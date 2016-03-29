@@ -28,10 +28,26 @@ git_repository(
     remote = "https://github.com/bazelbuild/rules_dotnet.git",
     tag = "0.0.1",
 )
-load("@io_bazel_rules_dotnet//dotnet:csharp.bzl", "csharp_repositories")
 
+load(
+    "@io_bazel_rules_dotnet//dotnet:csharp.bzl",
+    "csharp_repositories",
+    "csharp_configure",
+    nuget_package
+)
 csharp_repositories()
+csharp_configure()
+
+nuget_package(
+  name = "some_name",
+  package = "Some.Package",
+  version = "0.1.2",
+)
 ```
+
+The `csharp_repositories` rule fetches external dependencies, namely the NUnit
+binaries, and the `csharp_configure` rule sets up the rules to use the local
+Mono C# toolchain installed on your system.
 
 ## Examples
 
