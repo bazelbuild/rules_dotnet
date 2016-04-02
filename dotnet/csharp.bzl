@@ -33,6 +33,9 @@ def _make_csc_deps(deps, extra_files=[]):
       if dep_type == "library":
         dlls += [dep.out]
         refs += [dep.name]
+      if dep_type == "library_set":
+        dlls += dep.out
+        refs += [d.basename for d in dep.out]
       if dep.transitive_dlls:
         transitive_dlls += dep.transitive_dlls
 
@@ -300,6 +303,11 @@ _COMMON_ATTRS = {
 
 _LIB_ATTRS = {
     "_target_type": attr.string(default="library")
+}
+
+_NUGET_ATTRS = {
+    "srcs": attr.label_list(allow_files = FileType([".dll"])),
+    "_target_type": attr.string(default="library_set")
 }
 
 _EXE_ATTRS = {

@@ -35,6 +35,7 @@ load(
     "csharp_configure",
     nuget_package
 )
+
 csharp_repositories()
 csharp_configure()
 
@@ -82,6 +83,20 @@ csharp_nunit_test(
 )
 ```
 
+### nuget\_repository
+
+In the WORKSPACE file for your project record a nuget dependency like so.
+This is a repository rule so it will not work unless it is in a workspace
+file.
+
+```python
+nuget_package(
+    name="ndesk_options",
+    package="NDesk.Options",
+    version="0.2.1",
+)
+```
+
 ## Things still missing:
 
 - Handle .resx files correctly.
@@ -91,8 +106,8 @@ csharp_nunit_test(
 
 ## Future nice to haves:
 
+- nuget_packages repository rule that will handle multiple different nuget packages in one rule.
 - Building csproj and sln files for VS and MonoDevelop.
-- Nuget Packaging
 - Windows .NET framwork support
 
 <a name="csharp_library"></a>
@@ -286,5 +301,91 @@ testing framework.
         </p>
       </td>
     </tr>
+  </tbody>
+</table>
+
+<a name="nuget_package"></a>
+## nuget\_package
+
+```python
+nuget_package(name, package, version, package_sources)
+```
+
+A repository_rule that adds a nuget package dependency for the Workspace.
+
+
+<table class="table table-condensed table-bordered table-params">
+  <colgroup>
+    <col class="col-param" />
+    <col class="param-description" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th colspan="2">Attributes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>name</code></td>
+      <td>
+        <p><code>Name, required</code></p>
+        <p>Unique name for this rule</p>
+      </td>
+    <tr>
+      <td><code>package</code></td>
+      <td>
+        <p><code>String, Required</code></p>
+        <p>Name of the nuget package.</p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>version</code></td>
+      <td>
+        <p><code>String, Required</code></p>
+        <p>Version of the nuget package to install.</p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>package\_sources</code></td>
+      <td>
+        <p><code>List of strings, optional</code></p>
+        <p>Sources to pull nuget packages from. Either url or path.</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+```python
+dll_import(name, srcs)
+```
+
+A repository_rule that adds a nuget package dependency for the Workspace.
+
+
+<table class="table table-condensed table-bordered table-params">
+  <colgroup>
+    <col class="col-param" />
+    <col class="param-description" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th colspan="2">Attributes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>name</code></td>
+      <td>
+        <p><code>Name, required</code></p>
+        <p>Unique name for this rule</p>
+      </td>
+    <tr>
+    <tr>
+      <td><code>srcs</code></td>
+      <td>
+        <p><code>Labels, required</code></p>
+        <p>List of dotnet dll assemblies to use.</p>
+      </td>
+    <tr>
   </tbody>
 </table>
