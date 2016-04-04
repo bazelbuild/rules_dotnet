@@ -153,8 +153,8 @@ def _csc_get_output(ctx):
 
 def _csc_collect_inputs(ctx, extra_files=[]):
   depinfo = _make_csc_deps(ctx.attr.deps, extra_files=extra_files)
-  inputs = set(ctx.files.srcs) + depinfo.dlls + depinfo.transitive_dlls \
-    + [ctx.file.csc]
+  inputs = (set(ctx.files.srcs) + depinfo.dlls + depinfo.transitive_dlls
+      + [ctx.file.csc])
   srcs = [src.path for src in ctx.files.srcs]
   return struct(depinfo=depinfo,
                 inputs=inputs,
