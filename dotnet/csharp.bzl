@@ -153,7 +153,8 @@ def _csc_get_output(ctx):
 
 def _csc_collect_inputs(ctx, extra_files=[]):
   depinfo = _make_csc_deps(ctx.attr.deps, extra_files=extra_files)
-  inputs = set(ctx.files.srcs) + depinfo.dlls + depinfo.transitive_dlls
+  inputs = set(ctx.files.srcs) + depinfo.dlls + depinfo.transitive_dlls \
+    + [ctx.file.csc]
   srcs = [src.path for src in ctx.files.srcs]
   return struct(depinfo=depinfo,
                 inputs=inputs,
@@ -249,27 +250,17 @@ def _find_and_symlink(repository_ctx, binary, env_variable):
     found_binary = repository_ctx.which(binary)
     if found_binary == None:
       fail("Cannot find %s. Either correct your path or set the %s " +
-           "environment variable.")
+           "environment variable." % (binary, env_variable))
     repository_ctx.symlink(found_binary, binary)
-
-_TOOLCHAIN_BUILD = """\
-package(default_visibility = ["//visibility:public"])
-
-filegroup(
-    name = "mono_bin",
-    srcs = ["mono"],
-)
-
-filegroup(
-    name = "csc_bin",
-    srcs = ["mcs"],
-)
-"""
 
 def _csharp_autoconf(repository_ctx):
   _find_and_symlink(repository_ctx, "mono", "MONO")
   _find_and_symlink(repository_ctx, "mcs", "CSC")
-  repository_ctx.file("BUILD", _TOOLCHAIN_BUILD)
+  toolchain_build = """\
+package(default_visibility = ["//visibility:public"])
+exports_files(["mono", "mcs"])
+"""
+  repository_ctx.file("BUILD", toolchain_build)
 
 _COMMON_ATTRS = {
     # configuration fragment that specifies
@@ -288,12 +279,18 @@ _COMMON_ATTRS = {
     # define preprocessor symbols.
     # TODO(jeremy): "define": attr.string_list(),
     # The mono binary and csharp compiler.
-    "mono": attr.label(default=Label("//external:mono"),
-                       single_file=True,
-                       executable=True),
-    "csc": attr.label(default=Label("//external:csc"),
-                      single_file=True,
-                      executable=True),
+    "mono": attr.label(
+        default = Label("@local_config_csharp//:mono"),
+        allow_files = True,
+        single_file = True,
+        executable = True,
+    ),
+    "csc": attr.label(
+        default = Label("@local_config_csharp//:mcs"),
+        allow_files = True,
+        single_file = True,
+        executable = True,
+    ),
 }
 
 _LIB_ATTRS = {
@@ -396,16 +393,6 @@ def csharp_configure():
   ```
   """
   csharp_autoconf(name = "local_config_csharp")
-
-  native.bind(
-      name = "mono",
-      actual = "@local_config_csharp//:mono_bin",
-  )
-
-  native.bind(
-      name = "csc",
-      actual = "@local_config_csharp//:csc_bin",
-  )
 
 def csharp_repositories():
   """Adds the repository rules needed for using the C# rules."""
