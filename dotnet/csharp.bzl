@@ -404,34 +404,6 @@ dll_import = rule(
   attrs = _NUGET_ATTRS,
 )
 
-csharp_autoconf = repository_rule(
-    implementation = _csharp_autoconf,
-    local = True,
-)
-
-def csharp_configure():
-  """Finds the mono and mcs binaries installed on the local system and sets
-  up an external repository to use the local toolchain.
-
-  To use the local Mono toolchain installed on your system, add the following
-  to your WORKSPACE file:
-
-  ```python
-  csharp_configure()
-  ```
-  """
-  csharp_autoconf(name = "local_config_csharp")
-
-  native.bind(
-      name = "mono",
-      actual = "@local_config_csharp//:mono_bin",
-  )
-
-  native.bind(
-      name = "csc",
-      actual = "@local_config_csharp//:csc_bin",
-  )
-
 def _nuget_package_impl(repository_ctx):
   # figure out the output_path
   package = repository_ctx.attr.package
@@ -530,5 +502,5 @@ def csharp_repositories():
       url = "https://github.com/nunit/nunitv2/releases/download/2.6.4/NUnit-2.6.4.zip",
       sha256 = "1bd925514f31e7729ccde40a38a512c2accd86895f93465f3dfe6d0b593d7170",
       type = "zip",
-      build_file = "dotnet/nunit.BUILD",
+      build_file = "//dotnet:nunit.BUILD",
   )
