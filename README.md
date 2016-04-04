@@ -44,6 +44,7 @@ nuget_package(
   package = "Some.Package",
   version = "0.1.2",
 )
+)
 ```
 
 The `csharp_repositories` rule fetches external dependencies, namely the NUnit
