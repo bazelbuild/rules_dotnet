@@ -254,8 +254,8 @@ def _find_and_symlink(repository_ctx, binary, env_variable):
   else:
     found_binary = repository_ctx.which(binary)
     if found_binary == None:
-      fail("Cannot find %s. Either correct your path or set the %s " +
-           "environment variable." % (binary, env_variable))
+      fail("Cannot find %s. Either correct your path or set the " % binary +
+           "%s environment variable." % env_variable)
     repository_ctx.symlink(found_binary, binary)
 
 def _csharp_autoconf(repository_ctx):
