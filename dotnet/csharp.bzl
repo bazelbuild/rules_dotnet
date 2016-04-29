@@ -290,13 +290,13 @@ _COMMON_ATTRS = {
     # TODO(jeremy): "define": attr.string_list(),
     # The mono binary and csharp compiler.
     "mono": attr.label(
-        default = Label("@local_config_csharp//:mono"),
+        default = Label("@mono//mono/bin:mono"),
         allow_files = True,
         single_file = True,
         executable = True,
     ),
     "csc": attr.label(
-        default = Label("@local_config_csharp//:mcs"),
+        default = Label("@mono//mono/bin:mcs"),
         allow_files = True,
         single_file = True,
         executable = True,
@@ -406,6 +406,50 @@ dll_import = rule(
   attrs = _NUGET_ATTRS,
 )
 
+# TODO(jeremy): it is entirely possible that we want to abstract the whole
+# mono .pkg unpacking piece for general use outside of dotnet.
+def _mono_repository_impl(repository_ctx):
+  # purely osx example.
+  working_dir = repository_ctx.path("")
+  download_output = repository_ctx.path("mono.xar")
+  #download the package
+  repository_ctx.download(
+    repository_ctx.attr.pkg,
+    download_output,
+    #repository_ctx.attr.sha256,
+    False)
+
+  unpack_script = repository_ctx.path(repository_ctx.attr._mono_unpack_path)
+  # now we need to extract the file.
+  extract_command = [
+    unpack_script,
+    working_dir,
+    download_output,
+  ]
+  result = repository_ctx.execute(extract_command)
+
+  print("result: %s" % result)
+  # now we create the build file.
+
+  toolchain_build = """\
+package(default_visibility = ["//visibility:public"])
+exports_files(["mono", "mcs"])
+"""
+  repository_ctx.file("mono/bin/BUILD", toolchain_build)
+
+mono_package = repository_rule(
+  implementation = _mono_repository_impl,
+  attrs = {
+    "pkg": attr.string(default="http://download.mono-project.com/archive/4.2.3/macos-10-x86/MonoFramework-MDK-4.2.3.4.macos10.xamarin.x86.pkg"),
+    "sha256": attr.string(default="5e1caca94028be1c7416dd03b999fbf40b6808cf966cd7afa3dcb85cfb29b65f"),
+    "_mono_unpack_path": attr.label(
+       default=Label("//dotnet:mono_unpack.sh"),
+       executable=True
+    ),
+  },
+  local = True,
+)
+
 def _nuget_package_impl(repository_ctx):
   # figure out the output_path
   package = repository_ctx.attr.package
@@ -498,3 +542,4 @@ def csharp_repositories():
       # work when Workspaces import this using a repository rule.
       build_file = str(Label("//dotnet:nunit.BUILD")),
   )
+  mono_package(name="mono")
