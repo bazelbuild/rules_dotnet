@@ -29,9 +29,10 @@ function clean()
 
 function unpack()
 {
-    # TODO(jeremy): We need to get xar as well
+    # NOTE(jwall): This script is intended to work on OS X only.
+    # These utilities are for the moment guaranteed to exist
+    # on that platform.
     xar -x -f $pkg_file || exit 1
-    # TODO(jeremy): We need to get cpio from somewhere
     cpio -i < mono.pkg/Payload || exit 1
     mv Library/Frameworks/Mono.framework/Versions/4.* mono || exit 1
 }

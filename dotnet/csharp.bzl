@@ -416,7 +416,7 @@ def _mono_repository_impl(repository_ctx):
   repository_ctx.download(
     repository_ctx.attr.pkg,
     download_output,
-    #repository_ctx.attr.sha256,
+    repository_ctx.attr.sha256,
     False)
 
   unpack_script = repository_ctx.path(repository_ctx.attr._mono_unpack_path)
@@ -428,9 +428,7 @@ def _mono_repository_impl(repository_ctx):
   ]
   result = repository_ctx.execute(extract_command)
 
-  print("result: %s" % result)
   # now we create the build file.
-
   toolchain_build = """\
 package(default_visibility = ["//visibility:public"])
 exports_files(["mono", "mcs"])
