@@ -290,13 +290,13 @@ _COMMON_ATTRS = {
     # TODO(jeremy): "define": attr.string_list(),
     # The mono binary and csharp compiler.
     "mono": attr.label(
-        default = Label("@mono//mono/bin:mono"),
+        default = Label("@mono//bin:mono"),
         allow_files = True,
         single_file = True,
         executable = True,
     ),
     "csc": attr.label(
-        default = Label("@mono//mono/bin:mcs"),
+        default = Label("@mono//bin:mcs"),
         allow_files = True,
         single_file = True,
         executable = True,
@@ -406,44 +406,46 @@ dll_import = rule(
   attrs = _NUGET_ATTRS,
 )
 
-# TODO(jeremy): it is entirely possible that we want to abstract the whole
-# mono .pkg unpacking piece for general use outside of dotnet.
 def _mono_repository_impl(repository_ctx):
-  # purely osx example.
+  # TODO(jwall): The below is necessary due to bug:
+  #   https://github.com/bazelbuild/bazel/issues/1235.
+  #   when that bug is fixed the below should be removed.
   working_dir = repository_ctx.path("")
-  download_output = repository_ctx.path("mono.xar")
+  repository_ctx.file(repository_ctx.path("empty"))
+  if not working_dir.exists:
+    fail("working_dir %s does not exist! See https://github.com/bazelbuild/bazel/issues/1235" % working_dir)
+
+  # purely osx example.
+  download_output = repository_ctx.path("")
   #download the package
-  repository_ctx.download(
+  repository_ctx.download_and_extract(
     repository_ctx.attr.pkg,
     download_output,
     repository_ctx.attr.sha256,
-    False)
-
-  unpack_script = repository_ctx.path(repository_ctx.attr._mono_unpack_path)
-  # now we need to extract the file.
-  extract_command = [
-    unpack_script,
-    working_dir,
-    download_output,
-  ]
-  result = repository_ctx.execute(extract_command)
+    "", "mono")
 
   # now we create the build file.
-  toolchain_build = """\
+  toolchain_build = """
 package(default_visibility = ["//visibility:public"])
 exports_files(["mono", "mcs"])
 """
-  repository_ctx.file("mono/bin/BUILD", toolchain_build)
+  # FIXME(jeremy): Remove when the fixed archive is uploaded.
+  repository_ctx.file("bin/mcs", """
+#!/bin/sh
+script_dir=$(dirname $0)
+
+export PATH=$PATH:$script_dir
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$script_dir/../lib/pkgconfig:$script_dir/../share/pkgconfig
+
+exec $script_dir/mono $MONO_OPTIONS $script_dir/../lib/mono/4.5/mcs.exe "$@"
+  """)
+  repository_ctx.file("bin/BUILD", toolchain_build)
 
 mono_package = repository_rule(
   implementation = _mono_repository_impl,
   attrs = {
-    "pkg": attr.string(default="http://download.mono-project.com/archive/4.2.3/macos-10-x86/MonoFramework-MDK-4.2.3.4.macos10.xamarin.x86.pkg"),
-    "sha256": attr.string(default="5e1caca94028be1c7416dd03b999fbf40b6808cf966cd7afa3dcb85cfb29b65f"),
-    "_mono_unpack_path": attr.label(
-       default=Label("//dotnet:mono_unpack.sh"),
-       executable=True
-    ),
+    "pkg": attr.string(default="http://bazel-mirror.storage.googleapis.com/download.mono-project.com/archive/4.2.3/macos-10-x86/MonoFramework-MDK-4.2.3.4.macos10.xamarin.x86.tar.gz"),
+    "sha256": attr.string(default="81c4ea93d9784239b8607a992269f0547a687061dbd2a321b1511c37dcf58df7"),
   },
   local = True,
 )
