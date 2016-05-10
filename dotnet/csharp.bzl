@@ -519,7 +519,7 @@ mono_package = repository_rule(
   local = True,
 )
 
-def csharp_repositories(use_local_mono=True):
+def csharp_repositories(use_local_mono=False):
   """Adds the repository rules needed for using the C# rules."""
   native.new_http_archive(
       name = "nunit",
