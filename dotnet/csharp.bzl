@@ -474,12 +474,6 @@ csharp_autoconf = repository_rule(
     local = True,
 )
 
-def _mono_repository_impl(repository_ctx):
-  if repository_ctx.attr.use_local:
-    _csharp_autoconf(repository_ctx)
-  else:
-    _mono_osx_repository_impl(repository_ctx)
-
 def _mono_osx_repository_impl(repository_ctx):
   # TODO(jwall): The below is necessary due to bug:
   #   https://github.com/bazelbuild/bazel/issues/1235.
@@ -503,6 +497,16 @@ package(default_visibility = ["//visibility:public"])
 exports_files(["mono", "mcs"])
 """
   repository_ctx.file("bin/BUILD", toolchain_build)
+
+def _mono_repository_impl(repository_ctx):
+  print("os name: %s" % repository_ctx.os.name)
+  if repository_ctx.attr.use_local:
+    _csharp_autoconf(repository_ctx)
+  elif repository_ctx.os.name == "mac os x":
+    _mono_osx_repository_impl(repository_ctx)
+  else:
+    #if nothing else works look for a local version of mono
+    _csharp_autoconf(repository_ctx)
 
 mono_package = repository_rule(
   implementation = _mono_repository_impl,
