@@ -489,13 +489,12 @@ def _mono_osx_repository_impl(repository_ctx):
   if not working_dir.exists:
     fail("working_dir %s does not exist! See https://github.com/bazelbuild/bazel/issues/1235" % working_dir)
 
-  # purely osx example.
   download_output = repository_ctx.path("")
   #download the package
   repository_ctx.download_and_extract(
-    repository_ctx.attr.pkg,
+    repository_ctx.attr._osx_pkg,
     download_output,
-    repository_ctx.attr.sha256,
+    repository_ctx.attr._osx_sha256,
     "", "mono")
 
   # now we create the build file.
@@ -508,9 +507,8 @@ exports_files(["mono", "mcs"])
 mono_package = repository_rule(
   implementation = _mono_repository_impl,
   attrs = {
-    # FIXME(jeremy): rename to _osx_pkg and _osx_sha256
-    "pkg": attr.string(default="http://bazel-mirror.storage.googleapis.com/download.mono-project.com/archive/4.2.3/macos-10-x86/MonoFramework-MDK-4.2.3.4.macos10.xamarin.x86.tar.gz"),
-    "sha256": attr.string(default="a7afb92d4a81f17664a040c8f36147e57a46bb3c33314b73ec737ad73608e08b"),
+    "_osx_pkg": attr.string(default="http://bazel-mirror.storage.googleapis.com/download.mono-project.com/archive/4.2.3/macos-10-x86/MonoFramework-MDK-4.2.3.4.macos10.xamarin.x86.tar.gz"),
+    "_osx_sha256": attr.string(default="a7afb92d4a81f17664a040c8f36147e57a46bb3c33314b73ec737ad73608e08b"),
     "use_local": attr.bool(default=False),
   },
   local = True,
