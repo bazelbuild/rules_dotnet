@@ -406,50 +406,6 @@ dll_import = rule(
   attrs = _NUGET_ATTRS,
 )
 
-def _mono_repository_impl(repository_ctx):
-  # TODO(jwall): The below is necessary due to bug:
-  #   https://github.com/bazelbuild/bazel/issues/1235.
-  #   when that bug is fixed the below should be removed.
-  working_dir = repository_ctx.path("")
-  repository_ctx.file(repository_ctx.path("empty"))
-  if not working_dir.exists:
-    fail("working_dir %s does not exist! See https://github.com/bazelbuild/bazel/issues/1235" % working_dir)
-
-  # purely osx example.
-  download_output = repository_ctx.path("")
-  #download the package
-  repository_ctx.download_and_extract(
-    repository_ctx.attr.pkg,
-    download_output,
-    repository_ctx.attr.sha256,
-    "", "mono")
-
-  # now we create the build file.
-  toolchain_build = """
-package(default_visibility = ["//visibility:public"])
-exports_files(["mono", "mcs"])
-"""
-  # FIXME(jeremy): Remove when the fixed archive is uploaded.
-  repository_ctx.file("bin/mcs", """
-#!/bin/sh
-script_dir=$(dirname $0)
-
-export PATH=$PATH:$script_dir
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$script_dir/../lib/pkgconfig:$script_dir/../share/pkgconfig
-
-exec $script_dir/mono $MONO_OPTIONS $script_dir/../lib/mono/4.5/mcs.exe "$@"
-  """)
-  repository_ctx.file("bin/BUILD", toolchain_build)
-
-mono_package = repository_rule(
-  implementation = _mono_repository_impl,
-  attrs = {
-    "pkg": attr.string(default="http://bazel-mirror.storage.googleapis.com/download.mono-project.com/archive/4.2.3/macos-10-x86/MonoFramework-MDK-4.2.3.4.macos10.xamarin.x86.tar.gz"),
-    "sha256": attr.string(default="81c4ea93d9784239b8607a992269f0547a687061dbd2a321b1511c37dcf58df7"),
-  },
-  local = True,
-)
-
 def _nuget_package_impl(repository_ctx):
   # figure out the output_path
   package = repository_ctx.attr.package
@@ -516,6 +472,48 @@ Args:
 csharp_autoconf = repository_rule(
     implementation = _csharp_autoconf,
     local = True,
+)
+
+def _mono_repository_impl(repository_ctx):
+  if repository_ctx.attr.use_local:
+    _csharp_autoconf(repository_ctx)
+  else:
+    _mono_osx_repository_impl(repository_ctx)
+
+def _mono_osx_repository_impl(repository_ctx):
+  # TODO(jwall): The below is necessary due to bug:
+  #   https://github.com/bazelbuild/bazel/issues/1235.
+  #   when that bug is fixed the below should be removed.
+  working_dir = repository_ctx.path("")
+  repository_ctx.file(repository_ctx.path("empty"))
+  if not working_dir.exists:
+    fail("working_dir %s does not exist! See https://github.com/bazelbuild/bazel/issues/1235" % working_dir)
+
+  # purely osx example.
+  download_output = repository_ctx.path("")
+  #download the package
+  repository_ctx.download_and_extract(
+    repository_ctx.attr.pkg,
+    download_output,
+    repository_ctx.attr.sha256,
+    "", "mono")
+
+  # now we create the build file.
+  toolchain_build = """
+package(default_visibility = ["//visibility:public"])
+exports_files(["mono", "mcs"])
+"""
+  repository_ctx.file("bin/BUILD", toolchain_build)
+
+mono_package = repository_rule(
+  implementation = _mono_repository_impl,
+  attrs = {
+    # FIXME(jeremy): rename to _osx_pkg and _osx_sha256
+    "pkg": attr.string(default="http://bazel-mirror.storage.googleapis.com/download.mono-project.com/archive/4.2.3/macos-10-x86/MonoFramework-MDK-4.2.3.4.macos10.xamarin.x86.tar.gz"),
+    "sha256": attr.string(default="a7afb92d4a81f17664a040c8f36147e57a46bb3c33314b73ec737ad73608e08b"),
+    "use_local": attr.bool(default=False),
+  },
+  local = True,
 )
 
 def csharp_configure():
