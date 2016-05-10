@@ -254,6 +254,7 @@ def _cs_nunit_run_impl(ctx):
                 runfiles=runfiles)
 
 def _find_and_symlink(repository_ctx, binary, env_variable):
+  #repository_ctx.file("bin/empty")
   if env_variable in repository_ctx.os.environ:
     return repository_ctx.path(repository_ctx.os.environ[env_variable])
   else:
@@ -261,7 +262,7 @@ def _find_and_symlink(repository_ctx, binary, env_variable):
     if found_binary == None:
       fail("Cannot find %s. Either correct your path or set the " % binary +
            "%s environment variable." % env_variable)
-    repository_ctx.symlink(found_binary, binary)
+    repository_ctx.symlink(found_binary, "bin/%s" % binary)
 
 def _csharp_autoconf(repository_ctx):
   _find_and_symlink(repository_ctx, "mono", "MONO")
@@ -270,7 +271,7 @@ def _csharp_autoconf(repository_ctx):
 package(default_visibility = ["//visibility:public"])
 exports_files(["mono", "mcs"])
 """
-  repository_ctx.file("BUILD", toolchain_build)
+  repository_ctx.file("bin/BUILD", toolchain_build)
 
 _COMMON_ATTRS = {
     # configuration fragment that specifies
@@ -518,20 +519,7 @@ mono_package = repository_rule(
   local = True,
 )
 
-def csharp_configure():
-  """Finds the mono and mcs binaries installed on the local system and sets
-  up an external repository to use the local toolchain.
-
-  To use the local Mono toolchain installed on your system, add the following
-  to your WORKSPACE file:
-
-  ```python
-  csharp_configure()
-  ```
-  """
-  csharp_autoconf(name = "local_config_csharp")
-
-def csharp_repositories():
+def csharp_repositories(use_local_mono=True):
   """Adds the repository rules needed for using the C# rules."""
   native.new_http_archive(
       name = "nunit",
@@ -542,4 +530,4 @@ def csharp_repositories():
       # work when Workspaces import this using a repository rule.
       build_file = str(Label("//dotnet:nunit.BUILD")),
   )
-  mono_package(name="mono")
+  mono_package(name="mono", use_local=use_local_mono)

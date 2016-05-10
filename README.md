@@ -34,12 +34,10 @@ git_repository(
 load(
     "@io_bazel_rules_dotnet//dotnet:csharp.bzl",
     "csharp_repositories",
-    "csharp_configure",
     nuget_package
 )
 
-csharp_repositories()
-csharp_configure()
+csharp_repositories(use_local_mono=True)
 
 nuget_package(
   name = "some_name",
@@ -49,8 +47,10 @@ nuget_package(
 ```
 
 The `csharp_repositories` rule fetches external dependencies, namely the NUnit
-binaries, and the `csharp_configure` rule sets up the rules to use the local
-Mono C# toolchain installed on your system.
+binaries and the mono repository. Setting `use_local_mono` to True will use
+your installed mono framework instead of downloading one. If you are on OS X
+you can set use_local_mono to False and mono will be downloaded for you by
+bazel. Support for downloading mono on Linux and Windows is coming soon.
 
 ## Examples
 
