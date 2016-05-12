@@ -479,17 +479,14 @@ def _mono_osx_repository_impl(repository_ctx):
   # TODO(jwall): The below is necessary due to bug:
   #   https://github.com/bazelbuild/bazel/issues/1235.
   #   when that bug is fixed the below should be removed.
-  working_dir = repository_ctx.path("")
   repository_ctx.file(repository_ctx.path("empty"))
-  if not working_dir.exists:
-    fail("working_dir %s does not exist! See https://github.com/bazelbuild/bazel/issues/1235" % working_dir)
 
   download_output = repository_ctx.path("")
-  #download the package
+  # download the package
   repository_ctx.download_and_extract(
-    repository_ctx.attr._osx_pkg,
+    "http://bazel-mirror.storage.googleapis.com/download.mono-project.com/archive/4.2.3/macos-10-x86/MonoFramework-MDK-4.2.3.4.macos10.xamarin.x86.tar.gz",
     download_output,
-    repository_ctx.attr._osx_sha256,
+    "a7afb92d4a81f17664a040c8f36147e57a46bb3c33314b73ec737ad73608e08b",
     "", "mono")
 
   # now we create the build file.
@@ -500,10 +497,9 @@ exports_files(["mono", "mcs"])
   repository_ctx.file("bin/BUILD", toolchain_build)
 
 def _mono_repository_impl(repository_ctx):
-  print("os name: %s" % repository_ctx.os.name)
   if repository_ctx.attr.use_local:
     _csharp_autoconf(repository_ctx)
-  elif repository_ctx.os.name == "mac os x":
+  elif repository_ctx.os.name.find("mac") != -1:
     _mono_osx_repository_impl(repository_ctx)
   else:
     #if nothing else works look for a local version of mono
@@ -512,8 +508,6 @@ def _mono_repository_impl(repository_ctx):
 mono_package = repository_rule(
   implementation = _mono_repository_impl,
   attrs = {
-    "_osx_pkg": attr.string(default="http://bazel-mirror.storage.googleapis.com/download.mono-project.com/archive/4.2.3/macos-10-x86/MonoFramework-MDK-4.2.3.4.macos10.xamarin.x86.tar.gz"),
-    "_osx_sha256": attr.string(default="a7afb92d4a81f17664a040c8f36147e57a46bb3c33314b73ec737ad73608e08b"),
     "use_local": attr.bool(default=False),
   },
   local = True,
