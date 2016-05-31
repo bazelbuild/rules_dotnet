@@ -116,8 +116,8 @@ def _make_nunit_launcher(ctx, depinfo, output):
           [d.short_path for d in depinfo.transitive_dlls])
 
   content = _NUNIT_LAUNCHER_SCRIPT.format(
-      mono_exe=ctx.file.mono.path,
-      nunit_exe=ctx.files._nunit_exe[0].path,
+      mono_exe=ctx.file.mono.short_path,
+      nunit_exe=ctx.files._nunit_exe[0].short_path,
       libs=" ".join(libs))
 
   ctx.file_action(output=ctx.outputs.executable, content=content)
