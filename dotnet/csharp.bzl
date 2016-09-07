@@ -100,7 +100,9 @@ def _make_csc_arglist(ctx, output, depinfo, extra_refs=[]):
 _NUNIT_LAUNCHER_SCRIPT = """\
 #!/bin/bash
 
-cd $0.runfiles
+if [[ -e "$0.runfiles" ]]; then
+  cd $0.runfiles/{workspace}
+fi
 
 # TODO(jeremy): This is a gross and fragile hack.
 # We should be able to do better than this.
@@ -118,14 +120,17 @@ def _make_nunit_launcher(ctx, depinfo, output):
   content = _NUNIT_LAUNCHER_SCRIPT.format(
       mono_exe=ctx.file.mono.short_path,
       nunit_exe=ctx.files._nunit_exe[0].short_path,
-      libs=" ".join(libs))
+      libs=" ".join(libs),
+      workspace=ctx.workspace_name)
 
   ctx.file_action(output=ctx.outputs.executable, content=content)
 
 _LAUNCHER_SCRIPT = """\
 #!/bin/bash
 
-cd $0.runfiles
+if [[ -e "$0.runfiles" ]]; then
+  cd $0.runfiles/{workspace}
+fi
 
 # TODO(jeremy): This is a gross and fragile hack.
 # We should be able to do better than this.
