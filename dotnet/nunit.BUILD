@@ -12,6 +12,6 @@ filegroup(
 
 filegroup(
     name = "nunit_framework",
-    srcs = glob(["NUnit-2.6.4/bin/framework/*.dll"]),
+    srcs = glob(["NUnit-2.6.4/bin/framework/*"]),
     visibility = ["//visibility:public"],
 )
