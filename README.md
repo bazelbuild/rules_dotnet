@@ -13,6 +13,10 @@
   </ul>
 </div>
 
+__WARNING:__ Theses rules are not compatible with
+[sandboxing](https://bazel.io/blog/2015/09/11/sandboxing.html).
+
+
 ## Overview
 
 This is a minimal viable set of C# bindings for building csharp code with
