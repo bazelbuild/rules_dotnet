@@ -3,7 +3,6 @@
 ## Rules
 
 <div class="toc">
-  <h2>Rules</h2>
   <ul>
     <li><a href="#csharp_library">csharp_library</a></li>
     <li><a href="#csharp_binary">csharp_binary</a></li>
