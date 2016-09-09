@@ -2,15 +2,12 @@
 
 ## Rules
 
-<div class="toc">
-  <ul>
-    <li><a href="#csharp_library">csharp_library</a></li>
-    <li><a href="#csharp_binary">csharp_binary</a></li>
-    <li><a href="#csharp_nunit_test">csharp_nunit_test</a></li>
-    <li><a href="#nuget_package">nuget_package</a></li>
-    <li><a href="#dll_import">dll_import</a></li>
-  </ul>
-</div>
+
+* [csharp_library](#csharp_library)
+* [csharp_binary](#csharp_library)
+* [csharp_nunit_test](#csharp_nunit_test)
+* [nuget_package](#nuget_package)
+* [dll_import](#dll_import)
 
 __WARNING:__ Theses rules are not compatible with
 [sandboxing](https://bazel.io/blog/2015/09/11/sandboxing.html).
