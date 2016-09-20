@@ -417,9 +417,14 @@ def _nuget_package_impl(repository_ctx):
   package = repository_ctx.attr.package
   output_dir = repository_ctx.path("")
 
+  mono = repository_ctx.path(repository_ctx.attr.mono_exe)
+  nuget = repository_ctx.path(repository_ctx.attr.nuget_exe)
+
   # assemble our nuget command
   nuget_cmd = [
-    repository_ctx.attr.nuget_bin_path,
+    mono,
+    "--config", "%s/../etc/mono/config" % mono.dirname,
+    nuget,
     "install",
     "-Version", repository_ctx.attr.version,
     "-OutputDirectory", output_dir,
@@ -431,8 +436,9 @@ def _nuget_package_impl(repository_ctx):
   # Lastly we add the nuget package name.
   nuget_cmd += [repository_ctx.attr.package]
   # execute nuget download.
-  repository_ctx.execute(nuget_cmd)
-  # TODO(jeremy): report errors if there were any
+  result = repository_ctx.execute(nuget_cmd)
+  if result.return_code:
+    fail("Nuget command failed: %s (%s)" % (result.stderr, " ".join(nuget_cmd)))
 
   tpl_file = Label("//dotnet:NUGET_BUILD.tpl")
   # add the BUILD file
@@ -450,17 +456,21 @@ nuget_package = repository_rule(
   implementation=_nuget_package_impl,
   #local=False,
   attrs={
-    # TODO(jeremy): use repository_ctx.which("mono") in the impl?
-    "mono_bin_path":attr.string(default=_MONO_UNIX_BIN),
-    # Location of the nuget exe
-    "nuget_bin_path":attr.string(default="/usr/local/bin/nuget"),
     # Sources to download the nuget packages from
     "package_sources":attr.string_list(),
     # The name of the nuget package
     "package":attr.string(mandatory=True),
     # The version of the nuget package
     "version":attr.string(mandatory=True),
-    # content of the BUILD file for this external resource.
+    # Reference to the mono binary
+    "mono_exe":attr.label(
+      executable=True,
+      default=Label("@mono//bin:mono"),
+    ),
+    # Reference to the nuget.exe file
+    "nuget_exe":attr.label(
+      default=Label("@nuget//:nuget.exe"),
+    ),
   })
 """Fetches a nuget package as an external dependency.
 
@@ -520,6 +530,7 @@ mono_package = repository_rule(
 
 def csharp_repositories(use_local_mono=False):
   """Adds the repository rules needed for using the C# rules."""
+
   native.new_http_archive(
       name = "nunit",
       url = "http://bazel-mirror.storage.googleapis.com/github.com/nunit/nunitv2/releases/download/2.6.4/NUnit-2.6.4.zip",
@@ -529,4 +540,17 @@ def csharp_repositories(use_local_mono=False):
       # work when Workspaces import this using a repository rule.
       build_file = str(Label("//dotnet:nunit.BUILD")),
   )
+
+  native.new_http_archive(
+      name = "nuget",
+      url = "https://github.com/mono/nuget-binary/archive/0811ba888a80aaff66a93a4c98567ce904ab2663.zip", # Sept 6, 2016
+      sha256 = "28323d23b7e6e02d3ba8892f525a1457ad23adb7e3a48908d37c1b5ae37519f6",
+      strip_prefix = "nuget-binary-0811ba888a80aaff66a93a4c98567ce904ab2663",
+      type = "zip",
+      build_file_content = """
+      package(default_visibility = ["//visibility:public"])
+      exports_files(["nuget.exe"])
+      """
+  )
+
   mono_package(name="mono", use_local=use_local_mono)

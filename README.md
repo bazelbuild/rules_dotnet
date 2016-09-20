@@ -28,7 +28,7 @@ Add the following to your `WORKSPACE` file to add the external repositories:
 git_repository(
     name = "io_bazel_rules_dotnet",
     remote = "https://github.com/bazelbuild/rules_dotnet.git",
-    tag = "0.0.1",
+    tag = "0.0.3",
 )
 
 load(
@@ -46,10 +46,11 @@ nuget_package(
 )
 ```
 
-The `csharp_repositories` rule fetches external dependencies, namely the NUnit
-binaries and the mono repository. Setting `use_local_mono` to `True` will use
-your installed mono framework instead of downloading one. If you are on OS X
-you can set `use_local_mono` to `False` and mono will be downloaded for you by
+The `csharp_repositories` rule fetches external dependencies, namely
+the mono repository, the nuget binary, and the nunit binary. Setting
+`use_local_mono` to `True` will use your installed mono framework
+instead of downloading one. If you are on OS X you can set
+`use_local_mono` to `False` and mono will be downloaded for you by
 bazel. Support for downloading mono on Linux is coming soon.
 
 ## Examples
@@ -93,7 +94,7 @@ file.
 
 ```python
 nuget_package(
-    name="ndesk_options", # referenced via path @ndesk_options//:ndesk_options
+    name="ndesk_options", # referenced via path @ndesk_options//:dylibs
     package="NDesk.Options",
     version="0.2.1",
 )
