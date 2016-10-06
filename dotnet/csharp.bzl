@@ -71,7 +71,7 @@ def _make_csc_arglist(ctx, output, depinfo, extra_refs=[]):
     args += [_make_csc_flag(flag_start, "lib", ",".join(list(libdirs)))]
 
   # /reference:filename[,filename2]
-  if depinfo.refs:
+  if depinfo.refs or extra_refs:
     args += [_make_csc_flag(flag_start, "reference",
                             ",".join(list(depinfo.refs + extra_refs)))]
   else:
@@ -120,7 +120,7 @@ def _make_nunit_launcher(ctx, depinfo, output):
   content = _NUNIT_LAUNCHER_SCRIPT.format(
       mono_exe=ctx.file.mono.short_path,
       nunit_exe=ctx.files._nunit_exe[0].short_path,
-      libs=" ".join(libs),
+      libs=" ".join(list(set(libs))),
       workspace=ctx.workspace_name)
 
   ctx.file_action(output=ctx.outputs.executable, content=content)
