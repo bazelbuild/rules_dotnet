@@ -104,10 +104,15 @@ if [[ -e "$0.runfiles" ]]; then
   cd $0.runfiles/{workspace}
 fi
 
+# Create top-level symlinks for lib files.
 # TODO(jeremy): This is a gross and fragile hack.
 # We should be able to do better than this.
 for l in {libs}; do
-    ln -s -f $l $(basename $l)
+    if [[ ! -e $(basename $l) ]]; then
+        # Note: -f required because the symlink may exist
+        # even though its current target does not exist.
+        ln -s -f $l $(basename $l)
+    fi
 done
 
 {mono_exe} {nunit_exe} {libs} "$@"
@@ -134,11 +139,18 @@ if [[ -e "$0.runfiles" ]]; then
   cd $0.runfiles/{workspace}
 fi
 
+# Create top-level symlinks for .exe and lib files.
 # TODO(jeremy): This is a gross and fragile hack.
 # We should be able to do better than this.
-ln -s -f {exe} $(basename {exe})
+if [[ ! -e $(basename {exe}) ]]; then
+    # Note: -f required because the symlink may exist
+    # even though its current target does not exist.
+    ln -s -f {exe} $(basename {exe})
+fi
 for l in {libs}; do
-    ln -s -f $l $(basename {workspace}/$l)
+    if [[ ! -e $(basename {workspace}/$l) ]]; then
+        ln -s -f $l $(basename {workspace}/$l)
+    fi
 done
 
 {mono_exe} $(basename {exe}) "$@"
