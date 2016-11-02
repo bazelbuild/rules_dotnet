@@ -130,9 +130,9 @@ _LAUNCHER_SCRIPT = """\
 
 set -e
 
-if [[ -e "$0.runfiles" ]]; then
-  cd $0.runfiles/{workspace}
-fi
+RUNFILES=$0.runfiles/{workspace}
+
+pushd $RUNFILES
 
 # TODO(jeremy): This is a gross and fragile hack.
 # We should be able to do better than this.
@@ -141,7 +141,9 @@ for l in {libs}; do
     ln -s -f $l $(basename {workspace}/$l)
 done
 
-{mono_exe} $(basename {exe}) "$@"
+popd
+
+$RUNFILES/{mono_exe} $RUNFILES/$(basename {exe}) "$@"
 """
 
 def _make_launcher(ctx, depinfo, output):
