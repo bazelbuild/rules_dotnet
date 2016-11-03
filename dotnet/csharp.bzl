@@ -539,11 +539,6 @@ csharp_autoconf = repository_rule(
 )
 
 def _mono_osx_repository_impl(repository_ctx):
-  # TODO(jwall): The below is necessary due to bug:
-  #   https://github.com/bazelbuild/bazel/issues/1235.
-  #   when that bug is fixed the below should be removed.
-  repository_ctx.file(repository_ctx.path("empty"))
-
   download_output = repository_ctx.path("")
   # download the package
   repository_ctx.download_and_extract(
