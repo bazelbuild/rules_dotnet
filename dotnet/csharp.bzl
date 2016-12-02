@@ -261,7 +261,7 @@ def _cs_nunit_run_impl(ctx):
       depinfo)
 
   _csc_compile_action(ctx, output, outputs, collected_inputs,
-                      extra_refs=["nunit.framework"])
+                      extra_refs=["Nunit.Framework"])
 
   _make_nunit_launcher(ctx, depinfo, output)
 
