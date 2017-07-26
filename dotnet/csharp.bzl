@@ -22,9 +22,9 @@ def _make_csc_flag(flag_start, flag_name, flag_value=None):
   return flag_start + flag_name + (":" + flag_value if flag_value else "")
 
 def _make_csc_deps(deps, extra_files=[]):
-  dlls = set()
-  refs = set()
-  transitive_dlls = set()
+  dlls = depset()
+  refs = depset()
+  transitive_dlls = depset()
   for dep in deps:
     if hasattr(dep, "target_type"):
       dep_type = getattr(dep, "target_type")
@@ -40,7 +40,7 @@ def _make_csc_deps(deps, extra_files=[]):
         transitive_dlls += dep.transitive_dlls
 
   return struct(
-      dlls = dlls + set(extra_files),
+      dlls = dlls + depset(extra_files),
       refs = refs,
       transitive_dlls = transitive_dlls)
 
@@ -125,7 +125,8 @@ def _make_nunit_launcher(ctx, depinfo, output):
   content = _NUNIT_LAUNCHER_SCRIPT.format(
       mono_exe=ctx.file.mono.short_path,
       nunit_exe=ctx.files._nunit_exe[0].short_path,
-      libs=" ".join(list(set(libs))),
+      unique_libs = {lib: None for lib in libs}.keys()
+      libs=" ".join(unique_libs),
       workspace=ctx.workspace_name)
 
   ctx.file_action(output=ctx.outputs.executable, content=content)
@@ -180,7 +181,7 @@ def _csc_get_output(ctx):
 
 def _csc_collect_inputs(ctx, extra_files=[]):
   depinfo = _make_csc_deps(ctx.attr.deps, extra_files=extra_files)
-  inputs = (set(ctx.files.srcs) + depinfo.dlls + depinfo.transitive_dlls
+  inputs = (depset(ctx.files.srcs) + depinfo.dlls + depinfo.transitive_dlls
       + [ctx.file.csc])
   srcs = [src.path for src in ctx.files.srcs]
   return struct(depinfo=depinfo,
@@ -206,10 +207,10 @@ def _cs_runfiles(ctx, outputs, depinfo, add_mono=False):
   mono_file = []
   if add_mono:
     mono_file = [ctx.file.mono]
-  transitive_files = set(depinfo.dlls + depinfo.transitive_dlls + mono_file) or None
+  transitive_files = depset(depinfo.dlls + depinfo.transitive_dlls + mono_file) or None
   return ctx.runfiles(
       files = outputs,
-      transitive_files = set(depinfo.dlls + depinfo.transitive_dlls + [ctx.file.mono]) or None)
+      transitive_files = depset(depinfo.dlls + depinfo.transitive_dlls + [ctx.file.mono]) or None)
 
 def _csc_compile_impl(ctx):
   if hasattr(ctx.outputs, "csc_lib") and hasattr(ctx.outputs, "csc_exe"):
@@ -236,7 +237,7 @@ def _csc_compile_impl(ctx):
                 srcs = srcs,
                 target_type=ctx.attr._target_type,
                 out = output,
-                dlls = set([output]),
+                dlls = depset([output]),
                 transitive_dlls = depinfo.dlls,
                 runfiles = runfiles)
 
@@ -269,7 +270,7 @@ def _cs_nunit_run_impl(ctx):
                 srcs=srcs,
                 target_type=ctx.attr._target_type,
                 out=output,
-                dlls = (set([output])
+                dlls = (depset([output])
                         if hasattr(ctx.outputs, "csc_lib") else None),
                 transitive_dlls = depinfo.dlls,
                 runfiles=runfiles)
@@ -416,13 +417,13 @@ Args:
 """
 
 def _dll_import_impl(ctx):
-  inputs = set(ctx.files.srcs)
+  inputs = depset(ctx.files.srcs)
   return struct(
     name = ctx.label.name,
     target_type = ctx.attr._target_type,
     out = inputs,
     dlls = inputs,
-    transitive_dlls = set([]),
+    transitive_dlls = depset(),
   )
 
 dll_import = rule(
