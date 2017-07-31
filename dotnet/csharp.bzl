@@ -125,8 +125,7 @@ def _make_nunit_launcher(ctx, depinfo, output):
   content = _NUNIT_LAUNCHER_SCRIPT.format(
       mono_exe=ctx.file.mono.short_path,
       nunit_exe=ctx.files._nunit_exe[0].short_path,
-      unique_libs = {lib: None for lib in libs}.keys()
-      libs=" ".join(unique_libs),
+      libs=" ".join({lib: None for lib in libs}.keys()),
       workspace=ctx.workspace_name)
 
   ctx.file_action(output=ctx.outputs.executable, content=content)
