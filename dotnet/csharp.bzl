@@ -191,14 +191,12 @@ def _csc_compile_action(ctx, assembly, all_outputs, collected_inputs,
                       extra_refs=[]):
   csc_args = _make_csc_arglist(ctx, assembly, collected_inputs.depinfo,
                                extra_refs=extra_refs)
-  command_script = " ".join([ctx.file.csc.path] + csc_args +
-                            collected_inputs.srcs)
 
-  ctx.action(
+  ctx.actions.run(
       inputs = list(collected_inputs.inputs),
       outputs = all_outputs,
-      command = command_script,
-      arguments = csc_args,
+      executable = ctx.file.csc.path,
+      arguments = csc_args + collected_inputs.srcs,
       progress_message = (
           "Compiling " + ctx.label.package + ":" + ctx.label.name))
 
