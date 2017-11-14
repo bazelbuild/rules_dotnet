@@ -48,19 +48,24 @@ def _get_libdirs(dlls, libdirs=[]):
   return [dep.dirname for dep in dlls] + libdirs
 
 def _make_csc_arglist(ctx, output, depinfo, extra_refs=[]):
+  args = ctx.actions.args()
+
   flag_start = ctx.attr._flag_start
-  args = [
-       # /out:<file>
-      _make_csc_flag(flag_start, "out", output.path),
-       # /target (exe for binary, library for lib, module for module)
-      _make_csc_flag(flag_start, "target", ctx.attr._target_type),
-      # /fullpaths
-      _make_csc_flag(flag_start, "fullpaths"),
-      # /warn
-      _make_csc_flag(flag_start, "warn", str(ctx.attr.warn)),
-      # /nologo
-      _make_csc_flag(flag_start, "nologo"),
-  ]
+
+  # /out:<file>
+  args.add(_make_csc_flag(flag_start, "out", output.path))
+
+  # /target (exe for binary, library for lib, module for module)
+  args.add(_make_csc_flag(flag_start, "target", ctx.attr._target_type))
+
+  # /fullpaths
+  args.add(_make_csc_flag(flag_start, "fullpaths"))
+
+  # /warn
+  args.add(_make_csc_flag(flag_start, "warn", str(ctx.attr.warn)))
+
+  # /nologo
+  args.add(_make_csc_flag(flag_start, "nologo"))
 
   # /modulename:<string> only used for modules
   libdirs = _get_libdirs(depinfo.dlls)
@@ -68,22 +73,23 @@ def _make_csc_arglist(ctx, output, depinfo, extra_refs=[]):
 
   # /lib:dir1,[dir1]
   if libdirs:
-    args += [_make_csc_flag(flag_start, "lib", ",".join(list(libdirs)))]
+    args.add(_make_csc_flag(flag_start, "lib", ",".join(list(libdirs))))
 
   # /reference:filename[,filename2]
   if depinfo.refs or extra_refs:
-    args += [_make_csc_flag(flag_start, "reference",
-                            ",".join(list(depinfo.refs + extra_refs)))]
+    args.add(_make_csc_flag(flag_start, "reference",
+                            ",".join(list(depinfo.refs + extra_refs))))
   else:
-    args += extra_refs
+    args.add(extra_refs)
 
   # /doc
   if hasattr(ctx.outputs, "doc_xml"):
-    args += [_make_csc_flag(flag_start, "doc", ctx.outputs.doc_xml.path)]
+    args.add(_make_csc_flag(flag_start, "doc", ctx.outputs.doc_xml.path))
 
   # /debug
   debug = ctx.var.get("BINMODE", "") == "-dbg"
-  args += [_make_csc_flag(flag_start, "debug")] if debug else []
+  if debug:
+    args.add(_make_csc_flag(flag_start, "debug"))
 
   # /warnaserror
   # TODO(jeremy): /define:name[;name2]
@@ -91,7 +97,7 @@ def _make_csc_arglist(ctx, output, depinfo, extra_refs=[]):
 
   # /main:class
   if hasattr(ctx.attr, "main_class") and ctx.attr.main_class:
-    args += [_make_csc_flag(flag_start, "main", ctx.attr.main_class)]
+    args.add(_make_csc_flag(flag_start, "main", ctx.attr.main_class))
 
   # TODO(jwall): /parallel
 
@@ -192,11 +198,25 @@ def _csc_compile_action(ctx, assembly, all_outputs, collected_inputs,
   csc_args = _make_csc_arglist(ctx, assembly, collected_inputs.depinfo,
                                extra_refs=extra_refs)
 
+  csc_args.add(collected_inputs.srcs)
+
+  csc_args.set_param_file_format("multiline")
+
+  # Use a "response file" to pass arguments to csc.
+  # Windows has a max command-line length of around 32k bytes. The default for
+  # Args is to spill to param files if the length of the executable, params
+  # and spaces between them sum to that number. Unfortunately the math doesn't
+  # work out exactly like that on Windows (e.g. there is also a null
+  # terminator, escaping.) For now, setting use_always to True is the
+  # conservative option. Long command lines are probable with C# due to
+  # organizing files by namespace.
+  csc_args.use_param_file("@%s", use_always=True)
+
   ctx.actions.run(
       inputs = list(collected_inputs.inputs),
       outputs = all_outputs,
       executable = ctx.file.csc.path,
-      arguments = csc_args + collected_inputs.srcs,
+      arguments = [csc_args],
       progress_message = (
           "Compiling " + ctx.label.package + ":" + ctx.label.name))
 
