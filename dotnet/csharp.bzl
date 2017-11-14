@@ -206,10 +206,10 @@ def _cs_runfiles(ctx, outputs, depinfo, add_mono=False):
   mono_file = []
   if add_mono:
     mono_file = [ctx.file.mono]
-  transitive_files = depset(depinfo.dlls + depinfo.transitive_dlls + mono_file) or None
+
   return ctx.runfiles(
       files = outputs,
-      transitive_files = depset(depinfo.dlls + depinfo.transitive_dlls + [ctx.file.mono]) or None)
+      transitive_files = depset(depinfo.dlls + depinfo.transitive_dlls + mono_file) or None)
 
 def _csc_compile_impl(ctx):
   if hasattr(ctx.outputs, "csc_lib") and hasattr(ctx.outputs, "csc_exe"):
@@ -225,7 +225,7 @@ def _csc_compile_impl(ctx):
   inputs = collected.inputs
   srcs = collected.srcs
 
-  runfiles = _cs_runfiles(ctx, outputs, depinfo)
+  runfiles = _cs_runfiles(ctx, outputs, depinfo, add_mono=True)
 
   _csc_compile_action(ctx, output, outputs, collected)
 
@@ -258,7 +258,8 @@ def _cs_nunit_run_impl(ctx):
   runfiles = _cs_runfiles(
       ctx,
       outputs + ctx.files._nunit_exe + ctx.files._nunit_exe_libs,
-      depinfo)
+      depinfo,
+      add_mono=True)
 
   _csc_compile_action(ctx, output, outputs, collected_inputs,
                       extra_refs=["Nunit.Framework"])
