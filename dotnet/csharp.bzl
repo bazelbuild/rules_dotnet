@@ -73,12 +73,11 @@ def _make_csc_arglist(ctx, output, depinfo, extra_refs=[]):
 
   # /lib:dir1,[dir1]
   if libdirs:
-    args.add(_make_csc_flag(flag_start, "lib", ",".join(list(libdirs))))
+    args.add(libdirs, format=flag_start + "lib:%s")
 
   # /reference:filename[,filename2]
   if depinfo.refs or extra_refs:
-    args.add(_make_csc_flag(flag_start, "reference",
-                            ",".join(list(depinfo.refs + extra_refs))))
+    args.add(depinfo.refs + extra_refs, format=flag_start + "reference:%s")
   else:
     args.add(extra_refs)
 
