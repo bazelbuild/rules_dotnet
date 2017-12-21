@@ -18,9 +18,6 @@ _MONO_UNIX_BIN = "/usr/local/bin/mono"
 
 # TODO(jeremy): Windows when it's available.
 
-def _make_csc_flag(flag_start, flag_name, flag_value=None):
-  return flag_start + flag_name + (":" + flag_value if flag_value else "")
-
 def _make_csc_deps(deps, extra_files=[]):
   dlls = depset()
   refs = depset()
@@ -50,22 +47,20 @@ def _get_libdirs(dlls, libdirs=[]):
 def _make_csc_arglist(ctx, output, depinfo, extra_refs=[]):
   args = ctx.actions.args()
 
-  flag_start = ctx.attr._flag_start
-
   # /out:<file>
-  args.add(_make_csc_flag(flag_start, "out", output.path))
+  args.add(format="/out:%s", value=output.path)
 
   # /target (exe for binary, library for lib, module for module)
-  args.add(_make_csc_flag(flag_start, "target", ctx.attr._target_type))
+  args.add(format="/target:%s", value=ctx.attr._target_type)
 
   # /fullpaths
-  args.add(_make_csc_flag(flag_start, "fullpaths"))
+  args.add("/fullpaths")
 
   # /warn
-  args.add(_make_csc_flag(flag_start, "warn", str(ctx.attr.warn)))
+  args.add(format="/warn:%s", value=str(ctx.attr.warn))
 
   # /nologo
-  args.add(_make_csc_flag(flag_start, "nologo"))
+  args.add("/nologo")
 
   # /modulename:<string> only used for modules
   libdirs = _get_libdirs(depinfo.dlls)
@@ -73,22 +68,22 @@ def _make_csc_arglist(ctx, output, depinfo, extra_refs=[]):
 
   # /lib:dir1,[dir1]
   if libdirs:
-    args.add(libdirs, format=flag_start + "lib:%s")
+    args.add(format="/lib:%s", value=libdirs)
 
   # /reference:filename[,filename2]
   if depinfo.refs or extra_refs:
-    args.add(depinfo.refs + extra_refs, format=flag_start + "reference:%s")
+    args.add(format="/reference:%s", value=depinfo.refs + extra_refs)
   else:
     args.add(extra_refs)
 
   # /doc
   if hasattr(ctx.outputs, "doc_xml"):
-    args.add(_make_csc_flag(flag_start, "doc", ctx.outputs.doc_xml.path))
+    args.add(format="/doc:%s", value=ctx.outputs.doc_xml.path)
 
   # /debug
   debug = ctx.var.get("BINMODE", "") == "-dbg"
   if debug:
-    args.add(_make_csc_flag(flag_start, "debug"))
+    args.add("/debug")
 
   # /warnaserror
   # TODO(jeremy): /define:name[;name2]
@@ -96,7 +91,7 @@ def _make_csc_arglist(ctx, output, depinfo, extra_refs=[]):
 
   # /main:class
   if hasattr(ctx.attr, "main_class") and ctx.attr.main_class:
-    args.add(_make_csc_flag(flag_start, "main", ctx.attr.main_class))
+    args.add(format="/main:%s", value=ctx.attr.main_class)
 
   # TODO(jwall): /parallel
 
@@ -313,8 +308,6 @@ exports_files(["mono", "mcs"])
   repository_ctx.file("bin/BUILD", toolchain_build)
 
 _COMMON_ATTRS = {
-    # configuration fragment that specifies
-    "_flag_start": attr.string(default="-"),
     # code dependencies for this rule.
     # all dependencies must provide an out field.
     "deps": attr.label_list(providers=["out", "target_type"]),
