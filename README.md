@@ -1,5 +1,9 @@
 # C# Rules
 
+| Bazel CI |
+| :---: |
+| [![Build Status](https://ci.bazel.io/buildStatus/icon?job=rules_dotnet)](https://ci.bazel.io/job/rules_dotnet) |
+
 ## Rules
 
 * [csharp_library](#csharp_library)
