@@ -2,7 +2,7 @@
 
 | Bazel CI |
 | :---: |
-| [![Build Status](https://ci.bazel.io/buildStatus/icon?job=rules_dotnet)](https://ci.bazel.io/job/rules_dotnet) |
+| [![Build Status](https://ci.bazel.build/buildStatus/icon?job=rules_dotnet)](https://ci.bazel.build/job/rules_dotnet/) |
 
 ## Rules
 
