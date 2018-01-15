@@ -98,6 +98,8 @@ def _make_csc_arglist(ctx, output, depinfo, extra_refs=[]):
   if hasattr(ctx.attr, "main_class") and ctx.attr.main_class:
     args.add(_make_csc_flag(flag_start, "main", ctx.attr.main_class))
 
+  args.add(format="/resource:%s", value=ctx.files.resources)
+
   # TODO(jwall): /parallel
 
   return args
@@ -185,8 +187,8 @@ def _csc_get_output(ctx):
 
 def _csc_collect_inputs(ctx, extra_files=[]):
   depinfo = _make_csc_deps(ctx.attr.deps, extra_files=extra_files)
-  inputs = (depset(ctx.files.srcs) + depinfo.dlls + depinfo.transitive_dlls
-      + [ctx.file.csc])
+  inputs = (depset(ctx.files.srcs) + depset(ctx.files.resources) + depinfo.dlls
+      + depinfo.transitive_dlls + [ctx.file.csc])
   srcs = [src.path for src in ctx.files.srcs]
   return struct(depinfo=depinfo,
                 inputs=inputs,
@@ -321,7 +323,7 @@ _COMMON_ATTRS = {
     # source files for this target.
     "srcs": attr.label_list(allow_files = FileType([".cs", ".resx"])),
     # resources to use as dependencies.
-    # TODO(jeremy): "resources_deps": attr.label_list(allow_files=True),
+    "resources": attr.label_list(allow_files = True),
     # TODO(jeremy): # name of the module if you are creating a module.
     # TODO(jeremy): "modulename": attri.string(),
     # warn level to use
