@@ -14,6 +14,8 @@
 
 """CSharp bazel rules"""
 
+load("@bazel_skylib//lib:dicts.bzl", "dicts")
+
 _MONO_UNIX_BIN = "/usr/local/bin/mono"
 
 # TODO(jeremy): Windows when it's available.
@@ -533,12 +535,12 @@ def _new_nuget_package_impl(repository_ctx):
 
 new_nuget_package = repository_rule(
   implementation=_new_nuget_package_impl,
-  attrs=_nuget_package_attrs + {
+  attrs=dicts.add(_nuget_package_attrs, {
     "build_file": attr.label(
       allow_files = True,
     ),
     "build_file_content": attr.string(),
-  })
+  }))
 """Fetches a nuget package as an external dependency with custom BUILD content.
 
 Args:
