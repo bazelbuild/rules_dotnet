@@ -9,16 +9,24 @@
 * [new_nuget_package](#new_nuget_package)
 * [dll_import](#dll_import)
 
-__WARNING:__ Theses rules are not compatible with
-[sandboxing](https://bazel.io/blog/2015/09/11/sandboxing.html).
-
-
 ## Overview
 
-This is a minimal viable set of C# bindings for building csharp code with
-mono. It's still pretty rough but it works as a proof of concept that could
-grow into something more. If windows support ever happens for Bazel then this
-might become especially valuable.
+This is a minimal viable set of C# bindings for building C# code with
+[Mono](http://www.mono-project.com/). It's still pretty rough but it
+works as a proof of concept that could grow into something more.
+
+## Caveats
+
+These rules are not compatible with
+[sandboxing](https://bazel.io/blog/2015/09/11/sandboxing.html).
+
+These rules do not currently support Windows and the.NET Framework.
+Issue [#54](https://github.com/bazelbuild/rules_dotnet/issues/54)
+tracks the necessary work. Bazel support for Windows is currently in
+[beta](https://blog.bazel.build/2017/10/16/windows-retrospect.html).
+
+These rules do not currently support .NET Core/Standard built with
+the official compiler on any platform.
 
 ## Setup
 
@@ -40,9 +48,9 @@ load(
 csharp_repositories(use_local_mono = True)
 
 nuget_package(
-  name = "some_name",
-  package = "Some.Package",
-  version = "0.1.2",
+  name = "Netwonsoft.Json",
+  package = "Newtonsoft.Json",
+  version = "10.0.3",
 )
 ```
 
@@ -91,17 +99,29 @@ csharp_nunit_test(
 
 ### nuget\_package
 
-In the WORKSPACE file for your project record a nuget dependency like so.
+In the `WORKSPACE` file for your project record a nuget dependency like so.
 This is a repository rule so it will not work unless it is in a workspace
 file.
 
 ```python
 nuget_package(
-    name="ndesk_options", # referenced via path @ndesk_options//:dylibs
-    package="NDesk.Options",
-    version="0.2.1",
+    name = "ndesk_options",
+    package = "NDesk.Options",
+    version = "0.2.1",
 )
 ```
+
+Now, in a `BUILD` file, you can add the package to your `deps`:
+
+```
+csharp_binary(
+    name = "MyApp",
+    srcs = ["MyApp.cs"],
+    deps = ["@ndesk_options//:dylibs"],
+)
+```
+
+
 
 ### new\_nuget\_package
 
@@ -153,7 +173,7 @@ dll_import(
 
 ## Things still missing:
 
-- Handle .resx files correctly.
+- Handle .resx files correctly. See issue [#51](https://github.com/bazelbuild/rules_dotnet/issues/51).
 - .Net Modules
 - Conditionally building documentation.
 - Pulling Mono in through a mono.WORKSPACE file.
@@ -164,7 +184,6 @@ dll_import(
 
 - nuget_packages repository rule that will handle multiple different nuget packages in one rule.
 - Building csproj and sln files for VS and MonoDevelop.
-- Windows .NET framwork support
 
 <a name="csharp_library"></a>
 ## csharp_library
