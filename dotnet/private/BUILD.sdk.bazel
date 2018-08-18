@@ -1,0 +1,22 @@
+package(default_visibility = [ "//visibility:public" ])
+
+filegroup(
+  name = "mcs_bin",
+  srcs = glob([
+    "mcs_bin/*",
+  ]),
+)
+
+filegroup(
+  name = "mono_bin",
+  srcs = glob([
+    "mono_bin/*",
+  ]),
+)
+
+filegroup(
+  name = "lib",
+  srcs = glob([
+    "lib/**/*",
+  ]),
+)

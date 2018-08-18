@@ -5,3 +5,7 @@
 /bazel-out
 /bazel-rules_dotnet
 /bazel-testlogs
+.vscode
+_build
+_static
+_templates

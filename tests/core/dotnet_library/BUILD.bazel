@@ -1,0 +1,21 @@
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_library", "dotnet_nunit_test")
+
+dotnet_library(
+    name = "custom_bin",
+    srcs = [
+        "main.cs",
+    ],
+    out = "alt_bin.dll",
+)
+
+dotnet_nunit_test(
+    name = "custom_bin_test",
+    srcs = [
+        "main_test.cs",
+    ],
+    deps = [
+        "@nunit2//:nunit.framework",
+    ],
+    data = [":custom_bin"],
+    size = "small",
+)

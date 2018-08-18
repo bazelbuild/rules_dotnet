@@ -1,11 +1,27 @@
 workspace(name = "io_bazel_rules_dotnet")
 
-http_archive(
-  name = "bazel_skylib",
-  url = "https://github.com/bazelbuild/bazel-skylib/archive/ff23a62c57d2912c3073a69c12f42c3d6e58a957.zip",
-  strip_prefix = "bazel-skylib-ff23a62c57d2912c3073a69c12f42c3d6e58a957",
-  sha256 = "ccf83f162e4a265b3aa09445c84fbc470215e392b250c86f0ce00536c99d5c17",
+load("//dotnet:defs.bzl", "dotnet_register_toolchains", "dotnet_repositories", "dotnet_nuget_new")
+
+dotnet_repositories()
+dotnet_register_toolchains("host")
+
+dotnet_nuget_new(
+    name = "npgsql", 
+    package="Npgsql", 
+    version="3.2.7", 
+    sha256="fa3e0cfbb2caa9946d2ce3d8174031a06320aad2c9e69a60f7739b9ddf19f172",
+    build_file_content = """
+package(default_visibility = [ "//visibility:public" ])
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_import_library")
+
+dotnet_import_library(
+    name = "npgsqllib",
+    src = "lib/net451/Npgsql.dll"
+)    
+    """
 )
 
-load("//dotnet:csharp.bzl", "csharp_repositories")
-csharp_repositories()
+
+load("@io_bazel_rules_dotnet//tests:bazel_tests.bzl", "test_environment")
+
+test_environment()
