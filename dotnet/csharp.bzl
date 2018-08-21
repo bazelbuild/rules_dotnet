@@ -50,16 +50,16 @@ def _make_csc_arglist(ctx, output, depinfo, extra_refs=[]):
   args = ctx.actions.args()
 
   # /out:<file>
-  args.add(format="/out:%s", value=output.path)
+  args.add(output.path, format="/out:%s")
 
   # /target (exe for binary, library for lib, module for module)
-  args.add(format="/target:%s", value=ctx.attr._target_type)
+  args.add(ctx.attr._target_type, format="/target:%s")
 
   # /fullpaths
   args.add("/fullpaths")
 
   # /warn
-  args.add(format="/warn:%s", value=str(ctx.attr.warn))
+  args.add(str(ctx.attr.warn), format="/warn:%s")
 
   # /nologo
   args.add("/nologo")
@@ -70,17 +70,17 @@ def _make_csc_arglist(ctx, output, depinfo, extra_refs=[]):
 
   # /lib:dir1,[dir1]
   if libdirs:
-    args.add(format="/lib:%s", value=libdirs)
+    args.add(libdirs, format="/lib:%s")
 
   # /reference:filename[,filename2]
   if depinfo.refs or extra_refs:
-    args.add(format="/reference:%s", value=depinfo.refs + extra_refs)
+    args.add(depinfo.refs + extra_refs, format="/reference:%s")
   else:
     args.add(extra_refs)
 
   # /doc
   if hasattr(ctx.outputs, "doc_xml"):
-    args.add(format="/doc:%s", value=ctx.outputs.doc_xml.path)
+    args.add(ctx.outputs.doc_xml.path, format="/doc:%s")
 
   # /debug
   debug = ctx.var.get("BINMODE", "") == "-dbg"
@@ -93,9 +93,9 @@ def _make_csc_arglist(ctx, output, depinfo, extra_refs=[]):
 
   # /main:class
   if hasattr(ctx.attr, "main_class") and ctx.attr.main_class:
-    args.add(format="/main:%s", value=ctx.attr.main_class)
+    args.add(ctx.attr.main_class, format="/main:%s")
 
-  args.add(format="/resource:%s", value=ctx.files.resources)
+  args.add(ctx.files.resources, format="/resource:%s")
 
   # TODO(jwall): /parallel
 
