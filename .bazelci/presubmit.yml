@@ -1,0 +1,26 @@
+---
+platforms:
+  ubuntu1404:
+    build_targets:
+      - "//..."
+    test_targets:
+      - "//..."
+    run_targets:
+      - "//tests/examples/example_binary:hello"
+      - "//tests/examples/example_binary:hello-core"
+  macos:
+    build_targets:
+      - "//..."
+    test_targets:
+      - "//..."
+    run_targets:
+      - "//tests/examples/example_binary:hello"
+      - "//tests/examples/example_binary:hello-core"
+  windows:
+    build_targets:
+      - "//..."
+    test_targets:
+      - "//..."
+    run_targets:
+      - "//tests/examples/example_binary:hello"
+      - "//tests/examples/example_binary:hello-core"
