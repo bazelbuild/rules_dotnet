@@ -5,6 +5,8 @@ C# Rules for Bazel_
 .. _Bazel: https://bazel.build/
 .. |badge| image:: https://badge.buildkite.com/703775290818dcb2af754f503ed54dc11bb124fce2a6bf1606.svg
    :target: https://buildkite.com/bazel/rules-dotnet-edge
+.. |badgeAzure| image:: https://dev.azure.com/tomaszstrejczek/rules_dotnet/_apis/build/status/tomaszstrejczek.rules_dotnet
+   :target: https://dev.azure.com/tomaszstrejczek/rules_dotnet/_apis/build/status/tomaszstrejczek.rules_dotnet?branchName=master
 .. _Mono: http://www.mono-project.com/
 .. _sandboxing: https://bazel.io/blog/2015/09/11/sandboxing.html 
 .. _dotnet_library: dotnet/core.rst#dotnet_library
@@ -18,11 +20,17 @@ C# Rules for Bazel_
 .. _dotnet_nuget_new: dotnet/workspace.rst#dotnet_nuget_new
 .. ;;
 
-|badge| 
+
+* Buildkite:
+
+  |badge|
+
+* Azure pipelines
+
+  |badgeAzure| 
 
 .. contents:: 
   :depth: 2
-
 
 Documentation
 -------------
@@ -52,10 +60,19 @@ could grow into something more.
 Caveats
 -------
 
-These rules are not compatible with sandboxing_.
+These rules are not compatible with sandboxing_. Particularly, running dotnet rules on linux o macos
+requires passing --spawn_strategy=standalone.
 
-Due to Windows short path limit (260) of cl compiler TMP env variable should be
-set to something short (like X:\ or c:\TEMP).
+_Bazel creates long paths. Therefore it is recommended to increase the length limit using newer version of Windows.
+Please see `here <https://docs.microsoft.com/en-us/windows/desktop/fileio/naming-a-file#maximum-path-length-limitation>`_.
+
+However, some Windows programs do not handle long path names. Most notably - Microsoft cl compiler. Therefore TMP env variable should be
+set to something short (like X:\\ or c:\\TEMP). 
+
+_Bazel and dotnet rules rely on symbolic linking. On Windows it, typically, requires elevated permissions. However, newer versions of Windows
+hava a `workaround <https://blogs.windows.com/buildingapps/2016/12/02/symlinks-windows-10/#IJuxPHWEkSSRqC7w.97>`_.
+
+NUnit v2 runner used in some tests requires .NET Framework 3.5 installation.
 
 Setup
 -----

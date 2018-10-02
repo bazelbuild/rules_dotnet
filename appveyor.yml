@@ -23,15 +23,22 @@ clone_script:
 install:
   - choco install mono
   - choco install bazel
+
   
 build_script:
   - ver
   - bazel  --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build -s  --local_resources=400,1,1.0  //...
+
+test_script:
   - bazel  --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s   --local_resources=400,1,1.0  //tests/examples/example_binary:hello
   - bazel  --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s   --local_resources=400,1,1.0  //tests/examples/example_binary:hello-core
   - bazel  --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m test --test_summary=detailed --test_output=all -s --local_resources=400,1,1.0  //...
 
-test: off
 
 deploy: off
 
+on_finish:
+  - ps: |
+      echo "on finish"
+      $wc = New-Object 'System.Net.WebClient'
+      gci -r c:/users/appveyor/_bazel_appveyor -filter test.xml | foreach { $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", $_.FullName)}

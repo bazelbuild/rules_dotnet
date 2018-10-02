@@ -523,9 +523,10 @@ core_stdlib(name = "system.io.compression.zipfile.dll", deps = [
       ":system.io.filesystem.dll",
       ":system.buffers.dll",
     ],
-    data = [
-      "@core_sdk//:shared/clrcompression.dll"
-    ]
+    data = select({
+      "@bazel_tools//src/conditions:windows": ["@core_sdk//:shared/clrcompression.dll"],
+      "//conditions:default": [],
+    }),
 )
 core_stdlib(name = "system.io.dll", deps = [
       ":system.runtime.dll",

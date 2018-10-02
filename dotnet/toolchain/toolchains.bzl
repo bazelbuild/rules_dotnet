@@ -186,7 +186,7 @@ def declare_toolchains():
             host = toolchain["host"],
         )
     elif toolchain["impl"] == "net":
-        if toolchain["name"] == "net_windows_amd64":
+        if toolchain["name"] == "dotnet_net_windows_amd64":
             net_toolchain(
                 # Required fields
                 name = toolchain["name"],
