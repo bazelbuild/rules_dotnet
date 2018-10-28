@@ -16,7 +16,7 @@ def dotnet_repositories():
   native.new_http_archive(
     name = "nunit3",
     url = "https://www.nuget.org/api/v2/package/NUnit/3.10.1",
-    sha256 = "b1e3dc91f692c1431bb451a800902cf2df290f3180dad3cfe9c2fbb42e0f3595",
+    sha256 = "3529193f6028d7f7ccc65c6cb83d62d1b1c39a7d7ba5f74036cd6b69f55b10b6",
     build_file = "@io_bazel_rules_dotnet//dotnet/externals:BUILD.nunit3",
     type = "zip",
   )
