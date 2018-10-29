@@ -5,8 +5,8 @@ C# Rules for Bazel_
 .. _Bazel: https://bazel.build/
 .. |badge| image:: https://badge.buildkite.com/703775290818dcb2af754f503ed54dc11bb124fce2a6bf1606.svg
    :target: https://buildkite.com/bazel/rules-dotnet-edge
-.. |badgeAzure| image:: https://dev.azure.com/tomaszstrejczek/rules_dotnet/_apis/build/status/tomaszstrejczek.rules_dotnet
-   :target: https://dev.azure.com/tomaszstrejczek/rules_dotnet/_apis/build/status/tomaszstrejczek.rules_dotnet?branchName=master
+.. |badgeAzure| image:: https://dev.azure.com/tomaszstrejczek/rules_dotnet/_apis/build/status/tomaszstrejczek.rules_dotnet?branchName=master
+   :target: https://dev.azure.com/tomaszstrejczek/rules_dotnet/_build
 .. _Mono: http://www.mono-project.com/
 .. _sandboxing: https://bazel.io/blog/2015/09/11/sandboxing.html 
 .. _dotnet_library: dotnet/core.rst#dotnet_library
