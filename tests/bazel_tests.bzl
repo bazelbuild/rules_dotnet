@@ -47,9 +47,11 @@ RULES_DOTNET_OUTPUT={output}
 
 mkdir -p {work_dir}
 mkdir -p {cache_dir}
+# Link files according to manifest
 ../../{test_prep}
 cp -f {workspace} {work_dir}/WORKSPACE
 cp -f {build} {work_dir}/BUILD.bazel
+{copy_srcs}
 cd {work_dir}
 
 {bazel} --bazelrc {bazelrc} {command} --config {config} {args} {target} >& bazel-output.txt
@@ -165,8 +167,25 @@ def _bazel_test_script_impl(ctx):
 
   workspace_file = dotnet.declare_file(dotnet, path="WORKSPACE.in")
   ctx.actions.write(workspace_file, workspace_content)
+  if ctx.attr.workspace_in:   
+    extra_workspace_file = dotnet.declare_file(dotnet, path="WORKSPACE.in.extra")
+    ctx.actions.run_shell(
+        inputs = ctx.attr.workspace_in.files.to_list() + [workspace_file],
+        outputs = [extra_workspace_file],
+        command = "cat {} >> {}; cat {} >> {}".format(workspace_file.path, extra_workspace_file.path, ctx.attr.workspace_in.files.to_list()[0].path, extra_workspace_file.path),      
+    )
+    workspace_file = extra_workspace_file
+
   build_file = dotnet.declare_file(dotnet, path="BUILD.in")
   ctx.actions.write(build_file, ctx.attr.build)
+  if ctx.attr.build_in:   
+    extra_build_file = dotnet.declare_file(dotnet, path="BUILD.in.extra")
+    ctx.actions.run_shell(
+        inputs = ctx.attr.build_in.files.to_list() + [build_file],
+        outputs = [extra_build_file],
+        command = "cat {} >> {}; cat {} >> {}".format(build_file.path, extra_build_file.path, ctx.attr.build_in.files.to_list()[0].path, extra_build_file.path),      
+    )
+    build_file = extra_build_file
 
   output = "external/" + ctx.workspace_name + "/" + ctx.label.package
   targets = ["@" + ctx.workspace_name + "//" + ctx.label.package + t if t.startswith(":") else t for t in ctx.attr.targets]
@@ -175,6 +194,12 @@ def _bazel_test_script_impl(ctx):
     # TODO(jayconrod): read logs for other packages
     logs = ["bazel-testlogs/{}/{}/test.log".format(output, t[1:])
             for t in ctx.attr.targets if t.startswith(":")]
+
+  copy_srcs = ""
+  for s in ctx.attr.srcs:
+    p = s.files.to_list()[0]
+    copy_srcs += "cp -f {} {}/{};".format(p.short_path, ctx.attr._settings.scratch_dir + "/" + ctx.attr.config, p.basename)
+
 
   script_content = _bazel_test_script_template.format(
       test_prep = ctx.attr.test_prep,
@@ -191,11 +216,14 @@ def _bazel_test_script_impl(ctx):
       bazel = ctx.attr._settings.bazel,
       work_dir = ctx.attr._settings.scratch_dir + "/" + ctx.attr.config,
       cache_dir = ctx.attr._settings.scratch_dir + "/cache",
+      copy_srcs = copy_srcs,
   )
   ctx.actions.write(output=script_file, is_executable=True, content=script_content)
+
+  runfiles = depset(direct = [workspace_file, build_file], transitive = [f.files for f in ctx.attr.srcs])
   return struct(
       files = depset([script_file]),
-      runfiles = ctx.runfiles([workspace_file, build_file], collect_data=True)
+      runfiles = ctx.runfiles(runfiles.to_list(), collect_data=True)
   )
 
 _bazel_test_script = rule(
@@ -216,6 +244,9 @@ _bazel_test_script = rule(
         "dotnet_version": attr.string(default = CURRENT_VERSION),
         "workspace": attr.string(),
         "build": attr.string(),
+        "workspace_in": attr.label(allow_files = True),
+        "build_in": attr.label(allow_files = True),
+        "srcs": attr.label_list(allow_files = True),
         "check": attr.string(),
         "test_prep": attr.string(),
         "config": attr.string(default = "isolate"),
@@ -235,7 +266,7 @@ _bazel_test_script = rule(
 )
 
 
-def bazel_test(name, command = None, args=None, targets = None, dotnet_version = None, tags=[], externals=[], workspace="", build="", check="", config=None):
+def bazel_test(name, command = None, args=None, targets = None, dotnet_version = None, tags=[], externals=[], workspace="", build="", check="", config=None, workspace_in=None, build_in=None, srcs=None):
   script_name = name+"_script"
   externals = externals + [
       "@io_bazel_rules_dotnet//:AUTHORS",
@@ -254,7 +285,10 @@ def bazel_test(name, command = None, args=None, targets = None, dotnet_version =
       build = build,
       check = check,
       config = config,
+      workspace_in = workspace_in,
+      build_in = build_in,
       test_prep = name + "_test_prep",
+      srcs = srcs
   )
 
   dotnet_launcher_gen(name = "%s_test_prep_gen" % name, exe = script_name)
@@ -265,6 +299,7 @@ def bazel_test(name, command = None, args=None, targets = None, dotnet_version =
       deps = ["@io_bazel_rules_dotnet//dotnet/tools/test_prep", "@io_bazel_rules_dotnet//dotnet/tools/common"],
       data = [script_name],
   )
+
   native.sh_test(
       name = name,
       size = "large",
@@ -274,7 +309,7 @@ def bazel_test(name, command = None, args=None, targets = None, dotnet_version =
       data = [
           "@bazel_test//:bazelrc",
           "@io_bazel_rules_dotnet//tests:rules_dotnet_deps",
-      ],
+      ] + ([workspace_in] if workspace_in else []) + ([build_in] if build_in else []),
   )
 
 def _bazel_test_settings_impl(ctx):

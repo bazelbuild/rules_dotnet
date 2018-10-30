@@ -54,7 +54,7 @@ _dotnet_nuget_attrs = {
     "package": attr.string(mandatory=True),
     # The version of the nuget package
     "version": attr.string(mandatory=True),
-    "sha256": attr.string(mandatory=True),
+    "sha256": attr.string(mandatory=False),
     "use_nuget_client": attr.bool(default=False)
 }
 
@@ -130,7 +130,7 @@ _nuget_package_attrs = {
     "package": attr.string(mandatory=True),
     # The version of the nuget package
     "version": attr.string(mandatory=True),
-    "sha256": attr.string(mandatory=True),
+    "sha256": attr.string(mandatory=False),
     "core_lib": attr.string(mandatory=True),
     "net_lib": attr.string(mandatory=True),
     "mono_lib": attr.string(mandatory=True),

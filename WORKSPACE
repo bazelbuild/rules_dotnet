@@ -10,7 +10,6 @@ nuget_package(
    name = "npgsql",
    package = "npgsql",
    version = "4.0.3",
-   sha256 = "4e1f91eb9f0c3dfb8e029edbc325175cd202455df3641bc16155ef422b6bfd6f",
    core_lib = "lib/netstandard2.0/Npgsql.dll",
    net_lib = "lib/net451/Npgsql.dll",
    mono_lib = "lib/net45/Npgsql.dll",

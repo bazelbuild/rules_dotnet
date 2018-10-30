@@ -1,20 +1,12 @@
 load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_binary", "dotnet_nunit_test")
 load("@io_bazel_rules_dotnet//tests:bazel_tests.bzl", "bazel_test")
 
-dotnet_nunit_test(
-    name = "empty_test",
-    srcs = [
-        "main_test.cs",
-    ],
-    deps = [
-        "@nunit2//:nunit.framework",
-    ],
-    size = "small",
-)
-
 bazel_test(
-    name = "download_sdk_test",
+    name = "nuget_single",
     command = "test",
     dotnet_version = "host",
-    targets = [":empty_test"],
+    targets = ["empty_test"],
+    workspace_in = ":workspace.in.bzl",
+    build_in = ":build.in.bzl",
+    srcs = [":main_test.cs"],
 )

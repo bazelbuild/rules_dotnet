@@ -13,7 +13,7 @@ dotnet_nunit_test(
 )
 
 bazel_test(
-    name = "download_sdk_test",
+    name = "download_sdk",
     command = "test",
     dotnet_version = "host",
     targets = [":empty_test"],
