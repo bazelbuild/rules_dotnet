@@ -327,3 +327,4 @@ bazel_test_settings = rule(
         "scratch_dir": attr.string(mandatory = True),
     },
 )
+
