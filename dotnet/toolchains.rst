@@ -271,9 +271,7 @@ This downloads Mono for use in toolchains.
 |     dotnet_download_sdk(                                                                         |
 |         name = "dotnet_sdk",                                                                     |
 |         sdks = {                                                                                 |
-|             "linux_amd64":   ("go1.8.1.linux-amd64.tar.gz",                                      |
-|                 "a579ab19d5237e263254f1eac5352efcf1d70b9dacadb6d6bb12b0911ede8994"),             |
-|             "darwin_amd64":      ("go1.8.1.darwin-amd64.tar.gz",                                 |
+|             "mono_darwin_amd64":      ("MonoFramework-MDK-4.2.3.4.macos10.xamarin.x86.tar.gz",   |
 |                 "25b026fe2f4de7c80b227f69588b06b93787f5b5f134fbf2d652926c08c04bcd"),             |
 |         },                                                                                       |
 |     )                                                                                            |
