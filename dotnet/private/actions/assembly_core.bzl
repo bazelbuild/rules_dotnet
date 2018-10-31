@@ -136,6 +136,7 @@ def emit_assembly_core(dotnet,
       outputs = [result] + ([pdb] if pdb else []),
       executable = dotnet.runner,
       arguments = [dotnet.mcs.path, "@"+paramfile.path],
+      mnemonic = "CoreCompile",
       progress_message = (
           "Compiling " + dotnet.label.package + ":" + dotnet.label.name))
 

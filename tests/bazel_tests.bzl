@@ -171,6 +171,7 @@ def _bazel_test_script_impl(ctx):
     extra_workspace_file = dotnet.declare_file(dotnet, path="WORKSPACE.in.extra")
     ctx.actions.run_shell(
         inputs = ctx.attr.workspace_in.files.to_list() + [workspace_file],
+        mnemonic = "WorkspaceGenerate",
         outputs = [extra_workspace_file],
         command = "cat {} >> {}; cat {} >> {}".format(workspace_file.path, extra_workspace_file.path, ctx.attr.workspace_in.files.to_list()[0].path, extra_workspace_file.path),      
     )
@@ -182,6 +183,7 @@ def _bazel_test_script_impl(ctx):
     extra_build_file = dotnet.declare_file(dotnet, path="BUILD.in.extra")
     ctx.actions.run_shell(
         inputs = ctx.attr.build_in.files.to_list() + [build_file],
+        mnemonic = "BuildGenerate",
         outputs = [extra_build_file],
         command = "cat {} >> {}; cat {} >> {}".format(build_file.path, extra_build_file.path, ctx.attr.build_in.files.to_list()[0].path, extra_build_file.path),      
     )

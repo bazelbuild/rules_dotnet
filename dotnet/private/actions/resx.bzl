@@ -44,6 +44,7 @@ def emit_resx(dotnet,
   dotnet.actions.run_shell(
       inputs = src.files,
       outputs = [copied_source],
+      mnemonic = "MonoResxCopySource",
       command = "cp {} {}".format(src.files.to_list()[0].path, copied_source.path),      
   )
 
@@ -54,6 +55,7 @@ def emit_resx(dotnet,
       outputs = [result],
       executable = dotnet.runner,
       arguments = [dotnet.resgen.path, copied_source.path],
+      mnemonic = "MonoResxCompile",
       progress_message = (
           "Compiling resoources" + dotnet.label.package + ":" + dotnet.label.name))
 

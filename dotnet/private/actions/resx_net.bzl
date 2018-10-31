@@ -44,6 +44,7 @@ def emit_resx_net(dotnet,
       outputs = [result],
       executable = dotnet.resgen,
       arguments = [args],
+      mnemonic = "NetResxCompile",
       progress_message = (
           "Compiling resoources" + dotnet.label.package + ":" + dotnet.label.name))
 

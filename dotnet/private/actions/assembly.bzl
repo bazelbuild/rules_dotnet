@@ -133,6 +133,7 @@ def emit_assembly(dotnet,
       outputs = [result],
       executable = dotnet.runner,
       arguments = [dotnet.mcs.path, "@"+paramfile.path],
+      mnemonic = "MonoCompile",
       progress_message = (
           "Compiling " + dotnet.label.package + ":" + dotnet.label.name))
 

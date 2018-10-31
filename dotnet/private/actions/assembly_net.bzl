@@ -140,6 +140,7 @@ def emit_assembly_net(dotnet,
       outputs = [result] + ([pdb] if pdb else []),
       executable = dotnet.mcs,
       arguments = ["@"+paramfile.path],
+      mnemonic = "NetCompile",
       progress_message = (
           "Compiling " + dotnet.label.package + ":" + dotnet.label.name))
 

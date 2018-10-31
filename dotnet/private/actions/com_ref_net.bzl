@@ -69,6 +69,7 @@ $params'''
       outputs = [result],
       command = command,
       arguments = [args],
+      mnemonic = "NetComRefGen",
       progress_message = (
           "Generating com wrapper" + dotnet.label.package + ":" + dotnet.label.name))
 
