@@ -14,6 +14,12 @@ load(
     "dotnet_launcher_gen",
 )
 
+_TEMPLATE = """
+DIR=$0.runfiles
+$DIR/dotnet $DIR/{} "$@"
+"""
+
+
 def _core_binary_impl(ctx):
   """dotnet_binary_impl emits actions for compiling dotnet executable assembly."""
   dotnet = dotnet_context(ctx)
@@ -30,16 +36,22 @@ def _core_binary_impl(ctx):
       data = ctx.attr.data,
   )
 
+  launcher = ctx.actions.declare_file("{}.bash".format(name))
+  content = _TEMPLATE.format(executable.result.basename)
+  ctx.actions.write(output = launcher, content = content, is_executable=False)
+
+  out = ctx.actions.declare_file("{}.out".format(name))
+  ctx.actions.run(outputs=[out], inputs=[launcher, executable.result], executable=ctx.attr._manifest_prep.files.to_list()[0], arguments=[launcher.path, out.path])
 
   return [
       DefaultInfo(
-          files = depset([executable.result]),
-          runfiles = ctx.runfiles(files = ctx.attr._native_deps.files.to_list() + [dotnet.runner], transitive_files = executable.runfiles),
-          executable = executable.result,
+          files = depset([executable.result, launcher, out]),
+          runfiles = ctx.runfiles(files = ctx.attr._native_deps.files.to_list() + [dotnet.runner] + ctx.attr._manifest_prep.files.to_list(), transitive_files = executable.runfiles),
+          executable = launcher,
       ),
   ]
   
-_core_binary = rule(
+core_binary = rule(
     _core_binary_impl,
     attrs = {
         "deps": attr.label_list(providers=[DotnetLibrary]),
@@ -50,20 +62,9 @@ _core_binary = rule(
         "unsafe": attr.bool(default = False),
         "data": attr.label_list(allow_files = True),        
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
-        "_native_deps": attr.label(default = Label("@core_sdk//:native_deps"))
+        "_native_deps": attr.label(default = Label("@core_sdk//:native_deps")),
+        "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep"))
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
     executable = True,
 )
-
-def core_binary(name, srcs, deps = [], defines = None, out = None, resources = None):
-    _core_binary(name = "%s_exe" % name, deps = deps, srcs = srcs, out = out, defines = defines, resources = resources)
-    exe = ":%s_exe" % name
-    dotnet_launcher_gen(name = "%s_launcher" % name, exe = exe)
-
-    native.cc_binary(
-        name=name, 
-        srcs = [":%s_launcher" % name],
-        deps = ["@io_bazel_rules_dotnet//dotnet/tools/runner_core", "@io_bazel_rules_dotnet//dotnet/tools/common"],
-        data = [exe],
-    )

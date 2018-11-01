@@ -105,9 +105,15 @@ load(
 )
 
 load(
+    "@io_bazel_rules_dotnet//dotnet/private:rules/import_binary_core.bzl", 
+    core_import_binary = "core_import_binary"
+)
+
+load(
     "@io_bazel_rules_dotnet//dotnet/private:rules/import_core.bzl", 
     core_import_library = "core_import_library"
 )
+
 
 load(
     "@io_bazel_rules_dotnet//dotnet/private:rules/com_ref.bzl", 

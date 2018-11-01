@@ -244,11 +244,13 @@ const char *GetManifestDir() {
 	static char buffer[64*1024];
 	char *p;
 	p = getcwd(buffer, sizeof(buffer));
+    printf("Checking MANIFEST in %s\n", buffer);
 	if (access("MANIFEST", F_OK)!=-1)
 		return buffer;
 
 
 	strcat(buffer, "/../MANIFEST");
+    printf("Checking MANIFEST in %s\n", buffer);
 	if (access(buffer, F_OK)!=-1) {
 		p = strrchr(buffer, '/');
 		*(p+1) = '\0';
@@ -269,13 +271,24 @@ const char *GetManifestDir() {
 	#endif	
     
 	strcat(buffer, ".runfiles/MANIFEST");
-	printf("Checking %s\n", buffer);
+    printf("Checking MANIFEST in %s\n", buffer);
 	if (access(buffer, F_OK)!=-1) {
 		p = strrchr(buffer, '/');
 		*(p+1) = '\0';
 		return buffer;
 	}
-	
+
+	p = getcwd(buffer, sizeof(buffer));
+	strcat(buffer, "/");
+	strcat(buffer, Exe);
+	strcat(buffer, ".runfiles/MANIFEST");
+    printf("Checking MANIFEST in %s\n", buffer);
+	if (access(buffer, F_OK)!=-1) {
+		p = strrchr(buffer, '/');
+		*(p+1) = '\0';
+		return buffer;
+	}
+
 	printf("Couldn't find MANIFEST file\n");
 	exit(-1);
 }
