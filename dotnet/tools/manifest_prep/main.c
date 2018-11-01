@@ -22,9 +22,7 @@ const char * Exe = NULL;
 int main(int argc, char *argv[], char *envp[])
 {
 	FILE *f;
-#ifdef _MSC_VER
 	const char *manifestDir, *outFile;
-#endif
 
 	Exe = argv[1];
 	outFile = argv[2];
