@@ -27,12 +27,10 @@ int main(int argc, char *argv[], char *envp[])
 	Exe = argv[1];
 	outFile = argv[2];
 
-#ifdef _MSC_VER
 	manifestDir = GetManifestDir();
 	ReadManifest(manifestDir);
 	LinkFiles(manifestDir);
 	LinkHostFxr(manifestDir);
-#endif
 
 	f = fopen(outFile, "w");
 	fprintf(f, "ok");
