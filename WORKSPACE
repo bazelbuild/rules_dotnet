@@ -122,12 +122,6 @@ nuget_package(
    core_lib = "lib/netstandard2.0/Newtonsoft.Json.dll",
    net_lib = "lib/net45/Newtonsoft.Json.dll",
    mono_lib = "lib/net45/Newtonsoft.Json.dll",
-   core_deps = [
-   ],
-   net_deps = [
-   ],
-   mono_deps = [
-   ],
    core_files = [
        "lib/netstandard2.0/Newtonsoft.Json.dll",
        "lib/netstandard2.0/Newtonsoft.Json.xml",
@@ -151,10 +145,6 @@ nuget_package(
    mono_lib = "lib/net46/NuGet.Frameworks.dll",
    core_deps = [
        "@io_bazel_rules_dotnet//dotnet/stdlib.core:netstandard.library.dll",
-   ],
-   net_deps = [
-   ],
-   mono_deps = [
    ],
    core_files = [
        "lib/netstandard1.6/NuGet.Frameworks.dll",
@@ -242,14 +232,6 @@ nuget_package(
    core_lib = "lib/net40/Microsoft.Web.XmlTransform.dll",
    net_lib = "lib/net40/Microsoft.Web.XmlTransform.dll",
    mono_lib = "lib/net40/Microsoft.Web.XmlTransform.dll",
-   core_deps = [
-   ],
-   net_deps = [
-   ],
-   mono_deps = [
-   ],
-   core_files = [
-   ],
    net_files = [
        "lib/net40/Microsoft.Web.XmlTransform.dll",
    ],
@@ -267,10 +249,6 @@ nuget_package(
    mono_lib = "lib/net46/NuGet.Versioning.dll",
    core_deps = [
        "@io_bazel_rules_dotnet//dotnet/stdlib.core:netstandard.library.dll",
-   ],
-   net_deps = [
-   ],
-   mono_deps = [
    ],
    core_files = [
        "lib/netstandard1.6/NuGet.Versioning.dll",
@@ -592,8 +570,6 @@ nuget_package(
    core_lib = "lib/net46/NuGet.PackageManagement.dll",
    net_lib = "lib/net46/NuGet.PackageManagement.dll",
    mono_lib = "lib/net46/NuGet.PackageManagement.dll",
-   core_deps = [
-   ],
    net_deps = [
        "@nuget.commands//:net",
        "@nuget.resolver//:net",
@@ -604,8 +580,6 @@ nuget_package(
        "@nuget.resolver//:mono",
        "@microsoft.web.xdt//:mono",
    ],
-   core_files = [
-   ],
    net_files = [
        "lib/net46/NuGet.PackageManagement.dll",
        "lib/net46/NuGet.PackageManagement.xml",
@@ -613,6 +587,204 @@ nuget_package(
    mono_files = [
        "lib/net46/NuGet.PackageManagement.dll",
        "lib/net46/NuGet.PackageManagement.xml",
+   ],
+)
+nuget_package(
+   name = "xunit.abstractions",
+   package = "xunit.abstractions",
+   version = "2.0.3",
+   sha256 = "d03d72fc2df8880448f7a81bddb00e1bcb5c18f323c7e7cc69b4cfa727469403",
+   core_lib = "lib/netstandard2.0/xunit.abstractions.dll",
+   net_lib = "lib/net35/xunit.abstractions.dll",
+   mono_lib = "lib/net35/xunit.abstractions.dll",
+   core_files = [
+       "lib/netstandard2.0/xunit.abstractions.dll",
+       "lib/netstandard2.0/xunit.abstractions.xml",
+   ],
+   net_files = [
+       "lib/net35/xunit.abstractions.dll",
+       "lib/net35/xunit.abstractions.xml",
+   ],
+   mono_files = [
+       "lib/net35/xunit.abstractions.dll",
+       "lib/net35/xunit.abstractions.xml",
+   ],
+)
+nuget_package(
+   name = "xunit.analyzers",
+   package = "xunit.analyzers",
+   version = "0.10.0",
+   sha256 = "8c1b4939faac40aa99c3586915c8f7306727e5784fea703762351db3a7fa817d",
+)
+nuget_package(
+   name = "xunit.assert",
+   package = "xunit.assert",
+   version = "2.4.1",
+   sha256 = "865d5c3126a4025c24a4511c87108d31dbd089ee8f309d6e16b87380e0b7bec6",
+   core_lib = "lib/netstandard1.1/xunit.assert.dll",
+   net_lib = "lib/netstandard1.1/xunit.assert.dll",
+   mono_lib = "lib/netstandard1.1/xunit.assert.dll",
+   core_deps = [
+       "@io_bazel_rules_dotnet//dotnet/stdlib.core:netstandard.library.dll",
+   ],
+   core_files = [
+       "lib/netstandard1.1/xunit.assert.dll",
+       "lib/netstandard1.1/xunit.assert.xml",
+   ],
+   net_files = [
+       "lib/netstandard1.1/xunit.assert.dll",
+       "lib/netstandard1.1/xunit.assert.xml",
+   ],
+   mono_files = [
+       "lib/netstandard1.1/xunit.assert.dll",
+       "lib/netstandard1.1/xunit.assert.xml",
+   ],
+)
+nuget_package(
+   name = "xunit.extensibility.core",
+   package = "xunit.extensibility.core",
+   version = "2.4.1",
+   sha256 = "a000953abbc5e1798a16bfbc66a3d5a636e8a5981e470697bde2465b65d47880",
+   core_lib = "lib/netstandard1.1/xunit.core.dll",
+   net_lib = "lib/net452/xunit.core.dll",
+   mono_lib = "lib/net452/xunit.core.dll",
+   core_deps = [
+       "@io_bazel_rules_dotnet//dotnet/stdlib.core:netstandard.library.dll",
+       "@xunit.abstractions//:core",
+   ],
+   net_deps = [
+       "@xunit.abstractions//:net",
+   ],
+   mono_deps = [
+       "@xunit.abstractions//:mono",
+   ],
+   core_files = [
+       "lib/netstandard1.1/xunit.core.dll",
+       "lib/netstandard1.1/xunit.core.xml",
+   ],
+   net_files = [
+       "lib/net452/xunit.core.dll",
+       "lib/net452/xunit.core.dll.tdnet",
+       "lib/net452/xunit.core.xml",
+       "lib/net452/xunit.runner.tdnet.dll",
+       "lib/net452/xunit.runner.utility.net452.dll",
+   ],
+   mono_files = [
+       "lib/net452/xunit.core.dll",
+       "lib/net452/xunit.core.dll.tdnet",
+       "lib/net452/xunit.core.xml",
+       "lib/net452/xunit.runner.tdnet.dll",
+       "lib/net452/xunit.runner.utility.net452.dll",
+   ],
+)
+nuget_package(
+   name = "xunit.extensibility.execution",
+   package = "xunit.extensibility.execution",
+   version = "2.4.1",
+   sha256 = "2a6284760b14ab8cee409dac689034613d42219d80ba164be55edc1760a771dd",
+   core_lib = "lib/netstandard1.1/xunit.execution.dotnet.dll",
+   net_lib = "lib/net452/xunit.execution.desktop.dll",
+   mono_lib = "lib/net452/xunit.execution.desktop.dll",
+   core_deps = [
+       "@io_bazel_rules_dotnet//dotnet/stdlib.core:netstandard.library.dll",
+       "@xunit.extensibility.core//:core",
+   ],
+   net_deps = [
+       "@xunit.extensibility.core//:net",
+   ],
+   mono_deps = [
+       "@xunit.extensibility.core//:mono",
+   ],
+   core_files = [
+       "lib/netstandard1.1/xunit.execution.dotnet.dll",
+       "lib/netstandard1.1/xunit.execution.dotnet.xml",
+   ],
+   net_files = [
+       "lib/net452/xunit.execution.desktop.dll",
+       "lib/net452/xunit.execution.desktop.xml",
+   ],
+   mono_files = [
+       "lib/net452/xunit.execution.desktop.dll",
+       "lib/net452/xunit.execution.desktop.xml",
+   ],
+)
+nuget_package(
+   name = "xunit.core",
+   package = "xunit.core",
+   version = "2.4.1",
+   sha256 = "2a05200082483c7439550e05881fa2e6ed895d26319af30257ccd73f891ccbda",
+   core_deps = [
+       "@xunit.extensibility.core//:core",
+       "@xunit.extensibility.execution//:core",
+   ],
+   net_deps = [
+       "@xunit.extensibility.core//:net",
+       "@xunit.extensibility.execution//:net",
+   ],
+   mono_deps = [
+       "@xunit.extensibility.core//:mono",
+       "@xunit.extensibility.execution//:mono",
+   ],
+)
+nuget_package(
+   name = "xunit",
+   package = "xunit",
+   version = "2.4.1",
+   sha256 = "4060ee134667b31c8424e34ff06709f343e63de6fe39ac307525bccbbd9ac375",
+   core_deps = [
+       "@xunit.core//:core",
+       "@xunit.assert//:core",
+       "@xunit.analyzers//:core",
+   ],
+   net_deps = [
+       "@xunit.core//:net",
+       "@xunit.assert//:net",
+       "@xunit.analyzers//:net",
+   ],
+   mono_deps = [
+       "@xunit.core//:mono",
+       "@xunit.assert//:mono",
+       "@xunit.analyzers//:mono",
+   ],
+)
+nuget_package(
+   name = "xunit.runner.console",
+   package = "xunit.runner.console",
+   version = "2.4.1",
+   sha256 = "23f0b49edbfe5be8f8554e7f4317a390949bb96bdb2f8309ebe27c6855fad38f",
+   core_lib = "tools/netcoreapp2.0/xunit.abstractions.dll",
+   net_lib = "tools/net472/xunit.abstractions.dll",
+   mono_lib = "tools/net472/xunit.abstractions.dll",
+   core_tool = "tools/netcoreapp2.0/xunit.console.dll",
+   net_tool = "tools/net472/xunit.console.exe",
+   mono_tool = "tools/net472/xunit.console.exe",
+   core_files = [
+       "tools/netcoreapp2.0/xunit.abstractions.dll",
+       "tools/netcoreapp2.0/xunit.console.deps.json",
+       "tools/netcoreapp2.0/xunit.console.dll",
+       "tools/netcoreapp2.0/xunit.console.dll.config",
+       "tools/netcoreapp2.0/xunit.console.runtimeconfig.json",
+       "tools/netcoreapp2.0/xunit.runner.reporters.netcoreapp10.dll",
+       "tools/netcoreapp2.0/xunit.runner.utility.netcoreapp10.dll",
+       "tools/netcoreapp2.0/xunit.runner.utility.netcoreapp10.xml",
+   ],
+   net_files = [
+       "tools/net472/xunit.abstractions.dll",
+       "tools/net472/xunit.console.exe",
+       "tools/net472/xunit.console.exe.config",
+       "tools/net472/xunit.console.x86.exe",
+       "tools/net472/xunit.console.x86.exe.config",
+       "tools/net472/xunit.runner.reporters.net452.dll",
+       "tools/net472/xunit.runner.utility.net452.dll",
+   ],
+   mono_files = [
+       "tools/net472/xunit.abstractions.dll",
+       "tools/net472/xunit.console.exe",
+       "tools/net472/xunit.console.exe.config",
+       "tools/net472/xunit.console.x86.exe",
+       "tools/net472/xunit.console.x86.exe.config",
+       "tools/net472/xunit.runner.reporters.net452.dll",
+       "tools/net472/xunit.runner.utility.net452.dll",
    ],
 )
 ### End of generated by the tool

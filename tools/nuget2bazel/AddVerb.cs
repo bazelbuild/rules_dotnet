@@ -25,5 +25,10 @@ namespace nuget2bazel
             Default = null,
             HelpText = "Path to the directory with the WORKSPACE file")]
         public string RootPath { get; set; }
+
+        [Option('m', "mainFile",
+            Default = null,
+            HelpText = "Basename of the main file in the libs or tools folder if multiple are present")]
+        public string MainFile { get; set; }
     }
 }

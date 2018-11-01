@@ -21,12 +21,14 @@ namespace nuget2bazel
 {
     public class ProjectBazel: FolderNuGetProject
     {
+        private readonly string _mainFile;
         public string JsonConfigPath { get; set; }
         public string WorkspacePath { get; set; }
         public IEnumerable<NuGetProjectAction> NuGetProjectActions { get; set; }
 
-        public ProjectBazel(string root) : base(Path.Combine(root, "packages"))
+        public ProjectBazel(string root, string mainFile) : base(Path.Combine(root, "packages"))
         {
+            _mainFile = mainFile;
             JsonConfigPath = Path.Combine(root, "packages.json");
             WorkspacePath = Path.Combine(root, "WORKSPACE");
         }
@@ -145,7 +147,7 @@ namespace nuget2bazel
 
             var deps = (PackageDependencyInfo) NuGetProjectActions.First(x => x.PackageIdentity.Equals(packageIdentity)).PackageIdentity;
             var entry = new WorkspaceEntry(packageIdentity, GetSha(downloadResourceResult.PackageStream),
-                depsGroups, libItemGroups, refItemGroups);
+                depsGroups, libItemGroups, toolItemGroups, refItemGroups, _mainFile);
 
             if (!SdkList.Dlls.Contains(entry.PackageIdentity.Id.ToLower()))
             {

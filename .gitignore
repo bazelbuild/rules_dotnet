@@ -8,3 +8,4 @@ _templates
 _static
 _build
 /packages
+.vs

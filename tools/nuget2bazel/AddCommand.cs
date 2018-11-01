@@ -19,7 +19,7 @@ namespace nuget2bazel
 {
     public class AddCommand
     {
-        public async Task Do(string package, string version, string rootPath)
+        public async Task Do(string package, string version, string rootPath, string mainFile)
         {
             if (rootPath == null)
                 rootPath = Directory.GetCurrentDirectory();
@@ -36,7 +36,7 @@ namespace nuget2bazel
             var found = await packageMetadataResource.GetMetadataAsync(identity, content, logger, CancellationToken.None);
 
             var settings = Settings.LoadDefaultSettings(rootPath, null, new MachineWideSettings());
-            var project = new ProjectBazel(rootPath);
+            var project = new ProjectBazel(rootPath, mainFile);
             var sourceRepositoryProvider = new SourceRepositoryProvider(settings, providers);
             var packageManager = new NuGetPackageManager(sourceRepositoryProvider, settings, rootPath)
             {

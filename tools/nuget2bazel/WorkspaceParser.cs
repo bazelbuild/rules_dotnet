@@ -56,6 +56,9 @@ namespace nuget2bazel
             result.CoreLib= RequireAssignment(Token.CORE_LIB);
             result.NetLib = RequireAssignment(Token.NET_LIB);
             result.MonoLib= RequireAssignment(Token.MONO_LIB);
+            result.CoreTool = RequireAssignment(Token.CORE_TOOL);
+            result.NetTool = RequireAssignment(Token.NET_TOOL);
+            result.MonoTool = RequireAssignment(Token.MONO_TOOL);
             result.Core_Deps = RequireArray(Token.CORE_DEPS);
             result.Net_Deps = RequireArray(Token.NET_DEPS);
             result.Mono_Deps = RequireArray(Token.MONO_DEPS);
@@ -77,6 +80,10 @@ namespace nuget2bazel
 
         private string RequireAssignment(Token required)
         {
+            var token = PeekToken();
+            if (token.Item1 != required)
+                return null;
+
             RequireToken(required);
             RequireToken(Token.EQUAL);
             return RequireToken(Token.STRING);
@@ -84,6 +91,10 @@ namespace nuget2bazel
 
         private IEnumerable<string> RequireArray(Token required)
         {
+            var tok = PeekToken();
+            if (tok.Item1 != required)
+                return null;
+
             RequireToken(required);
             RequireToken(Token.EQUAL);
             RequireToken(Token.LBRACKET);
@@ -115,6 +126,9 @@ namespace nuget2bazel
             CORE_LIB,
             NET_LIB,
             MONO_LIB,
+            CORE_TOOL,
+            NET_TOOL,
+            MONO_TOOL,
             CORE_DEPS,
             NET_DEPS,
             MONO_DEPS,
@@ -172,6 +186,9 @@ namespace nuget2bazel
             if (str == "core_lib") return (Token.CORE_LIB, null);
             if (str == "net_lib") return (Token.NET_LIB, null);
             if (str == "mono_lib") return (Token.MONO_LIB, null);
+            if (str == "core_tool") return (Token.CORE_TOOL, null);
+            if (str == "net_tool") return (Token.NET_TOOL, null);
+            if (str == "mono_tool") return (Token.MONO_TOOL, null);
             if (str == "core_deps") return (Token.CORE_DEPS, null);
             if (str == "net_deps") return (Token.NET_DEPS, null);
             if (str == "mono_deps") return (Token.MONO_DEPS, null);
@@ -180,6 +197,15 @@ namespace nuget2bazel
             if (str == "mono_files") return (Token.MONO_FILES, null);
 
             throw new InvalidOperationException($"Unknown token: {str}");
+        }
+
+        private (Token, string) PeekToken()
+        {
+            int pos = _pos;
+            var result = GetToken();
+            _pos = pos;
+
+            return result;
         }
 
         private (Token, string) GetString()
