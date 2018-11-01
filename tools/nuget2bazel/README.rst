@@ -17,5 +17,5 @@ Sample usage:
 
     bazel run //tools/nuget2bazel -- add -p c:/rules_dotnet ninject 3.3.0
 
-    bazel run //tools/nuget2bazel -- remove -p c:/rules_dotnet ninject 
+    bazel run //tools/nuget2bazel -- delete -p c:/rules_dotnet ninject 
 
