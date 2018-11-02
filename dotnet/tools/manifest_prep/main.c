@@ -18,7 +18,7 @@
 
 const char * Exe = NULL;
 
-/* Two arguments are expected: path to the launcher (to locate the manifest file) and output file which should contain simple "ok" */
+/* One argument is expected: path to the launcher (to locate the manifest file) */
 int main(int argc, char *argv[], char *envp[])
 {
 	FILE *f;
@@ -31,10 +31,5 @@ int main(int argc, char *argv[], char *envp[])
 	ReadManifest(manifestDir);
 	LinkFiles(manifestDir);
 	LinkHostFxr(manifestDir);
-
-	f = fopen(outFile, "w");
-	fprintf(f, "ok");
-	fclose(f);
-
 	return 0;
 }

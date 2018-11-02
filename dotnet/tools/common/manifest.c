@@ -101,7 +101,7 @@ static void CreateLinkIfNeeded(const char* target, const char *toCreate)
         exit(-1);			
     }
 
-    result = symlink(target, toCreate);
+    result = link(target, toCreate);
     if (result!=0) {
         int error = errno;
         if (error != EEXIST) {

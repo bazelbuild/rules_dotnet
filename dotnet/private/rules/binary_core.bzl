@@ -15,8 +15,18 @@ load(
 )
 
 _TEMPLATE = """
+PREPARELINKPRG="{prepare}"
+LAUNCHERPATH="{launch}"
+EXEBASENAME="{exebasename}"
+
 DIR=$0.runfiles
-$DIR/dotnet $DIR/{} "$@"
+MANIFEST=$DIR/MANIFEST
+
+PREPARE=`/usr/bin/awk '{{if ($$1 ~ "{prepare}") {{print $2;exit}} }}' $MANIFEST`
+
+$PREPARE $LAUNCHERPATH
+
+$DIR/dotnet $DIR/$EXEBASENAME "$@"
 """
 
 
@@ -37,15 +47,12 @@ def _core_binary_impl(ctx):
   )
 
   launcher = ctx.actions.declare_file("{}.bash".format(name))
-  content = _TEMPLATE.format(executable.result.basename)
+  content = _TEMPLATE.format(prepare=ctx.attr._manifest_prep.files.to_list()[0].basename, launch=launcher.path, exebasename=executable.result.basename)
   ctx.actions.write(output = launcher, content = content, is_executable=False)
-
-  out = ctx.actions.declare_file("{}.out".format(name))
-  ctx.actions.run(outputs=[out], inputs=[launcher, executable.result], executable=ctx.attr._manifest_prep.files.to_list()[0], arguments=[launcher.path, out.path])
 
   return [
       DefaultInfo(
-          files = depset([executable.result, launcher, out]),
+          files = depset([executable.result, launcher]),
           runfiles = ctx.runfiles(files = ctx.attr._native_deps.files.to_list() + [dotnet.runner] + ctx.attr._manifest_prep.files.to_list(), transitive_files = executable.runfiles),
           executable = launcher,
       ),
