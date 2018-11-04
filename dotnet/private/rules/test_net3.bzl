@@ -56,13 +56,7 @@ def _net_nunit_test(ctx):
   )
   ctx.actions.write(output = launcher, content = content, is_executable=True)
 
-  if library.pdb:
-    pdbs = [library.pdb]
-  else:
-    pdbs = []
-
-  runfiles = ctx.runfiles(files = [dotnet.stdlib]  + pdbs + ctx.attr._manifest_prep.files.to_list() + [library.result], transitive_files=library.runfiles)
-
+  runfiles = ctx.runfiles(files = [launcher]  + ctx.attr._manifest_prep.files.to_list(), transitive_files=library.runfiles)
   test_launcher_runfiles = ctx.runfiles(files=[ctx.attr.testlauncher[DotnetLibrary].result], transitive_files = ctx.attr.testlauncher[DotnetLibrary].runfiles)
   runfiles = runfiles.merge(test_launcher_runfiles)
 

@@ -28,7 +28,8 @@ def _net_import_binary_impl(ctx):
   if dotnet.library == None:
     empty = dotnet.declare_file(dotnet, path="empty.sh")
     dotnet.actions.write(output = empty, content = "echo '.net not supported on this platform'")
-    return [DefaultInfo(executable = empty)]
+    library = dotnet.new_library(dotnet = dotnet)
+    return [library, DefaultInfo(executable = empty)]
 
   deps = ctx.attr.deps
   src = ctx.attr.src
