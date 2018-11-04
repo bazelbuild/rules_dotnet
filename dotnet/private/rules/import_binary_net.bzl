@@ -32,28 +32,28 @@ def _net_import_binary_impl(ctx):
 
   deps = ctx.attr.deps
   src = ctx.attr.src
+  result = src.files.to_list()[0]
 
-  deps_libraries = [d[DotnetLibrary] for d in deps]
-  transitive = sets.union(deps_libraries, *[a[DotnetLibrary].transitive for a in deps])
+  runfiles = depset(direct=[result] + [dotnet.stdlib], transitive=[d[DotnetLibrary].runfiles for d in deps])
+  transitive = depset(direct=deps, transitive=[a[DotnetLibrary].transitive for a in deps])
 
   library = dotnet.new_library(
     dotnet = dotnet, 
     name = name, 
     deps = deps, 
     transitive = transitive,
-    result = src.files.to_list()[0])
-
-  transitive_files = [d.result for d in library.transitive.to_list()]
+    runfiles = runfiles,
+    result = result)
 
   return [
       library,
       DefaultInfo(
           files = depset([library.result]),
-          runfiles = ctx.runfiles(files = [dotnet.stdlib, library.result], transitive_files=depset(direct=transitive_files)),
+          runfiles = ctx.runfiles(files = [], transitive_files=library.runfiles),
       ),
   ]
   
-_net_import_binary = rule(
+net_import_binary = rule(
     _net_import_binary_impl,
     attrs = {
         "deps": attr.label_list(providers=[DotnetLibrary]),
@@ -64,14 +64,3 @@ _net_import_binary = rule(
     executable = False,
 )
 
-def net_import_binary(name, src, deps = []):
-    _net_import_binary(name = "%s_exe" % name, deps = deps, src = src)
-    exe = ":%s_exe" % name
-    dotnet_launcher_gen(name = "%s_launcher" % name, exe = exe)
-
-    native.cc_binary(
-        name=name, 
-        srcs = [":%s_launcher" % name],
-        deps = ["@io_bazel_rules_dotnet//dotnet/tools/runner_net", "@io_bazel_rules_dotnet//dotnet/tools/common"],
-        data = [exe],
-    )
