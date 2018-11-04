@@ -37,7 +37,8 @@ def _net_binary_impl(ctx):
   if dotnet.library == None:
     empty = dotnet.declare_file(dotnet, path="empty.sh")
     dotnet.actions.write(output = empty, content = "echo '.net not supported on this platform'")
-    return [DefaultInfo(executable = empty)]
+    library = dotnet.new_library(dotnet = dotnet)
+    return [library, DefaultInfo(executable = empty)]
 
   executable = dotnet.binary(dotnet,
       name = name,
