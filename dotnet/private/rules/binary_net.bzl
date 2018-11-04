@@ -25,7 +25,6 @@ MANIFEST=$DIR/MANIFEST
 PREPARE=`/usr/bin/awk '{{if ($1 ~ "{prepare}") {{print $2;exit}} }}' $MANIFEST`
 
 $PREPARE $LAUNCHERPATH
-
 $DIR/$EXEBASENAME "$@"
 """
 
@@ -56,14 +55,8 @@ def _net_binary_impl(ctx):
       launch=launcher.path, 
       exebasename=executable.result.basename
   )
-  ctx.actions.write(output = launcher, content = content, is_executable=True)
-
-  if executable.pdb:
-    pdbs = [executable.pdb]
-  else:
-    pdbs = []
-
-  runfiles = ctx.runfiles(files = [dotnet.stdlib]  + pdbs + ctx.attr._manifest_prep.files.to_list(), transitive_files=executable.runfiles)
+  ctx.actions.write(output = launcher, content = content, is_executable=True)  
+  runfiles = ctx.runfiles(files = [launcher]  + ctx.attr._manifest_prep.files.to_list(), transitive_files=executable.runfiles)
 
   return [
       executable,

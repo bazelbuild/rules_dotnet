@@ -144,17 +144,8 @@ def emit_assembly_net(dotnet,
       progress_message = (
           "Compiling " + dotnet.label.package + ":" + dotnet.label.name))
 
-  deps_libraries = [d[DotnetLibrary] for d in deps]
-  transitive = sets.union(deps_libraries, *[a[DotnetLibrary].transitive for a in deps])
-
-  runfiles = dotnet._ctx.runfiles(files = [pdb]) if pdb else None
-  for d in deps_libraries:
-    if d.runfiles:
-      if not runfiles:
-        runfiles = d.runfiles
-      else:
-        runfiles.merge(d.runfiles)
-
+  runfiles = depset(direct=[result] + [dotnet.stdlib] + ([pdb] if pdb else []), transitive=[d[DotnetLibrary].runfiles for d in deps])
+  transitive = depset(direct=deps, transitive=[a[DotnetLibrary].transitive for a in deps])
 
   return dotnet.new_library(
     dotnet = dotnet, 

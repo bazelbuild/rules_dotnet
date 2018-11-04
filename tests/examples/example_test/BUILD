@@ -18,7 +18,7 @@ net_nunit_test(
         "MyTest.cs",
     ],
     deps = [
-        "//tests/examples/example_lib:MyClass",
+        "//tests/examples/example_lib:MyClass-net",
         "@nunit2//:net.nunit.framework",
     ],
     size = "small",
@@ -29,7 +29,7 @@ net_nunit3_test(
         "MyTest.cs",
     ],
     deps = [
-        "//tests/examples/example_lib:MyClass",
+        "//tests/examples/example_lib:MyClass-net",
         "@nunit3//:lib",
     ],
     size = "small",

@@ -76,8 +76,17 @@ static void CreateLinkIfNeeded(const char* target, const char *toCreate)
         exit(-1);			
     }
 
-    flag = SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE;
+    /* Try hard linking first */
+    result = CreateHardLink(toCreate, target, NULL);
+    if (result)
+        return;
+    error = GetLastError();
+    if (error == ERROR_ALREADY_EXISTS) 
+        return;
+
+    /* Fall back to symbolic linking */
     retry:
+    flag = SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE;
     result = CreateSymbolicLinkA(toCreate, target, flag);
     if (!result) {
         error = GetLastError();
@@ -315,8 +324,7 @@ void LinkHostFxr(const char *manifestDir)
 	}
 
     if (q == NULL) {
-        printf("Couldn't find host/fxr/ entry in the MANIFEST\n");
-        exit(-1);
+        return;       
     }
 
 

@@ -31,7 +31,7 @@ net_binary(
         "MyTool.cs",
     ],
     deps = [
-        "//tests/examples/example_lib:MyClass",
+        "//tests/examples/example_lib:MyClass-net",
     ],
 )
 

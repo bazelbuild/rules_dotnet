@@ -34,7 +34,7 @@ net_binary(
         "Program.cs",
     ],
     deps = [
-        "//tests/examples/example_lib:MyClass",
+        "//tests/examples/example_lib:MyClass-net",
         "@npgsql//:net",
     ]
 )

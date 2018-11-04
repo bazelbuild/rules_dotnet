@@ -14,7 +14,7 @@ def _net_library_impl(ctx):
   """net_library_impl emits actions for compiling dotnet executable assembly."""
   dotnet = dotnet_context(ctx)
   name = ctx.label.name
- 
+  
   # Handle case of empty toolchain on linux and darwin
   if dotnet.library == None:
     library = dotnet.new_library(dotnet = dotnet)
@@ -30,16 +30,7 @@ def _net_library_impl(ctx):
       unsafe = ctx.attr.unsafe,
   )
 
-  transitive_files = [d.result for d in library.transitive.to_list()]
-
-  if library.pdb:
-    pdbs = [library.pdb]
-  else:
-    pdbs = []
-
-  runfiles = ctx.runfiles(files = [dotnet.stdlib, library.result] + pdbs, transitive_files=depset(direct=transitive_files))
-  if library.runfiles:
-    runfiles.merge(library.runfiles)
+  runfiles = ctx.runfiles(files = [], transitive_files=library.runfiles)
 
   return [
       library,
