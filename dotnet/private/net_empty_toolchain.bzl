@@ -30,8 +30,7 @@ def _net_empty_toolchain_impl(ctx):
       get_dotnet_tlbimp = None,
       get_dotnet_stdlib = None,
       actions = struct(
-          binary = None,
-          library = None,
+          assembly = None,
           resx = None,
           com_ref = None
       ),
