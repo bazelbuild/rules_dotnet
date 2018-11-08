@@ -84,8 +84,8 @@ Setup
     # A newer version should be fine
     git_repository(
         name = "io_bazel_rules_dotnet",
-        remote = "https://github.com/tomek1909/rules_dotnet",
-        tag = "0.0.1",
+        remote = "https://github.com/bazelbuild/rules_dotnet",
+        tag = "0.0.2",
     )
 
     load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_register_toolchains", "dotnet_repositories")
