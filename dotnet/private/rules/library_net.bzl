@@ -16,11 +16,11 @@ def _net_library_impl(ctx):
   name = ctx.label.name
   
   # Handle case of empty toolchain on linux and darwin
-  if dotnet.library == None:
+  if dotnet.assembly == None:
     library = dotnet.new_library(dotnet = dotnet)
     return [library]
 
-  library = dotnet.library(dotnet,
+  library = dotnet.assembly(dotnet,
       name = name,
       srcs = ctx.attr.srcs,
       deps = ctx.attr.deps,
@@ -28,6 +28,8 @@ def _net_library_impl(ctx):
       out = ctx.attr.out,
       defines = ctx.attr.defines,
       unsafe = ctx.attr.unsafe,
+      data = ctx.attr.data,
+      executable = False,
   )
 
   runfiles = ctx.runfiles(files = [], transitive_files=library.runfiles)
@@ -49,6 +51,7 @@ net_library = rule(
         "out": attr.string(),
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
+        "data": attr.label_list(allow_files = True),        
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data"))
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],

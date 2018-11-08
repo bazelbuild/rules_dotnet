@@ -19,7 +19,7 @@ def _net_com_library_impl(ctx):
   name = ctx.label.name
  
    # Handle case of empty toolchain on linux and darwin
-  if dotnet.library == None:
+  if dotnet.assembly == None:
     library = dotnet.new_library(dotnet = dotnet)
     return [library]
 

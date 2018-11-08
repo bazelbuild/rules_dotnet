@@ -25,7 +25,7 @@ def _net_import_binary_impl(ctx):
   name = ctx.label.name
  
   # Handle case of empty toolchain on linux and darwin
-  if dotnet.library == None:
+  if dotnet.assembly == None:
     empty = dotnet.declare_file(dotnet, path="empty.sh")
     dotnet.actions.write(output = empty, content = "echo '.net not supported on this platform'")
     library = dotnet.new_library(dotnet = dotnet)

@@ -30,13 +30,13 @@ def _net_nunit_test(ctx):
   name = ctx.label.name
  
   # Handle case of empty toolchain on linux and darwin
-  if dotnet.library == None:
+  if dotnet.assembly == None:
     empty = dotnet.declare_file(dotnet, path="empty.sh")
     dotnet.actions.write(output = empty, content = "echo '.net not supported on this platform'")
     library = dotnet.new_library(dotnet = dotnet)
     return [library, DefaultInfo(executable = empty)]
 
-  library = dotnet.library(dotnet,
+  library = dotnet.assembly(dotnet,
       name = name,
       srcs = ctx.attr.srcs,
       deps = ctx.attr.deps,
@@ -44,6 +44,7 @@ def _net_nunit_test(ctx):
       out = ctx.attr.out,
       defines = ctx.attr.defines,
       unsafe = ctx.attr.unsafe,
+      executable = False,
   )
 
   testlauncher = ctx.attr.testlauncher.files.to_list()[0].basename

@@ -15,7 +15,7 @@ def _core_library_impl(ctx):
   dotnet = dotnet_context(ctx)
   name = ctx.label.name
 
-  library = dotnet.library(dotnet,
+  library = dotnet.assembly(dotnet,
       name = name,
       srcs = ctx.attr.srcs,
       deps = ctx.attr.deps,
@@ -24,6 +24,7 @@ def _core_library_impl(ctx):
       defines = ctx.attr.defines,
       unsafe = ctx.attr.unsafe,
       data = ctx.attr.data,
+      executable = False,
   )
 
   return [

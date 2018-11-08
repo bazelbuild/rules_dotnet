@@ -20,8 +20,7 @@ load(
     "paths",
 )
 
-load("@io_bazel_rules_dotnet//dotnet/private:actions/binary.bzl", "emit_binary")
-load("@io_bazel_rules_dotnet//dotnet/private:actions/library.bzl", "emit_library")
+load("@io_bazel_rules_dotnet//dotnet/private:actions/assembly.bzl", "emit_assembly")
 load("@io_bazel_rules_dotnet//dotnet/private:actions/resx.bzl", "emit_resx")
 
 def _get_dotnet_runner(context_data, ext):
@@ -88,8 +87,7 @@ def _dotnet_toolchain_impl(ctx):
       get_dotnet_tlbimp = _get_dotnet_tlbimp,
       get_dotnet_stdlib = _get_dotnet_stdlib,
       actions = struct(
-          binary = emit_binary,
-          library = emit_library,
+          assembly = emit_assembly,
           resx = emit_resx,
           com_ref = None
       ),

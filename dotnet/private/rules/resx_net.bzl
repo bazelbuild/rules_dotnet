@@ -9,7 +9,7 @@ def _net_resx_impl(ctx):
   name = ctx.label.name
  
   # Handle case of empty toolchain on linux and darwin
-  if dotnet.library == None:
+  if dotnet.assembly == None:
     result = dotnet.declare_file(dotnet, path="empty.resources")
     dotnet.actions.write(output = result, content = ".net not supported on this platform")
     empty = dotnet.new_resource(dotnet = dotnet, name = name, result=result)

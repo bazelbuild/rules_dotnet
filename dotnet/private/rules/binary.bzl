@@ -30,7 +30,7 @@ def _dotnet_binary_impl(ctx):
   dotnet = dotnet_context(ctx)
   name = ctx.label.name
  
-  executable = dotnet.binary(dotnet,
+  executable = dotnet.assembly(dotnet,
       name = name,
       srcs = ctx.attr.srcs,
       deps = ctx.attr.deps,
@@ -39,6 +39,7 @@ def _dotnet_binary_impl(ctx):
       defines = ctx.attr.defines,
       unsafe = ctx.attr.unsafe,
       data = ctx.attr.data,
+      executable = True,
   )
 
 
