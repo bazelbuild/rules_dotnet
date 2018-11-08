@@ -30,6 +30,7 @@ int main(int argc, char *argv[], char *envp[])
 	manifestDir = GetManifestDir();
 	ReadManifest(manifestDir);
 	LinkFiles(manifestDir);
+	LinkFilesTree(manifestDir);
 	LinkHostFxr(manifestDir);
 	return 0;
 }

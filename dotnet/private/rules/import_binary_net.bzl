@@ -13,12 +13,6 @@ load(
     "sets"
 )
 
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/launcher_gen.bzl",
-    "dotnet_launcher_gen",
-)
-
-
 def _net_import_binary_impl(ctx):
   """net_import_library_impl emits actions for importing an external dll (for example provided by nuget)."""
   dotnet = dotnet_context(ctx)

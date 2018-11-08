@@ -1,6 +1,5 @@
 load("@io_bazel_rules_dotnet//dotnet/private:common.bzl", "env_execute")
 load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_context")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/launcher_gen.bzl", "dotnet_launcher_gen")
 
 
 # _bazelrc is the bazel.rc file that sets the default options for tests
@@ -204,7 +203,7 @@ def _bazel_test_script_impl(ctx):
 
 
   script_content = _bazel_test_script_template.format(
-      test_prep = ctx.attr.test_prep,
+      test_prep = ctx.attr._manifest_prep.files.to_list()[0].basename,
       bazelrc = ctx.attr._settings.exec_root+"/"+ctx.file._bazelrc.path,
       config = ctx.attr.config,
       command = ctx.attr.command,
@@ -250,7 +249,6 @@ _bazel_test_script = rule(
         "build_in": attr.label(allow_files = True),
         "srcs": attr.label_list(allow_files = True),
         "check": attr.string(),
-        "test_prep": attr.string(),
         "config": attr.string(default = "isolate"),
         "data": attr.label_list(
             allow_files = True,
@@ -261,6 +259,7 @@ _bazel_test_script = rule(
             single_file = True,
             default = "@bazel_test//:bazelrc",
         ),
+        "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
         "_settings": attr.label(default = Label("@bazel_test//:settings")),
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
     },
@@ -289,17 +288,7 @@ def bazel_test(name, command = None, args=None, targets = None, dotnet_version =
       config = config,
       workspace_in = workspace_in,
       build_in = build_in,
-      test_prep = name + "_test_prep",
       srcs = srcs
-  )
-
-  dotnet_launcher_gen(name = "%s_test_prep_gen" % name, exe = script_name)
-  
-  native.cc_binary(
-      name=name + "_test_prep", 
-      srcs = [":%s_test_prep_gen" % name],
-      deps = ["@io_bazel_rules_dotnet//dotnet/tools/test_prep", "@io_bazel_rules_dotnet//dotnet/tools/common"],
-      data = [script_name],
   )
 
   native.sh_test(

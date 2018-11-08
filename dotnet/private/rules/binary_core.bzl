@@ -9,11 +9,6 @@ load(
     "DotnetResource",
 )
 
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/launcher_gen.bzl",
-    "dotnet_launcher_gen",
-)
-
 _TEMPLATE = """
 PREPARELINKPRG="{prepare}"
 LAUNCHERPATH="{launch}"

@@ -8,11 +8,6 @@ load(
     "DotnetLibrary",
 )
 
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/launcher_gen.bzl",
-    "dotnet_launcher_gen",
-)
-
 def _core_import_binary_impl(ctx):
   """core_import_library_impl emits actions for importing an external executable (for example provided by nuget)."""
   dotnet = dotnet_context(ctx)
@@ -20,10 +15,10 @@ def _core_import_binary_impl(ctx):
  
   deps = ctx.attr.deps
   src = ctx.attr.src
+  result = src.files.to_list()[0]
 
-  deps_libraries = [d[DotnetLibrary] for d in deps]  
-  transitive = depset(direct = deps, transitive = [d[DotnetLibrary].transitive for d in deps])
-  runfiles = depset(direct = [src.files.to_list()[0]] + ctx.attr._native_deps.files.to_list(), transitive = [a[DotnetLibrary].runfiles for a in transitive])
+  runfiles = depset(direct=[result] + [dotnet.stdlib], transitive=[d[DotnetLibrary].runfiles for d in deps])
+  transitive = depset(direct=deps, transitive=[a[DotnetLibrary].transitive for a in deps])
 
 
   library = dotnet.new_library(
@@ -31,18 +26,18 @@ def _core_import_binary_impl(ctx):
     name = name, 
     deps = deps, 
     transitive = transitive,
-    result = src.files.to_list()[0],
-    runfiles = runfiles)
+    runfiles = runfiles,
+    result = result)
 
   return [
       library,
       DefaultInfo(
           files = depset([library.result]),
-          runfiles = ctx.runfiles(files = ctx.attr._native_deps.files.to_list() + [dotnet.runner], transitive_files = library.runfiles),
+          runfiles = ctx.runfiles(files = ctx.attr._native_deps.files.to_list(), transitive_files = library.runfiles),
       ),
   ]
   
-_core_import_binary = rule(
+core_import_binary = rule(
     _core_import_binary_impl,
     attrs = {
         "deps": attr.label_list(providers=[DotnetLibrary]),
@@ -51,16 +46,5 @@ _core_import_binary = rule(
         "_native_deps": attr.label(default = Label("@core_sdk//:native_deps"))
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
+    executable = False,
 )
-
-def core_import_binary(name, src, deps = []):
-    _core_import_binary(name = "%s_exe" % name, deps = deps, src = src)
-    exe = ":%s_exe" % name
-    dotnet_launcher_gen(name = "%s_launcher" % name, exe = exe)
-
-    native.cc_binary(
-        name=name, 
-        srcs = [":%s_launcher" % name],
-        deps = ["@io_bazel_rules_dotnet//dotnet/tools/runner_core", "@io_bazel_rules_dotnet//dotnet/tools/common"],
-        data = [exe],
-    )
