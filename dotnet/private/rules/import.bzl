@@ -21,24 +21,24 @@ def _dotnet_import_library_impl(ctx):
  
   deps = ctx.attr.deps
   src = ctx.attr.src
+  result = src.files.to_list()[0]
 
-  deps_libraries = [d[DotnetLibrary] for d in deps]
-  transitive = sets.union(deps_libraries, *[a[DotnetLibrary].transitive for a in deps])
+  runfiles = depset(direct=[result] + [dotnet.stdlib], transitive=[d[DotnetLibrary].runfiles for d in deps])
+  transitive = depset(direct=deps, transitive=[a[DotnetLibrary].transitive for a in deps])
 
   library = dotnet.new_library(
     dotnet = dotnet, 
     name = name, 
     deps = deps, 
     transitive = transitive,
-    result = src.files.to_list()[0])
-
-  transitive_files = [d.result for d in library.transitive.to_list()]
+    runfiles = runfiles,
+    result = result)
 
   return [
       library,
       DefaultInfo(
           files = depset([library.result]),
-          runfiles = ctx.runfiles(files = [dotnet.stdlib, library.result], transitive_files=depset(direct=transitive_files)),
+          runfiles = ctx.runfiles(files = [], transitive_files=library.runfiles),
       ),
   ]
   

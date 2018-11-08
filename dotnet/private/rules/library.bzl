@@ -23,15 +23,16 @@ def _dotnet_library_impl(ctx):
       out = ctx.attr.out,
       defines = ctx.attr.defines,
       unsafe = ctx.attr.unsafe,
+      data = ctx.attr.data,
   )
 
-  transitive_files = [d.result for d in library.transitive.to_list()]
+  runfiles = ctx.runfiles(files = [], transitive_files=library.runfiles)
 
   return [
       library,
       DefaultInfo(
           files = depset([library.result]),
-          runfiles = ctx.runfiles(files = [dotnet.stdlib, library.result], transitive_files=depset(direct=transitive_files)),
+          runfiles = runfiles,
       ),
   ]
   
@@ -44,6 +45,7 @@ dotnet_library = rule(
         "out": attr.string(),
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
+        "data": attr.label_list(),
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data"))
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],

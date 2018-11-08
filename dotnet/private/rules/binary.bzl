@@ -9,10 +9,21 @@ load(
     "DotnetResource",
 )
 
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/launcher_gen.bzl",
-    "dotnet_launcher_gen",
-)
+_TEMPLATE = """
+PREPARELINKPRG="{prepare}"
+LAUNCHERPATH="{launch}"
+EXEBASENAME="{exebasename}"
+
+DIR=$0.runfiles
+MANIFEST=$DIR/MANIFEST
+
+PREPARE=`/usr/bin/awk '{{if ($1 ~ "{prepare}") {{print $2;exit}} }}' $MANIFEST`
+
+export MONO_PATH=$DIR
+$PREPARE $LAUNCHERPATH
+$DIR/mono $DIR/$EXEBASENAME "$@"
+"""
+
 
 def _dotnet_binary_impl(ctx):
   """dotnet_binary_impl emits actions for compiling dotnet executable assembly."""
@@ -27,19 +38,29 @@ def _dotnet_binary_impl(ctx):
       out = ctx.attr.out,
       defines = ctx.attr.defines,
       unsafe = ctx.attr.unsafe,
+      data = ctx.attr.data,
   )
 
-  transitive_files = [d.result for d in executable.transitive.to_list()]
+
+  launcher = ctx.actions.declare_file("{}.bash".format(name))
+  content = _TEMPLATE.format(
+      prepare=ctx.attr._manifest_prep.files.to_list()[0].basename, 
+      launch=launcher.path, 
+      exebasename=executable.result.basename
+  )
+  ctx.actions.write(output = launcher, content = content, is_executable=True)  
+  runfiles = ctx.runfiles(files = [launcher]  + ctx.attr._manifest_prep.files.to_list() + [dotnet.runner], transitive_files=executable.runfiles)
 
   return [
+      executable,
       DefaultInfo(
-          files = depset([executable.result]),
-          runfiles = ctx.runfiles(files = [dotnet.stdlib, dotnet.runner], transitive_files=depset(direct=transitive_files)),
-          executable = executable.result,
+          files = depset([executable.result, launcher]),
+          runfiles = runfiles,
+          executable = launcher,
       ),
   ]
   
-_dotnet_binary = rule(
+dotnet_binary = rule(
     _dotnet_binary_impl,
     attrs = {
         "deps": attr.label_list(providers=[DotnetLibrary]),
@@ -48,20 +69,10 @@ _dotnet_binary = rule(
         "out": attr.string(),
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
+        "data": attr.label_list(),
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
+        "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
     executable = True,
 )
-
-def dotnet_binary(name, srcs, deps = [], defines = None, out = None, resources = None):
-    _dotnet_binary(name = "%s_exe" % name, deps = deps, srcs = srcs, out = out, defines = defines, resources = resources)
-    exe = ":%s_exe" % name
-    dotnet_launcher_gen(name = "%s_launcher" % name, exe = exe)
-
-    native.cc_binary(
-        name=name, 
-        srcs = [":%s_launcher" % name],
-        deps = ["@io_bazel_rules_dotnet//dotnet/tools/runner", "@io_bazel_rules_dotnet//dotnet/tools/common"],
-        data = [exe],
-    )

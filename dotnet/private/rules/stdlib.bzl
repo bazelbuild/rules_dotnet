@@ -28,17 +28,21 @@ def _dotnet_stdlib_impl(ctx):
   name = ctx.label.name
   result = _get_dotnet_stdlib_byname(dotnet.lib, dotnet.libVersion, name)
 
+  runfiles = depset(direct = [result])
+
   library = dotnet.new_library(
     dotnet = dotnet, 
     name = name, 
     deps = None, 
     transitive = depset([]),
+    runfiles = runfiles,
     result = result)
  
   return [
       library,
       DefaultInfo(
           files = depset([library.result]),
+          runfiles = ctx.runfiles(files = [], transitive_files = runfiles),
       ),
   ]
   
