@@ -17,7 +17,8 @@ EXEBASENAME="{exebasename}"
 DIR=$0.runfiles
 MANIFEST=$DIR/MANIFEST
 
-PREPARE=`/usr/bin/awk '{{if ($1 ~ "{prepare}") {{print $2;exit}} }}' $MANIFEST`
+PATH=/usr/bin:/bin:$PATH
+PREPARE=`awk '{{if ($1 ~ "{prepare}") {{print $2;exit}} }}' $MANIFEST`
 
 export MONO_PATH=$DIR
 $PREPARE $LAUNCHERPATH

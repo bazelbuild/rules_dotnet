@@ -14,12 +14,14 @@ PREPARELINKPRG="{prepare}"
 LAUNCHERPATH="{launch}"
 EXEBASENAME="{exebasename}"
 
+PATH=/usr/bin:/bin:$PATH
+
 DIR=$TEST_SRCDIR
 MANIFEST=$DIR/MANIFEST
-PREPARE=`/usr/bin/awk '{{if ($1 ~ "{prepare}") {{print $2;exit}} }}' $MANIFEST`
+PREPARE=`awk '{{if ($1 ~ "{prepare}") {{print $2;exit}} }}' $MANIFEST`
 $PREPARE $LAUNCHERPATH
 
-MONOPATH=`/usr/bin/readlink -f $DIR/mono`
+MONOPATH=`readlink -f $DIR/mono`
 "$MONOPATH" $DIR/{testlauncher} $DIR/$EXEBASENAME "$@"
 """
 

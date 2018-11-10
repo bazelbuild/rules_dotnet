@@ -49,7 +49,8 @@ mkdir -p {cache_dir}
 # Link files according to manifest
 DIR=$TEST_SRCDIR
 MANIFEST=$DIR/MANIFEST
-PREPARE=`/usr/bin/awk '{{if ($1 ~ "{test_prep}") {{print $2;exit}} }}' $MANIFEST`
+PATH=/usr/bin:/bin:$PATH
+PREPARE=`awk '{{if ($1 ~ "{test_prep}") {{print $2;exit}} }}' $MANIFEST`
 $PREPARE .
 
 cp -f {workspace} {work_dir}/WORKSPACE
