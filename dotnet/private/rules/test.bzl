@@ -15,15 +15,12 @@ LAUNCHERPATH="{launch}"
 EXEBASENAME="{exebasename}"
 
 DIR=$TEST_SRCDIR
-
 MANIFEST=$DIR/MANIFEST
-
 PREPARE=`/usr/bin/awk '{{if ($1 ~ "{prepare}") {{print $2;exit}} }}' $MANIFEST`
-
-export MONO_PATH=$DIR
-
 $PREPARE $LAUNCHERPATH
-$DIR/mono $DIR/{testlauncher} $DIR/$EXEBASENAME "$@"
+
+MONOPATH=`/usr/bin/readlink -f $DIR/mono`
+"$MONOPATH" $DIR/{testlauncher} $DIR/$EXEBASENAME "$@"
 """
 
 def _dotnet_nunit_test(ctx):
@@ -61,7 +58,7 @@ def _dotnet_nunit_test(ctx):
   )
   ctx.actions.write(output = launcher, content = content, is_executable=True)
 
-  runfiles = ctx.runfiles(files = [launcher]  + ctx.attr._manifest_prep.files.to_list() + [dotnet.runner], transitive_files=library.runfiles)
+  runfiles = ctx.runfiles(files = [launcher]  + ctx.attr._manifest_prep.files.to_list() + [dotnet.runner] + ctx.attr._native_deps.files.to_list(), transitive_files=library.runfiles)
   test_launcher_runfiles = ctx.runfiles(files=[ctx.attr.testlauncher[DotnetLibrary].result], transitive_files = ctx.attr.testlauncher[DotnetLibrary].runfiles)
   runfiles = runfiles.merge(test_launcher_runfiles)
 
@@ -86,6 +83,7 @@ dotnet_nunit_test = rule(
         "data": attr.label_list(),
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
+        "_native_deps": attr.label(default = Label("@dotnet_sdk//:native_deps")),
         "testlauncher": attr.label(default = "@nunit2//:nunit-console-runner-exe", providers=[DotnetLibrary])
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],

@@ -47,7 +47,11 @@ RULES_DOTNET_OUTPUT={output}
 mkdir -p {work_dir}
 mkdir -p {cache_dir}
 # Link files according to manifest
-../../{test_prep}
+DIR=$TEST_SRCDIR
+MANIFEST=$DIR/MANIFEST
+PREPARE=`/usr/bin/awk '{{if ($1 ~ "{test_prep}") {{print $2;exit}} }}' $MANIFEST`
+$PREPARE .
+
 cp -f {workspace} {work_dir}/WORKSPACE
 cp -f {build} {work_dir}/BUILD.bazel
 {copy_srcs}
@@ -221,7 +225,7 @@ def _bazel_test_script_impl(ctx):
   )
   ctx.actions.write(output=script_file, is_executable=True, content=script_content)
 
-  runfiles = depset(direct = [workspace_file, build_file], transitive = [f.files for f in ctx.attr.srcs])
+  runfiles = depset(direct = [workspace_file, build_file] + ctx.attr._manifest_prep.files.to_list(), transitive = [f.files for f in ctx.attr.srcs])
   return struct(
       files = depset([script_file]),
       runfiles = ctx.runfiles(runfiles.to_list(), collect_data=True)

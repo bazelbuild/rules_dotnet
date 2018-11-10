@@ -50,7 +50,7 @@ def _dotnet_binary_impl(ctx):
       exebasename=executable.result.basename
   )
   ctx.actions.write(output = launcher, content = content, is_executable=True)  
-  runfiles = ctx.runfiles(files = [launcher]  + ctx.attr._manifest_prep.files.to_list() + [dotnet.runner], transitive_files=executable.runfiles)
+  runfiles = ctx.runfiles(files = [launcher]  + ctx.attr._manifest_prep.files.to_list() + [dotnet.runner] + ctx.attr._native_deps.files.to_list(), transitive_files=executable.runfiles)
 
   return [
       executable,
@@ -73,6 +73,7 @@ dotnet_binary = rule(
         "data": attr.label_list(),
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
+        "_native_deps": attr.label(default = Label("@dotnet_sdk//:native_deps")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
     executable = True,
