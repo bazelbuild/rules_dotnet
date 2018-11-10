@@ -21,8 +21,10 @@ MANIFEST=$DIR/MANIFEST
 PREPARE=`awk '{{if ($1 ~ "{prepare}") {{print $2;exit}} }}' $MANIFEST`
 $PREPARE $LAUNCHERPATH
 
-MONOPATH=`readlink -f $DIR/mono`
-"$MONOPATH" $DIR/{testlauncher} $DIR/$EXEBASENAME "$@"
+MONOPRG=`readlink $DIR/mono`
+MONO_PATH=$DIR
+
+"$MONOPRG" $DIR/{testlauncher} $DIR/$EXEBASENAME "$@"
 """
 
 def _dotnet_nunit_test(ctx):

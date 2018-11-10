@@ -4,7 +4,6 @@ jobs:
     name: 'Default'
   steps:
     - script: |
-        choco upgrade -y bazel
         bazel version
         dotnet --info
         choco --version
