@@ -85,8 +85,8 @@ static void CreateLinkIfNeeded(const char* target, const char *toCreate)
         return;
 
     /* Fall back to symbolic linking */
-    retry:
     flag = SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE;
+    retry:
     result = CreateSymbolicLinkA(toCreate, target, flag);
     if (!result) {
         error = GetLastError();
