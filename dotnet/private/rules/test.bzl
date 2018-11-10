@@ -21,9 +21,14 @@ MANIFEST=$DIR/MANIFEST
 PREPARE=`awk '{{if ($1 ~ "{prepare}") {{print $2;exit}} }}' $MANIFEST`
 $PREPARE $LAUNCHERPATH
 
-MONOPRG=`readlink $DIR/mono`
-MONO_PATH=$DIR
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    READLINK=greadlink
+else
+    READLINK=readlink
+fi
 
+MONOPRG=`$READLINK -f $DIR/mono`
+echo "Using $MONOPRG"
 "$MONOPRG" $DIR/{testlauncher} $DIR/$EXEBASENAME "$@"
 """
 

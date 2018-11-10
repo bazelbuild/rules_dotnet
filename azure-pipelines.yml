@@ -97,7 +97,7 @@ jobs:
       vmImage: macOS-10.13
   steps:
     - script: |
-        brew install bazel
+        brew install bazel coreutils
       displayName: 'Install dependencies'
     - script: |
         bazel version

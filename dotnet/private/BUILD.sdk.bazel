@@ -39,5 +39,5 @@ filegroup(
   name = "native_deps",
   srcs = glob(["host/**/*"]) + 
         glob(["shared/**/hostpolicy*"]) + glob(["shared/**/api-ms-*"]) + glob(["shared/**/*.so"]) + 
-        glob(["shared/**/coreclr.dll"]) + glob(["shared/**/clrjit.dll"])+ glob(["shared/**/*.dylib"]) + glob(["**/*-sgen.dll"]),
+        glob(["shared/**/coreclr.dll"]) + glob(["shared/**/clrjit.dll"])+ glob(["shared/**/*.dylib"]),
 )
