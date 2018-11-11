@@ -10,52 +10,32 @@ jobs:
       displayName: 'Show env'
     - script: |
         bazel ^
-        --batch ^
-        --host_jvm_args=-Xmx500m ^
-        --host_jvm_args=-Xms500m ^
         build ^
         -s ^
-        --local_resources=400,1,1.0 ^
         //...
       displayName: 'Build all'
     - script: |
         bazel ^
-        --batch ^
-        --host_jvm_args=-Xmx500m ^
-        --host_jvm_args=-Xms500m ^
         run ^
         -s ^
-        --local_resources=400,1,1.0 ^
         //tests/examples/example_binary:hello
       displayName: 'Run sample hello'
     - script: |
         bazel ^
-        --batch ^
-        --host_jvm_args=-Xmx500m ^
-        --host_jvm_args=-Xms500m ^
         run ^
         -s ^
-        --local_resources=400,1,1.0 ^
         //tests/examples/example_binary:hello-core
       displayName: 'Run sample core hello'
     - script: |
         bazel ^
-        --batch ^
-        --host_jvm_args=-Xmx500m ^
-        --host_jvm_args=-Xms500m ^
         run ^
         -s ^
-        --local_resources=400,1,1.0 ^
         //tests/examples/example_binary:hello-net
       displayName: 'Run sample .net hello'
     - script: |
         bazel ^
-        --batch ^
-        --host_jvm_args=-Xmx500m ^
-        --host_jvm_args=-Xms500m ^
         test ^
         -s ^
-        --local_resources=400,1,1.0 ^
         --test_summary=detailed ^
         --test_output=all ^
         //...
