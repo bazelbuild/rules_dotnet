@@ -64,7 +64,7 @@ CORE_SDK_REPOSITORIES = {
 NET_ROSLYN_REPOSITORIES = {
     "2.8.2": {
         "net_windows_amd64":      ("https://www.nuget.org/api/v2/package/Microsoft.Net.Compilers/2.8.2/", 
-                                "118bbad08ceff7ce174254d4a2fdf29bc21a96389b2f0a8c1d140db58f1bd395"),
+                                "48d0d13d8667e16ce150fbb7d804d12d9b9bca8bba9003eaccf1f105cbd427f6"),
     },
 }
 
