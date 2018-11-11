@@ -36,7 +36,19 @@ filegroup(
 
 # _bazel_test_script_template is the template for the bazel invocation script
 _bazel_test_script_template = """
-set -u
+set -euo pipefail
+echo "Executing $0"
+
+export PATH=/usr/bin:/bin:$PATH
+
+if [[ -f "$0.runfiles/MANIFEST" ]]; then
+export RUNFILES_MANIFEST_FILE="$0.runfiles/MANIFEST"
+elif [[ -f "$0.runfiles_manifest" ]]; then
+export RUNFILES_MANIFEST_FILE="$0.runfiles_manifest"
+fi
+
+echo "Using for MANIFEST $RUNFILES_MANIFEST_FILE"
+DIR=$(dirname $RUNFILES_MANIFEST_FILE)
 
 echo pwd is `pwd`
 echo command is {command}
@@ -47,14 +59,14 @@ RULES_DOTNET_OUTPUT={output}
 mkdir -p {work_dir}
 mkdir -p {cache_dir}
 # Link files according to manifest
-DIR=$TEST_SRCDIR
-MANIFEST=$DIR/MANIFEST
-PATH=/usr/bin:/bin:$PATH
-PREPARE=`awk '{{if ($1 ~ "{test_prep}") {{print $2;exit}} }}' $MANIFEST`
-$PREPARE .
 
-cp -f {workspace} {work_dir}/WORKSPACE
-cp -f {build} {work_dir}/BUILD.bazel
+PREPARE=`awk '{{if ($1 ~ "{test_prep}") {{print $2;exit}} }}' $RUNFILES_MANIFEST_FILE`
+$PREPARE $RUNFILES_MANIFEST_FILE
+
+echo "dir $DIR"
+echo "dw $DIR/{workspace}"
+cp -f $DIR/{workspace} {work_dir}/WORKSPACE
+cp -f $DIR/{build} {work_dir}/BUILD.bazel
 {copy_srcs}
 cd {work_dir}
 
@@ -204,7 +216,7 @@ def _bazel_test_script_impl(ctx):
   copy_srcs = ""
   for s in ctx.attr.srcs:
     p = s.files.to_list()[0]
-    copy_srcs += "cp -f {} {}/{};".format(p.short_path, ctx.attr._settings.scratch_dir + "/" + ctx.attr.config, p.basename)
+    copy_srcs += "cp -f $DIR/{} {}/{};".format(p.basename, ctx.attr._settings.scratch_dir + "/" + ctx.attr.config, p.basename)
 
 
   script_content = _bazel_test_script_template.format(
@@ -216,8 +228,8 @@ def _bazel_test_script_impl(ctx):
       target = " ".join(targets),
       logs = " ".join(logs),
       check = ctx.attr.check,
-      workspace = workspace_file.short_path,
-      build = build_file.short_path,
+      workspace = workspace_file.basename,
+      build = build_file.basename,
       output = output,
       bazel = ctx.attr._settings.bazel,
       work_dir = ctx.attr._settings.scratch_dir + "/" + ctx.attr.config,

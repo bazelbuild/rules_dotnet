@@ -11,17 +11,28 @@ load(
 
 
 _TEMPLATE = """
+set -euo pipefail
+echo "Executing $0"
+
+export PATH=/usr/bin:/bin:$PATH
+
+if [[ -f "$0.runfiles/MANIFEST" ]]; then
+export RUNFILES_MANIFEST_FILE="$0.runfiles/MANIFEST"
+elif [[ -f "$0.runfiles_manifest" ]]; then
+export RUNFILES_MANIFEST_FILE="$0.runfiles_manifest"
+fi
+
+echo "Using for MANIFEST $RUNFILES_MANIFEST_FILE"
+DIR=$(dirname $RUNFILES_MANIFEST_FILE)
+
 PREPARELINKPRG="{prepare}"
 LAUNCHERPATH="{launch}"
 EXEBASENAME="{exebasename}"
 
-DIR=$0.runfiles
-MANIFEST=$DIR/MANIFEST
+PREPARE=`awk '{{if ($1 ~ "{prepare}") {{print $2;exit}} }}' $RUNFILES_MANIFEST_FILE`
+$PREPARE $RUNFILES_MANIFEST_FILE
 
-PATH=/usr/bin:/bin:$PATH
-PREPARE=`awk '{{if ($1 ~ "{prepare}") {{print $2;exit}} }}' $MANIFEST`
-
-$PREPARE $LAUNCHERPATH
+$PREPARE $RUNFILES_MANIFEST_FILE
 $DIR/$EXEBASENAME "$@"
 """
 

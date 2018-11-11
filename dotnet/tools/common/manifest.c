@@ -152,7 +152,8 @@ void LinkFiles(const char *manifestDir) {
 typedef struct _stat Stat;
 static void do_mkdir(const char *path)
 {
-    Stat            st;
+    Stat  st;
+    DWORD error;
 
     if (access(path, F_OK) == 0) {
         return;
@@ -160,7 +161,10 @@ static void do_mkdir(const char *path)
 
     /* Directory does not exist. EEXIST for race condition */
     if (CreateDirectoryA(path, NULL) == 0) {
-        printf("Error %d creating directory for %s\n", GetLastError(), path);
+        error = GetLastError();
+        if (error == ERROR_ALREADY_EXISTS) 
+            return;
+        printf("Error %d creating directory for %s\n", error, path);
         exit(-1);        
     }
 }
@@ -260,6 +264,16 @@ void LinkFilesTree(const char *manifestDir) {
 const char *GetManifestDir() {
 	static char buffer[64*1024];
 	char *p;
+
+	strcpy(buffer, Exe);
+    printf("Checking MANIFEST in %s\n", buffer);
+	if (access(buffer, F_OK)!=-1) {
+		p = strrchr(buffer, '/');
+		*(p+1) = '\0';
+    
+		return buffer;
+	}
+
 	p = getcwd(buffer, sizeof(buffer));
     printf("Checking MANIFEST in %s\n", buffer);
 	if (access("MANIFEST", F_OK)!=-1)
