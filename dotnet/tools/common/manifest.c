@@ -97,6 +97,13 @@ static void CreateLinkIfNeeded(const char* target, const char *toCreate)
         }
         if (error != ERROR_ALREADY_EXISTS) {
             printf("Error %d on linking %s to %s\n", error, toCreate, target);
+            /* For uknown to me reasons, sometimes the link function failes even if long paths are enabled. */
+            if (error==ERROR_PATH_NOT_FOUND && PathFileExistsA(target))
+            {
+                printf("Target file %s does exists. Ignoring error. \n", target);
+                return;
+            }
+
             exit(-1);
         }
     }
