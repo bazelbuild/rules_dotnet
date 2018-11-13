@@ -19,6 +19,8 @@ if [[ -f "$0.runfiles/MANIFEST" ]]; then
 export RUNFILES_MANIFEST_FILE="$0.runfiles/MANIFEST"
 elif [[ -f "$0.runfiles_manifest" ]]; then
 export RUNFILES_MANIFEST_FILE="$0.runfiles_manifest"
+elif [[ -n "$RUNFILES_DIR" ]]; then
+export RUNFILES_MANIFEST_FILE="$RUNFILES_DIR/MANIFEST"
 fi
 
 echo "Using for MANIFEST $RUNFILES_MANIFEST_FILE"

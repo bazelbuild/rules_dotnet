@@ -36,7 +36,6 @@ filegroup(
 
 # _bazel_test_script_template is the template for the bazel invocation script
 _bazel_test_script_template = """
-set -euo pipefail
 echo "Executing $0"
 
 export PATH=/usr/bin:/bin:$PATH
@@ -45,6 +44,8 @@ if [[ -f "$0.runfiles/MANIFEST" ]]; then
 export RUNFILES_MANIFEST_FILE="$0.runfiles/MANIFEST"
 elif [[ -f "$0.runfiles_manifest" ]]; then
 export RUNFILES_MANIFEST_FILE="$0.runfiles_manifest"
+elif [[ -n "$RUNFILES_DIR" ]]; then
+export RUNFILES_MANIFEST_FILE="$RUNFILES_DIR/MANIFEST"
 fi
 
 echo "Using for MANIFEST $RUNFILES_MANIFEST_FILE"
@@ -63,8 +64,6 @@ mkdir -p {cache_dir}
 PREPARE=`awk '{{if ($1 ~ "{test_prep}") {{print $2;exit}} }}' $RUNFILES_MANIFEST_FILE`
 $PREPARE $RUNFILES_MANIFEST_FILE
 
-echo "dir $DIR"
-echo "dw $DIR/{workspace}"
 cp -f $DIR/{workspace} {work_dir}/WORKSPACE
 cp -f $DIR/{build} {work_dir}/BUILD.bazel
 {copy_srcs}
@@ -72,6 +71,8 @@ cd {work_dir}
 
 {bazel} --bazelrc {bazelrc} {command} --config {config} {args} {target} >& bazel-output.txt
 result=$?
+
+echo "Result $result"
 
 function at_exit {{
   echo "bazel exited with status $result"
