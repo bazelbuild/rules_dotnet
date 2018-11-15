@@ -105,6 +105,12 @@ def _binary_impl(ctx):
   dotnet = dotnet_context(ctx)
   name = ctx.label.name
  
+  if dotnet.assembly == None:
+    empty = dotnet.declare_file(dotnet, path="empty.sh")
+    dotnet.actions.write(output = empty, content = "echo assembly generations is not supported on this platform'")
+    library = dotnet.new_library(dotnet = dotnet)
+    return [library, DefaultInfo(executable = empty)]
+
   executable = dotnet.assembly(dotnet,
       name = name,
       srcs = ctx.attr.srcs,
