@@ -23,16 +23,8 @@ load(
 
 load(
     "@io_bazel_rules_dotnet//dotnet/private:rules/binary.bzl", 
-    dotnet_binary = "dotnet_binary"
-)
-
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/binary_core.bzl", 
-    core_binary = "core_binary"
-)
-
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/binary_net.bzl", 
+    dotnet_binary = "dotnet_binary",
+    core_binary = "core_binary",
     net_binary = "net_binary"
 )
 

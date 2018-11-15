@@ -96,12 +96,13 @@ Example
       visibility = ["//visibility:public"],
   )
 
-dotnet_binary
-~~~~~~~~~~~~~
+dotnet_binary, net_binary, core_binary
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This builds an executable from a set of source files.
+This builds an executable from a set of source files (respectively for Mono, .NET and .NET Core).
 You can run the binary with ``bazel run``, or you can
 build it with ``bazel build`` and run it directly.
+
 
 Providers
 ^^^^^^^^^
@@ -145,6 +146,10 @@ Attributes
 | :param:`unsafe`            | :type:`bool`                | :value:`False`                        |
 +----------------------------+-----------------------------+---------------------------------------+
 | If true passes /unsafe flag to the compiler                                                      |
++----------------------------+-----------------------------+---------------------------------------+
+| :param:`data`              | :type:`label_list`          | :value:`None`                         |
++----------------------------+-----------------------------+---------------------------------------+
+| The list of additional files to be included as runfiles for the generated executable             |
 +----------------------------+-----------------------------+---------------------------------------+
 
 Example

@@ -34,3 +34,8 @@ filegroup(
     "tools/**/*",
   ]),
 )
+
+filegroup(
+  name = "native_deps",
+  srcs = [],
+)
