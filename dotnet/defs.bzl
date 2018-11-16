@@ -30,16 +30,8 @@ load(
 
 load(
     "@io_bazel_rules_dotnet//dotnet/private:rules/library.bzl", 
-    dotnet_library = "dotnet_library"
-)
-
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/library_core.bzl", 
-    core_library = "core_library"
-)
-
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/library_net.bzl", 
+    dotnet_library = "dotnet_library",
+    core_library = "core_library",
     net_library = "net_library"
 )
 
