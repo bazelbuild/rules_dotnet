@@ -289,8 +289,8 @@ Example
     )
 
 
-dotnet_import_library
-~~~~~~~~~~~~~~~~~~~~~
+dotnet_import_library, core_import_library, net_import_library
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This imports an external dll and transforms it into DotnetLibrary_ so it can be referenced
 as dependency by other rules. Often used with dotnet_nuget_new_. 

@@ -75,7 +75,9 @@ load(
 
 load(
     "@io_bazel_rules_dotnet//dotnet/private:rules/import.bzl", 
-    dotnet_import_library = "dotnet_import_library"
+    dotnet_import_library = "dotnet_import_library",
+    core_import_library = "core_import_library",
+    net_import_library = "net_import_library",
 )
 
 load(
@@ -84,20 +86,9 @@ load(
 )
 
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/import_net.bzl", 
-    net_import_library = "net_import_library"
-)
-
-load(
     "@io_bazel_rules_dotnet//dotnet/private:rules/import_binary_core.bzl", 
     core_import_binary = "core_import_binary"
 )
-
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/import_core.bzl", 
-    core_import_library = "core_import_library"
-)
-
 
 load(
     "@io_bazel_rules_dotnet//dotnet/private:rules/com_ref.bzl", 
