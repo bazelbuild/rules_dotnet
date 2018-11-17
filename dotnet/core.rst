@@ -29,10 +29,11 @@ The intent is that theses rules are sufficient to match the capabilities of the 
 API
 ---
 
-dotnet_library
-~~~~~~~~~~~~~~
+dotnet_library, core_library, net_library
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This builds a dotnet assembly from a set of source files.
+This builds a dotnet assembly from a set of source files. The rule generates assebly respectively
+for Mono, .NET Core and .NET.
 
 Providers
 ^^^^^^^^^
@@ -76,6 +77,10 @@ Attributes
 | :param:`unsafe`            | :type:`bool`                | :value:`False`                        |
 +----------------------------+-----------------------------+---------------------------------------+
 | If true passes /unsafe flag to the compiler                                                      |
++----------------------------+-----------------------------+---------------------------------------+
+| :param:`data`              | :type:`label_list`          | :value:`None`                         |
++----------------------------+-----------------------------+---------------------------------------+
+| The list of additional files to include in the list of runfiles for compile assembly             |
 +----------------------------+-----------------------------+---------------------------------------+
 
 Example
