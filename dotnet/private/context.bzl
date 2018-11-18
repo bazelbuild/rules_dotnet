@@ -74,6 +74,7 @@ def dotnet_context(ctx, attr=None):
       assembly = toolchain.actions.assembly,
       resx = toolchain.actions.resx,
       com_ref = toolchain.actions.com_ref,
+      stdlib_byname = toolchain.actions.stdlib_byname,
       exe_extension = ext,
       runner = runner,
       mcs = mcs,

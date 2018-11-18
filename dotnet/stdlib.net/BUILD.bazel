@@ -1,6 +1,6 @@
 package(default_visibility = [ "//visibility:public" ])
 
-load("@io_bazel_rules_dotnet//dotnet/private:rules/stdlib_net.bzl", "net_stdlib")
+load("@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl", "net_stdlib")
 
 net_stdlib(name="accessibility.dll")
 net_stdlib(name="custommarshalers.dll")

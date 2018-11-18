@@ -75,6 +75,18 @@ def _get_dotnet_stdlib(context_data):
     return f
   fail("Could not find mscorlib in dotnet_sdk (lib, %s)" % context_data._libVersion)
 
+def _get_dotnet_stdlib_byname(shared, lib, libVersion, name):
+  lname = name.lower()
+  for f in lib.files:
+    basename = paths.basename(f.path)
+    if basename.lower() != lname:
+      continue
+    dirname = paths.dirname(f.path)
+    if dirname.find(libVersion)==-1:
+      continue
+    return f
+  fail("Could not find %s in dotnet_sdk (lib)" % name)
+
 def _dotnet_toolchain_impl(ctx):
   return [platform_common.ToolchainInfo(
       name = ctx.label.name,
@@ -89,7 +101,8 @@ def _dotnet_toolchain_impl(ctx):
       actions = struct(
           assembly = emit_assembly,
           resx = emit_resx,
-          com_ref = None
+          com_ref = None,
+          stdlib_byname = _get_dotnet_stdlib_byname,
       ),
       flags = struct(
           compile = (),

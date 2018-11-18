@@ -4,40 +4,30 @@ load(
 )
 
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:common.bzl",
-    "paths",
+    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "DotnetLibrary",
 )
 
-def _get_dotnet_stdlib_byname(lib, libVersion, name):
-  lname = name.lower()
-  for f in lib.files:
-    basename = paths.basename(f.path)
-    if basename.lower() != lname:
-      continue
-    dirname = paths.dirname(f.path)
-    if dirname.find(libVersion)==-1:
-      continue
-    return f
-  fail("Could not find %s in dotnet_sdk (lib)" % name)
-
-
-# TODO(tomek) we don't need special treatment for mscorlib.dll
-def _dotnet_stdlib_impl(ctx):
-  """dotnet_stdlib_impl emits the assembly from @dotnet_sdk//:lib."""
+def _stdlib_impl(ctx):
   dotnet = dotnet_context(ctx)
   name = ctx.label.name
-  result = _get_dotnet_stdlib_byname(dotnet.lib, dotnet.libVersion, name)
+  result = dotnet.stdlib_byname(name = name, shared = dotnet.shared, lib = dotnet.lib, libVersion = dotnet.libVersion)
 
-  runfiles = depset(direct = [result])
+  deps = ctx.attr.deps
+  transitive = depset(direct = deps, transitive = [a[DotnetLibrary].transitive for a in deps])
+  extra = depset(direct = [result], transitive = [t.files for t in ctx.attr.data])
+  direct = extra.to_list()
+    
+  runfiles = depset(direct = direct, transitive = [a[DotnetLibrary].runfiles for a in deps])
 
   library = dotnet.new_library(
     dotnet = dotnet, 
     name = name, 
-    deps = None, 
-    transitive = depset([]),
+    deps = deps, 
+    transitive = transitive,
     runfiles = runfiles,
     result = result)
- 
+
   return [
       library,
       DefaultInfo(
@@ -45,12 +35,38 @@ def _dotnet_stdlib_impl(ctx):
           runfiles = ctx.runfiles(files = [], transitive_files = runfiles),
       ),
   ]
+
   
 dotnet_stdlib = rule(
-    _dotnet_stdlib_impl,
+    _stdlib_impl,
     attrs = {
+        "deps": attr.label_list(providers=[DotnetLibrary]),        
+        "data": attr.label_list(allow_files = True),        
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data"))
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
     executable = False,
 )
+
+core_stdlib = rule(
+    _stdlib_impl,
+    attrs = {
+        "deps": attr.label_list(providers=[DotnetLibrary]),        
+        "data": attr.label_list(allow_files = True),        
+        "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
+    },
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
+    executable = False,
+)
+
+net_stdlib = rule(
+    _stdlib_impl,
+    attrs = {
+        "deps": attr.label_list(providers=[DotnetLibrary]),        
+        "data": attr.label_list(allow_files = True),        
+        "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data"))
+    },
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
+    executable = False,
+)
+

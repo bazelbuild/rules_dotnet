@@ -1,6 +1,6 @@
 package(default_visibility = [ "//visibility:public" ])
 
-load("@io_bazel_rules_dotnet//dotnet/private:rules/stdlib_core.bzl", "core_stdlib")
+load("@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl", "core_stdlib")
 
 core_stdlib(name = "system.private.corelib.dll")
 

@@ -32,7 +32,8 @@ def _net_empty_toolchain_impl(ctx):
       actions = struct(
           assembly = None,
           resx = None,
-          com_ref = None
+          com_ref = None,
+          stdlib_byname = None,
       ),
       flags = struct(
           compile = (),
