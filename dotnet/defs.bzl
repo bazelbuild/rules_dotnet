@@ -48,17 +48,9 @@ load(
 
 load(
     "@io_bazel_rules_dotnet//dotnet/private:rules/test.bzl", 
-    dotnet_nunit_test = "dotnet_nunit_test"
-)
-
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/test_net.bzl", 
-    net_nunit_test = "net_nunit_test"
-)
-
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/test_net3.bzl", 
-    net_nunit3_test = "net_nunit3_test"
+    dotnet_nunit_test = "dotnet_nunit_test",
+    net_nunit_test = "net_nunit_test",
+    net_nunit3_test = "net_nunit3_test",
 )
 
 load(
