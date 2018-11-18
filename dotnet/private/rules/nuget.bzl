@@ -84,6 +84,9 @@ _FUNC = """
     src = "{}",
     deps = [
         {}
+    ],
+    data = [
+        {}
     ]
 )
 
@@ -94,7 +97,11 @@ def _get_importlib(func, name, lib, deps, files):
     depsstr = ""
     for d in deps:
         depsstr += "    \"{}\",\n".format(d)
-    result = _FUNC.format(func, name, lib, depsstr)
+    datastr = ""
+    for f in files:
+        datastr += "    \"{}\",\n".format(f)
+
+    result = _FUNC.format(func, name, lib, depsstr, datastr)
     return result
 
 _TEMPLATE2 = """

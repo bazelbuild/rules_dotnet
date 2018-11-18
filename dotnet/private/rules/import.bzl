@@ -22,7 +22,12 @@ def _import_library_impl(ctx):
   src = ctx.attr.src
   result = src.files.to_list()[0]
 
-  runfiles = depset(direct=[result] + [dotnet.stdlib], transitive=[d[DotnetLibrary].runfiles for d in deps])
+  if ctx.attr.data != None:
+    data = depset(direct=[], transitive = [t.files for t in ctx.attr.data])
+  else:
+    data = depset()
+
+  runfiles = depset(direct=[result] + [dotnet.stdlib], transitive=[d[DotnetLibrary].runfiles for d in deps]+[data])
   transitive = depset(direct=deps, transitive=[a[DotnetLibrary].transitive for a in deps])
 
   library = dotnet.new_library(
@@ -46,6 +51,7 @@ dotnet_import_library = rule(
     attrs = {
         "deps": attr.label_list(providers=[DotnetLibrary]),
         "src": attr.label(allow_files = FileType([".dll", ".exe"]), mandatory=True),        
+        "data": attr.label_list(allow_files = True),        
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
         "_native_deps": attr.label(default = Label("@dotnet_sdk//:native_deps"))
     },
@@ -58,6 +64,7 @@ dotnet_import_binary = rule(
     attrs = {
         "deps": attr.label_list(providers=[DotnetLibrary]),
         "src": attr.label(allow_files = FileType([".dll", ".exe"]), mandatory=True),        
+        "data": attr.label_list(allow_files = True),        
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
         "_native_deps": attr.label(default = Label("@dotnet_sdk//:native_deps"))
     },
@@ -96,6 +103,7 @@ net_import_library = rule(
     attrs = {
         "deps": attr.label_list(providers=[DotnetLibrary]),
         "src": attr.label(allow_files = FileType([".dll", ".exe"]), mandatory=True),        
+        "data": attr.label_list(allow_files = True),        
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
         "_native_deps": attr.label(default = Label("@net_sdk//:native_deps"))
     },
@@ -108,6 +116,7 @@ net_import_binary = rule(
     attrs = {
         "deps": attr.label_list(providers=[DotnetLibrary]),
         "src": attr.label(allow_files = FileType([".dll", ".exe"]), mandatory=True),        
+        "data": attr.label_list(allow_files = True),        
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
         "_native_deps": attr.label(default = Label("@net_sdk//:native_deps"))
     },

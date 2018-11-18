@@ -1110,6 +1110,7 @@ core_stdlib(name = "system.runtime.compilerservices.visualc.dll", deps = [
 core_stdlib(name = "system.runtime.dll", deps = [
       ":system.private.corelib.dll",
       ":system.private.uri.dll",
+      ":system.runtime.loader.dll",
     ]
 )
 core_stdlib(name = "system.runtime.extensions.dll", deps = [
