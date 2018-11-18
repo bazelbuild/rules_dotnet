@@ -37,11 +37,7 @@ load(
 
 load(
     "@io_bazel_rules_dotnet//dotnet/private:rules/resx.bzl", 
-    dotnet_resx = "dotnet_resx"
-)
-
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/resx_net.bzl", 
+    dotnet_resx = "dotnet_resx",
     net_resx = "net_resx"
 )
 
