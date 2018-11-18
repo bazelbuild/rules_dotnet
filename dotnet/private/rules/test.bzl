@@ -139,7 +139,13 @@ fi
 DOTNETPRG=`$READLINK -f $DIR/dotnet`
 echo "Using $DOTNETPRG and $XML_OUTPUT_FILE"
 
-"$DOTNETPRG" $DIR/{testlauncher} $DIR/$EXEBASENAME -nunit `cygpath -w $XML_OUTPUT_FILE` "$@"
+if [[ "$OS" == "Windows"* ]]; then
+    OUT=`cygpath -w $XML_OUTPUT_FILE`
+else
+    OUT=$XML_OUTPUT_FILE
+fi
+
+"$DOTNETPRG" $DIR/{testlauncher} $DIR/$EXEBASENAME -nunit $OUT "$@"
 result=$?
 exit $result
 """
