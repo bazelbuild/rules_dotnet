@@ -9,8 +9,13 @@ load(
 )
 
 def _stdlib_impl(ctx):
-  dotnet = dotnet_context(ctx)
+  dotnet = dotnet_context(ctx) 
   name = ctx.label.name
+
+  if dotnet.stdlib_byname == None:
+    library = dotnet.new_library(dotnet = dotnet)
+    return [library]
+
   result = dotnet.stdlib_byname(name = name, shared = dotnet.shared, lib = dotnet.lib, libVersion = dotnet.libVersion)
 
   deps = ctx.attr.deps
