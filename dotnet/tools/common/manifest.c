@@ -77,6 +77,7 @@ static void CreateLinkIfNeeded(const char* target, const char *toCreate)
     }
 
     /* Try hard linking first (except mono.exe) */
+    /*
     if (strstr(toCreate, "mono.exe")==NULL) 
     {
         result = CreateHardLink(toCreate, target, NULL);
@@ -86,7 +87,8 @@ static void CreateLinkIfNeeded(const char* target, const char *toCreate)
         if (error == ERROR_ALREADY_EXISTS) 
             return;
     }
-
+    */
+   
     /* Fall back to symbolic linking */
     flag = SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE;
     retry:

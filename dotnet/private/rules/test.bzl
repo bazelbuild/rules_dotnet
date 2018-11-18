@@ -10,7 +10,6 @@ load(
 )
 
 _TEMPLATE_MONO = """
-set -euo pipefail
 echo "Executing $0"
 
 export PATH=/usr/bin:/bin:$PATH
@@ -40,12 +39,13 @@ else
 fi
 
 MONOPRG=`$READLINK -f $DIR/mono`
-echo "Using $MONOPRG"
-"$MONOPRG" $DIR/{testlauncher} $DIR/$EXEBASENAME "$@"
+echo "Using $MONOPRG and $XML_OUTPUT_FILE"
+"$MONOPRG" $DIR/{testlauncher} -xml=$XML_OUTPUT_FILE $DIR/$EXEBASENAME "$@"
+result=$?
+exit $result
 """
 
-_TEMPLATE_NET = """
-set -euo pipefail
+_TEMPLATE_NET2 = """
 echo "Executing $0"
 
 export PATH=/usr/bin:/bin:$PATH
@@ -70,7 +70,39 @@ PREPARE=`awk '{{if ($1 ~ "{prepare}") {{print $2;exit}} }}' $RUNFILES_MANIFEST_F
 
 $PREPARE $RUNFILES_MANIFEST_FILE
 
-$DIR/{testlauncher} $DIR/$EXEBASENAME "$@"
+$DIR/{testlauncher} --result=`cygpath -w $XML_OUTPUT_FILE` $DIR/$EXEBASENAME "$@"
+result=$?
+exit $result
+"""
+
+_TEMPLATE_NET3 = """
+echo "Executing $0"
+
+export PATH=/usr/bin:/bin:$PATH
+
+if [[ -f "$0.runfiles/MANIFEST" ]]; then
+export RUNFILES_MANIFEST_FILE="$0.runfiles/MANIFEST"
+elif [[ -f "$0.runfiles_manifest" ]]; then
+export RUNFILES_MANIFEST_FILE="$0.runfiles_manifest"
+elif [[ -n "$RUNFILES_DIR" ]]; then
+export RUNFILES_MANIFEST_FILE="$RUNFILES_DIR/MANIFEST"
+fi
+
+echo "Using for MANIFEST $RUNFILES_MANIFEST_FILE"
+DIR=$(dirname $RUNFILES_MANIFEST_FILE)
+
+PREPARELINKPRG="{prepare}"
+LAUNCHERPATH="{launch}"
+EXEBASENAME="{exebasename}"
+
+PATH=/usr/bin:/bin:$PATH
+PREPARE=`awk '{{if ($1 ~ "{prepare}") {{print $2;exit}} }}' $RUNFILES_MANIFEST_FILE`
+
+$PREPARE $RUNFILES_MANIFEST_FILE
+
+$DIR/{testlauncher} --result=`cygpath -w $XML_OUTPUT_FILE`\;transform=`cygpath -w $DIR/{xslt}` $DIR/$EXEBASENAME "$@"
+result=$?
+exit $result
 """
 
 def _unit_test(ctx):
@@ -103,7 +135,8 @@ def _unit_test(ctx):
       prepare=ctx.attr._manifest_prep.files.to_list()[0].basename, 
       launch=launcher.path, 
       exebasename=library.result.basename,
-      testlauncher = testlauncher
+      testlauncher = testlauncher,
+      xslt = ctx.attr._xslt.files.to_list()[0].basename, 
   )
   ctx.actions.write(output = launcher, content = content, is_executable=True)
 
@@ -112,7 +145,7 @@ def _unit_test(ctx):
     files += [launcher]
   if dotnet.runner != None:
     files += [dotnet.runner]
-  files += ctx.attr._manifest_prep.files.to_list() + ctx.attr._native_deps.files.to_list()
+  files += ctx.attr._manifest_prep.files.to_list() + ctx.attr._native_deps.files.to_list() + ctx.attr._xslt.files.to_list()
 
   runfiles = ctx.runfiles(files = files, transitive_files=library.runfiles)
   test_launcher_runfiles = ctx.runfiles(files=[ctx.attr.testlauncher[DotnetLibrary].result], transitive_files = ctx.attr.testlauncher[DotnetLibrary].runfiles)
@@ -142,6 +175,7 @@ dotnet_nunit_test = rule(
         "_native_deps": attr.label(default = Label("@dotnet_sdk//:native_deps")),
         "testlauncher": attr.label(default = "@nunit2//:nunit-console-runner-exe", providers=[DotnetLibrary]),
         "_template": attr.string(default = _TEMPLATE_MONO),
+        "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files=True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
     executable = True,
@@ -162,7 +196,8 @@ net_nunit_test = rule(
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
         "_native_deps": attr.label(default = Label("@net_sdk//:native_deps")),
         "testlauncher": attr.label(default = "@nunit2//:net.nunit-console-runner-exe", providers=[DotnetLibrary]),
-        "_template": attr.string(default = _TEMPLATE_NET),
+        "_template": attr.string(default = _TEMPLATE_NET2),
+        "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files=True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = True,
@@ -183,7 +218,8 @@ net_nunit3_test = rule(
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
         "_native_deps": attr.label(default = Label("@net_sdk//:native_deps")),
         "testlauncher": attr.label(default = "@nunit3_consolerunner//:nunit3.console.exe", providers=[DotnetLibrary]),
-        "_template": attr.string(default = _TEMPLATE_NET),
+        "_template": attr.string(default = _TEMPLATE_NET3),
+        "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files=True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = True,
