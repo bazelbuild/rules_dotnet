@@ -117,12 +117,23 @@ static void CreateLinkIfNeeded(const char* target, const char *toCreate)
 static void CreateLinkIfNeeded(const char* target, const char *toCreate) 
 {
     int result;
+    char *p;
+
     if (access(target, F_OK)==-1) {
         printf("File %s does not exist\n", target);
         exit(-1);			
     }
 
-    result = link(target, toCreate);
+    p = strrchr(toCreate, '/');
+    if (p==NULL) {
+        printf("Error on linking %s to %s. toCreate doesn't contain '/'\n", toCreate, target);
+        exit(-1);
+    }
+
+    if (strcmp(p, "/mono")==0 || strcmp(p, "/dotnet")==0) 
+        result = symlink(target, toCreate);
+    else
+        result = link(target, toCreate);
     if (result!=0) {
         int error = errno;
         if (error == EEXIST)
