@@ -9,7 +9,7 @@ load(
     "DotnetResource",
 )
 
-_TEMPLATE_MONO = """
+_TEMPLATE_NUNIT_MONO = """
 echo "Executing $0"
 
 export PATH=/usr/bin:/bin:$PATH
@@ -45,7 +45,7 @@ result=$?
 exit $result
 """
 
-_TEMPLATE_NET2 = """
+_TEMPLATE_NUNIT_NET = """
 echo "Executing $0"
 
 export PATH=/usr/bin:/bin:$PATH
@@ -75,7 +75,7 @@ result=$?
 exit $result
 """
 
-_TEMPLATE_NET3 = """
+_TEMPLATE_NUNIT3_NET = """
 echo "Executing $0"
 
 export PATH=/usr/bin:/bin:$PATH
@@ -105,7 +105,7 @@ result=$?
 exit $result
 """
 
-_TEMPLATE_CORE = """
+_TEMPLATE_XUNIT_CORE = """
 echo "Executing $0"
 
 export PATH=/usr/bin:/bin:$PATH
@@ -145,7 +145,45 @@ else
     OUT=$XML_OUTPUT_FILE
 fi
 
-"$DOTNETPRG" $DIR/{testlauncher} $DIR/$EXEBASENAME -nunit $OUT "$@"
+"$DOTNETPRG" $DIR/{testlauncher} $DIR/$EXEBASENAME -junit $OUT "$@"
+result=$?
+exit $result
+"""
+
+_TEMPLATE_XUNIT_NET = """
+echo "Executing $0"
+
+export PATH=/usr/bin:/bin:$PATH
+
+if [[ -f "$0.runfiles/MANIFEST" ]]; then
+export RUNFILES_MANIFEST_FILE="$0.runfiles/MANIFEST"
+elif [[ -f "$0.runfiles_manifest" ]]; then
+export RUNFILES_MANIFEST_FILE="$0.runfiles_manifest"
+elif [[ -n "$RUNFILES_DIR" ]]; then
+export RUNFILES_MANIFEST_FILE="$RUNFILES_DIR/MANIFEST"
+fi
+
+echo "Using for MANIFEST $RUNFILES_MANIFEST_FILE"
+DIR=$(dirname $RUNFILES_MANIFEST_FILE)
+
+PREPARELINKPRG="{prepare}"
+LAUNCHERPATH="{launch}"
+EXEBASENAME="{exebasename}"
+
+PATH=/usr/bin:/bin:$PATH
+PREPARE=`awk '{{if ($1 ~ "{prepare}") {{print $2;exit}} }}' $RUNFILES_MANIFEST_FILE`
+
+$PREPARE $RUNFILES_MANIFEST_FILE
+
+echo "Using $XML_OUTPUT_FILE"
+
+if [[ "$OS" == "Windows"* ]]; then
+    OUT=`cygpath -w $XML_OUTPUT_FILE`
+else
+    OUT=$XML_OUTPUT_FILE
+fi
+
+$DIR/{testlauncher} $DIR/$EXEBASENAME -junit $OUT "$@"
 result=$?
 exit $result
 """
@@ -219,7 +257,7 @@ dotnet_nunit_test = rule(
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
         "_native_deps": attr.label(default = Label("@dotnet_sdk//:native_deps")),
         "testlauncher": attr.label(default = "@nunit2//:nunit-console-runner-exe", providers=[DotnetLibrary]),
-        "_template": attr.string(default = _TEMPLATE_MONO),
+        "_template": attr.string(default = _TEMPLATE_NUNIT_MONO),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files=True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
@@ -241,7 +279,7 @@ net_nunit_test = rule(
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
         "_native_deps": attr.label(default = Label("@net_sdk//:native_deps")),
         "testlauncher": attr.label(default = "@nunit2//:net.nunit-console-runner-exe", providers=[DotnetLibrary]),
-        "_template": attr.string(default = _TEMPLATE_NET2),
+        "_template": attr.string(default = _TEMPLATE_NUNIT_NET),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files=True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
@@ -263,7 +301,7 @@ net_nunit3_test = rule(
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
         "_native_deps": attr.label(default = Label("@net_sdk//:native_deps")),
         "testlauncher": attr.label(default = "@nunit3_consolerunner//:nunit3.console.exe", providers=[DotnetLibrary]),
-        "_template": attr.string(default = _TEMPLATE_NET3),
+        "_template": attr.string(default = _TEMPLATE_NUNIT3_NET),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files=True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
@@ -285,10 +323,32 @@ core_xunit_test = rule(
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
         "_native_deps": attr.label(default = Label("@core_sdk//:native_deps")),
         "testlauncher": attr.label(default = "@xunit.runner.console//:core_tool", providers=[DotnetLibrary]),
-        "_template": attr.string(default = _TEMPLATE_CORE),
+        "_template": attr.string(default = _TEMPLATE_XUNIT_CORE),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files=True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
+    executable = True,
+    test = True,
+)
+
+net_xunit_test = rule(
+    _unit_test,
+    attrs = {
+        "deps": attr.label_list(providers=[DotnetLibrary]),
+        "resources": attr.label_list(providers=[DotnetResource]),
+        "srcs": attr.label_list(allow_files = FileType([".cs"])),        
+        "out": attr.string(),
+        "defines": attr.string_list(),
+        "unsafe": attr.bool(default = False),
+        "data": attr.label_list(),
+        "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
+        "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
+        "_native_deps": attr.label(default = Label("@net_sdk//:native_deps")),
+        "testlauncher": attr.label(default = "@xunit.runner.console//:net_tool", providers=[DotnetLibrary]),
+        "_template": attr.string(default = _TEMPLATE_XUNIT_NET),
+        "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files=True),
+    },
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = True,
     test = True,
 )
