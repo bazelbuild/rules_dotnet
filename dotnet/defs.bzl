@@ -53,6 +53,7 @@ load(
     net_nunit3_test = "net_nunit3_test",
     core_xunit_test = "core_xunit_test",
     net_xunit_test = "net_xunit_test",
+    dotnet_xunit_test = "dotnet_xunit_test",
 )
 
 load(

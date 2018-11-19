@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_xunit_test", "net_xunit_test")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_xunit_test", "net_xunit_test", "dotnet_xunit_test")
 
 core_xunit_test(
     name = "example_xunit",
@@ -23,6 +23,20 @@ net_xunit_test(
         "@xunit.extensibility.core//:net",
         "@xunit.assert//:net",
         "@xunit.extensibility.execution//:net",
+    ],
+    size = "small",
+)
+
+net_xunit_test(
+    name = "mono.example_xunit",
+    srcs = [
+        "MyTest.cs",
+    ],
+    deps = [
+        "@io_bazel_rules_dotnet//dotnet/stdlib:system.runtime.dll",
+        "@xunit.extensibility.core//:mono",
+        "@xunit.assert//:mono",
+        "@xunit.extensibility.execution//:mono",
     ],
     size = "small",
 )
