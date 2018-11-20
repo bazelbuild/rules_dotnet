@@ -121,6 +121,7 @@ def _binary_impl(ctx):
       unsafe = ctx.attr.unsafe,
       data = ctx.attr.data,
       executable = True,
+      keyfile = ctx.attr.keyfile,
   )
 
 
@@ -156,6 +157,7 @@ dotnet_binary = rule(
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
         "data": attr.label_list(),
+        "keyfile": attr.label(allow_files = True),
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
         "_native_deps": attr.label(default = Label("@dotnet_sdk//:native_deps")),
@@ -175,6 +177,7 @@ core_binary = rule(
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
         "data": attr.label_list(allow_files = True),        
+        "keyfile": attr.label(allow_files = True),
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
         "_native_deps": attr.label(default = Label("@core_sdk//:native_deps")),
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
@@ -194,6 +197,7 @@ net_binary = rule(
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
         "data": attr.label_list(),
+        "keyfile": attr.label(allow_files = True),
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
         "_native_deps": attr.label(default = Label("@net_sdk//:native_deps")),
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),

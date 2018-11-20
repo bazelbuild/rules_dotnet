@@ -29,6 +29,7 @@ def _library_impl(ctx):
       defines = ctx.attr.defines,
       unsafe = ctx.attr.unsafe,
       data = ctx.attr.data,
+      keyfile = ctx.attr.keyfile,
       executable = False,
   )
 
@@ -52,6 +53,7 @@ dotnet_library = rule(
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
         "data": attr.label_list(),
+        "keyfile": attr.label(allow_files = True),
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data"))
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
@@ -68,6 +70,7 @@ core_library = rule(
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
         "data": attr.label_list(allow_files = True),        
+        "keyfile": attr.label(allow_files = True),
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data"))
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
@@ -84,6 +87,7 @@ net_library = rule(
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
         "data": attr.label_list(allow_files = True),        
+        "keyfile": attr.label(allow_files = True),
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data"))
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],

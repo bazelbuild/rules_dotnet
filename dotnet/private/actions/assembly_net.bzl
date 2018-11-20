@@ -17,7 +17,7 @@ def _map_dep(deps):
 def _map_resource(resources):
   return [d[DotnetResource].result.path + "," + d[DotnetResource].identifier for d in resources]
 
-def _make_runner_arglist(dotnet, deps, resources, output, pdb, executable, defines, unsafe):
+def _make_runner_arglist(dotnet, deps, resources, output, pdb, executable, defines, unsafe, keyfile):
   args = dotnet.actions.args()
 
   # /out:<file>
@@ -62,6 +62,9 @@ def _make_runner_arglist(dotnet, deps, resources, output, pdb, executable, defin
   if unsafe:
     args.add("/unsafe")
 
+  if keyfile:
+    args.add("-keyfile:" + keyfile.files.to_list()[0].path)
+
   # /debug
   #debug = ctx.var.get("BINMODE", "") == "-dbg"
   #if debug:
@@ -94,7 +97,8 @@ def emit_assembly_net(dotnet,
     executable = True,
     defines = None,
     unsafe = False,
-    data = None):
+    data = None,
+    keyfile = None):
   """See dotnet/toolchains.rst#binary for full documentation."""
 
   if name == "" and out == None:
@@ -115,7 +119,7 @@ def emit_assembly_net(dotnet,
   else:
     pdb = None
 
-  runner_args = _make_runner_arglist(dotnet, deps, resources, result, pdb, executable, defines, unsafe)
+  runner_args = _make_runner_arglist(dotnet, deps, resources, result, pdb, executable, defines, unsafe, keyfile)
 
   attr_srcs = [f for t in srcs for f in as_iterable(t.files)]
   runner_args.add(attr_srcs)
