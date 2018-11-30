@@ -415,7 +415,7 @@ dotnet_xunit_test = rule(
         "_template": attr.string(default = _TEMPLATE_XUNIT_MONO),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files=True),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
     executable = True,
     test = True,
 )

@@ -27,7 +27,7 @@ net_xunit_test(
     size = "small",
 )
 
-net_xunit_test(
+dotnet_xunit_test(
     name = "mono.example_xunit",
     srcs = [
         "MyTest.cs",
