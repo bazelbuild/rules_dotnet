@@ -27,7 +27,8 @@ def emit_resx(dotnet,
     name = "",
     src = None,
     identifier = None,
-    out = None):
+    out = None,
+    customresgen = None):
 
   if name == "" and out == None:
     fail("either name or out must be set")

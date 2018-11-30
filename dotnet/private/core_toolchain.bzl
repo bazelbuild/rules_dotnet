@@ -22,7 +22,7 @@ load(
 
 
 load("@io_bazel_rules_dotnet//dotnet/private:actions/assembly_core.bzl", "emit_assembly_core")
-load("@io_bazel_rules_dotnet//dotnet/private:actions/resx.bzl", "emit_resx")
+load("@io_bazel_rules_dotnet//dotnet/private:actions/resx_core.bzl", "emit_resx_core")
 
 def _get_dotnet_runner(context_data, ext):
   for f in context_data._mono_bin.files:
@@ -90,7 +90,7 @@ def _core_toolchain_impl(ctx):
       get_dotnet_stdlib = _get_dotnet_stdlib,
       actions = struct(
           assembly = emit_assembly_core,
-          resx = emit_resx,
+          resx = emit_resx_core,
           com_ref = None,
           stdlib_byname = _get_dotnet_stdlib_byname,
       ),

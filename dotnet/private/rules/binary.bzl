@@ -10,17 +10,19 @@ load(
 )
 
 _TEMPLATE_MONO = """
-set -euo pipefail
+set -eo pipefail
 echo "Executing $0"
 
 export PATH=/usr/bin:/bin:$PATH
 
-if [[ -f "$0.runfiles/MANIFEST" ]]; then
-export RUNFILES_MANIFEST_FILE="$0.runfiles/MANIFEST"
-elif [[ -f "$0.runfiles_manifest" ]]; then
-export RUNFILES_MANIFEST_FILE="$0.runfiles_manifest"
-elif [[ -n "$RUNFILES_DIR" ]]; then
-export RUNFILES_MANIFEST_FILE="$RUNFILES_DIR/MANIFEST"
+if [[ -z "$RUNFILES_MANIFEST_FILE" ]]; then
+    if [[ -f "$0.runfiles/MANIFEST" ]]; then
+    export RUNFILES_MANIFEST_FILE="$0.runfiles/MANIFEST"
+    elif [[ -f "$0.runfiles_manifest" ]]; then
+    export RUNFILES_MANIFEST_FILE="$0.runfiles_manifest"
+    elif [[ -n "$RUNFILES_DIR" ]]; then
+    export RUNFILES_MANIFEST_FILE="$RUNFILES_DIR/MANIFEST"
+    fi
 fi
 
 echo "Using for MANIFEST $RUNFILES_MANIFEST_FILE"
@@ -45,20 +47,22 @@ echo "Using $MONOPRG"
 """
 
 _TEMPLATE_CORE = """
-set -euo pipefail
-echo "Executing $0"
+set -eo pipefail
+echo "Executing $0 args $#"
 
 export PATH=/usr/bin:/bin:$PATH
 
-if [[ -f "$0.runfiles/MANIFEST" ]]; then
-export RUNFILES_MANIFEST_FILE="$0.runfiles/MANIFEST"
-elif [[ -f "$0.runfiles_manifest" ]]; then
-export RUNFILES_MANIFEST_FILE="$0.runfiles_manifest"
-elif [[ -n "$RUNFILES_DIR" ]]; then
-export RUNFILES_MANIFEST_FILE="$RUNFILES_DIR/MANIFEST"
+if [[ -z "$RUNFILES_MANIFEST_FILE" ]]; then
+    if [[ -f "$0.runfiles/MANIFEST" ]]; then
+    export RUNFILES_MANIFEST_FILE="$0.runfiles/MANIFEST"
+    elif [[ -f "$0.runfiles_manifest" ]]; then
+    export RUNFILES_MANIFEST_FILE="$0.runfiles_manifest"
+    elif [[ -n "$RUNFILES_DIR" ]]; then
+    export RUNFILES_MANIFEST_FILE="$RUNFILES_DIR/MANIFEST"
+    fi
 fi
 
-echo "Using for MANIFEST $RUNFILES_MANIFEST_FILE"
+echo "Using for MANIFEST $RUNFILES_MANIFEST_FILE in $PWD"
 DIR=$(dirname $RUNFILES_MANIFEST_FILE)
 
 PREPARELINKPRG="{prepare}"
@@ -72,17 +76,19 @@ $DIR/dotnet $DIR/$EXEBASENAME "$@"
 """
 
 _TEMPLATE_NET = """
-set -euo pipefail
+set -eo pipefail
 echo "Executing $0"
 
 export PATH=/usr/bin:/bin:$PATH
 
-if [[ -f "$0.runfiles/MANIFEST" ]]; then
-export RUNFILES_MANIFEST_FILE="$0.runfiles/MANIFEST"
-elif [[ -f "$0.runfiles_manifest" ]]; then
-export RUNFILES_MANIFEST_FILE="$0.runfiles_manifest"
-elif [[ -n "$RUNFILES_DIR" ]]; then
-export RUNFILES_MANIFEST_FILE="$RUNFILES_DIR/MANIFEST"
+if [[ -z "$RUNFILES_MANIFEST_FILE" ]]; then
+    if [[ -f "$0.runfiles/MANIFEST" ]]; then
+    export RUNFILES_MANIFEST_FILE="$0.runfiles/MANIFEST"
+    elif [[ -f "$0.runfiles_manifest" ]]; then
+    export RUNFILES_MANIFEST_FILE="$0.runfiles_manifest"
+    elif [[ -n "$RUNFILES_DIR" ]]; then
+    export RUNFILES_MANIFEST_FILE="$RUNFILES_DIR/MANIFEST"
+    fi
 fi
 
 echo "Using for MANIFEST $RUNFILES_MANIFEST_FILE"

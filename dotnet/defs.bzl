@@ -38,7 +38,8 @@ load(
 load(
     "@io_bazel_rules_dotnet//dotnet/private:rules/resx.bzl", 
     dotnet_resx = "dotnet_resx",
-    net_resx = "net_resx"
+    net_resx = "net_resx",
+    core_resx = "core_resx",
 )
 
 load(

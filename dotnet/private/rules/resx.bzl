@@ -21,6 +21,7 @@ def _resx_impl(ctx):
       src = ctx.attr.src,
       identifier = ctx.attr.identifier,
       out = ctx.attr.out,
+      customresgen = ctx.attr._simpleresgen,
   )
   return [
       resource,
@@ -36,7 +37,8 @@ net_resx = rule(
         "src": attr.label(allow_files = FileType([".resx"]), mandatory=True),        
         "identifier": attr.string(),
         "out": attr.string(),
-        "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data"))
+        "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
+        "_simpleresgen": attr.label(),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = False,
@@ -48,8 +50,23 @@ dotnet_resx = rule(
         "src": attr.label(allow_files = FileType([".resx"]), mandatory=True),        
         "identifier": attr.string(),
         "out": attr.string(),
-        "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data"))
+        "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
+        "_simpleresgen": attr.label(),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
     executable = False,
 )
+
+core_resx = rule(
+    _resx_impl,
+    attrs = {
+        # source files for this target.
+        "src": attr.label(allow_files = FileType([".resx"]), mandatory=True),        
+        "identifier": attr.string(),
+        "out": attr.string(),
+        "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
+        "_simpleresgen": attr.label(default = Label("@io_bazel_rules_dotnet//tools/simpleresgen:simpleresgen")),
+    },
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
+    executable = False,
+)  

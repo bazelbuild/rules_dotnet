@@ -101,13 +101,13 @@ static void CreateLinkIfNeeded(const char* target, const char *toCreate)
             goto retry;
         }
         if (error != ERROR_ALREADY_EXISTS) {
-            printf("Error %d on linking %s to %s\n", error, toCreate, target);
             /* For uknown to me reasons, sometimes the link function failes even if long paths are enabled. */
             if (error==ERROR_PATH_NOT_FOUND && PathFileExistsA(target))
             {
-                printf("Target file %s does exists. Ignoring error. \n", target);
+                /*printf("Target file %s does exists. Ignoring error. \n", target);*/
                 return;
             }
+            printf("Error %d on linking %s to %s\n", error, toCreate, target);
 
             exit(-1);
         }
@@ -177,13 +177,15 @@ static void do_mkdir(const char *path)
 {
     Stat  st;
     DWORD error;
+    wchar_t buffer[32*1024];
 
     if (access(path, F_OK) == 0) {
         return;
     }
 
+    mbtowc(buffer, path, sizeof(buffer));
     /* Directory does not exist. EEXIST for race condition */
-    if (CreateDirectoryA(path, NULL) == 0) {
+    if (CreateDirectoryW(buffer, NULL) == 0) {
         error = GetLastError();
         if (error == ERROR_ALREADY_EXISTS) 
             return;
