@@ -251,8 +251,8 @@ Test example
     )
 
 
-dotnet_resx
-~~~~~~~~~~~
+dotnet_resx, net_resx, core_resx
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This builds a dotnet .resources file from a single .resx file.
 
