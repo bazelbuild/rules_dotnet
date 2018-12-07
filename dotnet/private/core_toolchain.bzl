@@ -19,85 +19,81 @@ load(
     "@io_bazel_rules_dotnet//dotnet/private:common.bzl",
     "paths",
 )
-
-
 load("@io_bazel_rules_dotnet//dotnet/private:actions/assembly_core.bzl", "emit_assembly_core")
 load("@io_bazel_rules_dotnet//dotnet/private:actions/resx_core.bzl", "emit_resx_core")
 
 def _get_dotnet_runner(context_data, ext):
-  for f in context_data._mono_bin.files:
-    basename = paths.basename(f.path)
-    if basename != "dotnet" + ext:
-      continue
-    return f
-  fail("Could not find dotnet core executable in core_sdk (mono_bin)")
-
+    for f in context_data._mono_bin.files:
+        basename = paths.basename(f.path)
+        if basename != "dotnet" + ext:
+            continue
+        return f
+    fail("Could not find dotnet core executable in core_sdk (mono_bin)")
 
 def _get_dotnet_mcs(context_data):
-  for f in context_data._mcs_bin.files:
-    basename = paths.basename(f.path)
-    if basename != "csc.dll":
-      continue
-    return f
+    for f in context_data._mcs_bin.files:
+        basename = paths.basename(f.path)
+        if basename != "csc.dll":
+            continue
+        return f
 
-  for f in context_data._lib.files:
-    basename = paths.basename(f.path)
-    if basename != "csc.dll":
-      continue
-    return f
-  fail("Could not find csc.dll in core_sdk (mcs_bin, lib)")
+    for f in context_data._lib.files:
+        basename = paths.basename(f.path)
+        if basename != "csc.dll":
+            continue
+        return f
+    fail("Could not find csc.dll in core_sdk (mcs_bin, lib)")
 
 def _get_dotnet_resgen(context_data):
-  return None
+    return None
 
 def _get_dotnet_tlbimp(context_data):
-  return None
+    return None
 
 def _get_dotnet_stdlib(context_data):
-  for f in context_data._shared.files:
-    basename = paths.basename(f.path)
-    if basename != "mscorlib.dll":
-      continue
-    return f
-  fail("Could not find mscorlib in core_sdk (lib, %s)" % context_data._libVersion)
+    for f in context_data._shared.files:
+        basename = paths.basename(f.path)
+        if basename != "mscorlib.dll":
+            continue
+        return f
+    fail("Could not find mscorlib in core_sdk (lib, %s)" % context_data._libVersion)
 
 def _get_dotnet_stdlib_byname(shared, lib, libVersion, name):
-  lname = name.lower()
-  for f in shared.files:
-    basename = paths.basename(f.path)
-    if basename.lower() != lname:
-      continue
-    return f
+    lname = name.lower()
+    for f in shared.files:
+        basename = paths.basename(f.path)
+        if basename.lower() != lname:
+            continue
+        return f
 
-  for f in lib.files:
-    basename = paths.basename(f.path)
-    if basename.lower() != lname:
-      continue
-    return f
-  fail("Could not find %s in core_sdk (shared, lib)" % name)
-
+    for f in lib.files:
+        basename = paths.basename(f.path)
+        if basename.lower() != lname:
+            continue
+        return f
+    fail("Could not find %s in core_sdk (shared, lib)" % name)
 
 def _core_toolchain_impl(ctx):
-  return [platform_common.ToolchainInfo(
-      name = ctx.label.name,
-      default_dotnetimpl = ctx.attr.dotnetimpl,
-      default_dotnetos = ctx.attr.dotnetos,
-      default_dotnetarch = ctx.attr.dotnetarch,
-      get_dotnet_runner = _get_dotnet_runner,
-      get_dotnet_mcs = _get_dotnet_mcs,
-      get_dotnet_resgen = _get_dotnet_resgen,
-      get_dotnet_tlbimp = _get_dotnet_tlbimp,
-      get_dotnet_stdlib = _get_dotnet_stdlib,
-      actions = struct(
-          assembly = emit_assembly_core,
-          resx = emit_resx_core,
-          com_ref = None,
-          stdlib_byname = _get_dotnet_stdlib_byname,
-      ),
-      flags = struct(
-          compile = (),
-      ),
-  )]
+    return [platform_common.ToolchainInfo(
+        name = ctx.label.name,
+        default_dotnetimpl = ctx.attr.dotnetimpl,
+        default_dotnetos = ctx.attr.dotnetos,
+        default_dotnetarch = ctx.attr.dotnetarch,
+        get_dotnet_runner = _get_dotnet_runner,
+        get_dotnet_mcs = _get_dotnet_mcs,
+        get_dotnet_resgen = _get_dotnet_resgen,
+        get_dotnet_tlbimp = _get_dotnet_tlbimp,
+        get_dotnet_stdlib = _get_dotnet_stdlib,
+        actions = struct(
+            assembly = emit_assembly_core,
+            resx = emit_resx_core,
+            com_ref = None,
+            stdlib_byname = _get_dotnet_stdlib_byname,
+        ),
+        flags = struct(
+            compile = (),
+        ),
+    )]
 
 _core_toolchain = rule(
     _core_toolchain_impl,
@@ -109,29 +105,29 @@ _core_toolchain = rule(
     },
 )
 
-def core_toolchain(name, host, constraints=[], **kwargs):
-  """See dotnet/toolchains.rst#core-toolchain for full documentation."""
+def core_toolchain(name, host, constraints = [], **kwargs):
+    """See dotnet/toolchains.rst#core-toolchain for full documentation."""
 
-  elems = host.split("_")
-  impl, os, arch = elems[0], elems[1], elems[2]
-  host_constraints = constraints + [
-    "@io_bazel_rules_dotnet//dotnet/toolchain:" + os,
-    "@io_bazel_rules_dotnet//dotnet/toolchain:" + arch,
-  ]
+    elems = host.split("_")
+    impl, os, arch = elems[0], elems[1], elems[2]
+    host_constraints = constraints + [
+        "@io_bazel_rules_dotnet//dotnet/toolchain:" + os,
+        "@io_bazel_rules_dotnet//dotnet/toolchain:" + arch,
+    ]
 
-  impl_name = name + "-impl"
-  _core_toolchain(
-      name = impl_name,
-      dotnetimpl = impl,
-      dotnetos = os,
-      dotnetarch = arch,
-      tags = ["manual"],
-      visibility = ["//visibility:public"],
-      **kwargs
-  )
-  native.toolchain(
-      name = name,
-      toolchain_type = "@io_bazel_rules_dotnet//dotnet:toolchain_core",
-      exec_compatible_with = host_constraints,
-      toolchain = ":"+impl_name,
-  )
+    impl_name = name + "-impl"
+    _core_toolchain(
+        name = impl_name,
+        dotnetimpl = impl,
+        dotnetos = os,
+        dotnetarch = arch,
+        tags = ["manual"],
+        visibility = ["//visibility:public"],
+        **kwargs
+    )
+    native.toolchain(
+        name = name,
+        toolchain_type = "@io_bazel_rules_dotnet//dotnet:toolchain_core",
+        exec_compatible_with = host_constraints,
+        toolchain = ":" + impl_name,
+    )

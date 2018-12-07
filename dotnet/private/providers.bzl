@@ -1,4 +1,3 @@
-
 DotnetLibrary = provider()
 """
 A represenatation of the dotnet binary.

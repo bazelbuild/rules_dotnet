@@ -6,8 +6,11 @@ load(
 def _vs2017_ref_net_impl(ctx):
     prefix = "vs"
     for vs_type in ["Community", "Professional", "Enterprise"]:
-        vs_ref_path = paths.join("C:/Program Files (x86)/Microsoft Visual Studio/2017", 
-            vs_type, "Common7/IDE/ReferenceAssemblies")
+        vs_ref_path = paths.join(
+            "C:/Program Files (x86)/Microsoft Visual Studio/2017",
+            vs_type,
+            "Common7/IDE/ReferenceAssemblies",
+        )
         if ctx.path(vs_ref_path).exists:
             ctx.symlink(vs_ref_path, prefix)
 
@@ -22,5 +25,5 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "net_import_library")
     ctx.file("BUILD", build_file_content)
 
 vs2017_ref_net = repository_rule(
-    implementation=_vs2017_ref_net_impl,
+    implementation = _vs2017_ref_net_impl,
 )

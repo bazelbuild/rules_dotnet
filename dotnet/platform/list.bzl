@@ -27,30 +27,30 @@ DOTNETIMPL_OS_ARCH = (
 )
 
 def declare_config_settings():
-  for impl in DOTNETIMPL:
-    native.config_setting(
-        name = impl,
-        #constraint_values = ["//dotnet/toolchain:" + impl],
-        values = {
-            "compilation_mode": impl
-        }
-    )
-  for os in DOTNETOS:
-    native.config_setting(
-        name = os,
-        constraint_values = ["//dotnet/toolchain:" + os],
-    )
-  for arch in DOTNETARCH:
-    native.config_setting(
-        name = arch,
-        constraint_values = ["//dotnet/toolchain:" + arch],
-    )
-  for impl, os, arch in DOTNETIMPL_OS_ARCH:
-    native.config_setting(
-        name = impl + "_" + os + "_" + arch,
-        constraint_values = [
-            "//dotnet/toolchain:" + os,
-            "//dotnet/toolchain:" + arch,
-            "//dotnet/toolchain:" + impl,
-        ],
-    )
+    for impl in DOTNETIMPL:
+        native.config_setting(
+            name = impl,
+            #constraint_values = ["//dotnet/toolchain:" + impl],
+            values = {
+                "compilation_mode": impl,
+            },
+        )
+    for os in DOTNETOS:
+        native.config_setting(
+            name = os,
+            constraint_values = ["//dotnet/toolchain:" + os],
+        )
+    for arch in DOTNETARCH:
+        native.config_setting(
+            name = arch,
+            constraint_values = ["//dotnet/toolchain:" + arch],
+        )
+    for impl, os, arch in DOTNETIMPL_OS_ARCH:
+        native.config_setting(
+            name = impl + "_" + os + "_" + arch,
+            constraint_values = [
+                "//dotnet/toolchain:" + os,
+                "//dotnet/toolchain:" + arch,
+                "//dotnet/toolchain:" + impl,
+            ],
+        )

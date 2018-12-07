@@ -17,28 +17,27 @@ rules on other platforms. This way targets specified for incompatible platforms 
 and silently are skupped
 """
 
-
 def _net_empty_toolchain_impl(ctx):
-  return [platform_common.ToolchainInfo(
-      name = ctx.label.name,
-      default_dotnetimpl = ctx.attr.dotnetimpl,
-      default_dotnetos = ctx.attr.dotnetos,
-      default_dotnetarch = ctx.attr.dotnetarch,
-      get_dotnet_runner = None,
-      get_dotnet_mcs = None,
-      get_dotnet_resgen = None,
-      get_dotnet_tlbimp = None,
-      get_dotnet_stdlib = None,
-      actions = struct(
-          assembly = None,
-          resx = None,
-          com_ref = None,
-          stdlib_byname = None,
-      ),
-      flags = struct(
-          compile = (),
-      ),
-  )]
+    return [platform_common.ToolchainInfo(
+        name = ctx.label.name,
+        default_dotnetimpl = ctx.attr.dotnetimpl,
+        default_dotnetos = ctx.attr.dotnetos,
+        default_dotnetarch = ctx.attr.dotnetarch,
+        get_dotnet_runner = None,
+        get_dotnet_mcs = None,
+        get_dotnet_resgen = None,
+        get_dotnet_tlbimp = None,
+        get_dotnet_stdlib = None,
+        actions = struct(
+            assembly = None,
+            resx = None,
+            com_ref = None,
+            stdlib_byname = None,
+        ),
+        flags = struct(
+            compile = (),
+        ),
+    )]
 
 _net_empty_toolchain = rule(
     _net_empty_toolchain_impl,
@@ -50,29 +49,29 @@ _net_empty_toolchain = rule(
     },
 )
 
-def net_empty_toolchain(name, host, constraints=[], **kwargs):
-  """See dotnet/toolchains.rst#net-toolchain for full documentation."""
+def net_empty_toolchain(name, host, constraints = [], **kwargs):
+    """See dotnet/toolchains.rst#net-toolchain for full documentation."""
 
-  elems = host.split("_")
-  impl, os, arch = elems[0], elems[1], elems[2]
-  host_constraints = constraints + [
-    "@io_bazel_rules_dotnet//dotnet/toolchain:" + os,
-    "@io_bazel_rules_dotnet//dotnet/toolchain:" + arch,
-  ]
+    elems = host.split("_")
+    impl, os, arch = elems[0], elems[1], elems[2]
+    host_constraints = constraints + [
+        "@io_bazel_rules_dotnet//dotnet/toolchain:" + os,
+        "@io_bazel_rules_dotnet//dotnet/toolchain:" + arch,
+    ]
 
-  impl_name = name + "-impl"
-  _net_empty_toolchain(
-      name = impl_name,
-      dotnetimpl = impl,
-      dotnetos = os,
-      dotnetarch = arch,
-      tags = ["manual"],
-      visibility = ["//visibility:public"],
-      **kwargs
-  )
-  native.toolchain(
-      name = name,
-      toolchain_type = "@io_bazel_rules_dotnet//dotnet:toolchain_net",
-      exec_compatible_with = host_constraints,
-      toolchain = ":"+impl_name,
-  )
+    impl_name = name + "-impl"
+    _net_empty_toolchain(
+        name = impl_name,
+        dotnetimpl = impl,
+        dotnetos = os,
+        dotnetarch = arch,
+        tags = ["manual"],
+        visibility = ["//visibility:public"],
+        **kwargs
+    )
+    native.toolchain(
+        name = name,
+        toolchain_type = "@io_bazel_rules_dotnet//dotnet:toolchain_net",
+        exec_compatible_with = host_constraints,
+        toolchain = ":" + impl_name,
+    )

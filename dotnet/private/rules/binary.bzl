@@ -2,7 +2,6 @@ load(
     "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
     "dotnet_context",
 )
-
 load(
     "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
     "DotnetLibrary",
@@ -105,60 +104,59 @@ $PREPARE $RUNFILES_MANIFEST_FILE
 $DIR/$EXEBASENAME "$@"
 """
 
-
 def _binary_impl(ctx):
-  """dotnet_binary_impl emits actions for compiling dotnet executable assembly."""
-  dotnet = dotnet_context(ctx)
-  name = ctx.label.name
- 
-  if dotnet.assembly == None:
-    empty = dotnet.declare_file(dotnet, path="empty.sh")
-    dotnet.actions.write(output = empty, content = "echo assembly generations is not supported on this platform'")
-    library = dotnet.new_library(dotnet = dotnet)
-    return [library, DefaultInfo(executable = empty)]
+    """dotnet_binary_impl emits actions for compiling dotnet executable assembly."""
+    dotnet = dotnet_context(ctx)
+    name = ctx.label.name
 
-  executable = dotnet.assembly(dotnet,
-      name = name,
-      srcs = ctx.attr.srcs,
-      deps = ctx.attr.deps,
-      resources = ctx.attr.resources,
-      out = ctx.attr.out,
-      defines = ctx.attr.defines,
-      unsafe = ctx.attr.unsafe,
-      data = ctx.attr.data,
-      executable = True,
-      keyfile = ctx.attr.keyfile,
-  )
+    if dotnet.assembly == None:
+        empty = dotnet.declare_file(dotnet, path = "empty.sh")
+        dotnet.actions.write(output = empty, content = "echo assembly generations is not supported on this platform'")
+        library = dotnet.new_library(dotnet = dotnet)
+        return [library, DefaultInfo(executable = empty)]
 
+    executable = dotnet.assembly(
+        dotnet,
+        name = name,
+        srcs = ctx.attr.srcs,
+        deps = ctx.attr.deps,
+        resources = ctx.attr.resources,
+        out = ctx.attr.out,
+        defines = ctx.attr.defines,
+        unsafe = ctx.attr.unsafe,
+        data = ctx.attr.data,
+        executable = True,
+        keyfile = ctx.attr.keyfile,
+    )
 
-  launcher = ctx.actions.declare_file("{}.bash".format(name))
-  content = ctx.attr._template.format(
-      prepare=ctx.attr._manifest_prep.files.to_list()[0].basename, 
-      launch=launcher.path, 
-      exebasename=executable.result.basename
-  )
-  ctx.actions.write(output = launcher, content = content, is_executable=True)  
-  if dotnet.runner != None:
-    runner = [dotnet.runner]
-  else:
-    runner = []
-  runfiles = ctx.runfiles(files = [launcher]  + ctx.attr._manifest_prep.files.to_list() + runner + ctx.attr._native_deps.files.to_list(), transitive_files=executable.runfiles)
+    launcher = ctx.actions.declare_file("{}.bash".format(name))
+    content = ctx.attr._template.format(
+        prepare = ctx.attr._manifest_prep.files.to_list()[0].basename,
+        launch = launcher.path,
+        exebasename = executable.result.basename,
+    )
+    ctx.actions.write(output = launcher, content = content, is_executable = True)
+    if dotnet.runner != None:
+        runner = [dotnet.runner]
+    else:
+        runner = []
+    runfiles = ctx.runfiles(files = [launcher] + ctx.attr._manifest_prep.files.to_list() + runner + ctx.attr._native_deps.files.to_list(), transitive_files = executable.runfiles)
 
-  return [
-      executable,
-      DefaultInfo(
-          files = depset([executable.result, launcher]),
-          runfiles = runfiles,
-          executable = launcher,
-      ),
-  ]
-  
+    return [
+        executable,
+        DefaultInfo(
+            files = depset([executable.result, launcher]),
+            runfiles = runfiles,
+            executable = launcher,
+        ),
+    ]
+
 dotnet_binary = rule(
     _binary_impl,
     attrs = {
-        "deps": attr.label_list(providers=[DotnetLibrary]),
-        "resources": attr.label_list(providers=[DotnetResource]),
-        "srcs": attr.label_list(allow_files = FileType([".cs"])),        
+        "deps": attr.label_list(providers = [DotnetLibrary]),
+        "resources": attr.label_list(providers = [DotnetResource]),
+        "srcs": attr.label_list(allow_files = FileType([".cs"])),
         "out": attr.string(),
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
@@ -176,13 +174,13 @@ dotnet_binary = rule(
 core_binary = rule(
     _binary_impl,
     attrs = {
-        "deps": attr.label_list(providers=[DotnetLibrary]),
-        "resources": attr.label_list(providers=[DotnetResource]),
-        "srcs": attr.label_list(allow_files = FileType([".cs"])),        
+        "deps": attr.label_list(providers = [DotnetLibrary]),
+        "resources": attr.label_list(providers = [DotnetResource]),
+        "srcs": attr.label_list(allow_files = FileType([".cs"])),
         "out": attr.string(),
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
-        "data": attr.label_list(allow_files = True),        
+        "data": attr.label_list(allow_files = True),
         "keyfile": attr.label(allow_files = True),
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
         "_native_deps": attr.label(default = Label("@core_sdk//:native_deps")),
@@ -196,9 +194,9 @@ core_binary = rule(
 net_binary = rule(
     _binary_impl,
     attrs = {
-        "deps": attr.label_list(providers=[DotnetLibrary]),
-        "resources": attr.label_list(providers=[DotnetResource]),
-        "srcs": attr.label_list(allow_files = FileType([".cs"])),        
+        "deps": attr.label_list(providers = [DotnetLibrary]),
+        "resources": attr.label_list(providers = [DotnetResource]),
+        "srcs": attr.label_list(allow_files = FileType([".cs"])),
         "out": attr.string(),
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
