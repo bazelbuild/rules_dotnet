@@ -59,7 +59,7 @@ jobs:
             $xslt.Transform($file, $result)
           }        
         }
-        gci -r . -filter "test*.xml" -exclude "*-junit.xml" | foreach { doProcess($_.FullName) }
+        gci -r bazel-out -filter "test*.xml" -exclude "*-junit.xml" | foreach { doProcess($_.FullName) }
 
     - task: PublishTestResults@2
       inputs:
@@ -115,7 +115,7 @@ jobs:
             $xslt.Transform($file, $result)
           }        
         }
-        gci -r . -filter "test*.xml" -exclude "*-junit.xml" | foreach { doProcess($_.FullName) }
+        gci -r bazel-out -filter "test*.xml" -exclude "*-junit.xml" | foreach { doProcess($_.FullName) }
     - task: PublishTestResults@2
       inputs:
         testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit
@@ -172,7 +172,7 @@ jobs:
             $xslt.Transform($file, $result)
           }        
         }
-        gci -r . -filter "test*.xml" -exclude "*-junit.xml" | foreach { doProcess($_.FullName) }
+        gci -r bazel-out -filter "test*.xml" -exclude "*-junit.xml" | foreach { doProcess($_.FullName) }
     - task: PublishTestResults@2
       inputs:
         testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit
