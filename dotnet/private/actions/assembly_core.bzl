@@ -10,10 +10,10 @@ load(
 )
 
 def _map_dep(deps):
-    return [d[DotnetLibrary].result for d in deps]
+    return deps[DotnetLibrary].result.path
 
-def _map_resource(resources):
-    return [d[DotnetResource].result.path + "," + d[DotnetResource].identifier for d in resources]
+def _map_resource(d):
+    return d[DotnetResource].result.path + "," + d[DotnetResource].identifier 
 
 def _make_runner_arglist(dotnet, deps, resources, output, pdb, executable, defines, unsafe, keyfile):
     args = dotnet.actions.args()
@@ -50,12 +50,12 @@ def _make_runner_arglist(dotnet, deps, resources, output, pdb, executable, defin
     #  args.add(format="/lib:%s", value=libdirs)
 
     if deps and len(deps) > 0:
-        args.add(deps, format = "/reference:%s", map_fn = _map_dep)
+        args.add_all(deps, format_each = "/reference:%s", map_each = _map_dep)
 
     args.add(dotnet.stdlib, format = "/reference:%s")
 
     if defines and len(defines) > 0:
-        args.add(defines, format = "/define:%s")
+        args.add_all(defines, format_each = "/define:%s")
 
     if unsafe:
         args.add("/unsafe")
@@ -72,7 +72,7 @@ def _make_runner_arglist(dotnet, deps, resources, output, pdb, executable, defin
     # TODO(jeremy): /define:name[;name2]
 
     if resources and len(resources) > 0:
-        args.add(resources, format = "/resource:%s", map_fn = _map_resource)
+        args.add_all(resources, format_each = "/resource:%s", map_each = _map_resource)
 
     # TODO(jeremy): /resource:filename[,identifier[,accesibility-modifier]]
 
@@ -124,7 +124,7 @@ def emit_assembly_core(
     runner_args = _make_runner_arglist(dotnet, transitive.to_list(), resources, result, pdb, executable, defines, unsafe, keyfile)
 
     attr_srcs = [f for t in srcs for f in as_iterable(t.files)]
-    runner_args.add(attr_srcs)
+    runner_args.add_all(attr_srcs)
 
     runner_args.set_param_file_format("multiline")
 
@@ -133,7 +133,7 @@ def emit_assembly_core(
 
     dotnet.actions.write(output = paramfile, content = runner_args)
 
-    deps_files = _map_dep(deps)
+    deps_files = [d[DotnetLibrary].result for d in deps]
     dotnet.actions.run(
         inputs = attr_srcs + [paramfile] + deps_files + [dotnet.stdlib] + [r[DotnetResource].result for r in resources],
         outputs = [result] + ([pdb] if pdb else []),

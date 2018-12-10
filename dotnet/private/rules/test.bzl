@@ -293,7 +293,7 @@ dotnet_nunit_test = rule(
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "resources": attr.label_list(providers = [DotnetResource]),
-        "srcs": attr.label_list(allow_files = FileType([".cs"])),
+        "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
@@ -315,7 +315,7 @@ net_nunit_test = rule(
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "resources": attr.label_list(providers = [DotnetResource]),
-        "srcs": attr.label_list(allow_files = FileType([".cs"])),
+        "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
@@ -337,7 +337,7 @@ net_nunit3_test = rule(
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "resources": attr.label_list(providers = [DotnetResource]),
-        "srcs": attr.label_list(allow_files = FileType([".cs"])),
+        "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
@@ -359,7 +359,7 @@ core_xunit_test = rule(
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "resources": attr.label_list(providers = [DotnetResource]),
-        "srcs": attr.label_list(allow_files = FileType([".cs"])),
+        "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
@@ -381,7 +381,7 @@ net_xunit_test = rule(
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "resources": attr.label_list(providers = [DotnetResource]),
-        "srcs": attr.label_list(allow_files = FileType([".cs"])),
+        "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
@@ -403,7 +403,7 @@ dotnet_xunit_test = rule(
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "resources": attr.label_list(providers = [DotnetResource]),
-        "srcs": attr.label_list(allow_files = FileType([".cs"])),
+        "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),

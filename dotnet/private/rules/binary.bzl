@@ -156,7 +156,7 @@ dotnet_binary = rule(
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "resources": attr.label_list(providers = [DotnetResource]),
-        "srcs": attr.label_list(allow_files = FileType([".cs"])),
+        "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
@@ -176,7 +176,7 @@ core_binary = rule(
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "resources": attr.label_list(providers = [DotnetResource]),
-        "srcs": attr.label_list(allow_files = FileType([".cs"])),
+        "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
@@ -196,7 +196,7 @@ net_binary = rule(
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "resources": attr.label_list(providers = [DotnetResource]),
-        "srcs": attr.label_list(allow_files = FileType([".cs"])),
+        "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),

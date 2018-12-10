@@ -23,7 +23,7 @@ load("@io_bazel_rules_dotnet//dotnet/private:actions/assembly.bzl", "emit_assemb
 load("@io_bazel_rules_dotnet//dotnet/private:actions/resx.bzl", "emit_resx")
 
 def _get_dotnet_runner(context_data, ext):
-    for f in context_data._mono_bin.files:
+    for f in context_data._mono_bin.files.to_list():
         basename = paths.basename(f.path)
         if basename != "mono" + ext:
             continue
@@ -31,13 +31,13 @@ def _get_dotnet_runner(context_data, ext):
     fail("Could not find mono executable in dotnet_sdk (mono_bin)")
 
 def _get_dotnet_mcs(context_data):
-    for f in context_data._mcs_bin.files:
+    for f in context_data._mcs_bin.files.to_list():
         basename = paths.basename(f.path)
         if basename != "mcs.exe":
             continue
         return f
 
-    for f in context_data._lib.files:
+    for f in context_data._lib.files.to_list():
         basename = paths.basename(f.path)
         if basename != "mcs.exe":
             continue
@@ -45,13 +45,13 @@ def _get_dotnet_mcs(context_data):
     fail("Could not find mcs.exe in dotnet_sdk (mcs_bin, lib)")
 
 def _get_dotnet_resgen(context_data):
-    for f in context_data._mcs_bin.files:
+    for f in context_data._mcs_bin.files.to_list():
         basename = paths.basename(f.path)
         if basename != "resgen.exe":
             continue
         return f
 
-    for f in context_data._lib.files:
+    for f in context_data._lib.files.to_list():
         basename = paths.basename(f.path)
         if basename != "resgen.exe":
             continue
@@ -63,7 +63,7 @@ def _get_dotnet_tlbimp(context_data):
     return None
 
 def _get_dotnet_stdlib(context_data):
-    for f in context_data._lib.files:
+    for f in context_data._lib.files.to_list():
         basename = paths.basename(f.path)
         if basename != "mscorlib.dll":
             continue
@@ -75,7 +75,7 @@ def _get_dotnet_stdlib(context_data):
 
 def _get_dotnet_stdlib_byname(shared, lib, libVersion, name):
     lname = name.lower()
-    for f in lib.files:
+    for f in lib.files.to_list():
         basename = paths.basename(f.path)
         if basename.lower() != lname:
             continue

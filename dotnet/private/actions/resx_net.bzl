@@ -15,7 +15,7 @@ load(
 def _make_runner_arglist(dotnet, source, output):
     args = dotnet.actions.args()
 
-    args.add(source.files, format = "%s")
+    args.add_all(source.files)
     args.add(output)
 
     return args

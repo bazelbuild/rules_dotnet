@@ -34,7 +34,7 @@ net_resx = rule(
     _resx_impl,
     attrs = {
         # source files for this target.
-        "src": attr.label(allow_files = FileType([".resx"]), mandatory = True),
+        "src": attr.label(allow_files = [".resx"], mandatory = True),
         "identifier": attr.string(),
         "out": attr.string(),
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
@@ -47,7 +47,7 @@ dotnet_resx = rule(
     _resx_impl,
     attrs = {
         # source files for this target.
-        "src": attr.label(allow_files = FileType([".resx"]), mandatory = True),
+        "src": attr.label(allow_files = [".resx"], mandatory = True),
         "identifier": attr.string(),
         "out": attr.string(),
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
@@ -61,7 +61,7 @@ core_resx = rule(
     _resx_impl,
     attrs = {
         # source files for this target.
-        "src": attr.label(allow_files = FileType([".resx"]), mandatory = True),
+        "src": attr.label(allow_files = [".resx"], mandatory = True),
         "identifier": attr.string(),
         "out": attr.string(),
         "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),

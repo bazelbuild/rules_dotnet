@@ -270,11 +270,9 @@ _bazel_test_script = rule(
         "config": attr.string(default = "isolate"),
         "data": attr.label_list(
             allow_files = True,
-            cfg = "data",
         ),
         "_bazelrc": attr.label(
-            allow_files = True,
-            single_file = True,
+            allow_single_file = True,
             default = "@bazel_test//:bazelrc",
         ),
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),

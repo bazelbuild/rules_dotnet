@@ -23,7 +23,7 @@ load("@io_bazel_rules_dotnet//dotnet/private:actions/assembly_core.bzl", "emit_a
 load("@io_bazel_rules_dotnet//dotnet/private:actions/resx_core.bzl", "emit_resx_core")
 
 def _get_dotnet_runner(context_data, ext):
-    for f in context_data._mono_bin.files:
+    for f in context_data._mono_bin.files.to_list():
         basename = paths.basename(f.path)
         if basename != "dotnet" + ext:
             continue
@@ -31,13 +31,13 @@ def _get_dotnet_runner(context_data, ext):
     fail("Could not find dotnet core executable in core_sdk (mono_bin)")
 
 def _get_dotnet_mcs(context_data):
-    for f in context_data._mcs_bin.files:
+    for f in context_data._mcs_bin.files.to_list():
         basename = paths.basename(f.path)
         if basename != "csc.dll":
             continue
         return f
 
-    for f in context_data._lib.files:
+    for f in context_data._lib.files.to_list():
         basename = paths.basename(f.path)
         if basename != "csc.dll":
             continue
@@ -51,7 +51,7 @@ def _get_dotnet_tlbimp(context_data):
     return None
 
 def _get_dotnet_stdlib(context_data):
-    for f in context_data._shared.files:
+    for f in context_data._shared.files.to_list():
         basename = paths.basename(f.path)
         if basename != "mscorlib.dll":
             continue
@@ -60,13 +60,13 @@ def _get_dotnet_stdlib(context_data):
 
 def _get_dotnet_stdlib_byname(shared, lib, libVersion, name):
     lname = name.lower()
-    for f in shared.files:
+    for f in shared.files.to_list():
         basename = paths.basename(f.path)
         if basename.lower() != lname:
             continue
         return f
 
-    for f in lib.files:
+    for f in lib.files.to_list():
         basename = paths.basename(f.path)
         if basename.lower() != lname:
             continue

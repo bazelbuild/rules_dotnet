@@ -27,7 +27,7 @@ def _get_dotnet_runner(context_data, ext):
     return None
 
 def _get_dotnet_mcs(context_data):
-    for f in context_data._mcs_bin.files:
+    for f in context_data._mcs_bin.files.to_list():
         basename = paths.basename(f.path)
         if basename != "csc.exe":
             continue
@@ -41,7 +41,7 @@ def _get_dotnet_tlbimp(context_data):
     return _get_dotnet_tool(context_data, "tlbimp.exe")
 
 def _get_dotnet_tool(context_data, name):
-    for f in context_data._tools.files:
+    for f in context_data._tools.files.to_list():
         basename = paths.basename(f.path)
         if basename.lower() != name:
             continue
@@ -49,7 +49,7 @@ def _get_dotnet_tool(context_data, name):
     fail("Could not find %s in net_sdk (tools)" % name)
 
 def _get_dotnet_stdlib(context_data):
-    for f in context_data._lib.files:
+    for f in context_data._lib.files.to_list():
         basename = paths.basename(f.path)
         if basename != "mscorlib.dll":
             continue
@@ -58,7 +58,7 @@ def _get_dotnet_stdlib(context_data):
 
 def _get_dotnet_stdlib_byname(shared, lib, libVersion, name):
     lname = name.lower()
-    for f in shared.files:
+    for f in shared.files.to_list():
         basename = paths.basename(f.path)
         if basename.lower() != lname:
             continue
