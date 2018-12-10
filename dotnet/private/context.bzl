@@ -3,10 +3,6 @@ load(
     "DotnetLibrary",
     "DotnetResource",
 )
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:common.bzl",
-    "paths",
-)
 
 DotnetContext = provider()
 

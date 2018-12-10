@@ -1,7 +1,6 @@
 load(
     "@io_bazel_rules_dotnet//dotnet/private:common.bzl",
     "as_iterable",
-    "sets",
 )
 load(
     "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
@@ -118,7 +117,7 @@ def emit_assembly_net(
     else:
         pdb = None
 
-    runner_args = _make_runner_arglist(dotnet, deps.to_list(), resources, result, pdb, executable, defines, unsafe, keyfile)
+    runner_args = _make_runner_arglist(dotnet, deps, resources, result, pdb, executable, defines, unsafe, keyfile)
 
     attr_srcs = [f for t in srcs for f in as_iterable(t.files)]
     runner_args.add_all(attr_srcs)

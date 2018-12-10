@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet/private:common.bzl", "bat_extension", "executable_extension", "paths")
+load("@io_bazel_rules_dotnet//dotnet/private:common.bzl", "bat_extension", "executable_extension")
 
 def _detect_net_framework(ctx, version):
     defpath = ctx.path("C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v" + version)

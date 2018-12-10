@@ -1,5 +1,5 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:common.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:skylib/lib/paths.bzl",
     "paths",
 )
 

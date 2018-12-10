@@ -6,10 +6,6 @@ load(
     "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
     "DotnetLibrary",
 )
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:common.bzl",
-    "sets",
-)
 
 def _net_com_library_impl(ctx):
     """_net_com_reference_impl emits actions for creating com wrapper library."""
@@ -36,7 +32,7 @@ def _net_com_library_impl(ctx):
     deps = ctx.attr.deps
 
     deps_libraries = [d[DotnetLibrary] for d in deps]
-    transitive = sets.union(deps_libraries, *[a[DotnetLibrary].transitive for a in deps])
+    transitive = depset(direct = deps, transitive = [a[DotnetLibrary].transitive for a in deps])
 
     library = dotnet.new_library(
         dotnet = dotnet,

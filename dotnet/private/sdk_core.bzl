@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet/private:common.bzl", "bat_extension", "executable_extension", "paths")
+load("@io_bazel_rules_dotnet//dotnet/private:common.bzl", "bat_extension", "executable_extension")
 
 def _get_shared_dir(ctx):
     p = ctx.path("core/shared/Microsoft.NETCore.App")

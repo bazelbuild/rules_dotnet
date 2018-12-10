@@ -7,9 +7,8 @@ load(
     "DotnetLibrary",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:common.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:skylib/lib/dicts.bzl",
     "dicts",
-    "paths",
 )
 
 def _dotnet_nuget_impl(

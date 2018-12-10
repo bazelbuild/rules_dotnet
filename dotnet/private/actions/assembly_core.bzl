@@ -1,7 +1,6 @@
 load(
     "@io_bazel_rules_dotnet//dotnet/private:common.bzl",
     "as_iterable",
-    "sets",
 )
 load(
     "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
