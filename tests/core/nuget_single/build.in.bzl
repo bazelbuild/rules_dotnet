@@ -10,7 +10,7 @@ dotnet_nunit_test(
         "@npgsql//:lib",
         "@commandlineparser//:lib",
         "@nuget.frameworks//:mono",
-        "@nuget.common//:mono"
+        "@nuget.common//:mono",
     ],
     size = "small",
 )

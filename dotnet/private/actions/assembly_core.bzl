@@ -12,7 +12,7 @@ def _map_dep(deps):
     return deps[DotnetLibrary].result.path
 
 def _map_resource(d):
-    return d[DotnetResource].result.path + "," + d[DotnetResource].identifier 
+    return d[DotnetResource].result.path + "," + d[DotnetResource].identifier
 
 def _make_runner_arglist(dotnet, deps, resources, output, pdb, executable, defines, unsafe, keyfile):
     args = dotnet.actions.args()

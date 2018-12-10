@@ -47,7 +47,7 @@ def _make_runner_arglist(dotnet, deps, resources, output, pdb, executable, defin
     # /lib:dir1,[dir1]
     #if libdirs:
     #  args.add(format="/lib:%s", value=libdirs)
-    
+
     if deps and len(deps) > 0:
         args.add_all(deps, format_each = "/reference:%s", map_each = _map_dep)
 

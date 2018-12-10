@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_binary", "core_binary", "net_binary")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_binary", "dotnet_binary", "net_binary")
 
 dotnet_binary(
     name = "hello_tool",
@@ -17,11 +17,11 @@ core_binary(
     ],
     deps = [
         "//tests/examples/example_lib:MyClass-core",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.extensions.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.console.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.io.filesystem.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.private.corelib.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.console.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.extensions.dll",
     ],
 )
 
@@ -40,10 +40,10 @@ genrule(
     outs = [
         "hello_world.txt",
     ],
+    cmd = "$(location :hello_tool) $@",
     tools = [
         ":hello_tool",
     ],
-    cmd = "$(location :hello_tool) $@",
 )
 
 genrule(
@@ -52,10 +52,10 @@ genrule(
         "hello_world_1.txt",
         "hello_world_2.txt",
     ],
+    cmd = "$(location :hello_tool) $(OUTS)",
     tools = [
         ":hello_tool",
     ],
-    cmd = "$(location :hello_tool) $(OUTS)",
 )
 
 genrule(
@@ -63,10 +63,10 @@ genrule(
     outs = [
         "hello_world_core.txt",
     ],
+    cmd = "$(location :hello_tool_core) $@",
     tools = [
         ":hello_tool_core",
     ],
-    cmd = "$(location :hello_tool_core) $@",
 )
 
 genrule(
@@ -75,10 +75,10 @@ genrule(
         "hello_world_1_core.txt",
         "hello_world_2_core.txt",
     ],
+    cmd = "$(location :hello_tool_core) $(OUTS)",
     tools = [
         ":hello_tool_core",
     ],
-    cmd = "$(location :hello_tool_core) $(OUTS)",
 )
 
 #genrule(

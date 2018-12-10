@@ -1,6 +1,10 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_binary", 
-        "core_binary", "net_binary", "net_com_library")
-
+load(
+    "@io_bazel_rules_dotnet//dotnet:defs.bzl",
+    "core_binary",
+    "dotnet_binary",
+    "net_binary",
+    "net_com_library",
+)
 
 dotnet_binary(
     name = "hello",
@@ -21,11 +25,11 @@ core_binary(
     ],
     deps = [
         "//tests/examples/example_lib:MyClass-core",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.private.corelib.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.console.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.private.corelib.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.dll",
         "@npgsql//:core",
-    ]
+    ],
 )
 
 net_binary(
@@ -36,18 +40,18 @@ net_binary(
     deps = [
         "//tests/examples/example_lib:MyClass-net",
         "@npgsql//:net",
-    ]
+    ],
 )
 
 net_com_library(
     name = "com-ref-shell32",
+    out = "shell32.dll",
     guid = "50A7E9B0-70EF-11D1-B75A-00A0C90564FE",
+    lcid = 0,
     major_version = 1,
     minor_version = 0,
-    lcid = 0,
-    platform = "win32",
     namespace = "Shell32",
-    out = "shell32.dll"
+    platform = "win32",
 )
 
 # The rule is left as an example. It is commented out, because our CI server doesn't have VS2017 installed

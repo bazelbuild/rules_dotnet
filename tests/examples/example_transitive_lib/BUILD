@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_library", "core_library", "net_library")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_library", "dotnet_library", "net_library")
 
 dotnet_library(
     name = "TransitiveClass",
@@ -16,9 +16,9 @@ core_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.private.corelib.dll",
-    ]
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.dll",
+    ],
 )
 
 net_library(
@@ -28,5 +28,5 @@ net_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-    ]
+    ],
 )

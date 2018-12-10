@@ -1,7 +1,8 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_nunit_test", "net_nunit_test", "net_nunit3_test")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_nunit_test", "net_nunit3_test", "net_nunit_test")
 
 dotnet_nunit_test(
     name = "example_test",
+    size = "small",
     srcs = [
         "MyTest.cs",
     ],
@@ -9,11 +10,11 @@ dotnet_nunit_test(
         "//tests/examples/example_lib:MyClass",
         "@nunit2//:nunit.framework",
     ],
-    size = "small",
 )
 
 net_nunit_test(
     name = "net.example_test",
+    size = "small",
     srcs = [
         "MyTest.cs",
     ],
@@ -21,10 +22,11 @@ net_nunit_test(
         "//tests/examples/example_lib:MyClass-net",
         "@nunit2//:net.nunit.framework",
     ],
-    size = "small",
 )
+
 net_nunit3_test(
     name = "net.example_test3",
+    size = "small",
     srcs = [
         "MyTest.cs",
     ],
@@ -32,5 +34,4 @@ net_nunit3_test(
         "//tests/examples/example_lib:MyClass-net",
         "@nunit3//:lib",
     ],
-    size = "small",
 )

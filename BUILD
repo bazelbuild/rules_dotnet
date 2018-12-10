@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet/private:context.bzl", "dotnet_context_data", "core_context_data", "net_context_data")
+load("@io_bazel_rules_dotnet//dotnet/private:context.bzl", "core_context_data", "dotnet_context_data", "net_context_data")
 
 dotnet_context_data(
     name = "dotnet_context_data",
