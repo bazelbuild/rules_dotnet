@@ -31,6 +31,7 @@ def _make_runner_arglist(dotnet, deps, resources, output, executable, defines, u
     args.add("/fullpaths")
     args.add("/noconfig")
     args.add("/nostdlib")
+    args.add("/noconfig")
 
     # /warn
     #args.add(format="/warn:%s", value=str(ctx.attr.warn))

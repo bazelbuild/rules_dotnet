@@ -32,6 +32,7 @@ def _make_runner_arglist(dotnet, deps, resources, output, pdb, executable, defin
     args.add("/nostdlib")
     args.add("/langversion:latest")
     args.add("/nologo")
+    args.add("/noconfig")
 
     if pdb:
         args.add("-debug:full")
