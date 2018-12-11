@@ -7,7 +7,10 @@ dotnet_library(
     srcs = [":NUnitCore_Interfaces_files"],
     defines = ["CLR_4_0"],
     visibility = ["//visibility:public"],
-    deps = ["@io_bazel_rules_dotnet//dotnet/stdlib:System.dll"]
+    deps = [
+        "@io_bazel_rules_dotnet//dotnet/stdlib:System.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib:System.Collections.Specialized.dll"
+    ]
 )
 
 net_library(
@@ -15,6 +18,10 @@ net_library(
     srcs = [":NUnitCore_Interfaces_files"],
     defines = ["CLR_4_0"],
     visibility = ["//visibility:public"],
+    deps = [
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.collections.specialized.dll"
+    ]
 )
 
 dotnet_library(
@@ -34,6 +41,11 @@ net_library(
     srcs = [":NUnitFramework_framework_files"],
     defines = ["CLR_4_0"],
     visibility = ["//visibility:public"],
+    deps = [
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.collections.specialized.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.xml.dll",
+    ],
 )
 
 dotnet_library(
@@ -54,6 +66,14 @@ net_library(
     defines = ["CLR_4_0"],
     visibility = ["//visibility:public"],
     deps = [
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.collections.specialized.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.text.regularexpressions.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.componentmodel.typeconverter.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.diagnostics.tracesource.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.runtime.extensions.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.xml.readerwriter.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.runtime.remoting.dll",
         ":net.nunit.core.interfaces",
     ]
 )
@@ -70,6 +90,8 @@ dotnet_library(
         "@io_bazel_rules_dotnet//dotnet/stdlib:System.Runtime.Remoting.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib:System.Drawing.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib:System.Xml.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib:System.Runtime.Extensions.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib:System.Xml.ReaderWriter.dll",
         ":nunit.core.interfaces",
         ":nunit.core",
     ]
@@ -82,6 +104,14 @@ net_library(
     defines = ["CLR_4_0"],
     visibility = ["//visibility:public"],
     deps = [
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.runtime.extensions.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.xml.readerwriter.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.runtime.remoting.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.xml.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.drawing.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.configuration.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.collections.specialized.dll",
         ":net.nunit.core.interfaces",
         ":net.nunit.core",
     ]
@@ -116,6 +146,11 @@ net_library(
     srcs = [":ConsoleRunner_nunit_console_files"],
     visibility = ["//visibility:public"],
     deps = [
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.xml.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.collections.specialized.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.text.regularexpressions.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.drawing.dll",
         ":net.nunit.core.interfaces",
         ":net.nunit.core",
         ":net.nunit.util",

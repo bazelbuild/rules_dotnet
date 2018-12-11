@@ -32,7 +32,6 @@ def _make_runner_arglist(dotnet, deps, resources, output, pdb, executable, defin
     args.add("/nostdlib")
     args.add("/langversion:latest")
     args.add("/nologo")
-    args.add("/noconfig")
 
     if pdb:
         args.add("-debug:full")
@@ -138,7 +137,7 @@ def emit_assembly_core(
         inputs = attr_srcs + [paramfile] + deps_files + [dotnet.stdlib] + [r[DotnetResource].result for r in resources],
         outputs = [result] + ([pdb] if pdb else []),
         executable = dotnet.runner,
-        arguments = [dotnet.mcs.path, "@" + paramfile.path],
+        arguments = [dotnet.mcs.path, "/noconfig", "@" + paramfile.path],
         mnemonic = "CoreCompile",
         progress_message = (
             "Compiling " + dotnet.label.package + ":" + dotnet.label.name

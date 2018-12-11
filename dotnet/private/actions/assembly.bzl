@@ -29,9 +29,7 @@ def _make_runner_arglist(dotnet, deps, resources, output, executable, defines, u
     args.add(target, format = "/target:%s")
 
     args.add("/fullpaths")
-    args.add("/noconfig")
     args.add("/nostdlib")
-    args.add("/noconfig")
 
     # /warn
     #args.add(format="/warn:%s", value=str(ctx.attr.warn))
@@ -136,7 +134,7 @@ def emit_assembly(
         inputs = attr_srcs + [paramfile] + deps_files + [dotnet.stdlib] + [r[DotnetResource].result for r in resources],
         outputs = [result],
         executable = dotnet.runner,
-        arguments = [dotnet.mcs.path, "@" + paramfile.path],
+        arguments = [dotnet.mcs.path, "/noconfig", "@" + paramfile.path],
         mnemonic = "MonoCompile",
         progress_message = (
             "Compiling " + dotnet.label.package + ":" + dotnet.label.name

@@ -30,6 +30,7 @@ net_xunit_test(
     srcs = glob(["*.cs"]),
     resources = [":net.resx"],
     deps = [
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.runtime.dll",
         "@xunit.assert//:net",
         "@xunit.extensibility.core//:net",
