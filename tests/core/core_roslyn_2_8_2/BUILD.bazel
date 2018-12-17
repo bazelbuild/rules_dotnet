@@ -1,0 +1,11 @@
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_binary", "dotnet_nunit_test")
+load("@io_bazel_rules_dotnet//tests:bazel_tests.bzl", "bazel_test")
+
+bazel_test(
+    name = "core_roslyn_2_8_2",
+    command = "test",
+    targets = ["sanity"],
+    workspace_in = ":workspace.in.bzl",
+    build_in = ":build.in.bzl",
+    srcs = [":MyTest.cs"],
+)
