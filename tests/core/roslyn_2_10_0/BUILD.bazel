@@ -2,7 +2,7 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_binary", "dotnet_nunit_t
 load("@io_bazel_rules_dotnet//tests:bazel_tests.bzl", "bazel_test")
 
 bazel_test(
-    name = "core_roslyn_2_6_1",
+    name = "roslyn_2_10_0",
     command = "test",
     targets = ["sanity"],
     workspace_in = ":workspace.in.bzl",
