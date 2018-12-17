@@ -115,7 +115,7 @@ def _test_environment_impl(ctx):
 
     # Get a temporary directory to use as our scratch workspace
     if ctx.os.name.startswith("windows"):
-        scratch_dir = ctx.os.environ["TMP"].replace("\\", "/") + "/bazel_go_test"
+        scratch_dir = ctx.os.environ["TMP"].replace("\\", "/") + "/bazel_dotnet_test"
     else:
         result = env_execute(ctx, ["mktemp", "-d"])
         if result.return_code:
@@ -176,8 +176,11 @@ def _bazel_test_script_impl(ctx):
     if ctx.attr.workspace:
         workspace_content += ctx.attr.workspace
     else:
-        workspace_content += _basic_workspace.format()
-        workspace_content += register
+        if ctx.attr.workspace_in:
+            workspace_content += _basic_workspace.format()
+        else:
+            workspace_content += _basic_workspace.format()
+            workspace_content += register
 
     workspace_file = dotnet.declare_file(dotnet, path = "WORKSPACE.in")
     ctx.actions.write(workspace_file, workspace_content)

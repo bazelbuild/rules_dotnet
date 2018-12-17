@@ -1,3 +1,5 @@
+dotnet_register_toolchains(dotnet_version="host")
+
 load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_nuget_new", "nuget_package")
 
 dotnet_nuget_new(
@@ -91,3 +93,5 @@ nuget_package(
         "lib/net46/NuGet.Common.xml",
     ],
 )
+
+#

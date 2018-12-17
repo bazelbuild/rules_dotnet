@@ -38,7 +38,7 @@ load(
 
 DEFAULT_VERSION = "4.2.3"
 CORE_DEFAULT_VERSION = "2.1.200"
-NET_ROSLYN_DEFAULT_VERSION = "2.8.2"
+NET_ROSLYN_DEFAULT_VERSION = "2.10.0"
 NET_DEFAULT_VERSION = "4.7.2"
 
 SDK_REPOSITORIES = {
@@ -68,10 +68,46 @@ CORE_SDK_REPOSITORIES = {
 }
 
 NET_ROSLYN_REPOSITORIES = {
+    "2.6.0": {
+        "net_windows_amd64": (
+            "https://www.nuget.org/api/v2/package/Microsoft.Net.Compilers/2.6.0/",
+            "4ec0a588dc7b538e3f05fb9637931941320defef8e8fde1a79392de9c2a5a276",
+        ),
+    },
+    "2.6.1": {
+        "net_windows_amd64": (
+            "https://www.nuget.org/api/v2/package/Microsoft.Net.Compilers/2.6.1/",
+            "49eaa49477f7409f15f6d4c92ea0176c94100fa063ed20ca6f5eb0ee16655848",
+        ),
+    },
+    "2.7.0": {
+        "net_windows_amd64": (
+            "https://www.nuget.org/api/v2/package/Microsoft.Net.Compilers/2.7.0/",
+            "e6ab3b41c4a30f3c98d4fd318a780d4051c4f35b2bb575b1ea11f621275f1597",
+        ),
+    },
+    "2.8.0": {
+        "net_windows_amd64": (
+            "https://www.nuget.org/api/v2/package/Microsoft.Net.Compilers/2.8.0/",
+            "cd0a53049e5c6f7f4d96f30c54c25321c547a2d36b588a820bbdeef0c6ff05b5",
+        ),
+    },
     "2.8.2": {
         "net_windows_amd64": (
             "https://www.nuget.org/api/v2/package/Microsoft.Net.Compilers/2.8.2/",
             "48d0d13d8667e16ce150fbb7d804d12d9b9bca8bba9003eaccf1f105cbd427f6",
+        ),
+    },
+    "2.9.0": {
+        "net_windows_amd64": (
+            "https://www.nuget.org/api/v2/package/Microsoft.Net.Compilers/2.9.0/",
+            "9af42dbb5d198f7e885671bf85ecca3e958d8a22a21dbd6e328b694d390562ce",
+        ),
+    },
+    "2.10.0": {
+        "net_windows_amd64": (
+            "https://www.nuget.org/api/v2/package/Microsoft.Net.Compilers/2.10.0/",
+            "854d162cbe3c90100922c970ba593631f2d106f7b757a99425d50dc5cdafbdc0",
         ),
     },
 }
