@@ -1,10 +1,17 @@
 workspace(name = "io_bazel_rules_dotnet")
 
-load("//dotnet:defs.bzl", "dotnet_register_toolchains", "dotnet_repositories", 
-        "dotnet_nuget_new", "net_gac4", "vs2017_ref_net", "nuget_package")
+load("//dotnet:defs.bzl", "dotnet_register_toolchains", "net_register_toolchains", "dotnet_repositories", 
+        "dotnet_nuget_new", "net_gac4", "vs2017_ref_net", "nuget_package", "DOTNET_NET_FRAMEWORKS")
 
 dotnet_repositories()
 dotnet_register_toolchains("host")
+
+[net_register_toolchains(
+    framework
+) for framework in DOTNET_NET_FRAMEWORKS
+]
+
+
 
 nuget_package(
    name = "npgsql",

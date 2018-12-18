@@ -86,44 +86,44 @@ def dotnet_context(ctx, attr = None):
 
 def _dotnet_context_data(ctx):
     return struct(
-        _mcs_bin = ctx.attr._mcs_bin,
-        _mono_bin = ctx.attr._mono_bin,
-        _lib = ctx.attr._lib,
-        _tools = ctx.attr._tools,
-        _shared = ctx.attr._shared,
-        _host = ctx.attr._host,
-        _libVersion = ctx.attr._libVersion,
+        _mcs_bin = ctx.attr.mcs_bin,
+        _mono_bin = ctx.attr.mono_bin,
+        _lib = ctx.attr.lib,
+        _tools = ctx.attr.tools,
+        _shared = ctx.attr.shared,
+        _host = ctx.attr.host,
+        _libVersion = ctx.attr.libVersion,
         _toolchain_type = ctx.attr._toolchain_type,
     )
 
 dotnet_context_data = rule(
     _dotnet_context_data,
     attrs = {
-        "_mcs_bin": attr.label(
+        "mcs_bin": attr.label(
             allow_files = True,
             default = "@dotnet_sdk//:mcs_bin",
         ),
-        "_mono_bin": attr.label(
+        "mono_bin": attr.label(
             allow_files = True,
             default = "@dotnet_sdk//:mono_bin",
         ),
-        "_lib": attr.label(
+        "lib": attr.label(
             allow_files = True,
             default = "@dotnet_sdk//:lib",
         ),
-        "_tools": attr.label(
+        "tools": attr.label(
             allow_files = True,
             default = "@net_sdk//:lib",
         ),
-        "_shared": attr.label(
+        "shared": attr.label(
             allow_files = True,
             default = "@dotnet_sdk//:lib",
         ),
-        "_host": attr.label(
+        "host": attr.label(
             allow_files = True,
             default = "@dotnet_sdk//:lib",
         ),
-        "_libVersion": attr.string(
+        "libVersion": attr.string(
             default = "4.5",
         ),
         "_toolchain_type": attr.string(
@@ -135,31 +135,31 @@ dotnet_context_data = rule(
 core_context_data = rule(
     _dotnet_context_data,
     attrs = {
-        "_mcs_bin": attr.label(
+        "mcs_bin": attr.label(
             allow_files = True,
             default = "@core_sdk//:mcs_bin",
         ),
-        "_mono_bin": attr.label(
+        "mono_bin": attr.label(
             allow_files = True,
             default = "@core_sdk//:mono_bin",
         ),
-        "_lib": attr.label(
+        "lib": attr.label(
             allow_files = True,
             default = "@core_sdk//:lib",
         ),
-        "_tools": attr.label(
+        "tools": attr.label(
             allow_files = True,
             default = "@core_sdk//:lib",
         ),
-        "_shared": attr.label(
+        "shared": attr.label(
             allow_files = True,
             default = "@core_sdk//:shared",
         ),
-        "_host": attr.label(
+        "host": attr.label(
             allow_files = True,
             default = "@core_sdk//:host",
         ),
-        "_libVersion": attr.string(
+        "libVersion": attr.string(
             default = "",
         ),
         "_toolchain_type": attr.string(
@@ -171,31 +171,31 @@ core_context_data = rule(
 net_context_data = rule(
     _dotnet_context_data,
     attrs = {
-        "_mcs_bin": attr.label(
+        "mcs_bin": attr.label(
             allow_files = True,
             default = "@net_sdk//:mcs_bin",
         ),
-        "_mono_bin": attr.label(
+        "mono_bin": attr.label(
             allow_files = True,
             default = "@net_sdk//:mono_bin",
         ),
-        "_lib": attr.label(
+        "lib": attr.label(
             allow_files = True,
             default = "@net_sdk//:lib",
         ),
-        "_tools": attr.label(
+        "tools": attr.label(
             allow_files = True,
             default = "@net_sdk//:tools",
         ),
-        "_shared": attr.label(
+        "shared": attr.label(
             allow_files = True,
             default = "@net_sdk//:lib",
         ),
-        "_host": attr.label(
+        "host": attr.label(
             allow_files = True,
             default = "@net_sdk//:mcs_bin",
         ),
-        "_libVersion": attr.string(
+        "libVersion": attr.string(
             default = "",
         ),
         "_toolchain_type": attr.string(

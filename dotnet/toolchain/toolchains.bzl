@@ -34,6 +34,7 @@ load(
     "DOTNETIMPL",
     "DOTNETIMPL_OS_ARCH",
     "DOTNETOS",
+    "DOTNET_NET_FRAMEWORKS",
 )
 
 DEFAULT_VERSION = "4.2.3"
@@ -216,27 +217,35 @@ def declare_toolchains():
     for toolchain in _toolchains:
         if toolchain["impl"] == "mono":
             dotnet_toolchain(
-                # Required fields
                 name = toolchain["name"],
                 host = toolchain["host"],
             )
         elif toolchain["impl"] == "core":
             core_toolchain(
-                # Required fields
                 name = toolchain["name"],
                 host = toolchain["host"],
             )
         elif toolchain["impl"] == "net":
             if toolchain["name"] == "dotnet_net_windows_amd64":
                 net_toolchain(
-                    # Required fields
                     name = toolchain["name"],
                     host = toolchain["host"],
                 )
             else:
                 # Hardcoded empty rules for .NET on Linux and ocx
                 net_empty_toolchain(
-                    # Required fields
                     name = toolchain["name"],
                     host = toolchain["host"],
                 )
+
+def net_register_toolchains(net_version, net_roslyn_version = NET_ROSLYN_DEFAULT_VERSION, tools_version = "net472"):
+    if net_roslyn_version not in NET_ROSLYN_REPOSITORIES:
+        fail("Unknown .net Roslyn version {}".format(net_roslyn_version))
+
+    net_download_sdk(
+        name = "net_sdk_" + net_version,
+        version = DOTNET_NET_FRAMEWORKS[net_version][3],
+        toolsVersion = DOTNET_NET_FRAMEWORKS[tools_version][3],
+        targetFrameworkString = DOTNET_NET_FRAMEWORKS[net_version][0],
+        sdks = NET_ROSLYN_REPOSITORIES[net_roslyn_version],
+    )

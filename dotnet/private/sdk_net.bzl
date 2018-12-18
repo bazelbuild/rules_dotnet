@@ -12,7 +12,7 @@ def _detect_net_tools(ctx, version):
         defpath = ctx.path("C:/Program Files (x86)/Microsoft SDKs/Windows/" + ms_sdk_version + "/bin/NETFX " + version + " Tools")
         if defpath.exists:
             return defpath
-    fail("Failed to find .net tools " + version + " in default location " + defpath)
+    fail("Failed to find .net tools " + version + " in default location " + str(defpath))
 
 def _net_download_sdk_impl(ctx):
     if not ctx.os.name.startswith("windows"):
@@ -34,8 +34,18 @@ def _net_download_sdk_impl(ctx):
     lib = _detect_net_framework(ctx, ctx.attr.version)
     ctx.symlink(lib, "lib")
 
-    tools = _detect_net_tools(ctx, ctx.attr.version)
+    if ctx.attr.toolsVersion == "":
+        tools = _detect_net_tools(ctx, ctx.attr.version)
+    else:
+        tools = _detect_net_tools(ctx, ctx.attr.toolsVersion)
+
     ctx.symlink(tools, "tools")
+
+    # Generate file with target framework attribute
+    content = """
+    [assembly:TargetFramework("{}")]
+    """.format(ctx.attr.targetFrameworkString)
+    ctx.file("targetframework.cs", content)
 
 def _net_empty_download_sdk_impl(ctx):
     sdks = ctx.attr.sdks
@@ -51,6 +61,8 @@ net_download_sdk = repository_rule(
         "sdks": attr.string_list_dict(),
         "urls": attr.string_list(),
         "version": attr.string(),
+        "toolsVersion": attr.string(),
+        "targetFrameworkString": attr.string(),
         "strip_prefix": attr.string(default = ""),
     },
 )
