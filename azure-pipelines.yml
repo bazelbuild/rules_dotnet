@@ -145,6 +145,9 @@ jobs:
         mono --version
       displayName: 'Show env'
     - script: |
+        bazel clean --expunge
+      displayName: 'Clean all'
+    - script: |
         bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build -s --local_resources=400,1,1.0 --spawn_strategy=standalone //... --all_incompatible_changes
       displayName: 'Build all'
     - script: |
