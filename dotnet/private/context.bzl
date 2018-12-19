@@ -149,7 +149,7 @@ core_context_data = rule(
         ),
         "_tools": attr.label(
             allow_files = True,
-            default = "@net_sdk//:lib",
+            default = "@core_sdk//:lib",
         ),
         "_shared": attr.label(
             allow_files = True,

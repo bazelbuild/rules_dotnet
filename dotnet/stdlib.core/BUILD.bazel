@@ -1477,3 +1477,19 @@ core_stdlib(name = "windowsbase.dll", deps = [
 core_stdlib(name = "system.security.cryptography.protecteddata.dll", deps = [
   ]
 )
+
+core_stdlib(name = "microsoft.dotnet.internalabstractions.dll", deps = [
+  ]
+)
+
+core_stdlib(name = "microsoft.dotnet.platformabstractions.dll", deps = [
+  ]
+)
+
+core_stdlib(name = "microsoft.extensions.dependencymodel.dll", deps = [
+  ]
+)
+
+core_stdlib(name = "system.xml.xpath.xmldocument.dll", deps = [
+    ]
+)
