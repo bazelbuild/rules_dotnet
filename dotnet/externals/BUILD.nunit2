@@ -19,8 +19,8 @@ net_library(
     defines = ["CLR_4_0"],
     visibility = ["//visibility:public"],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.collections.specialized.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.collections.specialized.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.dll",
     ],
 )
 
@@ -42,9 +42,9 @@ net_library(
     defines = ["CLR_4_0"],
     visibility = ["//visibility:public"],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.collections.specialized.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.xml.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.collections.specialized.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.xml.dll",
     ],
 )
 
@@ -67,14 +67,14 @@ net_library(
     visibility = ["//visibility:public"],
     deps = [
         ":net.nunit.core.interfaces",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.collections.specialized.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.componentmodel.typeconverter.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.diagnostics.tracesource.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.runtime.extensions.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.runtime.remoting.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.text.regularexpressions.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.xml.readerwriter.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.collections.specialized.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.componentmodel.typeconverter.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.diagnostics.tracesource.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.runtime.extensions.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.runtime.remoting.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.text.regularexpressions.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.xml.readerwriter.dll",
     ],
 )
 
@@ -106,14 +106,14 @@ net_library(
     deps = [
         ":net.nunit.core",
         ":net.nunit.core.interfaces",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.collections.specialized.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.configuration.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.drawing.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.runtime.extensions.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.runtime.remoting.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.xml.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.xml.readerwriter.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.collections.specialized.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.configuration.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.drawing.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.runtime.extensions.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.runtime.remoting.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.xml.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.xml.readerwriter.dll",
     ],
 )
 
@@ -149,11 +149,11 @@ net_library(
         ":net.nunit.core",
         ":net.nunit.core.interfaces",
         ":net.nunit.util",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.collections.specialized.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.drawing.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.text.regularexpressions.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.xml.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.collections.specialized.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.drawing.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.text.regularexpressions.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.xml.dll",
     ],
 )
 

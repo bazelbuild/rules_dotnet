@@ -122,6 +122,9 @@ def emit_assembly_net(
     attr_srcs = [f for t in srcs for f in as_iterable(t.files)]
     runner_args.add_all(attr_srcs)
 
+    attr_extra_srcs = [f for t in dotnet.extra_srcs for f in as_iterable(t.files)]
+    runner_args.add_all(attr_extra_srcs)
+
     runner_args.set_param_file_format("multiline")
 
     # Use a "response file" to pass arguments to csc.
@@ -139,7 +142,7 @@ def emit_assembly_net(
 
     deps_files = [d[DotnetLibrary].result for d in deps]
     dotnet.actions.run(
-        inputs = attr_srcs + [paramfile] + deps_files + [dotnet.stdlib] + [r[DotnetResource].result for r in resources],
+        inputs = attr_srcs + attr_extra_srcs + [paramfile] + deps_files + [dotnet.stdlib] + [r[DotnetResource].result for r in resources],
         outputs = [result] + ([pdb] if pdb else []),
         executable = dotnet.mcs,
         arguments = ["/noconfig", "@" + paramfile.path],

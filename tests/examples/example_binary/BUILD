@@ -4,6 +4,7 @@ load(
     "dotnet_binary",
     "net_binary",
     "net_com_library",
+    "DOTNET_NET_FRAMEWORKS",
 )
 
 dotnet_binary(
@@ -32,16 +33,16 @@ core_binary(
     ],
 )
 
-net_binary(
-    name = "hello-net",
+[net_binary(
+    name = "hello-net_{}".format(framework),
     srcs = [
         "Program.cs",
     ],
     deps = [
-        "//tests/examples/example_lib:MyClass-net",
+        "//tests/examples/example_lib:MyClass-net_{}".format(framework),
         "@npgsql//:net",
     ],
-)
+) for framework in DOTNET_NET_FRAMEWORKS]
 
 net_com_library(
     name = "com-ref-shell32",

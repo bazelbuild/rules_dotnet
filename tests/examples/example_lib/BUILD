@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_library", "dotnet_library", "net_library")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_library", "dotnet_library", "net_library", "DOTNET_NET_FRAMEWORKS")
 
 dotnet_library(
     name = "MyClass",
@@ -26,13 +26,14 @@ core_library(
     ],
 )
 
-net_library(
-    name = "MyClass-net",
+[net_library(
+    name = "MyClass-net_{}".format(framework),
     srcs = [
         "MyClass.cs",
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "//tests/examples/example_transitive_lib:TransitiveClass-net",
+        "//tests/examples/example_transitive_lib:TransitiveClass-net_{}".format(framework),
     ],
-)
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
+) for framework in DOTNET_NET_FRAMEWORKS]

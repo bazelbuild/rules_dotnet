@@ -71,13 +71,20 @@ static void CreateLinkIfNeeded(const char* target, const char *toCreate)
 	DWORD error;
 	DWORD flag;
 
+
     if (!PathFileExists(target)) {
         printf("File %s does not exist\n", target);
         exit(-1);			
     }
 
+    /* The file is linked by the calling script */
+    if (strstr(toCreate, "manifest_prep.exe")!=NULL)
+        return;
+
+    _chmod(toCreate, _S_IREAD | _S_IWRITE);
+    unlink(toCreate);
+
     /* Try hard linking first (except mono.exe) */
-    /*
     if (strstr(toCreate, "mono.exe")==NULL) 
     {
         result = CreateHardLink(toCreate, target, NULL);
@@ -85,9 +92,11 @@ static void CreateLinkIfNeeded(const char* target, const char *toCreate)
             return;
         error = GetLastError();
         if (error == ERROR_ALREADY_EXISTS) 
+        {
+            printf("%s does exist after unlink. Ignoring error. \n", toCreate);
             return;
+        }
     }
-    */
    
     /* Fall back to symbolic linking */
     flag = SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE;
@@ -183,7 +192,7 @@ static void do_mkdir(const char *path)
         return;
     }
 
-    mbtowc(buffer, path, sizeof(buffer));
+    mbstowcs(buffer, path, sizeof(buffer));
     /* Directory does not exist. EEXIST for race condition */
     if (CreateDirectoryW(buffer, NULL) == 0) {
         error = GetLastError();
@@ -201,6 +210,7 @@ static void do_mkdir(const char *path)
 {
     Stat            st;
     int status = 0;
+
 
     if (stat(path, &st) != 0)
     {
@@ -243,6 +253,7 @@ static void CreateDirTreeForFile(const char * path)
     char *pp;
     char *sp;
     char  copypath[64*1024];
+
 
     strcpy(copypath, path);
 
@@ -366,8 +377,7 @@ void LinkHostFxr(const char *manifestDir)
         return;       
     }
 
-
-    sprintf(buffer, "%s/%s", manifestDir, q);
+    sprintf(buffer, "%s%s", manifestDir, q);
     CreateDirTreeForFile(buffer);
     CreateLinkIfNeeded(p->Path, buffer);
 }

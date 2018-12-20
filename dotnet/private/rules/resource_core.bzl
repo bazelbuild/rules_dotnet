@@ -28,7 +28,7 @@ core_resource = rule(
         # source files for this target.
         "src": attr.label(allow_files = True, mandatory = True),
         "identifier": attr.string(),
-        "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
     executable = False,

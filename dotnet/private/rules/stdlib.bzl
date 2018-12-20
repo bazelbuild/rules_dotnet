@@ -9,12 +9,15 @@ load(
 
 def _stdlib_impl(ctx):
     dotnet = dotnet_context(ctx)
-    name = ctx.label.name
+    if ctx.attr.dll == "":
+        name = ctx.label.name
+    else:
+        name = ctx.attr.dll
 
     if dotnet.stdlib_byname == None:
         library = dotnet.new_library(dotnet = dotnet)
         return [library]
-
+    
     result = dotnet.stdlib_byname(name = name, shared = dotnet.shared, lib = dotnet.lib, libVersion = dotnet.libVersion)
 
     deps = ctx.attr.deps
@@ -44,9 +47,10 @@ def _stdlib_impl(ctx):
 dotnet_stdlib = rule(
     _stdlib_impl,
     attrs = {
+        "dll": attr.string(),
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "data": attr.label_list(allow_files = True),
-        "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
     executable = False,
@@ -55,9 +59,10 @@ dotnet_stdlib = rule(
 core_stdlib = rule(
     _stdlib_impl,
     attrs = {
+        "dll": attr.string(),
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "data": attr.label_list(allow_files = True),
-        "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
     executable = False,
@@ -66,9 +71,10 @@ core_stdlib = rule(
 net_stdlib = rule(
     _stdlib_impl,
     attrs = {
+        "dll": attr.string(),
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "data": attr.label_list(allow_files = True),
-        "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = False,

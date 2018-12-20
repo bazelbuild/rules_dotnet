@@ -43,7 +43,7 @@ def _net_download_sdk_impl(ctx):
 
     # Generate file with target framework attribute
     content = """
-    [assembly:TargetFramework("{}")]
+    [assembly:System.Runtime.Versioning.TargetFramework("{}")]
     """.format(ctx.attr.targetFrameworkString)
     ctx.file("targetframework.cs", content)
 

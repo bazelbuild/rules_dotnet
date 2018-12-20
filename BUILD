@@ -27,6 +27,7 @@ exports_files(["AUTHORS"])
     shared = "@net_sdk_{}//:lib".format(framework),
     host = "@net_sdk_{}//:mcs_bin".format(framework),
     libVersion = DOTNET_NET_FRAMEWORKS[framework][3], 
+    extra_srcs = ["@net_sdk_{}//:tagetframework".format(framework)],
     visibility = ["//visibility:public"],
 ) for framework in DOTNET_NET_FRAMEWORKS
 ]

@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_binary", "dotnet_binary", "net_binary")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_binary", "dotnet_binary", "net_binary", "DOTNET_NET_FRAMEWORKS")
 
 dotnet_binary(
     name = "hello_tool",
@@ -25,15 +25,16 @@ core_binary(
     ],
 )
 
-net_binary(
-    name = "hello_tool_net",
+[net_binary(
+    name = "hello_tool_net_{}".format(framework),
     srcs = [
         "MyTool.cs",
     ],
     deps = [
-        "//tests/examples/example_lib:MyClass-net",
+        "//tests/examples/example_lib:MyClass-net_{}".format(framework),
     ],
-)
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
+) for framework in DOTNET_NET_FRAMEWORKS]
 
 genrule(
     name = "hello_single_output",

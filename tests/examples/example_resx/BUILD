@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_resx", "core_xunit_test", "dotnet_resx", "dotnet_xunit_test", "net_resx", "net_xunit_test")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_resx", "core_xunit_test", "dotnet_resx", "dotnet_xunit_test", "net_resx", "net_xunit_test", "DOTNET_NET_FRAMEWORKS")
 
 core_resx(
     name = "core.resx",
@@ -24,19 +24,19 @@ net_resx(
     identifier = "example_resx.Resources.resources",
 )
 
-net_xunit_test(
-    name = "net.example_resx",
+[net_xunit_test(
+    name = "net.example_resx_{}".format(framework),
     size = "small",
     srcs = glob(["*.cs"]),
     resources = [":net.resx"],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.runtime.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:{}_system.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:{}_system.runtime.dll".format(framework),
         "@xunit.assert//:net",
         "@xunit.extensibility.core//:net",
         "@xunit.extensibility.execution//:net",
     ],
-)
+) for framework in DOTNET_NET_FRAMEWORKS]
 
 dotnet_resx(
     name = "mono.resx",

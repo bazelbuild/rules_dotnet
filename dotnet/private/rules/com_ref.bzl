@@ -63,7 +63,7 @@ net_com_library = rule(
         "platform": attr.string(),
         "namespace": attr.string(),
         "out": attr.string(),
-        "_dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = False,
