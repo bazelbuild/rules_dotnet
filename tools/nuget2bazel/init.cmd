@@ -16,6 +16,6 @@ set nuget2bazel=dotnet run -- add -s -p c:/rules_dotnet
 %nuget2bazel% nuget.projectmodel 4.8.0
 %nuget2bazel% nuget.commands 4.8.0
 %nuget2bazel% nuget.packagemanagement 4.8.0
-%nuget2bazel% xunit.runner.console 2.4.1
+%nuget2bazel% -m xunit.console xunit.runner.console 2.4.1
 %nuget2bazel% xunit.assert 2.4.1
 %nuget2bazel% xunit 2.4.1
