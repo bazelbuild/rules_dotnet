@@ -54,16 +54,16 @@ namespace nuget2bazel
             result.PackageIdentity = new PackageIdentity(package, new NuGetVersion(version));
             result.Sha256 = RequireAssignment(Token.SHA256);
             result.CoreLib= RequireAssignment(Token.CORE_LIB);
-            result.NetLib = RequireAssignment(Token.NET_LIB);
+            result.NetLib = RequireDictionary(Token.NET_LIB);
             result.MonoLib= RequireAssignment(Token.MONO_LIB);
             result.CoreTool = RequireAssignment(Token.CORE_TOOL);
-            result.NetTool = RequireAssignment(Token.NET_TOOL);
+            result.NetTool = RequireDictionary(Token.NET_TOOL);
             result.MonoTool = RequireAssignment(Token.MONO_TOOL);
             result.Core_Deps = RequireArray(Token.CORE_DEPS);
-            result.Net_Deps = RequireArray(Token.NET_DEPS);
+            result.Net_Deps = RequireDictionaryList(Token.NET_DEPS);
             result.Mono_Deps = RequireArray(Token.MONO_DEPS);
             result.Core_Files = RequireArray(Token.CORE_FILES);
-            result.Net_Files = RequireArray(Token.NET_FILES);
+            result.Net_Files = RequireDictionaryList(Token.NET_FILES);
             result.Mono_Files = RequireArray(Token.MONO_FILES);
             RequireToken(Token.RPAR);
             return result;
@@ -89,7 +89,7 @@ namespace nuget2bazel
             return RequireToken(Token.STRING);
         }
 
-        private IEnumerable<string> RequireArray(Token required)
+        private IDictionary<string, string> RequireDictionary(Token required)
         {
             var tok = PeekToken();
             if (tok.Item1 != required)
@@ -97,10 +97,68 @@ namespace nuget2bazel
 
             RequireToken(required);
             RequireToken(Token.EQUAL);
-            RequireToken(Token.LBRACKET);
+            RequireToken(Token.LCURLY);
 
-            var result = new List<string>();
+            var result = new Dictionary<string, string>();
             for (;;)
+            {
+                var (token, value) = GetToken();
+                if (token == Token.STRING)
+                {
+                    RequireToken(Token.COLON);
+                    var (token2, value2) = GetToken();
+                    if (token2 != Token.STRING)
+                        throw new InvalidOperationException($"Unexpected token {token2}, {value2}. Expected Token.STRING");
+
+                    result.Add(value, value2);
+                    continue;
+                }
+
+                if (token == Token.RCURLY)
+                    break;
+            }
+
+            return result;
+        }
+
+        private IDictionary<string, IEnumerable<string>> RequireDictionaryList(Token required)
+        {
+            var tok = PeekToken();
+            if (tok.Item1 != required)
+                return null;
+
+            RequireToken(required);
+            RequireToken(Token.EQUAL);
+            RequireToken(Token.LCURLY);
+
+            var result = new Dictionary<string, IEnumerable<string>>();
+            for (; ; )
+            {
+                var (token, value) = GetToken();
+                if (token == Token.STRING)
+                {
+                    RequireToken(Token.COLON);
+                    var (token2, value2) = GetToken();
+                    if (token2 != Token.LBRACKET)
+                        throw new InvalidOperationException($"Unexpected token {token2}, {value2}. Expected Token.LBRACKET");
+
+                    var val = GetArrayValue();
+
+                    result.Add(value, val);
+                    continue;
+                }
+
+                if (token == Token.RCURLY)
+                    break;
+            }
+
+            return result;
+        }
+
+        private IEnumerable<string> GetArrayValue()
+        {
+            var result = new List<string>();
+            for (; ; )
             {
                 var (token, value) = GetToken();
                 if (token == Token.STRING)
@@ -114,6 +172,19 @@ namespace nuget2bazel
             }
 
             return result;
+        }
+
+        private IEnumerable<string> RequireArray(Token required)
+        {
+            var tok = PeekToken();
+            if (tok.Item1 != required)
+                return null;
+
+            RequireToken(required);
+            RequireToken(Token.EQUAL);
+            RequireToken(Token.LBRACKET);
+
+            return GetArrayValue();
         }
 
         enum Token
@@ -142,7 +213,10 @@ namespace nuget2bazel
             STRING,
             EOF,
             ERROR,
-            EQUAL
+            EQUAL,
+            COLON,
+            LCURLY,
+            RCURLY,
         }
 
         private (Token, string) GetToken()
@@ -168,6 +242,15 @@ namespace nuget2bazel
                 case '=':
                     ++_pos;
                     return (Token.EQUAL, null);
+                case ':':
+                    ++_pos;
+                    return (Token.COLON, null);
+                case '{':
+                    ++_pos;
+                    return (Token.LCURLY, null);
+                case '}':
+                    ++_pos;
+                    return (Token.RCURLY, null);
             }
 
             if (_toparse[_pos] == '\"')

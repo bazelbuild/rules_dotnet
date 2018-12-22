@@ -199,7 +199,7 @@ static void do_mkdir(const char *path)
         if (error == ERROR_ALREADY_EXISTS) 
             return;
         printf("Error %d creating directory for %s\n", error, path);
-        exit(-1);        
+        /*exit(-1); */
     }
 }
 
@@ -226,7 +226,7 @@ static void do_mkdir(const char *path)
 
     if (status != 0) {
         printf("Error %d creating directory for %s\n", errno, path);
-        //exit(-1);        
+        /*exit(-1);  */
     }
 }
 #endif

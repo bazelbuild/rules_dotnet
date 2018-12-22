@@ -15,7 +15,7 @@ dotnet_binary(
     ],
     deps = [
         "//tests/examples/example_lib:MyClass",
-        "@npgsql//:mono",
+        "@newtonsoft.json//:mono",
     ],
 )
 
@@ -29,7 +29,7 @@ core_binary(
         "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.console.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.private.corelib.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.dll",
-        "@npgsql//:core",
+        "@newtonsoft.json//:core",
     ],
 )
 
@@ -40,8 +40,9 @@ core_binary(
     ],
     deps = [
         "//tests/examples/example_lib:MyClass-net_{}".format(framework),
-        "@npgsql//:net",
+        "@newtonsoft.json//:{}_net".format(framework),
     ],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
 ) for framework in DOTNET_NET_FRAMEWORKS]
 
 net_com_library(
