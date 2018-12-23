@@ -33,63 +33,177 @@ dotnet_import_library(
 )
 
 nuget_package(
-    name = "nuget.frameworks",
-    package = "nuget.frameworks",
-    version = "4.8.0",
-    core_lib = "lib/netstandard1.6/NuGet.Frameworks.dll",
-    net_lib = "lib/net46/NuGet.Frameworks.dll",
-    mono_lib = "lib/net46/NuGet.Frameworks.dll",
-    core_deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:netstandard.library.dll",
-    ],
-    net_deps = [
-    ],
-    mono_deps = [
-    ],
-    core_files = [
-        "lib/netstandard1.6/NuGet.Frameworks.dll",
-        "lib/netstandard1.6/NuGet.Frameworks.xml",
-    ],
-    net_files = [
-        "lib/net46/NuGet.Frameworks.dll",
-        "lib/net46/NuGet.Frameworks.xml",
-    ],
-    mono_files = [
-        "lib/net46/NuGet.Frameworks.dll",
-        "lib/net46/NuGet.Frameworks.xml",
-    ],
+   name = "nuget.frameworks",
+   package = "nuget.frameworks",
+   version = "4.8.0",
+   sha256 = "",
+   core_lib = "lib/netstandard1.6/NuGet.Frameworks.dll",
+   net_lib = {
+       "net45": "lib/net40/NuGet.Frameworks.dll",
+       "net451": "lib/net40/NuGet.Frameworks.dll",
+       "net452": "lib/net40/NuGet.Frameworks.dll",
+       "net46": "lib/net46/NuGet.Frameworks.dll",
+       "net461": "lib/net46/NuGet.Frameworks.dll",
+       "net462": "lib/net46/NuGet.Frameworks.dll",
+       "net47": "lib/net46/NuGet.Frameworks.dll",
+       "net471": "lib/net46/NuGet.Frameworks.dll",
+       "net472": "lib/net46/NuGet.Frameworks.dll",
+       "netstandard1.6": "lib/netstandard1.6/NuGet.Frameworks.dll",
+       "netstandard2.0": "lib/netstandard1.6/NuGet.Frameworks.dll",
+   },
+   mono_lib = "lib/net46/NuGet.Frameworks.dll",
+   core_deps = [
+       "@io_bazel_rules_dotnet//dotnet/stdlib.core:netstandard.library.dll",
+   ],
+   core_files = [
+       "lib/netstandard1.6/NuGet.Frameworks.dll",
+       "lib/netstandard1.6/NuGet.Frameworks.xml",
+   ],
+   net_files = {
+       "net45": [
+          "lib/net40/NuGet.Frameworks.dll",
+          "lib/net40/NuGet.Frameworks.xml",
+       ],
+       "net451": [
+          "lib/net40/NuGet.Frameworks.dll",
+          "lib/net40/NuGet.Frameworks.xml",
+       ],
+       "net452": [
+          "lib/net40/NuGet.Frameworks.dll",
+          "lib/net40/NuGet.Frameworks.xml",
+       ],
+       "net46": [
+          "lib/net46/NuGet.Frameworks.dll",
+          "lib/net46/NuGet.Frameworks.xml",
+       ],
+       "net461": [
+          "lib/net46/NuGet.Frameworks.dll",
+          "lib/net46/NuGet.Frameworks.xml",
+       ],
+       "net462": [
+          "lib/net46/NuGet.Frameworks.dll",
+          "lib/net46/NuGet.Frameworks.xml",
+       ],
+       "net47": [
+          "lib/net46/NuGet.Frameworks.dll",
+          "lib/net46/NuGet.Frameworks.xml",
+       ],
+       "net471": [
+          "lib/net46/NuGet.Frameworks.dll",
+          "lib/net46/NuGet.Frameworks.xml",
+       ],
+       "net472": [
+          "lib/net46/NuGet.Frameworks.dll",
+          "lib/net46/NuGet.Frameworks.xml",
+       ],
+       "netstandard1.6": [
+          "lib/netstandard1.6/NuGet.Frameworks.dll",
+          "lib/netstandard1.6/NuGet.Frameworks.xml",
+       ],
+       "netstandard2.0": [
+          "lib/netstandard1.6/NuGet.Frameworks.dll",
+          "lib/netstandard1.6/NuGet.Frameworks.xml",
+       ],
+   },
+   mono_files = [
+       "lib/net46/NuGet.Frameworks.dll",
+       "lib/net46/NuGet.Frameworks.xml",
+   ],
 )
 nuget_package(
-    name = "nuget.common",
-    package = "nuget.common",
-    version = "4.8.0",
-    core_lib = "lib/netstandard1.6/NuGet.Common.dll",
-    net_lib = "lib/net46/NuGet.Common.dll",
-    mono_lib = "lib/net46/NuGet.Common.dll",
-    core_deps = [
-        "@nuget.frameworks//:core",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:netstandard.library.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.diagnostics.process.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.threading.thread.dll",
-    ],
-    net_deps = [
-        "@nuget.frameworks//:net",
-    ],
-    mono_deps = [
-        "@nuget.frameworks//:mono",
-    ],
-    core_files = [
-        "lib/netstandard1.6/NuGet.Common.dll",
-        "lib/netstandard1.6/NuGet.Common.xml",
-    ],
-    net_files = [
-        "lib/net46/NuGet.Common.dll",
-        "lib/net46/NuGet.Common.xml",
-    ],
-    mono_files = [
-        "lib/net46/NuGet.Common.dll",
-        "lib/net46/NuGet.Common.xml",
-    ],
+   name = "nuget.common",
+   package = "nuget.common",
+   version = "4.8.0",
+   sha256 = "",
+   core_lib = "lib/netstandard1.6/NuGet.Common.dll",
+   net_lib = {
+       "net46": "lib/net46/NuGet.Common.dll",
+       "net461": "lib/net46/NuGet.Common.dll",
+       "net462": "lib/net46/NuGet.Common.dll",
+       "net47": "lib/net46/NuGet.Common.dll",
+       "net471": "lib/net46/NuGet.Common.dll",
+       "net472": "lib/net46/NuGet.Common.dll",
+       "netstandard1.6": "lib/netstandard1.6/NuGet.Common.dll",
+       "netstandard2.0": "lib/netstandard1.6/NuGet.Common.dll",
+   },
+   mono_lib = "lib/net46/NuGet.Common.dll",
+   core_deps = [
+       "@nuget.frameworks//:core",
+       "@io_bazel_rules_dotnet//dotnet/stdlib.core:netstandard.library.dll",
+       "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.diagnostics.process.dll",
+       "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.threading.thread.dll",
+   ],
+   net_deps = {
+       "net46": [
+          "@nuget.frameworks//:net46_net",
+       ],
+       "net461": [
+          "@nuget.frameworks//:net461_net",
+       ],
+       "net462": [
+          "@nuget.frameworks//:net462_net",
+       ],
+       "net47": [
+          "@nuget.frameworks//:net47_net",
+       ],
+       "net471": [
+          "@nuget.frameworks//:net471_net",
+       ],
+       "net472": [
+          "@nuget.frameworks//:net472_net",
+       ],
+       "netstandard1.6": [
+          "@nuget.frameworks//:netstandard1.6_net",
+       ],
+       "netstandard2.0": [
+          "@nuget.frameworks//:netstandard2.0_net",
+       ],
+   },
+   mono_deps = [
+       "@nuget.frameworks//:mono",
+   ],
+   core_files = [
+       "lib/netstandard1.6/NuGet.Common.dll",
+       "lib/netstandard1.6/NuGet.Common.xml",
+   ],
+   net_files = {
+       "net46": [
+          "lib/net46/NuGet.Common.dll",
+          "lib/net46/NuGet.Common.xml",
+       ],
+       "net461": [
+          "lib/net46/NuGet.Common.dll",
+          "lib/net46/NuGet.Common.xml",
+       ],
+       "net462": [
+          "lib/net46/NuGet.Common.dll",
+          "lib/net46/NuGet.Common.xml",
+       ],
+       "net47": [
+          "lib/net46/NuGet.Common.dll",
+          "lib/net46/NuGet.Common.xml",
+       ],
+       "net471": [
+          "lib/net46/NuGet.Common.dll",
+          "lib/net46/NuGet.Common.xml",
+       ],
+       "net472": [
+          "lib/net46/NuGet.Common.dll",
+          "lib/net46/NuGet.Common.xml",
+       ],
+       "netstandard1.6": [
+          "lib/netstandard1.6/NuGet.Common.dll",
+          "lib/netstandard1.6/NuGet.Common.xml",
+       ],
+       "netstandard2.0": [
+          "lib/netstandard1.6/NuGet.Common.dll",
+          "lib/netstandard1.6/NuGet.Common.xml",
+       ],
+   },
+   mono_files = [
+       "lib/net46/NuGet.Common.dll",
+       "lib/net46/NuGet.Common.xml",
+   ],
 )
 
 #

@@ -1692,10 +1692,8 @@ nuget_package(
    mono_tool = "tools/net472/xunit.console.exe",
    core_files = [
        "tools/netcoreapp2.0/xunit.abstractions.dll",
-       "tools/netcoreapp2.0/xunit.console.deps.json",
        "tools/netcoreapp2.0/xunit.console.dll",
        "tools/netcoreapp2.0/xunit.console.dll.config",
-       "tools/netcoreapp2.0/xunit.console.runtimeconfig.json",
        "tools/netcoreapp2.0/xunit.runner.reporters.netcoreapp10.dll",
        "tools/netcoreapp2.0/xunit.runner.utility.netcoreapp10.dll",
        "tools/netcoreapp2.0/xunit.runner.utility.netcoreapp10.xml",
