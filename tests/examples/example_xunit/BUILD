@@ -7,9 +7,8 @@ core_xunit_test(
         "MyTest.cs",
     ],
     deps = [
-        "@xunit.assert//:core",
-        "@xunit.extensibility.core//:core",
-        "@xunit.extensibility.execution//:core",
+        "@xunit//:xunit.core",
+        "@xunit_assert//:assert.xunit",
     ],
 )
 
