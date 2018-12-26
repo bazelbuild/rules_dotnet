@@ -92,69 +92,69 @@ namespace nuget2bazel
         {
             var sb = new StringBuilder();
             sb.Append($"nuget_package(\n");
-            sb.Append($"   name = \"{PackageIdentity.Id.ToLower()}\",\n");
-            sb.Append($"   package = \"{PackageIdentity.Id.ToLower()}\",\n");
-            sb.Append($"   version = \"{PackageIdentity.Version}\",\n");
-            sb.Append($"   sha256 = \"{Sha256}\",\n");
+            sb.Append($"    name = \"{PackageIdentity.Id.ToLower()}\",\n");
+            sb.Append($"    package = \"{PackageIdentity.Id.ToLower()}\",\n");
+            sb.Append($"    version = \"{PackageIdentity.Version}\",\n");
+            sb.Append($"    sha256 = \"{Sha256}\",\n");
             if (!String.IsNullOrEmpty(CoreLib))
-                sb.Append($"   core_lib = \"{CoreLib}\",\n");
+                sb.Append($"    core_lib = \"{CoreLib}\",\n");
             if (!String.IsNullOrEmpty(NetLib))
-                sb.Append($"   net_lib = \"{NetLib}\",\n");
+                sb.Append($"    net_lib = \"{NetLib}\",\n");
             if (!String.IsNullOrEmpty(MonoLib))
-                sb.Append($"   mono_lib = \"{MonoLib}\",\n");
+                sb.Append($"    mono_lib = \"{MonoLib}\",\n");
             if (!String.IsNullOrEmpty(CoreTool))
-                sb.Append($"   core_tool = \"{CoreTool}\",\n");
+                sb.Append($"    core_tool = \"{CoreTool}\",\n");
             if (!String.IsNullOrEmpty(NetTool))
-                sb.Append($"   net_tool = \"{NetTool}\",\n");
+                sb.Append($"    net_tool = \"{NetTool}\",\n");
             if (!String.IsNullOrEmpty(MonoTool))
-                sb.Append($"   mono_tool = \"{MonoTool}\",\n");
+                sb.Append($"    mono_tool = \"{MonoTool}\",\n");
 
             if (Core_Deps != null && Core_Deps.Any())
             {
-                sb.Append($"   core_deps = [\n");
+                sb.Append($"    core_deps = [\n");
                 foreach (var s in Core_Deps)
-                    sb.Append($"       \"{s}\",\n");
-                sb.Append($"   ],\n");
+                    sb.Append($"        \"{s}\",\n");
+                sb.Append($"    ],\n");
             }
 
             if (Net_Deps != null && Net_Deps.Any())
             {
-                sb.Append($"   net_deps = [\n");
+                sb.Append($"    net_deps = [\n");
                 foreach (var s in Net_Deps)
-                    sb.Append($"       \"{s}\",\n");
-                sb.Append($"   ],\n");
+                    sb.Append($"        \"{s}\",\n");
+                sb.Append($"    ],\n");
             }
 
             if (Mono_Deps != null && Mono_Deps.Any())
             {
-                sb.Append($"   mono_deps = [\n");
+                sb.Append($"    mono_deps = [\n");
                 foreach (var s in Mono_Deps)
-                    sb.Append($"       \"{s}\",\n");
-                sb.Append($"   ],\n");
+                    sb.Append($"        \"{s}\",\n");
+                sb.Append($"    ],\n");
             }
 
             if (Core_Files != null && Core_Files.Any())
             {
-                sb.Append($"   core_files = [\n");
+                sb.Append($"    core_files = [\n");
                 foreach (var s in Core_Files)
-                    sb.Append($"       \"{s}\",\n");
-                sb.Append($"   ],\n");
+                    sb.Append($"        \"{s}\",\n");
+                sb.Append($"    ],\n");
             }
 
             if (Net_Files != null && Net_Files.Any())
             {
-                sb.Append($"   net_files = [\n");
+                sb.Append($"    net_files = [\n");
                 foreach (var s in Net_Files)
-                    sb.Append($"       \"{s}\",\n");
-                sb.Append($"   ],\n");
+                    sb.Append($"        \"{s}\",\n");
+                sb.Append($"    ],\n");
             }
 
             if (Mono_Files != null && Mono_Files.Any())
             {
-                sb.Append($"   mono_files = [\n");
+                sb.Append($"    mono_files = [\n");
                 foreach (var s in Mono_Files)
-                    sb.Append($"       \"{s}\",\n");
-                sb.Append($"   ],\n");
+                    sb.Append($"        \"{s}\",\n");
+                sb.Append($"    ],\n");
             }
             sb.Append($")\n");
             return sb.ToString();
