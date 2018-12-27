@@ -33,7 +33,7 @@ jobs:
         bazel ^
         run ^
         -s ^
-        //tests/examples/example_binary:hello-net
+        //tests/examples/example_binary:hello-net_net472
       displayName: 'Run sample .net hello'
     - script: |
         bazel ^
