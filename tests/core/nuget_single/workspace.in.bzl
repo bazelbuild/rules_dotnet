@@ -6,7 +6,6 @@ dotnet_nuget_new(
     name = "npgsql",
     package = "Npgsql",
     version = "3.2.7",
-    sha256 = "683bbe42cd585f28beb23822a113db5731bce44020fd0af2ac827e642fe7e301",
     build_file_content = """
 package(default_visibility = [ "//visibility:public" ])
 load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_import_library")
@@ -37,7 +36,6 @@ nuget_package(
     name = "nuget.frameworks",
     package = "nuget.frameworks",
     version = "4.8.0",
-    sha256 = "0228601ad2becf5ec3825882f556fdd821e2f470e504a659acdeabc908ce9060",
     core_lib = "lib/netstandard1.6/NuGet.Frameworks.dll",
     net_lib = "lib/net46/NuGet.Frameworks.dll",
     mono_lib = "lib/net46/NuGet.Frameworks.dll",
