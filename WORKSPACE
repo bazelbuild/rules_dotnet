@@ -3,6 +3,8 @@ workspace(name = "io_bazel_rules_dotnet")
 load("//dotnet:defs.bzl", "dotnet_register_toolchains", "net_register_toolchains", "dotnet_repositories", 
         "dotnet_nuget_new", "net_gac4", "vs2017_ref_net", "nuget_package", "DOTNET_NET_FRAMEWORKS")
 
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
 dotnet_repositories()
 dotnet_register_toolchains("host")
 
@@ -16,6 +18,34 @@ net_gac4(
   version = "4.0.0.0",
   token = "31bf3856ad364e35"
 )
+
+http_archive(
+    name = "xunit_abstractions",
+    build_file = "//3rd_party:abstractions.xunit/repo.bzl",
+    urls = ["https://github.com/xunit/abstractions.xunit/archive/2.0.1.tar.gz"]
+)
+
+http_archive(
+    name = "xunit_assert",
+    build_file = "//3rd_party:assert.xunit/repo.bzl",
+    urls = ["https://github.com/xunit/assert.xunit/archive/2.4.1.tar.gz"],
+    strip_prefix="assert.xunit-2.4.1",
+)
+
+http_archive(
+    name = "testfx",
+    build_file = "//3rd_party:testfx/repo.bzl",
+    urls = ["https://github.com/Microsoft/testfx/archive/1.4.0.tar.gz"],
+    strip_prefix="testfx-1.4.0",
+)
+
+http_archive(
+    name = "xunit",
+    build_file = "//3rd_party:xunit/repo.bzl",
+    urls = ["https://github.com/xunit/xunit/archive/2.4.1.tar.gz"],
+    strip_prefix="xunit-2.4.1",
+)
+
 
 # The rule is left as an example. It is commented out, because our CI server doesn't have VS2017 installed
 # vs2017_ref_net(name = "vs2017_ref")
@@ -1679,6 +1709,17 @@ nuget_package(
    package = "xunit.runner.console",
    version = "2.4.1",
    sha256 = "",
+   core_lib = "tools/netcoreapp2.0/xunit.abstractions.dll",
+   net_lib = {
+       "net452": "tools/net452/xunit.abstractions.dll",
+       "net46": "tools/net46/xunit.abstractions.dll",
+       "net461": "tools/net461/xunit.abstractions.dll",
+       "net462": "tools/net462/xunit.abstractions.dll",
+       "net47": "tools/net47/xunit.abstractions.dll",
+       "net471": "tools/net471/xunit.abstractions.dll",
+       "net472": "tools/net472/xunit.abstractions.dll",
+   },
+   mono_lib = "tools/net472/xunit.abstractions.dll",
    core_tool = "tools/netcoreapp2.0/xunit.console.dll",
    net_tool = {
        "net452": "tools/net452/xunit.console.exe",
@@ -1692,8 +1733,10 @@ nuget_package(
    mono_tool = "tools/net472/xunit.console.exe",
    core_files = [
        "tools/netcoreapp2.0/xunit.abstractions.dll",
+       "tools/netcoreapp2.0/xunit.console.deps.json",
        "tools/netcoreapp2.0/xunit.console.dll",
        "tools/netcoreapp2.0/xunit.console.dll.config",
+       "tools/netcoreapp2.0/xunit.console.runtimeconfig.json",
        "tools/netcoreapp2.0/xunit.runner.reporters.netcoreapp10.dll",
        "tools/netcoreapp2.0/xunit.runner.utility.netcoreapp10.dll",
        "tools/netcoreapp2.0/xunit.runner.utility.netcoreapp10.xml",

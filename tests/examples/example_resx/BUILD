@@ -12,9 +12,8 @@ core_xunit_test(
     srcs = glob(["*.cs"]),
     resources = [":core.resx"],
     deps = [
-        "@xunit.assert//:core",
-        "@xunit.extensibility.core//:core",
-        "@xunit.extensibility.execution//:core",
+        "@xunit_assert//:assert.xunit",
+        "@xunit//:xunit.core",
     ],
 )
 

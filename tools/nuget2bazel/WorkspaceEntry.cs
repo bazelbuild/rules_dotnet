@@ -21,9 +21,8 @@ namespace nuget2bazel
         }
         public WorkspaceEntry(PackageIdentity identity, string sha256, IEnumerable<PackageDependencyGroup> deps,
             IEnumerable<FrameworkSpecificGroup> libs, IEnumerable<FrameworkSpecificGroup> tools, IEnumerable<FrameworkSpecificGroup> references,
-            string mainFile, bool skipSHA)
+            string mainFile)
         {
-            _skipSha = skipSHA;
             var netFrameworkTFMs = new string[]
             {
                 "net45", "net451", "net452", "net46", "net461", "net462", "net47", "net471", "net472", "netstandard1.0",
@@ -159,8 +158,13 @@ namespace nuget2bazel
                 sb.Append($"    sha256 = \"{Sha256}\",\n");
             if (!String.IsNullOrEmpty(CoreLib))
                 sb.Append($"    core_lib = \"{CoreLib}\",\n");
-            if (!String.IsNullOrEmpty(NetLib))
-                sb.Append($"    net_lib = \"{NetLib}\",\n");
+            if (NetLib != null && NetLib.Any())
+            {
+                sb.Append("    net_lib = {\n");
+                foreach (var pair in NetLib)
+                    sb.Append($"        \"{pair.Key}\": \"{pair.Value}\",\n");
+                sb.Append("    },\n");
+            }
             if (!String.IsNullOrEmpty(MonoLib))
                 sb.Append($"    mono_lib = \"{MonoLib}\",\n");
             if (!String.IsNullOrEmpty(CoreTool))

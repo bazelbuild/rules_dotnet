@@ -93,7 +93,7 @@ static void CreateLinkIfNeeded(const char* target, const char *toCreate)
         error = GetLastError();
         if (error == ERROR_ALREADY_EXISTS) 
         {
-            printf("%s does exist after unlink. Ignoring error. \n", toCreate);
+            /*printf("%s does exist after unlink. Ignoring error. \n", toCreate);*/
             return;
         }
     }
@@ -198,8 +198,8 @@ static void do_mkdir(const char *path)
         error = GetLastError();
         if (error == ERROR_ALREADY_EXISTS) 
             return;
-        printf("Error %d creating directory for %s\n", error, path);
-        /*exit(-1); */
+        /*printf("Error %d creating directory for %s\n", error, path);
+        exit(-1); */
     }
 }
 
@@ -225,8 +225,8 @@ static void do_mkdir(const char *path)
     }
 
     if (status != 0) {
-        printf("Error %d creating directory for %s\n", errno, path);
-        /*exit(-1);  */
+        /*printf("Error %d creating directory for %s\n", errno, path);
+        exit(-1);  */
     }
 }
 #endif
