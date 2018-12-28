@@ -5,6 +5,7 @@ load(
     "net_binary",
     "net_com_library",
     "DOTNET_NET_FRAMEWORKS",
+    "DOTNET_CORE_FRAMEWORKS",
 )
 
 dotnet_binary(
@@ -19,19 +20,21 @@ dotnet_binary(
     ],
 )
 
-core_binary(
-    name = "hello-core",
+[core_binary(
+    name = "{}_hello-core".format(framework),
     srcs = [
         "Program.cs",
     ],
     deps = [
-        "//tests/examples/example_lib:MyClass-core",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.console.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.private.corelib.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.dll",
+        "//tests/examples/example_lib:{}_MyClass-core".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.console.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.private.corelib.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.runtime.dll".format(framework),
         "@newtonsoft.json//:core",
     ],
-)
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+    native_deps = "@core_sdk_{}//:native_deps".format(framework),
+) for framework in DOTNET_CORE_FRAMEWORKS]
 
 [net_binary(
     name = "hello-net_{}".format(framework),

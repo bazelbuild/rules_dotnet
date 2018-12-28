@@ -273,7 +273,7 @@ def _unit_test(ctx):
         files += [launcher]
     if dotnet.runner != None:
         files += [dotnet.runner]
-    files += ctx.attr._manifest_prep.files.to_list() + ctx.attr._native_deps.files.to_list() + ctx.attr._xslt.files.to_list()
+    files += ctx.attr._manifest_prep.files.to_list() + ctx.attr.native_deps.files.to_list() + ctx.attr._xslt.files.to_list()
 
     runfiles = ctx.runfiles(files = files, transitive_files = library.runfiles)
     test_launcher_runfiles = ctx.runfiles(files = [ctx.attr.testlauncher[DotnetLibrary].result], transitive_files = ctx.attr.testlauncher[DotnetLibrary].runfiles)
@@ -300,7 +300,7 @@ dotnet_nunit_test = rule(
         "data": attr.label_list(),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
-        "_native_deps": attr.label(default = Label("@dotnet_sdk//:native_deps")),
+        "native_deps": attr.label(default = Label("@dotnet_sdk//:native_deps")),
         "testlauncher": attr.label(default = "@nunit2//:nunit-console-runner-exe", providers = [DotnetLibrary]),
         "_template": attr.string(default = _TEMPLATE_NUNIT_MONO),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
@@ -322,7 +322,7 @@ net_nunit_test = rule(
         "data": attr.label_list(),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
-        "_native_deps": attr.label(default = Label("@net_sdk//:native_deps")),
+        "native_deps": attr.label(default = Label("@net_sdk//:native_deps")),
         "testlauncher": attr.label(default = "@nunit2//:net.nunit-console-runner-exe", providers = [DotnetLibrary]),
         "_template": attr.string(default = _TEMPLATE_NUNIT_NET),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
@@ -344,7 +344,7 @@ net_nunit3_test = rule(
         "data": attr.label_list(),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
-        "_native_deps": attr.label(default = Label("@net_sdk//:native_deps")),
+        "native_deps": attr.label(default = Label("@net_sdk//:native_deps")),
         "testlauncher": attr.label(default = "@nunit3_consolerunner//:nunit3.console.exe", providers = [DotnetLibrary]),
         "_template": attr.string(default = _TEMPLATE_NUNIT3_NET),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
@@ -366,7 +366,7 @@ core_xunit_test = rule(
         "data": attr.label_list(),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
-        "_native_deps": attr.label(default = Label("@core_sdk//:native_deps")),
+        "native_deps": attr.label(default = Label("@core_sdk//:native_deps")),
         "testlauncher": attr.label(default = "@xunit//:xunit.console", providers = [DotnetLibrary]),
         "_template": attr.string(default = _TEMPLATE_XUNIT_CORE),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
@@ -388,7 +388,7 @@ net_xunit_test = rule(
         "data": attr.label_list(),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
-        "_native_deps": attr.label(default = Label("@net_sdk//:native_deps")),
+        "native_deps": attr.label(default = Label("@net_sdk//:native_deps")),
         "testlauncher": attr.label(default = "@xunit.runner.console//:net472_net_tool", providers = [DotnetLibrary]),
         "_template": attr.string(default = _TEMPLATE_XUNIT_NET),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
@@ -410,7 +410,7 @@ dotnet_xunit_test = rule(
         "data": attr.label_list(),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
-        "_native_deps": attr.label(default = Label("@dotnet_sdk//:native_deps")),
+        "native_deps": attr.label(default = Label("@dotnet_sdk//:native_deps")),
         "testlauncher": attr.label(default = "@xunit.runner.console//:mono_tool", providers = [DotnetLibrary]),
         "_template": attr.string(default = _TEMPLATE_XUNIT_MONO),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),

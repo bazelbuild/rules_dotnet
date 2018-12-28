@@ -140,7 +140,7 @@ def _binary_impl(ctx):
         runner = [dotnet.runner]
     else:
         runner = []
-    runfiles = ctx.runfiles(files = [launcher] + ctx.attr._manifest_prep.files.to_list() + runner + ctx.attr._native_deps.files.to_list(), transitive_files = executable.runfiles)
+    runfiles = ctx.runfiles(files = [launcher] + ctx.attr._manifest_prep.files.to_list() + runner + ctx.attr.native_deps.files.to_list(), transitive_files = executable.runfiles)
 
     return [
         executable,
@@ -164,7 +164,7 @@ dotnet_binary = rule(
         "keyfile": attr.label(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
-        "_native_deps": attr.label(default = Label("@dotnet_sdk//:native_deps")),
+        "native_deps": attr.label(default = Label("@dotnet_sdk//:native_deps")),
         "_template": attr.string(default = _TEMPLATE_MONO),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
@@ -183,7 +183,7 @@ core_binary = rule(
         "data": attr.label_list(allow_files = True),
         "keyfile": attr.label(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
-        "_native_deps": attr.label(default = Label("@core_sdk//:native_deps")),
+        "native_deps": attr.label(default = Label("@core_sdk//:native_deps")),
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
         "_template": attr.string(default = _TEMPLATE_CORE),
     },
@@ -203,7 +203,7 @@ net_binary = rule(
         "data": attr.label_list(),
         "keyfile": attr.label(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data_net472")),
-        "_native_deps": attr.label(default = Label("@net_sdk//:native_deps")),
+        "native_deps": attr.label(default = Label("@net_sdk//:native_deps")),
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
         "_template": attr.string(default = _TEMPLATE_NET),
     },

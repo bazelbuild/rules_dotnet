@@ -1,21 +1,27 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_resx", "core_xunit_test", "dotnet_resx", "dotnet_xunit_test", "net_resx", "net_xunit_test", "DOTNET_NET_FRAMEWORKS")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_resx", "core_xunit_test", "dotnet_resx", "dotnet_xunit_test", "net_resx", "net_xunit_test", 
+        "DOTNET_NET_FRAMEWORKS", "DOTNET_CORE_FRAMEWORKS")
 
-core_resx(
-    name = "core.resx",
+[core_resx(
+    name = "{}_core.resx".format(framework),
     src = "Resources.resx",
     identifier = "example_resx.Resources.resources",
-)
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+    simpleresgen  ="@io_bazel_rules_dotnet//tools/simpleresgen:{}_simpleresgen".format(framework),
+) for framework in DOTNET_CORE_FRAMEWORKS]
 
-core_xunit_test(
-    name = "example_resx",
+[core_xunit_test(
+    name = "{}_example_resx".format(framework),
     size = "small",
     srcs = glob(["*.cs"]),
-    resources = [":core.resx"],
+    resources = [":{}_core.resx".format(framework)],
     deps = [
-        "@xunit_assert//:assert.xunit",
-        "@xunit//:xunit.core",
+        "@xunit_assert//:{}_assert.xunit".format(framework),
+        "@xunit//:{}_xunit.core".format(framework),
     ],
-)
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+    native_deps = "@core_sdk_{}//:native_deps".format(framework),
+    testlauncher = "@xunit//:{}_xunit.console".format(framework),
+) for framework in DOTNET_CORE_FRAMEWORKS]
 
 net_resx(
     name = "net.resx",

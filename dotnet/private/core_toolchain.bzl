@@ -56,7 +56,7 @@ def _get_dotnet_stdlib(context_data):
         if basename != "mscorlib.dll":
             continue
         return f
-    fail("Could not find mscorlib in core_sdk (lib, %s)" % context_data._libVersion)
+    fail("Could not find mscorlib in core_sdk (lib, %s)" % context_data._shared)
 
 def _get_dotnet_stdlib_byname(shared, lib, libVersion, name):
     lname = name.lower()

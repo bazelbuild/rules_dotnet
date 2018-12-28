@@ -1,23 +1,25 @@
 package(default_visibility = [ "//visibility:public" ])
 
+load(":macro.bzl", "multi_core_stdlib")
 load("@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl", "core_stdlib")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS")
 
-core_stdlib(name = "system.private.corelib.dll")
+multi_core_stdlib(name = "system.private.corelib.dll")
 
-core_stdlib(name = "microsoft.csharp.dll", deps = [
+multi_core_stdlib(name = "microsoft.csharp.dll", deps = [
       ":netstandard.dll",
     ]
 )
-core_stdlib(name = "microsoft.visualbasic.dll", deps = [
+multi_core_stdlib(name = "microsoft.visualbasic.dll", deps = [
       ":netstandard.dll",
     ]
 )
-core_stdlib(name = "microsoft.win32.primitives.dll", deps = [
+multi_core_stdlib(name = "microsoft.win32.primitives.dll", deps = [
       ":system.runtime.dll",
       ":system.runtime.interopservices.dll",
     ]
 )
-core_stdlib(name = "microsoft.win32.registry.dll", deps = [
+multi_core_stdlib(name = "microsoft.win32.registry.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -28,7 +30,7 @@ core_stdlib(name = "microsoft.win32.registry.dll", deps = [
       ":system.buffers.dll",
     ]
 )
-core_stdlib(name = "mscorlib.dll", deps = [
+multi_core_stdlib(name = "mscorlib.dll", deps = [
       ":system.private.corelib.dll",
       ":microsoft.win32.registry.dll",
       ":system.security.principal.windows.dll",
@@ -63,7 +65,7 @@ core_stdlib(name = "mscorlib.dll", deps = [
       ":system.threading.tasks.parallel.dll",
     ]
 )
-core_stdlib(name = "netstandard.dll", deps = [
+multi_core_stdlib(name = "netstandard.dll", deps = [
       ":system.runtime.dll",
       ":system.io.memorymappedfiles.dll",
       ":system.io.pipes.dll",
@@ -154,7 +156,7 @@ core_stdlib(name = "netstandard.dll", deps = [
 )
 alias(name = "netstandard.library.dll", actual=":netstandard.dll")
 
-core_stdlib(name = "sos.netcore.dll", deps = [
+multi_core_stdlib(name = "sos.netcore.dll", deps = [
       ":system.runtime.dll",
       ":system.runtime.interopservices.dll",
       ":system.reflection.metadata.dll",
@@ -166,15 +168,15 @@ core_stdlib(name = "sos.netcore.dll", deps = [
       ":system.io.filesystem.dll",
     ]
 )
-core_stdlib(name = "system.appcontext.dll", deps = [
+multi_core_stdlib(name = "system.appcontext.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.buffers.dll", deps = [
+multi_core_stdlib(name = "system.buffers.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.collections.concurrent.dll", deps = [
+multi_core_stdlib(name = "system.collections.concurrent.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.diagnostics.debug.dll",
@@ -185,12 +187,12 @@ core_stdlib(name = "system.collections.concurrent.dll", deps = [
       ":system.runtime.extensions.dll",
     ]
 )
-core_stdlib(name = "system.collections.dll", deps = [
+multi_core_stdlib(name = "system.collections.dll", deps = [
       ":system.private.corelib.dll",
       ":system.runtime.dll",
     ]
 )
-core_stdlib(name = "system.collections.immutable.dll", deps = [
+multi_core_stdlib(name = "system.collections.immutable.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.collections.dll",
@@ -201,7 +203,7 @@ core_stdlib(name = "system.collections.immutable.dll", deps = [
       ":system.runtime.extensions.dll",
     ]
 )
-core_stdlib(name = "system.collections.nongeneric.dll", deps = [
+multi_core_stdlib(name = "system.collections.nongeneric.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.extensions.dll",
@@ -209,31 +211,31 @@ core_stdlib(name = "system.collections.nongeneric.dll", deps = [
       ":system.threading.dll",
     ]
 )
-core_stdlib(name = "system.collections.specialized.dll", deps = [
+multi_core_stdlib(name = "system.collections.specialized.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.extensions.dll",
       ":system.threading.dll",
     ]
 )
-core_stdlib(name = "system.componentmodel.annotations.dll", deps = [
+multi_core_stdlib(name = "system.componentmodel.annotations.dll", deps = [
       ":netstandard.dll",
     ]
 )
-core_stdlib(name = "system.componentmodel.composition.dll", deps = [
-      ":system.runtime.dll",
-    ]
-)
-core_stdlib(name = "system.componentmodel.dataannotations.dll", deps = [
+# multi_core_stdlib(name = "system.componentmodel.composition.dll", deps = [
+#       ":system.runtime.dll",
+#     ]
+# )
+multi_core_stdlib(name = "system.componentmodel.dataannotations.dll", deps = [
       ":system.runtime.dll",
       ":system.componentmodel.annotations.dll",
     ]
 )
-core_stdlib(name = "system.componentmodel.dll", deps = [
+multi_core_stdlib(name = "system.componentmodel.dll", deps = [
       ":system.runtime.dll",
     ]
 )
-core_stdlib(name = "system.componentmodel.eventbasedasync.dll", deps = [
+multi_core_stdlib(name = "system.componentmodel.eventbasedasync.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.threading.dll",
@@ -241,7 +243,7 @@ core_stdlib(name = "system.componentmodel.eventbasedasync.dll", deps = [
       ":system.componentmodel.dll",
     ]
 )
-core_stdlib(name = "system.componentmodel.primitives.dll", deps = [
+multi_core_stdlib(name = "system.componentmodel.primitives.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.collections.nongeneric.dll",
@@ -250,7 +252,7 @@ core_stdlib(name = "system.componentmodel.primitives.dll", deps = [
       ":system.runtime.extensions.dll",
     ]
 )
-core_stdlib(name = "system.componentmodel.typeconverter.dll", deps = [
+multi_core_stdlib(name = "system.componentmodel.typeconverter.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -273,11 +275,11 @@ core_stdlib(name = "system.componentmodel.typeconverter.dll", deps = [
       ":system.text.regularexpressions.dll",
     ]
 )
-core_stdlib(name = "system.configuration.dll", deps = [
+multi_core_stdlib(name = "system.configuration.dll", deps = [
       ":system.runtime.dll",
     ]
 )
-core_stdlib(name = "system.console.dll", deps = [
+multi_core_stdlib(name = "system.console.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -287,7 +289,7 @@ core_stdlib(name = "system.console.dll", deps = [
       ":system.threading.tasks.dll",
     ]
 )
-core_stdlib(name = "system.core.dll", deps = [
+multi_core_stdlib(name = "system.core.dll", deps = [
       ":system.runtime.dll",
       ":system.io.memorymappedfiles.dll",
       ":system.security.cryptography.cng.dll",
@@ -305,7 +307,7 @@ core_stdlib(name = "system.core.dll", deps = [
       ":system.threading.tasks.dll",
     ]
 )
-core_stdlib(name = "system.data.common.dll", deps = [
+multi_core_stdlib(name = "system.data.common.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.extensions.dll",
@@ -330,20 +332,20 @@ core_stdlib(name = "system.data.common.dll", deps = [
       ":system.linq.expressions.dll",
     ]
 )
-core_stdlib(name = "system.data.dll", deps = [
+multi_core_stdlib(name = "system.data.dll", deps = [
       ":system.private.corelib.dll",
       ":system.data.common.dll",
     ]
 )
-core_stdlib(name = "system.diagnostics.contracts.dll", deps = [
+multi_core_stdlib(name = "system.diagnostics.contracts.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.diagnostics.debug.dll", deps = [
+multi_core_stdlib(name = "system.diagnostics.debug.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.diagnostics.diagnosticsource.dll", deps = [
+multi_core_stdlib(name = "system.diagnostics.diagnosticsource.dll", deps = [
       ":system.runtime.dll",
       ":system.runtime.extensions.dll",
       ":system.diagnostics.tracing.dll",
@@ -352,14 +354,14 @@ core_stdlib(name = "system.diagnostics.diagnosticsource.dll", deps = [
       ":system.diagnostics.debug.dll",
     ]
 )
-core_stdlib(name = "system.diagnostics.fileversioninfo.dll", deps = [
+multi_core_stdlib(name = "system.diagnostics.fileversioninfo.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
       ":system.io.filesystem.dll",
     ]
 )
-core_stdlib(name = "system.diagnostics.process.dll", deps = [
+multi_core_stdlib(name = "system.diagnostics.process.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -381,14 +383,14 @@ core_stdlib(name = "system.diagnostics.process.dll", deps = [
       ":system.io.filesystem.dll",
     ]
 )
-core_stdlib(name = "system.diagnostics.stacktrace.dll", deps = [
+multi_core_stdlib(name = "system.diagnostics.stacktrace.dll", deps = [
       ":system.private.corelib.dll",
       ":system.runtime.extensions.dll",
       ":system.reflection.metadata.dll",
       ":system.io.filesystem.dll",
     ]
 )
-core_stdlib(name = "system.diagnostics.textwritertracelistener.dll", deps = [
+multi_core_stdlib(name = "system.diagnostics.textwritertracelistener.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.extensions.dll",
@@ -397,11 +399,11 @@ core_stdlib(name = "system.diagnostics.textwritertracelistener.dll", deps = [
       ":system.threading.dll",
     ]
 )
-core_stdlib(name = "system.diagnostics.tools.dll", deps = [
+multi_core_stdlib(name = "system.diagnostics.tools.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.diagnostics.tracesource.dll", deps = [
+multi_core_stdlib(name = "system.diagnostics.tracesource.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -414,11 +416,11 @@ core_stdlib(name = "system.diagnostics.tracesource.dll", deps = [
       ":system.io.filesystem.dll",
     ]
 )
-core_stdlib(name = "system.diagnostics.tracing.dll", deps = [
+multi_core_stdlib(name = "system.diagnostics.tracing.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.dll", deps = [
+multi_core_stdlib(name = "system.dll", deps = [
       ":system.private.corelib.dll",
       ":system.collections.dll",
       ":system.io.compression.dll",
@@ -463,13 +465,13 @@ core_stdlib(name = "system.dll", deps = [
       ":system.threading.thread.dll",
     ]
 )
-core_stdlib(name = "system.drawing.dll", deps = [
+multi_core_stdlib(name = "system.drawing.dll", deps = [
       ":system.runtime.dll",
       ":system.drawing.primitives.dll",
       ":system.componentmodel.typeconverter.dll",
     ]
 )
-core_stdlib(name = "system.drawing.primitives.dll", deps = [
+multi_core_stdlib(name = "system.drawing.primitives.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.componentmodel.primitives.dll",
@@ -478,27 +480,27 @@ core_stdlib(name = "system.drawing.primitives.dll", deps = [
       ":system.runtime.extensions.dll",
     ]
 )
-core_stdlib(name = "system.dynamic.runtime.dll", deps = [
+multi_core_stdlib(name = "system.dynamic.runtime.dll", deps = [
       ":system.runtime.dll",
       ":system.linq.expressions.dll",
     ]
 )
-core_stdlib(name = "system.globalization.calendars.dll", deps = [
+multi_core_stdlib(name = "system.globalization.calendars.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.globalization.dll", deps = [
+multi_core_stdlib(name = "system.globalization.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.globalization.extensions.dll", deps = [
+multi_core_stdlib(name = "system.globalization.extensions.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
       ":system.runtime.extensions.dll",
     ]
 )
-core_stdlib(name = "system.io.compression.dll", deps = [
+multi_core_stdlib(name = "system.io.compression.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -510,30 +512,34 @@ core_stdlib(name = "system.io.compression.dll", deps = [
       ":system.buffers.dll",
     ]
 )
-core_stdlib(name = "system.io.compression.filesystem.dll", deps = [
+multi_core_stdlib(name = "system.io.compression.filesystem.dll", deps = [
       ":system.runtime.dll",
       ":system.io.compression.zipfile.dll",
     ]
 )
-core_stdlib(name = "system.io.compression.zipfile.dll", deps = [
-      ":system.runtime.dll",
-      ":system.resources.resourcemanager.dll",
-      ":system.runtime.extensions.dll",
-      ":system.io.compression.dll",
-      ":system.io.filesystem.dll",
-      ":system.buffers.dll",
+[core_stdlib(name = "{}_system.io.compression.zipfile.dll".format(framework), 
+    dll = "system.io.compression.zipfile.dll",
+    deps = [
+      ":{}_system.runtime.dll".format(framework),
+      ":{}_system.resources.resourcemanager.dll".format(framework),
+      ":{}_system.runtime.extensions.dll".format(framework),
+      ":{}_system.io.compression.dll".format(framework),
+      ":{}_system.io.filesystem.dll".format(framework),
+      ":{}_system.buffers.dll".format(framework),
     ],
     data = select({
-      "@bazel_tools//src/conditions:windows": ["@core_sdk//:shared/clrcompression.dll"],
+      "@bazel_tools//src/conditions:windows": ["@core_sdk_{}//:shared/clrcompression.dll".format(framework)],
       "//conditions:default": [],
     }),
-)
-core_stdlib(name = "system.io.dll", deps = [
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+) for framework in DOTNET_CORE_FRAMEWORKS]
+
+multi_core_stdlib(name = "system.io.dll", deps = [
       ":system.runtime.dll",
       ":system.runtime.extensions.dll",
     ]
 )
-core_stdlib(name = "system.io.filesystem.accesscontrol.dll", deps = [
+multi_core_stdlib(name = "system.io.filesystem.accesscontrol.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.extensions.dll",
@@ -543,7 +549,7 @@ core_stdlib(name = "system.io.filesystem.accesscontrol.dll", deps = [
       ":system.collections.nongeneric.dll",
     ]
 )
-core_stdlib(name = "system.io.filesystem.dll", deps = [
+multi_core_stdlib(name = "system.io.filesystem.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -556,7 +562,7 @@ core_stdlib(name = "system.io.filesystem.dll", deps = [
       ":system.buffers.dll",
     ]
 )
-core_stdlib(name = "system.io.filesystem.driveinfo.dll", deps = [
+multi_core_stdlib(name = "system.io.filesystem.driveinfo.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -565,11 +571,11 @@ core_stdlib(name = "system.io.filesystem.driveinfo.dll", deps = [
       ":system.threading.tasks.dll",
     ]
 )
-core_stdlib(name = "system.io.filesystem.primitives.dll", deps = [
+multi_core_stdlib(name = "system.io.filesystem.primitives.dll", deps = [
       ":system.runtime.dll",
     ]
 )
-core_stdlib(name = "system.io.filesystem.watcher.dll", deps = [
+multi_core_stdlib(name = "system.io.filesystem.watcher.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -582,7 +588,7 @@ core_stdlib(name = "system.io.filesystem.watcher.dll", deps = [
       ":microsoft.win32.primitives.dll",
     ]
 )
-core_stdlib(name = "system.io.isolatedstorage.dll", deps = [
+multi_core_stdlib(name = "system.io.isolatedstorage.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.extensions.dll",
@@ -596,7 +602,7 @@ core_stdlib(name = "system.io.isolatedstorage.dll", deps = [
       ":system.security.principal.windows.dll",
     ]
 )
-core_stdlib(name = "system.io.memorymappedfiles.dll", deps = [
+multi_core_stdlib(name = "system.io.memorymappedfiles.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -606,7 +612,7 @@ core_stdlib(name = "system.io.memorymappedfiles.dll", deps = [
       ":system.io.filesystem.dll",
     ]
 )
-core_stdlib(name = "system.io.pipes.dll", deps = [
+multi_core_stdlib(name = "system.io.pipes.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -617,11 +623,11 @@ core_stdlib(name = "system.io.pipes.dll", deps = [
       ":system.threading.tasks.dll",
     ]
 )
-core_stdlib(name = "system.io.unmanagedmemorystream.dll", deps = [
+multi_core_stdlib(name = "system.io.unmanagedmemorystream.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.linq.dll", deps = [
+multi_core_stdlib(name = "system.linq.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.collections.dll",
@@ -630,7 +636,7 @@ core_stdlib(name = "system.linq.dll", deps = [
       ":system.runtime.extensions.dll",
     ]
 )
-core_stdlib(name = "system.linq.expressions.dll", deps = [
+multi_core_stdlib(name = "system.linq.expressions.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.diagnostics.debug.dll",
@@ -646,7 +652,7 @@ core_stdlib(name = "system.linq.expressions.dll", deps = [
       ":system.linq.dll",
     ]
 )
-core_stdlib(name = "system.linq.parallel.dll", deps = [
+multi_core_stdlib(name = "system.linq.parallel.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.extensions.dll",
@@ -660,7 +666,7 @@ core_stdlib(name = "system.linq.parallel.dll", deps = [
       ":system.diagnostics.tracing.dll",
     ]
 )
-core_stdlib(name = "system.linq.queryable.dll", deps = [
+multi_core_stdlib(name = "system.linq.queryable.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.diagnostics.debug.dll",
@@ -669,7 +675,7 @@ core_stdlib(name = "system.linq.queryable.dll", deps = [
       ":system.linq.dll",
     ]
 )
-core_stdlib(name = "system.net.dll", deps = [
+multi_core_stdlib(name = "system.net.dll", deps = [
       ":system.runtime.dll",
       ":system.net.primitives.dll",
       ":system.net.webclient.dll",
@@ -679,7 +685,7 @@ core_stdlib(name = "system.net.dll", deps = [
       ":system.net.sockets.dll",
     ]
 )
-core_stdlib(name = "system.net.http.dll", deps = [
+multi_core_stdlib(name = "system.net.http.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -699,7 +705,7 @@ core_stdlib(name = "system.net.http.dll", deps = [
       ":system.io.compression.dll",
     ]
 )
-core_stdlib(name = "system.net.httplistener.dll", deps = [
+multi_core_stdlib(name = "system.net.httplistener.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -729,7 +735,7 @@ core_stdlib(name = "system.net.httplistener.dll", deps = [
       ":system.security.cryptography.primitives.dll",
     ]
 )
-core_stdlib(name = "system.net.mail.dll", deps = [
+multi_core_stdlib(name = "system.net.mail.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -754,7 +760,7 @@ core_stdlib(name = "system.net.mail.dll", deps = [
       ":system.io.filesystem.dll",
     ]
 )
-core_stdlib(name = "system.net.nameresolution.dll", deps = [
+multi_core_stdlib(name = "system.net.nameresolution.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -766,7 +772,7 @@ core_stdlib(name = "system.net.nameresolution.dll", deps = [
       ":system.security.principal.windows.dll",
     ]
 )
-core_stdlib(name = "system.net.networkinformation.dll", deps = [
+multi_core_stdlib(name = "system.net.networkinformation.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -782,7 +788,7 @@ core_stdlib(name = "system.net.networkinformation.dll", deps = [
       ":system.threading.threadpool.dll",
     ]
 )
-core_stdlib(name = "system.net.ping.dll", deps = [
+multi_core_stdlib(name = "system.net.ping.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -799,7 +805,7 @@ core_stdlib(name = "system.net.ping.dll", deps = [
       ":microsoft.win32.primitives.dll",
     ]
 )
-core_stdlib(name = "system.net.primitives.dll", deps = [
+multi_core_stdlib(name = "system.net.primitives.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -811,7 +817,7 @@ core_stdlib(name = "system.net.primitives.dll", deps = [
       ":system.threading.dll",
     ]
 )
-core_stdlib(name = "system.net.requests.dll", deps = [
+multi_core_stdlib(name = "system.net.requests.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -834,7 +840,7 @@ core_stdlib(name = "system.net.requests.dll", deps = [
       ":system.threading.thread.dll",
     ]
 )
-core_stdlib(name = "system.net.security.dll", deps = [
+multi_core_stdlib(name = "system.net.security.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -856,7 +862,7 @@ core_stdlib(name = "system.net.security.dll", deps = [
       ":system.security.claims.dll",
     ]
 )
-core_stdlib(name = "system.net.servicepoint.dll", deps = [
+multi_core_stdlib(name = "system.net.servicepoint.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.extensions.dll",
@@ -866,7 +872,7 @@ core_stdlib(name = "system.net.servicepoint.dll", deps = [
       ":system.net.security.dll",
     ]
 )
-core_stdlib(name = "system.net.sockets.dll", deps = [
+multi_core_stdlib(name = "system.net.sockets.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -884,7 +890,7 @@ core_stdlib(name = "system.net.sockets.dll", deps = [
       ":system.io.filesystem.dll",
     ]
 )
-core_stdlib(name = "system.net.webclient.dll", deps = [
+multi_core_stdlib(name = "system.net.webclient.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.extensions.dll",
@@ -900,7 +906,7 @@ core_stdlib(name = "system.net.webclient.dll", deps = [
       ":system.io.filesystem.dll",
     ]
 )
-core_stdlib(name = "system.net.webheadercollection.dll", deps = [
+multi_core_stdlib(name = "system.net.webheadercollection.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.extensions.dll",
@@ -908,7 +914,7 @@ core_stdlib(name = "system.net.webheadercollection.dll", deps = [
       ":system.diagnostics.tracing.dll",
     ]
 )
-core_stdlib(name = "system.net.webproxy.dll", deps = [
+multi_core_stdlib(name = "system.net.webproxy.dll", deps = [
       ":system.runtime.dll",
       ":system.runtime.extensions.dll",
       ":system.net.primitives.dll",
@@ -917,7 +923,7 @@ core_stdlib(name = "system.net.webproxy.dll", deps = [
       ":system.net.networkinformation.dll",
     ]
 )
-core_stdlib(name = "system.net.websockets.client.dll", deps = [
+multi_core_stdlib(name = "system.net.websockets.client.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -934,7 +940,7 @@ core_stdlib(name = "system.net.websockets.client.dll", deps = [
       ":system.threading.dll",
     ]
 )
-core_stdlib(name = "system.net.websockets.dll", deps = [
+multi_core_stdlib(name = "system.net.websockets.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -945,19 +951,19 @@ core_stdlib(name = "system.net.websockets.dll", deps = [
       ":system.runtime.extensions.dll",
     ]
 )
-core_stdlib(name = "system.numerics.dll", deps = [
+multi_core_stdlib(name = "system.numerics.dll", deps = [
       ":system.runtime.dll",
       ":system.runtime.numerics.dll",
       ":system.numerics.vectors.dll",
     ]
 )
-core_stdlib(name = "system.numerics.vectors.dll", deps = [
+multi_core_stdlib(name = "system.numerics.vectors.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.extensions.dll",
     ]
 )
-core_stdlib(name = "system.objectmodel.dll", deps = [
+multi_core_stdlib(name = "system.objectmodel.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.diagnostics.debug.dll",
@@ -965,7 +971,7 @@ core_stdlib(name = "system.objectmodel.dll", deps = [
       ":system.threading.dll",
     ]
 )
-core_stdlib(name = "system.private.datacontractserialization.dll", deps = [
+multi_core_stdlib(name = "system.private.datacontractserialization.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.extensions.dll",
@@ -988,11 +994,11 @@ core_stdlib(name = "system.private.datacontractserialization.dll", deps = [
       ":system.collections.specialized.dll",
     ]
 )
-core_stdlib(name = "system.private.uri.dll", deps = [
+multi_core_stdlib(name = "system.private.uri.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.private.xml.dll", deps = [
+multi_core_stdlib(name = "system.private.xml.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -1020,7 +1026,7 @@ core_stdlib(name = "system.private.xml.dll", deps = [
       ":system.console.dll",
     ]
 )
-core_stdlib(name = "system.private.xml.linq.dll", deps = [
+multi_core_stdlib(name = "system.private.xml.linq.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.private.xml.dll",
@@ -1033,7 +1039,7 @@ core_stdlib(name = "system.private.xml.linq.dll", deps = [
       ":system.linq.dll",
     ]
 )
-core_stdlib(name = "system.reflection.dispatchproxy.dll", deps = [
+multi_core_stdlib(name = "system.reflection.dispatchproxy.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.collections.dll",
@@ -1044,27 +1050,27 @@ core_stdlib(name = "system.reflection.dispatchproxy.dll", deps = [
       ":system.linq.dll",
     ]
 )
-core_stdlib(name = "system.reflection.dll", deps = [
+multi_core_stdlib(name = "system.reflection.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.reflection.emit.dll", deps = [
+multi_core_stdlib(name = "system.reflection.emit.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.reflection.emit.ilgeneration.dll", deps = [
+multi_core_stdlib(name = "system.reflection.emit.ilgeneration.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.reflection.emit.lightweight.dll", deps = [
+multi_core_stdlib(name = "system.reflection.emit.lightweight.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.reflection.extensions.dll", deps = [
+multi_core_stdlib(name = "system.reflection.extensions.dll", deps = [
       ":system.runtime.dll",
     ]
 )
-core_stdlib(name = "system.reflection.metadata.dll", deps = [
+multi_core_stdlib(name = "system.reflection.metadata.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -1079,83 +1085,83 @@ core_stdlib(name = "system.reflection.metadata.dll", deps = [
       ":system.buffers.dll",
     ]
 )
-core_stdlib(name = "system.reflection.primitives.dll", deps = [
+multi_core_stdlib(name = "system.reflection.primitives.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.reflection.typeextensions.dll", deps = [
+multi_core_stdlib(name = "system.reflection.typeextensions.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.resources.reader.dll", deps = [
+multi_core_stdlib(name = "system.resources.reader.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
     ]
 )
-core_stdlib(name = "system.resources.resourcemanager.dll", deps = [
+multi_core_stdlib(name = "system.resources.resourcemanager.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.resources.writer.dll", deps = [
+multi_core_stdlib(name = "system.resources.writer.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.extensions.dll",
       ":system.collections.dll",
     ]
 )
-core_stdlib(name = "system.runtime.compilerservices.visualc.dll", deps = [
+multi_core_stdlib(name = "system.runtime.compilerservices.visualc.dll", deps = [
       ":system.runtime.dll",
     ]
 )
-core_stdlib(name = "system.runtime.dll", deps = [
+multi_core_stdlib(name = "system.runtime.dll", deps = [
       ":system.private.corelib.dll",
       ":system.private.uri.dll",
       ":system.runtime.loader.dll",
     ]
 )
-core_stdlib(name = "system.runtime.extensions.dll", deps = [
+multi_core_stdlib(name = "system.runtime.extensions.dll", deps = [
       ":system.private.corelib.dll",
       ":system.security.principal.dll",
       ":system.private.uri.dll",
     ]
 )
-core_stdlib(name = "system.runtime.handles.dll", deps = [
+multi_core_stdlib(name = "system.runtime.handles.dll", deps = [
       ":system.runtime.dll",
     ]
 )
-core_stdlib(name = "system.runtime.interopservices.dll", deps = [
+multi_core_stdlib(name = "system.runtime.interopservices.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.runtime.interopservices.runtimeinformation.dll", deps = [
+multi_core_stdlib(name = "system.runtime.interopservices.runtimeinformation.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
       ":system.threading.dll",
     ]
 )
-core_stdlib(name = "system.runtime.interopservices.windowsruntime.dll", deps = [
+multi_core_stdlib(name = "system.runtime.interopservices.windowsruntime.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.runtime.loader.dll", deps = [
+multi_core_stdlib(name = "system.runtime.loader.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.runtime.numerics.dll", deps = [
+multi_core_stdlib(name = "system.runtime.numerics.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.extensions.dll",
     ]
 )
-core_stdlib(name = "system.runtime.serialization.dll", deps = [
+multi_core_stdlib(name = "system.runtime.serialization.dll", deps = [
       ":system.runtime.dll",
       ":system.runtime.serialization.primitives.dll",
       ":system.runtime.serialization.xml.dll",
       ":system.runtime.serialization.json.dll",
     ]
 )
-core_stdlib(name = "system.runtime.serialization.formatters.dll", deps = [
+multi_core_stdlib(name = "system.runtime.serialization.formatters.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.collections.nongeneric.dll",
@@ -1166,23 +1172,23 @@ core_stdlib(name = "system.runtime.serialization.formatters.dll", deps = [
       ":system.text.encoding.extensions.dll",
     ]
 )
-core_stdlib(name = "system.runtime.serialization.json.dll", deps = [
+multi_core_stdlib(name = "system.runtime.serialization.json.dll", deps = [
       ":system.runtime.dll",
       ":system.private.datacontractserialization.dll",
     ]
 )
-core_stdlib(name = "system.runtime.serialization.primitives.dll", deps = [
+multi_core_stdlib(name = "system.runtime.serialization.primitives.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
     ]
 )
-core_stdlib(name = "system.runtime.serialization.xml.dll", deps = [
+multi_core_stdlib(name = "system.runtime.serialization.xml.dll", deps = [
       ":system.runtime.dll",
       ":system.private.datacontractserialization.dll",
       ":system.runtime.serialization.primitives.dll",
     ]
 )
-core_stdlib(name = "system.security.accesscontrol.dll", deps = [
+multi_core_stdlib(name = "system.security.accesscontrol.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -1194,7 +1200,7 @@ core_stdlib(name = "system.security.accesscontrol.dll", deps = [
       ":system.collections.nongeneric.dll",
     ]
 )
-core_stdlib(name = "system.security.claims.dll", deps = [
+multi_core_stdlib(name = "system.security.claims.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.security.principal.dll",
@@ -1202,7 +1208,7 @@ core_stdlib(name = "system.security.claims.dll", deps = [
       ":system.runtime.extensions.dll",
     ]
 )
-core_stdlib(name = "system.security.cryptography.algorithms.dll", deps = [
+multi_core_stdlib(name = "system.security.cryptography.algorithms.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -1214,7 +1220,7 @@ core_stdlib(name = "system.security.cryptography.algorithms.dll", deps = [
       ":system.threading.dll",
     ]
 )
-core_stdlib(name = "system.security.cryptography.cng.dll", deps = [
+multi_core_stdlib(name = "system.security.cryptography.cng.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -1224,7 +1230,7 @@ core_stdlib(name = "system.security.cryptography.cng.dll", deps = [
       ":system.security.cryptography.algorithms.dll",
     ]
 )
-core_stdlib(name = "system.security.cryptography.csp.dll", deps = [
+multi_core_stdlib(name = "system.security.cryptography.csp.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -1237,7 +1243,7 @@ core_stdlib(name = "system.security.cryptography.csp.dll", deps = [
       ":system.threading.thread.dll",
     ]
 )
-core_stdlib(name = "system.security.cryptography.encoding.dll", deps = [
+multi_core_stdlib(name = "system.security.cryptography.encoding.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -1248,11 +1254,11 @@ core_stdlib(name = "system.security.cryptography.encoding.dll", deps = [
       ":system.linq.dll",
     ]
 )
-core_stdlib(name = "system.security.cryptography.openssl.dll", deps = [
+multi_core_stdlib(name = "system.security.cryptography.openssl.dll", deps = [
       ":netstandard.dll",
     ]
 )
-core_stdlib(name = "system.security.cryptography.primitives.dll", deps = [
+multi_core_stdlib(name = "system.security.cryptography.primitives.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.threading.dll",
@@ -1260,7 +1266,7 @@ core_stdlib(name = "system.security.cryptography.primitives.dll", deps = [
       ":system.diagnostics.debug.dll",
     ]
 )
-core_stdlib(name = "system.security.cryptography.x509certificates.dll", deps = [
+multi_core_stdlib(name = "system.security.cryptography.x509certificates.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -1278,15 +1284,15 @@ core_stdlib(name = "system.security.cryptography.x509certificates.dll", deps = [
       ":system.io.filesystem.dll",
     ]
 )
-core_stdlib(name = "system.security.dll", deps = [
+multi_core_stdlib(name = "system.security.dll", deps = [
       ":system.runtime.dll",
     ]
 )
-core_stdlib(name = "system.security.principal.dll", deps = [
+multi_core_stdlib(name = "system.security.principal.dll", deps = [
       ":system.runtime.dll",
     ]
 )
-core_stdlib(name = "system.security.principal.windows.dll", deps = [
+multi_core_stdlib(name = "system.security.principal.windows.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -1299,29 +1305,29 @@ core_stdlib(name = "system.security.principal.windows.dll", deps = [
       ":microsoft.win32.primitives.dll",
     ]
 )
-core_stdlib(name = "system.security.securestring.dll", deps = [
+multi_core_stdlib(name = "system.security.securestring.dll", deps = [
       ":system.runtime.dll",
       ":system.runtime.interopservices.dll",
     ]
 )
-core_stdlib(name = "system.servicemodel.web.dll", deps = [
+multi_core_stdlib(name = "system.servicemodel.web.dll", deps = [
       ":system.runtime.dll",
       ":system.runtime.serialization.json.dll",
     ]
 )
-core_stdlib(name = "system.serviceprocess.dll", deps = [
+multi_core_stdlib(name = "system.serviceprocess.dll", deps = [
       ":system.runtime.dll",
     ]
 )
-core_stdlib(name = "system.text.encoding.dll", deps = [
+multi_core_stdlib(name = "system.text.encoding.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.text.encoding.extensions.dll", deps = [
+multi_core_stdlib(name = "system.text.encoding.extensions.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.text.regularexpressions.dll", deps = [
+multi_core_stdlib(name = "system.text.regularexpressions.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.extensions.dll",
@@ -1330,30 +1336,30 @@ core_stdlib(name = "system.text.regularexpressions.dll", deps = [
       ":system.threading.dll",
     ]
 )
-core_stdlib(name = "system.threading.dll", deps = [
+multi_core_stdlib(name = "system.threading.dll", deps = [
       ":system.private.corelib.dll",
       ":system.runtime.extensions.dll",
     ]
 )
-core_stdlib(name = "system.threading.overlapped.dll", deps = [
+multi_core_stdlib(name = "system.threading.overlapped.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.threading.tasks.dataflow.dll", deps = [
+multi_core_stdlib(name = "system.threading.tasks.dataflow.dll", deps = [
       ":netstandard.dll",
     ]
 )
-core_stdlib(name = "system.threading.tasks.dll", deps = [
+multi_core_stdlib(name = "system.threading.tasks.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.threading.tasks.extensions.dll", deps = [
+multi_core_stdlib(name = "system.threading.tasks.extensions.dll", deps = [
       ":system.runtime.dll",
       ":system.threading.tasks.dll",
       ":system.collections.dll",
     ]
 )
-core_stdlib(name = "system.threading.tasks.parallel.dll", deps = [
+multi_core_stdlib(name = "system.threading.tasks.parallel.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.extensions.dll",
@@ -1364,26 +1370,26 @@ core_stdlib(name = "system.threading.tasks.parallel.dll", deps = [
       ":system.threading.dll",
     ]
 )
-core_stdlib(name = "system.threading.thread.dll", deps = [
+multi_core_stdlib(name = "system.threading.thread.dll", deps = [
       ":system.private.corelib.dll",
       ":system.security.principal.dll",
       ":system.runtime.extensions.dll",
     ]
 )
-core_stdlib(name = "system.threading.threadpool.dll", deps = [
+multi_core_stdlib(name = "system.threading.threadpool.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.threading.timer.dll", deps = [
+multi_core_stdlib(name = "system.threading.timer.dll", deps = [
       ":system.private.corelib.dll",
     ]
 )
-core_stdlib(name = "system.transactions.dll", deps = [
+multi_core_stdlib(name = "system.transactions.dll", deps = [
       ":system.runtime.dll",
       ":system.transactions.local.dll",
     ]
 )
-core_stdlib(name = "system.transactions.local.dll", deps = [
+multi_core_stdlib(name = "system.transactions.local.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
       ":system.runtime.interopservices.dll",
@@ -1396,100 +1402,100 @@ core_stdlib(name = "system.transactions.local.dll", deps = [
       ":system.diagnostics.tracing.dll",
     ]
 )
-core_stdlib(name = "system.valuetuple.dll", deps = [
+multi_core_stdlib(name = "system.valuetuple.dll", deps = [
       ":system.runtime.dll",
       ":system.resources.resourcemanager.dll",
     ]
 )
-core_stdlib(name = "system.web.dll", deps = [
+multi_core_stdlib(name = "system.web.dll", deps = [
       ":system.runtime.dll",
       ":system.web.httputility.dll",
     ]
 )
-core_stdlib(name = "system.web.httputility.dll", deps = [
+multi_core_stdlib(name = "system.web.httputility.dll", deps = [
       ":system.runtime.dll",
       ":system.runtime.extensions.dll",
       ":system.collections.specialized.dll",
     ]
 )
-core_stdlib(name = "system.windows.dll", deps = [
+multi_core_stdlib(name = "system.windows.dll", deps = [
       ":system.runtime.dll",
       ":system.objectmodel.dll",
     ]
 )
-core_stdlib(name = "system.xml.dll", deps = [
+multi_core_stdlib(name = "system.xml.dll", deps = [
       ":system.runtime.dll",
       ":system.xml.readerwriter.dll",
       ":system.xml.xmlserializer.dll",
       ":system.xml.xpath.dll",
     ]
 )
-core_stdlib(name = "system.xml.linq.dll", deps = [
+multi_core_stdlib(name = "system.xml.linq.dll", deps = [
       ":system.runtime.dll",
       ":system.xml.xdocument.dll",
       ":system.xml.xpath.xdocument.dll",
     ]
 )
-core_stdlib(name = "system.xml.readerwriter.dll", deps = [
+multi_core_stdlib(name = "system.xml.readerwriter.dll", deps = [
       ":system.runtime.dll",
       ":system.private.xml.dll",
     ]
 )
-core_stdlib(name = "system.xml.serialization.dll", deps = [
+multi_core_stdlib(name = "system.xml.serialization.dll", deps = [
       ":system.runtime.dll",
       ":system.xml.readerwriter.dll",
       ":system.xml.xmlserializer.dll",
     ]
 )
-core_stdlib(name = "system.xml.xdocument.dll", deps = [
+multi_core_stdlib(name = "system.xml.xdocument.dll", deps = [
       ":system.runtime.dll",
       ":system.private.xml.linq.dll",
     ]
 )
-core_stdlib(name = "system.xml.xmldocument.dll", deps = [
+multi_core_stdlib(name = "system.xml.xmldocument.dll", deps = [
       ":system.runtime.dll",
       ":system.private.xml.dll",
     ]
 )
-core_stdlib(name = "system.xml.xmlserializer.dll", deps = [
+multi_core_stdlib(name = "system.xml.xmlserializer.dll", deps = [
       ":system.runtime.dll",
       ":system.private.xml.dll",
     ]
 )
-core_stdlib(name = "system.xml.xpath.dll", deps = [
+multi_core_stdlib(name = "system.xml.xpath.dll", deps = [
       ":system.runtime.dll",
       ":system.private.xml.dll",
     ]
 )
-core_stdlib(name = "system.xml.xpath.xdocument.dll", deps = [
+multi_core_stdlib(name = "system.xml.xpath.xdocument.dll", deps = [
       ":system.runtime.dll",
       ":system.runtime.extensions.dll",
       ":system.private.xml.dll",
       ":system.private.xml.linq.dll",
     ]
 )
-core_stdlib(name = "windowsbase.dll", deps = [
+multi_core_stdlib(name = "windowsbase.dll", deps = [
       ":system.runtime.dll",
       ":system.objectmodel.dll",
     ]
 )
 
-core_stdlib(name = "system.security.cryptography.protecteddata.dll", deps = [
+multi_core_stdlib(name = "system.security.cryptography.protecteddata.dll", deps = [
   ]
 )
 
-core_stdlib(name = "microsoft.dotnet.internalabstractions.dll", deps = [
+multi_core_stdlib(name = "microsoft.dotnet.internalabstractions.dll", deps = [
   ]
 )
 
-core_stdlib(name = "microsoft.dotnet.platformabstractions.dll", deps = [
+multi_core_stdlib(name = "microsoft.dotnet.platformabstractions.dll", deps = [
   ]
 )
 
-core_stdlib(name = "microsoft.extensions.dependencymodel.dll", deps = [
+multi_core_stdlib(name = "microsoft.extensions.dependencymodel.dll", deps = [
   ]
 )
 
-core_stdlib(name = "system.xml.xpath.xmldocument.dll", deps = [
+multi_core_stdlib(name = "system.xml.xpath.xmldocument.dll", deps = [
     ]
 )

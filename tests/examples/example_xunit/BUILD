@@ -1,16 +1,19 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_xunit_test", "dotnet_xunit_test", "net_xunit_test", "DOTNET_NET_FRAMEWORKS")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_xunit_test", "dotnet_xunit_test", "net_xunit_test", "DOTNET_NET_FRAMEWORKS", "DOTNET_CORE_FRAMEWORKS")
 
-core_xunit_test(
-    name = "example_xunit",
+[core_xunit_test(
+    name = "{}_example_xunit".format(framework),
     size = "small",
     srcs = [
         "MyTest.cs",
     ],
     deps = [
-        "@xunit//:xunit.core",
-        "@xunit_assert//:assert.xunit",
+        "@xunit//:{}_xunit.core".format(framework),
+        "@xunit_assert//:{}_assert.xunit".format(framework),
     ],
-)
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+    native_deps = "@core_sdk_{}//:native_deps".format(framework),
+    testlauncher = "@xunit//:{}_xunit.console".format(framework),
+) for framework in DOTNET_CORE_FRAMEWORKS]
 
 [net_xunit_test(
     name = "net.example_xunit_{}".format(framework),

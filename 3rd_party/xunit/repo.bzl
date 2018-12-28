@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_library", "core_binary", "core_resource", "core_xunit_test")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_library", "core_binary", "core_resource", "core_xunit_test","DOTNET_CORE_FRAMEWORKS")
 
 filegroup(
   name = "core_common",
@@ -11,31 +11,33 @@ filegroup(
   ] + ["@xunit_assert//:common_files"]
 )
 
-core_resource(
-    name = "xunit_core_resource",
+[core_resource(
+    name = "{}_xunit_core_resource".format(framework),
     src = "src/xunit.core/Resources/xunit.core.rd.xml",
     identifier="Xunit.Resources.xunit.core.rd.xml",
-)
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+) for framework in DOTNET_CORE_FRAMEWORKS]
 
-core_library(
-    name = "xunit.core",
+[core_library(
+    name = "{}_xunit.core".format(framework),
     srcs = [":core_common"] + glob(["src/xunit.core/**/*.cs"]),
     defines = [
         "XUNIT_FRAMEWORK",
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.private.corelib.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.linq.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.io.filesystem.dll",
-        "@xunit_abstractions//:abstractions.xunit",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.runtime.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.private.corelib.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.linq.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.io.filesystem.dll".format(framework),
+        "@xunit_abstractions//:{}_abstractions.xunit".format(framework),
     ],
-    resources = [":xunit_core_resource"],
+    resources = [":{}_xunit_core_resource".format(framework)],
     data = [
         ":src/xunit.core/xunit.core.dll.tdnet"
-    ]
-)
+    ],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+) for framework in DOTNET_CORE_FRAMEWORKS]
 
 filegroup(
   name = "execution_common",
@@ -59,8 +61,8 @@ filegroup(
   ] + glob(["src/messages/**/*.cs"]) + ["@xunit_assert//:common_files"]
 )
 
-core_library(
-    name = "xunit.execution.dotnet",
+[core_library(
+    name = "{}_xunit.execution.dotnet".format(framework),
     srcs = [":execution_common"] + glob(["src/xunit.execution/**/*.cs"]),
     defines = [
         "XUNIT_FRAMEWORK",
@@ -68,16 +70,17 @@ core_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.private.corelib.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.linq.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.linq.expressions.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.io.filesystem.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.collections.concurrent.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.threading.thread.dll",
-        ":xunit.core",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.runtime.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.private.corelib.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.linq.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.linq.expressions.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.io.filesystem.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.collections.concurrent.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.threading.thread.dll".format(framework),
+        ":{}_xunit.core".format(framework),
     ],
-)
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+) for framework in DOTNET_CORE_FRAMEWORKS]
 
 filegroup(
   name = "runner_utility_common",
@@ -107,8 +110,8 @@ filegroup(
   ] + glob(["src/messages/**/*.cs"])
 )
 
-core_library(
-    name = "xunit.runner.utility",
+[core_library(
+    name = "{}_xunit.runner.utility".format(framework),
     srcs = [":runner_utility_common"] + glob(["src/xunit.runner.utility/**/*.cs"]),
     defines = [
         "NETSTANDARD2_0",
@@ -117,19 +120,20 @@ core_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.private.corelib.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.linq.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.linq.expressions.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.io.filesystem.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.collections.concurrent.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.threading.thread.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.text.regularexpressions.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.xml.xdocument.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.interopservices.runtimeinformation.dll",
-        "@xunit_abstractions//:abstractions.xunit",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.runtime.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.private.corelib.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.linq.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.linq.expressions.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.io.filesystem.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.collections.concurrent.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.threading.thread.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.text.regularexpressions.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.xml.xdocument.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.runtime.interopservices.runtimeinformation.dll".format(framework),
+        "@xunit_abstractions//:{}_abstractions.xunit".format(framework),
   ],
-)
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+) for framework in DOTNET_CORE_FRAMEWORKS]
 
 
 filegroup(
@@ -141,8 +145,8 @@ filegroup(
   ]
 )
 
-core_library(
-    name = "xunit.runner.reporters",
+[core_library(
+    name = "{}_xunit.runner.reporters".format(framework),
     srcs = [":runner_reporters_common"] + glob(["src/xunit.runner.reporters/**/*.cs"]),
     defines = [
         "NETSTANDARD2_0",
@@ -150,17 +154,18 @@ core_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.private.corelib.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.linq.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.linq.expressions.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.io.filesystem.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.collections.concurrent.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.threading.thread.dll",
-        "@xunit_abstractions//:abstractions.xunit",
-        ":xunit.runner.utility",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.runtime.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.private.corelib.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.linq.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.linq.expressions.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.io.filesystem.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.collections.concurrent.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.threading.thread.dll".format(framework),
+        "@xunit_abstractions//:{}_abstractions.xunit".format(framework),
+        ":{}_xunit.runner.utility".format(framework),
   ],
-)
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+) for framework in DOTNET_CORE_FRAMEWORKS]
 
 filegroup(
   name = "console_common",
@@ -174,32 +179,36 @@ filegroup(
   ] + glob(["src/common/AssemblyResolution/**/*.cs"])
 )
 
-core_resource(
-    name = "HTML_xslt",
+[core_resource(
+    name = "{}_HTML_xslt".format(framework),
     src = "src/xunit.console/HTML.xslt",
     identifier="Xunit.ConsoleClient.HTML.xslt",
-)
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+) for framework in DOTNET_CORE_FRAMEWORKS]
 
-core_resource(
-    name = "NUnitXml_xslt",
+[core_resource(
+    name = "{}_NUnitXml_xslt".format(framework),
     src = "src/xunit.console/NUnitXml.xslt",
     identifier="Xunit.ConsoleClient.NUnitXml.xslt",
-)
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+) for framework in DOTNET_CORE_FRAMEWORKS]
 
-core_resource(
-    name = "xUnit1_xslt",
+[core_resource(
+    name = "{}_xUnit1_xslt".format(framework),
     src = "src/xunit.console/xUnit1.xslt",
     identifier="Xunit.ConsoleClient.xUnit1.xslt",
-)
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+) for framework in DOTNET_CORE_FRAMEWORKS]
 
-core_resource(
-    name = "JUnitXml_xslt",
+[core_resource(
+    name = "{}_JUnitXml_xslt".format(framework),
     src = "src/xunit.console/JUnitXml.xslt",
     identifier="Xunit.ConsoleClient.JUnitXml.xslt",
-)
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+) for framework in DOTNET_CORE_FRAMEWORKS]
 
-core_binary(
-    name = "xunit.console",
+[core_binary(
+    name = "{}_xunit.console".format(framework),
     srcs = [":console_common"] + glob(["src/xunit.console/**/*.cs"]),
     defines = [
         "NETSTANDARD2_0",
@@ -209,17 +218,19 @@ core_binary(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        ":xunit.runner.reporters",
-        ":xunit.execution.dotnet",
+        ":{}_xunit.runner.reporters".format(framework),
+        ":{}_xunit.execution.dotnet".format(framework),
     ],
     resources = [
-        ":HTML_xslt",
-        ":NUnitXml_xslt",
-        ":xUnit1_xslt",
-        ":JUnitXml_xslt",
+        ":{}_HTML_xslt".format(framework),
+        ":{}_NUnitXml_xslt".format(framework),
+        ":{}_xUnit1_xslt".format(framework),
+        ":{}_JUnitXml_xslt".format(framework),
     ],
     unsafe = True,
-)
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+    native_deps = "@core_sdk_{}//:native_deps".format(framework),
+) for framework in DOTNET_CORE_FRAMEWORKS]
 
 filegroup(
   name = "test_utility_common",

@@ -35,10 +35,11 @@ load(
     "DOTNETIMPL_OS_ARCH",
     "DOTNETOS",
     "DOTNET_NET_FRAMEWORKS",
+    "DOTNET_CORE_FRAMEWORKS",
 )
 
 DEFAULT_VERSION = "4.2.3"
-CORE_DEFAULT_VERSION = "2.1.200"
+CORE_DEFAULT_VERSION = "v2.1.502"
 NET_ROSLYN_DEFAULT_VERSION = "2.10.0"
 NET_DEFAULT_VERSION = "4.7.2"
 
@@ -52,7 +53,7 @@ SDK_REPOSITORIES = {
 }
 
 CORE_SDK_REPOSITORIES = {
-    "2.1.200": {
+    "v2.1.200": {
         "core_windows_amd64": (
             "https://download.microsoft.com/download/3/7/1/37189942-C91D-46E9-907B-CF2B2DE584C7/dotnet-sdk-2.1.200-win-x64.zip",
             "f3c92c52d88364ac4359716e11e13b67f0e4ea256676b56334a4eb88c728e7fd",
@@ -64,6 +65,34 @@ CORE_SDK_REPOSITORIES = {
         "core_darwin_amd64": (
             "https://download.microsoft.com/download/3/7/1/37189942-C91D-46E9-907B-CF2B2DE584C7/dotnet-sdk-2.1.200-osx-x64.tar.gz",
             "ac695c3319caf043e6b40861906cd4d396ba8922fd206332d2a778635667a2ba",
+        ),
+    },
+    "v2.1.502": {
+        "core_windows_amd64": (
+            "https://download.visualstudio.microsoft.com/download/pr/c88b53e5-121c-4bc9-af5d-47a9d154ea64/e62eff84357c48dc8052a9c6ce5dfb8a/dotnet-sdk-2.1.502-win-x64.zip",
+            "2da94993092ebb27ffa4dcfe9e94c1acaafb34f9570ecfbc74291dcec9a8b213",
+        ),
+        "core_linux_amd64": (
+            "https://download.visualstudio.microsoft.com/download/pr/4c8893df-3b05-48a5-b760-20f2db692c45/ff0545dbbb3c52f6fa38657ad97d65d8/dotnet-sdk-2.1.502-linux-x64.tar.gz",
+            "f8bcee4cdc52e6b907f1a94102ec43977e84c62b7a54be6040e906a7b6ee4453",
+        ),
+        "core_darwin_amd64": (
+            "https://download.visualstudio.microsoft.com/download/pr/50729ca4-03ce-4e19-af87-bfae014b0431/1c830d9dcffa7663702e32fab6953425/dotnet-sdk-2.1.502-osx-x64.tar.gz",
+            "47fbc7cd65aacfd9e1002057ba29f1a567bd6c9923b1ff7aa5dcb4e48c85de95",
+        ),
+    },
+    "v2.2.101": {
+        "core_windows_amd64": (
+            "https://download.visualstudio.microsoft.com/download/pr/25d4104d-1776-41cb-b96e-dff9e9bf1542/b878c013de90f0e6c91f6f3c98a2d592/dotnet-sdk-2.2.101-win-x64.zip",
+            "fe13ce1eac2ebbc73fb069506d4951c57178935952a30ede029bf849279b4079",
+        ),
+        "core_linux_amd64": (
+            "https://download.visualstudio.microsoft.com/download/pr/80e1d007-d6f0-402f-b047-779464dd989b/9ae5e2df9aa166b720bdb92d19977044/dotnet-sdk-2.2.101-linux-x64.tar.gz",
+            "2b14129d8e0fa01ba027145022e0580796604f091a52fcb86d23c0fa1fa438e9",
+        ),
+        "core_darwin_amd64": (
+            "https://download.visualstudio.microsoft.com/download/pr/3100b00b-4e63-4d49-bd59-297931016032/b71d2aff0d650b5501258a54b0cd2ea7/dotnet-sdk-2.2.101-osx-x64.tar.gz",
+            "fc695c2c797da757251ce643d408e99e6325563bf08d46f1bf8d45a8ebc1aac6",
         ),
     },
 }
@@ -248,4 +277,15 @@ def net_register_toolchains(net_version, net_roslyn_version = NET_ROSLYN_DEFAULT
         toolsVersion = DOTNET_NET_FRAMEWORKS[tools_version][3],
         targetFrameworkString = DOTNET_NET_FRAMEWORKS[net_version][0],
         sdks = NET_ROSLYN_REPOSITORIES[net_roslyn_version],
+    )
+
+def core_register_toolchains(core_version):
+    if core_version not in CORE_SDK_REPOSITORIES:
+        fail("Unknown core version {}".format(core_version))
+
+    core_download_sdk(
+        name = "core_sdk_{}".format(core_version),
+        version = core_version[1:],
+        targetFrameworkString = DOTNET_CORE_FRAMEWORKS[core_version][0],
+        sdks = CORE_SDK_REPOSITORIES[core_version],
     )

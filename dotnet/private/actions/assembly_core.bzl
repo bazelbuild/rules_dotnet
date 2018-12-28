@@ -125,6 +125,9 @@ def emit_assembly_core(
     attr_srcs = [f for t in srcs for f in as_iterable(t.files)]
     runner_args.add_all(attr_srcs)
 
+    attr_extra_srcs = [f for t in dotnet.extra_srcs for f in as_iterable(t.files)]
+    runner_args.add_all(attr_extra_srcs)
+
     runner_args.set_param_file_format("multiline")
 
     paramfilepath = name + extension + ".param"
