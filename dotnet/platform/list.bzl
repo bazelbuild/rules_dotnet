@@ -54,10 +54,11 @@ DOTNET_NET_FRAMEWORKS = {
 # struct:
 # 0. Version string - as required by TargetFrameworkAttribute
 # 1. Preporocesor directive
+# 2. TFM
 DOTNET_CORE_FRAMEWORKS = {
-    "v2.1.200": (".NETCore,Version=v2.1", "NETCOREAPP2_1"),
-    "v2.1.502": (".NETCore,Version=v2.1", "NETCOREAPP2_1"),
-    "v2.2.101": (".NETCore,Version=v2.2", "NETCOREAPP2_2"),
+    "v2.1.200": (".NETCore,Version=v2.1", "NETCOREAPP2_1", "netcoreapp2.1"),
+    "v2.1.502": (".NETCore,Version=v2.1", "NETCOREAPP2_1", "netcoreapp2.1"),
+    "v2.2.101": (".NETCore,Version=v2.2", "NETCOREAPP2_2", "netcoreapp2.2"),
 }
 
 

@@ -61,28 +61,28 @@ genrule(
     ],
 )
 
-genrule(
-    name = "hello_single_output_core",
-    outs = [
-        "hello_world_core.txt",
-    ],
-    cmd = "$(location :hello_tool_core) $@",
-    tools = [
-        ":hello_tool_core",
-    ],
-)
+# genrule(
+#     name = "hello_single_output_core",
+#     outs = [
+#         "hello_world_core.txt",
+#     ],
+#     cmd = "$(location :hello_tool_core) $@",
+#     tools = [
+#         ":hello_tool_core",
+#     ],
+# )
 
-genrule(
-    name = "hello_multiple_outputs_core",
-    outs = [
-        "hello_world_1_core.txt",
-        "hello_world_2_core.txt",
-    ],
-    cmd = "$(location :hello_tool_core) $(OUTS)",
-    tools = [
-        ":hello_tool_core",
-    ],
-)
+# genrule(
+#     name = "hello_multiple_outputs_core",
+#     outs = [
+#         "hello_world_1_core.txt",
+#         "hello_world_2_core.txt",
+#     ],
+#     cmd = "$(location :hello_tool_core) $(OUTS)",
+#     tools = [
+#         ":hello_tool_core",
+#     ],
+# )
 
 #genrule(
 #    name = "hello_single_output_net",

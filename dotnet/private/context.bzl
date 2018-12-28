@@ -12,7 +12,7 @@ def _declare_file(dotnet, path = None, ext = None):
         result += ext
     return dotnet.actions.declare_file(result)
 
-def _new_library(dotnet, name = None, deps = None, transitive = None, result = None, pdb = None, runfiles = None, **kwargs):
+def new_library(dotnet, name = None, deps = None, transitive = None, result = None, pdb = None, runfiles = None, **kwargs):
     return DotnetLibrary(
         name = dotnet.label.name if not name else name,
         label = dotnet.label,
@@ -74,7 +74,7 @@ def dotnet_context(ctx, attr = None):
         resgen = resgen,
         tlbimp = tlbimp,
         declare_file = _declare_file,
-        new_library = _new_library,
+        new_library = new_library,
         new_resource = _new_resource,
         workspace_name = ctx.workspace_name,
         libVersion = context_data._libVersion,

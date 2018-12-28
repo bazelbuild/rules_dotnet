@@ -4,7 +4,22 @@ load(":macro.bzl", "multi_core_stdlib")
 load("@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl", "core_stdlib")
 load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS")
 
-multi_core_stdlib(name = "system.private.corelib.dll")
+# system.memory.dll is not present in netcoreapp 2.1.200
+[core_stdlib(name = "{}_system.private.corelib.dll".format(framework),
+    dll = "system.private.corelib.dll",
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+  )  for framework in ["v2.1.200"]]
+
+[core_stdlib(name = "{}_system.memory.dll".format(framework),
+    dll = "system.memory.dll",
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+  )  for framework in ["v2.1.502", "v2.2.101"]]
+
+[core_stdlib(name = "{}_system.private.corelib.dll".format(framework), 
+    dll = "system.private.corelib.dll",
+    deps = ["{}_system.memory.dll".format(framework)],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+) for framework in ["v2.1.502", "v2.2.101"]]
 
 multi_core_stdlib(name = "microsoft.csharp.dll", deps = [
       ":netstandard.dll",
@@ -154,7 +169,7 @@ multi_core_stdlib(name = "netstandard.dll", deps = [
       ":system.xml.xpath.dll",
     ]
 )
-alias(name = "netstandard.library.dll", actual=":netstandard.dll")
+[alias(name = "{}_netstandard.library.dll".format(framework), actual=":{}_netstandard.dll".format(framework))   for framework in DOTNET_CORE_FRAMEWORKS]
 
 multi_core_stdlib(name = "sos.netcore.dll", deps = [
       ":system.runtime.dll",

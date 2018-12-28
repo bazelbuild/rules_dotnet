@@ -30,7 +30,7 @@ dotnet_binary(
         "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.console.dll".format(framework),
         "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.private.corelib.dll".format(framework),
         "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.runtime.dll".format(framework),
-        "@newtonsoft.json//:core",
+        "@newtonsoft.json//:netcoreapp2.1_core",
     ],
     dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
     native_deps = "@core_sdk_{}//:native_deps".format(framework),
