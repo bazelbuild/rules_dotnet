@@ -36,6 +36,7 @@ dotnet_binary(
         "//tests/examples/example_lib:MyClass-net_{}".format(framework),
     ],
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
+    native_deps = "@net_sdk_{}//:native_deps".format(framework),
 ) for framework in DOTNET_NET_FRAMEWORKS]
 
 genrule(

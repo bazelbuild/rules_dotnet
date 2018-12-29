@@ -6,11 +6,6 @@ dotnet_context_data(
     visibility = ["//visibility:public"],
 )
 
-net_context_data(
-    name = "net_context_data",
-    visibility = ["//visibility:public"],
-)
-
 exports_files(["AUTHORS"])
 
 [net_context_data(

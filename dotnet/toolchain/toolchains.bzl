@@ -163,39 +163,6 @@ _label_prefix = "@io_bazel_rules_dotnet//dotnet/toolchain:"
 
 def dotnet_register_toolchains(dotnet_version = DEFAULT_VERSION, core_version = CORE_DEFAULT_VERSION, net_version = NET_DEFAULT_VERSION, net_roslyn_version = NET_ROSLYN_DEFAULT_VERSION):
     """See /dotnet/toolchains.rst#dostnet-register-toolchains for full documentation."""
-    if "dotnet_download_sdk" not in native.existing_rules() and "dotnet_host_sdk" not in native.existing_rules() and "dotnet_local_sdk" not in native.existing_rules():
-        if dotnet_version in SDK_REPOSITORIES:
-            dotnet_download_sdk(
-                name = "dotnet_sdk",
-                sdks = SDK_REPOSITORIES[dotnet_version],
-            )
-        elif dotnet_version == "host":
-            dotnet_host_sdk(
-                name = "dotnet_sdk",
-            )
-        elif dotnet_version != None:
-            fail("Unknown dotnet version {}".format(dotnet_version))
-
-    if "core_download_sdk" not in native.existing_rules():
-        if core_version in CORE_SDK_REPOSITORIES:
-            core_download_sdk(
-                name = "core_sdk",
-                version = core_version,
-                sdks = CORE_SDK_REPOSITORIES[core_version],
-            )
-        elif core_version != None:
-            fail("Unknown core version {}".format(core_version))
-
-    if "net_download_sdk" not in native.existing_rules():
-        if net_roslyn_version in NET_ROSLYN_REPOSITORIES:
-            net_download_sdk(
-                name = "net_sdk",
-                version = net_version,
-                sdks = NET_ROSLYN_REPOSITORIES[net_roslyn_version],
-            )
-        elif net_roslyn_version != None:
-            fail("Unknown .net Roslyn version {}".format(net_roslyn_version))
-
     # Use the final dictionaries to register all the toolchains
     for toolchain in _toolchains:
         name = _label_prefix + toolchain["name"]
@@ -267,7 +234,7 @@ def declare_toolchains():
                     host = toolchain["host"],
                 )
 
-def net_register_toolchains(net_version, net_roslyn_version = NET_ROSLYN_DEFAULT_VERSION, tools_version = "net472"):
+def net_register_sdk(net_version, net_roslyn_version = NET_ROSLYN_DEFAULT_VERSION, tools_version = "net472"):
     if net_roslyn_version not in NET_ROSLYN_REPOSITORIES:
         fail("Unknown .net Roslyn version {}".format(net_roslyn_version))
 
@@ -279,7 +246,7 @@ def net_register_toolchains(net_version, net_roslyn_version = NET_ROSLYN_DEFAULT
         sdks = NET_ROSLYN_REPOSITORIES[net_roslyn_version],
     )
 
-def core_register_toolchains(core_version):
+def core_register_sdk(core_version):
     if core_version not in CORE_SDK_REPOSITORIES:
         fail("Unknown core version {}".format(core_version))
 
@@ -288,4 +255,10 @@ def core_register_toolchains(core_version):
         version = core_version[1:],
         targetFrameworkString = DOTNET_CORE_FRAMEWORKS[core_version][0],
         sdks = CORE_SDK_REPOSITORIES[core_version],
+    )
+
+def mono_register_sdk(dotnet_version = DEFAULT_VERSION, core_version = CORE_DEFAULT_VERSION, net_version = NET_DEFAULT_VERSION, net_roslyn_version = NET_ROSLYN_DEFAULT_VERSION):
+    """See /dotnet/toolchains.rst#dostnet-register-toolchains for full documentation."""
+    dotnet_host_sdk(
+        name = "dotnet_sdk",
     )

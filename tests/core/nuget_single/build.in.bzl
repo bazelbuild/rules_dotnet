@@ -13,4 +13,6 @@ dotnet_nunit_test(
         "@nuget.common//:mono",
     ],
     size = "small",
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
+    native_deps = "@net_sdk_net472//:native_deps",
 )

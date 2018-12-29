@@ -46,18 +46,20 @@ dotnet_binary(
         "@newtonsoft.json//:{}_net".format(framework),
     ],
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
+    native_deps = "@net_sdk_{}//:native_deps".format(framework),
 ) for framework in DOTNET_NET_FRAMEWORKS]
 
-net_com_library(
-    name = "com-ref-shell32",
-    out = "shell32.dll",
+[net_com_library(
+    name = "{}_com-ref-shell32".format(framework),
+    out = "{}_shell32.dll".format(framework),
     guid = "50A7E9B0-70EF-11D1-B75A-00A0C90564FE",
     lcid = 0,
     major_version = 1,
     minor_version = 0,
     namespace = "Shell32",
     platform = "win32",
-)
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
+) for framework in DOTNET_NET_FRAMEWORKS]
 
 # The rule is left as an example. It is commented out, because our CI server doesn't have VS2017 installed
 #net_binary(

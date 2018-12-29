@@ -115,7 +115,7 @@ dotnet_context_data = rule(
         ),
         "tools": attr.label(
             allow_files = True,
-            default = "@net_sdk//:lib",
+            default = "@dotnet_sdk//:lib",
         ),
         "shared": attr.label(
             allow_files = True,

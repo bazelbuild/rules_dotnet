@@ -22,6 +22,7 @@ net_library(
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.collections.specialized.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.dll",
     ],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472"
 )
 
 dotnet_library(
@@ -46,6 +47,7 @@ net_library(
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.xml.dll",
     ],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472"
 )
 
 dotnet_library(
@@ -76,6 +78,7 @@ net_library(
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.text.regularexpressions.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.xml.readerwriter.dll",
     ],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
 )
 
 dotnet_library(
@@ -115,6 +118,7 @@ net_library(
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.xml.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.xml.readerwriter.dll",
     ],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472"
 )
 
 dotnet_resx(
@@ -125,6 +129,7 @@ dotnet_resx(
 net_resx(
     name = "net.Transform",
     src = ":src/ClientUtilities/util/Transform.resx",
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
 )
 
 dotnet_library(
@@ -155,6 +160,7 @@ net_library(
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.text.regularexpressions.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.xml.dll",
     ],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472"
 )
 
 dotnet_binary(
@@ -176,6 +182,8 @@ net_binary(
         ":net.nunit.util",
         ":net.nunit-console-runner",
     ],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
+    native_deps = "@net_sdk_net472//:native_deps",
 )
 
 filegroup(

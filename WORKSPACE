@@ -1,18 +1,20 @@
 workspace(name = "io_bazel_rules_dotnet")
 
-load("//dotnet:defs.bzl", "dotnet_register_toolchains", "net_register_toolchains", "core_register_toolchains", "dotnet_repositories", 
+load("//dotnet:defs.bzl", "dotnet_register_toolchains", "net_register_sdk", "core_register_sdk", "mono_register_sdk", "dotnet_repositories", 
         "dotnet_nuget_new", "net_gac4", "vs2017_ref_net", "nuget_package", "DOTNET_NET_FRAMEWORKS", "DOTNET_CORE_FRAMEWORKS")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 dotnet_repositories()
-dotnet_register_toolchains("host")
+dotnet_register_toolchains()
 
-[net_register_toolchains(
+mono_register_sdk()
+
+[net_register_sdk(
     framework
 ) for framework in DOTNET_NET_FRAMEWORKS]
 
-[core_register_toolchains(
+[core_register_sdk(
     framework
 ) for framework in DOTNET_CORE_FRAMEWORKS]
 

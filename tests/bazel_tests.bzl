@@ -98,8 +98,9 @@ exit $result
 # _basic_workspace is the content appended to all test workspace files
 # it contains the calls required to make the dotnet rules work
 _basic_workspace = """
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_repositories", "dotnet_register_toolchains")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_repositories", "dotnet_register_toolchains", "net_register_sdk")
 dotnet_repositories()
+dotnet_register_toolchains()
 """
 
 def _test_environment_impl(ctx):

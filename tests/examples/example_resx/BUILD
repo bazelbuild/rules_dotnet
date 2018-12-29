@@ -23,17 +23,20 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_resx", "core_xunit_test", 
     testlauncher = "@{}_xunit//:xunit.console".format(framework),
 ) for framework in DOTNET_CORE_FRAMEWORKS]
 
-net_resx(
-    name = "net.resx",
+[net_resx(
+    name = "{}_net.resx".format(framework),
     src = "Resources.resx",
     identifier = "example_resx.Resources.resources",
-)
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
+) for framework in ["net45", "net451", "net452","net46","net461","net462","net47","net471","net472","netstandard1.1",
+    "netstandard1.2","netstandard1.3","netstandard1.4","netstandard1.5","netstandard1.6","netstandard2.0"]]
+
 
 [net_xunit_test(
     name = "net.example_resx_{}".format(framework),
     size = "small",
     srcs = glob(["*.cs"]),
-    resources = [":net.resx"],
+    resources = [":{}_net.resx".format(framework)],
     deps = [
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/{}:system.dll".format(framework),
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/{}:system.runtime.dll".format(framework),
@@ -41,6 +44,8 @@ net_resx(
         "@xunit.extensibility.core//:{}_net".format(framework),
         "@xunit.extensibility.execution//:{}_net".format(framework),
     ],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
+    native_deps = "@net_sdk_{}//:native_deps".format(framework),
 ) for framework in ["net45", "net451", "net452","net46","net461","net462","net47","net471","net472","netstandard1.1",
     "netstandard1.2","netstandard1.3","netstandard1.4","netstandard1.5","netstandard1.6","netstandard2.0"]]
 
