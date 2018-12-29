@@ -1,7 +1,11 @@
 load("@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl", "core_stdlib")
 
 def all_core_stdlib(framework):
-    context = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework)
+    if framework:
+        context = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework)
+    else:
+        context = "@io_bazel_rules_dotnet//:core_context_data"
+
     core_stdlib(
         name = "microsoft.csharp.dll",
         deps = [
@@ -1947,20 +1951,63 @@ def all_core_stdlib(framework):
         dotnet_context_data = context,
     )
 
+    if framework:
+        core_stdlib(
+            name = "system.io.compression.zipfile.dll",
+            dll = "system.io.compression.zipfile.dll",
+            deps = [
+                ":system.runtime.dll",
+                ":system.resources.resourcemanager.dll",
+                ":system.runtime.extensions.dll",
+                ":system.io.compression.dll",
+                ":system.io.filesystem.dll",
+                ":system.buffers.dll",
+            ],
+            data = select({
+                "@bazel_tools//src/conditions:windows": ["@core_sdk_{}//:shared/clrcompression.dll".format(framework)],
+                "//conditions:default": [],
+            }),
+            dotnet_context_data = context,
+        )
+    else:
+        core_stdlib(
+            name = "system.io.compression.zipfile.dll",
+            dll = "system.io.compression.zipfile.dll",
+            deps = [
+                ":system.runtime.dll",
+                ":system.resources.resourcemanager.dll",
+                ":system.runtime.extensions.dll",
+                ":system.io.compression.dll",
+                ":system.io.filesystem.dll",
+                ":system.buffers.dll",
+            ],
+            data = select({
+                "@bazel_tools//src/conditions:windows": ["@core_sdk//:shared/clrcompression.dll"],
+                "//conditions:default": [],
+            }),
+            dotnet_context_data = context,
+        )
+
+    native.alias(
+        name = "netstandard.library.dll",
+        actual = ":netstandard.dll",
+    )
+
+def all_core_stdlib215(framework):
+    if framework:
+        context = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework)
+    else:
+        context = "@io_bazel_rules_dotnet//:core_context_data"
+
     core_stdlib(
-        name = "system.io.compression.zipfile.dll",
-        dll = "system.io.compression.zipfile.dll",
-        deps = [
-            ":system.runtime.dll",
-            ":system.resources.resourcemanager.dll",
-            ":system.runtime.extensions.dll",
-            ":system.io.compression.dll",
-            ":system.io.filesystem.dll",
-            ":system.buffers.dll",
-        ],
-        data = select({
-            "@bazel_tools//src/conditions:windows": ["@core_sdk_{}//:shared/clrcompression.dll".format(framework)],
-            "//conditions:default": [],
-        }),
+        name = "system.memory.dll",
+        dll = "system.memory.dll",
         dotnet_context_data = context,
+    )
+
+    core_stdlib(
+        name = "system.private.corelib.dll",
+        dll = "system.private.corelib.dll",
+        dotnet_context_data = context,
+        deps = ["system.memory.dll"],
     )

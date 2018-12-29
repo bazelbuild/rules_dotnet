@@ -173,7 +173,7 @@ core_context_data = rule(
         ),
         "extra_srcs": attr.label_list(
             allow_files = True,
-            default = [],
+            default = ["@core_sdk//:tagetframework"],
         ),
     },
 )

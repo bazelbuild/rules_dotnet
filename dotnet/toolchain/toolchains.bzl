@@ -247,12 +247,12 @@ def net_register_sdk(net_version, net_roslyn_version = NET_ROSLYN_DEFAULT_VERSIO
         sdks = NET_ROSLYN_REPOSITORIES[net_roslyn_version],
     )
 
-def core_register_sdk(core_version):
+def core_register_sdk(core_version, name = None):
     if core_version not in CORE_SDK_REPOSITORIES:
         fail("Unknown core version {}".format(core_version))
 
     core_download_sdk(
-        name = "core_sdk_{}".format(core_version),
+        name = name if name else "core_sdk_{}".format(core_version),
         version = core_version[1:],
         targetFrameworkString = DOTNET_CORE_FRAMEWORKS[core_version][0],
         sdks = CORE_SDK_REPOSITORIES[core_version],

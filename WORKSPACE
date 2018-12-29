@@ -18,6 +18,9 @@ mono_register_sdk()
     framework
 ) for framework in DOTNET_CORE_FRAMEWORKS]
 
+# Default core_sdk
+core_register_sdk("v2.1.502", name = "core_sdk")
+
 net_gac4(
   name = "System.ComponentModel.DataAnnotations",
   version = "4.0.0.0",

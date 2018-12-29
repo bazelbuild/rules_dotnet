@@ -12,3 +12,16 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "core_
         "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.xml.dll".format(framework),
     ],
 ) for framework in DOTNET_CORE_FRAMEWORKS]
+
+core_binary(
+    name = "simpleresgen",
+    srcs = glob(["**/*.cs"]),
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data",
+    native_deps = "@core_sdk//:native_deps",
+    unsafe = True,
+    visibility = ["//visibility:public"],
+    deps = [
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.xml.dll",
+    ],
+)

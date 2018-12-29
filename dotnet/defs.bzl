@@ -1,6 +1,9 @@
 load(
     "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
+    _core_context_data = "core_context_data",
     _dotnet_context = "dotnet_context",
+    _dotnet_context_data = "dotnet_context_data",
+    _net_context_data = "net_context_data",
 )
 load(
     "@io_bazel_rules_dotnet//dotnet/toolchain:toolchains.bzl",
@@ -129,3 +132,6 @@ net_gac4 = _net_gac4
 vs2017_ref_net = _vs2017_ref_net
 DOTNET_NET_FRAMEWORKS = _DOTNET_NET_FRAMEWORKS
 DOTNET_CORE_FRAMEWORKS = _DOTNET_CORE_FRAMEWORKS
+core_context_data = _core_context_data
+dotnet_context_data = _dotnet_context_data
+net_context_data = _net_context_data
