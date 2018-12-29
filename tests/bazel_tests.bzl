@@ -98,9 +98,10 @@ exit $result
 # _basic_workspace is the content appended to all test workspace files
 # it contains the calls required to make the dotnet rules work
 _basic_workspace = """
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_repositories", "dotnet_register_toolchains", "net_register_sdk")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_repositories", "dotnet_register_toolchains", "mono_register_sdk", "net_register_sdk")
 dotnet_repositories()
 dotnet_register_toolchains()
+mono_register_sdk()
 """
 
 def _test_environment_impl(ctx):
@@ -160,11 +161,6 @@ def _bazel_test_script_impl(ctx):
         ctx.actions.write(script_file, "", is_executable = True)
         return [DefaultInfo(files = depset([script_file]))]
 
-    if ctx.attr.dotnet_version == CURRENT_VERSION:
-        register = "dotnet_register_toolchains()\n"
-    elif ctx.attr.dotnet_version != None:
-        register = 'dotnet_register_toolchains(dotnet_version="{}")\n'.format(ctx.attr.dotnet_version)
-
     workspace_content = 'workspace(name = "bazel_test")\n\n'
     for ext in ctx.attr.externals:
         root = ext.label.workspace_root
@@ -181,7 +177,6 @@ def _bazel_test_script_impl(ctx):
             workspace_content += _basic_workspace.format()
         else:
             workspace_content += _basic_workspace.format()
-            workspace_content += register
 
     workspace_file = dotnet.declare_file(dotnet, path = "WORKSPACE.in")
     ctx.actions.write(workspace_file, workspace_content)
