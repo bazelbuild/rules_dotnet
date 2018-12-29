@@ -13,5 +13,7 @@ core_stdlib(
 
 all_core_stdlib(framework)
 
-alias(name = "netstandard.library.dll", actual = ":netstandard.dll")
-
+alias(
+    name = "netstandard.library.dll",
+    actual = ":netstandard.dll",
+)

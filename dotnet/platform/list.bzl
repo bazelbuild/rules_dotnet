@@ -61,7 +61,6 @@ DOTNET_CORE_FRAMEWORKS = {
     "v2.2.101": (".NETCore,Version=v2.2", "NETCOREAPP2_2", "netcoreapp2.2"),
 }
 
-
 def declare_config_settings():
     for impl in DOTNETIMPL:
         native.config_setting(

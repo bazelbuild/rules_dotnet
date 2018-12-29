@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_binary", "dotnet_binary", "net_binary", "DOTNET_NET_FRAMEWORKS", "DOTNET_CORE_FRAMEWORKS")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NET_FRAMEWORKS", "core_binary", "dotnet_binary", "net_binary")
 
 dotnet_binary(
     name = "hello_tool",
@@ -15,6 +15,8 @@ dotnet_binary(
     srcs = [
         "MyTool.cs",
     ],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+    native_deps = "@core_sdk_{}//:native_deps".format(framework),
     deps = [
         "//tests/examples/example_lib:{}_MyClass-core".format(framework),
         "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.console.dll".format(framework),
@@ -23,8 +25,6 @@ dotnet_binary(
         "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.runtime.dll".format(framework),
         "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.runtime.extensions.dll".format(framework),
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
-    native_deps = "@core_sdk_{}//:native_deps".format(framework),
 ) for framework in DOTNET_CORE_FRAMEWORKS]
 
 [net_binary(
@@ -32,11 +32,11 @@ dotnet_binary(
     srcs = [
         "MyTool.cs",
     ],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
+    native_deps = "@net_sdk_{}//:native_deps".format(framework),
     deps = [
         "//tests/examples/example_lib:MyClass-net_{}".format(framework),
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
-    native_deps = "@net_sdk_{}//:native_deps".format(framework),
 ) for framework in DOTNET_NET_FRAMEWORKS]
 
 genrule(

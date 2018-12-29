@@ -17,12 +17,12 @@ net_library(
     name = "net.nunit.core.interfaces",
     srcs = [":NUnitCore_Interfaces_files"],
     defines = ["CLR_4_0"],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
     visibility = ["//visibility:public"],
     deps = [
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.collections.specialized.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.dll",
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472"
 )
 
 dotnet_library(
@@ -41,13 +41,13 @@ net_library(
     name = "net.nunit.framework",
     srcs = [":NUnitFramework_framework_files"],
     defines = ["CLR_4_0"],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
     visibility = ["//visibility:public"],
     deps = [
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.collections.specialized.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.xml.dll",
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472"
 )
 
 dotnet_library(
@@ -66,6 +66,7 @@ net_library(
     name = "net.nunit.core",
     srcs = [":NUnitCore_core_files"],
     defines = ["CLR_4_0"],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
     visibility = ["//visibility:public"],
     deps = [
         ":net.nunit.core.interfaces",
@@ -78,7 +79,6 @@ net_library(
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.text.regularexpressions.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.xml.readerwriter.dll",
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
 )
 
 dotnet_library(
@@ -104,6 +104,7 @@ net_library(
     name = "net.nunit.util",
     srcs = [":ClientUtilities_util_files"],
     defines = ["CLR_4_0"],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
     resources = [":net.Transform"],
     visibility = ["//visibility:public"],
     deps = [
@@ -118,7 +119,6 @@ net_library(
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.xml.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.xml.readerwriter.dll",
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472"
 )
 
 dotnet_resx(
@@ -149,6 +149,7 @@ dotnet_library(
 net_library(
     name = "net.nunit-console-runner",
     srcs = [":ConsoleRunner_nunit_console_files"],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
     visibility = ["//visibility:public"],
     deps = [
         ":net.nunit.core",
@@ -160,7 +161,6 @@ net_library(
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.text.regularexpressions.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.xml.dll",
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472"
 )
 
 dotnet_binary(
@@ -177,13 +177,13 @@ dotnet_binary(
 net_binary(
     name = "net.nunit-console-runner-exe",
     srcs = [":ConsoleRunner_nunit_console_exe_files"],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
+    native_deps = "@net_sdk_net472//:native_deps",
     deps = [
         ":net.nunit.core",
         ":net.nunit.util",
         ":net.nunit-console-runner",
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
-    native_deps = "@net_sdk_net472//:native_deps",
 )
 
 filegroup(

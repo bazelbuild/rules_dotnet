@@ -34,8 +34,8 @@ load(
     "DOTNETIMPL",
     "DOTNETIMPL_OS_ARCH",
     "DOTNETOS",
-    "DOTNET_NET_FRAMEWORKS",
     "DOTNET_CORE_FRAMEWORKS",
+    "DOTNET_NET_FRAMEWORKS",
 )
 
 DEFAULT_VERSION = "4.2.3"
@@ -163,6 +163,7 @@ _label_prefix = "@io_bazel_rules_dotnet//dotnet/toolchain:"
 
 def dotnet_register_toolchains(dotnet_version = DEFAULT_VERSION, core_version = CORE_DEFAULT_VERSION, net_version = NET_DEFAULT_VERSION, net_roslyn_version = NET_ROSLYN_DEFAULT_VERSION):
     """See /dotnet/toolchains.rst#dostnet-register-toolchains for full documentation."""
+
     # Use the final dictionaries to register all the toolchains
     for toolchain in _toolchains:
         name = _label_prefix + toolchain["name"]

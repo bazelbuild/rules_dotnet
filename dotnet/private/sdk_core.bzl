@@ -30,6 +30,7 @@ def _core_download_sdk_impl(ctx):
     ctx.symlink("core/sdk/" + ctx.attr.version, "lib")
     ctx.symlink(_get_shared_dir(ctx), "shared")
     ctx.symlink("core/host/", "host")
+
     # Generate file with target framework attribute
     content = """
     [assembly:System.Runtime.Versioning.TargetFramework("{}")]
@@ -48,6 +49,7 @@ core_download_sdk = repository_rule(
 )
 
 """See /dotnet/toolchains.rst#dotnet-sdk for full documentation."""
+
 def _remote_sdk(ctx, urls, strip_prefix, sha256):
     ctx.download_and_extract(
         url = urls,

@@ -7,5 +7,5 @@ load(
 package(default_visibility = ["//visibility:public"])
 
 declare_toolchains()
-declare_constraints()
 
+declare_constraints()

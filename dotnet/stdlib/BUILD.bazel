@@ -1,131 +1,257 @@
-package(default_visibility = [ "//visibility:public" ])
+package(default_visibility = ["//visibility:public"])
 
 load("@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl", "dotnet_stdlib")
 
-dotnet_stdlib(name="Accessibility.dll")
-dotnet_stdlib(name="Commons.Xml.Relaxng.dll")
-dotnet_stdlib(name="CustomMarshalers.dll")
-dotnet_stdlib(name="I18N.CJK.dll")
-dotnet_stdlib(name="I18N.MidEast.dll")
-dotnet_stdlib(name="I18N.Other.dll")
-dotnet_stdlib(name="I18N.Rare.dll")
-dotnet_stdlib(name="I18N.West.dll")
-dotnet_stdlib(name="I18N.dll")
-dotnet_stdlib(name="IBM.Data.DB2.dll")
-dotnet_stdlib(name="Microsoft.Build.Engine.dll")
-dotnet_stdlib(name="Microsoft.Build.Framework.dll")
-dotnet_stdlib(name="Microsoft.Build.Tasks.v4.0.dll")
-dotnet_stdlib(name="Microsoft.Build.Utilities.v4.0.dll")
-dotnet_stdlib(name="Microsoft.Build.dll")
-dotnet_stdlib(name="Microsoft.CSharp.dll")
-dotnet_stdlib(name="Microsoft.VisualC.dll")
-dotnet_stdlib(name="Microsoft.Web.Infrastructure.dll")
-dotnet_stdlib(name="Mono.CSharp.dll")
-dotnet_stdlib(name="Mono.Cairo.dll")
-dotnet_stdlib(name="Mono.CodeContracts.dll")
-dotnet_stdlib(name="Mono.CompilerServices.SymbolWriter.dll")
-dotnet_stdlib(name="Mono.Data.Sqlite.dll")
-dotnet_stdlib(name="Mono.Data.Tds.dll")
-dotnet_stdlib(name="Mono.Debugger.Soft.dll")
-dotnet_stdlib(name="Mono.Http.dll")
-dotnet_stdlib(name="Mono.Management.dll")
-dotnet_stdlib(name="Mono.Messaging.RabbitMQ.dll")
-dotnet_stdlib(name="Mono.Messaging.dll")
-dotnet_stdlib(name="Mono.Parallel.dll")
-dotnet_stdlib(name="Mono.Posix.dll")
-dotnet_stdlib(name="Mono.Security.dll")
-dotnet_stdlib(name="Mono.Simd.dll")
-dotnet_stdlib(name="Mono.Tasklets.dll")
-dotnet_stdlib(name="Mono.WebBrowser.dll")
-dotnet_stdlib(name="Novell.Directory.Ldap.dll")
-dotnet_stdlib(name="PEAPI.dll")
-dotnet_stdlib(name="RabbitMQ.Client.dll")
-dotnet_stdlib(name="System.ComponentModel.Composition.dll")
-dotnet_stdlib(name="System.ComponentModel.DataAnnotations.dll")
-dotnet_stdlib(name="System.Configuration.Install.dll")
-dotnet_stdlib(name="System.Configuration.dll")
-dotnet_stdlib(name="System.Core.dll")
-dotnet_stdlib(name="System.Data.DataSetExtensions.dll")
-dotnet_stdlib(name="System.Data.Entity.dll")
-dotnet_stdlib(name="System.Data.Linq.dll")
-dotnet_stdlib(name="System.Data.OracleClient.dll")
-dotnet_stdlib(name="System.Data.Services.Client.dll")
-dotnet_stdlib(name="System.Data.Services.dll")
-dotnet_stdlib(name="System.Data.dll")
-dotnet_stdlib(name="System.Design.dll")
-dotnet_stdlib(name="System.Diagnostics.Tracing.dll")
-dotnet_stdlib(name="System.DirectoryServices.Protocols.dll")
-dotnet_stdlib(name="System.DirectoryServices.dll")
-dotnet_stdlib(name="System.Drawing.Design.dll")
-dotnet_stdlib(name="System.Drawing.dll")
-dotnet_stdlib(name="System.Dynamic.dll")
-dotnet_stdlib(name="System.EnterpriseServices.dll")
-dotnet_stdlib(name="System.IO.Compression.FileSystem.dll")
-dotnet_stdlib(name="System.IO.Compression.dll")
-dotnet_stdlib(name="System.IdentityModel.Selectors.dll")
-dotnet_stdlib(name="System.IdentityModel.dll")
-dotnet_stdlib(name="System.Json.Microsoft.dll")
-dotnet_stdlib(name="System.Json.dll")
-dotnet_stdlib(name="System.Management.dll")
-dotnet_stdlib(name="System.Messaging.dll")
-dotnet_stdlib(name="System.Net.Http.Formatting.dll")
-dotnet_stdlib(name="System.Net.Http.WebRequest.dll")
-dotnet_stdlib(name="System.Net.Http.dll")
-dotnet_stdlib(name="System.Net.dll")
-dotnet_stdlib(name="System.Numerics.dll")
-dotnet_stdlib(name="System.Reactive.Core.dll")
-dotnet_stdlib(name="System.Reactive.Debugger.dll")
-dotnet_stdlib(name="System.Reactive.Experimental.dll")
-dotnet_stdlib(name="System.Reactive.Interfaces.dll")
-dotnet_stdlib(name="System.Reactive.Linq.dll")
-dotnet_stdlib(name="System.Reactive.Observable.Aliases.dll")
-dotnet_stdlib(name="System.Reactive.PlatformServices.dll")
-dotnet_stdlib(name="System.Reactive.Providers.dll")
-dotnet_stdlib(name="System.Reactive.Runtime.Remoting.dll")
-dotnet_stdlib(name="System.Reactive.Windows.Forms.dll")
-dotnet_stdlib(name="System.Reactive.Windows.Threading.dll")
-dotnet_stdlib(name="System.Reflection.Context.dll")
-dotnet_stdlib(name="system.runtime.dll")
-dotnet_stdlib(name="System.Runtime.Caching.dll")
-dotnet_stdlib(name="System.Runtime.DurableInstancing.dll")
-dotnet_stdlib(name="System.Runtime.Remoting.dll")
-dotnet_stdlib(name="System.Runtime.Serialization.Formatters.Soap.dll")
-dotnet_stdlib(name="System.Runtime.Serialization.dll")
-dotnet_stdlib(name="System.Security.dll")
-dotnet_stdlib(name="System.ServiceModel.Activation.dll")
-dotnet_stdlib(name="System.ServiceModel.Discovery.dll")
-dotnet_stdlib(name="System.ServiceModel.Routing.dll")
-dotnet_stdlib(name="System.ServiceModel.Web.dll")
-dotnet_stdlib(name="System.ServiceModel.dll")
-dotnet_stdlib(name="System.ServiceProcess.dll")
-dotnet_stdlib(name="System.Threading.Tasks.Dataflow.dll")
-dotnet_stdlib(name="System.Transactions.dll")
-dotnet_stdlib(name="System.Web.Abstractions.dll")
-dotnet_stdlib(name="System.Web.ApplicationServices.dll")
-dotnet_stdlib(name="System.Web.DynamicData.dll")
-dotnet_stdlib(name="System.Web.Extensions.Design.dll")
-dotnet_stdlib(name="System.Web.Extensions.dll")
-dotnet_stdlib(name="System.Web.Http.SelfHost.dll")
-dotnet_stdlib(name="System.Web.Http.WebHost.dll")
-dotnet_stdlib(name="System.Web.Http.dll")
-dotnet_stdlib(name="System.Web.Mvc.dll")
-dotnet_stdlib(name="System.Web.Razor.dll")
-dotnet_stdlib(name="System.Web.Routing.dll")
-dotnet_stdlib(name="System.Web.Services.dll")
-dotnet_stdlib(name="System.Web.WebPages.Deployment.dll")
-dotnet_stdlib(name="System.Web.WebPages.Razor.dll")
-dotnet_stdlib(name="System.Web.WebPages.dll")
-dotnet_stdlib(name="System.Web.dll")
-dotnet_stdlib(name="System.Windows.Forms.DataVisualization.dll")
-dotnet_stdlib(name="System.Windows.Forms.dll")
-dotnet_stdlib(name="System.Windows.dll")
-dotnet_stdlib(name="System.Xaml.dll")
-dotnet_stdlib(name="System.Xml.Linq.dll")
-dotnet_stdlib(name="System.Xml.Serialization.dll")
-dotnet_stdlib(name="System.Xml.dll")
-dotnet_stdlib(name="System.dll")
-dotnet_stdlib(name="WebMatrix.Data.dll")
-dotnet_stdlib(name="WindowsBase.dll")
-dotnet_stdlib(name="System.Collections.Specialized.dll")
-dotnet_stdlib(name="System.Runtime.Extensions.dll")
-dotnet_stdlib(name="System.Xml.ReaderWriter.dll")
+dotnet_stdlib(name = "Accessibility.dll")
+
+dotnet_stdlib(name = "Commons.Xml.Relaxng.dll")
+
+dotnet_stdlib(name = "CustomMarshalers.dll")
+
+dotnet_stdlib(name = "I18N.CJK.dll")
+
+dotnet_stdlib(name = "I18N.MidEast.dll")
+
+dotnet_stdlib(name = "I18N.Other.dll")
+
+dotnet_stdlib(name = "I18N.Rare.dll")
+
+dotnet_stdlib(name = "I18N.West.dll")
+
+dotnet_stdlib(name = "I18N.dll")
+
+dotnet_stdlib(name = "IBM.Data.DB2.dll")
+
+dotnet_stdlib(name = "Microsoft.Build.Engine.dll")
+
+dotnet_stdlib(name = "Microsoft.Build.Framework.dll")
+
+dotnet_stdlib(name = "Microsoft.Build.Tasks.v4.0.dll")
+
+dotnet_stdlib(name = "Microsoft.Build.Utilities.v4.0.dll")
+
+dotnet_stdlib(name = "Microsoft.Build.dll")
+
+dotnet_stdlib(name = "Microsoft.CSharp.dll")
+
+dotnet_stdlib(name = "Microsoft.VisualC.dll")
+
+dotnet_stdlib(name = "Microsoft.Web.Infrastructure.dll")
+
+dotnet_stdlib(name = "Mono.CSharp.dll")
+
+dotnet_stdlib(name = "Mono.Cairo.dll")
+
+dotnet_stdlib(name = "Mono.CodeContracts.dll")
+
+dotnet_stdlib(name = "Mono.CompilerServices.SymbolWriter.dll")
+
+dotnet_stdlib(name = "Mono.Data.Sqlite.dll")
+
+dotnet_stdlib(name = "Mono.Data.Tds.dll")
+
+dotnet_stdlib(name = "Mono.Debugger.Soft.dll")
+
+dotnet_stdlib(name = "Mono.Http.dll")
+
+dotnet_stdlib(name = "Mono.Management.dll")
+
+dotnet_stdlib(name = "Mono.Messaging.RabbitMQ.dll")
+
+dotnet_stdlib(name = "Mono.Messaging.dll")
+
+dotnet_stdlib(name = "Mono.Parallel.dll")
+
+dotnet_stdlib(name = "Mono.Posix.dll")
+
+dotnet_stdlib(name = "Mono.Security.dll")
+
+dotnet_stdlib(name = "Mono.Simd.dll")
+
+dotnet_stdlib(name = "Mono.Tasklets.dll")
+
+dotnet_stdlib(name = "Mono.WebBrowser.dll")
+
+dotnet_stdlib(name = "Novell.Directory.Ldap.dll")
+
+dotnet_stdlib(name = "PEAPI.dll")
+
+dotnet_stdlib(name = "RabbitMQ.Client.dll")
+
+dotnet_stdlib(name = "System.ComponentModel.Composition.dll")
+
+dotnet_stdlib(name = "System.ComponentModel.DataAnnotations.dll")
+
+dotnet_stdlib(name = "System.Configuration.Install.dll")
+
+dotnet_stdlib(name = "System.Configuration.dll")
+
+dotnet_stdlib(name = "System.Core.dll")
+
+dotnet_stdlib(name = "System.Data.DataSetExtensions.dll")
+
+dotnet_stdlib(name = "System.Data.Entity.dll")
+
+dotnet_stdlib(name = "System.Data.Linq.dll")
+
+dotnet_stdlib(name = "System.Data.OracleClient.dll")
+
+dotnet_stdlib(name = "System.Data.Services.Client.dll")
+
+dotnet_stdlib(name = "System.Data.Services.dll")
+
+dotnet_stdlib(name = "System.Data.dll")
+
+dotnet_stdlib(name = "System.Design.dll")
+
+dotnet_stdlib(name = "System.Diagnostics.Tracing.dll")
+
+dotnet_stdlib(name = "System.DirectoryServices.Protocols.dll")
+
+dotnet_stdlib(name = "System.DirectoryServices.dll")
+
+dotnet_stdlib(name = "System.Drawing.Design.dll")
+
+dotnet_stdlib(name = "System.Drawing.dll")
+
+dotnet_stdlib(name = "System.Dynamic.dll")
+
+dotnet_stdlib(name = "System.EnterpriseServices.dll")
+
+dotnet_stdlib(name = "System.IO.Compression.FileSystem.dll")
+
+dotnet_stdlib(name = "System.IO.Compression.dll")
+
+dotnet_stdlib(name = "System.IdentityModel.Selectors.dll")
+
+dotnet_stdlib(name = "System.IdentityModel.dll")
+
+dotnet_stdlib(name = "System.Json.Microsoft.dll")
+
+dotnet_stdlib(name = "System.Json.dll")
+
+dotnet_stdlib(name = "System.Management.dll")
+
+dotnet_stdlib(name = "System.Messaging.dll")
+
+dotnet_stdlib(name = "System.Net.Http.Formatting.dll")
+
+dotnet_stdlib(name = "System.Net.Http.WebRequest.dll")
+
+dotnet_stdlib(name = "System.Net.Http.dll")
+
+dotnet_stdlib(name = "System.Net.dll")
+
+dotnet_stdlib(name = "System.Numerics.dll")
+
+dotnet_stdlib(name = "System.Reactive.Core.dll")
+
+dotnet_stdlib(name = "System.Reactive.Debugger.dll")
+
+dotnet_stdlib(name = "System.Reactive.Experimental.dll")
+
+dotnet_stdlib(name = "System.Reactive.Interfaces.dll")
+
+dotnet_stdlib(name = "System.Reactive.Linq.dll")
+
+dotnet_stdlib(name = "System.Reactive.Observable.Aliases.dll")
+
+dotnet_stdlib(name = "System.Reactive.PlatformServices.dll")
+
+dotnet_stdlib(name = "System.Reactive.Providers.dll")
+
+dotnet_stdlib(name = "System.Reactive.Runtime.Remoting.dll")
+
+dotnet_stdlib(name = "System.Reactive.Windows.Forms.dll")
+
+dotnet_stdlib(name = "System.Reactive.Windows.Threading.dll")
+
+dotnet_stdlib(name = "System.Reflection.Context.dll")
+
+dotnet_stdlib(name = "system.runtime.dll")
+
+dotnet_stdlib(name = "System.Runtime.Caching.dll")
+
+dotnet_stdlib(name = "System.Runtime.DurableInstancing.dll")
+
+dotnet_stdlib(name = "System.Runtime.Remoting.dll")
+
+dotnet_stdlib(name = "System.Runtime.Serialization.Formatters.Soap.dll")
+
+dotnet_stdlib(name = "System.Runtime.Serialization.dll")
+
+dotnet_stdlib(name = "System.Security.dll")
+
+dotnet_stdlib(name = "System.ServiceModel.Activation.dll")
+
+dotnet_stdlib(name = "System.ServiceModel.Discovery.dll")
+
+dotnet_stdlib(name = "System.ServiceModel.Routing.dll")
+
+dotnet_stdlib(name = "System.ServiceModel.Web.dll")
+
+dotnet_stdlib(name = "System.ServiceModel.dll")
+
+dotnet_stdlib(name = "System.ServiceProcess.dll")
+
+dotnet_stdlib(name = "System.Threading.Tasks.Dataflow.dll")
+
+dotnet_stdlib(name = "System.Transactions.dll")
+
+dotnet_stdlib(name = "System.Web.Abstractions.dll")
+
+dotnet_stdlib(name = "System.Web.ApplicationServices.dll")
+
+dotnet_stdlib(name = "System.Web.DynamicData.dll")
+
+dotnet_stdlib(name = "System.Web.Extensions.Design.dll")
+
+dotnet_stdlib(name = "System.Web.Extensions.dll")
+
+dotnet_stdlib(name = "System.Web.Http.SelfHost.dll")
+
+dotnet_stdlib(name = "System.Web.Http.WebHost.dll")
+
+dotnet_stdlib(name = "System.Web.Http.dll")
+
+dotnet_stdlib(name = "System.Web.Mvc.dll")
+
+dotnet_stdlib(name = "System.Web.Razor.dll")
+
+dotnet_stdlib(name = "System.Web.Routing.dll")
+
+dotnet_stdlib(name = "System.Web.Services.dll")
+
+dotnet_stdlib(name = "System.Web.WebPages.Deployment.dll")
+
+dotnet_stdlib(name = "System.Web.WebPages.Razor.dll")
+
+dotnet_stdlib(name = "System.Web.WebPages.dll")
+
+dotnet_stdlib(name = "System.Web.dll")
+
+dotnet_stdlib(name = "System.Windows.Forms.DataVisualization.dll")
+
+dotnet_stdlib(name = "System.Windows.Forms.dll")
+
+dotnet_stdlib(name = "System.Windows.dll")
+
+dotnet_stdlib(name = "System.Xaml.dll")
+
+dotnet_stdlib(name = "System.Xml.Linq.dll")
+
+dotnet_stdlib(name = "System.Xml.Serialization.dll")
+
+dotnet_stdlib(name = "System.Xml.dll")
+
+dotnet_stdlib(name = "System.dll")
+
+dotnet_stdlib(name = "WebMatrix.Data.dll")
+
+dotnet_stdlib(name = "WindowsBase.dll")
+
+dotnet_stdlib(name = "System.Collections.Specialized.dll")
+
+dotnet_stdlib(name = "System.Runtime.Extensions.dll")
+
+dotnet_stdlib(name = "System.Xml.ReaderWriter.dll")

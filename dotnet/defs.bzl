@@ -4,10 +4,10 @@ load(
 )
 load(
     "@io_bazel_rules_dotnet//dotnet/toolchain:toolchains.bzl",
-    _dotnet_register_toolchains = "dotnet_register_toolchains",
-    _mono_register_sdk= "mono_register_sdk",
-    _net_register_sdk = "net_register_sdk",
     _core_register_sdk = "core_register_sdk",
+    _dotnet_register_toolchains = "dotnet_register_toolchains",
+    _mono_register_sdk = "mono_register_sdk",
+    _net_register_sdk = "net_register_sdk",
 )
 load(
     "@io_bazel_rules_dotnet//dotnet/private:sdk.bzl",
@@ -84,8 +84,8 @@ load(
 )
 load(
     "@io_bazel_rules_dotnet//dotnet/platform:list.bzl",
-    _DOTNET_NET_FRAMEWORKS ="DOTNET_NET_FRAMEWORKS",
-    _DOTNET_CORE_FRAMEWORKS ="DOTNET_CORE_FRAMEWORKS",
+    _DOTNET_CORE_FRAMEWORKS = "DOTNET_CORE_FRAMEWORKS",
+    _DOTNET_NET_FRAMEWORKS = "DOTNET_NET_FRAMEWORKS",
 )
 
 dotnet_context = _dotnet_context

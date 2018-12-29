@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_library", "dotnet_library", "net_library", "DOTNET_NET_FRAMEWORKS", "DOTNET_CORE_FRAMEWORKS")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NET_FRAMEWORKS", "core_library", "dotnet_library", "net_library")
 
 dotnet_library(
     name = "TransitiveClass",
@@ -14,12 +14,12 @@ dotnet_library(
     srcs = [
         "TransitiveClass.cs",
     ],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
     visibility = ["//visibility:public"],
     deps = [
         "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.private.corelib.dll".format(framework),
         "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.runtime.dll".format(framework),
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
 ) for framework in DOTNET_CORE_FRAMEWORKS]
 
 [net_library(
@@ -27,8 +27,8 @@ dotnet_library(
     srcs = [
         "TransitiveClass.cs",
     ],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
     visibility = ["//visibility:public"],
     deps = [
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
 ) for framework in DOTNET_NET_FRAMEWORKS]

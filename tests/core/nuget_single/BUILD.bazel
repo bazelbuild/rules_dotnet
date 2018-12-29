@@ -2,10 +2,10 @@ load("@io_bazel_rules_dotnet//tests:bazel_tests.bzl", "bazel_test")
 
 bazel_test(
     name = "nuget_single",
+    srcs = [":main_test.cs"],
+    build_in = ":build.in.bzl",
     command = "test",
     dotnet_version = "host",
     targets = ["empty_test"],
     workspace_in = ":workspace.in.bzl",
-    build_in = ":build.in.bzl",
-    srcs = [":main_test.cs"],
 )

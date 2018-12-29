@@ -147,4 +147,3 @@ def all_stdlib471(framework):
     net_stdlib(name = "system.componentmodel.typeconverter.dll", dotnet_context_data = context)
     net_stdlib(name = "system.collections.specialized.dll", dotnet_context_data = context)
     net_stdlib(name = "system.diagnostics.tracesource.dll", dotnet_context_data = context)
-
