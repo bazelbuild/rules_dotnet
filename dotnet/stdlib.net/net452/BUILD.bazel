@@ -1,0 +1,8 @@
+package(default_visibility = ["//visibility:public"])
+
+load("@io_bazel_rules_dotnet//dotnet/stdlib.net:macro.bzl", "all_stdlib")
+load("@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl", "net_stdlib")
+
+framework = "net452"
+
+all_stdlib(framework)

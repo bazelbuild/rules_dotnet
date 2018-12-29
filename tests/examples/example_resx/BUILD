@@ -35,8 +35,8 @@ net_resx(
     srcs = glob(["*.cs"]),
     resources = [":net.resx"],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:{}_system.dll".format(framework),
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:{}_system.runtime.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net/{}:system.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net/{}:system.runtime.dll".format(framework),
         "@xunit.assert//:{}_net".format(framework),
         "@xunit.extensibility.core//:{}_net".format(framework),
         "@xunit.extensibility.execution//:{}_net".format(framework),

@@ -40,11 +40,3 @@ exports_files(["AUTHORS"])
 ) for framework in DOTNET_CORE_FRAMEWORKS
 ]
 
-filegroup(
-    name = "all",
-    srcs = [
-        "@v2.1.200_xunit_abstractions//:abstractions.xunit",
-        "@v2.1.200_xunit_assert//:assert.xunit",
-        "@v2.1.200_xunit//:xunit.console",
-    ]
-)
