@@ -16,8 +16,8 @@ dotnet_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.private.corelib.dll".format(framework),
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.runtime.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.private.corelib.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.runtime.dll".format(framework),
     ],
     dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
 ) for framework in DOTNET_CORE_FRAMEWORKS]

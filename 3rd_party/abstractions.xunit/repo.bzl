@@ -1,12 +1,13 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_library", "core_binary", "core_resource", "DOTNET_CORE_FRAMEWORKS")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_binary", "core_library", "core_resource")
 
-[core_library(
-    name = "{}_abstractions.xunit".format(framework),
-    srcs = glob(["**/*.cs"]),
-    visibility = ["//visibility:public"],
-    deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.runtime.dll".format(framework),
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:{}_system.private.corelib.dll".format(framework),
-    ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
-) for framework in DOTNET_CORE_FRAMEWORKS]
+def buildall(framework):
+    core_library(
+        name = "abstractions.xunit".format(framework),
+        srcs = native.glob(["**/*.cs"]),
+        visibility = ["//visibility:public"],
+        deps = [
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.runtime.dll".format(framework),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.private.corelib.dll".format(framework),
+        ],
+        dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+    )

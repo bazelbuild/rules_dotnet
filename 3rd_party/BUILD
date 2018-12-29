@@ -1,1 +1,1 @@
-exports_files(["xunit/GlobalAssemblyInfo.cs"])
+exports_files(glob(["xunit/*.cs"]))

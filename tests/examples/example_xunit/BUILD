@@ -7,12 +7,12 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_xunit_test", "dotnet_xunit
         "MyTest.cs",
     ],
     deps = [
-        "@xunit//:{}_xunit.core".format(framework),
-        "@xunit_assert//:{}_assert.xunit".format(framework),
+        "@{}_xunit//:xunit.core".format(framework),
+        "@{}_xunit_assert//:assert.xunit".format(framework),
     ],
     dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
     native_deps = "@core_sdk_{}//:native_deps".format(framework),
-    testlauncher = "@xunit//:{}_xunit.console".format(framework),
+    testlauncher = "@{}_xunit//:xunit.console".format(framework),
 ) for framework in DOTNET_CORE_FRAMEWORKS]
 
 [net_xunit_test(

@@ -26,7 +26,7 @@ jobs:
         bazel ^
         run ^
         -s ^
-        //tests/examples/example_binary:hello-core ^
+        //tests/examples/example_binary:v2.1.200_hello-core ^
         --all_incompatible_changes
       displayName: 'Run sample core hello'
     - script: |
@@ -94,7 +94,7 @@ jobs:
         bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s --local_resources=400,1,1.0 --spawn_strategy=standalone //tests/examples/example_binary:hello
       displayName: 'Run sample hello'
     - script: |
-        bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s --local_resources=400,1,1.0 --spawn_strategy=standalone //tests/examples/example_binary:hello-core
+        bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s --local_resources=400,1,1.0 --spawn_strategy=standalone //tests/examples/example_binary:v2.1.200_hello-core
       displayName: 'Run sample core hello'
     - script: |
         bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m test -s --local_resources=400,1,1.0 --test_summary=detailed --spawn_strategy=standalone --test_output=all //...
@@ -154,7 +154,7 @@ jobs:
         bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s --local_resources=400,1,1.0 --spawn_strategy=standalone //tests/examples/example_binary:hello
       displayName: 'Run sample hello'
     - script: |
-        bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s --local_resources=400,1,1.0 --spawn_strategy=standalone //tests/examples/example_binary:hello-core
+        bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s --local_resources=400,1,1.0 --spawn_strategy=standalone //tests/examples/example_binary:v2.1.200_hello-core
       displayName: 'Run sample core hello'
     - script: |
         bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m test -s --local_resources=400,1,1.0 --test_summary=detailed --spawn_strategy=standalone --test_output=all //...

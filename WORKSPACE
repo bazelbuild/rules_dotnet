@@ -10,13 +10,11 @@ dotnet_register_toolchains("host")
 
 [net_register_toolchains(
     framework
-) for framework in DOTNET_NET_FRAMEWORKS
-]
+) for framework in DOTNET_NET_FRAMEWORKS]
 
 [core_register_toolchains(
     framework
-) for framework in DOTNET_CORE_FRAMEWORKS
-]
+) for framework in DOTNET_CORE_FRAMEWORKS]
 
 net_gac4(
   name = "System.ComponentModel.DataAnnotations",
@@ -24,32 +22,32 @@ net_gac4(
   token = "31bf3856ad364e35"
 )
 
-http_archive(
-    name = "xunit_abstractions",
-    build_file = "//3rd_party:abstractions.xunit/repo.bzl",
+[http_archive(
+    name = "{}_xunit_abstractions".format(framework),
+    build_file = "@io_bazel_rules_dotnet//3rd_party:abstractions.xunit/repo_{}.bzl".format(framework),
     urls = ["https://github.com/xunit/abstractions.xunit/archive/2.0.1.tar.gz"]
-)
+) for framework in DOTNET_CORE_FRAMEWORKS]
 
-http_archive(
-    name = "xunit_assert",
-    build_file = "//3rd_party:assert.xunit/repo.bzl",
+[http_archive(
+    name = "{}_xunit_assert".format(framework),
+    build_file = "@io_bazel_rules_dotnet//3rd_party:assert.xunit/repo_{}.bzl".format(framework),
     urls = ["https://github.com/xunit/assert.xunit/archive/2.4.1.tar.gz"],
     strip_prefix="assert.xunit-2.4.1",
-)
+) for framework in DOTNET_CORE_FRAMEWORKS]
 
-http_archive(
-    name = "testfx",
-    build_file = "//3rd_party:testfx/repo.bzl",
+[http_archive(
+    name = "{}_testfx".format(framework),
+    build_file = "@io_bazel_rules_dotnet//3rd_party:testfx/repo_{}.bzl".format(framework),
     urls = ["https://github.com/Microsoft/testfx/archive/1.4.0.tar.gz"],
     strip_prefix="testfx-1.4.0",
-)
+) for framework in DOTNET_CORE_FRAMEWORKS]
 
-http_archive(
-    name = "xunit",
-    build_file = "//3rd_party:xunit/repo.bzl",
+[http_archive(
+    name = "{}_xunit".format(framework),
+    build_file = "//3rd_party:xunit/repo_{}.bzl".format(framework),
     urls = ["https://github.com/xunit/xunit/archive/2.4.1.tar.gz"],
     strip_prefix="xunit-2.4.1",
-)
+) for framework in DOTNET_CORE_FRAMEWORKS]
 
 
 # The rule is left as an example. It is commented out, because our CI server doesn't have VS2017 installed
