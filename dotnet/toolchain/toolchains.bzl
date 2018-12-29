@@ -91,7 +91,7 @@ CORE_SDK_REPOSITORIES = {
             "2b14129d8e0fa01ba027145022e0580796604f091a52fcb86d23c0fa1fa438e9",
         ),
         "core_darwin_amd64": (
-            "https://download.visualstudio.microsoft.com/download/pr/3100b00b-4e63-4d49-bd59-297931016032/b71d2aff0d650b5501258a54b0cd2ea7/dotnet-sdk-2.2.101-osx-x64.tar.gz",
+            "https://download.visualstudio.microsoft.com/download/pr/55c65d12-5f99-45d3-aa14-35359a6d02ca/3f6bcd694e3bfbb84e6b99e65279bd1e/dotnet-sdk-2.2.101-osx-x64.tar.gz",
             "fc695c2c797da757251ce643d408e99e6325563bf08d46f1bf8d45a8ebc1aac6",
         ),
     },
