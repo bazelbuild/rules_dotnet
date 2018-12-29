@@ -95,15 +95,6 @@ trap at_exit EXIT
 exit $result
 """
 
-# _basic_workspace is the content appended to all test workspace files
-# it contains the calls required to make the dotnet rules work
-_basic_workspace = """
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_repositories", "dotnet_register_toolchains", "mono_register_sdk", "net_register_sdk")
-dotnet_repositories()
-dotnet_register_toolchains()
-mono_register_sdk()
-"""
-
 def _test_environment_impl(ctx):
     # Find bazel
     bazel = ""
@@ -172,11 +163,6 @@ def _bazel_test_script_impl(ctx):
         )
     if ctx.attr.workspace:
         workspace_content += ctx.attr.workspace
-    else:
-        if ctx.attr.workspace_in:
-            workspace_content += _basic_workspace.format()
-        else:
-            workspace_content += _basic_workspace.format()
 
     workspace_file = dotnet.declare_file(dotnet, path = "WORKSPACE.in")
     ctx.actions.write(workspace_file, workspace_content)
