@@ -9,7 +9,7 @@ dotnet_context_data(
 )
 
 core_context_data(
-    name = "core_context_data"
+    name = "core_context_data",
 )
 
 exports_files(["AUTHORS"])
