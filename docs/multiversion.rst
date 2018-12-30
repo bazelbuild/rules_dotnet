@@ -8,15 +8,15 @@ Particularly .NET Framework is often used with multiple versions of frameworks (
 Rules_dotnet support multiple versions of framework for .NET Core and .NET Framework. The version of
 the framework is specified by the "dotnet_context_data" attribute. For example:
 
-  .. code:: python
+.. code:: python
 
     net_library(
-      name = "foo_bar",
-      srcs = [
-          "foo.cs",
-          "bar.cs",
-      ],
-      dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
+        name = "foo_bar",
+        srcs = [
+            "foo.cs",
+            "bar.cs",
+        ],
+        dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
     )
 
 The available frameworks are defined when calling net_register_sdk_ and core_register_sdk_.
