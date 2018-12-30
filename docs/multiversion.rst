@@ -20,6 +20,7 @@ the framework is specified by the "dotnet_context_data" attribute. For example:
     )
 
 The available frameworks are defined when calling net_register_sdk_ and core_register_sdk_.
+
 Two techniques are often used to build multiple versions:
 
 * Using loops (see `example <../tests/examples/example_transitive_lib/BUILD>`_):
@@ -49,7 +50,7 @@ Two techniques are often used to build multiple versions:
     ) for framework in DOTNET_NET_FRAMEWORKS]
     ...
 
-* Using macros (see `example 2 <../dotnet/stdlib.core/mazro.bzl>`_:
+* Using macros (see `example 2 <../dotnet/stdlib.core/macro.bzl>`_:
 
   .. code:: python
 
