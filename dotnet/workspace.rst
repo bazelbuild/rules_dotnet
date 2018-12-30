@@ -33,8 +33,6 @@ dotnet_repositories
 Fetches remote repositories required by dotnet rules.
 
 
-
-
 dotnet_nuget
 ~~~~~~~~~~~~
 

@@ -1,7 +1,7 @@
 Core dotnet rules tests
 =======================
 
-This contains tests of the core go rules.
+This contains tests of the core rules.
 
 Contents
 --------

@@ -105,7 +105,7 @@ NET_ROSLYN_REPOSITORIES = {
     "2.6.1": {
         "net_windows_amd64": (
             "https://www.nuget.org/api/v2/package/Microsoft.Net.Compilers/2.6.1/",
-            "49eaa49477f7409f15f6d4c92ea0176c94100fa063ed20ca6f5eb0ee16655848",
+            "2e38aa455b5a1acce260a8ea30696804e6fa66aa366a04118f0cb4c8d7d08cf9",
         ),
     },
     "2.7.0": {
@@ -117,19 +117,19 @@ NET_ROSLYN_REPOSITORIES = {
     "2.8.0": {
         "net_windows_amd64": (
             "https://www.nuget.org/api/v2/package/Microsoft.Net.Compilers/2.8.0/",
-            "cd0a53049e5c6f7f4d96f30c54c25321c547a2d36b588a820bbdeef0c6ff05b5",
+            "ec357a48b5ce3a2890c744967f4057a6c2c953fdd407bd57c003c9d300fe015f",
         ),
     },
     "2.8.2": {
         "net_windows_amd64": (
             "https://www.nuget.org/api/v2/package/Microsoft.Net.Compilers/2.8.2/",
-            "48d0d13d8667e16ce150fbb7d804d12d9b9bca8bba9003eaccf1f105cbd427f6",
+            "96684975e6934859e3a9f42536d2ffeb63f8e5761eb38838d0604d4cc31e0b47",
         ),
     },
     "2.9.0": {
         "net_windows_amd64": (
             "https://www.nuget.org/api/v2/package/Microsoft.Net.Compilers/2.9.0/",
-            "9af42dbb5d198f7e885671bf85ecca3e958d8a22a21dbd6e328b694d390562ce",
+            "63a6828a1a4ada4b813f48784b1797b4b270a8c0559fcafc64666efb3de84bfd",
         ),
     },
     "2.10.0": {

@@ -6,7 +6,9 @@ Multiversion
 Particularly .NET Framework is often used with multiple versions of frameworks (net45, net472, etc.).
 
 Rules_dotnet support multiple versions of framework for .NET Core and .NET Framework. The version of
-the framework is specified by the "dotnet_context_data" attribute. For example:
+the framework is specified by the "dotnet_context_data" attribute. 
+
+For example:
 
 .. code:: python
 
@@ -50,7 +52,7 @@ Two techniques are often used to build multiple versions:
     ) for framework in DOTNET_NET_FRAMEWORKS]
     ...
 
-* Using macros (see `example 2 <../dotnet/stdlib.core/macro.bzl>`_:
+* Using macros (see `example 2 <../dotnet/stdlib.core/macro.bzl>`_):
 
   .. code:: python
 
@@ -78,3 +80,5 @@ Two techniques are often used to build multiple versions:
 
     framework = "v2.1.200"
     all_core_stdlib(framework)
+
+Please take into consideration `runtime limitations <runtime.rst>`_.

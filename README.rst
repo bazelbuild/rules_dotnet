@@ -44,6 +44,8 @@ Documentation
 
 * `Multiple framework versions <docs/multiversion.rst>`_
 
+* `Nuget usage <tools/nuget2bazel/README.rst>`_
+
 * `Core API <dotnet/core.rst>`_
   
   * `dotnet_library, core_library, net_library <dotnet/core.rst#dotnet-library-core-library-net-library>`_

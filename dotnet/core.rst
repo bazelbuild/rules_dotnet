@@ -272,6 +272,7 @@ dotnet_resx, net_resx, core_resx
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This builds a dotnet .resources file from a single .resx file.
+
 .NET Core version uses a custom tool to convert text .resx file to .resources files because no 
 standard tool is provided.
 
