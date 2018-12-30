@@ -206,14 +206,14 @@ net_context_data = rule(
             default = "@net_sdk//:mcs_bin",
         ),
         "libVersion": attr.string(
-            default = "",
+            mandatory = True,
         ),
         "_toolchain_type": attr.string(
             default = "@io_bazel_rules_dotnet//dotnet:toolchain_net",
         ),
         "extra_srcs": attr.label_list(
             allow_files = True,
-            default = [],
+            default = ["@net_sdk//:tagetframework"],
         ),
     },
 )

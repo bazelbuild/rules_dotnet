@@ -20,9 +20,10 @@ Welcome to rules_dotnet's documentation!
    tests/core/README.rst
    tests/core/dotnet_library/README.rst
    tests/core/dotnet_binary/README.rst
-   tests/core/download_sdk/README.rst
    tests/core/nuget_single/README.rst
    tools/nuget2bazel/README.rst
+   docs/runtime.rst
+   docs/multiversion.rst
 
 Indices and tables
 ==================

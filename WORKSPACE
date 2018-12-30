@@ -21,6 +21,9 @@ mono_register_sdk()
 # Default core_sdk
 core_register_sdk("v2.1.502", name = "core_sdk")
 
+# Default net_sdk
+net_register_sdk("net471", name = "net_sdk")
+
 net_gac4(
   name = "System.ComponentModel.DataAnnotations",
   version = "4.0.0.0",

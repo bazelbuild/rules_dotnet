@@ -24,25 +24,23 @@ The Dotnet toolchain consists of three main layers, `the sdk`_ and `the toolchai
 The SDK
 ~~~~~~~
 
-At the bottom is the Mono MDK.
+At the bottom there are frameworks (.NET, Core or Mono). More than one version of the
+framework may be used at the same time.
 
-This is always bound to ``@dotnet_sdk`` and can be referred to directly if needed, but in general
-you should always access it through the toolchain.
+The frameworks are bound to ``@dotnet_sdk`` for Mono, ``@core_sdk_<version>`` for .NET Core
+and ``@net_sdk_<version>`` for .NET Framework. They can be referred to directly if needed, but 
+in general you should always access it through the toolchain.
 
-The dotnet_download_sdk_ and dotnet_host_sdk_ family of rules are responsible for downloading
-these, and adding just enough of a build file to expose the contents to Bazel.
+The net_register_sdk_, mono_register_sdk_ and core_register_sdk_ family of rules are 
+responsible for downloading these, and adding just enough of a build file to expose the 
+contents to Bazel.
 
-If you don't do anything special, the dotnet rules will download the most recent official SDK for
-your host (if available).
-If you need a forked version of dotnet/mono, want to control the version or just use the
-installed sdk then it is easy to do, you just need to make sure you have bound the dotnet_sdk
-repository before you call dotnet_register_toolchains_.
 
 The toolchain
 ~~~~~~~~~~~~~
 
 This a wrapper over the sdk that provides enough extras to match, target and work on a specific
-platforms. It should be considered an opaqute type, you only ever use it through `the context`_.
+platforms. It should be considered an opaque type, you only ever use it through `the context`_.
 
 Declaration
 ^^^^^^^^^^^
@@ -57,7 +55,7 @@ it's default name, the following toolchain labels (along with many others) will 
 
 .. code::
 
-  @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64
+  @io_bazel_rules_dotnet//dotnet/toolchain:net_linux_amd64
   
 The toolchains are not usable until you register them.
 
@@ -74,7 +72,7 @@ dotnet_register_toolchains_.
 
 If you wish to have more control over the toolchains you can instead just make direct
 calls to dotnet_register_toolchains_ with only the toolchains you wish to install. You can see an
-example of this in `limiting the available toolchains`_.
+example of this in `limiting the available toolchains <https://docs.bazel.build/versions/master/toolchains.html#toolchain-resolution>`_.
 
 
 The context
@@ -87,8 +85,6 @@ Use
 
 If you are writing a new rule that wants to use the Dotnet toolchain, you need to do a couple of things.
 First, you have to declare that you want to consume the toolchain on the rule declaration.
-The easiest way to do this is to use the dotnet_rule wrapper, which adds in the toolchain and some
-hidden attributes that it consumes.
 
 .. code:: python
 
@@ -111,182 +107,78 @@ And then in the rule body, you need to get the toolchain itself and use it's act
     dotnet = dotnet_context(ctx)
 
 
-Customizing
------------
-
-Normal usage
-~~~~~~~~~~~~
-
-This is an example of normal usage for the other examples to be compared against.
-
-WORKSPACE
-^^^^^^^^^
-
-.. code:: python
-
-    load("@io_bazel_rules_dotnet//dotnet:def.bzl", "dotnet_rules_dependencies", "dotnet_register_toolchains")
-
-    dotnet_rules_dependencies()
-    dotnet_register_toolchains()
-
-
-Forcing the Dotnet version
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You can select the version of the Mono to use by specifying it when you call
-dotnet_register_toolchains_ but you must use a value that matches a known toolchain.
-
-WORKSPACE
-^^^^^^^^^
-
-.. code:: python
-
-    load("@io_bazel_rules_dotnet//dotnet:def.bzl", "dotnet_rules_dependencies", "dotnet_register_toolchains")
-
-    dotnet_rules_dependencies()
-    dotnet_register_toolchains(dotnet_version="4.2.3")
-
-
-Using the installed Mono 
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-The "host" version is a special toolchain that breaks the hermetic seal to use the host installed
-toolchain.
-
-WORKSPACE
-^^^^^^^^^
-
-.. code:: python
-
-    load("@io_bazel_rules_dotnet//dotnet:def.bzl", "dotnet_rules_dependencies", "dotnet_register_toolchains")
-
-    dotnet_rules_dependencies()
-    dotnet_register_toolchains(go_version="host")
-
-
-
-Registering a custom Mono
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-If you want to register your own toolchain that takes precedence over the pre-declared ones you can
-just add it and register it before the normal ones.
-
-WORKSPACE
-^^^^^^^^^
-
-.. code:: python
-
-    load("@io_bazel_rules_dotnet//dotnet:def.bzl", "dotnet_rules_dependencies", "dotnet_register_toolchains", "dotnet_download_sdk")
-
-    dotnet_download_sdk(name="my_macos_sdk", url="http://bazel-mirror.storage.googleapis.com/download.mono-project.com/archive/4.2.3/macos-10-x86/MonoFramework-MDK-4.2.3.4.macos10.xamarin.x86.tar.gz")
-    register_toolchains(
-        "@//:my_macos_toolchain",
-    )
-
-    dotnet_rules_dependencies()
-    dotnet_register_toolchains()
-
-
-BUILD.bazel
-^^^^^^^^^^^
-
-.. code:: python
-
-    dotnet_toolchain(name="my_macos_toolchain", sdk="my_macos_sdk")
-
-
-Limiting the available toolchains
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-If you wanted to only allow your project to be compiled on mac at Mono version 4.2.3,
-instead of calling dotnet_register_toolchains_ you can put
-
-WORKSPACE
-^^^^^^^^^
-
-.. code:: python
-
-    load("@io_bazel_rules_dotnet//dotnet:def.bzl", "dotnet_rules_dependencies")
-
-    dotnet_rules_dependencies()
-    register_toolchains(
-        "@io_bazel_rules_dotnet//dotnet/toolchain:4.2.3_darwin_amd64",
-    )
-
-
 API
 ---
 
 dotnet_register_toolchains
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Installs the Dotnet toolchains. If :param:`dotnet_version` is specified, it sets the
-Mono version to use (for example, :value:`"4.2.3"`). By default, the latest
-Mono will be used.
+Installs the Dotnet toolchains. 
 
-+--------------------------------+-----------------------------+-----------------------------------+
-| **Name**                       | **Type**                    | **Default value**                 |
-+--------------------------------+-----------------------------+-----------------------------------+
-| :param:`dotnet_version`        | :type:`string`              | :value:`"4.2.3"`                  |
-+--------------------------------+-----------------------------+-----------------------------------+
-| This specifies the Mono version to select.                                                       |
-| It will match the version specification of the toochain which for normal sdk toolchains is       |
-| also the string part of the binary distribution you want to use.                                 |
-| You can also use it to select the "host" sdk toolchain, or a custom toolchain with a             |
-| specialized version string.                                                                      |
-+--------------------------------+-----------------------------+-----------------------------------+
+net_register_sdk
+~~~~~~~~~~~~~~~~
 
-dotnet_download_sdk
-~~~~~~~~~~~~~~~~~~~
+Registers .NET Framework.
 
-This downloads Mono for use in toolchains.
+It searches for .NET Framework using well known location and provided version. On non-Windows
+platform the function doesn't do anything.
 
-+--------------------------------+-----------------------------+-----------------------------------+
-| **Name**                       | **Type**                    | **Default value**                 |
-+--------------------------------+-----------------------------+-----------------------------------+
-| :param:`name`                  | :type:`string`              | |mandatory|                       |
-+--------------------------------+-----------------------------+-----------------------------------+
-| A unique name for this sdk. This should almost always be :value:`dotnet_sdk` if you want the SDK |
-| to be used by toolchains.                                                                        |
-+--------------------------------+-----------------------------+-----------------------------------+
-| :param:`urls`                  | :type:`string_list`         | :value:`official distributions`   |
-+--------------------------------+-----------------------------+-----------------------------------+
-| A list of mirror urls to the binary distribution of Mono. These must contain the `{}`            |
-| used to substitute the sdk filename being fetched (using `.format`.                              |
-+--------------------------------+-----------------------------+-----------------------------------+
-| :param:`strip_prefix`          | :type:`string`              | :value:`""`                       |
-+--------------------------------+-----------------------------+-----------------------------------+
-| A directory prefix to strip from the extracted files.                                            |
-+--------------------------------+-----------------------------+-----------------------------------+
-| :param:`sdks`                  | :type:`string_list_dict`    | |mandatory|                       |
-+--------------------------------+-----------------------------+-----------------------------------+
-| This consists of a set of mappings from the host platform tuple to a list of filename and        |
-| sha256 for that file. The filename is combined the :param:`urls` to produce the final download   |
-| urls to use.                                                                                     |
-|                                                                                                  |
-| As an example:                                                                                   |
-|                                                                                                  |
-| .. code:: python                                                                                 |
-|                                                                                                  |
-|     dotnet_download_sdk(                                                                         |
-|         name = "dotnet_sdk",                                                                     |
-|         sdks = {                                                                                 |
-|             "mono_darwin_amd64":      ("MonoFramework-MDK-4.2.3.4.macos10.xamarin.x86.tar.gz",   |
-|                 "25b026fe2f4de7c80b227f69588b06b93787f5b5f134fbf2d652926c08c04bcd"),             |
-|         },                                                                                       |
-|     )                                                                                            |
-|                                                                                                  |
-+--------------------------------+-----------------------------+-----------------------------------+
++--------------------------------+-----------------------------+------------------------------------+
+| **Name**                       | **Type**                    | **Default value**                  |
++--------------------------------+-----------------------------+------------------------------------+
+| :param:`net_version`           | :type:`string`              | |mandatory|                        |
++--------------------------------+-----------------------------+------------------------------------+
+| The `TFM <https://docs.microsoft.com/en-us/dotnet/standard/frameworks>`_ of the framework.        |
+| The supported frameworks are listed in `list.bzl <platform/list.bzl>`_.                           |
++--------------------------------+-----------------------------+------------------------------------+
+| :param:`net_roslyn_version`    | :type:`string`              | :value:`NET_ROSLYN_DEFAULT_VERSION`|
++--------------------------------+-----------------------------+------------------------------------+
+| The .NET framework is used with independent compiler provided via nuget package                   |
+| `Microsoft.Net.Compilers <https://www.nuget.org/packages/Microsoft.Net.Compilers/>`_              |
++--------------------------------+-----------------------------+------------------------------------+
+| :param:`tools_version`         | :type:`string`              | :value:`net472`                    |
++--------------------------------+-----------------------------+------------------------------------+
+| The version of the framework to use for resgen tools if different is expected.                    |
++--------------------------------+-----------------------------+------------------------------------+
+| :param:`name`                  | :type:`string`              | :value:`None`                      |
++--------------------------------+-----------------------------+------------------------------------+
+| The name under which the SDK will be registered. If not provided the default @net_sdk_<tfm>       |
+| is used.                                                                                          |
++--------------------------------+-----------------------------+------------------------------------+
 
+core_register_sdk
+~~~~~~~~~~~~~~~~~
+
+Registers .NET Core.
+
+It downloads the sdk for given version. Uses core_download_sdk_.
+
++--------------------------------+-----------------------------+------------------------------------+
+| **Name**                       | **Type**                    | **Default value**                  |
++--------------------------------+-----------------------------+------------------------------------+
+| :param:`core_version`          | :type:`string`              | |mandatory|                        |
++--------------------------------+-----------------------------+------------------------------------+
+| The exact version of the framework.                                                               |
+| The supported frameworks are listed in `list.bzl <platform/list.bzl>`_.                           |
++--------------------------------+-----------------------------+------------------------------------+
+| :param:`name`                  | :type:`string`              | :value:`None`                      |
++--------------------------------+-----------------------------+------------------------------------+
+| The name under which the SDK will be registered. If not provided the default @core_sdk_<version>  |
+| is used.                                                                                          |
++--------------------------------+-----------------------------+------------------------------------+
+
+mono_register_sdk
+~~~~~~~~~~~~~~~~~
+
+Registers Mono SDK. Mono has to be installed before use. See dotnet_host_sdk_.
 
 dotnet_host_sdk
 ~~~~~~~~~~~~~~~
 
-This detects the host Mono for use in toolchains.
+This detects the host Mono for use in toolchains. It usually is not used directly. Use mono_register_sdk_
+instead.
 
-It searches the PATH. You can achive the same result by setting
-the version to "host" when registering toolchains to select the installed sdk so it should
-never be neccesary to use this feature directly.
+It searches the PATH. 
 
 +--------------------------------+-----------------------------+-----------------------------------+
 | **Name**                       | **Type**                    | **Default value**                 |
@@ -295,6 +187,30 @@ never be neccesary to use this feature directly.
 +--------------------------------+-----------------------------+-----------------------------------+
 | A unique name for this sdk. This should almost always be :value:`dotnet_sdk` if you want the SDK |
 | to be used by toolchains.                                                                        |
++--------------------------------+-----------------------------+-----------------------------------+
+
+core_download_sdk
+~~~~~~~~~~~~~~~~~
+
+This downloads .NET Core SDK for given version. It usually is not used directly. Use core_register_sdk_
+instead. It also generates a file with System.Runtime.Versioning.TargetFramework declaration for given
+target framework.
+
++--------------------------------+-----------------------------+-----------------------------------+
+| **Name**                       | **Type**                    | **Default value**                 |
++--------------------------------+-----------------------------+-----------------------------------+
+| :param:`name`                  | :type:`string`              | |mandatory|                       |
++--------------------------------+-----------------------------+-----------------------------------+
+| A unique name for this sdk. This should almost always be :value:`core_sdk_<tfm>` if you want the |
+| SDK to be used by toolchains.                                                                    |
++--------------------------------+-----------------------------+-----------------------------------+
+| :param:`version`               | :type:`string`              |                                   |
++--------------------------------+-----------------------------+-----------------------------------+
+| The version for the framework                                                                    |
++--------------------------------+-----------------------------+-----------------------------------+
+| :param:`targetFrameworkString` | :type:`string`              |                                   |
++--------------------------------+-----------------------------+-----------------------------------+
+| The version of the framework as required by System.Runtime.Versioning.TargetFramework            |
 +--------------------------------+-----------------------------+-----------------------------------+
 
 
@@ -308,13 +224,29 @@ the dotnet context data as an attribute.
 
 .. code:: python
 
-  my_rule = rule(
+  my_rule_mono = rule(
       _my_rule_impl,
       attrs = {
           ...
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data"))
       },
       toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
+  )
+  my_rule_core = rule(
+      _my_rule_impl,
+      attrs = {
+          ...
+        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data"))
+      },
+      toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
+  )
+  my_rule_net = rule(
+      _my_rule_impl,
+      attrs = {
+          ...
+        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data"))
+      },
+      toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
   )
 
 
@@ -330,7 +262,7 @@ The context object
 ~~~~~~~~~~~~~~~~~~
 
 DotnetContext is never returned by a rule, instead you build one using dotnet_context(ctx) in the 
-top of any custom skylark rule that wants to interact with the go rules.
+top of any custom skylark rule that wants to interact with the dotnet rules (regardless of framework).
 It provides all the information needed to create dotnet actions, and create or interact with the 
 other dotnet providers.
 
@@ -346,8 +278,7 @@ Methods
 
 * Action generators
 
-  * library_
-  * binary_
+  * assembly_
   * resx_
 
 * Helpers
@@ -374,7 +305,7 @@ Fields
 +--------------------------------+-----------------------------------------------------------------+
 | :param:`runner`                | :type:`File`                                                    |
 +--------------------------------+-----------------------------------------------------------------+
-| The "mono" binary used to run dotnet executables                                                 |
+| The "mono" or "dotnet" binary used to run framework executables                                  |
 +--------------------------------+-----------------------------------------------------------------+
 | :param:`mcs`                   | :type:`File`                                                    |
 +--------------------------------+-----------------------------------------------------------------+
@@ -390,7 +321,7 @@ Fields
 +--------------------------------+-----------------------------------------------------------------+
 | :param:`libVersion`            | :type:`string`                                                  |
 +--------------------------------+-----------------------------------------------------------------+
-| The mono library version to used. The default is 4.7-api                                         |
+| The library version to used.                                                                     |
 +--------------------------------+-----------------------------------------------------------------+
 | :param:`actions`               | :type:`ctx.actions`                                             |
 +--------------------------------+-----------------------------------------------------------------+
@@ -448,6 +379,10 @@ It returns DotnetLibrary_ provider.
 | :param:`data`                  | :type:`File iterable`          | :value:`None`                     |
 +--------------------------------+--------------------------------+-----------------------------------+
 | List of addtional files to use as runfiles.                                                         |
++--------------------------------+--------------------------------+-----------------------------------+
+| :param:`keyfile`               | :type:`File`                   | :value:`None`                     |
++--------------------------------+--------------------------------+-----------------------------------+
+| Keyfile to use for signing the assembly.                                                            |
 +--------------------------------+--------------------------------+-----------------------------------+
 
 resx
@@ -523,6 +458,18 @@ they will be visible to the resolver when it is invoked.
 +--------------------------------+--------------------------------+-----------------------------------+
 | The full set of transitive dependencies. This includes ``deps`` for this                            |
 | library and all ``deps`` members transitively reachable through ``deps``.                           |
++--------------------------------+--------------------------------+-----------------------------------+
+| :param:`result`                | :type:`File`                   |                                   |
++--------------------------------+--------------------------------+-----------------------------------+
+| The result to include in DotnetLibrary (used when importing external assemblies)                    |
++--------------------------------+--------------------------------+-----------------------------------+
+| :param:`pdb`                   | :type:`File`                   |                                   |
++--------------------------------+--------------------------------+-----------------------------------+
+| If .pdb file for given library                                                                      |
++--------------------------------+--------------------------------+-----------------------------------+
+| :param:`runfiles`              | :type:`depset of Files`        |                                   |
++--------------------------------+--------------------------------+-----------------------------------+
+| Runfiles for DotnetLibrary                                                                          |
 +--------------------------------+--------------------------------+-----------------------------------+
 
 new_resource

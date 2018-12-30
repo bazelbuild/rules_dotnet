@@ -13,12 +13,6 @@ load(
     _net_register_sdk = "net_register_sdk",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:sdk.bzl",
-    _dotnet_download_sdk = "dotnet_download_sdk",
-    _dotnet_host_sdk = "dotnet_host_sdk",
-    _dotnet_local_sdk = "dotnet_local_sdk",
-)
-load(
     "@io_bazel_rules_dotnet//dotnet/private:dotnet_toolchain.bzl",
     _dotnet_toolchain = "dotnet_toolchain",
 )
@@ -96,9 +90,6 @@ dotnet_register_toolchains = _dotnet_register_toolchains
 mono_register_sdk = _mono_register_sdk
 net_register_sdk = _net_register_sdk
 core_register_sdk = _core_register_sdk
-dotnet_download_sdk = _dotnet_download_sdk
-dotnet_host_sdk = _dotnet_host_sdk
-dotnet_local_sdk = _dotnet_local_sdk
 dotnet_toolchain = _dotnet_toolchain
 dotnet_repositories = _dotnet_repositories
 core_binary = _core_binary

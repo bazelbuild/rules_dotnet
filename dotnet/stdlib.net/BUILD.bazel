@@ -1,1 +1,9 @@
 package(default_visibility = ["//visibility:public"])
+
+load("@io_bazel_rules_dotnet//dotnet/stdlib.net:macro.bzl", "all_stdlib", "all_stdlib46", "all_stdlib471")
+
+framework = None
+
+all_stdlib(framework)
+all_stdlib46(framework)
+all_stdlib471(framework)

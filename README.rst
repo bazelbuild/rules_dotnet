@@ -8,6 +8,8 @@ C# Rules for Bazel_
 .. |badgeAzure| image:: https://dev.azure.com/tomaszstrejczek/rules_dotnet/_apis/build/status/tomaszstrejczek.rules_dotnet?branchName=master
    :target: https://dev.azure.com/tomaszstrejczek/rules_dotnet/_build
 .. _Mono: http://www.mono-project.com/
+.. _Net: https://en.wikipedia.org/wiki/.NET_Framework
+.. _Core: https://en.wikipedia.org/wiki/.NET_Core
 .. _sandboxing: https://bazel.io/blog/2015/09/11/sandboxing.html 
 .. _dotnet_library: dotnet/core.rst#dotnet_library
 .. _dotnet_binary: dotnet/core.rst#dotnet_binary
@@ -16,6 +18,9 @@ C# Rules for Bazel_
 .. _dotnet_import_library: dotnet/core.rst#dotnet_import_library
 .. _dotnet_repositories: dotnet/workspace.rst#dotnet_repositories
 .. _dotnet_register_toolchains: dotnet/toolchains.rst#dotnet_register_toolchains
+.. _net_register_sdk: dotnet/toolchains.rst#net_register_sdk
+.. _core_register_sdk: dotnet/toolchains.rst#core_register_sdk
+.. _mono_register_sdk: dotnet/toolchains.rst#mono_register_sdk
 .. _nuget_package: dotnet/workspace.rst#nuget_package
 .. _dotnet_nuget_new: dotnet/workspace.rst#dotnet_nuget_new
 .. ;;
@@ -35,13 +40,19 @@ C# Rules for Bazel_
 Documentation
 -------------
 
+* `Runtime considerations <docs/runtime.rst>`_
+
+* `Multiple framework versions <docs/multiversion.rst>`_
+
 * `Core API <dotnet/core.rst>`_
   
-  * `dotnet_library`_
-  * `dotnet_binary`_
-  * `dotnet_nunit_test`_
-  * `dotnet_resx`_
-  * `dotnet_import_library`_
+  * `dotnet_library, core_library, net_library <dotnet/core.rst#dotnet-library-core-library-net-library>`_
+  * `dotnet_binary, net_binary, core_binary <dotnet/core.rst#dotnet-binary-net-binary-core-binary>`_
+  * `dotnet_resx, net_resx, core_resx <dotnet/core.rst#dotnet-resx-net-resx-core-resx>`_
+  * `dotnet_nunit_test, net_nunit_test, net_nunit3_test, core_xunit_test, net_xunit_test, dotnet_xunit_test <dotnet/core.rst#dotnet-nunit-test-net-nunit-test-net-nunit3-test-core-xunit-test-net-xunit-test-dotnet-xunit-test>`_
+  * `dotnet_resx, net_resx, core_resx <dotnet/core.rst#dotnet-resx-net-resx-core-resx>`_
+  * `dotnet_import_library, core_import_library, net_import_library, dotnet_import_binary, core_import_binary, net_import_binary <dotnet/core.rst#dotnet-import-library-core-import-library-net-import-library-dotnet-import-binary-core-import-binary-net-import-binary>`_
+  * `dotnet_stdlib, core_stdlib, net_stdlib <dotnet/core.rst#dotnet-stdlib-core-stdlib-net-stdlib>`_
 
 * `Workspace rules <dotnet/workspace.rst>`_
 
@@ -54,25 +65,31 @@ Overview
 --------
 
 This is a minimal viable set of C# bindings for building C# code with
-Mono_. It's still pretty rough but it works as a proof of concept that 
-could grow into something more.
+Core_, Net_ and Mono_. It's still pretty rough but it works.
 
 Caveats
 -------
 
-These rules are not compatible with sandboxing_. Particularly, running dotnet rules on linux o macos
-requires passing --spawn_strategy=standalone.
+These rules are not compatible with sandboxing_. Particularly, running dotnet rules 
+on Linux or OSX requires passing --spawn_strategy=standalone.
 
-Bazel_ creates long paths. Therefore it is recommended to increase the length limit using newer version of Windows.
-Please see `here <https://docs.microsoft.com/en-us/windows/desktop/fileio/naming-a-file#maximum-path-length-limitation>`_.
+Bazel_ creates long paths. Therefore it is recommended to increase the length limit 
+using newer version of Windows. Please see 
+`here <https://docs.microsoft.com/en-us/windows/desktop/fileio/naming-a-file#maximum-path-length-limitation>`_.
 
-However, some Windows programs do not handle long path names. Most notably - Microsoft cl compiler. Therefore TMP env variable should be
-set to something short (like X:\\ or c:\\TEMP). 
+However, some Windows programs do not handle long path names. Most notably - Microsoft 
+C compiler (cl.exe). Therefore TMP env variable should be set to something 
+short (like X:\\ or c:\\TEMP). 
 
-Bazel_ and dotnet rules rely on symbolic linking. On Windows it, typically, requires elevated permissions. However, newer versions of Windows
-hava a `workaround <https://blogs.windows.com/buildingapps/2016/12/02/symlinks-windows-10/#IJuxPHWEkSSRqC7w.97>`_.
+Bazel_ and dotnet_rules rely on symbolic linking. On Windows it, typically, requires 
+elevated permissions. However, newer versions of Windows have a `workaround <https://blogs.windows.com/buildingapps/2016/12/02/symlinks-windows-10/#IJuxPHWEkSSRqC7w.97>`_.
 
 NUnit v2 runner used in some tests requires .NET Framework 3.5 installation.
+
+If you intend to use Mono_ or .Net Framework then they have to be installed locally 
+on the machine. The producers of these frameworks do not provide downloadable 
+"run-in-place" (without installation) versions. The developer versions of these frameworks
+have to be used.
 
 Setup
 -----
@@ -88,15 +105,22 @@ Setup
         tag = "0.0.2",
     )
 
-    load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_register_toolchains", "dotnet_repositories")
+    load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_register_sdk", "net_register_sdk", "mono_register_sdk",
+        "dotnet_register_toolchains", "dotnet_repositories", "nuget_package")
 
-    dotnet_register_toolchains("host")
-
+    dotnet_register_toolchains()
     dotnet_repositories()
+    # For .NET Core:
+    core_register_sdk("v2.1.502", name = "core_sdk")
+    # For .NET Framework:
+    net_register_sdk("net471", name = "net_sdk")
+    # For Mono:
+    mono_register_sdk()
 
   The dotnet_repositories_ rule fetches external dependencies, namely the nuget binary.
-  The dotnet_register_toolchains_ tries to locate mono binaries and configure toolchains to use it.
-  Support for downloading mono is coming soon.
+  The dotnet_register_toolchains_ configures toolchains.
+  The mono_register_sdk_, core_register_sdk_, net_register_sdk_ "glue" toolchains with 
+  appropriate SDKs.
 
 * Add a file named ``BUILD.bazel`` in the root directory of your
   project. In general, you need one of these files in every directory
@@ -109,6 +133,7 @@ Setup
 
 * If you intend to use CoreCLR make sure to install libunwind-devel if it is not present on your system
   (applies to Linux).
+
 
 Examples
 --------
@@ -127,7 +152,6 @@ Examples
           "//examples/example_lib:MyClass",
           "@npgsql//:npgsqllib",
       ],
-      visibility = ["//visibility:public"],
     )
 
 * dotnet_binary_

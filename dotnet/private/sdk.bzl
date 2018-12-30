@@ -68,47 +68,6 @@ dotnet_host_sdk = repository_rule(
     local = True,
 )
 
-def _dotnet_download_sdk_impl(ctx):
-    if ctx.os.name == "linux":
-        host = "mono_linux_amd64"
-    elif ctx.os.name == "mac os x":
-        host = "mono_darwin_amd64"
-    elif ctx.os.name.startswith("windows"):
-        host = "mono_windows_amd64"
-    else:
-        fail("Unsupported operating system: " + ctx.os.name)
-    sdks = ctx.attr.sdks
-    if host not in sdks:
-        fail("Unsupported host {}".format(host))
-    filename, sha256 = ctx.attr.sdks[host]
-    _sdk_build_file(ctx)
-    _remote_sdk(ctx, [filename], ctx.attr.strip_prefix, sha256)
-    ctx.symlink("mono/lib/mono/4.5", "mcs_bin")
-    ctx.symlink("mono/bin", "mono_bin")
-    ctx.symlink("mono/lib/mono", "lib")
-
-dotnet_download_sdk = repository_rule(
-    _dotnet_download_sdk_impl,
-    attrs = {
-        "sdks": attr.string_list_dict(),
-        "urls": attr.string_list(),
-        "strip_prefix": attr.string(default = ""),
-    },
-)
-
-def _dotnet_local_sdk_impl(ctx):
-    _sdk_build_file(ctx)
-    bin = paths.join(ctx.attr.path, "/bin")
-    ctx.symlink(bin, "bin")
-    lib = paths.join(ctx.attr.path, "/lib")
-    ctx.symlink(lib, "lib")
-
-dotnet_local_sdk = repository_rule(
-    _dotnet_local_sdk_impl,
-    attrs = {
-        "path": attr.string(),
-    },
-)
 
 """See /dotnet/toolchains.rst#dotnet-sdk for full documentation."""
 

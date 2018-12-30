@@ -58,7 +58,7 @@ Attributes
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`resources`         | :type:`label_list`          | :value:`None`                         |
 +----------------------------+-----------------------------+---------------------------------------+
-| The list of resources to compile with. Usually provided via reference to dotnet_resx_            |
+| The list of resources to compile with. Usually provided via reference to dotnet_resx             |
 | or the rules compatible with DotnetResource_ provider                                            |
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`srcs`              | :type:`label_list`          | :value:`None`                         |
@@ -105,6 +105,19 @@ Example
       visibility = ["//visibility:public"],
   )
 
+  [core_library(
+    name = "{}_TransitiveClass-core".format(framework),
+    srcs = [
+        "TransitiveClass.cs",
+    ],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+    visibility = ["//visibility:public"],
+    deps = [
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.private.corelib.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.runtime.dll".format(framework),
+    ],
+  ) for framework in DOTNET_CORE_FRAMEWORKS]
+
 dotnet_binary, net_binary, core_binary
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -136,7 +149,7 @@ Attributes
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`resources`         | :type:`label_list`          | :value:`None`                         |
 +----------------------------+-----------------------------+---------------------------------------+
-| The list of resources to compile with. Usually provided via reference to dotnet_resx_            |
+| The list of resources to compile with. Usually provided via reference to dotnet_resx             |
 | or the rules compatible with DotnetResource_ provider                                            |
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`srcs`              | :type:`label_list`          | :value:`None`                         |
@@ -183,11 +196,11 @@ Example
       visibility = ["//visibility:public"],
   )
 
-dotnet_nunit_test
-~~~~~~~~~~~~~~~~~
+dotnet_nunit_test, net_nunit_test, net_nunit3_test, core_xunit_test, net_xunit_test, dotnet_xunit_test
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This builds a set of tests that can be run with ``bazel test``.
-Currently it uses nunit2.
+'_nunit_' rules use NUnit2, '_nunit3_' rules use NUnit3, '_xunit_' rules use xunit.
 
 To run all tests in the workspace, and print output on failure, run
 
@@ -202,36 +215,40 @@ You can pass arguments to tests by passing `--test_arg=arg <test_arg_>`_ argumen
 Attributes
 ^^^^^^^^^^
 
-+----------------------------+-----------------------------+---------------------------------------+
-| **Name**                   | **Type**                    | **Default value**                     |
-+----------------------------+-----------------------------+---------------------------------------+
-| :param:`name`              | :type:`string`              | |mandatory|                           |
-+----------------------------+-----------------------------+---------------------------------------+
-| A unique name for this rule.                                                                     |
-+----------------------------+-----------------------------+---------------------------------------+
-| :param:`deps`              | :type:`label_list`          | :value:`None`                         |
-+----------------------------+-----------------------------+---------------------------------------+
-| The direct dependencies of this library.                                                         |
-| These may be dotnet_library rules or compatible rules with the DotnetLibrary_ provider.          |
-+----------------------------+-----------------------------+---------------------------------------+
-| :param:`resources`         | :type:`label_list`          | :value:`None`                         |
-+----------------------------+-----------------------------+---------------------------------------+
-| The list of resources to compile with. Usually provided via reference to dotnet_resx_            |
-| or the rules compatible with DotnetResource_ provider                                            |
-+----------------------------+-----------------------------+---------------------------------------+
-| :param:`srcs`              | :type:`label_list`          | :value:`None`                         |
-+----------------------------+-----------------------------+---------------------------------------+
-| The list of .cs source files that are compiled to create the assembly.                           |
-| Only :value:`.cs` files are permitted                                                            |
-+----------------------------+-----------------------------+---------------------------------------+
-| :param:`out`               | :type:`string`              | :value:`""`                           |
-+----------------------------+-----------------------------+---------------------------------------+
-| An alternative name of the output file                                                           |
-+----------------------------+-----------------------------+---------------------------------------+
-| :param:`defines`           | :type:`string_list`         | :value:`None`                         |
-+----------------------------+-----------------------------+---------------------------------------+
-| The list of defines passed via /define compiler option                                           |
-+----------------------------+-----------------------------+---------------------------------------+
++----------------------------+-----------------------------+--------------------------------------------+
+| **Name**                   | **Type**                    | **Default value**                          |
++----------------------------+-----------------------------+--------------------------------------------+
+| :param:`name`              | :type:`string`              | |mandatory|                                |
++----------------------------+-----------------------------+--------------------------------------------+
+| A unique name for this rule.                                                                          |
++----------------------------+-----------------------------+--------------------------------------------+
+| :param:`deps`              | :type:`label_list`          | :value:`None`                              |
++----------------------------+-----------------------------+--------------------------------------------+
+| The direct dependencies of this library.                                                              |
+| These may be dotnet_library rules or compatible rules with the DotnetLibrary_ provider.               |
++----------------------------+-----------------------------+--------------------------------------------+
+| :param:`resources`         | :type:`label_list`          | :value:`None`                              |
++----------------------------+-----------------------------+--------------------------------------------+
+| The list of resources to compile with. Usually provided via reference to dotnet_resx                  |
+| or the rules compatible with DotnetResource_ provider                                                 |
++----------------------------+-----------------------------+--------------------------------------------+
+| :param:`srcs`              | :type:`label_list`          | :value:`None`                              |
++----------------------------+-----------------------------+--------------------------------------------+
+| The list of .cs source files that are compiled to create the assembly.                                |
+| Only :value:`.cs` files are permitted                                                                 |
++----------------------------+-----------------------------+--------------------------------------------+
+| :param:`out`               | :type:`string`              | :value:`""`                                |
++----------------------------+-----------------------------+--------------------------------------------+
+| An alternative name of the output file                                                                |
++----------------------------+-----------------------------+--------------------------------------------+
+| :param:`defines`           | :type:`string_list`         | :value:`None`                              |
++----------------------------+-----------------------------+--------------------------------------------+
+| The list of defines passed via /define compiler option                                                |
++----------------------------+-----------------------------+--------------------------------------------+
+| :param:`testlauncher`      | :type:`Label`               | :value:`<as required by unit framework>`   |
++----------------------------+-----------------------------+--------------------------------------------+
+| The list of defines passed via /define compiler option                                                |
++----------------------------+-----------------------------+--------------------------------------------+
 
 
 Test example
@@ -255,6 +272,8 @@ dotnet_resx, net_resx, core_resx
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This builds a dotnet .resources file from a single .resx file.
+.NET Core version uses a custom tool to convert text .resx file to .resources files because no 
+standard tool is provided.
 
 Providers
 ^^^^^^^^^
@@ -284,6 +303,11 @@ Attributes
 | :param:`out`               | :type:`string`              | :value:`""`                           |
 +----------------------------+-----------------------------+---------------------------------------+
 | An alternative name of the output file                                                           |
++----------------------------+-----------------------------+---------------------------------------+
+| :param:`simpleresgen`      | :type:`Label`               | :value:`<as required>`                |
++----------------------------+-----------------------------+---------------------------------------+
+| An alternative tool for generating resources file. It is used by .NET Core to use a custom       |
+| //tools/simpleresgen tool                                                                        |
 +----------------------------+-----------------------------+---------------------------------------+
 
 Example
@@ -331,5 +355,42 @@ Attributes
 Example
 ^^^^^^^
 See dotnet_nuget_new_.
+
+
+dotnet_stdlib, core_stdlib, net_stdlib
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This imports a frameworkl dll and transforms it into DotnetLibrary_ so it can be referenced
+as dependency by other rules. Uses by //dotnet/stdlib... packages. 
+
+Providers
+^^^^^^^^^
+
+* DotnetLibrary_
+
+Attributes
+^^^^^^^^^^
+
++----------------------------+-----------------------------+---------------------------------------+
+| **Name**                   | **Type**                    | **Default value**                     |
++----------------------------+-----------------------------+---------------------------------------+
+| :param:`name`              | :type:`string`              | |mandatory|                           |
++----------------------------+-----------------------------+---------------------------------------+
+| A unique name for this rule.                                                                     |
++----------------------------+-----------------------------+---------------------------------------+
+| :param:`deps`              | :type:`label_list`          | :value:`None`                         |
++----------------------------+-----------------------------+---------------------------------------+
+| The direct dependencies of this dll.                                                             |
+| These may be dotnet_library rules or compatible rules with the DotnetLibrary_ provider.          |
++----------------------------+-----------------------------+---------------------------------------+
+| :param:`data`              | :type:`label_list`          | :value:`None`                         |
++----------------------------+-----------------------------+---------------------------------------+
+| The list of additional files to include in the list of runfiles for compile assembly             |
++----------------------------+-----------------------------+---------------------------------------+
+| :param:`dll`               | :type:`label`               | :value:`""`                           |
++----------------------------+-----------------------------+---------------------------------------+
+| The file to be transformed into DotnetLibrary_ provider. If empty then `name` is used.           |
++----------------------------+-----------------------------+---------------------------------------+
+
 
 

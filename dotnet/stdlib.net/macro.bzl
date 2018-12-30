@@ -1,7 +1,11 @@
 load("@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl", "net_stdlib")
 
 def all_stdlib(framework):
-    context = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework)
+    if framework:
+        context = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework)
+    else:
+        context = "@io_bazel_rules_dotnet//:net_context_data"
+
 
     net_stdlib(name = "mscorlib.dll", dotnet_context_data = context)
     net_stdlib(name = "accessibility.dll", dotnet_context_data = context)
@@ -139,11 +143,17 @@ def all_stdlib(framework):
     net_stdlib(name = "system.xml.readerwriter.dll", dotnet_context_data = context)
 
 def all_stdlib46(framework):
-    context = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework)
+    if framework:
+        context = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework)
+    else:
+        context = "@io_bazel_rules_dotnet//:net_context_data"
     net_stdlib(name = "system.dynamic.dll", dotnet_context_data = context)
 
 def all_stdlib471(framework):
-    context = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework)
+    if framework:
+        context = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework)
+    else:
+        context = "@io_bazel_rules_dotnet//:net_context_data"
     net_stdlib(name = "system.componentmodel.typeconverter.dll", dotnet_context_data = context)
     net_stdlib(name = "system.collections.specialized.dll", dotnet_context_data = context)
     net_stdlib(name = "system.diagnostics.tracesource.dll", dotnet_context_data = context)
