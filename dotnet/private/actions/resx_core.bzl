@@ -11,7 +11,10 @@ def _make_runner_arglist(dotnet, source, output, resgen):
     args = dotnet.actions.args()
 
     args.add(resgen)
-    args.add_all(source.files)
+    if type(source) == "Target":
+        args.add_all(source.files)
+    else:
+        args.add(source)
     args.add(output)
 
     return args
@@ -36,8 +39,10 @@ def emit_resx_core(
     # We use the command to extrace shell path and force runfiles creation
     resolve = dotnet._ctx.resolve_command(command = customresgen.files_to_run.executable.path, tools = [customresgen])
 
+    inputs = src.files.to_list() if type(src) == "Target" else [src]
+
     dotnet.actions.run(
-        inputs = src.files.to_list() + resolve[0],
+        inputs = inputs + resolve[0],
         tools = customresgen.files,
         outputs = [result],
         executable = resolve[1][0],

@@ -6,7 +6,13 @@ load(
 def _make_runner_arglist(dotnet, source, output):
     args = dotnet.actions.args()
 
-    args.add_all(source.files)
+    args.add("/useSourcePath")
+
+    if type(source) == "Target":
+        args.add_all(source.files)
+    else:
+        args.add(source)
+
     args.add(output)
 
     return args
@@ -28,8 +34,10 @@ def emit_resx_net(
 
     args = _make_runner_arglist(dotnet, src, result)
 
+    inputs = src.files if type(src) == "Target" else [src]
+
     dotnet.actions.run(
-        inputs = src.files,
+        inputs = inputs,
         outputs = [result],
         executable = dotnet.resgen,
         arguments = [args],

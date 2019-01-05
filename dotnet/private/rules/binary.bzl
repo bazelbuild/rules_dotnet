@@ -6,6 +6,7 @@ load(
     "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
     "DotnetLibrary",
     "DotnetResource",
+    "DotnetResourceList",
 )
 
 _TEMPLATE_MONO = """
@@ -155,7 +156,7 @@ dotnet_binary = rule(
     _binary_impl,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
-        "resources": attr.label_list(providers = [DotnetResource]),
+        "resources": attr.label_list(providers = [DotnetResourceList]),
         "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),
@@ -175,7 +176,7 @@ core_binary = rule(
     _binary_impl,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
-        "resources": attr.label_list(providers = [DotnetResource]),
+        "resources": attr.label_list(providers = [DotnetResourceList]),
         "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),
@@ -195,7 +196,7 @@ net_binary = rule(
     _binary_impl,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
-        "resources": attr.label_list(providers = [DotnetResource]),
+        "resources": attr.label_list(providers = [DotnetResourceList]),
         "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),

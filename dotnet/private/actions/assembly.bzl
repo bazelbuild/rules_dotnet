@@ -6,13 +6,14 @@ load(
     "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
     "DotnetLibrary",
     "DotnetResource",
+    "DotnetResourceList",
 )
 
 def _map_dep(deps):
     return deps[DotnetLibrary].result.path
 
 def _map_resource(d):
-    return d[DotnetResource].result.path + "," + d[DotnetResource].identifier
+    return d.result.path + "," + d.identifier
 
 def _make_runner_arglist(dotnet, deps, resources, output, executable, defines, unsafe, keyfile):
     args = dotnet.actions.args()
@@ -67,8 +68,9 @@ def _make_runner_arglist(dotnet, deps, resources, output, executable, defines, u
     # /warnaserror
     # TODO(jeremy): /define:name[;name2]
 
-    if resources and len(resources) > 0:
-        args.add_all(resources, format_each = "/resource:%s", map_each = _map_resource)
+    for r in resources:
+        if r[DotnetResourceList].result and len(r[DotnetResourceList].result) > 0:
+            args.add_all(r[DotnetResourceList].result, format_each = "/resource:%s", map_each = _map_resource)
 
     # TODO(jeremy): /resource:filename[,identifier[,accesibility-modifier]]
 

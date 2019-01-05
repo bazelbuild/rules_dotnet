@@ -15,7 +15,12 @@ def _make_runner_arglist(dotnet, source, output):
     args = dotnet.actions.args()
 
     args.add(dotnet.resgen.path)
-    args.add_all(source.files)
+    if type(source) == "Target":
+        args.add_all(source.files)
+    else:
+        args.add(source)
+
+    args.add(output)
 
     return args
 
@@ -38,8 +43,10 @@ def emit_resx(
     # Therefore we have to copy the source file to the target directory
     copied_source = dotnet.declare_file(dotnet, path = paths.replace_extension(result.basename, ".resx"))
 
+    inputs = src.files if type(src) == "Target" else [src]
+
     dotnet.actions.run_shell(
-        inputs = src.files,
+        inputs = inputs,
         outputs = [copied_source],
         mnemonic = "MonoResxCopySource",
         command = "cp {} {}".format(src.files.to_list()[0].path, copied_source.path),

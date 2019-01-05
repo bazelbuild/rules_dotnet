@@ -6,6 +6,7 @@ load(
     "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
     "DotnetLibrary",
     "DotnetResource",
+    "DotnetResourceList",
 )
 
 def _library_impl(ctx):
@@ -46,7 +47,7 @@ dotnet_library = rule(
     _library_impl,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
-        "resources": attr.label_list(providers = [DotnetResource]),
+        "resources": attr.label_list(providers = [DotnetResourceList]),
         "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),
@@ -63,7 +64,7 @@ core_library = rule(
     _library_impl,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
-        "resources": attr.label_list(providers = [DotnetResource]),
+        "resources": attr.label_list(providers = [DotnetResourceList]),
         "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),
@@ -80,14 +81,14 @@ net_library = rule(
     _library_impl,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
-        "resources": attr.label_list(providers = [DotnetResource]),
+        "resources": attr.label_list(providers = [DotnetResourceList]),
         "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
         "data": attr.label_list(allow_files = True),
         "keyfile": attr.label(allow_files = True),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data_net472")),
+        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = False,

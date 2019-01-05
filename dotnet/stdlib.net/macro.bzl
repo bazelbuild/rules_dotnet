@@ -6,7 +6,6 @@ def all_stdlib(framework):
     else:
         context = "@io_bazel_rules_dotnet//:net_context_data"
 
-
     net_stdlib(name = "mscorlib.dll", dotnet_context_data = context)
     net_stdlib(name = "accessibility.dll", dotnet_context_data = context)
     net_stdlib(name = "custommarshalers.dll", dotnet_context_data = context)
@@ -141,6 +140,8 @@ def all_stdlib(framework):
     net_stdlib(name = "system.text.regularexpressions.dll", dotnet_context_data = context)
     net_stdlib(name = "system.runtime.extensions.dll", dotnet_context_data = context)
     net_stdlib(name = "system.xml.readerwriter.dll", dotnet_context_data = context)
+    net_stdlib(name = "system.linq.dll", dotnet_context_data = context)
+    net_stdlib(name = "system.linq.queryable.dll", dotnet_context_data = context)
 
 def all_stdlib46(framework):
     if framework:
@@ -157,3 +158,4 @@ def all_stdlib471(framework):
     net_stdlib(name = "system.componentmodel.typeconverter.dll", dotnet_context_data = context)
     net_stdlib(name = "system.collections.specialized.dll", dotnet_context_data = context)
     net_stdlib(name = "system.diagnostics.tracesource.dll", dotnet_context_data = context)
+    net_stdlib(name = "system.diagnostics.textwritertracelistener.dll", dotnet_context_data = context)
