@@ -21,7 +21,7 @@ def _resx_impl(ctx):
         result = dotnet.declare_file(dotnet, path = "empty.resources")
         dotnet.actions.write(output = result, content = ".net not supported on this platform")
         empty = dotnet.new_resource(dotnet = dotnet, name = name, result = result)
-        return [empty]
+        return [empty, DotnetResourceList(result=[empty])]
 
     resource = dotnet.resx(
         dotnet,
