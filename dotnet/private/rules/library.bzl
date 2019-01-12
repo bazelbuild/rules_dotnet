@@ -52,7 +52,7 @@ dotnet_library = rule(
         "out": attr.string(),
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
-        "data": attr.label_list(),
+        "data": attr.label_list(allow_files = True),
         "keyfile": attr.label(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
     },
