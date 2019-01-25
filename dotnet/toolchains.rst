@@ -476,7 +476,7 @@ new_resource
 ~~~~~~~~~~~~
 
 This creates a new DotnetResource_.
-You can add extra fields to the go library by providing extra named parameters to this function,
+You can add extra fields to the dotnet resource by providing extra named parameters to this function,
 they will be visible to the resolver when it is invoked.
 
 +--------------------------------+-----------------------------+-----------------------------------+

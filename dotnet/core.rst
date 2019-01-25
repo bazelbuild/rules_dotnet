@@ -322,6 +322,117 @@ Example
     )
 
 
+net_resx_multi
+~~~~~~~~~~~~~~
+
+This builds a dotnet .resources files from multiple .resx file (one for each).
+
+Providers
+^^^^^^^^^
+
+* DotnetResource_
+
+Attributes
+^^^^^^^^^^
+
++-----------------------------+-----------------------------+---------------------------------------+
+| **Name**                    | **Type**                    | **Default value**                     |
++-----------------------------+-----------------------------+---------------------------------------+
+| :param:`name`               | :type:`string`              | |mandatory|                           |
++-----------------------------+-----------------------------+---------------------------------------+
+| A unique name for this rule.                                                                      |
++-----------------------------+-----------------------------+---------------------------------------+
+| :param:`srcs`               | :type:`label_list`          | |mandatory|                           |
++-----------------------------+-----------------------------+---------------------------------------+
+| The source files to be embeded.                                                                   |
++-----------------------------+-----------------------------+---------------------------------------+
+| :param:`identiferBase`      | :type:`string`              | :value:`""`                           |
++-----------------------------+-----------------------------+---------------------------------------+
+| The logical name for given resource is constructred from identiferBase + "." +                    |
+| "directory.repalce('/','.')" + "." + basename + ".resources". The resulting name that is used     |
+| to load the resource.                                                                             |
++-----------------------------+-----------------------------+---------------------------------------+
+| :param:`fixedIdentifierBase`| :type:`string`              | :value:`""`                           |
++-----------------------------+-----------------------------+---------------------------------------+
+| The logical name for given resource is constructred from fixedIdentiferBase + "." +               |
+| "." + basename + ".resources. The resulting name that is used to load the resource.               |
+| Either identifierBase of fixedIdentifierBase must be specified                                    |
++-----------------------------+-----------------------------+---------------------------------------+
+| :param:`simpleresgen`       | :type:`Label`               | :value:`<as required>`                |
++-----------------------------+-----------------------------+---------------------------------------+
+| An alternative tool for generating resources file. It is used by .NET Core to use a custom        |
+| //tools/simpleresgen tool                                                                         |
++-----------------------------+-----------------------------+---------------------------------------+
+
+
+net_resource, core_resource
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This wraps a resource so it can be embeded into an assembly.
+
+Providers
+^^^^^^^^^
+
+* DotnetResource_
+
+Attributes
+^^^^^^^^^^
+
++----------------------------+-----------------------------+---------------------------------------+
+| **Name**                   | **Type**                    | **Default value**                     |
++----------------------------+-----------------------------+---------------------------------------+
+| :param:`name`              | :type:`string`              | |mandatory|                           |
++----------------------------+-----------------------------+---------------------------------------+
+| A unique name for this rule.                                                                     |
++----------------------------+-----------------------------+---------------------------------------+
+| :param:`src`               | :type:`label`               | |mandatory|                           |
++----------------------------+-----------------------------+---------------------------------------+
+| The source to be embeded.                                                                        |
++----------------------------+-----------------------------+---------------------------------------+
+| :param:`identifer`         | :type:`string`              | :value:`""`                           |
++----------------------------+-----------------------------+---------------------------------------+
+| The logical name for the resource; the name that is used to load the resource.                   |
+| The default is the basename of the file name (no subfolder).                                     |
++----------------------------+-----------------------------+---------------------------------------+
+
+net_resource_multi
+~~~~~~~~~~~~~~~~~~
+
+This wraps multiple resource files so they can be embeded into an assembly.
+
+Providers
+^^^^^^^^^
+
+* DotnetResource_
+
+Attributes
+^^^^^^^^^^
+
++-----------------------------+-----------------------------+---------------------------------------+
+| **Name**                    | **Type**                    | **Default value**                     |
++-----------------------------+-----------------------------+---------------------------------------+
+| :param:`name`               | :type:`string`              | |mandatory|                           |
++-----------------------------+-----------------------------+---------------------------------------+
+| A unique name for this rule.                                                                      |
++-----------------------------+-----------------------------+---------------------------------------+
+| :param:`srcs`               | :type:`label_list`          | |mandatory|                           |
++-----------------------------+-----------------------------+---------------------------------------+
+| The source files to be embeded.                                                                   |
++-----------------------------+-----------------------------+---------------------------------------+
+| :param:`identiferBase`      | :type:`string`              | :value:`""`                           |
++-----------------------------+-----------------------------+---------------------------------------+
+| The logical name for given resource is constructred from identiferBase + "." +                    |
+| "directory.repalce('/','.')" + "." + filename. The resulting name that is used to load            |
+| the resource.                                                                                     |
++-----------------------------+-----------------------------+---------------------------------------+
+| :param:`fixedIdentifierBase`| :type:`string`              | :value:`""`                           |
++-----------------------------+-----------------------------+---------------------------------------+
+| The logical name for given resource is constructred from fixedIdentiferBase + "." +               |
+| "." + filename. The resulting name that is used to load the resource.                             |
+| Either identifierBase of fixedIdentifierBase must be specified                                    |
++----------------------------+-----------------------------+---------------------------------------+
+
+
 dotnet_import_library, core_import_library, net_import_library, dotnet_import_binary, core_import_binary, net_import_binary
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

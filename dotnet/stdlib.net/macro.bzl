@@ -142,6 +142,7 @@ def all_stdlib(framework):
     net_stdlib(name = "system.xml.readerwriter.dll", dotnet_context_data = context)
     net_stdlib(name = "system.linq.dll", dotnet_context_data = context)
     net_stdlib(name = "system.linq.queryable.dll", dotnet_context_data = context)
+    net_stdlib(name = "system.threading.dll", dotnet_context_data = context)
 
 def all_stdlib46(framework):
     if framework:
