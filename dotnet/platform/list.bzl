@@ -29,7 +29,7 @@ DOTNETIMPL_OS_ARCH = (
 # struct:
 # 0. Version string - as required by TargetFrameworkAttribute
 # 1. FacadedBy - for netstandard  contains net framework which supports given version
-# 2. Preprocesor directive
+# 2. Preprocessor directive
 # 3. Version number - as used in C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/ (without 'v')
 DOTNET_NET_FRAMEWORKS = {
     "net45": (".NETFramework,Version=v4.5", None, "NET45", "4.5"),
