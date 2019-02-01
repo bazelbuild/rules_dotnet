@@ -173,7 +173,7 @@ core_context_data = rule(
         ),
         "extra_srcs": attr.label_list(
             allow_files = True,
-            default = ["@core_sdk//:tagetframework"],
+            default = ["@core_sdk//:targetframework"],
         ),
     },
 )
@@ -213,7 +213,7 @@ net_context_data = rule(
         ),
         "extra_srcs": attr.label_list(
             allow_files = True,
-            default = ["@net_sdk//:tagetframework"],
+            default = ["@net_sdk//:targetframework"],
         ),
     },
 )

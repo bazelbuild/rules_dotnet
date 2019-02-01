@@ -21,7 +21,7 @@ exports_files(["AUTHORS"])
 [
     net_context_data(
         name = "net_context_data_" + framework,
-        extra_srcs = ["@net_sdk_{}//:tagetframework".format(framework)],
+        extra_srcs = ["@net_sdk_{}//:targetframework".format(framework)],
         host = "@net_sdk_{}//:mcs_bin".format(framework),
         lib = "@net_sdk_{}//:lib".format(framework),
         libVersion = DOTNET_NET_FRAMEWORKS[framework][3],
@@ -37,7 +37,7 @@ exports_files(["AUTHORS"])
 [
     core_context_data(
         name = "core_context_data_" + framework,
-        extra_srcs = ["@core_sdk_{}//:tagetframework".format(framework)],
+        extra_srcs = ["@core_sdk_{}//:targetframework".format(framework)],
         host = "@core_sdk_{}//:host".format(framework),
         lib = "@core_sdk_{}//:lib".format(framework),
         mcs_bin = "@core_sdk_{}//:mcs_bin".format(framework),
