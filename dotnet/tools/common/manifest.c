@@ -130,15 +130,7 @@ static void CreateLinkIfNeeded(const char* target, const char *toCreate)
         exit(-1);
     }
 
-    if (strcmp(p, "/mono")==0 || strcmp(p, "/dotnet")==0) 
-        result = symlink(target, toCreate);
-    else {
-        result = link(target, toCreate);
-        if (result!=0 && errno == EXDEV) {
-            // Cross-device hardlinks are not possible. Fallback to a symlink.
-            result = symlink(target, toCreate);
-        }
-    }
+    result = symlink(target, toCreate);
     if (result!=0) {
         int error = errno;
         if (error == EEXIST)
