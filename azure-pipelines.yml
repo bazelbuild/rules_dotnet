@@ -13,21 +13,18 @@ jobs:
         build ^
         -s ^
         //... ^
-        --all_incompatible_changes
       displayName: 'Build all'
     - script: |
         bazel ^
         run ^
         -s ^
         //tests/examples/example_binary:hello ^
-        --all_incompatible_changes
       displayName: 'Run sample hello'
     - script: |
         bazel ^
         run ^
         -s ^
         //tests/examples/example_binary:v2.1.200_hello-core ^
-        --all_incompatible_changes
       displayName: 'Run sample core hello'
     - script: |
         bazel ^
@@ -88,7 +85,7 @@ jobs:
         mono --version
       displayName: 'Show env'
     - script: |
-        bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build -s --local_resources=400,1,1.0 --spawn_strategy=standalone //... --all_incompatible_changes
+        bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build -s --local_resources=400,1,1.0 --spawn_strategy=standalone //... 
       displayName: 'Build all'
     - script: |
         bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s --local_resources=400,1,1.0 --spawn_strategy=standalone //tests/examples/example_binary:hello
@@ -148,7 +145,7 @@ jobs:
         bazel clean --expunge
       displayName: 'Clean all'
     - script: |
-        bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build -s --local_resources=400,1,1.0 --spawn_strategy=standalone //... --all_incompatible_changes
+        bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build -s --local_resources=400,1,1.0 --spawn_strategy=standalone //... 
       displayName: 'Build all'
     - script: |
         bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s --local_resources=400,1,1.0 --spawn_strategy=standalone //tests/examples/example_binary:hello
