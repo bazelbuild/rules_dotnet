@@ -9,3 +9,9 @@ package(default_visibility = ["//visibility:public"])
 declare_toolchains()
 
 declare_constraints()
+
+filegroup(
+    name = "all_rules",
+    srcs = glob(["**/*.bzl"]),
+    visibility = ["//visibility:public"],
+)
