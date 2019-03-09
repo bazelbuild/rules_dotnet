@@ -38,6 +38,7 @@ jobs:
         -s ^
         --test_summary=detailed ^
         --test_output=all ^
+        --experimental_enable_runfiles ^
         //...
       continueOnError: true
       displayName: 'Run tests'

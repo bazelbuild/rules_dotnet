@@ -2,7 +2,7 @@ load(":bazel_tests.bzl", "md5_sum")
 
 md5_sum(
     name = "all_rules_md5",
-    #    testonly = True,
+    testonly = True,
     srcs = glob(["*.bzl"]) + [
         "//dotnet:all_rules",
         "//dotnet/platform:all_rules",
@@ -18,7 +18,7 @@ md5_sum(
 
 filegroup(
     name = "rules_dotnet_deps",
-    #testonly = True,
+    testonly = True,
     srcs = [":all_rules_md5"],
     visibility = ["//visibility:public"],
 )
