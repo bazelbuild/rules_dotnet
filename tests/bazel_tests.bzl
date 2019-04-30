@@ -317,3 +317,33 @@ bazel_test_settings = rule(
         "scratch_dir": attr.string(mandatory = True),
     },
 )
+
+def _md5_sum_impl(ctx):
+    out = ctx.actions.declare_file(ctx.label.name + ".md5")
+    arguments = ctx.actions.args()
+    arguments.add_all([out])
+    arguments.add_all(ctx.files.srcs)
+
+    paramfile = ctx.actions.declare_file(ctx.label.name + ".params")
+    ctx.actions.write(output = paramfile, content = arguments)
+
+    ctx.actions.run(
+        inputs = ctx.files.srcs + [paramfile],
+        outputs = [out],
+        mnemonic = "DotnetMd5sum",
+        executable = ctx.executable._md5sum,
+        arguments = [paramfile.path],
+    )
+    return struct(files = depset([out]))
+
+md5_sum = rule(
+    _md5_sum_impl,
+    attrs = {
+        "srcs": attr.label_list(allow_files = True),
+        "_md5sum": attr.label(
+            executable = True,
+            default = "@io_bazel_rules_dotnet//dotnet/tools/md5sum",
+            cfg = "host",
+        ),
+    },
+)

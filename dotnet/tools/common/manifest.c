@@ -139,6 +139,8 @@ static void CreateLinkIfNeeded(const char* target, const char *toCreate)
         exit(-1);
     }
 
+    unlink(toCreate);
+
     if (strcmp(p, "/mono")==0 || strcmp(p, "/dotnet")==0) 
         result = symlink(target, toCreate);
     else {
