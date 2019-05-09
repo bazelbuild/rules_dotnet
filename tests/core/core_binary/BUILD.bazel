@@ -1,6 +1,6 @@
 load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_binary", "core_xunit_test", "DOTNET_CORE_FRAMEWORKS" )
 
-#framework = "v2.1.503"
+framework = "v2.1.503"
 
 core_binary(
     name = "custom_bin",
@@ -13,21 +13,19 @@ core_binary(
     ],
 )
 
-# # [
-# core_xunit_test(
-#     name = "custom_bin_test",
-#     size = "small",
-#     srcs = [
-#         "main_test.cs",
-#     ],
-#     data = [":custom_bin"],
-#     deps = [
-#         "@io_bazel_rules_dotnet//dotnet/stdlib.core:mscorlib.dll",
-#         "@xunit_assert//:assert.xunit",
-#         "@xunit//:xunit.core",
-#         # "@{}_xunit_assert//:assert.xunit".format(framework),
-#         # "@{}_xunit//:xunit.core".format(framework),
-#     ],
-# )
-# #     ) for framework in DOTNET_CORE_FRAMEWORKS
-# # ]
+core_xunit_test(
+    name = "custom_bin_test",
+    size = "small",
+    srcs = [
+        "main_test.cs",
+    ],
+    data = [":custom_bin"],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data",
+    native_deps = "@core_sdk//:native_deps",
+    testlauncher = "@{}_xunit//:xunit.console".format(framework),
+    deps = [
+        "@{}_xunit//:xunit.core".format(framework),
+        "@{}_xunit_assert//:assert.xunit".format(framework),
+    ],
+)
+
