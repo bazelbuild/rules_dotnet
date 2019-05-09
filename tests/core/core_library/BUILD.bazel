@@ -1,0 +1,28 @@
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_library", "core_xunit_test")
+
+framework = "v2.1.503"
+
+core_library(
+    name = "custom_bin",
+    srcs = [
+        "main.cs",
+    ],
+    out = "alt_bin.dll",
+    deps = [
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:mscorlib.dll",
+    ],
+)
+
+core_xunit_test(
+    name = "custom_bin_test",
+    size = "small",
+    srcs = [
+        "main_test.cs",
+    ],
+    data = [":custom_bin"],
+    testlauncher = "@{}_xunit//:xunit.console".format(framework),
+    deps = [
+        "@{}_xunit_assert//:assert.xunit".format(framework),
+        "@{}_xunit//:xunit.core".format(framework),
+    ],
+)
