@@ -3,6 +3,10 @@ load(
     "as_iterable",
 )
 load(
+    "@io_bazel_rules_dotnet//dotnet/private:skylib/lib/paths.bzl",
+    "paths",
+)
+load(
     "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
     "DotnetLibrary",
     "DotnetResource",
@@ -101,21 +105,13 @@ def emit_assembly_core(
         keyfile = None):
     """See dotnet/toolchains.rst#binary for full documentation."""
 
-    if name == "" and out == None:
-        fail("either name or out must be set")
+    if name == "":
+        fail("Name must be set")
 
-    if not out:
-        if executable:
-            extension = ".exe"
-        else:
-            extension = ".dll"
-        result = dotnet.declare_file(dotnet, path = name + extension)
-    else:
-        result = dotnet.declare_file(dotnet, path = out)
-        extension = ""
+    result = dotnet.declare_file(dotnet, path = name)
 
     if dotnet.debug:
-        pdb = dotnet.declare_file(dotnet, path = name + ".pdb")
+        pdb = dotnet.declare_file(dotnet, path = paths.split_extension(name)[0] + ".pdb")
     else:
         pdb = None
 
@@ -132,7 +128,7 @@ def emit_assembly_core(
 
     runner_args.set_param_file_format("multiline")
 
-    paramfilepath = name + extension + ".param"
+    paramfilepath = name + ".param"
     paramfile = dotnet.declare_file(dotnet, path = paramfilepath)
 
     dotnet.actions.write(output = paramfile, content = runner_args)

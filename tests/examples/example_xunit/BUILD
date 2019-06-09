@@ -8,10 +8,10 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNE
     ],
     dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
     native_deps = "@core_sdk_{}//:native_deps".format(framework),
-    testlauncher = "@{}_xunit//:xunit.console".format(framework),
+    testlauncher = "@{}_xunit//:xunit.console.exe".format(framework),
     deps = [
-        "@{}_xunit//:xunit.core".format(framework),
-        "@{}_xunit_assert//:assert.xunit".format(framework),
+        "@{}_xunit//:xunit.core.dll".format(framework),
+        "@{}_xunit_assert//:assert.xunit.dll".format(framework),
     ],
 ) for framework in DOTNET_CORE_FRAMEWORKS]
 

@@ -16,7 +16,7 @@
 
 #include "dotnet/tools/common/manifest.h"
 
-const char * Exe = NULL;
+const char *Exe = NULL;
 
 /* One argument is expected: path to the launcher (to locate the manifest file) */
 int main(int argc, char *argv[], char *envp[])

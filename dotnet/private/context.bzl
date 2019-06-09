@@ -78,6 +78,7 @@ def dotnet_context(ctx, attr = None):
         new_resource = _new_resource,
         workspace_name = ctx.workspace_name,
         libVersion = context_data._libVersion,
+        framework = context_data._framework,
         lib = context_data._lib,
         shared = context_data._shared,
         debug = ctx.var["COMPILATION_MODE"] == "dbg",
@@ -96,6 +97,7 @@ def _dotnet_context_data(ctx):
         _libVersion = ctx.attr.libVersion,
         _toolchain_type = ctx.attr._toolchain_type,
         _extra_srcs = ctx.attr.extra_srcs,
+        _framework = ctx.attr.framework,
     )
 
 dotnet_context_data = rule(
@@ -127,6 +129,9 @@ dotnet_context_data = rule(
         ),
         "libVersion": attr.string(
             default = "4.5",
+        ),
+        "framework": attr.string(
+            default = "",
         ),
         "_toolchain_type": attr.string(
             default = "@io_bazel_rules_dotnet//dotnet:toolchain",
@@ -168,6 +173,9 @@ core_context_data = rule(
         "libVersion": attr.string(
             default = "",
         ),
+        "framework": attr.string(
+            default = "",
+        ),
         "_toolchain_type": attr.string(
             default = "@io_bazel_rules_dotnet//dotnet:toolchain_core",
         ),
@@ -207,6 +215,9 @@ net_context_data = rule(
         ),
         "libVersion": attr.string(
             mandatory = True,
+        ),
+        "framework": attr.string(
+            default = "",
         ),
         "_toolchain_type": attr.string(
             default = "@io_bazel_rules_dotnet//dotnet:toolchain_net",

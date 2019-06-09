@@ -10,7 +10,6 @@ load(
 def _make_runner_arglist(dotnet, source, output, resgen):
     args = dotnet.actions.args()
 
-    args.add(resgen)
     if type(source) == "Target":
         args.add_all(source.files)
     else:
@@ -37,19 +36,19 @@ def emit_resx_core(
     args = _make_runner_arglist(dotnet, src, result, customresgen.files_to_run.executable.path)
 
     # We use the command to extrace shell path and force runfiles creation
-    resolve = dotnet._ctx.resolve_command(command = customresgen.files_to_run.executable.path, tools = [customresgen])
+    resolve = dotnet._ctx.resolve_tools(tools = [customresgen])
 
     inputs = src.files.to_list() if type(src) == "Target" else [src]
 
     dotnet.actions.run(
-        inputs = inputs + resolve[0],
+        inputs = inputs + resolve[0].to_list(),
         tools = customresgen.files,
         outputs = [result],
-        executable = resolve[1][0],
+        executable = customresgen.files_to_run.executable,
         arguments = [args],
         env = {"RUNFILES_MANIFEST_FILE": customresgen.files_to_run.runfiles_manifest.path},
         mnemonic = "CoreResxCompile",
-        input_manifests = resolve[2],
+        input_manifests = resolve[1],
         progress_message = (
             "Compiling resoources" + dotnet.label.package + ":" + dotnet.label.name
         ),

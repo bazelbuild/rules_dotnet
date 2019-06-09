@@ -3,7 +3,7 @@ package(default_visibility = ["//visibility:public"])
 load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_binary", "dotnet_library", "dotnet_resx", "net_binary", "net_library", "net_resx")
 
 dotnet_library(
-    name = "nunit.core.interfaces",
+    name = "nunit.core.interfaces.dll",
     srcs = [":NUnitCore_Interfaces_files"],
     defines = ["CLR_4_0"],
     visibility = ["//visibility:public"],
@@ -14,7 +14,7 @@ dotnet_library(
 )
 
 net_library(
-    name = "net.nunit.core.interfaces",
+    name = "net.nunit.core.interfaces.dll",
     srcs = [":NUnitCore_Interfaces_files"],
     defines = ["CLR_4_0"],
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
@@ -26,7 +26,7 @@ net_library(
 )
 
 dotnet_library(
-    name = "nunit.framework",
+    name = "nunit.framework.dll",
     srcs = [":NUnitFramework_framework_files"],
     defines = ["CLR_4_0"],
     visibility = ["//visibility:public"],
@@ -38,7 +38,7 @@ dotnet_library(
 )
 
 net_library(
-    name = "net.nunit.framework",
+    name = "net.nunit.framework.dll",
     srcs = [":NUnitFramework_framework_files"],
     defines = ["CLR_4_0"],
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
@@ -51,25 +51,25 @@ net_library(
 )
 
 dotnet_library(
-    name = "nunit.core",
+    name = "nunit.core.dll",
     srcs = [":NUnitCore_core_files"],
     defines = ["CLR_4_0"],
     visibility = ["//visibility:public"],
     deps = [
-        ":nunit.core.interfaces",
+        ":nunit.core.interfaces.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib:System.Configuration.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib:System.dll",
     ],
 )
 
 net_library(
-    name = "net.nunit.core",
+    name = "net.nunit.core.dll",
     srcs = [":NUnitCore_core_files"],
     defines = ["CLR_4_0"],
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
     visibility = ["//visibility:public"],
     deps = [
-        ":net.nunit.core.interfaces",
+        ":net.nunit.core.interfaces.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.collections.specialized.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.componentmodel.typeconverter.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.diagnostics.tracesource.dll",
@@ -82,14 +82,14 @@ net_library(
 )
 
 dotnet_library(
-    name = "nunit.util",
+    name = "nunit.util.dll",
     srcs = [":ClientUtilities_util_files"],
     defines = ["CLR_4_0"],
     resources = [":Transform"],
     visibility = ["//visibility:public"],
     deps = [
-        ":nunit.core",
-        ":nunit.core.interfaces",
+        ":nunit.core.dll",
+        ":nunit.core.interfaces.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib:System.Configuration.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib:System.Drawing.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib:System.Runtime.Extensions.dll",
@@ -101,15 +101,15 @@ dotnet_library(
 )
 
 net_library(
-    name = "net.nunit.util",
+    name = "net.nunit.util.dll",
     srcs = [":ClientUtilities_util_files"],
     defines = ["CLR_4_0"],
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
     resources = [":net.Transform"],
     visibility = ["//visibility:public"],
     deps = [
-        ":net.nunit.core",
-        ":net.nunit.core.interfaces",
+        ":net.nunit.core.dll",
+        ":net.nunit.core.interfaces.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.collections.specialized.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.configuration.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.dll",
@@ -133,13 +133,13 @@ net_resx(
 )
 
 dotnet_library(
-    name = "nunit-console-runner",
+    name = "nunit-console-runner.dll",
     srcs = [":ConsoleRunner_nunit_console_files"],
     visibility = ["//visibility:public"],
     deps = [
-        ":nunit.core",
-        ":nunit.core.interfaces",
-        ":nunit.util",
+        ":nunit.core.dll",
+        ":nunit.core.interfaces.dll",
+        ":nunit.util.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib:System.Drawing.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib:System.Xml.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib:System.dll",
@@ -147,14 +147,14 @@ dotnet_library(
 )
 
 net_library(
-    name = "net.nunit-console-runner",
+    name = "net.nunit-console-runner.dll",
     srcs = [":ConsoleRunner_nunit_console_files"],
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
     visibility = ["//visibility:public"],
     deps = [
-        ":net.nunit.core",
-        ":net.nunit.core.interfaces",
-        ":net.nunit.util",
+        ":net.nunit.core.dll",
+        ":net.nunit.core.interfaces.dll",
+        ":net.nunit.util.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.collections.specialized.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/net472:system.drawing.dll",
@@ -164,25 +164,25 @@ net_library(
 )
 
 dotnet_binary(
-    name = "nunit-console-runner-exe",
+    name = "nunit-console-runner.exe",
     srcs = [":ConsoleRunner_nunit_console_exe_files"],
     deps = [
-        ":nunit.core",
-        ":nunit.util",
-        ":nunit-console-runner",
+        ":nunit.core.dll",
+        ":nunit.util.dll",
+        ":nunit-console-runner.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib:System.dll",
     ],
 )
 
 net_binary(
-    name = "net.nunit-console-runner-exe",
+    name = "net.nunit-console-runner.exe",
     srcs = [":ConsoleRunner_nunit_console_exe_files"],
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
     native_deps = "@net_sdk_net472//:native_deps",
     deps = [
-        ":net.nunit.core",
-        ":net.nunit.util",
-        ":net.nunit-console-runner",
+        ":net.nunit.core.dll",
+        ":net.nunit.util.dll",
+        ":net.nunit-console-runner.dll",
     ],
 )
 

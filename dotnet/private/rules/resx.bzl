@@ -21,7 +21,7 @@ def _resx_impl(ctx):
         result = dotnet.declare_file(dotnet, path = "empty.resources")
         dotnet.actions.write(output = result, content = ".net not supported on this platform")
         empty = dotnet.new_resource(dotnet = dotnet, name = name, result = result)
-        return [empty, DotnetResourceList(result=[empty])]
+        return [empty, DotnetResourceList(result = [empty])]
 
     resource = dotnet.resx(
         dotnet,
@@ -110,7 +110,7 @@ core_resx = rule(
         "identifier": attr.string(),
         "out": attr.string(),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
-        "simpleresgen": attr.label(default = Label("@io_bazel_rules_dotnet//tools/simpleresgen:simpleresgen")),
+        "simpleresgen": attr.label(default = Label("@io_bazel_rules_dotnet//tools/simpleresgen:simpleresgen.exe")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
     executable = False,

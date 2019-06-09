@@ -2,7 +2,7 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_binary", "core_library", "
 
 def buildall(framework):
     core_library(
-        name = "assert.xunit",
+        name = "assert.xunit.dll",
         srcs = native.glob(["**/*.cs"]),
         visibility = ["//visibility:public"],
         deps = [

@@ -1,4 +1,8 @@
 load(
+    "@io_bazel_rules_dotnet//dotnet/platform:list.bzl",
+    "DOTNET_NET_FRAMEWORKS",
+)
+load(
     "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
     "dotnet_context",
 )
@@ -17,45 +21,52 @@ def _net_com_library_impl(ctx):
         library = dotnet.new_library(dotnet = dotnet)
         return [library]
 
-    com_library = dotnet.com_ref(
-        dotnet,
-        name = name,
-        guid = ctx.attr.guid,
-        major_version = ctx.attr.major_version,
-        minor_version = ctx.attr.minor_version,
-        lcid = ctx.attr.lcid,
-        platform = ctx.attr.platform,
-        namespace = ctx.attr.namespace,
-        out = ctx.attr.out,
+    for wrapper in ctx.attr._tlbimp_wrapper:
+        if ctx.attr._tlbimp_wrapper[wrapper] == dotnet.framework:
+            tlbimp_wrapper = wrapper
+
+    result = dotnet.declare_file(dotnet, path = name)
+
+    args = dotnet.actions.args()
+    args.add(dotnet.tlbimp)
+    args.add(ctx.attr.guid)
+    args.add(ctx.attr.major_version)
+    args.add(ctx.attr.minor_version)
+    args.add(ctx.attr.lcid)
+    args.add(ctx.attr.platform)
+    args.add(ctx.attr.namespace)
+    args.add(result, format = "%s")
+
+    dotnet.actions.run(
+        outputs = [result],
+        inputs = [],
+        executable = tlbimp_wrapper.files_to_run,
+        arguments = [args],
+        mnemonic = "NetComRefGen",
+        progress_message = (
+            "Generating com wrapper" + dotnet.label.package + ":" + dotnet.label.name
+        ),
     )
-
-    deps = ctx.attr.deps
-
-    deps_libraries = [d[DotnetLibrary] for d in deps]
-    transitive = depset(direct = deps, transitive = [a[DotnetLibrary].transitive for a in deps])
 
     library = dotnet.new_library(
         dotnet = dotnet,
         name = name,
-        deps = deps,
-        transitive = transitive,
-        result = com_library,
+        deps = [],
+        transitive = [],
+        result = result,
     )
-
-    transitive_files = [d.result for d in library.transitive.to_list()]
 
     return [
         library,
         DefaultInfo(
             files = depset([library.result]),
-            runfiles = ctx.runfiles(files = [dotnet.stdlib, library.result], transitive_files = depset(direct = transitive_files)),
+            runfiles = ctx.runfiles(files = [dotnet.stdlib, library.result], transitive_files = depset()),
         ),
     ]
 
 net_com_library = rule(
     _net_com_library_impl,
     attrs = {
-        "deps": attr.label_list(providers = [DotnetLibrary]),
         "guid": attr.string(),
         "major_version": attr.int(),
         "minor_version": attr.int(),
@@ -64,6 +75,9 @@ net_com_library = rule(
         "namespace": attr.string(),
         "out": attr.string(),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
+        "_tlbimp_wrapper": attr.label_keyed_string_dict(
+            default = {Label("@io_bazel_rules_dotnet//dotnet/tools/tlbimp_wrapper:tlbimp_wrapper_{}.exe".format(framework)): framework for framework in DOTNET_NET_FRAMEWORKS},
+        ),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = False,

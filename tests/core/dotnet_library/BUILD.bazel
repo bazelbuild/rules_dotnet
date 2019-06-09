@@ -16,6 +16,6 @@ dotnet_nunit_test(
     ],
     data = [":custom_bin"],
     deps = [
-        "@nunit2//:nunit.framework",
+        "@nunit2//:nunit.framework.dll",
     ],
 )

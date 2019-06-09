@@ -22,7 +22,7 @@ def buildall(framework):
     )
 
     core_library(
-        name = "xunit.core",
+        name = "xunit.core.dll",
         srcs = [":core_common"] + native.glob(["src/xunit.core/**/*.cs"]),
         defines = [
             "XUNIT_FRAMEWORK",
@@ -33,7 +33,7 @@ def buildall(framework):
             "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.private.corelib.dll".format(framework),
             "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.linq.dll".format(framework),
             "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.io.filesystem.dll".format(framework),
-            "@{}_xunit_abstractions//:abstractions.xunit".format(framework),
+            "@{}_xunit_abstractions//:abstractions.xunit.dll".format(framework),
         ],
         resources = [":xunit_core_resource"],
         data = [
@@ -65,7 +65,7 @@ def buildall(framework):
     )
 
     core_library(
-        name = "xunit.execution.dotnet",
+        name = "xunit.execution.dotnet.dll",
         srcs = [":execution_common"] + native.glob(["src/xunit.execution/**/*.cs"]),
         defines = [
             "XUNIT_FRAMEWORK",
@@ -80,7 +80,7 @@ def buildall(framework):
             "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.io.filesystem.dll".format(framework),
             "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.collections.concurrent.dll".format(framework),
             "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.threading.thread.dll".format(framework),
-            ":xunit.core",
+            ":xunit.core.dll",
         ],
         dotnet_context_data = context,
     )
@@ -114,7 +114,7 @@ def buildall(framework):
     )
 
     core_library(
-        name = "xunit.runner.utility",
+        name = "xunit.runner.utility.dll",
         srcs = [":runner_utility_common"] + native.glob(["src/xunit.runner.utility/**/*.cs"]),
         defines = [
             "NETSTANDARD2_0",
@@ -133,7 +133,7 @@ def buildall(framework):
             "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.text.regularexpressions.dll".format(framework),
             "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.xml.xdocument.dll".format(framework),
             "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.runtime.interopservices.runtimeinformation.dll".format(framework),
-            "@{}_xunit_abstractions//:abstractions.xunit".format(framework),
+            "@{}_xunit_abstractions//:abstractions.xunit.dll".format(framework),
         ],
         dotnet_context_data = context,
     )
@@ -148,7 +148,7 @@ def buildall(framework):
     )
 
     core_library(
-        name = "xunit.runner.reporters".format(framework),
+        name = "xunit.runner.reporters.dll",
         srcs = [":runner_reporters_common"] + native.glob(["src/xunit.runner.reporters/**/*.cs"]),
         defines = [
             "NETSTANDARD2_0",
@@ -163,8 +163,8 @@ def buildall(framework):
             "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.io.filesystem.dll".format(framework),
             "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.collections.concurrent.dll".format(framework),
             "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.threading.thread.dll".format(framework),
-            "@{}_xunit_abstractions//:abstractions.xunit".format(framework),
-            ":xunit.runner.utility",
+            "@{}_xunit_abstractions//:abstractions.xunit.dll".format(framework),
+            ":xunit.runner.utility.dll",
         ],
         dotnet_context_data = context,
     )
@@ -210,7 +210,7 @@ def buildall(framework):
     )
 
     core_binary(
-        name = "xunit.console",
+        name = "xunit.console.exe",
         srcs = [":console_common"] + native.glob(["src/xunit.console/**/*.cs"]),
         defines = [
             "NETSTANDARD2_0",
@@ -220,8 +220,8 @@ def buildall(framework):
         ],
         visibility = ["//visibility:public"],
         deps = [
-            ":xunit.runner.reporters",
-            ":xunit.execution.dotnet",
+            ":xunit.runner.reporters.dll",
+            ":xunit.execution.dotnet.dll",
         ],
         resources = [
             ":HTML_xslt",

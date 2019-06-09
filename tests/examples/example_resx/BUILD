@@ -15,7 +15,7 @@ load(
     src = "Resources.resx",
     dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
     identifier = "example_resx.Resources.resources",
-    simpleresgen = "@io_bazel_rules_dotnet//tools/simpleresgen:{}_simpleresgen".format(framework),
+    simpleresgen = "@io_bazel_rules_dotnet//tools/simpleresgen:{}_simpleresgen.exe".format(framework),
 ) for framework in DOTNET_CORE_FRAMEWORKS]
 
 [core_xunit_test(
@@ -25,10 +25,10 @@ load(
     dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
     native_deps = "@core_sdk_{}//:native_deps".format(framework),
     resources = [":{}_core.resx".format(framework)],
-    testlauncher = "@{}_xunit//:xunit.console".format(framework),
+    testlauncher = "@{}_xunit//:xunit.console.exe".format(framework),
     deps = [
-        "@{}_xunit_assert//:assert.xunit".format(framework),
-        "@{}_xunit//:xunit.core".format(framework),
+        "@{}_xunit_assert//:assert.xunit.dll".format(framework),
+        "@{}_xunit//:xunit.core.dll".format(framework),
     ],
 ) for framework in DOTNET_CORE_FRAMEWORKS]
 

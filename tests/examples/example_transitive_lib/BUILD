@@ -10,7 +10,7 @@ dotnet_library(
 )
 
 [core_library(
-    name = "{}_TransitiveClass-core".format(framework),
+    name = "{}_TransitiveClass-core.dll".format(framework),
     srcs = [
         "TransitiveClass.cs",
     ],
@@ -23,7 +23,7 @@ dotnet_library(
 ) for framework in DOTNET_CORE_FRAMEWORKS]
 
 [net_library(
-    name = "TransitiveClass-net_{}".format(framework),
+    name = "TransitiveClass-net_{}.dll".format(framework),
     srcs = [
         "TransitiveClass.cs",
     ],
