@@ -207,7 +207,7 @@ def _binary_impl2(ctx):
     ]
 
 dotnet_binary = rule(
-    _binary_impl,
+    _binary_impl2,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "resources": attr.label_list(providers = [DotnetResourceList]),
@@ -218,9 +218,9 @@ dotnet_binary = rule(
         "data": attr.label_list(allow_files = True),
         "keyfile": attr.label(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
-        "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
         "native_deps": attr.label(default = Label("@dotnet_sdk//:native_deps")),
-        "_template": attr.string(default = _TEMPLATE_MONO),
+        "_launcher": attr.label(default = Label("//dotnet/tools/launcher_mono:launcher_mono.exe")),
+        "_copy": attr.label(default = Label("//dotnet/tools/copy")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
     executable = True,

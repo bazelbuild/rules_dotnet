@@ -96,7 +96,7 @@ dotnet_resx(
 )
 
 dotnet_xunit_test(
-    name = "mono.example_resx",
+    name = "mono.example_resx.dll",
     size = "small",
     srcs = glob(["*.cs"]),
     resources = [":mono.resx"],

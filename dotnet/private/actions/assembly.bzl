@@ -3,6 +3,10 @@ load(
     "as_iterable",
 )
 load(
+    "@io_bazel_rules_dotnet//dotnet/private:skylib/lib/paths.bzl",
+    "paths",
+)
+load(
     "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
     "DotnetLibrary",
     "DotnetResource",
@@ -101,15 +105,7 @@ def emit_assembly(
     if name == "" and out == None:
         fail("either name or out must be set")
 
-    if not out:
-        if executable:
-            extension = ".exe"
-        else:
-            extension = ".dll"
-        result = dotnet.declare_file(dotnet, path = name + extension)
-    else:
-        result = dotnet.declare_file(dotnet, path = out)
-        extension = ""
+    result = dotnet.declare_file(dotnet, path = name)
 
     runner_args = _make_runner_arglist(dotnet, deps, resources, result, executable, defines, unsafe, keyfile)
 
@@ -126,7 +122,7 @@ def emit_assembly(
     # terminator, escaping.) For now, setting use_always to True is the
     # conservative option. Long command lines are probable with C# due to
     # organizing files by namespace.
-    paramfilepath = name + extension + ".param"
+    paramfilepath = name + ".param"
     paramfile = dotnet.declare_file(dotnet, path = paramfilepath)
 
     dotnet.actions.write(output = paramfile, content = runner_args)

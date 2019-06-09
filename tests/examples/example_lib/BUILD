@@ -1,7 +1,7 @@
 load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NET_FRAMEWORKS", "core_library", "dotnet_library", "net_library")
 
 dotnet_library(
-    name = "MyClass",
+    name = "MyClass.dll",
     srcs = [
         "MyClass.cs",
         "Properties/AssemblyInfo.cs",
@@ -9,7 +9,7 @@ dotnet_library(
     #resources = [ "hello.txt" ],
     visibility = ["//visibility:public"],
     deps = [
-        "//tests/examples/example_transitive_lib:TransitiveClass",
+        "//tests/examples/example_transitive_lib:TransitiveClass.dll",
     ],
 )
 

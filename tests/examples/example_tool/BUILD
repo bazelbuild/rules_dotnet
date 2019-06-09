@@ -1,12 +1,12 @@
 load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NET_FRAMEWORKS", "core_binary", "dotnet_binary", "net_binary")
 
 dotnet_binary(
-    name = "hello_tool",
+    name = "hello_tool.exe",
     srcs = [
         "MyTool.cs",
     ],
     deps = [
-        "//tests/examples/example_lib:MyClass",
+        "//tests/examples/example_lib:MyClass.dll",
     ],
 )
 
@@ -44,9 +44,9 @@ genrule(
     outs = [
         "hello_world.txt",
     ],
-    cmd = "$(location :hello_tool) $@",
+    cmd = "$(location :hello_tool.exe) $@",
     tools = [
-        ":hello_tool",
+        ":hello_tool.exe",
     ],
 )
 
@@ -56,9 +56,9 @@ genrule(
         "hello_world_1.txt",
         "hello_world_2.txt",
     ],
-    cmd = "$(location :hello_tool) $(OUTS)",
+    cmd = "$(location :hello_tool.exe) $(OUTS)",
     tools = [
-        ":hello_tool",
+        ":hello_tool.exe",
     ],
 )
 

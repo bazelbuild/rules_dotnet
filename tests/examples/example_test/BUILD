@@ -1,13 +1,13 @@
 load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_NET_FRAMEWORKS", "dotnet_nunit_test", "net_nunit3_test", "net_nunit_test")
 
 dotnet_nunit_test(
-    name = "example_test",
+    name = "example_test.dll",
     size = "small",
     srcs = [
         "MyTest.cs",
     ],
     deps = [
-        "//tests/examples/example_lib:MyClass",
+        "//tests/examples/example_lib:MyClass.dll",
         "@nunit2//:nunit.framework.dll",
     ],
 )

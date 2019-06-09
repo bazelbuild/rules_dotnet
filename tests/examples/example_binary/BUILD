@@ -9,13 +9,13 @@ load(
 )
 
 dotnet_binary(
-    name = "hello",
+    name = "hello.exe",
     srcs = [
         "Program.cs",
         "Properties/AssemblyInfo.cs",
     ],
     deps = [
-        "//tests/examples/example_lib:MyClass",
+        "//tests/examples/example_lib:MyClass.dll",
         "@newtonsoft.json//:mono",
     ],
 )
