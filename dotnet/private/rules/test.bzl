@@ -342,7 +342,7 @@ def _unit_test2(ctx):
     ]
 
 dotnet_nunit_test = rule(
-    _unit_test,
+    _unit_test2,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "resources": attr.label_list(providers = [DotnetResource]),
@@ -355,7 +355,8 @@ dotnet_nunit_test = rule(
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
         "native_deps": attr.label(default = Label("@dotnet_sdk//:native_deps")),
         "testlauncher": attr.label(default = "@nunit2//:nunit-console-runner.exe", providers = [DotnetLibrary]),
-        "_template": attr.string(default = _TEMPLATE_NUNIT_MONO),
+        "_launcher": attr.label(default = Label("//dotnet/tools/launcher_mono_nunit:launcher_mono_nunit.exe")),
+        "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
         "keyfile": attr.label(allow_files = True),
     },
@@ -365,12 +366,11 @@ dotnet_nunit_test = rule(
 )
 
 net_nunit_test = rule(
-    _unit_test,
+    _unit_test2,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "resources": attr.label_list(providers = [DotnetResource]),
         "srcs": attr.label_list(allow_files = [".cs"]),
-        "out": attr.string(),
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
         "data": attr.label_list(allow_files = True),
@@ -378,7 +378,8 @@ net_nunit_test = rule(
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
         "native_deps": attr.label(default = Label("@net_sdk//:native_deps")),
         "testlauncher": attr.label(default = "@nunit2//:net.nunit-console-runner.exe", providers = [DotnetLibrary]),
-        "_template": attr.string(default = _TEMPLATE_NUNIT_NET),
+        "_launcher": attr.label(default = Label("//dotnet/tools/launcher_net_nunit:launcher_net_nunit.exe")),
+        "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
         "keyfile": attr.label(allow_files = True),
     },
