@@ -433,7 +433,7 @@ core_xunit_test = rule(
 )
 
 net_xunit_test = rule(
-    _unit_test,
+    _unit_test2,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "resources": attr.label_list(providers = [DotnetResource]),
@@ -446,7 +446,8 @@ net_xunit_test = rule(
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
         "native_deps": attr.label(default = Label("@net_sdk//:native_deps")),
         "testlauncher": attr.label(default = "@xunit.runner.console//:net472_net_tool", providers = [DotnetLibrary]),
-        "_template": attr.string(default = _TEMPLATE_XUNIT_NET),
+        "_launcher": attr.label(default = Label("//dotnet/tools/launcher_net_xunit:launcher_net_xunit.exe")),
+        "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
         "keyfile": attr.label(allow_files = True),
     },
@@ -456,7 +457,7 @@ net_xunit_test = rule(
 )
 
 dotnet_xunit_test = rule(
-    _unit_test,
+    _unit_test2,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "resources": attr.label_list(providers = [DotnetResource]),
@@ -469,7 +470,8 @@ dotnet_xunit_test = rule(
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
         "native_deps": attr.label(default = Label("@dotnet_sdk//:native_deps")),
         "testlauncher": attr.label(default = "@xunit.runner.console//:mono_tool", providers = [DotnetLibrary]),
-        "_template": attr.string(default = _TEMPLATE_XUNIT_MONO),
+        "_launcher": attr.label(default = Label("//dotnet/tools/launcher_mono_xunit:launcher_mono_xunit.exe")),
+        "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
         "keyfile": attr.label(allow_files = True),
     },

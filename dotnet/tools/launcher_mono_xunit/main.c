@@ -21,12 +21,17 @@ const char *Exe = NULL;
 
 static void Execute(int argc, char *argv[], const char *manifestDir)
 {
-	char torun[64 * 1024], *p;
-	char **newargv = (char **)malloc((argc + 2) * sizeof(char *));
-	int i;
+	char torun[64 * 1024], *p, xunit[64 * 1024];
 	const char *mono;
+	char **newargv = (char **)malloc((argc + 5) * sizeof(char *));
+	//char *newargv[1024];
+	int i;
 
+	// Locate mono runner
 	mono = GetLinkedMonoLauncher(manifestDir);
+
+	// xunit runner
+	sprintf(xunit, "%s/xunit.console.exe", manifestDir);
 
 	// Based on current exe calculate _0.dll to run
 	p = strrchr(Exe, '/');
@@ -41,14 +46,17 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 
 	// Prepare arguments
 	newargv[0] = mono;
-	newargv[1] = torun;
+	newargv[1] = xunit;
+	newargv[2] = torun;
+	newargv[3] = "-junit";
+	newargv[4] = getenv("XML_OUTPUT_FILE");
 	for (i = 1; i < argc; ++i)
-		newargv[i + 1] = argv[i];
-	newargv[i + 1] = NULL;
+		newargv[i + 4] = argv[i];
+	newargv[i + 4] = NULL;
 
 	if (IsVerbose())
 	{
-		for (i = 0; i < argc + 2; ++i)
+		for (i = 0; i < argc + 5; ++i)
 			printf("argv[%d] = %s\n", i, newargv[i]);
 	}
 #ifdef _MSC_VER
@@ -66,7 +74,7 @@ int main(int argc, char *argv[], char *envp[])
 	char *p;
 
 	if (IsVerbose())
-		printf("Launcher mono %s\n", argv[0]);
+		printf("Launcher core_xunit %s\n", argv[0]);
 
 	Exe = strdup(argv[0]);
 	for (p = (char *)Exe; *p != '\0'; ++p)
