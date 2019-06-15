@@ -24,7 +24,7 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 	char torun[64 * 1024], *p;
 	char **newargv = (char **)malloc((argc + 2) * sizeof(char *));
 	int i;
-	const char *mono;
+	char *mono;
 
 	mono = GetLinkedMonoLauncher(manifestDir);
 

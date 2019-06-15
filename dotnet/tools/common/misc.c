@@ -23,7 +23,7 @@ int IsVerbose()
     return 1;
 }
 
-const char *GetLinkedMonoLauncher(const char *manifestDir)
+char *GetLinkedMonoLauncher(const char *manifestDir)
 {
     static char mono[64 * 1024];
     char linkedmono[64 * 1024];

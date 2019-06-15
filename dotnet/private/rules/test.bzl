@@ -17,8 +17,15 @@ def _unit_test(ctx):
     name = ctx.label.name
 
     if dotnet.assembly == None:
-        empty = dotnet.declare_file(dotnet, path = "empty.sh")
-        dotnet.actions.write(output = empty, content = "echo assembly generations is not supported on this platform'")
+        empty = dotnet.declare_file(dotnet, path = "empty.exe")
+        ctx.actions.run(
+            outputs = [empty],
+            inputs = ctx.attr._empty.files.to_list(),
+            executable = ctx.attr._copy.files.to_list()[0],
+            arguments = [empty.path, ctx.attr._empty.files.to_list()[0].path],
+            mnemonic = "CopyEmpty",
+        )
+
         library = dotnet.new_library(dotnet = dotnet)
         return [library, DefaultInfo(executable = empty)]
 
@@ -79,6 +86,7 @@ dotnet_nunit_test = rule(
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
         "keyfile": attr.label(allow_files = True),
+        "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
     executable = True,
@@ -102,6 +110,7 @@ net_nunit_test = rule(
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
         "keyfile": attr.label(allow_files = True),
+        "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = True,
@@ -126,6 +135,7 @@ net_nunit3_test = rule(
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
         "keyfile": attr.label(allow_files = True),
+        "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = True,
@@ -148,6 +158,7 @@ core_xunit_test = rule(
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
         "keyfile": attr.label(allow_files = True),
+        "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
     executable = True,
@@ -172,6 +183,7 @@ net_xunit_test = rule(
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
         "keyfile": attr.label(allow_files = True),
+        "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = True,
@@ -196,6 +208,7 @@ dotnet_xunit_test = rule(
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
         "keyfile": attr.label(allow_files = True),
+        "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
     executable = True,
