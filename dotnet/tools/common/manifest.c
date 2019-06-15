@@ -91,6 +91,7 @@ static void CreateLinkIfNeeded(const char *target, const char *toCreate)
         return;
 
     _chmod(toCreate, _S_IREAD | _S_IWRITE);
+
     unlink(toCreate);
 
     /* Try hard linking first (except mono.exe) */

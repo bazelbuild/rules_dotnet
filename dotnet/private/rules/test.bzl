@@ -7,6 +7,10 @@ load(
     "DotnetLibrary",
     "DotnetResource",
 )
+load(
+    "@io_bazel_rules_dotnet//dotnet/private:skylib/lib/paths.bzl",
+    "paths",
+)
 
 _TEMPLATE_NUNIT_MONO = """
 echo "Executing $0"
@@ -288,6 +292,55 @@ def _unit_test(ctx):
         ),
     ]
 
+def _unit_test2(ctx):
+    dotnet = dotnet_context(ctx)
+    name = ctx.label.name
+
+    if dotnet.assembly == None:
+        empty = dotnet.declare_file(dotnet, path = "empty.sh")
+        dotnet.actions.write(output = empty, content = "echo assembly generations is not supported on this platform'")
+        library = dotnet.new_library(dotnet = dotnet)
+        return [library, DefaultInfo(executable = empty)]
+
+    executable = dotnet.assembly(
+        dotnet,
+        name = paths.split_extension(name)[0] + "_0.dll",
+        srcs = ctx.attr.srcs,
+        deps = ctx.attr.deps,
+        resources = ctx.attr.resources,
+        out = None,
+        defines = ctx.attr.defines,
+        unsafe = ctx.attr.unsafe,
+        data = ctx.attr.data,
+        executable = False,
+        keyfile = ctx.attr.keyfile,
+    )
+
+    launcher = dotnet.declare_file(dotnet, path = name)
+    ctx.actions.run(
+        outputs = [launcher],
+        inputs = ctx.attr._launcher.files.to_list(),
+        executable = ctx.attr._copy.files.to_list()[0],
+        arguments = [launcher.path, ctx.attr._launcher.files.to_list()[0].path],
+        mnemonic = "CopyLauncher",
+    )
+
+    if dotnet.runner != None:
+        runner = [dotnet.runner]
+    else:
+        runner = []
+
+    runfiles = ctx.runfiles(files = [launcher] + runner + ctx.attr.native_deps.files.to_list(), transitive_files = depset(transitive = [executable.runfiles, ctx.attr.testlauncher[DotnetLibrary].runfiles]))
+
+    return [
+        executable,
+        DefaultInfo(
+            files = depset([executable.result, launcher]),
+            runfiles = runfiles,
+            executable = launcher,
+        ),
+    ]
+
 dotnet_nunit_test = rule(
     _unit_test,
     attrs = {
@@ -304,6 +357,7 @@ dotnet_nunit_test = rule(
         "testlauncher": attr.label(default = "@nunit2//:nunit-console-runner.exe", providers = [DotnetLibrary]),
         "_template": attr.string(default = _TEMPLATE_NUNIT_MONO),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
+        "keyfile": attr.label(allow_files = True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
     executable = True,
@@ -326,6 +380,7 @@ net_nunit_test = rule(
         "testlauncher": attr.label(default = "@nunit2//:net.nunit-console-runner.exe", providers = [DotnetLibrary]),
         "_template": attr.string(default = _TEMPLATE_NUNIT_NET),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
+        "keyfile": attr.label(allow_files = True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = True,
@@ -348,6 +403,7 @@ net_nunit3_test = rule(
         "testlauncher": attr.label(default = "@nunit3_consolerunner//:nunit3.console.exe", providers = [DotnetLibrary]),
         "_template": attr.string(default = _TEMPLATE_NUNIT3_NET),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
+        "keyfile": attr.label(allow_files = True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = True,
@@ -355,21 +411,21 @@ net_nunit3_test = rule(
 )
 
 core_xunit_test = rule(
-    _unit_test,
+    _unit_test2,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "resources": attr.label_list(providers = [DotnetResource]),
         "srcs": attr.label_list(allow_files = [".cs"]),
-        "out": attr.string(),
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
         "data": attr.label_list(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
-        "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
         "native_deps": attr.label(default = Label("@core_sdk//:native_deps")),
         "testlauncher": attr.label(default = "@xunit//:xunit.console", providers = [DotnetLibrary]),
-        "_template": attr.string(default = _TEMPLATE_XUNIT_CORE),
+        "_launcher": attr.label(default = Label("//dotnet/tools/launcher_core_xunit:launcher_core_xunit.exe")),
+        "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
+        "keyfile": attr.label(allow_files = True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
     executable = True,
@@ -392,6 +448,7 @@ net_xunit_test = rule(
         "testlauncher": attr.label(default = "@xunit.runner.console//:net472_net_tool", providers = [DotnetLibrary]),
         "_template": attr.string(default = _TEMPLATE_XUNIT_NET),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
+        "keyfile": attr.label(allow_files = True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = True,
@@ -414,6 +471,7 @@ dotnet_xunit_test = rule(
         "testlauncher": attr.label(default = "@xunit.runner.console//:mono_tool", providers = [DotnetLibrary]),
         "_template": attr.string(default = _TEMPLATE_XUNIT_MONO),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
+        "keyfile": attr.label(allow_files = True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
     executable = True,

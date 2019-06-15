@@ -21,42 +21,16 @@ const char *Exe = NULL;
 
 static void Execute(int argc, char *argv[], const char *manifestDir)
 {
-	char mono[64 * 1024], torun[64 * 1024], *p, linkedmono[64 * 1024];
-	char **newargv = (char **)malloc((argc + 2) * sizeof(char *));
+	char dotnet[64 * 1024], torun[64 * 1024], *p, xunit[64 * 1024];
+	char **newargv = (char **)malloc((argc + 5) * sizeof(char *));
+	//char *newargv[1024];
 	int i;
-#ifdef _MSC_VER
-	HANDLE h;
-	DWORD ret;
-	BOOL b;
-#else
-	int len;
-#endif
 
-	// Locate mono runner
-#ifdef _MSC_VER
-	sprintf(mono, "%s/mono.exe", manifestDir);
-	h = CreateFile(mono,				  // file to open
-				   GENERIC_READ,		  // open for reading
-				   FILE_SHARE_READ,		  // share for reading
-				   NULL,				  // default security
-				   OPEN_EXISTING,		  // existing file only
-				   FILE_ATTRIBUTE_NORMAL, // normal file
-				   NULL);				  // no attr. template
-	if (h == INVALID_HANDLE_VALUE)
-	{
-		printf("Could not open file %s (error %d\n)", mono, GetLastError());
-		exit(-1);
-	}
-	ret = GetFinalPathNameByHandle(h, linkedmono, sizeof(linkedmono), VOLUME_NAME_DOS);
-	CloseHandle(h);
-	GetShortPathName(linkedmono, mono, sizeof(mono));
-	strcpy(mono, mono + 4);
-#else
-	sprintf(mono, "%s/mono", manifestDir);
-	len = readlink(mono, linkedmono, sizeof(linkedmono));
-	linkedmono[len] = '\0';
-	strcpy(mono, linkedmono);
-#endif
+	// Locate dotnet runner
+	sprintf(dotnet, "%s/dotnet", manifestDir);
+
+	// xunit runner
+	sprintf(xunit, "%s/xunit.console_0.dll", manifestDir);
 
 	// Based on current exe calculate _0.dll to run
 	p = strrchr(Exe, '/');
@@ -70,15 +44,18 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 	strcpy(p, "_0.dll");
 
 	// Prepare arguments
-	newargv[0] = mono;
-	newargv[1] = torun;
+	newargv[0] = dotnet;
+	newargv[1] = xunit;
+	newargv[2] = torun;
+	newargv[3] = "-junit";
+	newargv[4] = getenv("XML_OUTPUT_FILE");
 	for (i = 1; i < argc; ++i)
-		newargv[i + 1] = argv[i];
-	newargv[i + 1] = NULL;
+		newargv[i + 4] = argv[i];
+	newargv[i + 4] = NULL;
 
 	if (IsVerbose())
 	{
-		for (i = 0; i < argc + 2; ++i)
+		for (i = 0; i < argc + 5; ++i)
 			printf("argv[%d] = %s\n", i, newargv[i]);
 	}
 #ifdef _MSC_VER
@@ -96,7 +73,7 @@ int main(int argc, char *argv[], char *envp[])
 	char *p;
 
 	if (IsVerbose())
-		printf("Launcher mono %s\n", argv[0]);
+		printf("Launcher core_xunit %s\n", argv[0]);
 
 	Exe = strdup(argv[0]);
 	for (p = (char *)Exe; *p != '\0'; ++p)

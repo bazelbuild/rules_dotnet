@@ -1,11 +1,10 @@
 load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_binary", "dotnet_nunit_test")
 
 dotnet_binary(
-    name = "custom_bin",
+    name = "custom_bin.exe",
     srcs = [
         "main.cs",
     ],
-    out = "alt_bin.exe",
 )
 
 dotnet_nunit_test(
@@ -14,7 +13,7 @@ dotnet_nunit_test(
     srcs = [
         "main_test.cs",
     ],
-    data = [":custom_bin"],
+    data = [":custom_bin.exe"],
     deps = [
         "@nunit2//:nunit.framework.dll",
     ],

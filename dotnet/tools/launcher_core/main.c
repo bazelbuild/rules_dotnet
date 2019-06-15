@@ -67,7 +67,7 @@ int main(int argc, char *argv[], char *envp[])
 	char *p;
 
 	if (IsVerbose())
-		printf("Launcher %s\n", argv[0]);
+		printf("Launcher core %s\n", argv[0]);
 
 	Exe = strdup(argv[0]);
 	for (p = (char *)Exe; *p != '\0'; ++p)

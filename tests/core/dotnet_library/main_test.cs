@@ -11,7 +11,7 @@ namespace example_test
         [Test]
         public void MyTest2()
         {
-            Assert.AreEqual(true, File.Exists("alt_bin.dll"));
+            Assert.AreEqual(true, File.Exists("custom_bin.dll"));
         }
     }
 }
