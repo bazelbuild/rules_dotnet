@@ -8,7 +8,7 @@ dotnet_binary(
 )
 
 dotnet_nunit_test(
-    name = "custom_bin_test",
+    name = "custom_bin_test.dll",
     size = "small",
     srcs = [
         "main_test.cs",

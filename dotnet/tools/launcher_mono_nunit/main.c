@@ -48,6 +48,7 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 	newargv[1] = xunit;
 	newargv[2] = torun;
 	newargv[3] = arg;
+
 	for (i = 1; i < argc; ++i)
 		newargv[i + 3] = argv[i];
 	newargv[i + 3] = NULL;
@@ -72,7 +73,7 @@ int main(int argc, char *argv[], char *envp[])
 	char *p;
 
 	if (IsVerbose())
-		printf("Launcher core_xunit %s\n", argv[0]);
+		printf("Launcher mono_nunit %s\n", argv[0]);
 
 	Exe = strdup(argv[0]);
 	for (p = (char *)Exe; *p != '\0'; ++p)

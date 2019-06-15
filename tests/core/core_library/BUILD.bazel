@@ -3,7 +3,7 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_library", "core_xunit_test
 framework = "v2.1.503"
 
 core_library(
-    name = "custom_bin",
+    name = "custom_bin.dll",
     srcs = [
         "main.cs",
     ],
@@ -14,12 +14,12 @@ core_library(
 )
 
 core_xunit_test(
-    name = "custom_bin_test",
+    name = "custom_bin_test.dll",
     size = "small",
     srcs = [
         "main_test.cs",
     ],
-    data = [":custom_bin"],
+    data = [":custom_bin.dll"],
     testlauncher = "@{}_xunit//:xunit.console.exe".format(framework),
     deps = [
         "@{}_xunit_assert//:assert.xunit.dll".format(framework),

@@ -57,7 +57,7 @@ load(
 ]]
 
 [net_xunit_test(
-    name = "net.example_resx_{}".format(framework),
+    name = "net.example_resx_{}.dll".format(framework),
     size = "small",
     srcs = glob(["*.cs"]),
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),

@@ -21,17 +21,16 @@ const char *Exe = NULL;
 
 static void Execute(int argc, char *argv[], const char *manifestDir)
 {
-	char torun[64 * 1024], *p, xunit[64 * 1024];
-	const char *mono;
-	char **newargv = (char **)malloc((argc + 5) * sizeof(char *));
-	//char *newargv[1024];
+	char torun[64 * 1024], *p, xunit[64 * 1024], arg[64 * 1024];
+	char **newargv = (char **)malloc((argc + 3) * sizeof(char *));
 	int i;
-
-	// Locate mono runner
-	mono = GetLinkedMonoLauncher(manifestDir);
+#ifdef _MSC_VER
+	char longpath[64 * 1024];
+	DWORD r;
+#endif
 
 	// xunit runner
-	sprintf(xunit, "%s/xunit.console.exe", manifestDir);
+	sprintf(xunit, "%s/nunit3-console.exe", manifestDir);
 
 	// Based on current exe calculate _0.dll to run
 	p = strrchr(Exe, '/');
@@ -44,19 +43,29 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 	}
 	strcpy(p, "_0.dll");
 
-	// Prepare arguments
-	newargv[0] = mono;
-	newargv[1] = xunit;
-	newargv[2] = torun;
-	newargv[3] = "-junit";
-	newargv[4] = getenv("XML_OUTPUT_FILE");
-	for (i = 1; i < argc; ++i)
-		newargv[i + 4] = argv[i];
-	newargv[i + 4] = NULL;
+	// arg
+	sprintf(arg, "--result=%s;transform=%s/n3.xslt", getenv("XML_OUTPUT_FILE"), manifestDir);
 
+	// Prepare arguments
+	newargv[0] = xunit;
+	newargv[1] = torun;
+	newargv[2] = arg;
+	for (i = 1; i < argc; ++i)
+		newargv[i + 2] = argv[i];
+	newargv[i + 2] = NULL;
+
+#ifdef _MSC_VER
+	r = GetLongPathName(newargv[0], longpath, sizeof(longpath));
+	if (!r)
+	{
+		printf("GetLongPathName failed for %s\n", newargv[0]);
+		exit(-1);
+	}
+	newargv[0] = longpath;
+#endif
 	if (IsVerbose())
 	{
-		for (i = 0; i < argc + 5; ++i)
+		for (i = 0; i < argc + 3; ++i)
 			printf("argv[%d] = %s\n", i, newargv[i]);
 	}
 #ifdef _MSC_VER
@@ -74,7 +83,7 @@ int main(int argc, char *argv[], char *envp[])
 	char *p;
 
 	if (IsVerbose())
-		printf("Launcher mono_xunit %s\n", argv[0]);
+		printf("Launcher net_nunit3 %s\n", argv[0]);
 
 	Exe = strdup(argv[0]);
 	for (p = (char *)Exe; *p != '\0'; ++p)

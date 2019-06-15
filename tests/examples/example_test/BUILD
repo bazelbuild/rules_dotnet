@@ -27,7 +27,7 @@ dotnet_nunit_test(
 ) for framework in DOTNET_NET_FRAMEWORKS]
 
 [net_nunit3_test(
-    name = "net.example_test3_{}".format(framework),
+    name = "net.example_test3_{}.dll".format(framework),
     size = "small",
     srcs = [
         "MyTest.cs",
