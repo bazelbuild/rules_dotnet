@@ -59,7 +59,17 @@ dotnet_binary(
     minor_version = 0,
     namespace = "Shell32",
     platform = "win32",
-) for framework in DOTNET_NET_FRAMEWORKS]
+) for framework in [
+    "net45",
+    "net451",
+    "net452",
+    "net46",
+    "net461",
+    "net462",
+    "net47",
+    "net471",
+    "net472",
+]]
 
 # The rule is left as an example. It is commented out, because our CI server doesn't have VS2017 installed
 #net_binary(
