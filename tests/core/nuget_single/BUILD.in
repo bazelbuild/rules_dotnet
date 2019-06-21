@@ -1,12 +1,12 @@
 load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_nunit_test")
 
 dotnet_nunit_test(
-    name = "empty_test",
+    name = "empty_test.dll",
     srcs = [
-        "main_test.cs",
+        "MyTest.cs",
     ],
     deps = [
-        "@nunit2//:nunit.framework",
+        "@nunit2//:nunit.framework.dll",
         "@npgsql//:lib",
         "@commandlineparser//:lib",
         "@nuget.frameworks//:mono",

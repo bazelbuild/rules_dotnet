@@ -1,7 +1,7 @@
 package(default_visibility = ["//visibility:public"])
 
 load("@io_bazel_rules_dotnet//dotnet/private:context.bzl", "core_context_data", "dotnet_context_data", "net_context_data")
-load("//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NET_FRAMEWORKS")
+load("//dotnet:defs.bzl", "DEFAULT_DOTNET_CORE_FRAMEWORK", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NET_FRAMEWORKS")
 
 dotnet_context_data(
     name = "dotnet_context_data",
@@ -10,7 +10,7 @@ dotnet_context_data(
 
 core_context_data(
     name = "core_context_data",
-    framework = "v2.1.503",
+    framework = DEFAULT_DOTNET_CORE_FRAMEWORK,
 )
 
 net_context_data(

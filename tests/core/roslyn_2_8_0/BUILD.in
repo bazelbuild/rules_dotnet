@@ -1,7 +1,7 @@
 load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "net_nunit3_test")
 
 net_nunit3_test(
-    name = "sanity",
+    name = "sanity.dll",
     size = "small",
     srcs = [
         "MyTest.cs",
@@ -12,3 +12,4 @@ net_nunit3_test(
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
     native_deps = "@net_sdk_net472//:native_deps",
 )
+
