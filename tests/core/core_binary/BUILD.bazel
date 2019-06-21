@@ -18,7 +18,9 @@ core_xunit_test(
     srcs = [
         "main_test.cs",
     ],
-    data = [":custom_bin.exe"],
+    data = [
+        ":custom_bin.exe",
+    ],
     dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data",
     native_deps = "@core_sdk//:native_deps",
     testlauncher = "@{}_xunit//:xunit.console.exe".format(framework),

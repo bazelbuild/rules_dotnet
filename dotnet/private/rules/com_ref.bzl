@@ -12,7 +12,7 @@ load(
 )
 
 def _net_com_library_impl(ctx):
-    """_net_com_reference_impl emits actions for creating com wrapper library."""
+    """_net_com_library_impl emits actions for creating com wrapper library."""
     dotnet = dotnet_context(ctx)
     name = ctx.label.name
 

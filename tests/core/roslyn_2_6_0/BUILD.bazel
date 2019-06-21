@@ -10,6 +10,7 @@ core_xunit_test(
         "BUILD.in",
         "MyTest.cs.in",
         "WORKSPACE.in",
+        "//tests:all_rules_md5",
     ],
     deps = [
         "//tests/testlib:testlib.dll",

@@ -19,7 +19,9 @@ core_xunit_test(
     srcs = [
         "main_test.cs",
     ],
-    data = [":custom_bin.dll"],
+    data = [
+        ":custom_bin.dll",
+    ],
     testlauncher = "@{}_xunit//:xunit.console.exe".format(framework),
     deps = [
         "@{}_xunit_assert//:assert.xunit.dll".format(framework),

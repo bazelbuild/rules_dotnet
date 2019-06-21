@@ -14,7 +14,7 @@ load(
 )
 
 def _binary_impl(ctx):
-    """dotnet_binary_impl emits actions for compiling dotnet executable assembly."""
+    """_binary_impl emits actions for compiling executable assembly."""
     dotnet = dotnet_context(ctx)
     name = ctx.label.name
 

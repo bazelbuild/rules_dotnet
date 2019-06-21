@@ -13,7 +13,9 @@ dotnet_nunit_test(
     srcs = [
         "main_test.cs",
     ],
-    data = [":custom_bin.dll"],
+    data = [
+        ":custom_bin.dll",
+    ],
     deps = [
         "@nunit2//:nunit.framework.dll",
     ],

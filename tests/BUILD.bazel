@@ -9,7 +9,7 @@ md5_sum(
         "//dotnet/private:all_rules",
         "//dotnet/toolchain:all_rules",
     ],
-    visibility = ["//visibility:private"],
+    visibility = ["//visibility:public"],
 )
 
 # Consuming the above md5_sum rule directly into the data deps of a sh_test results in the
