@@ -2,7 +2,7 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_xunit_test")
 
 core_xunit_test(
     name = "nuget_single.dll",
-    size = "long",
+    size = "large",
     srcs = [
         "nuget_single.cs",
     ],
