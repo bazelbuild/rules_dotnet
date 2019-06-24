@@ -105,7 +105,10 @@ def emit_assembly(
     if name == "" and out == None:
         fail("either name or out must be set")
 
-    result = dotnet.declare_file(dotnet, path = name)
+    if not out:
+        result = dotnet.declare_file(dotnet, path = name)
+    else:
+        result = dotnet.declare_file(dotnet, path = out)
 
     runner_args = _make_runner_arglist(dotnet, deps, resources, result, executable, defines, unsafe, keyfile)
 

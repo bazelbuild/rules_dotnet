@@ -108,7 +108,11 @@ def emit_assembly_net(
     if name == "" and out == None:
         fail("either name or out must be set")
 
-    result = dotnet.declare_file(dotnet, path = name)
+    if not out:
+        result = dotnet.declare_file(dotnet, path = name)
+    else:
+        result = dotnet.declare_file(dotnet, path = out)
+
 
     if dotnet.debug:
         pdb = dotnet.declare_file(dotnet, path = paths.split_extension(name)[0] + ".pdb")
