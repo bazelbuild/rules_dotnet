@@ -101,10 +101,11 @@ Setup
   .. code:: python
 
     # A newer version should be fine
+    load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
     git_repository(
         name = "io_bazel_rules_dotnet",
         remote = "https://github.com/bazelbuild/rules_dotnet",
-        tag = "0.0.2",
+        tag = "0.0.3",
     )
 
     load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_register_sdk", "net_register_sdk", "mono_register_sdk",
