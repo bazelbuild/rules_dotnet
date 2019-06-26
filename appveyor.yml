@@ -30,8 +30,8 @@ build_script:
   - bazel  --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build -s  --local_resources=400,1,1.0  //...
 
 test_script:
-  - bazel  --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s   --local_resources=400,1,1.0  //tests/examples/example_binary:hello
-  - bazel  --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s   --local_resources=400,1,1.0  //tests/examples/example_binary:hello-core
+  - bazel  --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s   --local_resources=400,1,1.0  //tests/examples/example_binary:hello.exe
+  - bazel  --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s   --local_resources=400,1,1.0  //tests/examples/example_binary:hello-core.exe
   - bazel  --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m test --test_summary=detailed --test_output=all -s --local_resources=400,1,1.0  //...
 
 
