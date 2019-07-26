@@ -19,7 +19,7 @@ def _map_dep(deps):
 def _map_resource(d):
     return d.result.path + "," + d.identifier
 
-def _make_runner_arglist(dotnet, deps, resources, output, executable, defines, unsafe, keyfile):
+def _make_runner_arglist(dotnet, deps, resources, output, pdb, executable, defines, unsafe, keyfile):
     args = dotnet.actions.args()
 
     # /out:<file>
@@ -35,6 +35,8 @@ def _make_runner_arglist(dotnet, deps, resources, output, executable, defines, u
 
     args.add("/fullpaths")
     args.add("/nostdlib")
+    if pdb:
+        args.add("-debug")
 
     # /warn
     #args.add(format="/warn:%s", value=str(ctx.attr.warn))
@@ -110,7 +112,12 @@ def emit_assembly(
     else:
         result = dotnet.declare_file(dotnet, path = out)
 
-    runner_args = _make_runner_arglist(dotnet, deps, resources, result, executable, defines, unsafe, keyfile)
+    if dotnet.debug:
+        pdb = dotnet.declare_file(dotnet, path = result.basename + ".mdb", sibling = result)
+    else:
+        pdb = None
+
+    runner_args = _make_runner_arglist(dotnet, deps, resources, result, pdb, executable, defines, unsafe, keyfile)
 
     attr_srcs = [f for t in srcs for f in as_iterable(t.files)]
     runner_args.add_all(attr_srcs)
@@ -133,7 +140,7 @@ def emit_assembly(
     deps_files = [d[DotnetLibrary].result for d in deps]
     dotnet.actions.run(
         inputs = attr_srcs + [paramfile] + deps_files + [dotnet.stdlib] + [r[DotnetResource].result for r in resources],
-        outputs = [result],
+        outputs = [result] + ([pdb] if pdb else []),
         executable = dotnet.runner,
         arguments = [dotnet.mcs.path, "/noconfig", "@" + paramfile.path],
         mnemonic = "MonoCompile",
@@ -143,7 +150,7 @@ def emit_assembly(
     )
 
     extra = [] if data == None else [d.files for d in data]
-    runfiles = depset(direct = [result] + [dotnet.stdlib], transitive = [d[DotnetLibrary].runfiles for d in deps] + extra)
+    runfiles = depset(direct = [result] + [dotnet.stdlib] + ([pdb] if pdb else []), transitive = [d[DotnetLibrary].runfiles for d in deps] + extra)
     transitive = depset(direct = deps, transitive = [a[DotnetLibrary].transitive for a in deps])
 
     return dotnet.new_library(

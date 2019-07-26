@@ -6,11 +6,11 @@ load(
 
 DotnetContext = provider()
 
-def _declare_file(dotnet, path = None, ext = None):
+def _declare_file(dotnet, path = None, ext = None, sibling = None):
     result = path if path else dotnet._ctx.label.name
     if ext:
         result += ext
-    return dotnet.actions.declare_file(result)
+    return dotnet.actions.declare_file(result, sibling = sibling)
 
 def new_library(dotnet, name = None, deps = None, transitive = None, result = None, pdb = None, runfiles = None, **kwargs):
     return DotnetLibrary(
