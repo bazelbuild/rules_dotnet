@@ -19,6 +19,9 @@ namespace nuget2bazel
         {
             _root = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
             Directory.CreateDirectory(_root);
+
+            // Nuget libraries require HOME set
+            Environment.SetEnvironmentVariable("HOME", _root);
         }
 
 
