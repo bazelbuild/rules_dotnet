@@ -4,6 +4,8 @@ using System.Text;
 using System.Xml.Linq;
 using NuGet.Common;
 using NuGet.Packaging;
+using NuGet.Packaging.PackageExtraction;
+using NuGet.Packaging.Signing;
 using NuGet.ProjectManagement;
 
 namespace nuget2bazel
@@ -11,6 +13,15 @@ namespace nuget2bazel
     public class ProjectContext : INuGetProjectContext
     {
         private Logger logger = new Logger();
+
+        public ProjectContext()
+        {
+            PackageExtractionContext = new PackageExtractionContext(
+                PackageSaveMode.Defaultv3,
+                PackageExtractionBehavior.XmlDocFileSaveMode,
+                null,
+                logger);
+        }
 
         public void Log(MessageLevel level, string message, params object[] args)
         {

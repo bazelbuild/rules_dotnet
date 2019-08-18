@@ -19,10 +19,17 @@ namespace nuget2bazel
 {
     public class AddCommand
     {
-        public async Task Do(string package, string version, string rootPath, string mainFile, bool skipSha256)
+        public Task Do(string package, string version, string rootPath, string mainFile, bool skipSha256)
         {
             if (rootPath == null)
                 rootPath = Directory.GetCurrentDirectory();
+
+            var project = new ProjectBazel(rootPath, mainFile, skipSha256);
+
+            return DoWithProject(package, version, project);
+        }
+        public async Task DoWithProject(string package, string version, ProjectBazel project)
+        {
 
             var logger = new Logger();
             var providers = new List<Lazy<INuGetResourceProvider>>();
@@ -35,15 +42,14 @@ namespace nuget2bazel
             var content = new SourceCacheContext();
             var found = await packageMetadataResource.GetMetadataAsync(identity, content, logger, CancellationToken.None);
 
-            var settings = Settings.LoadDefaultSettings(rootPath, null, new MachineWideSettings());
-            var project = new ProjectBazel(rootPath, mainFile, skipSha256);
+            var settings = Settings.LoadDefaultSettings(project.RootPath, null, new MachineWideSettings());
             var sourceRepositoryProvider = new SourceRepositoryProvider(settings, providers);
-            var packageManager = new NuGetPackageManager(sourceRepositoryProvider, settings, rootPath)
+            var packageManager = new NuGetPackageManager(sourceRepositoryProvider, settings, project.RootPath)
             {
                 PackagesFolderNuGetProject = project
             };
 
-            const bool  allowPrereleaseVersions = false;
+            const bool  allowPrereleaseVersions = true;
             const bool allowUnlisted = false;
             var resolutionContext = new ResolutionContext(
                 DependencyBehavior.HighestMinor, allowPrereleaseVersions, allowUnlisted, VersionConstraints.None);

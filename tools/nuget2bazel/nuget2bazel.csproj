@@ -2,22 +2,22 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.3.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="NuGet.Common" Version="4.8.0" />
-    <PackageReference Include="NuGet.Configuration" Version="4.8.0" />
-    <PackageReference Include="NuGet.Frameworks" Version="4.8.0" />
-    <PackageReference Include="NuGet.PackageManagement" Version="4.8.0" />
-    <PackageReference Include="NuGet.Packaging" Version="4.8.0" />
-    <PackageReference Include="NuGet.Packaging.Core" Version="4.8.0" />
-    <PackageReference Include="NuGet.ProjectModel" Version="4.8.0" />
-    <PackageReference Include="NuGet.Protocol" Version="4.8.0" />
-    <PackageReference Include="NuGet.Resolver" Version="4.8.0" />
-    <PackageReference Include="NuGet.Versioning" Version="4.8.0" />
+    <PackageReference Include="CommandLineParser" Version="2.6.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="NuGet.Common" Version="4.9.2" />
+    <PackageReference Include="NuGet.Configuration" Version="4.9.2" />
+    <PackageReference Include="NuGet.Frameworks" Version="4.9.2" />
+    <PackageReference Include="NuGet.PackageManagement.NetStandard" Version="4.9.2" />
+    <PackageReference Include="NuGet.Packaging" Version="4.9.2" />
+    <PackageReference Include="NuGet.Packaging.Core" Version="4.9.2" />
+    <PackageReference Include="NuGet.ProjectModel" Version="4.9.2" />
+    <PackageReference Include="NuGet.Protocol" Version="4.9.2" />
+    <PackageReference Include="NuGet.Resolver" Version="4.9.2" />
+    <PackageReference Include="NuGet.Versioning" Version="4.9.2" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29001.49
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "nuget2bazel", "nuget2bazel.csproj", "{7E789998-0B36-45AF-8060-4594995F7DED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "nuget2bazel-test", "..\..\tests\tools\nuget2bazel\nuget2bazel-test.csproj", "{D8876C69-F952-45A1-B2E8-438D7C6B2729}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{7E789998-0B36-45AF-8060-4594995F7DED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E789998-0B36-45AF-8060-4594995F7DED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E789998-0B36-45AF-8060-4594995F7DED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8876C69-F952-45A1-B2E8-438D7C6B2729}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8876C69-F952-45A1-B2E8-438D7C6B2729}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8876C69-F952-45A1-B2E8-438D7C6B2729}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8876C69-F952-45A1-B2E8-438D7C6B2729}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

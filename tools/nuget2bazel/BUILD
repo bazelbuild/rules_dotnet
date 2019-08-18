@@ -1,10 +1,13 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "core_binary")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DEFAULT_DOTNET_CORE_FRAMEWORK", "DOTNET_CORE_FRAMEWORKS", "core_binary")
 
-[core_binary(
-    name = "{}_nuget2bazel.exe".format(framework),
+framework = DEFAULT_DOTNET_CORE_FRAMEWORK
+
+core_binary(
+    name = "nuget2bazel.exe",
     srcs = glob(["*.cs"]),
     dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
     native_deps = "@core_sdk_{}//:native_deps".format(framework),
+    visibility = ["//visibility:public"],
     deps = [
         "@commandlineparser//:netcoreapp2.1_core",
         "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:netstandard.dll".format(framework),
@@ -29,7 +32,7 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "core_
         "@nuget.common//:netcoreapp2.1_core",
         "@nuget.configuration//:netcoreapp2.1_core",
         "@nuget.frameworks//:netcoreapp2.1_core",
-        "@nuget.packagemanagement//:net46_net",
+        "@nuget.packagemanagement.netstandard//:netcoreapp2.1_core",
         "@nuget.packaging.core//:netcoreapp2.1_core",
         "@nuget.packaging//:netcoreapp2.1_core",
         "@nuget.projectmodel//:netcoreapp2.1_core",
@@ -37,4 +40,4 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "core_
         "@nuget.resolver//:netcoreapp2.1_core",
         "@nuget.versioning//:netcoreapp2.1_core",
     ],
-) for framework in DOTNET_CORE_FRAMEWORKS]
+)

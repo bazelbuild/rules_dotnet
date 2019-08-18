@@ -2,7 +2,7 @@
   "profiles": {
     "nuget2bazel": {
       "commandName": "Project",
-      "commandLineArgs": "add -p c:/rules_dotnet nuget.commands 4.8.0"
+      "commandLineArgs": "sync -p c:/rules_dotnet"
     }
   }
 }

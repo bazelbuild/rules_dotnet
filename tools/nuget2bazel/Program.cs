@@ -9,8 +9,8 @@ namespace nuget2bazel
     {
         static void Main(string[] args)
         {
-            var parsed = Parser.Default.ParseArguments<AddVerb, DeleteVerb>(args);
-            var result = parsed.MapResult<AddVerb, DeleteVerb, int>(
+            var parsed = Parser.Default.ParseArguments<AddVerb, DeleteVerb, SyncVerb>(args);
+            var result = parsed.MapResult<AddVerb, DeleteVerb, SyncVerb, int>(
                 (AddVerb opts) =>
                 {
                     var res = new AddCommand().Do(opts.Package, opts.Version, opts.RootPath, opts.MainFile, opts.SkipSha256);
@@ -20,6 +20,12 @@ namespace nuget2bazel
                 (DeleteVerb opts) =>
                 {
                     var res = new DeleteCommand().Do(opts.Package, opts.RootPath);
+                    res.Wait();
+                    return 0;
+                },
+                (SyncVerb opts) =>
+                {
+                    var res = new SyncCommand().Do(opts.RootPath);
                     res.Wait();
                     return 0;
                 },

@@ -26,6 +26,7 @@ namespace nuget2bazel
         private IEnumerable<WorkspaceEntry> ParseEntries()
         {
             var result = new List<WorkspaceEntry>();
+
             for (;;)
             {
                 var entry = ParseEntry();
@@ -46,30 +47,82 @@ namespace nuget2bazel
 
             var result = new WorkspaceEntry();
 
-            RequireToken(Token.NUGET_PACKAGE);
-            RequireToken(Token.LPAR);
-            RequireAssignment(Token.NAME);
-            var package = RequireAssignment(Token.PACKAGE);
-            var version = RequireAssignment(Token.VERSION);
+            string package = null;
+            string version = null;
+
+            RequireToken(TokenCode.NUGET_PACKAGE);
+            RequireToken(TokenCode.LPAR);
+
+            var finished = false;
+            while(!finished)
+            {
+                var (token, val) = PeekToken();
+                switch (token)
+                {
+                    case TokenCode.NAME:
+                        RequireToken(TokenCode.NAME);
+                        RequireToken(TokenCode.EQUAL);
+                        RequireToken(TokenCode.STRING);
+                        break;
+                    case TokenCode.CORE_FILES:
+                        result.Core_Files = RequireDictionaryList(TokenCode.CORE_FILES);
+                        break;
+                    case TokenCode.CORE_LIB:
+                        result.CoreLib = RequireDictionary(TokenCode.CORE_LIB);
+                        break;
+                    case TokenCode.MONO_DEPS:
+                        result.Mono_Deps = RequireArray(TokenCode.MONO_DEPS);
+                        break;
+                    case TokenCode.MONO_FILES:
+                        result.Mono_Files = RequireArray(TokenCode.MONO_FILES);
+                        break;
+                    case TokenCode.MONO_LIB:
+                        result.MonoLib = RequireAssignment(TokenCode.MONO_LIB);
+                        break;
+                    case TokenCode.NET_DEPS:
+                        result.Net_Deps = RequireDictionaryList(TokenCode.NET_DEPS);
+                        break;
+                    case TokenCode.NET_FILES:
+                        result.Net_Files = RequireDictionaryList(TokenCode.NET_FILES);
+                        break;
+                    case TokenCode.NET_LIB:
+                        result.NetLib = RequireDictionary(TokenCode.NET_LIB);
+                        break;
+                    case TokenCode.PACKAGE:
+                        package = RequireAssignment(TokenCode.PACKAGE);
+                        break;
+                    case TokenCode.VERSION:
+                        version = RequireAssignment(TokenCode.VERSION);
+                        break;
+                    case TokenCode.SHA256:
+                        result.Sha256 = RequireAssignment(TokenCode.SHA256);
+                        break;
+                    case TokenCode.CORE_TOOL:
+                        result.CoreTool = RequireDictionary(TokenCode.CORE_TOOL);
+                        break;
+                    case TokenCode.NET_TOOL:
+                        result.NetTool = RequireDictionary(TokenCode.NET_TOOL);
+                        break;
+                    case TokenCode.MONO_TOOL:
+                        result.MonoTool = RequireAssignment(TokenCode.MONO_TOOL);
+                        break;
+                    case TokenCode.CORE_DEPS:
+                        result.Core_Deps = RequireDictionaryList(TokenCode.CORE_DEPS);
+                        break;
+                    case TokenCode.RPAR:
+                        finished = true;
+                        GetToken();
+                        break;
+                }
+
+            }
+
             result.PackageIdentity = new PackageIdentity(package, new NuGetVersion(version));
-            result.Sha256 = RequireAssignment(Token.SHA256);
-            result.CoreLib= RequireDictionary(Token.CORE_LIB);
-            result.NetLib = RequireDictionary(Token.NET_LIB);
-            result.MonoLib= RequireAssignment(Token.MONO_LIB);
-            result.CoreTool = RequireDictionary(Token.CORE_TOOL);
-            result.NetTool = RequireDictionary(Token.NET_TOOL);
-            result.MonoTool = RequireAssignment(Token.MONO_TOOL);
-            result.Core_Deps = RequireDictionaryList(Token.CORE_DEPS);
-            result.Net_Deps = RequireDictionaryList(Token.NET_DEPS);
-            result.Mono_Deps = RequireArray(Token.MONO_DEPS);
-            result.Core_Files = RequireDictionaryList(Token.CORE_FILES);
-            result.Net_Files = RequireDictionaryList(Token.NET_FILES);
-            result.Mono_Files = RequireArray(Token.MONO_FILES);
-            RequireToken(Token.RPAR);
+
             return result;
         }
 
-        private string RequireToken(Token required)
+        private string RequireToken(TokenCode required)
         {
             var (token, value) = GetToken();
             if (token != required)
@@ -78,69 +131,69 @@ namespace nuget2bazel
             return value;
         }
 
-        private string RequireAssignment(Token required)
+        private string RequireAssignment(TokenCode required)
         {
             var token = PeekToken();
             if (token.Item1 != required)
                 return null;
 
             RequireToken(required);
-            RequireToken(Token.EQUAL);
-            return RequireToken(Token.STRING);
+            RequireToken(TokenCode.EQUAL);
+            return RequireToken(TokenCode.STRING);
         }
 
-        private IDictionary<string, string> RequireDictionary(Token required)
+        private IDictionary<string, string> RequireDictionary(TokenCode required)
         {
             var tok = PeekToken();
             if (tok.Item1 != required)
                 return null;
 
             RequireToken(required);
-            RequireToken(Token.EQUAL);
-            RequireToken(Token.LCURLY);
+            RequireToken(TokenCode.EQUAL);
+            RequireToken(TokenCode.LCURLY);
 
             var result = new Dictionary<string, string>();
             for (;;)
             {
                 var (token, value) = GetToken();
-                if (token == Token.STRING)
+                if (token == TokenCode.STRING)
                 {
-                    RequireToken(Token.COLON);
+                    RequireToken(TokenCode.COLON);
                     var (token2, value2) = GetToken();
-                    if (token2 != Token.STRING)
-                        throw new InvalidOperationException($"Unexpected token {token2}, {value2}. Expected Token.STRING");
+                    if (token2 != TokenCode.STRING)
+                        throw new InvalidOperationException($"Unexpected token {token2}, {value2}. Expected TokenCode.STRING");
 
                     result.Add(value, value2);
                     continue;
                 }
 
-                if (token == Token.RCURLY)
+                if (token == TokenCode.RCURLY)
                     break;
             }
 
             return result;
         }
 
-        private IDictionary<string, IEnumerable<string>> RequireDictionaryList(Token required)
+        private IDictionary<string, IEnumerable<string>> RequireDictionaryList(TokenCode required)
         {
             var tok = PeekToken();
             if (tok.Item1 != required)
                 return null;
 
             RequireToken(required);
-            RequireToken(Token.EQUAL);
-            RequireToken(Token.LCURLY);
+            RequireToken(TokenCode.EQUAL);
+            RequireToken(TokenCode.LCURLY);
 
             var result = new Dictionary<string, IEnumerable<string>>();
             for (; ; )
             {
                 var (token, value) = GetToken();
-                if (token == Token.STRING)
+                if (token == TokenCode.STRING)
                 {
-                    RequireToken(Token.COLON);
+                    RequireToken(TokenCode.COLON);
                     var (token2, value2) = GetToken();
-                    if (token2 != Token.LBRACKET)
-                        throw new InvalidOperationException($"Unexpected token {token2}, {value2}. Expected Token.LBRACKET");
+                    if (token2 != TokenCode.LBRACKET)
+                        throw new InvalidOperationException($"Unexpected token {token2}, {value2}. Expected TokenCode.LBRACKET");
 
                     var val = GetArrayValue();
 
@@ -148,7 +201,7 @@ namespace nuget2bazel
                     continue;
                 }
 
-                if (token == Token.RCURLY)
+                if (token == TokenCode.RCURLY)
                     break;
             }
 
@@ -161,33 +214,33 @@ namespace nuget2bazel
             for (; ; )
             {
                 var (token, value) = GetToken();
-                if (token == Token.STRING)
+                if (token == TokenCode.STRING)
                 {
                     result.Add(value);
                     continue;
                 }
 
-                if (token == Token.RBRACKET)
+                if (token == TokenCode.RBRACKET)
                     break;
             }
 
             return result;
         }
 
-        private IEnumerable<string> RequireArray(Token required)
+        private IEnumerable<string> RequireArray(TokenCode required)
         {
             var tok = PeekToken();
             if (tok.Item1 != required)
                 return null;
 
             RequireToken(required);
-            RequireToken(Token.EQUAL);
-            RequireToken(Token.LBRACKET);
+            RequireToken(TokenCode.EQUAL);
+            RequireToken(TokenCode.LBRACKET);
 
             return GetArrayValue();
         }
 
-        enum Token
+        public enum TokenCode
         {
             NUGET_PACKAGE,
             NAME,
@@ -219,38 +272,44 @@ namespace nuget2bazel
             RCURLY,
         }
 
-        private (Token, string) GetToken()
+        public struct Token
+        {
+            public TokenCode Code;
+            public string Value;
+        }
+
+        private (TokenCode, string) GetToken()
         {
             while (!IsEof() && IsWhitespace()) ++_pos;
 
-            if (IsEof()) return (Token.EOF, null);
+            if (IsEof()) return (TokenCode.EOF, null);
 
             switch (_toparse[_pos])
             {
                 case '(':
                     ++_pos;
-                    return (Token.LPAR, null);
+                    return (TokenCode.LPAR, null);
                 case ')':
                     ++_pos;
-                    return (Token.RPAR, null);
+                    return (TokenCode.RPAR, null);
                 case '[':
                     ++_pos;
-                    return (Token.LBRACKET, null);
+                    return (TokenCode.LBRACKET, null);
                 case ']':
                     ++_pos;
-                    return (Token.RBRACKET, null);
+                    return (TokenCode.RBRACKET, null);
                 case '=':
                     ++_pos;
-                    return (Token.EQUAL, null);
+                    return (TokenCode.EQUAL, null);
                 case ':':
                     ++_pos;
-                    return (Token.COLON, null);
+                    return (TokenCode.COLON, null);
                 case '{':
                     ++_pos;
-                    return (Token.LCURLY, null);
+                    return (TokenCode.LCURLY, null);
                 case '}':
                     ++_pos;
-                    return (Token.RCURLY, null);
+                    return (TokenCode.RCURLY, null);
             }
 
             if (_toparse[_pos] == '\"')
@@ -261,28 +320,28 @@ namespace nuget2bazel
             var str = _toparse.Substring(_pos, q - _pos);
             _pos = q;
 
-            if (str == "nuget_package") return (Token.NUGET_PACKAGE, null);
-            if (str == "name") return (Token.NAME, null);
-            if (str == "package") return (Token.PACKAGE, null);
-            if (str == "version") return (Token.VERSION, null);
-            if (str == "sha256") return (Token.SHA256, null);
-            if (str == "core_lib") return (Token.CORE_LIB, null);
-            if (str == "net_lib") return (Token.NET_LIB, null);
-            if (str == "mono_lib") return (Token.MONO_LIB, null);
-            if (str == "core_tool") return (Token.CORE_TOOL, null);
-            if (str == "net_tool") return (Token.NET_TOOL, null);
-            if (str == "mono_tool") return (Token.MONO_TOOL, null);
-            if (str == "core_deps") return (Token.CORE_DEPS, null);
-            if (str == "net_deps") return (Token.NET_DEPS, null);
-            if (str == "mono_deps") return (Token.MONO_DEPS, null);
-            if (str == "core_files") return (Token.CORE_FILES, null);
-            if (str == "net_files") return (Token.NET_FILES, null);
-            if (str == "mono_files") return (Token.MONO_FILES, null);
+            if (str == "nuget_package") return (TokenCode.NUGET_PACKAGE, null);
+            if (str == "name") return (TokenCode.NAME, null);
+            if (str == "package") return (TokenCode.PACKAGE, null);
+            if (str == "version") return (TokenCode.VERSION, null);
+            if (str == "sha256") return (TokenCode.SHA256, null);
+            if (str == "core_lib") return (TokenCode.CORE_LIB, null);
+            if (str == "net_lib") return (TokenCode.NET_LIB, null);
+            if (str == "mono_lib") return (TokenCode.MONO_LIB, null);
+            if (str == "core_tool") return (TokenCode.CORE_TOOL, null);
+            if (str == "net_tool") return (TokenCode.NET_TOOL, null);
+            if (str == "mono_tool") return (TokenCode.MONO_TOOL, null);
+            if (str == "core_deps") return (TokenCode.CORE_DEPS, null);
+            if (str == "net_deps") return (TokenCode.NET_DEPS, null);
+            if (str == "mono_deps") return (TokenCode.MONO_DEPS, null);
+            if (str == "core_files") return (TokenCode.CORE_FILES, null);
+            if (str == "net_files") return (TokenCode.NET_FILES, null);
+            if (str == "mono_files") return (TokenCode.MONO_FILES, null);
 
             throw new InvalidOperationException($"Unknown token: {str}");
         }
 
-        private (Token, string) PeekToken()
+        private (TokenCode, string) PeekToken()
         {
             int pos = _pos;
             var result = GetToken();
@@ -291,7 +350,7 @@ namespace nuget2bazel
             return result;
         }
 
-        private (Token, string) GetString()
+        private (TokenCode, string) GetString()
         {
             ++_pos;
             var q = _pos;
@@ -303,7 +362,7 @@ namespace nuget2bazel
             var result = _toparse.Substring(_pos, q - _pos);
             _pos = q + 1;
 
-            return (Token.STRING, result);
+            return (TokenCode.STRING, result);
         }
 
         private bool IsEof()

@@ -27,12 +27,15 @@ namespace nuget2bazel
         public string WorkspacePath { get; set; }
         public IEnumerable<NuGetProjectAction> NuGetProjectActions { get; set; }
 
+        public string RootPath { get; private set; }
+
         public ProjectBazel(string root, string mainFile, bool skipSha256) : base(Path.Combine(root, "packages"))
         {
             _mainFile = mainFile;
             _skipSha256 = skipSha256;
             JsonConfigPath = Path.Combine(root, "packages.json");
             WorkspacePath = Path.Combine(root, "WORKSPACE");
+            RootPath = root;
         }
 
         private async Task<JObject> GetJsonAsync()
@@ -157,13 +160,19 @@ namespace nuget2bazel
 
             if (!SdkList.Dlls.Contains(entry.PackageIdentity.Id.ToLower()))
             {
-                var workspace = await GetWorkspaceAsync();
-                var updater = new WorkspaceWriter();
-                var updated = updater.AddEntry(workspace, entry);
-                await SaveWorkspaceAsync(updated);
+                await AddEntry(entry);
             }
 
             return await base.InstallPackageAsync(packageIdentity, downloadResourceResult, nuGetProjectContext, token);
+        }
+
+        public virtual async Task AddEntry(WorkspaceEntry entry)
+        {
+            var workspace = await GetWorkspaceAsync();
+            var updater = new WorkspaceWriter();
+            var updated = updater.AddEntry(workspace, entry);
+            await SaveWorkspaceAsync(updated);
+
         }
 
         public override async Task<bool> UninstallPackageAsync(
