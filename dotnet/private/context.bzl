@@ -186,6 +186,49 @@ core_context_data = rule(
     },
 )
 
+netstandard_context_data = rule(
+    _dotnet_context_data,
+    attrs = {
+        "mcs_bin": attr.label(
+            allow_files = True,
+            default = "@netstandard_sdk//:mcs_bin",
+        ),
+        "mono_bin": attr.label(
+            allow_files = True,
+            default = "@netstandard_sdk//:mono_bin",
+        ),
+        "lib": attr.label(
+            allow_files = True,
+            default = "@netstandard_sdk//:lib",
+        ),
+        "tools": attr.label(
+            allow_files = True,
+            default = "@netstandard_sdk//:lib",
+        ),
+        "shared": attr.label(
+            allow_files = True,
+            default = "@netstandard_sdk//:shared",
+        ),
+        "host": attr.label(
+            allow_files = True,
+            default = "@netstandard_sdk//:host",
+        ),
+        "libVersion": attr.string(
+            default = "",
+        ),
+        "framework": attr.string(
+            default = "",
+        ),
+        "_toolchain_type": attr.string(
+            default = "@io_bazel_rules_dotnet//dotnet:toolchain_netstandard",
+        ),
+        "extra_srcs": attr.label_list(
+            allow_files = True,
+            default = [],
+        ),
+    },
+)
+
 net_context_data = rule(
     _dotnet_context_data,
     attrs = {

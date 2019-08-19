@@ -68,6 +68,18 @@ core_stdlib = rule(
     executable = False,
 )
 
+netstandard_stdlib = rule(
+    _stdlib_impl,
+    attrs = {
+        "dll": attr.string(),
+        "deps": attr.label_list(providers = [DotnetLibrary]),
+        "data": attr.label_list(allow_files = True),
+        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:netstandard_context_data")),
+    },
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_netstandard"],
+    executable = False,
+)
+
 net_stdlib = rule(
     _stdlib_impl,
     attrs = {

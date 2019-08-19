@@ -4,6 +4,7 @@ load(
     _dotnet_context = "dotnet_context",
     _dotnet_context_data = "dotnet_context_data",
     _net_context_data = "net_context_data",
+    _netstandard_context_data = "netstandard_context_data",
 )
 load(
     "@io_bazel_rules_dotnet//dotnet/toolchain:toolchains.bzl",
@@ -11,6 +12,7 @@ load(
     _dotnet_register_toolchains = "dotnet_register_toolchains",
     _mono_register_sdk = "mono_register_sdk",
     _net_register_sdk = "net_register_sdk",
+    _netstandard_register_sdk = "netstandard_register_sdk",
 )
 load(
     "@io_bazel_rules_dotnet//dotnet/private:dotnet_toolchain.bzl",
@@ -31,6 +33,7 @@ load(
     _core_library = "core_library",
     _dotnet_library = "dotnet_library",
     _net_library = "net_library",
+    _netstandard_library = "netstandard_library",
 )
 load(
     "@io_bazel_rules_dotnet//dotnet/private:rules/resx.bzl",
@@ -94,6 +97,7 @@ dotnet_register_toolchains = _dotnet_register_toolchains
 mono_register_sdk = _mono_register_sdk
 net_register_sdk = _net_register_sdk
 core_register_sdk = _core_register_sdk
+netstandard_register_sdk = _netstandard_register_sdk
 dotnet_toolchain = _dotnet_toolchain
 dotnet_repositories = _dotnet_repositories
 core_binary = _core_binary
@@ -102,6 +106,7 @@ net_binary = _net_binary
 core_library = _core_library
 dotnet_library = _dotnet_library
 net_library = _net_library
+netstandard_library = _netstandard_library
 core_resx = _core_resx
 dotnet_resx = _dotnet_resx
 net_resx = _net_resx
@@ -134,3 +139,4 @@ DEFAULT_DOTNET_CORE_FRAMEWORK = _DEFAULT_DOTNET_CORE_FRAMEWORK
 core_context_data = _core_context_data
 dotnet_context_data = _dotnet_context_data
 net_context_data = _net_context_data
+netstandard_context_data = _netstandard_context_data

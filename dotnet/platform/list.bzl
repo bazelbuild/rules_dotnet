@@ -2,6 +2,7 @@ DOTNETIMPL = {
     "mono": None,
     "core": None,
     "net": None,
+    "netstandard": None,
 }
 
 DOTNETOS = {
@@ -24,6 +25,9 @@ DOTNETIMPL_OS_ARCH = (
     ("net", "windows", "amd64"),
     ("net", "linux", "amd64"),
     ("net", "darwin", "amd64"),
+    ("netstandard", "windows", "amd64"),
+    ("netstandard", "linux", "amd64"),
+    ("netstandard", "darwin", "amd64"),
 )
 
 # struct:

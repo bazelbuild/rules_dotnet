@@ -93,3 +93,20 @@ net_library = rule(
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = False,
 )
+
+netstandard_library = rule(
+    _library_impl,
+    attrs = {
+        "deps": attr.label_list(providers = [DotnetLibrary]),
+        "resources": attr.label_list(providers = [DotnetResourceList]),
+        "srcs": attr.label_list(allow_files = [".cs"]),
+        "out": attr.string(),
+        "defines": attr.string_list(),
+        "unsafe": attr.bool(default = False),
+        "data": attr.label_list(allow_files = True),
+        "keyfile": attr.label(allow_files = True),
+        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:netstandard_context_data")),
+    },
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_netstandard"],
+    executable = False,
+)

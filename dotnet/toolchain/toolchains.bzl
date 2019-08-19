@@ -11,6 +11,10 @@ load(
     "net_toolchain",
 )
 load(
+    "@io_bazel_rules_dotnet//dotnet/private:netstandard_toolchain.bzl",
+    "netstandard_toolchain",
+)
+load(
     "@io_bazel_rules_dotnet//dotnet/private:net_empty_toolchain.bzl",
     "net_empty_toolchain",
 )
@@ -27,6 +31,10 @@ load(
     "net_download_sdk",
 )
 load(
+    "@io_bazel_rules_dotnet//dotnet/private:sdk_netstandard.bzl",
+    "netstandard_download_sdk",
+)
+load(
     "@io_bazel_rules_dotnet//dotnet/platform:list.bzl",
     "DOTNETARCH",
     "DOTNETIMPL",
@@ -40,6 +48,7 @@ DEFAULT_VERSION = "4.2.3"
 CORE_DEFAULT_VERSION = "v2.1.502"
 NET_ROSLYN_DEFAULT_VERSION = "2.10.0"
 NET_DEFAULT_VERSION = "4.7.2"
+NETSTANDARD_DEFAULT_VERSION = "2.0.3"
 
 SDK_REPOSITORIES = {
     "4.2.3": {
@@ -154,6 +163,65 @@ NET_ROSLYN_REPOSITORIES = {
     },
 }
 
+NETSTANDARD_SDK_REPOSITORIES = {
+    "2.0.0": {
+        "netstandard_windows_amd64": (
+            "https://www.nuget.org/api/v2/package/NETStandard.Library/2.0.0",
+            "3eb87644f79bcffb3c0331dbdac3c7837265f2cdf58a7bfd93e431776f77c9ba",
+        ),
+        "netstandard_linux_amd64": (
+            "https://www.nuget.org/api/v2/package/NETStandard.Library/2.0.0",
+            "3eb87644f79bcffb3c0331dbdac3c7837265f2cdf58a7bfd93e431776f77c9ba",
+        ),
+        "netstandard_darwin_amd64": (
+            "https://www.nuget.org/api/v2/package/NETStandard.Library/2.0.0",
+            "3eb87644f79bcffb3c0331dbdac3c7837265f2cdf58a7bfd93e431776f77c9ba",
+        ),
+    },
+    "2.0.1": {
+        "netstandard_windows_amd64": (
+            "https://www.nuget.org/api/v2/package/NETStandard.Library/2.0.1",
+            "3eb87644f79bcffb3c0331dbdac3c7837265f2cdf58a7bfd93e431776f77c9ba",
+        ),
+        "netstandard_linux_amd64": (
+            "https://www.nuget.org/api/v2/package/NETStandard.Library/2.0.1",
+            "3eb87644f79bcffb3c0331dbdac3c7837265f2cdf58a7bfd93e431776f77c9ba",
+        ),
+        "netstandard_darwin_amd64": (
+            "https://www.nuget.org/api/v2/package/NETStandard.Library/2.0.1",
+            "3eb87644f79bcffb3c0331dbdac3c7837265f2cdf58a7bfd93e431776f77c9ba",
+        ),
+    },
+    "2.0.2": {
+        "netstandard_windows_amd64": (
+            "https://www.nuget.org/api/v2/package/NETStandard.Library/2.0.2",
+            "3eb87644f79bcffb3c0331dbdac3c7837265f2cdf58a7bfd93e431776f77c9ba",
+        ),
+        "netstandard_linux_amd64": (
+            "https://www.nuget.org/api/v2/package/NETStandard.Library/2.0.2",
+            "3eb87644f79bcffb3c0331dbdac3c7837265f2cdf58a7bfd93e431776f77c9ba",
+        ),
+        "netstandard_darwin_amd64": (
+            "https://www.nuget.org/api/v2/package/NETStandard.Library/2.0.2",
+            "3eb87644f79bcffb3c0331dbdac3c7837265f2cdf58a7bfd93e431776f77c9ba",
+        ),
+    },
+    "2.0.3": {
+        "netstandard_windows_amd64": (
+            "https://www.nuget.org/api/v2/package/NETStandard.Library/2.0.3",
+            "3eb87644f79bcffb3c0331dbdac3c7837265f2cdf58a7bfd93e431776f77c9ba",
+        ),
+        "netstandard_linux_amd64": (
+            "https://www.nuget.org/api/v2/package/NETStandard.Library/2.0.3",
+            "3eb87644f79bcffb3c0331dbdac3c7837265f2cdf58a7bfd93e431776f77c9ba",
+        ),
+        "netstandard_darwin_amd64": (
+            "https://www.nuget.org/api/v2/package/NETStandard.Library/2.0.3",
+            "3eb87644f79bcffb3c0331dbdac3c7837265f2cdf58a7bfd93e431776f77c9ba",
+        ),
+    },
+}
+
 def _generate_toolchains():
     # Use all the above information to generate all the possible toolchains we might support
     toolchains = []
@@ -234,6 +302,11 @@ def declare_toolchains():
                 name = toolchain["name"],
                 host = toolchain["host"],
             )
+        elif toolchain["impl"] == "netstandard":
+            netstandard_toolchain(
+                name = toolchain["name"],
+                host = toolchain["host"],
+            )
         elif toolchain["impl"] == "net":
             if toolchain["name"] == "dotnet_net_windows_amd64":
                 net_toolchain(
@@ -268,6 +341,19 @@ def core_register_sdk(core_version, name = None):
         version = core_version[1:],
         targetFrameworkString = DOTNET_CORE_FRAMEWORKS[core_version][0],
         sdks = CORE_SDK_REPOSITORIES[core_version],
+    )
+
+def netstandard_register_sdk(netstandard_version = NETSTANDARD_DEFAULT_VERSION, core_version = CORE_DEFAULT_VERSION, name = None):
+    if core_version not in CORE_SDK_REPOSITORIES:
+        fail("Unknown core version {}".format(core_version))
+
+    netstandard_download_sdk(
+        name = name if name else "netstandard_sdk_{}".format(netstandard_version),
+        version = core_version[1:],
+        targetFrameworkString = DOTNET_CORE_FRAMEWORKS[core_version][0],
+        #sdks = NETSTANDARD_SDK_REPOSITORIES[netstandard_version],
+        sdks = CORE_SDK_REPOSITORIES[core_version],
+        netstandard = NETSTANDARD_SDK_REPOSITORIES[netstandard_version],
     )
 
 def mono_register_sdk():
