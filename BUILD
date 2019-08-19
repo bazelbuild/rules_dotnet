@@ -1,6 +1,6 @@
 package(default_visibility = ["//visibility:public"])
 
-load("@io_bazel_rules_dotnet//dotnet/private:context.bzl", "core_context_data", "dotnet_context_data", "net_context_data")
+load("@io_bazel_rules_dotnet//dotnet/private:context.bzl", "core_context_data", "dotnet_context_data", "net_context_data", "netstandard_context_data")
 load("//dotnet:defs.bzl", "DEFAULT_DOTNET_CORE_FRAMEWORK", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NET_FRAMEWORKS")
 
 dotnet_context_data(
@@ -17,6 +17,10 @@ net_context_data(
     name = "net_context_data",
     framework = "net472",
     libVersion = "4.7.2",
+)
+
+netstandard_context_data(
+    name = "netstandard_context_data",
 )
 
 exports_files(["AUTHORS"])
