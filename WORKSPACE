@@ -366,6 +366,11 @@ nuget_package(
     ],
 )
 nuget_package(
+    name = "microsoft.netcore.platforms",
+    package = "microsoft.netcore.platforms",
+    version = "1.1.2",
+)
+nuget_package(
     name = "microsoft.web.xdt",
     package = "microsoft.web.xdt",
     version = "2.1.2",
@@ -2015,11 +2020,6 @@ nuget_package(
         "lib/net46/NuGet.Commands.dll",
         "lib/net46/NuGet.Commands.xml",
     ],
-)
-nuget_package(
-    name = "microsoft.netcore.platforms",
-    package = "microsoft.netcore.platforms",
-    version = "1.1.2",
 )
 nuget_package(
     name = "nuget.resolver",

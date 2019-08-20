@@ -2,7 +2,7 @@
   "profiles": {
     "nuget2bazel": {
       "commandName": "Project",
-      "commandLineArgs": "sync -p c:/rules_dotnet"
+      "commandLineArgs": "update -p c:/rules_dotnet NuGet.Common 4.9.2"
     }
   }
 }

@@ -39,6 +39,7 @@ jobs:
         --test_summary=detailed ^
         --test_output=all ^
         --experimental_enable_runfiles ^
+        --incompatible_windows_native_test_wrapper ^
         //...
       continueOnError: true
       displayName: 'Run tests'
