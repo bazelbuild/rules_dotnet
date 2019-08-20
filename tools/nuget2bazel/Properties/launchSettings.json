@@ -2,7 +2,7 @@
   "profiles": {
     "nuget2bazel": {
       "commandName": "Project",
-      "commandLineArgs": "update -p c:/rules_dotnet NuGet.Common 4.9.2"
+      "commandLineArgs": "add -p c:/temp/a NuGet.PackageManagement 4.9.2"
     }
   }
 }

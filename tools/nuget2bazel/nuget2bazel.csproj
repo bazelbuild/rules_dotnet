@@ -8,16 +8,21 @@
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.6.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="NuGet.Common" Version="4.9.2" />
-    <PackageReference Include="NuGet.Configuration" Version="4.9.2" />
-    <PackageReference Include="NuGet.Frameworks" Version="4.9.2" />
-    <PackageReference Include="NuGet.PackageManagement.NetStandard" Version="4.9.2" />
-    <PackageReference Include="NuGet.Packaging" Version="4.9.2" />
-    <PackageReference Include="NuGet.Packaging.Core" Version="4.9.2" />
-    <PackageReference Include="NuGet.ProjectModel" Version="4.9.2" />
-    <PackageReference Include="NuGet.Protocol" Version="4.9.2" />
-    <PackageReference Include="NuGet.Resolver" Version="4.9.2" />
-    <PackageReference Include="NuGet.Versioning" Version="4.9.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\rules_dotnet_3rd_party\nuget.netstandard\nuget\src\NuGet.Core\NuGet.Commands\NuGet.Commands.csproj" />
+    <ProjectReference Include="..\..\..\rules_dotnet_3rd_party\nuget.netstandard\nuget\src\NuGet.Core\NuGet.Common\NuGet.Common.csproj" />
+    <ProjectReference Include="..\..\..\rules_dotnet_3rd_party\nuget.netstandard\nuget\src\NuGet.Core\NuGet.Configuration\NuGet.Configuration.csproj" />
+    <ProjectReference Include="..\..\..\rules_dotnet_3rd_party\nuget.netstandard\nuget\src\NuGet.Core\NuGet.DependencyResolver.Core\NuGet.DependencyResolver.Core.csproj" />
+    <ProjectReference Include="..\..\..\rules_dotnet_3rd_party\nuget.netstandard\nuget\src\NuGet.Core\NuGet.Frameworks\NuGet.Frameworks.csproj" />
+    <ProjectReference Include="..\..\..\rules_dotnet_3rd_party\nuget.netstandard\nuget\src\NuGet.Core\NuGet.PackageManagement\NuGet.PackageManagement.csproj" />
+    <ProjectReference Include="..\..\..\rules_dotnet_3rd_party\nuget.netstandard\nuget\src\NuGet.Core\NuGet.Packaging.Core\NuGet.Packaging.Core.csproj" />
+    <ProjectReference Include="..\..\..\rules_dotnet_3rd_party\nuget.netstandard\nuget\src\NuGet.Core\NuGet.Packaging\NuGet.Packaging.csproj" />
+    <ProjectReference Include="..\..\..\rules_dotnet_3rd_party\nuget.netstandard\nuget\src\NuGet.Core\NuGet.ProjectModel\NuGet.ProjectModel.csproj" />
+    <ProjectReference Include="..\..\..\rules_dotnet_3rd_party\nuget.netstandard\nuget\src\NuGet.Core\NuGet.Protocol\NuGet.Protocol.csproj" />
+    <ProjectReference Include="..\..\..\rules_dotnet_3rd_party\nuget.netstandard\nuget\src\NuGet.Core\NuGet.Resolver\NuGet.Resolver.csproj" />
+    <ProjectReference Include="..\..\..\rules_dotnet_3rd_party\nuget.netstandard\nuget\src\NuGet.Core\NuGet.Versioning\NuGet.Versioning.csproj" />
   </ItemGroup>
 
 </Project>
