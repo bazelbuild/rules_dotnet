@@ -12,6 +12,7 @@ load(
     "mono_register_sdk",
     "net_gac4",
     "net_register_sdk",
+    "netstandard_register_sdk",
     "nuget_package",
     "vs2017_ref_net",
 )
@@ -41,6 +42,12 @@ core_register_sdk(
 net_register_sdk(
     "net471",
     name = "net_sdk",
+)
+
+# Default netstandard_sdk
+netstandard_register_sdk(
+    "2.0.3",
+    name = "netstandard_sdk",
 )
 
 net_gac4(
