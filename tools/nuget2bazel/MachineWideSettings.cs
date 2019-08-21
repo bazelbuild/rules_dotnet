@@ -8,16 +8,16 @@ namespace nuget2bazel
 {
     public class MachineWideSettings : IMachineWideSettings
     {
-        private readonly Lazy<ISettings> _settings;
+        private readonly Lazy<IEnumerable<Settings>> _settings;
 
         public MachineWideSettings()
         {
             var baseDirectory = NuGetEnvironment.GetFolderPath(NuGetFolderPath.MachineWideConfigDirectory);
-            _settings = new Lazy<ISettings>(
+            _settings = new Lazy<IEnumerable<Settings>>(
                 () => global::NuGet.Configuration.Settings.LoadMachineWideSettings(baseDirectory));
         }
 
+        public IEnumerable<Settings> Settings => _settings.Value;
 
-        ISettings IMachineWideSettings.Settings => _settings.Value;
     }
 }

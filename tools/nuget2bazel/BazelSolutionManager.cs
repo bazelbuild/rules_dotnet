@@ -8,7 +8,7 @@ using NuGet.ProjectManagement;
 
 namespace nuget2bazel
 {
-    public class BazelSolutionManager: ISolutionManager
+    public class BazelSolutionManager : ISolutionManager
     {
         private readonly ProjectBazel _project;
         public event EventHandler SolutionOpening;
@@ -37,9 +37,12 @@ namespace nuget2bazel
         }
 
         public INuGetProjectContext NuGetProjectContext { get; set; }
+
+        public bool IsSolutionAvailable => throw new NotImplementedException();
+
         public Task<IEnumerable<NuGetProject>> GetNuGetProjectsAsync()
         {
-            return Task.FromResult(new NuGetProject[] {_project}.AsEnumerable());
+            return Task.FromResult(new NuGetProject[] { _project }.AsEnumerable());
         }
 
         public Task<string> GetNuGetProjectSafeNameAsync(NuGetProject nuGetProject)
@@ -63,6 +66,21 @@ namespace nuget2bazel
         }
 
         public Task<bool> DoesNuGetSupportsAnyProjectAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<NuGetProject> GetNuGetProjects()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetNuGetProjectSafeName(NuGetProject nuGetProject)
+        {
+            throw new NotImplementedException();
+        }
+
+        public NuGetProject GetNuGetProject(string nuGetProjectSafeName)
         {
             throw new NotImplementedException();
         }
