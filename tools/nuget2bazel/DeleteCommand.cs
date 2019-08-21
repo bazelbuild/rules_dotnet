@@ -37,7 +37,7 @@ namespace nuget2bazel
                 PackagesFolderNuGetProject = project,
             };
 
-            var projectContext = new ProjectContext();
+            var projectContext = new ProjectContext(settings);
             var uninstallContext = new UninstallationContext(true, true);
 
             await packageManager.UninstallPackageAsync(packageManager.PackagesFolderNuGetProject,

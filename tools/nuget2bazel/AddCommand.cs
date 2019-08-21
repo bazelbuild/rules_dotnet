@@ -30,7 +30,6 @@ namespace nuget2bazel
         }
         public async Task DoWithProject(string package, string version, ProjectBazel project)
         {
-
             var logger = new Logger();
             var providers = new List<Lazy<INuGetResourceProvider>>();
             providers.AddRange(Repository.Provider.GetCoreV3());  // Add v3 API support
@@ -49,12 +48,12 @@ namespace nuget2bazel
                 PackagesFolderNuGetProject = project
             };
 
-            const bool  allowPrereleaseVersions = true;
+            const bool allowPrereleaseVersions = true;
             const bool allowUnlisted = false;
             var resolutionContext = new ResolutionContext(
                 DependencyBehavior.HighestMinor, allowPrereleaseVersions, allowUnlisted, VersionConstraints.None);
 
-            var projectContext = new ProjectContext();
+            var projectContext = new ProjectContext(settings);
 
             var actions = await packageManager.PreviewInstallPackageAsync(packageManager.PackagesFolderNuGetProject,
                 identity, resolutionContext, projectContext, sourceRepository,

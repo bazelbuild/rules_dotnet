@@ -2,7 +2,7 @@
   "profiles": {
     "nuget2bazel": {
       "commandName": "Project",
-      "commandLineArgs": "sync -p c:/rules_dotnet"
+      "commandLineArgs": "add -p c:/temp/b  NuGet.PackageManagement.NetStandard 4.9.2"
     }
   }
 }

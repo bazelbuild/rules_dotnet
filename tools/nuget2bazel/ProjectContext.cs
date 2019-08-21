@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
 using NuGet.Common;
+using NuGet.Configuration;
 using NuGet.Packaging;
 using NuGet.Packaging.PackageExtraction;
 using NuGet.Packaging.Signing;
@@ -14,12 +15,13 @@ namespace nuget2bazel
     {
         private Logger logger = new Logger();
 
-        public ProjectContext()
+        public ProjectContext(ISettings settings)
         {
+            var policy = ClientPolicyContext.GetClientPolicy(settings, logger);
             PackageExtractionContext = new PackageExtractionContext(
                 PackageSaveMode.Defaultv3,
                 PackageExtractionBehavior.XmlDocFileSaveMode,
-                null,
+                policy, 
                 logger);
         }
 
