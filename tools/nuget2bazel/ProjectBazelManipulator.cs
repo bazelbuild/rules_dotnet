@@ -20,7 +20,7 @@ using NuGet.Versioning;
 
 namespace nuget2bazel
 {
-    public class ProjectBazel : FolderNuGetProject
+    public class ProjectBazelManipulator : FolderNuGetProject
     {
         private readonly string _mainFile;
         private readonly bool _skipSha256;
@@ -28,29 +28,29 @@ namespace nuget2bazel
         public string WorkspacePath { get; set; }
         public IEnumerable<NuGetProjectAction> NuGetProjectActions { get; set; }
 
-        public string RootPath { get; private set; }
+        public ProjectBazelConfig ProjectConfig { get; private set; }
 
-        public ProjectBazel(string root, string mainFile, bool skipSha256) : base(Path.Combine(root, "packages"))
+        public ProjectBazelManipulator(ProjectBazelConfig prjConfig, string mainFile, bool skipSha256) : base(Path.Combine(prjConfig.RootPath, "packages"))
         {
+            ProjectConfig = prjConfig;
             _mainFile = mainFile;
             _skipSha256 = skipSha256;
-            JsonConfigPath = Path.Combine(root, "nuget2bazel.json");
-            WorkspacePath = Path.Combine(root, "WORKSPACE");
-            RootPath = root;
+            JsonConfigPath = Path.Combine(ProjectConfig.RootPath, ProjectConfig.Nuget2BazelConfigName);
+            WorkspacePath = Path.Combine(ProjectConfig.RootPath, ProjectConfig.BazelFileName);
         }
 
-        private async Task<ProjectBazelConfig> GetJsonAsync()
+        private async Task<Nuget2BazelConfig> GetJsonAsync()
         {
             if (!File.Exists(JsonConfigPath))
                 using (var sw = new StreamWriter(JsonConfigPath))
                 {
                     await sw.WriteAsync("{}");
-                    return new ProjectBazelConfig();
+                    return new Nuget2BazelConfig();
                 }
 
             using (var reader = File.OpenText(JsonConfigPath))
             {
-                return JsonConvert.DeserializeObject<ProjectBazelConfig>(await reader.ReadToEndAsync());
+                return JsonConvert.DeserializeObject<Nuget2BazelConfig>(await reader.ReadToEndAsync());
             }
         }
 
@@ -69,7 +69,7 @@ namespace nuget2bazel
             }
         }
 
-        private async Task SaveJsonAsync(ProjectBazelConfig json)
+        private async Task SaveJsonAsync(Nuget2BazelConfig json)
         {
             using (var writer = new StreamWriter(JsonConfigPath, false, Encoding.UTF8))
             {
@@ -97,7 +97,7 @@ namespace nuget2bazel
             return builder.ToString();
         }
 
-        private static IEnumerable<PackageDependency> GetDependencies(ProjectBazelConfig json)
+        private static IEnumerable<PackageDependency> GetDependencies(Nuget2BazelConfig json)
         {
             return json.externals.Select(x => x.Key.Split("/"))
                 .Select(y => new PackageDependency(y[0], VersionRange.Parse(y[1])))
@@ -179,7 +179,7 @@ namespace nuget2bazel
         {
             var workspace = await GetWorkspaceAsync();
             var updater = new WorkspaceWriter();
-            var updated = updater.AddEntry(workspace, entry);
+            var updated = updater.AddEntry(workspace, entry, ProjectConfig.Indent);
             await SaveWorkspaceAsync(updated);
         }
 
@@ -194,7 +194,7 @@ namespace nuget2bazel
 
             var workspace = await GetWorkspaceAsync();
             var updater = new WorkspaceWriter();
-            var updated = updater.RemoveEntry(workspace, packageIdentity.Id);
+            var updated = updater.RemoveEntry(workspace, packageIdentity.Id, ProjectConfig.Indent);
             await SaveWorkspaceAsync(updated);
 
             return await base.UninstallPackageAsync(packageIdentity, nuGetProjectContext, token);

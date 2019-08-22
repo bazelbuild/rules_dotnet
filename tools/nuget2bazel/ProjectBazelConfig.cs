@@ -1,17 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace nuget2bazel
 {
     public class ProjectBazelConfig
     {
-        public ProjectBazelConfig()
+        public ProjectBazelConfig(string root)
         {
-            externals = new Dictionary<string, string>();
-            dependencies = new Dictionary<string, string>();
+            RootPath = root;
+            Nuget2BazelConfigName = "nuget2bazel.json";
+            BazelFileName = "WORKSPACE";
+            Indent = false;
         }
-        public IDictionary<string, string> externals { get; set; }
-        public IDictionary<string, string> dependencies { get; set; }
+        public ProjectBazelConfig(BaseVerb verb)
+        {
+            RootPath = verb.RootPath;
+            if (RootPath == null)
+                RootPath = Directory.GetCurrentDirectory();
+
+            Nuget2BazelConfigName = verb.Nuget2BazelConfigName;
+            BazelFileName = verb.BazelFileName;
+            Indent = verb.Indent;
+        }
+
+        public string RootPath { get; set; }
+        public string Nuget2BazelConfigName { get; set; }
+        public string BazelFileName { get; set; }
+        public bool Indent { get; set; }
     }
 }

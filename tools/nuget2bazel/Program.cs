@@ -13,25 +13,29 @@ namespace nuget2bazel
             var result = parsed.MapResult<AddVerb, DeleteVerb, SyncVerb, UpdateVerb, int>(
                 (AddVerb opts) =>
                 {
-                    var res = new AddCommand().Do(opts.Package, opts.Version, opts.RootPath, opts.MainFile, opts.SkipSha256);
+                    var prjConfig = new ProjectBazelConfig(opts);
+                    var res = new AddCommand().Do(prjConfig, opts.Package, opts.Version, opts.MainFile, opts.SkipSha256);
                     res.Wait();
                     return 0;
                 },
                 (DeleteVerb opts) =>
                 {
-                    var res = new DeleteCommand().Do(opts.Package, opts.RootPath);
+                    var prjConfig = new ProjectBazelConfig(opts);
+                    var res = new DeleteCommand().Do(prjConfig, opts.Package);
                     res.Wait();
                     return 0;
                 },
                 (SyncVerb opts) =>
                 {
-                    var res = new SyncCommand().Do(opts.RootPath);
+                    var prjConfig = new ProjectBazelConfig(opts);
+                    var res = new SyncCommand().Do(prjConfig);
                     res.Wait();
                     return 0;
                 },
                 (UpdateVerb opts) =>
                 {
-                    var res = new UpdateCommand().Do(opts.Package, opts.Version, opts.RootPath, opts.MainFile, opts.SkipSha256);
+                    var prjConfig = new ProjectBazelConfig(opts);
+                    var res = new UpdateCommand().Do(prjConfig, opts.Package, opts.Version, opts.MainFile, opts.SkipSha256);
                     res.Wait();
                     return 0;
                 },

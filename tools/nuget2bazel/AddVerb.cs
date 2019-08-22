@@ -1,15 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CommandLine;
 
 namespace nuget2bazel
 {
     [Verb("add", HelpText = "Adds a pckage to the WORKSPACE and packages.json")]
-    public class AddVerb
+    public class AddVerb : BaseVerb
     {
         [Value(index: 0,
             Required = true,
@@ -20,11 +14,6 @@ namespace nuget2bazel
             Required = true,
             HelpText = "Package version")]
         public string Version { get; set; }
-
-        [Option('p', "path",
-            Default = null,
-            HelpText = "Path to the directory with the WORKSPACE file")]
-        public string RootPath { get; set; }
 
         [Option('m', "mainFile",
             Default = null,

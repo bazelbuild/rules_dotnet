@@ -98,7 +98,7 @@ namespace nuget2bazel
             var result = new Dictionary<string, IEnumerable<string>>();
             foreach (var framework in frameworks)
             {
-                var deps = MSBuildNuGetProjectSystemUtility.GetMostCompatibleGroup(framework, groups)?.Items?.Select(x => ToRefNet(x, framework))?.Where(y => y!=null);
+                var deps = MSBuildNuGetProjectSystemUtility.GetMostCompatibleGroup(framework, groups)?.Items?.Select(x => ToRefNet(x, framework))?.Where(y => y != null);
                 if (deps != null)
                     result.Add(framework.GetShortFolderName(), deps);
             }
@@ -142,7 +142,7 @@ namespace nuget2bazel
 
             if (mainFile != null)
             {
-                var f = compatibleItems.FirstOrDefault(x => String.Equals(Path.GetFileName(x), mainFile+".exe", StringComparison.CurrentCultureIgnoreCase));
+                var f = compatibleItems.FirstOrDefault(x => String.Equals(Path.GetFileName(x), mainFile + ".exe", StringComparison.CurrentCultureIgnoreCase));
                 if (f != null)
                     return f;
                 f = compatibleItems.FirstOrDefault(x => String.Equals(Path.GetFileName(x), mainFile + ".dll", StringComparison.CurrentCultureIgnoreCase));
@@ -163,128 +163,129 @@ namespace nuget2bazel
             return result;
         }
 
-        public string Generate()
+        public string Generate(bool indent)
         {
+            var i = indent ? "    " : "";
             var sb = new StringBuilder();
-            sb.Append($"nuget_package(\n");
-            sb.Append($"    name = \"{PackageIdentity.Id.ToLower()}\",\n");
-            sb.Append($"    package = \"{PackageIdentity.Id.ToLower()}\",\n");
-            sb.Append($"    version = \"{PackageIdentity.Version}\",\n");
-            if (!String.IsNullOrEmpty(Sha256)) 
-                sb.Append($"    sha256 = \"{Sha256}\",\n");
+            sb.Append($"{i}nuget_package(\n");
+            sb.Append($"{i}    name = \"{PackageIdentity.Id.ToLower()}\",\n");
+            sb.Append($"{i}    package = \"{PackageIdentity.Id.ToLower()}\",\n");
+            sb.Append($"{i}    version = \"{PackageIdentity.Version}\",\n");
+            if (!String.IsNullOrEmpty(Sha256))
+                sb.Append($"{i}    sha256 = \"{Sha256}\",\n");
             if (CoreLib != null && CoreLib.Any())
             {
-                sb.Append("    core_lib = {\n");
+                sb.Append($"{i}    core_lib = {{\n");
                 foreach (var pair in CoreLib)
-                    sb.Append($"        \"{pair.Key}\": \"{pair.Value}\",\n");
-                sb.Append("    },\n");
+                    sb.Append($"{i}        \"{pair.Key}\": \"{pair.Value}\",\n");
+                sb.Append($"{i}    }},\n");
             }
             if (NetLib != null && NetLib.Any())
             {
-                sb.Append("    net_lib = {\n");
+                sb.Append($"{i}    net_lib = {{\n");
                 foreach (var pair in NetLib)
-                    sb.Append($"        \"{pair.Key}\": \"{pair.Value}\",\n");
-                sb.Append("    },\n");
+                    sb.Append($"{i}        \"{pair.Key}\": \"{pair.Value}\",\n");
+                sb.Append($"{i}    }},\n");
             }
             if (!String.IsNullOrEmpty(MonoLib))
-                sb.Append($"    mono_lib = \"{MonoLib}\",\n");
+                sb.Append($"{i}    mono_lib = \"{MonoLib}\",\n");
             if (CoreTool != null && CoreTool.Sum(x => x.Value.Count()) > 0)
             {
-                sb.Append("   core_tool = {\n");
+                sb.Append($"{i}   core_tool = {{\n");
                 foreach (var pair in NetTool)
-                    sb.Append($"       \"{pair.Key}\": \"{pair.Value}\",\n");
-                sb.Append("   },\n");
+                    sb.Append($"{i}       \"{pair.Key}\": \"{pair.Value}\",\n");
+                sb.Append($"{i}   }},\n");
             }
-            if (NetTool != null && NetTool.Sum(x => x.Value.Count())> 0)
+            if (NetTool != null && NetTool.Sum(x => x.Value.Count()) > 0)
             {
-                sb.Append("   net_tool = {\n");
+                sb.Append($"{i}   net_tool = {{\n");
                 foreach (var pair in NetTool)
-                    sb.Append($"       \"{pair.Key}\": \"{pair.Value}\",\n");
-                sb.Append("   },\n");
+                    sb.Append($"{i}       \"{pair.Key}\": \"{pair.Value}\",\n");
+                sb.Append($"{i}   }},\n");
             }
             if (!String.IsNullOrEmpty(MonoTool))
-                sb.Append($"    mono_tool = \"{MonoTool}\",\n");
+                sb.Append($"{i}    mono_tool = \"{MonoTool}\",\n");
 
             if (Core_Deps != null && Core_Deps.Sum(x => x.Value.Count()) > 0)
             {
-                sb.Append("    core_deps = {\n");
+                sb.Append($"{i}    core_deps = {{\n");
                 foreach (var pair in Net_Deps)
                 {
                     if (!pair.Value.Any())
                         continue;
 
-                    sb.Append($"        \"{pair.Key}\": [\n");
+                    sb.Append($"{i}        \"{pair.Key}\": [\n");
                     foreach (var s in pair.Value)
-                        sb.Append($"           \"{s}\",\n");
-                    sb.Append("        ],\n");
+                        sb.Append($"{i}           \"{s}\",\n");
+                    sb.Append($"{i}        ],\n");
                 }
-                sb.Append("    },\n");
+                sb.Append($"{i}    }},\n");
             }
 
-            if (Net_Deps != null && Net_Deps.Sum(x => x.Value.Count())>0)
+            if (Net_Deps != null && Net_Deps.Sum(x => x.Value.Count()) > 0)
             {
-                sb.Append("    net_deps = {\n");
+                sb.Append($"{i}    net_deps = {{\n");
                 foreach (var pair in Net_Deps)
                 {
                     if (!pair.Value.Any())
                         continue;
 
-                    sb.Append($"        \"{pair.Key}\": [\n");
+                    sb.Append($"{i}        \"{pair.Key}\": [\n");
                     foreach (var s in pair.Value)
-                        sb.Append($"           \"{s}\",\n");
-                    sb.Append("        ],\n");
+                        sb.Append($"{i}           \"{s}\",\n");
+                    sb.Append($"{i}        ],\n");
                 }
-                sb.Append("    },\n");
+                sb.Append($"{i}    }},\n");
             }
 
             if (Mono_Deps != null && Mono_Deps.Any())
             {
-                sb.Append($"    mono_deps = [\n");
+                sb.Append($"{i}    mono_deps = [\n");
                 foreach (var s in Mono_Deps)
-                    sb.Append($"        \"{s}\",\n");
-                sb.Append($"    ],\n");
+                    sb.Append($"{i}        \"{s}\",\n");
+                sb.Append($"{i}    ],\n");
             }
 
             if (Core_Files != null && Core_Files.Sum(x => x.Value.Count()) > 0)
             {
-                sb.Append("    core_files = {\n");
+                sb.Append($"{i}    core_files = {{\n");
                 foreach (var pair in Core_Files)
                 {
                     if (!pair.Value.Any())
                         continue;
 
-                    sb.Append($"        \"{pair.Key}\": [\n");
+                    sb.Append($"{i}        \"{pair.Key}\": [\n");
                     foreach (var s in pair.Value)
-                        sb.Append($"           \"{s}\",\n");
-                    sb.Append("        ],\n");
+                        sb.Append($"{i}           \"{s}\",\n");
+                    sb.Append($"{i}        ],\n");
                 }
-                sb.Append("    },\n");
+                sb.Append($"{i}    }},\n");
             }
 
             if (Net_Files != null && Net_Files.Sum(x => x.Value.Count()) > 0)
             {
-                sb.Append("    net_files = {\n");
+                sb.Append($"{i}    net_files = {{\n");
                 foreach (var pair in Net_Files)
                 {
                     if (!pair.Value.Any())
                         continue;
 
-                    sb.Append($"        \"{pair.Key}\": [\n");
+                    sb.Append($"{i}        \"{pair.Key}\": [\n");
                     foreach (var s in pair.Value)
-                        sb.Append($"           \"{s}\",\n");
-                    sb.Append("        ],\n");
+                        sb.Append($"{i}           \"{s}\",\n");
+                    sb.Append($"{i}        ],\n");
                 }
-                sb.Append("    },\n");
+                sb.Append($"{i}    }},\n");
             }
 
             if (Mono_Files != null && Mono_Files.Any())
             {
-                sb.Append($"    mono_files = [\n");
+                sb.Append($"{i}    mono_files = [\n");
                 foreach (var s in Mono_Files)
-                    sb.Append($"        \"{s}\",\n");
-                sb.Append($"    ],\n");
+                    sb.Append($"{i}        \"{s}\",\n");
+                sb.Append($"{i}    ],\n");
             }
-            sb.Append($")\n");
+            sb.Append($"{i})\n");
             return sb.ToString();
         }
 

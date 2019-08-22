@@ -11,7 +11,7 @@ namespace nuget2bazel
     public class WorkspaceParserT
     {
         [Fact]
-        public async Task EmptyEntry()
+        public void EmptyEntry()
         {
             var data = @"
 nuget_package(
@@ -30,7 +30,7 @@ nuget_package(
         }
 
         [Fact]
-        public async Task ComplexEntry()
+        public void ComplexEntry()
         {
             var data = @"
 nuget_package(
@@ -53,7 +53,7 @@ nuget_package(
         }
 
         [Fact]
-        public async Task FullEntry()
+        public void FullEntry()
         {
             var data = @"
 nuget_package(
@@ -178,6 +178,25 @@ nuget_package(
             Assert.Equal("newtonsoft.json", entry.PackageIdentity.Id);
             Assert.Equal("11.0.2", entry.PackageIdentity.Version.ToString());
             Assert.Equal(2, entry.CoreLib.Count);
+        }
+
+        [Fact]
+        public void IndentedEntry()
+        {
+            var data = @"
+   nuget_package(
+       name = ""remotion.linq"",
+       package = ""remotion.linq"",
+       version = ""2.2.0"",
+   )
+";
+            var parser = new WorkspaceParser(data);
+            var result = parser.Parse();
+            Assert.Single(result);
+            var entry = result.First();
+            Assert.Equal("remotion.linq", entry.PackageIdentity.Id);
+            Assert.Equal("2.2.0", entry.PackageIdentity.Version.ToString());
+
         }
 
     }

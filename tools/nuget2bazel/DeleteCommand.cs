@@ -19,18 +19,15 @@ namespace nuget2bazel
 {
     public class DeleteCommand
     {
-        public async Task Do(string package, string rootPath)
+        public async Task Do(ProjectBazelConfig prjConfig, string package)
         {
-            if (rootPath == null)
-                rootPath = Directory.GetCurrentDirectory();
-
             var providers = new List<Lazy<INuGetResourceProvider>>();
             providers.AddRange(Repository.Provider.GetCoreV3());  // Add v3 API support
 
-            var settings = Settings.LoadDefaultSettings(rootPath, null, new MachineWideSettings());
-            var project = new ProjectBazel(rootPath, null, false);
+            var settings = Settings.LoadDefaultSettings(prjConfig.RootPath, null, new MachineWideSettings());
+            var project = new ProjectBazelManipulator(prjConfig, null, false);
             var sourceRepositoryProvider = new SourceRepositoryProvider(settings, providers);
-            var solutionManager = new BazelSolutionManager(project, rootPath);
+            var solutionManager = new BazelSolutionManager(project, prjConfig.RootPath);
             var deleteManager = new DeleteOnRestart();
             var packageManager = new NuGetPackageManager(sourceRepositoryProvider, settings, solutionManager, deleteManager)
             {
@@ -41,7 +38,7 @@ namespace nuget2bazel
             var uninstallContext = new UninstallationContext(true, true);
 
             await packageManager.UninstallPackageAsync(packageManager.PackagesFolderNuGetProject,
-                package, uninstallContext, projectContext, 
+                package, uninstallContext, projectContext,
                 CancellationToken.None);
         }
     }

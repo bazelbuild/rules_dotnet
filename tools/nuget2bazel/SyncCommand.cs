@@ -26,30 +26,27 @@ namespace nuget2bazel
 
     public class SyncCommand
     {
-        public async Task Do(string rootPath)
+        public async Task Do(ProjectBazelConfig prjConfig)
         {
             var logger = new Logger();
 
-            if (rootPath == null)
-                rootPath = Directory.GetCurrentDirectory();
-
-            var packagesJsonPath = Path.Combine(rootPath, "packages.json");
+            var packagesJsonPath = Path.Combine(prjConfig.RootPath, "nuget2bazel.json");
             var s = await File.ReadAllTextAsync(packagesJsonPath);
             var packagesJson = JsonConvert.DeserializeObject<PackagesJson>(s);
 
             foreach (var d in packagesJson.dependencies)
-                await Delete(logger, d.Key, rootPath);
+                await Delete(logger, d.Key, prjConfig);
 
             foreach (var d in packagesJson.dependencies)
-                await Add(logger, d.Key, d.Value, rootPath);
+                await Add(logger, d.Key, d.Value, prjConfig);
         }
 
-        private async Task Delete(ILogger logger, string package, string rootPath)
+        private async Task Delete(ILogger logger, string package, ProjectBazelConfig prjConfig)
         {
             try
             {
                 var cmd = new DeleteCommand();
-                await cmd.Do(package, rootPath);
+                await cmd.Do(prjConfig, package);
             }
             catch (Exception ex)
             {
@@ -58,12 +55,12 @@ namespace nuget2bazel
             }
 
         }
-        private async Task Add(ILogger logger, string package, string version, string rootPath)
+        private async Task Add(ILogger logger, string package, string version, ProjectBazelConfig prjConfig)
         {
             try
             {
                 var cmd = new AddCommand();
-                await cmd.Do(package, version, rootPath, null, true);
+                await cmd.Do(prjConfig, package, version, null, true);
             }
             catch (Exception ex)
             {

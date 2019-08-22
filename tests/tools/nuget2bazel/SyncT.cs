@@ -8,20 +8,22 @@ using Xunit;
 
 namespace nuget2bazel
 {
-    public class SyncT: IDisposable
+    public class SyncT : IDisposable
     {
-        private string _root;
+        private ProjectBazelConfig _prjConfig;
         public void Dispose()
         {
-            Directory.Delete(_root, true);
+            Directory.Delete(_prjConfig.RootPath, true);
         }
 
         public SyncT()
         {
-            _root = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-            Directory.CreateDirectory(_root);
+            var root = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            Directory.CreateDirectory(root);
+            _prjConfig = new ProjectBazelConfig(root);
+
             // Nuget libraries require HOME set
-            Environment.SetEnvironmentVariable("HOME", _root);
+            Environment.SetEnvironmentVariable("HOME", root);
         }
 
 
@@ -35,10 +37,10 @@ namespace nuget2bazel
             packagesJson.dependencies.Add("CommandLineParser", "2.3.0");
             packagesJson.dependencies.Add("System.Console", "4.3.1");
 
-            var packagesJsonPath = Path.Combine(_root, "packages.json");
+            var packagesJsonPath = Path.Combine(_prjConfig.RootPath, _prjConfig.Nuget2BazelConfigName);
             await File.WriteAllTextAsync(packagesJsonPath, JsonConvert.SerializeObject(packagesJson));
-            
-            await syncCmd.Do(_root);
+
+            await syncCmd.Do(_prjConfig);
 
             var readback = await File.ReadAllTextAsync(packagesJsonPath);
             var readbackJson = JsonConvert.DeserializeObject<PackagesJson>(readback);

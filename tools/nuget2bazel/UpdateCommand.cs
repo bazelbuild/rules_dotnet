@@ -19,16 +19,13 @@ namespace nuget2bazel
 {
     public class UpdateCommand
     {
-        public Task Do(string package, string version, string rootPath, string mainFile, bool skipSha256)
+        public Task Do(ProjectBazelConfig prjConfig, string package, string version, string mainFile, bool skipSha256)
         {
-            if (rootPath == null)
-                rootPath = Directory.GetCurrentDirectory();
-
-            var project = new ProjectBazel(rootPath, mainFile, skipSha256);
+            var project = new ProjectBazelManipulator(prjConfig, mainFile, skipSha256);
 
             return DoWithProject(package, version, project);
         }
-        public async Task DoWithProject(string package, string version, ProjectBazel project)
+        public async Task DoWithProject(string package, string version, ProjectBazelManipulator project)
         {
 
             var logger = new Logger();
@@ -42,9 +39,9 @@ namespace nuget2bazel
             var content = new SourceCacheContext();
             var found = await packageMetadataResource.GetMetadataAsync(identity, logger, CancellationToken.None);
 
-            var settings = Settings.LoadDefaultSettings(project.RootPath, null, new MachineWideSettings());
+            var settings = Settings.LoadDefaultSettings(project.ProjectConfig.RootPath, null, new MachineWideSettings());
             var sourceRepositoryProvider = new SourceRepositoryProvider(settings, providers);
-            var packageManager = new NuGetPackageManager(sourceRepositoryProvider, settings, project.RootPath)
+            var packageManager = new NuGetPackageManager(sourceRepositoryProvider, settings, project.ProjectConfig.RootPath)
             {
                 PackagesFolderNuGetProject = project
             };
@@ -56,7 +53,7 @@ namespace nuget2bazel
 
             var projectContext = new ProjectContext(settings);
 
-            var projects = new ProjectBazel[] { project };
+            var projects = new ProjectBazelManipulator[] { project };
             var actions = await packageManager.PreviewUpdatePackagesAsync(identity, projects, resolutionContext, projectContext,
                 new SourceRepository[] { sourceRepository },
                 Array.Empty<SourceRepository>(),  // This is a list of secondary source respositories, probably empty

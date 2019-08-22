@@ -10,7 +10,7 @@ namespace nuget2bazel
 {
     public class BazelSolutionManager : ISolutionManager
     {
-        private readonly ProjectBazel _project;
+        private readonly ProjectBazelManipulator _project;
         public event EventHandler SolutionOpening;
         public event EventHandler SolutionOpened;
         public event EventHandler SolutionClosing;
@@ -25,7 +25,7 @@ namespace nuget2bazel
         public string SolutionDirectory { get; }
         public bool IsSolutionOpen { get; }
 
-        public BazelSolutionManager(ProjectBazel project, string rootPath)
+        public BazelSolutionManager(ProjectBazelManipulator project, string rootPath)
         {
             _project = project;
             SolutionDirectory = rootPath;
