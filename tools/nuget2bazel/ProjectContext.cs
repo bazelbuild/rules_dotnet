@@ -6,6 +6,7 @@ using NuGet.Common;
 using NuGet.Configuration;
 using NuGet.Packaging;
 using NuGet.Packaging.PackageExtraction;
+using NuGet.Packaging.Signing;
 using NuGet.ProjectManagement;
 
 namespace nuget2bazel
@@ -16,12 +17,12 @@ namespace nuget2bazel
 
         public ProjectContext(ISettings settings)
         {
-            //var policy = ClientPolicyContext.GetClientPolicy(settings, logger);
-            //PackageExtractionContext = new PackageExtractionContext(
-            //    PackageSaveMode.Defaultv3,
-            //    PackageExtractionBehavior.XmlDocFileSaveMode,
-            //    policy, 
-            //    logger);
+            var policy = ClientPolicyContext.GetClientPolicy(settings, logger);
+            PackageExtractionContext = new PackageExtractionContext(
+                PackageSaveMode.Defaultv3,
+                PackageExtractionBehavior.XmlDocFileSaveMode,
+                policy,
+                logger);
         }
 
         public void Log(MessageLevel level, string message, params object[] args)
@@ -55,9 +56,9 @@ namespace nuget2bazel
 
         public NuGetActionType ActionType { get; set; }
         public Guid OperationId { get; set; }
-        public TelemetryServiceHelper TelemetryService
-        {
-            get => null; set => throw new NotImplementedException();
-        }
+        //public TelemetryServiceHelper TelemetryService
+        //{
+        //    get => null; set => throw new NotImplementedException();
+        //}
     }
 }

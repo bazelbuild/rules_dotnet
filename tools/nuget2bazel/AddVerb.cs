@@ -23,5 +23,10 @@ namespace nuget2bazel
         [Option('s', "skipSha256",
             HelpText = "If true, do not emit the sha256 value for generated nuget_package rules")]
         public bool SkipSha256 { get; set; }
+
+        [Option('l', "lowest",
+            Default = false,
+            HelpText = "Dependency behavior. Default is HighestMinor; setting this option changes to Lowest")]
+        public bool Lowest { get; set; }
     }
 }

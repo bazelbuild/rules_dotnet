@@ -19,13 +19,13 @@ namespace nuget2bazel
 {
     public class AddCommand
     {
-        public Task Do(ProjectBazelConfig prjConfig, string package, string version, string mainFile, bool skipSha256)
+        public Task Do(ProjectBazelConfig prjConfig, string package, string version, string mainFile, bool skipSha256, bool lowest)
         {
             var project = new ProjectBazelManipulator(prjConfig, mainFile, skipSha256);
 
-            return DoWithProject(package, version, project);
+            return DoWithProject(package, version, project, lowest);
         }
-        public async Task DoWithProject(string package, string version, ProjectBazelManipulator project)
+        public async Task DoWithProject(string package, string version, ProjectBazelManipulator project, bool lowest)
         {
             var logger = new Logger();
             var providers = new List<Lazy<INuGetResourceProvider>>();
@@ -36,7 +36,7 @@ namespace nuget2bazel
             var verParsed = NuGetVersion.Parse(version);
             var identity = new NuGet.Packaging.Core.PackageIdentity(package, verParsed);
             var content = new SourceCacheContext();
-            var found = await packageMetadataResource.GetMetadataAsync(identity, logger, CancellationToken.None);
+            var found = await packageMetadataResource.GetMetadataAsync(identity, content, logger, CancellationToken.None);
 
             var settings = Settings.LoadDefaultSettings(project.ProjectConfig.RootPath, null, new MachineWideSettings());
             var sourceRepositoryProvider = new SourceRepositoryProvider(settings, providers);
@@ -48,7 +48,7 @@ namespace nuget2bazel
             const bool allowPrereleaseVersions = true;
             const bool allowUnlisted = false;
             var resolutionContext = new ResolutionContext(
-                DependencyBehavior.Lowest, allowPrereleaseVersions, allowUnlisted, VersionConstraints.None);
+                lowest ? DependencyBehavior.Lowest : DependencyBehavior.HighestMinor, allowPrereleaseVersions, allowUnlisted, VersionConstraints.None);
 
             var projectContext = new ProjectContext(settings);
 

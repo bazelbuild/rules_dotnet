@@ -32,7 +32,7 @@ namespace nuget2bazel
             var project = new TestProject(_prjConfig);
             var addCmd = new AddCommand();
 
-            await addCmd.DoWithProject("System.Security.Permissions", "4.6.0-preview8.19405.3", project);
+            await addCmd.DoWithProject("System.Security.Permissions", "4.6.0-preview8.19405.3", project, false);
 
             Assert.Single(project.Entries);
             var entry = project.Entries.First();

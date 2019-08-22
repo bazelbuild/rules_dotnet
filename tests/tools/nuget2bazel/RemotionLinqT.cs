@@ -47,7 +47,7 @@ namespace nuget2bazel
             var project = new TestProject(_prjConfig);
             var addCmd = new AddCommand();
 
-            await addCmd.DoWithProject("Remotion.Linq", "2.2.0", project);
+            await addCmd.DoWithProject("Remotion.Linq", "2.2.0", project, false);
 
             Assert.Single(project.Entries);
             var entry = project.Entries.First();

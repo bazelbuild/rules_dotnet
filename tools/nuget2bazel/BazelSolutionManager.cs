@@ -11,6 +11,7 @@ namespace nuget2bazel
     public class BazelSolutionManager : ISolutionManager
     {
         private readonly ProjectBazelManipulator _project;
+#pragma warning disable 67
         public event EventHandler SolutionOpening;
         public event EventHandler SolutionOpened;
         public event EventHandler SolutionClosing;
@@ -24,6 +25,7 @@ namespace nuget2bazel
         public event EventHandler<ActionsExecutedEventArgs> ActionsExecuted;
         public string SolutionDirectory { get; }
         public bool IsSolutionOpen { get; }
+#pragma warning restore 67
 
         public BazelSolutionManager(ProjectBazelManipulator project, string rootPath)
         {
