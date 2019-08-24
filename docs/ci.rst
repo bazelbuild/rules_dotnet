@@ -31,5 +31,7 @@ Windows build agent requires the following steps to prepare:
 
    * .Net Framework 4.8 developer pack
 
+   * .Net Framework 3.5 (required by nunit2)
+
 * Enable Developer's mode to support non-admin symbolic linking
 
