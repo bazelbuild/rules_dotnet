@@ -24,6 +24,7 @@ Welcome to rules_dotnet's documentation!
    tools/nuget2bazel/README.rst
    docs/runtime.rst
    docs/multiversion.rst
+   docs/ci.rst
 
 Indices and tables
 ==================
