@@ -102,3 +102,13 @@ http_archive(
 load("@io_bazel_rules_dotnet//tests:bazel_tests.bzl", "test_environment")
 
 test_environment()
+
+# local_repository(
+#     name = "io_bazel_rules_dotnet_3rd_party",
+#     #path = "/home/nest-user/work/gopath/rules_dotnet",
+#     path = "c:/rules_dotnet_3rd_party",
+# )
+
+# load("@io_bazel_rules_dotnet_3rd_party//:repositories.bzl", "rules_dotnet_3rd_party_dependencies")
+
+# rules_dotnet_3rd_party_dependencies()
