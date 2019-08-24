@@ -8,9 +8,6 @@ dotnet_nunit_test(
     deps = [
         "@nunit2//:nunit.framework.dll",
         "@npgsql//:lib",
-        "@commandlineparser//:lib",
-        "@nuget.frameworks//:mono",
-        "@nuget.common//:mono",
     ],
     size = "small",
 )

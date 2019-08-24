@@ -35,13 +35,15 @@ namespace testlib
                 myProcess.StartInfo.UseShellExecute = false;
                 myProcess.StartInfo.FileName = bazel;
                 myProcess.StartInfo.CreateNoWindow = true;
-                myProcess.StartInfo.Arguments = $"--batch --bazelrc bazelrc test //...";
+                myProcess.StartInfo.Arguments = $"--bazelrc bazelrc test //...";
                 myProcess.StartInfo.WorkingDirectory = dir;
                 myProcess.StartInfo.RedirectStandardError = true;
                 myProcess.StartInfo.RedirectStandardOutput = true;
                 myProcess.Start();
 
-                myProcess.WaitForExit();
+                bool r = myProcess.WaitForExit(120 * 1000);
+                if (!r)
+                    myProcess.Kill();
 
                 var err = myProcess.StandardError.ReadToEnd();
                 var output = myProcess.StandardOutput.ReadToEnd();
@@ -49,7 +51,7 @@ namespace testlib
                 Console.WriteLine(err);
                 stdout = output;
                 stderr = err;
-                return myProcess.ExitCode;
+                return r ? myProcess.ExitCode : -100;
             }
 
         }
