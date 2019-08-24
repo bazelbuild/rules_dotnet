@@ -23,7 +23,7 @@ Windows build agent requires the following steps to prepare:
   .. code:: bash
 
     choco install netfx-4.7.2-devpack netfx-4.7.1-devpack netfx-4.7-devpack netfx-4.6.2-devpack netfx-4.6.1-devpack 
-    netfx-4.6-devpack netfx-4.5.2-devpack netfx-4.5.1-devpack monodevelop bazel
+    netfx-4.6-devpack netfx-4.5.2-devpack netfx-4.5.1-devpack mono bazel
 
 * Install dependencies not available from chocolatey (at the time of this writing):
 

@@ -32,7 +32,8 @@ DOTNETIMPL_OS_ARCH = (
 # 2. Preprocessor directive
 # 3. Version number - as used in C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/ (without 'v')
 DOTNET_NET_FRAMEWORKS = {
-    "net45": (".NETFramework,Version=v4.5", None, "NET45", "4.5"),
+    # .Net 4.5 developer pack is not downloadable from Microsoft. 4.5.1 may be easily used instead
+    "net45": (".NETFramework,Version=v4.5", None, "NET45", "4.5.1"),
     "net451": (".NETFramework,Version=v4.5.1", None, "NET451", "4.5.1"),
     "net452": (".NETFramework,Version=v4.5.2", None, "NET452", "4.5.2"),
     "net46": (".NETFramework,Version=v4.6", None, "NET46", "4.6"),
