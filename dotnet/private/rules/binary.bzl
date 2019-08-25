@@ -26,7 +26,7 @@ def _binary_impl(ctx):
 
     executable = dotnet.assembly(
         dotnet,
-        name = paths.split_extension(name)[0] + "_0.dll",
+        name = name,
         srcs = ctx.attr.srcs,
         deps = ctx.attr.deps,
         resources = ctx.attr.resources,
@@ -38,7 +38,7 @@ def _binary_impl(ctx):
         keyfile = ctx.attr.keyfile,
     )
 
-    launcher = dotnet.declare_file(dotnet, path = name)
+    launcher = dotnet.declare_file(dotnet, path = executable.result.basename + "_0.exe")
     ctx.actions.run(
         outputs = [launcher],
         inputs = ctx.attr._launcher.files.to_list(),

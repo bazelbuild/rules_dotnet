@@ -20,7 +20,7 @@
 
 int IsVerbose()
 {
-    return 0;
+    return 1;
 }
 
 char *GetLinkedMonoLauncher(const char *manifestDir)

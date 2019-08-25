@@ -24,7 +24,7 @@ static int CopyMsc(const char *to, const char *from)
 	BOOL r = CopyFile(from, to, FALSE);
 	if (!r)
 	{
-		printf("Failed to copy %s to %s. LastError: %d\n", from, to, GetLastError());
+		printf("copy: Failed to copy %s to %s. LastError: %d\n", from, to, GetLastError());
 		return -1;
 	}
 	return 0;

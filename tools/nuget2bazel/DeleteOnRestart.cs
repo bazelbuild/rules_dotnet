@@ -9,7 +9,7 @@ using NuGet.ProjectManagement;
 
 namespace nuget2bazel
 {
-    public class DeleteOnRestart: IDeleteOnRestartManager
+    public class DeleteOnRestart : IDeleteOnRestartManager
     {
         public IReadOnlyList<string> GetPackageDirectoriesMarkedForDeletion()
         {
@@ -31,7 +31,8 @@ namespace nuget2bazel
         {
             throw new NotImplementedException();
         }
-
+#pragma warning disable 67
         public event EventHandler<PackagesMarkedForDeletionEventArgs> PackagesMarkedForDeletionFound;
+#pragma warning restore 67
     }
 }

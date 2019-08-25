@@ -35,13 +35,13 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 	// Based on current exe calculate _0.dll to run
 	p = strrchr(Exe, '/');
 	sprintf(torun, "%s/%s", manifestDir, p + 1);
-	p = strrchr(torun, '.');
+	p = strrchr(torun, '_');
 	if (p == NULL)
 	{
-		printf(". not found in %s\n", torun);
+		printf("launcher_net_nunit3: _ not found in %s\n", torun);
 		exit(-1);
 	}
-	strcpy(p, "_0.dll");
+	*p = '\0';
 
 	// arg
 	sprintf(arg, "--result=%s;transform=%s/n3.xslt", getenv("XML_OUTPUT_FILE"), manifestDir);

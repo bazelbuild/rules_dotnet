@@ -31,11 +31,11 @@ def _unit_test(ctx):
 
     executable = dotnet.assembly(
         dotnet,
-        name = paths.split_extension(name)[0] + "_0.dll",
+        name = name,
         srcs = ctx.attr.srcs,
         deps = ctx.attr.deps,
         resources = ctx.attr.resources,
-        out = None,
+        out = ctx.attr.out,
         defines = ctx.attr.defines,
         unsafe = ctx.attr.unsafe,
         data = ctx.attr.data,
@@ -43,7 +43,7 @@ def _unit_test(ctx):
         keyfile = ctx.attr.keyfile,
     )
 
-    launcher = dotnet.declare_file(dotnet, path = name)
+    launcher = dotnet.declare_file(dotnet, path = executable.result.basename + "_0.exe")
     ctx.actions.run(
         outputs = [launcher],
         inputs = ctx.attr._launcher.files.to_list(),
@@ -99,6 +99,7 @@ net_nunit_test = rule(
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "resources": attr.label_list(providers = [DotnetResource]),
         "srcs": attr.label_list(allow_files = [".cs"]),
+        "out": attr.string(),
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
         "data": attr.label_list(allow_files = True),
@@ -148,6 +149,7 @@ core_xunit_test = rule(
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "resources": attr.label_list(providers = [DotnetResource]),
         "srcs": attr.label_list(allow_files = [".cs"]),
+        "out": attr.string(),
         "defines": attr.string_list(),
         "unsafe": attr.bool(default = False),
         "data": attr.label_list(allow_files = True),

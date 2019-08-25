@@ -28,16 +28,16 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 
 	mono = GetLinkedMonoLauncher(manifestDir);
 
-	// Based on current exe calculate _0.dll to run
+	// Based on current exe calculate file to run
 	p = strrchr(Exe, '/');
 	sprintf(torun, "%s/%s", manifestDir, p + 1);
-	p = strrchr(torun, '.');
+	p = strrchr(torun, '_');
 	if (p == NULL)
 	{
-		printf(". not found in %s\n", torun);
+		printf("launcher_mono: _ not found in %s\n", torun);
 		exit(-1);
 	}
-	strcpy(p, "_0.dll");
+	*p = '\0';
 
 	// Prepare arguments
 	newargv[0] = mono;

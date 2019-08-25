@@ -133,7 +133,7 @@ net_resx(
 )
 
 dotnet_library(
-    name = "nunit-console-runner.dll",
+    name = "nunit-console-runner-lib.dll",
     srcs = [":ConsoleRunner_nunit_console_files"],
     visibility = ["//visibility:public"],
     deps = [
@@ -147,7 +147,7 @@ dotnet_library(
 )
 
 net_library(
-    name = "net.nunit-console-runner.dll",
+    name = "net.nunit-console-runner-lib.dll",
     srcs = [":ConsoleRunner_nunit_console_files"],
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net472",
     visibility = ["//visibility:public"],
@@ -169,7 +169,7 @@ dotnet_binary(
     deps = [
         ":nunit.core.dll",
         ":nunit.util.dll",
-        ":nunit-console-runner.dll",
+        ":nunit-console-runner-lib.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib:System.dll",
     ],
 )
@@ -182,7 +182,7 @@ net_binary(
     deps = [
         ":net.nunit.core.dll",
         ":net.nunit.util.dll",
-        ":net.nunit-console-runner.dll",
+        ":net.nunit-console-runner-lib.dll",
     ],
 )
 
