@@ -190,6 +190,7 @@ static void CreateLinkIfNeeded(const char *target, const char *toCreate)
 
 void LinkFiles(const char *manifestDir)
 {
+    return;
     const struct Entry *p = g_Entries;
     const char *basename;
     char toCreate[64 * 1024];
@@ -309,6 +310,7 @@ static void CreateDirTreeForFile(const char *path)
 
 void LinkFilesTree(const char *manifestDir)
 {
+    return;
     const struct Entry *p = g_Entries;
     char toCreate[64 * 1024];
 

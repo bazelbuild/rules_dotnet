@@ -13,6 +13,26 @@ load(
     "paths",
 )
 
+def CopyRunfiles(dotnet, runfiles, copy, executable):
+    created = []
+    for f in runfiles.files.to_list():
+        if f.basename != executable.result.basename:
+            if f.basename == "hostfxr.dll":
+                version = f.path.split("/")
+                newfile = dotnet.declare_file(dotnet, path = "host/fxr/{}/hostfxr.dll".format(version[-2]))
+            else:
+                newfile = dotnet.declare_file(dotnet, path = f.basename)
+            dotnet.actions.run(
+                outputs = [newfile],
+                inputs = [f],
+                executable = copy.files.to_list()[0],
+                arguments = [newfile.path, f.path],
+                mnemonic = "CopyFile",
+            )
+            created.append(newfile)
+
+    return dotnet._ctx.runfiles(files = created)
+
 def _binary_impl(ctx):
     """_binary_impl emits actions for compiling executable assembly."""
     dotnet = dotnet_context(ctx)
@@ -51,7 +71,11 @@ def _binary_impl(ctx):
         runner = [dotnet.runner]
     else:
         runner = []
-    runfiles = ctx.runfiles(files = [launcher] + runner + ctx.attr.native_deps.files.to_list(), transitive_files = executable.runfiles)
+
+    #runfiles = ctx.runfiles(files = [launcher] + runner + ctx.attr.native_deps.files.to_list(), transitive_files = executable.runfiles)
+    runfiles = ctx.runfiles(files = runner + ctx.attr.native_deps.files.to_list(), transitive_files = executable.runfiles)
+
+    runfiles = CopyRunfiles(dotnet, runfiles, ctx.attr._copy, executable)
 
     return [
         executable,

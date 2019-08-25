@@ -104,14 +104,7 @@ int main(int argc, char *argv[], char *envp[])
 		}
 	}
 
-	manifestPath = GetManifestPath();
-	if (IsVerbose())
-	{
-		printf("Manifest found %s\n", manifestPath);
-	}
-
-	ReadManifestPath(manifestPath);
-
+	manifestPath = strdup(Exe);
 	manifestDir = strdup(manifestPath);
 	p = strrchr(manifestDir, '/');
 	if (p == NULL)
@@ -121,9 +114,9 @@ int main(int argc, char *argv[], char *envp[])
 	}
 	p[1] = '\0';
 
-	LinkFiles(manifestDir);
-	LinkFilesTree(manifestDir);
-	LinkHostFxr(manifestDir);
+	// LinkFiles(manifestDir);
+	// LinkFilesTree(manifestDir);
+	// LinkHostFxr(manifestDir);
 
 	// Execute should never return - it should transform this process into
 	// dotnet, which will handle exiting at some point/
