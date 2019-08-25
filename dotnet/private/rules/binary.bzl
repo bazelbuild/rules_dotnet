@@ -17,9 +17,9 @@ def CopyRunfiles(dotnet, runfiles, copy, executable):
     created = []
     for f in runfiles.files.to_list():
         if f.basename != executable.result.basename:
-            if f.basename == "hostfxr.dll":
+            if f.basename.find("hostfxr") >= 0:
                 version = f.path.split("/")
-                newfile = dotnet.declare_file(dotnet, path = "host/fxr/{}/hostfxr.dll".format(version[-2]))
+                newfile = dotnet.declare_file(dotnet, path = "host/fxr/{}/{}".format(version[-2], version[-1]))
             else:
                 newfile = dotnet.declare_file(dotnet, path = f.basename)
             dotnet.actions.run(
