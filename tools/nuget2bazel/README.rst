@@ -28,4 +28,7 @@ Sample usage:
 
     bazel run //tools/nuget2bazel -- delete -p c:/rules_dotnet ninject 
 
+By default the tool modifies WORKSPACE file in the provided directory with proper directives.
 
+However, typically it is more convenient to modify .bzl file to declare dependencies 
+in a separate function called in WORKSPACE. See for example `nuget.bzl <../../dotnet/private/deps/nuget.bat>`_.
