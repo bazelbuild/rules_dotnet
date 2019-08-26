@@ -79,9 +79,6 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 	printf("Call failed with errnor %d\n", errno);
 }
 
-/*
- * One argument is expected: path to the launcher (to locate the manifest file)
- */
 int main(int argc, char *argv[], char *envp[])
 {
 	const char *manifestDir;

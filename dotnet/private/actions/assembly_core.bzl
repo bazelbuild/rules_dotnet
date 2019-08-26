@@ -102,19 +102,20 @@ def emit_assembly_core(
         defines = None,
         unsafe = False,
         data = None,
-        keyfile = None):
+        keyfile = None,
+        subdir = "./"):
     """See dotnet/toolchains.rst#binary for full documentation."""
 
     if name == "" and out == None:
         fail("either name or out must be set")
 
     if not out:
-        result = dotnet.declare_file(dotnet, path = name)
+        result = dotnet.declare_file(dotnet, path = subdir + name)
     else:
-        result = dotnet.declare_file(dotnet, path = out)
+        result = dotnet.declare_file(dotnet, path = subdir + out)
 
     if dotnet.debug:
-        pdb = dotnet.declare_file(dotnet, path = paths.split_extension(name)[0] + ".pdb")
+        pdb = dotnet.declare_file(dotnet, path = paths.split_extension(result.path)[0] + ".pdb")
     else:
         pdb = None
 

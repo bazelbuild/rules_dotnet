@@ -13,15 +13,25 @@ load(
     "paths",
 )
 
-def CopyRunfiles(dotnet, runfiles, copy, executable):
+def CopyRunfiles(dotnet, runfiles, copy, symlink, executable, subdir):
     created = []
     for f in runfiles.files.to_list():
-        if f.basename != executable.result.basename:
+        if f.basename == "mono" or f.basename == "mono.exe":
+            newfile = dotnet.declare_file(dotnet, path = subdir + f.basename)
+            dotnet.actions.run(
+                outputs = [newfile],
+                inputs = [f],
+                executable = symlink.files.to_list()[0],
+                arguments = [newfile.path, f.path],
+                mnemonic = "LinkFile",
+            )
+            created.append(newfile)
+        elif f.basename != executable.result.basename:
             if f.basename.find("hostfxr") >= 0:
                 version = f.path.split("/")
-                newfile = dotnet.declare_file(dotnet, path = "host/fxr/{}/{}".format(version[-2], version[-1]))
+                newfile = dotnet.declare_file(dotnet, path = "{}/host/fxr/{}/{}".format(subdir, version[-2], version[-1]))
             else:
-                newfile = dotnet.declare_file(dotnet, path = f.basename)
+                newfile = dotnet.declare_file(dotnet, path = subdir + f.basename)
             dotnet.actions.run(
                 outputs = [newfile],
                 inputs = [f],
@@ -37,6 +47,7 @@ def _binary_impl(ctx):
     """_binary_impl emits actions for compiling executable assembly."""
     dotnet = dotnet_context(ctx)
     name = ctx.label.name
+    subdir = name + "/"
 
     if dotnet.assembly == None:
         empty = dotnet.declare_file(dotnet, path = "empty.sh")
@@ -56,9 +67,10 @@ def _binary_impl(ctx):
         data = ctx.attr.data,
         executable = True,
         keyfile = ctx.attr.keyfile,
+        subdir = subdir,
     )
 
-    launcher = dotnet.declare_file(dotnet, path = executable.result.basename + "_0.exe")
+    launcher = dotnet.declare_file(dotnet, path = subdir + executable.result.basename + "_0.exe")
     ctx.actions.run(
         outputs = [launcher],
         inputs = ctx.attr._launcher.files.to_list(),
@@ -73,9 +85,9 @@ def _binary_impl(ctx):
         runner = []
 
     #runfiles = ctx.runfiles(files = [launcher] + runner + ctx.attr.native_deps.files.to_list(), transitive_files = executable.runfiles)
-    runfiles = ctx.runfiles(files = runner + ctx.attr.native_deps.files.to_list(), transitive_files = executable.runfiles)
 
-    runfiles = CopyRunfiles(dotnet, runfiles, ctx.attr._copy, executable)
+    runfiles = ctx.runfiles(files = runner + ctx.attr.native_deps.files.to_list(), transitive_files = executable.runfiles)
+    runfiles = CopyRunfiles(dotnet, runfiles, ctx.attr._copy, ctx.attr._symlink, executable, subdir)
 
     return [
         executable,
@@ -101,6 +113,7 @@ dotnet_binary = rule(
         "native_deps": attr.label(default = Label("@dotnet_sdk//:native_deps")),
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_mono:launcher_mono.exe")),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
+        "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
     executable = True,
@@ -121,6 +134,7 @@ core_binary = rule(
         "native_deps": attr.label(default = Label("@core_sdk//:native_deps")),
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_core:launcher_core.exe")),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
+        "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
     executable = True,
@@ -141,6 +155,7 @@ net_binary = rule(
         "native_deps": attr.label(default = Label("@net_sdk//:native_deps")),
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_net:launcher_net.exe")),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
+        "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = True,

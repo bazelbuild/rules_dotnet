@@ -15,6 +15,7 @@ const char *GetManifestDir();
 const char *GetManifestPath();
 void LinkHostFxr(const char *manifestDir);
 int IsVerbose();
+void CreateLinkIfNeeded(const char *target, const char *toCreate);
 
 char *GetLinkedMonoLauncher(const char *manifestDir);
 

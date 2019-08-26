@@ -74,7 +74,7 @@ void ReadManifest(const char *manifestDir)
 }
 
 #ifdef _MSC_VER
-static void CreateLinkIfNeeded(const char *target, const char *toCreate)
+void CreateLinkIfNeeded(const char *target, const char *toCreate)
 {
     BOOL result;
     DWORD error;
@@ -136,7 +136,7 @@ retry:
     }
 }
 #else
-static void CreateLinkIfNeeded(const char *target, const char *toCreate)
+void CreateLinkIfNeeded(const char *target, const char *toCreate)
 {
     int result;
     char *p;
