@@ -12,6 +12,10 @@ load(
     "DotnetResource",
     "DotnetResourceList",
 )
+load(
+    "@io_bazel_rules_dotnet//dotnet/private:actions/resolve.bzl",
+    "ResolveVersions",
+)
 
 def _map_dep(deps):
     return deps[DotnetLibrary].result.path
@@ -120,7 +124,8 @@ def emit_assembly_core(
         pdb = None
 
     deps_libraries = [d[DotnetLibrary] for d in deps]
-    transitive = depset(direct = deps, transitive = [d[DotnetLibrary].transitive for d in deps])
+
+    transitive, transitive_runfiles = ResolveVersions(deps)
 
     runner_args = _make_runner_arglist(dotnet, transitive.to_list(), resources, result, pdb, executable, defines, unsafe, keyfile)
 
@@ -137,7 +142,7 @@ def emit_assembly_core(
 
     dotnet.actions.write(output = paramfile, content = runner_args)
 
-    deps_files = [d[DotnetLibrary].result for d in deps]
+    deps_files = [d[DotnetLibrary].result for d in transitive.to_list()]
     dotnet.actions.run(
         inputs = attr_srcs + [paramfile] + deps_files + [dotnet.stdlib] + [r[DotnetResource].result for r in resources],
         outputs = [result] + ([pdb] if pdb else []),
@@ -151,7 +156,7 @@ def emit_assembly_core(
 
     extra = depset(direct = [result] + [dotnet.stdlib] + ([pdb] if pdb else []), transitive = [t.files for t in data] if data else [])
     direct = extra.to_list()
-    runfiles = depset(direct = direct, transitive = [a[DotnetLibrary].runfiles for a in deps])
+    runfiles = depset(direct = direct, transitive = [transitive_runfiles])
 
     return dotnet.new_library(
         dotnet = dotnet,

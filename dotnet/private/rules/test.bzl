@@ -8,13 +8,19 @@ load(
     "DotnetResource",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:skylib/lib/paths.bzl",
-    "paths",
+    "@io_bazel_rules_dotnet//dotnet/private:rules/runfiles.bzl",
+    "CopyRunfiles",
+)
+load(
+    "@io_bazel_rules_dotnet//dotnet/private:actions/resolve.bzl",
+    "ResolveVersions",
+    "ResolveVersionsRaw",
 )
 
 def _unit_test(ctx):
     dotnet = dotnet_context(ctx)
     name = ctx.label.name
+    subdir = name + "/"
 
     if dotnet.assembly == None:
         empty = dotnet.declare_file(dotnet, path = "empty.exe")
@@ -41,9 +47,10 @@ def _unit_test(ctx):
         data = ctx.attr.data,
         executable = False,
         keyfile = ctx.attr.keyfile,
+        subdir = subdir,
     )
 
-    launcher = dotnet.declare_file(dotnet, path = executable.result.basename + "_0.exe")
+    launcher = dotnet.declare_file(dotnet, path = subdir + executable.result.basename + "_0.exe")
     ctx.actions.run(
         outputs = [launcher],
         inputs = ctx.attr._launcher.files.to_list(),
@@ -57,7 +64,12 @@ def _unit_test(ctx):
     else:
         runner = []
 
-    runfiles = ctx.runfiles(files = [launcher] + runner + ctx.attr.native_deps.files.to_list() + ctx.attr._xslt.files.to_list(), transitive_files = depset(transitive = [executable.runfiles, ctx.attr.testlauncher[DotnetLibrary].runfiles]))
+    #runfiles = ctx.runfiles(files = [launcher] + runner + ctx.attr.native_deps.files.to_list() + ctx.attr._xslt.files.to_list(), transitive_files = depset(transitive = [executable.runfiles, ctx.attr.testlauncher[DotnetLibrary].runfiles]))
+
+    transitive, transitive_runfiles = ResolveVersionsRaw([executable.transitive, ctx.attr.testlauncher[DotnetLibrary].transitive])
+
+    runfiles = ctx.runfiles(files = runner + ctx.attr.native_deps.files.to_list() + ctx.attr._xslt.files.to_list() + ctx.attr.testlauncher.files.to_list(), transitive_files = transitive_runfiles)
+    runfiles = CopyRunfiles(dotnet, runfiles, ctx.attr._copy, ctx.attr._symlink, executable, subdir)
 
     return [
         executable,
@@ -84,6 +96,7 @@ dotnet_nunit_test = rule(
         "testlauncher": attr.label(default = "@nunit2//:nunit-console-runner.exe", providers = [DotnetLibrary]),
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_mono_nunit:launcher_mono_nunit.exe")),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
+        "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
         "keyfile": attr.label(allow_files = True),
         "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
@@ -109,6 +122,7 @@ net_nunit_test = rule(
         "testlauncher": attr.label(default = "@nunit2//:net.nunit-console-runner.exe", providers = [DotnetLibrary]),
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_net_nunit:launcher_net_nunit.exe")),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
+        "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
         "keyfile": attr.label(allow_files = True),
         "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
@@ -134,6 +148,7 @@ net_nunit3_test = rule(
         "testlauncher": attr.label(default = "@nunit3_consolerunner//:nunit3.console.exe", providers = [DotnetLibrary]),
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_net_nunit3:launcher_net_nunit3.exe")),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
+        "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
         "keyfile": attr.label(allow_files = True),
         "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
@@ -158,6 +173,7 @@ core_xunit_test = rule(
         "testlauncher": attr.label(default = "@xunit//:xunit.console.exe", providers = [DotnetLibrary]),
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_core_xunit:launcher_core_xunit.exe")),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
+        "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
         "keyfile": attr.label(allow_files = True),
         "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
@@ -183,6 +199,7 @@ net_xunit_test = rule(
         "testlauncher": attr.label(default = "@xunit.runner.console//:net472_net_tool", providers = [DotnetLibrary]),
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_net_xunit:launcher_net_xunit.exe")),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
+        "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
         "keyfile": attr.label(allow_files = True),
         "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
@@ -208,6 +225,7 @@ dotnet_xunit_test = rule(
         "testlauncher": attr.label(default = "@xunit.runner.console//:mono_tool", providers = [DotnetLibrary]),
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_mono_xunit:launcher_mono_xunit.exe")),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
+        "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
         "keyfile": attr.label(allow_files = True),
         "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),

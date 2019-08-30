@@ -9,39 +9,9 @@ load(
     "DotnetResourceList",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:skylib/lib/paths.bzl",
-    "paths",
+    "@io_bazel_rules_dotnet//dotnet/private:rules/runfiles.bzl",
+    "CopyRunfiles",
 )
-
-def CopyRunfiles(dotnet, runfiles, copy, symlink, executable, subdir):
-    created = []
-    for f in runfiles.files.to_list():
-        if f.basename == "mono" or f.basename == "mono.exe":
-            newfile = dotnet.declare_file(dotnet, path = subdir + f.basename)
-            dotnet.actions.run(
-                outputs = [newfile],
-                inputs = [f],
-                executable = symlink.files.to_list()[0],
-                arguments = [newfile.path, f.path],
-                mnemonic = "LinkFile",
-            )
-            created.append(newfile)
-        elif f.basename != executable.result.basename:
-            if f.basename.find("hostfxr") >= 0:
-                version = f.path.split("/")
-                newfile = dotnet.declare_file(dotnet, path = "{}/host/fxr/{}/{}".format(subdir, version[-2], version[-1]))
-            else:
-                newfile = dotnet.declare_file(dotnet, path = subdir + f.basename)
-            dotnet.actions.run(
-                outputs = [newfile],
-                inputs = [f],
-                executable = copy.files.to_list()[0],
-                arguments = [newfile.path, f.path],
-                mnemonic = "CopyFile",
-            )
-            created.append(newfile)
-
-    return dotnet._ctx.runfiles(files = created)
 
 def _binary_impl(ctx):
     """_binary_impl emits actions for compiling executable assembly."""
@@ -87,7 +57,7 @@ def _binary_impl(ctx):
     #runfiles = ctx.runfiles(files = [launcher] + runner + ctx.attr.native_deps.files.to_list(), transitive_files = executable.runfiles)
 
     runfiles = ctx.runfiles(files = runner + ctx.attr.native_deps.files.to_list(), transitive_files = executable.runfiles)
-    runfiles = CopyRunfiles(dotnet, runfiles, ctx.attr._copy, ctx.attr._symlink, executable, subdir)
+    #runfiles = CopyRunfiles(dotnet, runfiles, ctx.attr._copy, ctx.attr._symlink, executable, subdir)
 
     return [
         executable,

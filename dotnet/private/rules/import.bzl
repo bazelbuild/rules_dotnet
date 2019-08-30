@@ -31,6 +31,7 @@ def _import_library_impl(ctx):
         transitive = transitive,
         runfiles = runfiles,
         result = result,
+        version = ctx.attr.version,
     )
 
     return [
@@ -47,6 +48,7 @@ dotnet_import_library = rule(
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True),
         "data": attr.label_list(allow_files = True),
+        "version": attr.string(),
     },
     executable = False,
 )
@@ -57,6 +59,7 @@ dotnet_import_binary = rule(
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True),
         "data": attr.label_list(allow_files = True),
+        "version": attr.string(),
     },
     executable = False,
 )
@@ -67,6 +70,7 @@ core_import_library = rule(
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True),
         "data": attr.label_list(allow_files = True),
+        "version": attr.string(),
     },
     executable = False,
 )
@@ -77,6 +81,7 @@ core_import_binary = rule(
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True),
         "data": attr.label_list(allow_files = True),
+        "version": attr.string(),
     },
     executable = False,
 )
@@ -87,6 +92,7 @@ net_import_library = rule(
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True),
         "data": attr.label_list(allow_files = True),
+        "version": attr.string(),
     },
     executable = False,
 )
@@ -97,6 +103,7 @@ net_import_binary = rule(
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True),
         "data": attr.label_list(allow_files = True),
+        "version": attr.string(),
     },
     executable = False,
 )

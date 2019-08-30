@@ -1,7 +1,14 @@
 load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_binary", "core_library", "core_resource", "core_xunit_test")
 
 def buildall(framework):
-    context = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework)
+    if framework != None:
+        context = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework)
+        versionprefix = "{}_".format(framework)
+        stdlibsuffix = "/{}".format(framework)
+    else:
+        context = "@io_bazel_rules_dotnet//:core_context_data"
+        versionprefix = ""
+        stdlibsuffix = ""
 
     native.filegroup(
         name = "core_common",
@@ -10,8 +17,8 @@ def buildall(framework):
             ":src/common/Guard.cs",
             ":src/common/TestMethodDisplay.cs",
             ":src/common/TestMethodDisplayOptions.cs",
-            "@io_bazel_rules_dotnet//3rd_party:xunit/GlobalAssemblyInfo.cs",
-        ] + ["@{}_xunit_assert//:common_files".format(framework)],
+            "@io_bazel_rules_dotnet//3rd_party/xunit:GlobalAssemblyInfo.cs",
+        ] + ["@{}xunit_assert//:common_files".format(versionprefix)],
     )
 
     core_resource(
@@ -29,11 +36,12 @@ def buildall(framework):
         ],
         visibility = ["//visibility:public"],
         deps = [
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.runtime.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.private.corelib.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.linq.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.io.filesystem.dll".format(framework),
-            "@{}_xunit_abstractions//:abstractions.xunit.dll".format(framework),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.runtime.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.private.corelib.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.linq.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.io.filesystem.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.collections.dll".format(stdlibsuffix),
+            "@{}xunit_abstractions//:abstractions.xunit.dll".format(versionprefix),
         ],
         resources = [":xunit_core_resource"],
         data = [
@@ -60,8 +68,8 @@ def buildall(framework):
             ":src/common/TestOptionsNames.cs",
             ":src/common/XunitSerializationInfo.cs",
             ":src/common/XunitWorkerThread.cs",
-            "@io_bazel_rules_dotnet//3rd_party:xunit/GlobalAssemblyInfo.cs",
-        ] + native.glob(["src/messages/**/*.cs"]) + ["@{}_xunit_assert//:common_files".format(framework)],
+            "@io_bazel_rules_dotnet//3rd_party/xunit:GlobalAssemblyInfo.cs",
+        ] + native.glob(["src/messages/**/*.cs"]) + ["@{}xunit_assert//:common_files".format(versionprefix)],
     )
 
     core_library(
@@ -73,13 +81,13 @@ def buildall(framework):
         ],
         visibility = ["//visibility:public"],
         deps = [
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.runtime.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.private.corelib.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.linq.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.linq.expressions.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.io.filesystem.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.collections.concurrent.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.threading.thread.dll".format(framework),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.runtime.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.private.corelib.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.linq.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.linq.expressions.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.io.filesystem.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.collections.concurrent.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.threading.thread.dll".format(stdlibsuffix),
             ":xunit.core.dll",
         ],
         dotnet_context_data = context,
@@ -109,7 +117,7 @@ def buildall(framework):
             ":src/common/XunitWorkerThread.cs",
             ":src/common/AssemblyResolution/AssemblyHelper_Desktop.cs",
             ":src/common/AssemblyResolution/_DiagnosticMessage.cs",
-            "@io_bazel_rules_dotnet//3rd_party:xunit/GlobalAssemblyInfo.cs",
+            "@io_bazel_rules_dotnet//3rd_party/xunit:GlobalAssemblyInfo.cs",
         ] + native.glob(["src/messages/**/*.cs"]),
     )
 
@@ -123,17 +131,18 @@ def buildall(framework):
         ],
         visibility = ["//visibility:public"],
         deps = [
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.runtime.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.private.corelib.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.linq.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.linq.expressions.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.io.filesystem.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.collections.concurrent.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.threading.thread.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.text.regularexpressions.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.xml.xdocument.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.runtime.interopservices.runtimeinformation.dll".format(framework),
-            "@{}_xunit_abstractions//:abstractions.xunit.dll".format(framework),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.runtime.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.private.corelib.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.linq.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.linq.expressions.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.io.filesystem.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.collections.concurrent.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.threading.thread.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.text.regularexpressions.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.xml.xdocument.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.runtime.interopservices.runtimeinformation.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.xml.linq.dll".format(stdlibsuffix),
+            "@{}xunit_abstractions//:abstractions.xunit.dll".format(versionprefix),
         ],
         dotnet_context_data = context,
     )
@@ -143,7 +152,7 @@ def buildall(framework):
         srcs = [
             ":src/common/Json.cs",
             ":src/common/XunitWorkerThread.cs",
-            "@io_bazel_rules_dotnet//3rd_party:xunit/GlobalAssemblyInfo.cs",
+            "@io_bazel_rules_dotnet//3rd_party/xunit:GlobalAssemblyInfo.cs",
         ],
     )
 
@@ -156,14 +165,14 @@ def buildall(framework):
         ],
         visibility = ["//visibility:public"],
         deps = [
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.runtime.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.private.corelib.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.linq.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.linq.expressions.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.io.filesystem.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.collections.concurrent.dll".format(framework),
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.threading.thread.dll".format(framework),
-            "@{}_xunit_abstractions//:abstractions.xunit.dll".format(framework),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.runtime.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.private.corelib.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.linq.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.linq.expressions.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.io.filesystem.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.collections.concurrent.dll".format(stdlibsuffix),
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core{}:system.threading.thread.dll".format(stdlibsuffix),
+            "@{}xunit_abstractions//:abstractions.xunit.dll".format(versionprefix),
             ":xunit.runner.utility.dll",
         ],
         dotnet_context_data = context,
@@ -177,7 +186,7 @@ def buildall(framework):
             ":src/common/DictionaryExtensions.cs",
             ":src/common/Guard.cs",
             ":src/common/Json.cs",
-            "@io_bazel_rules_dotnet//3rd_party:xunit/GlobalAssemblyInfo.cs",
+            "@io_bazel_rules_dotnet//3rd_party/xunit:GlobalAssemblyInfo.cs",
         ] + native.glob(["src/common/AssemblyResolution/**/*.cs"]),
     )
 
