@@ -4,7 +4,6 @@ jobs:
     name: 'home'
   steps:
     - script: |
-        choco -y upgrade bazel
         bazel version
         dotnet --info
         choco --version
