@@ -14,8 +14,6 @@ namespace nuget2bazel
 {
     public class WorkspaceEntry
     {
-        private readonly bool _skipSha;
-
         public WorkspaceEntry()
         {
         }

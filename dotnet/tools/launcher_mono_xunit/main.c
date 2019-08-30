@@ -81,12 +81,7 @@ int main(int argc, char *argv[], char *envp[])
 		if (*p == '\\')
 			*p = '/';
 
-	manifestPath = GetManifestPath();
-	if (IsVerbose())
-		printf("Manifest found %s\n", manifestPath);
-
-	ReadManifestPath(manifestPath);
-
+	manifestPath = strdup(Exe);
 	manifestDir = strdup(manifestPath);
 	p = strrchr(manifestDir, '/');
 	if (p == NULL)
@@ -95,9 +90,6 @@ int main(int argc, char *argv[], char *envp[])
 		return -1;
 	}
 	*(p + 1) = '\0';
-	LinkFiles(manifestDir);
-	LinkFilesTree(manifestDir);
-	LinkHostFxr(manifestDir);
 
 	Execute(argc, argv, manifestDir);
 
