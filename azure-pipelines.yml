@@ -195,3 +195,17 @@ jobs:
         #buildPlatform: # Optional
         #buildConfiguration: # Optional
         #publishRunAttachments: true # Optional
+
+    - task: Bash@3
+      inputs:
+        targetType: 'inline' # Optional. Options: filePath, inline
+        script: |
+          echo $BUILDNUMBER > $(srcFolder)/buildnumber
+      env:
+        BUILDNUMBER: $(Build.BuildNumber)
+
+    - task: PublishPipelineArtifact@0
+      inputs:
+        artifactName: 'buildnumber' 
+        targetPath: $(srcFolder)/buildnumber
+        

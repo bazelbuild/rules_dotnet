@@ -3,6 +3,14 @@ load(
     "DotnetLibrary",
 )
 
+def _compareVersions(v1, v2):
+    if v1 == None:
+        return True
+
+    if v2 == None:
+        return False
+    return v1 < v2
+
 # Expects List of tuples (File|DotnetLibrary, version).
 # Recalculates transitive dependencies.
 def _ResolveVersions(targets):
@@ -18,7 +26,7 @@ def _ResolveVersions(targets):
         if not found:
             matched[key] = d
             matched_versions[key] = v
-        elif found < v:
+        elif _compareVersions(found, v):
             matched[key] = d
             matched_versions[key] = v
 
