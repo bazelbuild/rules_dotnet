@@ -88,6 +88,9 @@ jobs:
         dotnet --info
       displayName: 'Show dotnet version'
     - script: |
+        brew cask install mono-mdk
+      displayName: 'Install mono'
+    - script: |
         mono --version
       displayName: 'Show mono version'
     - script: |
