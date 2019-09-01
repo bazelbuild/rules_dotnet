@@ -83,9 +83,13 @@ jobs:
       displayName: 'Install dependencies'
     - script: |
         bazel version
+      displayName: 'Show bazel version'
+    - script: |
         dotnet --info
+      displayName: 'Show dotnet version'
+    - script: |
         mono --version
-      displayName: 'Show env'
+      displayName: 'Show mono version'
     - script: |
         bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build -s --local_resources=400,1,1.0 --spawn_strategy=standalone //... 
       displayName: 'Build all'
