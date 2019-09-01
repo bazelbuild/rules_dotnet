@@ -30,5 +30,7 @@ def CopyRunfiles(dotnet, runfiles, copy, symlink, executable, subdir):
                 mnemonic = "CopyFile",
             )
             created.append(newfile)
+        elif f.basename == executable.result.basename:
+            created.append(f)
 
     return dotnet._ctx.runfiles(files = created)
