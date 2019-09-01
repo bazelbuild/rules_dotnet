@@ -7,7 +7,7 @@ jobs:
         bazel version
         dotnet --info
         choco --version
-        del c:\users\tomek\_bazel_tomek\sfs5eyg3\server\*
+        del c:\users\tomek\_bazel_tomek\sfs5eyg3\server\server_info.rawproto
       displayName: 'Show env'
     - script: |
         bazel ^
