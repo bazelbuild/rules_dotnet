@@ -201,12 +201,12 @@ jobs:
       inputs:
         targetType: 'inline' # Optional. Options: filePath, inline
         script: |
-          echo $BUILDNUMBER > $(srcFolder)/buildnumber
+          echo $BUILDNUMBER > buildnumber
       env:
         BUILDNUMBER: $(Build.BuildNumber)
 
     - task: PublishPipelineArtifact@0
       inputs:
         artifactName: 'buildnumber' 
-        targetPath: $(srcFolder)/buildnumber
+        targetPath: buildnumber
         
