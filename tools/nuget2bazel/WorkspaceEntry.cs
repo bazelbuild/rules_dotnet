@@ -19,7 +19,7 @@ namespace nuget2bazel
         }
         public WorkspaceEntry(PackageIdentity identity, string sha256, IEnumerable<PackageDependencyGroup> deps,
             IEnumerable<FrameworkSpecificGroup> libs, IEnumerable<FrameworkSpecificGroup> tools, IEnumerable<FrameworkSpecificGroup> references,
-            string mainFile)
+            string mainFile, string variable)
         {
             var netFrameworkTFMs = new string[]
             {
@@ -33,7 +33,7 @@ namespace nuget2bazel
             };
             PackageIdentity = identity;
             Sha256 = sha256;
-
+            Variable = variable;
             var coreFrameworks = coreFrameworkTFMs.Select(x => NuGetFramework.Parse(x));
             var netFrameworks = netFrameworkTFMs.Select(x => NuGetFramework.Parse(x));
             var monoFramework = NuGetFramework.Parse("net70");
@@ -44,8 +44,8 @@ namespace nuget2bazel
 
             var depConverted = deps.Select(x =>
                 new FrameworkSpecificGroup(x.TargetFramework, x.Packages.Select(y => y.Id.ToLower())));
-            Core_Deps = GetDeps(coreFrameworks, depConverted);
-            Net_Deps = GetDeps(netFrameworks, depConverted);
+            Core_Deps = GetDepsCore(coreFrameworks, depConverted);
+            Net_Deps = GetDepsNet(netFrameworks, depConverted);
             Mono_Deps = MSBuildNuGetProjectSystemUtility.GetMostCompatibleGroup(monoFramework, depConverted)?.Items?.Select(x => ToRefMono(x));
 
             CoreLib = new Dictionary<string, string>();
@@ -91,12 +91,25 @@ namespace nuget2bazel
                 MonoLib = Mono_Files?.FirstOrDefault(x => Path.GetExtension(x) == ".dll");
         }
 
-        private IDictionary<string, IEnumerable<string>> GetDeps(IEnumerable<NuGetFramework> frameworks, IEnumerable<FrameworkSpecificGroup> groups)
+        private IDictionary<string, IEnumerable<string>> GetDepsNet(IEnumerable<NuGetFramework> frameworks, IEnumerable<FrameworkSpecificGroup> groups)
         {
             var result = new Dictionary<string, IEnumerable<string>>();
             foreach (var framework in frameworks)
             {
                 var deps = MSBuildNuGetProjectSystemUtility.GetMostCompatibleGroup(framework, groups)?.Items?.Select(x => ToRefNet(x, framework))?.Where(y => y != null);
+                if (deps != null)
+                    result.Add(framework.GetShortFolderName(), deps);
+            }
+
+            return result;
+        }
+
+        private IDictionary<string, IEnumerable<string>> GetDepsCore(IEnumerable<NuGetFramework> frameworks, IEnumerable<FrameworkSpecificGroup> groups)
+        {
+            var result = new Dictionary<string, IEnumerable<string>>();
+            foreach (var framework in frameworks)
+            {
+                var deps = MSBuildNuGetProjectSystemUtility.GetMostCompatibleGroup(framework, groups)?.Items?.Select(x => ToRefCore(x, framework))?.Where(y => y != null);
                 if (deps != null)
                     result.Add(framework.GetShortFolderName(), deps);
             }
@@ -140,7 +153,10 @@ namespace nuget2bazel
 
             if (mainFile != null)
             {
-                var f = compatibleItems.FirstOrDefault(x => String.Equals(Path.GetFileName(x), mainFile + ".exe", StringComparison.CurrentCultureIgnoreCase));
+                var f = compatibleItems.FirstOrDefault(x => String.Equals(Path.GetFileName(x), mainFile, StringComparison.CurrentCultureIgnoreCase));
+                if (f != null)
+                    return f;
+                f = compatibleItems.FirstOrDefault(x => String.Equals(Path.GetFileName(x), mainFile + ".exe", StringComparison.CurrentCultureIgnoreCase));
                 if (f != null)
                     return f;
                 f = compatibleItems.FirstOrDefault(x => String.Equals(Path.GetFileName(x), mainFile + ".dll", StringComparison.CurrentCultureIgnoreCase));
@@ -166,7 +182,11 @@ namespace nuget2bazel
             var i = indent ? "    " : "";
             var sb = new StringBuilder();
             sb.Append($"{i}nuget_package(\n");
-            sb.Append($"{i}    name = \"{PackageIdentity.Id.ToLower()}\",\n");
+            if (Variable == null)
+                sb.Append($"{i}    name = \"{PackageIdentity.Id.ToLower()}\",\n");
+            else
+                sb.Append($"{i}    name = {Variable},\n");
+
             sb.Append($"{i}    package = \"{PackageIdentity.Id.ToLower()}\",\n");
             sb.Append($"{i}    version = \"{PackageIdentity.Version}\",\n");
             if (!String.IsNullOrEmpty(Sha256))
@@ -190,7 +210,7 @@ namespace nuget2bazel
             if (CoreTool != null && CoreTool.Sum(x => x.Value.Count()) > 0)
             {
                 sb.Append($"{i}   core_tool = {{\n");
-                foreach (var pair in NetTool)
+                foreach (var pair in CoreTool)
                     sb.Append($"{i}       \"{pair.Key}\": \"{pair.Value}\",\n");
                 sb.Append($"{i}   }},\n");
             }
@@ -207,7 +227,7 @@ namespace nuget2bazel
             if (Core_Deps != null && Core_Deps.Sum(x => x.Value.Count()) > 0)
             {
                 sb.Append($"{i}    core_deps = {{\n");
-                foreach (var pair in Net_Deps)
+                foreach (var pair in Core_Deps)
                 {
                     if (!pair.Value.Any())
                         continue;
@@ -287,12 +307,12 @@ namespace nuget2bazel
             return sb.ToString();
         }
 
-        private string ToRefCore(string id)
+        private string ToRefCore(string id, NuGetFramework framework)
         {
             if (SdkList.Dlls.Contains(id.ToLower()))
-                return $"@io_bazel_rules_dotnet//dotnet/stdlib.core:{id.ToLower()}.dll";
+                return null;
 
-            return $"@{id.ToLower()}//:core";
+            return $"@{id.ToLower()}//:{framework.GetShortFolderName()}_core";
         }
 
         private string ToRefMono(string id)
@@ -322,6 +342,7 @@ namespace nuget2bazel
 
         public PackageIdentity PackageIdentity { get; set; }
         public string Sha256 { get; set; }
+        public string Variable { get; set; }
         public IDictionary<string, string> CoreLib { get; set; }
         public IDictionary<string, string> NetLib { get; set; }
         public string MonoLib { get; set; }

@@ -2,7 +2,7 @@
   "profiles": {
     "nuget2bazel": {
       "commandName": "Project",
-      "commandLineArgs": "add -p c:/rules_dotnet/dotnet/private/deps -b nuget.bzl -c nuget.json -i -l  CommandLineParser 2.6.0"
+      "commandLineArgs": "add -p c:/rules_dotnet/dotnet/private/deps -b nunit.bzl -c nunit.json -i -m nunit3-console.exe nunit.consolerunner 3.10.0"
     }
   }
 }

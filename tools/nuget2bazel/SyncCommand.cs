@@ -60,7 +60,7 @@ namespace nuget2bazel
             try
             {
                 var cmd = new AddCommand();
-                await cmd.Do(prjConfig, package, version, null, true, false);
+                await cmd.Do(prjConfig, package, version, null, true, false, null);
             }
             catch (Exception ex)
             {

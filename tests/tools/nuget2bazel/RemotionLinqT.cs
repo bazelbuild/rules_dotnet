@@ -11,7 +11,7 @@ namespace nuget2bazel
     {
         public List<WorkspaceEntry> Entries = new List<WorkspaceEntry>();
 
-        public TestProject(ProjectBazelConfig prjConfig) : base(prjConfig, null, false)
+        public TestProject(ProjectBazelConfig prjConfig) : base(prjConfig, null, false, null)
         {
         }
 

@@ -27,7 +27,7 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 	int i;
 
 	// xunit runner
-	sprintf(xunit, "%s/net.nunit-console-runner.exe", manifestDir);
+	sprintf(xunit, "%s/nunit-console.exe", manifestDir);
 
 	// Based on current exe calculate _0.dll to run
 	p = strrchr(Exe, '/');

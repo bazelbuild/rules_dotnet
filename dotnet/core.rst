@@ -263,7 +263,7 @@ Test example
         ],
         deps = [
             "//examples/example_lib:MyClass",
-            "@nunit2//:nunit.framework",
+            "@nunitv2//:netstandard1.0_net",
         ],
     )
 

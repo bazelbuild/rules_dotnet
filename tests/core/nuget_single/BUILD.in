@@ -6,7 +6,7 @@ dotnet_nunit_test(
         "MyTest.cs",
     ],
     deps = [
-        "@nunit2//:nunit.framework.dll",
+        "@nunitv2//:netstandard1.0_net",
         "@npgsql//:lib",
     ],
     size = "small",

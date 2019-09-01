@@ -21,11 +21,10 @@ core_xunit_test(
     data = [
         ":custom_bin.exe",
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
-    native_deps = "@core_sdk_{}//:native_deps".format(framework),
-    testlauncher = "@{}_xunit//:xunit.console.exe".format(framework),
     deps = [
-        "@{}_xunit//:xunit.core.dll".format(framework),
-        "@{}_xunit_assert//:assert.xunit.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.dll",
+        "@xunit.assert//:netcoreapp2.1_core",
+        "@xunit.extensibility.core//:netcoreapp2.1_core",
+        "@xunit.extensibility.execution//:netcoreapp2.1_core",
     ],
 )

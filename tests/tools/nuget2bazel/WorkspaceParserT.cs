@@ -199,5 +199,25 @@ nuget_package(
 
         }
 
+        [Fact]
+        public void EntryWithVariable()
+        {
+            var data = @"
+nuget_package(
+    name = nunitv2,
+    package = ""remotion.linq"",
+    version = ""2.2.0"",
+)
+";
+            var parser = new WorkspaceParser(data);
+            var result = parser.Parse();
+            Assert.Single(result);
+            var entry = result.First();
+            Assert.Equal("remotion.linq", entry.PackageIdentity.Id);
+            Assert.Equal("nunitv2", entry.Variable);
+            Assert.Equal("2.2.0", entry.PackageIdentity.Version.ToString());
+
+        }
+
     }
 }

@@ -19,9 +19,9 @@ namespace nuget2bazel
 {
     public class AddCommand
     {
-        public Task Do(ProjectBazelConfig prjConfig, string package, string version, string mainFile, bool skipSha256, bool lowest)
+        public Task Do(ProjectBazelConfig prjConfig, string package, string version, string mainFile, bool skipSha256, bool lowest, string variable)
         {
-            var project = new ProjectBazelManipulator(prjConfig, mainFile, skipSha256);
+            var project = new ProjectBazelManipulator(prjConfig, mainFile, skipSha256, variable);
 
             return DoWithProject(package, version, project, lowest);
         }

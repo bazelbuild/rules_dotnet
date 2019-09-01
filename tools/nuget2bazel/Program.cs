@@ -14,7 +14,7 @@ namespace nuget2bazel
                 (AddVerb opts) =>
                 {
                     var prjConfig = new ProjectBazelConfig(opts);
-                    var res = new AddCommand().Do(prjConfig, opts.Package, opts.Version, opts.MainFile, opts.SkipSha256, opts.Lowest);
+                    var res = new AddCommand().Do(prjConfig, opts.Package, opts.Version, opts.MainFile, opts.SkipSha256, opts.Lowest, opts.Variable);
                     res.Wait();
                     return 0;
                 },
@@ -35,7 +35,7 @@ namespace nuget2bazel
                 (UpdateVerb opts) =>
                 {
                     var prjConfig = new ProjectBazelConfig(opts);
-                    var res = new UpdateCommand().Do(prjConfig, opts.Package, opts.Version, opts.MainFile, opts.SkipSha256, opts.Lowest);
+                    var res = new UpdateCommand().Do(prjConfig, opts.Package, opts.Version, opts.MainFile, opts.SkipSha256, opts.Lowest, opts.Variable);
                     res.Wait();
                     return 0;
                 },

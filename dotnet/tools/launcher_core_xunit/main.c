@@ -88,7 +88,7 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 	sprintf(dotnet, "%s/dotnet", manifestDir);
 
 	// xunit runner
-	sprintf(xunit, "%s/xunit.console.exe", manifestDir);
+	sprintf(xunit, "%s/xunit.console.dll", manifestDir);
 
 	// Based on current exe calculate _0.dll to run
 	p = strrchr(Exe, '/');

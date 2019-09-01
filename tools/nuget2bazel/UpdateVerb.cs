@@ -34,5 +34,10 @@ namespace nuget2bazel
         Default = false,
         HelpText = "Dependency behavior. Default is HighestMinor; setting this option changes to Lowest")]
         public bool Lowest { get; set; }
+
+        [Option('v', "variable",
+            Default = null,
+            HelpText = "Variable name to use in nuget_package rule")]
+        public string Variable { get; set; }
     }
 }

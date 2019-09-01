@@ -1,8 +1,0 @@
-package(default_visibility = ["//visibility:public"])
-
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "net_import_library")
-
-net_import_library(
-    name = "lib",
-    src = "lib/net45/nunit.framework.dll",
-)

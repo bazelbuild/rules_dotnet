@@ -8,7 +8,7 @@ dotnet_nunit_test(
     ],
     deps = [
         "//tests/examples/example_lib:MyClass.dll",
-        "@nunit2//:nunit.framework.dll",
+        "@nunitv2//:netstandard1.0_net",
     ],
 )
 
@@ -22,7 +22,7 @@ dotnet_nunit_test(
     native_deps = "@net_sdk_{}//:native_deps".format(framework),
     deps = [
         "//tests/examples/example_lib:MyClass-net_{}.dll".format(framework),
-        "@nunit2//:net.nunit.framework.dll",
+        "@nunitv2//:net472_net",
     ],
 ) for framework in DOTNET_NET_FRAMEWORKS]
 
@@ -35,8 +35,9 @@ dotnet_nunit_test(
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
     native_deps = "@net_sdk_{}//:native_deps".format(framework),
     deps = [
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net/{}:system.runtime.dll".format(framework),
         "//tests/examples/example_lib:MyClass-net_{}.dll".format(framework),
-        "@nunit3//:lib",
+        "@nunit//:net472_net",
     ],
 ) for framework in [
     "net45",

@@ -19,7 +19,10 @@ namespace testlib
 
             var dir = Path.Combine(Path.GetTempPath(), result);
             CopyFiles(files, dir);
-            return RunCommand(dir, out stdout, out stderr);
+            int r = RunCommand(dir, out stdout, out stderr);
+            string o, e;
+            RunShutdown(dir, out o, out e);
+            return r;
         }
 
         private int RunCommand(string dir, out string stdout, out string stderr)
@@ -36,6 +39,40 @@ namespace testlib
                 myProcess.StartInfo.FileName = bazel;
                 myProcess.StartInfo.CreateNoWindow = true;
                 myProcess.StartInfo.Arguments = $"--bazelrc bazelrc test //...";
+                myProcess.StartInfo.WorkingDirectory = dir;
+                myProcess.StartInfo.RedirectStandardError = true;
+                myProcess.StartInfo.RedirectStandardOutput = true;
+                myProcess.Start();
+
+                bool r = myProcess.WaitForExit(300 * 1000);
+                if (!r)
+                    myProcess.Kill();
+
+                var err = myProcess.StandardError.ReadToEnd();
+                var output = myProcess.StandardOutput.ReadToEnd();
+                Console.WriteLine(output);
+                Console.WriteLine(err);
+                stdout = output;
+                stderr = err;
+                return r ? myProcess.ExitCode : -100;
+            }
+
+        }
+
+        private int RunShutdown(string dir, out string stdout, out string stderr)
+        {
+            var bazel = GetBazelPath();
+
+            Environment.SetEnvironmentVariable("TEST_TMPDIR", "");
+
+            Console.WriteLine($"Starting {bazel} in {dir}");
+
+            using (var myProcess = new Process())
+            {
+                myProcess.StartInfo.UseShellExecute = false;
+                myProcess.StartInfo.FileName = bazel;
+                myProcess.StartInfo.CreateNoWindow = true;
+                myProcess.StartInfo.Arguments = $"shutdown";
                 myProcess.StartInfo.WorkingDirectory = dir;
                 myProcess.StartInfo.RedirectStandardError = true;
                 myProcess.StartInfo.RedirectStandardOutput = true;
@@ -126,7 +163,7 @@ namespace testlib
             {
                 using (var sha = SHA256.Create())
                 {
-                    using (var stream = new FileStream(Path.Combine(srcPath, f), FileMode.Open))
+                    using (var stream = new FileStream(Path.Combine(srcPath, f), FileMode.Open, FileAccess.Read))
                     {
                         var bytes = sha.ComputeHash(stream);
                         combined += Convert.ToBase64String(bytes);

@@ -17,6 +17,6 @@ dotnet_nunit_test(
         ":custom_bin.exe",
     ],
     deps = [
-        "@nunit2//:nunit.framework.dll",
+        "@nunitv2//:netstandard1.0_net",
     ],
 )

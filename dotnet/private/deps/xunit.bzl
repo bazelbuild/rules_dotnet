@@ -22,13 +22,8 @@ def dotnet_repositories_xunit():
         },
         mono_lib = "tools/net472/xunit.abstractions.dll",
        core_tool = {
-           "net452": "tools/net452/xunit.console.exe",
-           "net46": "tools/net46/xunit.console.exe",
-           "net461": "tools/net461/xunit.console.exe",
-           "net462": "tools/net462/xunit.console.exe",
-           "net47": "tools/net47/xunit.console.exe",
-           "net471": "tools/net471/xunit.console.exe",
-           "net472": "tools/net472/xunit.console.exe",
+           "netcoreapp2.0": "tools/netcoreapp2.0/xunit.console.dll",
+           "netcoreapp2.1": "tools/netcoreapp2.0/xunit.console.dll",
        },
        net_tool = {
            "net452": "tools/net452/xunit.console.exe",
@@ -502,53 +497,11 @@ def dotnet_repositories_xunit():
         },
         mono_lib = "lib/net452/xunit.core.dll",
         core_deps = {
-            "net45": [
-               "@xunit.abstractions//:net45_net",
+            "netcoreapp2.0": [
+               "@xunit.abstractions//:netcoreapp2.0_core",
             ],
-            "net451": [
-               "@xunit.abstractions//:net451_net",
-            ],
-            "net452": [
-               "@xunit.abstractions//:net452_net",
-            ],
-            "net46": [
-               "@xunit.abstractions//:net46_net",
-            ],
-            "net461": [
-               "@xunit.abstractions//:net461_net",
-            ],
-            "net462": [
-               "@xunit.abstractions//:net462_net",
-            ],
-            "net47": [
-               "@xunit.abstractions//:net47_net",
-            ],
-            "net471": [
-               "@xunit.abstractions//:net471_net",
-            ],
-            "net472": [
-               "@xunit.abstractions//:net472_net",
-            ],
-            "netstandard1.1": [
-               "@xunit.abstractions//:netstandard1.1_net",
-            ],
-            "netstandard1.2": [
-               "@xunit.abstractions//:netstandard1.2_net",
-            ],
-            "netstandard1.3": [
-               "@xunit.abstractions//:netstandard1.3_net",
-            ],
-            "netstandard1.4": [
-               "@xunit.abstractions//:netstandard1.4_net",
-            ],
-            "netstandard1.5": [
-               "@xunit.abstractions//:netstandard1.5_net",
-            ],
-            "netstandard1.6": [
-               "@xunit.abstractions//:netstandard1.6_net",
-            ],
-            "netstandard2.0": [
-               "@xunit.abstractions//:netstandard2.0_net",
+            "netcoreapp2.1": [
+               "@xunit.abstractions//:netcoreapp2.1_core",
             ],
         },
         net_deps = {
@@ -738,53 +691,11 @@ def dotnet_repositories_xunit():
         },
         mono_lib = "lib/net452/xunit.execution.desktop.dll",
         core_deps = {
-            "net45": [
-               "@xunit.extensibility.core//:net45_net",
+            "netcoreapp2.0": [
+               "@xunit.extensibility.core//:netcoreapp2.0_core",
             ],
-            "net451": [
-               "@xunit.extensibility.core//:net451_net",
-            ],
-            "net452": [
-               "@xunit.extensibility.core//:net452_net",
-            ],
-            "net46": [
-               "@xunit.extensibility.core//:net46_net",
-            ],
-            "net461": [
-               "@xunit.extensibility.core//:net461_net",
-            ],
-            "net462": [
-               "@xunit.extensibility.core//:net462_net",
-            ],
-            "net47": [
-               "@xunit.extensibility.core//:net47_net",
-            ],
-            "net471": [
-               "@xunit.extensibility.core//:net471_net",
-            ],
-            "net472": [
-               "@xunit.extensibility.core//:net472_net",
-            ],
-            "netstandard1.1": [
-               "@xunit.extensibility.core//:netstandard1.1_net",
-            ],
-            "netstandard1.2": [
-               "@xunit.extensibility.core//:netstandard1.2_net",
-            ],
-            "netstandard1.3": [
-               "@xunit.extensibility.core//:netstandard1.3_net",
-            ],
-            "netstandard1.4": [
-               "@xunit.extensibility.core//:netstandard1.4_net",
-            ],
-            "netstandard1.5": [
-               "@xunit.extensibility.core//:netstandard1.5_net",
-            ],
-            "netstandard1.6": [
-               "@xunit.extensibility.core//:netstandard1.6_net",
-            ],
-            "netstandard2.0": [
-               "@xunit.extensibility.core//:netstandard2.0_net",
+            "netcoreapp2.1": [
+               "@xunit.extensibility.core//:netcoreapp2.1_core",
             ],
         },
         net_deps = {
@@ -927,73 +838,13 @@ def dotnet_repositories_xunit():
         version = "2.4.1",
         sha256 = "2a05200082483c7439550e05881fa2e6ed895d26319af30257ccd73f891ccbda",
         core_deps = {
-            "net45": [
-               "@xunit.extensibility.core//:net45_net",
-               "@xunit.extensibility.execution//:net45_net",
+            "netcoreapp2.0": [
+               "@xunit.extensibility.core//:netcoreapp2.0_core",
+               "@xunit.extensibility.execution//:netcoreapp2.0_core",
             ],
-            "net451": [
-               "@xunit.extensibility.core//:net451_net",
-               "@xunit.extensibility.execution//:net451_net",
-            ],
-            "net452": [
-               "@xunit.extensibility.core//:net452_net",
-               "@xunit.extensibility.execution//:net452_net",
-            ],
-            "net46": [
-               "@xunit.extensibility.core//:net46_net",
-               "@xunit.extensibility.execution//:net46_net",
-            ],
-            "net461": [
-               "@xunit.extensibility.core//:net461_net",
-               "@xunit.extensibility.execution//:net461_net",
-            ],
-            "net462": [
-               "@xunit.extensibility.core//:net462_net",
-               "@xunit.extensibility.execution//:net462_net",
-            ],
-            "net47": [
-               "@xunit.extensibility.core//:net47_net",
-               "@xunit.extensibility.execution//:net47_net",
-            ],
-            "net471": [
-               "@xunit.extensibility.core//:net471_net",
-               "@xunit.extensibility.execution//:net471_net",
-            ],
-            "net472": [
-               "@xunit.extensibility.core//:net472_net",
-               "@xunit.extensibility.execution//:net472_net",
-            ],
-            "netstandard1.0": [
-               "@xunit.extensibility.core//:netstandard1.0_net",
-               "@xunit.extensibility.execution//:netstandard1.0_net",
-            ],
-            "netstandard1.1": [
-               "@xunit.extensibility.core//:netstandard1.1_net",
-               "@xunit.extensibility.execution//:netstandard1.1_net",
-            ],
-            "netstandard1.2": [
-               "@xunit.extensibility.core//:netstandard1.2_net",
-               "@xunit.extensibility.execution//:netstandard1.2_net",
-            ],
-            "netstandard1.3": [
-               "@xunit.extensibility.core//:netstandard1.3_net",
-               "@xunit.extensibility.execution//:netstandard1.3_net",
-            ],
-            "netstandard1.4": [
-               "@xunit.extensibility.core//:netstandard1.4_net",
-               "@xunit.extensibility.execution//:netstandard1.4_net",
-            ],
-            "netstandard1.5": [
-               "@xunit.extensibility.core//:netstandard1.5_net",
-               "@xunit.extensibility.execution//:netstandard1.5_net",
-            ],
-            "netstandard1.6": [
-               "@xunit.extensibility.core//:netstandard1.6_net",
-               "@xunit.extensibility.execution//:netstandard1.6_net",
-            ],
-            "netstandard2.0": [
-               "@xunit.extensibility.core//:netstandard2.0_net",
-               "@xunit.extensibility.execution//:netstandard2.0_net",
+            "netcoreapp2.1": [
+               "@xunit.extensibility.core//:netcoreapp2.1_core",
+               "@xunit.extensibility.execution//:netcoreapp2.1_core",
             ],
         },
         net_deps = {
@@ -1077,90 +928,15 @@ def dotnet_repositories_xunit():
         version = "2.4.1",
         sha256 = "4060ee134667b31c8424e34ff06709f343e63de6fe39ac307525bccbbd9ac375",
         core_deps = {
-            "net45": [
-               "@xunit.core//:net45_net",
-               "@xunit.assert//:net45_net",
-               "@xunit.analyzers//:net45_net",
+            "netcoreapp2.0": [
+               "@xunit.core//:netcoreapp2.0_core",
+               "@xunit.assert//:netcoreapp2.0_core",
+               "@xunit.analyzers//:netcoreapp2.0_core",
             ],
-            "net451": [
-               "@xunit.core//:net451_net",
-               "@xunit.assert//:net451_net",
-               "@xunit.analyzers//:net451_net",
-            ],
-            "net452": [
-               "@xunit.core//:net452_net",
-               "@xunit.assert//:net452_net",
-               "@xunit.analyzers//:net452_net",
-            ],
-            "net46": [
-               "@xunit.core//:net46_net",
-               "@xunit.assert//:net46_net",
-               "@xunit.analyzers//:net46_net",
-            ],
-            "net461": [
-               "@xunit.core//:net461_net",
-               "@xunit.assert//:net461_net",
-               "@xunit.analyzers//:net461_net",
-            ],
-            "net462": [
-               "@xunit.core//:net462_net",
-               "@xunit.assert//:net462_net",
-               "@xunit.analyzers//:net462_net",
-            ],
-            "net47": [
-               "@xunit.core//:net47_net",
-               "@xunit.assert//:net47_net",
-               "@xunit.analyzers//:net47_net",
-            ],
-            "net471": [
-               "@xunit.core//:net471_net",
-               "@xunit.assert//:net471_net",
-               "@xunit.analyzers//:net471_net",
-            ],
-            "net472": [
-               "@xunit.core//:net472_net",
-               "@xunit.assert//:net472_net",
-               "@xunit.analyzers//:net472_net",
-            ],
-            "netstandard1.0": [
-               "@xunit.core//:netstandard1.0_net",
-               "@xunit.assert//:netstandard1.0_net",
-               "@xunit.analyzers//:netstandard1.0_net",
-            ],
-            "netstandard1.1": [
-               "@xunit.core//:netstandard1.1_net",
-               "@xunit.assert//:netstandard1.1_net",
-               "@xunit.analyzers//:netstandard1.1_net",
-            ],
-            "netstandard1.2": [
-               "@xunit.core//:netstandard1.2_net",
-               "@xunit.assert//:netstandard1.2_net",
-               "@xunit.analyzers//:netstandard1.2_net",
-            ],
-            "netstandard1.3": [
-               "@xunit.core//:netstandard1.3_net",
-               "@xunit.assert//:netstandard1.3_net",
-               "@xunit.analyzers//:netstandard1.3_net",
-            ],
-            "netstandard1.4": [
-               "@xunit.core//:netstandard1.4_net",
-               "@xunit.assert//:netstandard1.4_net",
-               "@xunit.analyzers//:netstandard1.4_net",
-            ],
-            "netstandard1.5": [
-               "@xunit.core//:netstandard1.5_net",
-               "@xunit.assert//:netstandard1.5_net",
-               "@xunit.analyzers//:netstandard1.5_net",
-            ],
-            "netstandard1.6": [
-               "@xunit.core//:netstandard1.6_net",
-               "@xunit.assert//:netstandard1.6_net",
-               "@xunit.analyzers//:netstandard1.6_net",
-            ],
-            "netstandard2.0": [
-               "@xunit.core//:netstandard2.0_net",
-               "@xunit.assert//:netstandard2.0_net",
-               "@xunit.analyzers//:netstandard2.0_net",
+            "netcoreapp2.1": [
+               "@xunit.core//:netcoreapp2.1_core",
+               "@xunit.assert//:netcoreapp2.1_core",
+               "@xunit.analyzers//:netcoreapp2.1_core",
             ],
         },
         net_deps = {

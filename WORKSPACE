@@ -49,53 +49,6 @@ net_gac4(
     version = "4.0.0.0",
 )
 
-[http_archive(
-    name = "{}_xunit_abstractions".format(framework),
-    build_file = "@io_bazel_rules_dotnet//3rd_party:abstractions.xunit/repo_{}.bzl".format(framework),
-    sha256 = "302dfe0b87993528b2e0c227b4aca4bec82ed136163d7b4b3f75f24f9d43f6fa",
-    strip_prefix = "abstractions.xunit-2.0.1",
-    urls = ["https://github.com/xunit/abstractions.xunit/archive/2.0.1.tar.gz"],
-) for framework in DOTNET_CORE_FRAMEWORKS]
-
-[http_archive(
-    name = "{}_xunit_assert".format(framework),
-    build_file = "@io_bazel_rules_dotnet//3rd_party:assert.xunit/repo_{}.bzl".format(framework),
-    sha256 = "82e662c9a30b9468640d4e1b0db3fca58c22d5ac6f9b7ab8cc16ba1e35515d1c",
-    strip_prefix = "assert.xunit-2.4.1",
-    urls = ["https://github.com/xunit/assert.xunit/archive/2.4.1.tar.gz"],
-) for framework in DOTNET_CORE_FRAMEWORKS]
-
-[http_archive(
-    name = "{}_testfx".format(framework),
-    build_file = "@io_bazel_rules_dotnet//3rd_party:testfx/repo_{}.bzl".format(framework),
-    strip_prefix = "testfx-1.4.0",
-    urls = ["https://github.com/Microsoft/testfx/archive/1.4.0.tar.gz"],
-) for framework in DOTNET_CORE_FRAMEWORKS]
-
-[http_archive(
-    name = "{}_xunit".format(framework),
-    build_file = "//3rd_party:xunit/repo_{}.bzl".format(framework),
-    sha256 = "01a73e2fd8675fb2237ba067f2f3f12baf6d388216145fcb8374d6085f056f71",
-    strip_prefix = "xunit-2.4.1",
-    urls = ["https://github.com/xunit/xunit/archive/2.4.1.tar.gz"],
-) for framework in DOTNET_CORE_FRAMEWORKS]
-
-http_archive(
-    name = "xunit",
-    build_file = "//3rd_party:xunit/repo_{}.bzl".format(DEFAULT_DOTNET_CORE_FRAMEWORK),
-    sha256 = "01a73e2fd8675fb2237ba067f2f3f12baf6d388216145fcb8374d6085f056f71",
-    strip_prefix = "xunit-2.4.1",
-    urls = ["https://github.com/xunit/xunit/archive/2.4.1.tar.gz"],
-)
-
-http_archive(
-    name = "xunit_assert",
-    build_file = "@io_bazel_rules_dotnet//3rd_party:assert.xunit/repo_{}.bzl".format(DEFAULT_DOTNET_CORE_FRAMEWORK),
-    sha256 = "82e662c9a30b9468640d4e1b0db3fca58c22d5ac6f9b7ab8cc16ba1e35515d1c",
-    strip_prefix = "assert.xunit-2.4.1",
-    urls = ["https://github.com/xunit/assert.xunit/archive/2.4.1.tar.gz"],
-)
-
 # The rule is left as an example. It is commented out, because our CI server doesn't have VS2017 installed
 # vs2017_ref_net(name = "vs2017_ref")
 

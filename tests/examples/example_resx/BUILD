@@ -25,10 +25,13 @@ load(
     dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
     native_deps = "@core_sdk_{}//:native_deps".format(framework),
     resources = [":{}_core.resx".format(framework)],
-    testlauncher = "@{}_xunit//:xunit.console.exe".format(framework),
+    testlauncher = "@xunit.runner.console//:netcoreapp2.0_core_tool",
     deps = [
-        "@{}_xunit_assert//:assert.xunit.dll".format(framework),
-        "@{}_xunit//:xunit.core.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.runtime.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.diagnostics.tools.dll".format(framework),
+        "@xunit.assert//:netcoreapp2.0_core",
+        "@xunit.extensibility.core//:netcoreapp2.0_core",
+        "@xunit.extensibility.execution//:netcoreapp2.0_core",
     ],
 ) for framework in DOTNET_CORE_FRAMEWORKS]
 

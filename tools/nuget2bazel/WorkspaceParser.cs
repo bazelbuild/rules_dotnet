@@ -23,11 +23,21 @@ namespace nuget2bazel
             return ParseEntries();
         }
 
+        public class UnexpectedToken : Exception
+        {
+            public UnexpectedToken(string literal)
+            {
+                Literal = literal;
+            }
+
+            public string Literal { get; }
+        }
+
         private IEnumerable<WorkspaceEntry> ParseEntries()
         {
             var result = new List<WorkspaceEntry>();
 
-            for (;;)
+            for (; ; )
             {
                 var entry = ParseEntry();
                 if (entry == null)
@@ -54,7 +64,7 @@ namespace nuget2bazel
             RequireToken(TokenCode.LPAR);
 
             var finished = false;
-            while(!finished)
+            while (!finished)
             {
                 var (token, val) = PeekToken();
                 switch (token)
@@ -62,7 +72,14 @@ namespace nuget2bazel
                     case TokenCode.NAME:
                         RequireToken(TokenCode.NAME);
                         RequireToken(TokenCode.EQUAL);
-                        RequireToken(TokenCode.STRING);
+                        try
+                        {
+                            RequireToken(TokenCode.STRING);
+                        }
+                        catch (UnexpectedToken ex)
+                        {
+                            result.Variable = ex.Literal;
+                        }
                         break;
                     case TokenCode.CORE_FILES:
                         result.Core_Files = RequireDictionaryList(TokenCode.CORE_FILES);
@@ -153,7 +170,7 @@ namespace nuget2bazel
             RequireToken(TokenCode.LCURLY);
 
             var result = new Dictionary<string, string>();
-            for (;;)
+            for (; ; )
             {
                 var (token, value) = GetToken();
                 if (token == TokenCode.STRING)
@@ -270,6 +287,7 @@ namespace nuget2bazel
             COLON,
             LCURLY,
             RCURLY,
+            LITERAL,
         }
 
         public struct Token
@@ -338,7 +356,7 @@ namespace nuget2bazel
             if (str == "net_files") return (TokenCode.NET_FILES, null);
             if (str == "mono_files") return (TokenCode.MONO_FILES, null);
 
-            throw new InvalidOperationException($"Unknown token: {str}");
+            throw new UnexpectedToken(str);
         }
 
         private (TokenCode, string) PeekToken()

@@ -24,17 +24,20 @@ namespace nuget2bazel
     {
         private readonly string _mainFile;
         private readonly bool _skipSha256;
+        private readonly string _variable;
+
         public string JsonConfigPath { get; set; }
         public string WorkspacePath { get; set; }
         public IEnumerable<NuGetProjectAction> NuGetProjectActions { get; set; }
 
         public ProjectBazelConfig ProjectConfig { get; private set; }
 
-        public ProjectBazelManipulator(ProjectBazelConfig prjConfig, string mainFile, bool skipSha256) : base(Path.Combine(prjConfig.RootPath, "packages"))
+        public ProjectBazelManipulator(ProjectBazelConfig prjConfig, string mainFile, bool skipSha256, string variable) : base(Path.Combine(prjConfig.RootPath, "packages"))
         {
             ProjectConfig = prjConfig;
             _mainFile = mainFile;
             _skipSha256 = skipSha256;
+            _variable = variable;
             JsonConfigPath = Path.Combine(ProjectConfig.RootPath, ProjectConfig.Nuget2BazelConfigName);
             WorkspacePath = Path.Combine(ProjectConfig.RootPath, ProjectConfig.BazelFileName);
         }
@@ -158,14 +161,13 @@ namespace nuget2bazel
             else if (packageReader is PackageFolderReader reader2)
                 refItemGroups = await reader2.GetItemsAsync(PackagingConstants.Folders.Ref, token);
 
-            var deps = (PackageDependencyInfo)NuGetProjectActions.First(x => x.PackageIdentity.Equals(packageIdentity)).PackageIdentity;
             var sha256 = "";
             if (!_skipSha256)
             {
                 sha256 = GetSha(downloadResourceResult.PackageStream);
             }
             var entry = new WorkspaceEntry(packageIdentity, sha256,
-                depsGroups, libItemGroups, toolItemGroups, refItemGroups, _mainFile);
+                depsGroups, libItemGroups, toolItemGroups, refItemGroups, _mainFile, _variable);
 
             if (!SdkList.Dlls.Contains(entry.PackageIdentity.Id.ToLower()))
             {

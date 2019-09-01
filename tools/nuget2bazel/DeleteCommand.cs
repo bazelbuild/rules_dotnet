@@ -25,7 +25,7 @@ namespace nuget2bazel
             providers.AddRange(Repository.Provider.GetCoreV3());  // Add v3 API support
 
             var settings = Settings.LoadDefaultSettings(prjConfig.RootPath, null, new MachineWideSettings());
-            var project = new ProjectBazelManipulator(prjConfig, null, false);
+            var project = new ProjectBazelManipulator(prjConfig, null, false, null);
             var sourceRepositoryProvider = new SourceRepositoryProvider(settings, providers);
             var solutionManager = new BazelSolutionManager(project, prjConfig.RootPath);
             var deleteManager = new DeleteOnRestart();

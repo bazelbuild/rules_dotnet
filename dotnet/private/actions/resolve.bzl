@@ -3,31 +3,252 @@ load(
     "DotnetLibrary",
 )
 
-# Expects List of depset(Target). Each Target needs to provide DotnetLibrary provider.
-# Recalculates transitive dependencies. The result does not include input targets.
-def ResolveVersionsRaw(targets):
+# Expects List of tuples (File|DotnetLibrary, version).
+# Recalculates transitive dependencies.
+def _ResolveVersions(targets):
     matched = {}
-    for d in targets:
-        for f in d.to_list():
-            ts = f[DotnetLibrary].transitive.to_list()
-            for t in ts:
-                dl = t[DotnetLibrary]
-                key = dl.result.basename
-                found = matched.get(key)
-                if not found:
-                    matched[key] = t
+    matched_versions = {}
 
-    values = matched.values()
-    values_depset = None if len(values) == 0 else [depset(direct = values)]
-    transitive = depset(direct = [], transitive = values_depset)
-    transitive_runfiles = depset(direct = [], transitive = [a[DotnetLibrary].runfiles for a in values])
+    for d, v in targets:
+        if type(d) == "Target":
+            key = d[DotnetLibrary].result.basename
+        else:
+            key = d.basename
+        found = matched_versions.get(key)
+        if not found:
+            matched[key] = d
+            matched_versions[key] = v
+        elif found < v:
+            matched[key] = d
+            matched_versions[key] = v
+
+    return matched.values()
+
+# Tries to decipher arguments to the list of File or DotnetLibrary
+# We need to do tricky calls because Starlark doesn't support recursion
+def ResolveVersions(*argv):
+    toprocess_transitive = []
+    toprocess_runfiles = []
+    for arg in argv:
+        toprocess_runfiles += _ResolveRunfilesLevel1(arg)
+        toprocess_transitive += _ResolveTransitiveLevel1(arg)
+
+    transitive = _ResolveVersions(toprocess_transitive)
+    transitive_runfiles = _ResolveVersions(toprocess_runfiles)
+
+    transitive = depset(direct = transitive)
+    transitive_runfiles = depset(transitive_runfiles)
     return transitive, transitive_runfiles
 
-# Expects List of Traget. Each Target needs to provide DotnetLibrary provider.
-# Includes in the result both deps and its unique transitive dependencies
-def ResolveVersions(deps):
-    targets = [t[DotnetLibrary].transitive for t in deps]
+def _ResolveRunfilesLevel1(arg):
+    result = []
+    if (type(arg)) == "list":
+        for inner in arg:
+            result += _ResolveRunfilesLevel2(inner, None)
+        return result
 
-    transitive, transitive_runfiles = ResolveVersionsRaw(targets)
-    transitive = depset(direct = deps, transitive = [transitive])
-    return transitive, transitive_runfiles
+    if (type(arg) == "Target"):
+        result += _ResolveRunfilesLevel2(arg[DotnetLibrary].runfiles.to_list(), arg[DotnetLibrary].version)
+        return result
+
+    if (type(arg) == "struct"):
+        result += _ResolveRunfilesLevel2(arg.runfiles.to_list(), arg.version)
+        return result
+
+    if (type(arg) == "File"):
+        result += [(arg, None)]
+        return result
+
+    fail("Unknown argument %s" % arg)
+
+def _ResolveRunfilesLevel2(arg, version):
+    result = []
+    if (type(arg)) == "list":
+        for inner in arg:
+            result += _ResolveRunfilesLevel3(inner, version)
+        return result
+
+    if (type(arg) == "Target"):
+        result += _ResolveRunfilesLevel3(arg[DotnetLibrary].runfiles.to_list(), arg[DotnetLibrary].version)
+        return result
+
+    if (type(arg) == "struct"):
+        result += _ResolveRunfilesLevel3(arg.runfiles.to_list(), arg.version)
+        return result
+
+    if (type(arg) == "File"):
+        result += [(arg, version)]
+        return result
+
+    fail("Unknown argument %s" % arg)
+
+def _ResolveRunfilesLevel3(arg, version):
+    result = []
+    if (type(arg)) == "list":
+        for inner in arg:
+            result += _ResolveRunfilesLevel4(inner, version)
+        return result
+
+    if (type(arg) == "Target"):
+        result += _ResolveRunfilesLevel4(arg[DotnetLibrary].runfiles.to_list(), arg[DotnetLibrary].version)
+        return result
+
+    if (type(arg) == "struct"):
+        result += _ResolveRunfilesLevel4(arg.runfiles.to_list(), arg.version)
+        return result
+
+    if (type(arg) == "File"):
+        result += [(arg, version)]
+        return result
+
+    fail("Unknown argument %s" % arg)
+
+def _ResolveRunfilesLevel4(arg, version):
+    result = []
+    if (type(arg)) == "list" or type(arg) == "Target" or type(arg) == "struct":
+        fail("Recursion to deep on %s" % arg)
+
+    if (type(arg) == "File"):
+        result += [(arg, version)]
+        return result
+
+    fail("Unknown argument %s" % arg)
+
+def _ResolveTransitiveLevel1(arg):
+    result = []
+    if (type(arg)) == "list":
+        for inner in arg:
+            result += _ResolveTransitiveLevel2(inner, None)
+        return result
+
+    if (type(arg) == "Target"):
+        result += [(arg, arg[DotnetLibrary].version)]
+        result += _ResolveTransitiveLevel2(arg[DotnetLibrary].transitive.to_list(), arg[DotnetLibrary].version)
+        return result
+
+    if (type(arg) == "struct"):
+        result += _ResolveTransitiveLevel2(arg.transitive.to_list(), arg.version)
+        return result
+
+    fail("Unknown argument %s" % arg)
+
+def _ResolveTransitiveLevel2(arg, version):
+    result = []
+    if (type(arg)) == "list":
+        for inner in arg:
+            result += _ResolveTransitiveLevel3(inner, version)
+        return result
+
+    if (type(arg) == "Target"):
+        result += [(arg, arg[DotnetLibrary].version)]
+        result += _ResolveTransitiveLevel3(arg[DotnetLibrary].transitive.to_list(), arg[DotnetLibrary].version)
+        return result
+
+    fail("Unknown argument %s" % arg)
+
+def _ResolveTransitiveLevel3(arg, version):
+    result = []
+    if (type(arg)) == "list":
+        for inner in arg:
+            result += _ResolveTransitiveLevel4(inner, version)
+        return result
+
+    if (type(arg) == "Target"):
+        result += [(arg, arg[DotnetLibrary].version)]
+        return result
+
+    fail("Unknown argument %s" % arg)
+
+def _ResolveTransitiveLevel4(arg, version):
+    result = []
+    if (type(arg)) == "list":
+        for inner in arg:
+            result += _ResolveTransitiveLevel5(inner, version)
+        return result
+
+    if (type(arg) == "Target"):
+        result += [(arg, arg[DotnetLibrary].version)]
+        return result
+
+    fail("Unknown argument %s" % arg)
+
+def _ResolveTransitiveLevel5(arg, version):
+    result = []
+    if (type(arg)) == "list":
+        for inner in arg:
+            result += _ResolveTransitiveLevel6(inner, version)
+        return result
+
+    if (type(arg) == "Target"):
+        result += [(arg, arg[DotnetLibrary].version)]
+        return result
+
+    fail("Unknown argument %s" % arg)
+
+def _ResolveTransitiveLevel6(arg, version):
+    result = []
+    if (type(arg)) == "list":
+        for inner in arg:
+            result += _ResolveTransitiveLevel7(inner, version)
+        return result
+
+    if (type(arg) == "Target"):
+        result += [(arg, arg[DotnetLibrary].version)]
+        return result
+
+    fail("Unknown argument %s" % arg)
+
+def _ResolveTransitiveLevel7(arg, version):
+    result = []
+    if (type(arg)) == "list":
+        for inner in arg:
+            result += _ResolveTransitiveLevel8(inner, version)
+        return result
+
+    if (type(arg) == "Target"):
+        result += [(arg, arg[DotnetLibrary].version)]
+        return result
+
+    fail("Unknown argument %s" % arg)
+
+def _ResolveTransitiveLevel8(arg, version):
+    result = []
+    if (type(arg)) == "list":
+        for inner in arg:
+            result += _ResolveTransitiveLevel9(inner, version)
+        return result
+
+    if (type(arg) == "Target"):
+        result += [(arg, arg[DotnetLibrary].version)]
+        return result
+
+    fail("Unknown argument %s" % arg)
+
+def _ResolveTransitiveLevel9(arg, version):
+    result = []
+    if (type(arg)) == "list":
+        for inner in arg:
+            result += _ResolveTransitiveLevel10(inner, version)
+        return result
+
+    if (type(arg) == "Target"):
+        result += [(arg, arg[DotnetLibrary].version)]
+        return result
+
+    fail("Unknown argument %s" % arg)
+
+def _ResolveTransitiveLevel10(arg, version):
+    result = []
+    if (type(arg)) == "list":
+        if (len(arg) == 0):
+            return result
+        fail("Recursion to deep on %s" % arg)
+
+    if (type(arg) == "Target"):
+        if (len(arg[DotnetLibrary].transitive.to_list()) > 0):
+            fail("Recursion to deep on %s" % arg[DotnetLibrary])
+        result += [(arg, arg[DotnetLibrary].version)]
+
+        return result
+
+    fail("Unknown argument %s" % arg)

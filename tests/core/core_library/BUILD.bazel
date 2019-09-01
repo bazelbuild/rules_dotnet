@@ -1,7 +1,5 @@
 load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DEFAULT_DOTNET_CORE_FRAMEWORK", "core_library", "core_xunit_test")
 
-framework = DEFAULT_DOTNET_CORE_FRAMEWORK
-
 core_library(
     name = "custom_bin.dll",
     srcs = [
@@ -22,11 +20,10 @@ core_xunit_test(
     data = [
         ":custom_bin.dll",
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
-    native_deps = "@core_sdk_{}//:native_deps".format(framework),
-    testlauncher = "@{}_xunit//:xunit.console.exe".format(framework),
     deps = [
-        "@{}_xunit_assert//:assert.xunit.dll".format(framework),
-        "@{}_xunit//:xunit.core.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.dll",
+        "@xunit.assert//:netcoreapp2.0_core",
+        "@xunit.extensibility.core//:netcoreapp2.0_core",
+        "@xunit.extensibility.execution//:netcoreapp2.0_core",
     ],
 )

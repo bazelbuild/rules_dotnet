@@ -247,29 +247,11 @@ def dotnet_repositories_nuget():
         },
         mono_lib = "lib/net46/NuGet.Common.dll",
         core_deps = {
-            "net46": [
-               "@nuget.frameworks//:net46_net",
+            "netcoreapp2.0": [
+               "@nuget.frameworks//:netcoreapp2.0_core",
             ],
-            "net461": [
-               "@nuget.frameworks//:net461_net",
-            ],
-            "net462": [
-               "@nuget.frameworks//:net462_net",
-            ],
-            "net47": [
-               "@nuget.frameworks//:net47_net",
-            ],
-            "net471": [
-               "@nuget.frameworks//:net471_net",
-            ],
-            "net472": [
-               "@nuget.frameworks//:net472_net",
-            ],
-            "netstandard1.6": [
-               "@nuget.frameworks//:netstandard1.6_net",
-            ],
-            "netstandard2.0": [
-               "@nuget.frameworks//:netstandard2.0_net",
+            "netcoreapp2.1": [
+               "@nuget.frameworks//:netcoreapp2.1_core",
             ],
         },
         net_deps = {
@@ -371,29 +353,11 @@ def dotnet_repositories_nuget():
         },
         mono_lib = "lib/net46/NuGet.Configuration.dll",
         core_deps = {
-            "net46": [
-               "@nuget.common//:net46_net",
+            "netcoreapp2.0": [
+               "@nuget.common//:netcoreapp2.0_core",
             ],
-            "net461": [
-               "@nuget.common//:net461_net",
-            ],
-            "net462": [
-               "@nuget.common//:net462_net",
-            ],
-            "net47": [
-               "@nuget.common//:net47_net",
-            ],
-            "net471": [
-               "@nuget.common//:net471_net",
-            ],
-            "net472": [
-               "@nuget.common//:net472_net",
-            ],
-            "netstandard1.6": [
-               "@nuget.common//:netstandard1.6_net",
-            ],
-            "netstandard2.0": [
-               "@nuget.common//:netstandard2.0_net",
+            "netcoreapp2.1": [
+               "@nuget.common//:netcoreapp2.1_core",
             ],
         },
         net_deps = {
@@ -564,37 +528,13 @@ def dotnet_repositories_nuget():
         },
         mono_lib = "lib/net46/NuGet.LibraryModel.dll",
         core_deps = {
-            "net46": [
-               "@nuget.common//:net46_net",
-               "@nuget.versioning//:net46_net",
+            "netcoreapp2.0": [
+               "@nuget.common//:netcoreapp2.0_core",
+               "@nuget.versioning//:netcoreapp2.0_core",
             ],
-            "net461": [
-               "@nuget.common//:net461_net",
-               "@nuget.versioning//:net461_net",
-            ],
-            "net462": [
-               "@nuget.common//:net462_net",
-               "@nuget.versioning//:net462_net",
-            ],
-            "net47": [
-               "@nuget.common//:net47_net",
-               "@nuget.versioning//:net47_net",
-            ],
-            "net471": [
-               "@nuget.common//:net471_net",
-               "@nuget.versioning//:net471_net",
-            ],
-            "net472": [
-               "@nuget.common//:net472_net",
-               "@nuget.versioning//:net472_net",
-            ],
-            "netstandard1.6": [
-               "@nuget.common//:netstandard1.6_net",
-               "@nuget.versioning//:netstandard1.6_net",
-            ],
-            "netstandard2.0": [
-               "@nuget.common//:netstandard2.0_net",
-               "@nuget.versioning//:netstandard2.0_net",
+            "netcoreapp2.1": [
+               "@nuget.common//:netcoreapp2.1_core",
+               "@nuget.versioning//:netcoreapp2.1_core",
             ],
         },
         net_deps = {
@@ -705,37 +645,13 @@ def dotnet_repositories_nuget():
         },
         mono_lib = "lib/net46/NuGet.Packaging.Core.dll",
         core_deps = {
-            "net46": [
-               "@nuget.common//:net46_net",
-               "@nuget.versioning//:net46_net",
+            "netcoreapp2.0": [
+               "@nuget.common//:netcoreapp2.0_core",
+               "@nuget.versioning//:netcoreapp2.0_core",
             ],
-            "net461": [
-               "@nuget.common//:net461_net",
-               "@nuget.versioning//:net461_net",
-            ],
-            "net462": [
-               "@nuget.common//:net462_net",
-               "@nuget.versioning//:net462_net",
-            ],
-            "net47": [
-               "@nuget.common//:net47_net",
-               "@nuget.versioning//:net47_net",
-            ],
-            "net471": [
-               "@nuget.common//:net471_net",
-               "@nuget.versioning//:net471_net",
-            ],
-            "net472": [
-               "@nuget.common//:net472_net",
-               "@nuget.versioning//:net472_net",
-            ],
-            "netstandard1.6": [
-               "@nuget.common//:netstandard1.6_net",
-               "@nuget.versioning//:netstandard1.6_net",
-            ],
-            "netstandard2.0": [
-               "@nuget.common//:netstandard2.0_net",
-               "@nuget.versioning//:netstandard2.0_net",
+            "netcoreapp2.1": [
+               "@nuget.common//:netcoreapp2.1_core",
+               "@nuget.versioning//:netcoreapp2.1_core",
             ],
         },
         net_deps = {
@@ -846,45 +762,15 @@ def dotnet_repositories_nuget():
         },
         mono_lib = "lib/net46/NuGet.Packaging.dll",
         core_deps = {
-            "net46": [
-               "@nuget.configuration//:net46_net",
-               "@nuget.packaging.core//:net46_net",
-               "@newtonsoft.json//:net46_net",
+            "netcoreapp2.0": [
+               "@nuget.configuration//:netcoreapp2.0_core",
+               "@nuget.packaging.core//:netcoreapp2.0_core",
+               "@newtonsoft.json//:netcoreapp2.0_core",
             ],
-            "net461": [
-               "@nuget.configuration//:net461_net",
-               "@nuget.packaging.core//:net461_net",
-               "@newtonsoft.json//:net461_net",
-            ],
-            "net462": [
-               "@nuget.configuration//:net462_net",
-               "@nuget.packaging.core//:net462_net",
-               "@newtonsoft.json//:net462_net",
-            ],
-            "net47": [
-               "@nuget.configuration//:net47_net",
-               "@nuget.packaging.core//:net47_net",
-               "@newtonsoft.json//:net47_net",
-            ],
-            "net471": [
-               "@nuget.configuration//:net471_net",
-               "@nuget.packaging.core//:net471_net",
-               "@newtonsoft.json//:net471_net",
-            ],
-            "net472": [
-               "@nuget.configuration//:net472_net",
-               "@nuget.packaging.core//:net472_net",
-               "@newtonsoft.json//:net472_net",
-            ],
-            "netstandard1.6": [
-               "@nuget.configuration//:netstandard1.6_net",
-               "@nuget.packaging.core//:netstandard1.6_net",
-               "@newtonsoft.json//:netstandard1.6_net",
-            ],
-            "netstandard2.0": [
-               "@nuget.configuration//:netstandard2.0_net",
-               "@nuget.packaging.core//:netstandard2.0_net",
-               "@newtonsoft.json//:netstandard2.0_net",
+            "netcoreapp2.1": [
+               "@nuget.configuration//:netcoreapp2.1_core",
+               "@nuget.packaging.core//:netcoreapp2.1_core",
+               "@newtonsoft.json//:netcoreapp2.1_core",
             ],
         },
         net_deps = {
@@ -1004,37 +890,13 @@ def dotnet_repositories_nuget():
         },
         mono_lib = "lib/net46/NuGet.Protocol.dll",
         core_deps = {
-            "net46": [
-               "@nuget.configuration//:net46_net",
-               "@nuget.packaging//:net46_net",
+            "netcoreapp2.0": [
+               "@nuget.configuration//:netcoreapp2.0_core",
+               "@nuget.packaging//:netcoreapp2.0_core",
             ],
-            "net461": [
-               "@nuget.configuration//:net461_net",
-               "@nuget.packaging//:net461_net",
-            ],
-            "net462": [
-               "@nuget.configuration//:net462_net",
-               "@nuget.packaging//:net462_net",
-            ],
-            "net47": [
-               "@nuget.configuration//:net47_net",
-               "@nuget.packaging//:net47_net",
-            ],
-            "net471": [
-               "@nuget.configuration//:net471_net",
-               "@nuget.packaging//:net471_net",
-            ],
-            "net472": [
-               "@nuget.configuration//:net472_net",
-               "@nuget.packaging//:net472_net",
-            ],
-            "netstandard1.6": [
-               "@nuget.configuration//:netstandard1.6_net",
-               "@nuget.packaging//:netstandard1.6_net",
-            ],
-            "netstandard2.0": [
-               "@nuget.configuration//:netstandard2.0_net",
-               "@nuget.packaging//:netstandard2.0_net",
+            "netcoreapp2.1": [
+               "@nuget.configuration//:netcoreapp2.1_core",
+               "@nuget.packaging//:netcoreapp2.1_core",
             ],
         },
         net_deps = {
@@ -1145,29 +1007,11 @@ def dotnet_repositories_nuget():
         },
         mono_lib = "lib/net46/NuGet.Credentials.dll",
         core_deps = {
-            "net46": [
-               "@nuget.protocol//:net46_net",
+            "netcoreapp2.0": [
+               "@nuget.protocol//:netcoreapp2.0_core",
             ],
-            "net461": [
-               "@nuget.protocol//:net461_net",
-            ],
-            "net462": [
-               "@nuget.protocol//:net462_net",
-            ],
-            "net47": [
-               "@nuget.protocol//:net47_net",
-            ],
-            "net471": [
-               "@nuget.protocol//:net471_net",
-            ],
-            "net472": [
-               "@nuget.protocol//:net472_net",
-            ],
-            "netstandard1.6": [
-               "@nuget.protocol//:netstandard1.6_net",
-            ],
-            "netstandard2.0": [
-               "@nuget.protocol//:netstandard2.0_net",
+            "netcoreapp2.1": [
+               "@nuget.protocol//:netcoreapp2.1_core",
             ],
         },
         net_deps = {
@@ -1258,37 +1102,13 @@ def dotnet_repositories_nuget():
         },
         mono_lib = "lib/net46/NuGet.DependencyResolver.Core.dll",
         core_deps = {
-            "net46": [
-               "@nuget.librarymodel//:net46_net",
-               "@nuget.protocol//:net46_net",
+            "netcoreapp2.0": [
+               "@nuget.librarymodel//:netcoreapp2.0_core",
+               "@nuget.protocol//:netcoreapp2.0_core",
             ],
-            "net461": [
-               "@nuget.librarymodel//:net461_net",
-               "@nuget.protocol//:net461_net",
-            ],
-            "net462": [
-               "@nuget.librarymodel//:net462_net",
-               "@nuget.protocol//:net462_net",
-            ],
-            "net47": [
-               "@nuget.librarymodel//:net47_net",
-               "@nuget.protocol//:net47_net",
-            ],
-            "net471": [
-               "@nuget.librarymodel//:net471_net",
-               "@nuget.protocol//:net471_net",
-            ],
-            "net472": [
-               "@nuget.librarymodel//:net472_net",
-               "@nuget.protocol//:net472_net",
-            ],
-            "netstandard1.6": [
-               "@nuget.librarymodel//:netstandard1.6_net",
-               "@nuget.protocol//:netstandard1.6_net",
-            ],
-            "netstandard2.0": [
-               "@nuget.librarymodel//:netstandard2.0_net",
-               "@nuget.protocol//:netstandard2.0_net",
+            "netcoreapp2.1": [
+               "@nuget.librarymodel//:netcoreapp2.1_core",
+               "@nuget.protocol//:netcoreapp2.1_core",
             ],
         },
         net_deps = {
@@ -1399,29 +1219,11 @@ def dotnet_repositories_nuget():
         },
         mono_lib = "lib/net46/NuGet.ProjectModel.dll",
         core_deps = {
-            "net46": [
-               "@nuget.dependencyresolver.core//:net46_net",
+            "netcoreapp2.0": [
+               "@nuget.dependencyresolver.core//:netcoreapp2.0_core",
             ],
-            "net461": [
-               "@nuget.dependencyresolver.core//:net461_net",
-            ],
-            "net462": [
-               "@nuget.dependencyresolver.core//:net462_net",
-            ],
-            "net47": [
-               "@nuget.dependencyresolver.core//:net47_net",
-            ],
-            "net471": [
-               "@nuget.dependencyresolver.core//:net471_net",
-            ],
-            "net472": [
-               "@nuget.dependencyresolver.core//:net472_net",
-            ],
-            "netstandard1.6": [
-               "@nuget.dependencyresolver.core//:netstandard1.6_net",
-            ],
-            "netstandard2.0": [
-               "@nuget.dependencyresolver.core//:netstandard2.0_net",
+            "netcoreapp2.1": [
+               "@nuget.dependencyresolver.core//:netcoreapp2.1_core",
             ],
         },
         net_deps = {
@@ -1523,37 +1325,13 @@ def dotnet_repositories_nuget():
         },
         mono_lib = "lib/net46/NuGet.Commands.dll",
         core_deps = {
-            "net46": [
-               "@nuget.credentials//:net46_net",
-               "@nuget.projectmodel//:net46_net",
+            "netcoreapp2.0": [
+               "@nuget.credentials//:netcoreapp2.0_core",
+               "@nuget.projectmodel//:netcoreapp2.0_core",
             ],
-            "net461": [
-               "@nuget.credentials//:net461_net",
-               "@nuget.projectmodel//:net461_net",
-            ],
-            "net462": [
-               "@nuget.credentials//:net462_net",
-               "@nuget.projectmodel//:net462_net",
-            ],
-            "net47": [
-               "@nuget.credentials//:net47_net",
-               "@nuget.projectmodel//:net47_net",
-            ],
-            "net471": [
-               "@nuget.credentials//:net471_net",
-               "@nuget.projectmodel//:net471_net",
-            ],
-            "net472": [
-               "@nuget.credentials//:net472_net",
-               "@nuget.projectmodel//:net472_net",
-            ],
-            "netstandard1.6": [
-               "@nuget.credentials//:netstandard1.6_net",
-               "@nuget.projectmodel//:netstandard1.6_net",
-            ],
-            "netstandard2.0": [
-               "@nuget.credentials//:netstandard2.0_net",
-               "@nuget.projectmodel//:netstandard2.0_net",
+            "netcoreapp2.1": [
+               "@nuget.credentials//:netcoreapp2.1_core",
+               "@nuget.projectmodel//:netcoreapp2.1_core",
             ],
         },
         net_deps = {
@@ -1664,29 +1442,11 @@ def dotnet_repositories_nuget():
         },
         mono_lib = "lib/net46/NuGet.Resolver.dll",
         core_deps = {
-            "net46": [
-               "@nuget.protocol//:net46_net",
+            "netcoreapp2.0": [
+               "@nuget.protocol//:netcoreapp2.0_core",
             ],
-            "net461": [
-               "@nuget.protocol//:net461_net",
-            ],
-            "net462": [
-               "@nuget.protocol//:net462_net",
-            ],
-            "net47": [
-               "@nuget.protocol//:net47_net",
-            ],
-            "net471": [
-               "@nuget.protocol//:net471_net",
-            ],
-            "net472": [
-               "@nuget.protocol//:net472_net",
-            ],
-            "netstandard1.6": [
-               "@nuget.protocol//:netstandard1.6_net",
-            ],
-            "netstandard2.0": [
-               "@nuget.protocol//:netstandard2.0_net",
+            "netcoreapp2.1": [
+               "@nuget.protocol//:netcoreapp2.1_core",
             ],
         },
         net_deps = {
@@ -1787,33 +1547,13 @@ def dotnet_repositories_nuget():
         },
         mono_lib = "lib/netstandard1.6/NuGet.PackageManagement.dll",
         core_deps = {
-            "net461": [
-               "@nuget.commands//:net461_net",
-               "@nuget.resolver//:net461_net",
+            "netcoreapp2.0": [
+               "@nuget.commands//:netcoreapp2.0_core",
+               "@nuget.resolver//:netcoreapp2.0_core",
             ],
-            "net462": [
-               "@nuget.commands//:net462_net",
-               "@nuget.resolver//:net462_net",
-            ],
-            "net47": [
-               "@nuget.commands//:net47_net",
-               "@nuget.resolver//:net47_net",
-            ],
-            "net471": [
-               "@nuget.commands//:net471_net",
-               "@nuget.resolver//:net471_net",
-            ],
-            "net472": [
-               "@nuget.commands//:net472_net",
-               "@nuget.resolver//:net472_net",
-            ],
-            "netstandard1.6": [
-               "@nuget.commands//:netstandard1.6_net",
-               "@nuget.resolver//:netstandard1.6_net",
-            ],
-            "netstandard2.0": [
-               "@nuget.commands//:netstandard2.0_net",
-               "@nuget.resolver//:netstandard2.0_net",
+            "netcoreapp2.1": [
+               "@nuget.commands//:netcoreapp2.1_core",
+               "@nuget.resolver//:netcoreapp2.1_core",
             ],
         },
         net_deps = {

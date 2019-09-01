@@ -10,7 +10,8 @@ core_library(
     deps = [
         "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.console.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.diagnostics.process.dll",
-        "@xunit//:xunit.core.dll",
-        "@xunit_assert//:assert.xunit.dll",
+        "@xunit.assert//:netcoreapp2.0_core",
+        "@xunit.extensibility.core//:netcoreapp2.0_core",
+        "@xunit.extensibility.execution//:netcoreapp2.0_core",
     ],
 )
