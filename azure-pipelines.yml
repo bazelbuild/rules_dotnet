@@ -94,6 +94,7 @@ jobs:
         testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit
         testResultsFiles: 'bazel-testlogs/**/test-junit.xml' 
         testRunTitle: $(systemName)
+        buildPlatform: $(systemName)
         #searchFolder: '$(System.DefaultWorkingDirectory)' # Optional
         #mergeTestResults: false # Optional
         #buildPlatform: # Optional
