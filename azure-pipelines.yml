@@ -65,3 +65,37 @@ jobs:
     - script: |
         bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s --local_resources=400,1,1.0 --spawn_strategy=standalone //tests/examples/example_binary:v2.1.200_hello-core.exe
       displayName: 'Run sample core hello'
+
+    - script: |
+        bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m test -s --local_resources=400,1,1.0 --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
+      continueOnError: true
+      displayName: 'Run tests'
+    - powershell: |
+        $xslt = New-Object System.Xml.Xsl.XslCompiledTransform;
+        $template = Resolve-Path "tools/converttests/n3.xslt"
+        $xslt.Load($template);
+        function doProcess($file)
+        {
+          $result = [io.path]::GetDirectoryName($file) + "/" + [io.path]::GetFileNameWithoutExtension($file) + "-junit.xml" 
+          echo "Processing $file to $result"
+          [xml]$xml = Get-Content $file
+          $n = Select-Xml "//testsuites" $xml 
+          if ($n.count -gt 0) {
+            echo "junit"
+            copy-item $file $result
+          } else {
+            echo "Transforming"
+            $xslt.Transform($file, $result)
+          }        
+        }
+        gci -r bazel-out -filter "test*.xml" -exclude "*-junit.xml" | foreach { doProcess($_.FullName) }
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit
+        testResultsFiles: 'bazel-testlogs/**/test-junit.xml' 
+        #searchFolder: '$(System.DefaultWorkingDirectory)' # Optional
+        #mergeTestResults: false # Optional
+        #testRunTitle: # Optional
+        #buildPlatform: # Optional
+        #buildConfiguration: # Optional
+        #publishRunAttachments: true # Optional
