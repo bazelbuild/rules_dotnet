@@ -1,87 +1,41 @@
 jobs:
-- job: Windows
+- job: BuildAndTest  
+  strategy:
+    matrix:
+      linux:
+        poolName: 'Default'
+        vmImage: 'ubuntu-16.04'       
+        system: 'linux'
+      windows:
+        poolName: 'home'
+        vmImage: ''
+        system: 'windows'
+      mac:
+        poolName: 'Default'
+        vmImage: 'macOS-10.13'
+        system: 'mac'
   pool:
-    name: 'home'
+    name: $(poolName)
+    vmImage: $(vmImage)
+
   steps:
     - script: |
-        bazel version
-        dotnet --info
-        choco --version
-        del c:\users\tomek\_bazel_tomek\sfs5eyg3\server\server_info.rawproto
-      displayName: 'Show env'
-    - script: |
-        bazel ^
-        build ^
-        -s ^
-        //... ^
-      displayName: 'Build all'
-    - script: |
-        bazel ^
-        run ^
-        -s ^
-        //tests/examples/example_binary:hello.exe ^
-      displayName: 'Run sample hello'
-    - script: |
-        bazel ^
-        run ^
-        -s ^
-        //tests/examples/example_binary:v2.1.200_hello-core.exe ^
-      displayName: 'Run sample core hello'
-    - script: |
-        bazel ^
-        run ^
-        -s ^
-        //tests/examples/example_binary:hello-net_net472.exe
-      displayName: 'Run sample .net hello'
-    - script: |
-        bazel ^
-        test ^
-        -s ^
-        --test_summary=detailed ^
-        --test_output=all ^
-        --experimental_enable_runfiles ^
-        --incompatible_windows_native_test_wrapper ^
-        //...
-      continueOnError: true
-      displayName: 'Run tests'
-    - powershell: |
-        $xslt = New-Object System.Xml.Xsl.XslCompiledTransform;
-        $template = Resolve-Path "tools\converttests\n3.xslt"
-        $xslt.Load($template);
-        function doProcess($file)
-        {
-          $result = [io.path]::GetDirectoryName($file) + "\" + [io.path]::GetFileNameWithoutExtension($file) + "-junit.xml" 
-          echo "Processing $file to $result"
-          [xml]$xml = Get-Content $file
-          $n = Select-Xml "//testsuites" $xml 
-          if ($n.count -gt 0) {
-            echo "junit"
-            copy-item $file $result
-          } else {
-            echo "Transforming"
-            $xslt.Transform($file, $result)
-          }        
-        }
-        gci -r bazel-out -filter "test*.xml" -exclude "*-junit.xml" | foreach { doProcess($_.FullName) }
+        echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
+        curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
+        sudo apt-get update && sudo apt-get install -y bazel
+      displayName: 'Install dependencies'
+      condition: and(succeeded(), eq(variables['system'], 'linux'))
 
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit
-        testResultsFiles: 'bazel-testlogs/**/test-junit.xml' 
-        #searchFolder: '$(System.DefaultWorkingDirectory)' # Optional
-        #mergeTestResults: false # Optional
-        #testRunTitle: # Optional
-        #buildPlatform: # Optional
-        #buildConfiguration: # Optional
-        #publishRunAttachments: true # Optional
-
-- job: macOS
-  pool:
-      vmImage: macOS-10.13
-  steps:
     - script: |
         brew install bazel coreutils
       displayName: 'Install dependencies'
+      condition: and(succeeded(), eq(variables['system'], 'mac'))
+
+    - script: |
+        brew cask install mono-mdk
+      displayName: 'Install mono'
+      condition: and(succeeded(), eq(variables['system'], 'mac'))
+
     - script: |
         bazel version
       displayName: 'Show bazel version'
@@ -89,124 +43,6 @@ jobs:
         dotnet --info
       displayName: 'Show dotnet version'
     - script: |
-        brew cask install mono-mdk
-      displayName: 'Install mono'
-    - script: |
         mono --version
       displayName: 'Show mono version'
-    - script: |
-        bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build -s --local_resources=400,1,1.0 --spawn_strategy=standalone //... 
-      displayName: 'Build all'
-    - script: |
-        bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s --local_resources=400,1,1.0 --spawn_strategy=standalone //tests/examples/example_binary:hello.exe
-      displayName: 'Run sample hello'
-    - script: |
-        bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s --local_resources=400,1,1.0 --spawn_strategy=standalone //tests/examples/example_binary:v2.1.200_hello-core.exe
-      displayName: 'Run sample core hello'
-    - script: |
-        bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m test -s --local_resources=400,1,1.0 --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
-      continueOnError: true
-      displayName: 'Run tests'
-    - powershell: |
-        $xslt = New-Object System.Xml.Xsl.XslCompiledTransform;
-        $template = Resolve-Path "tools/converttests/n3.xslt"
-        $xslt.Load($template);
-        function doProcess($file)
-        {
-          $result = [io.path]::GetDirectoryName($file) + "/" + [io.path]::GetFileNameWithoutExtension($file) + "-junit.xml" 
-          echo "Processing $file to $result"
-          [xml]$xml = Get-Content $file
-          $n = Select-Xml "//testsuites" $xml 
-          if ($n.count -gt 0) {
-            echo "junit"
-            copy-item $file $result
-          } else {
-            echo "Transforming"
-            $xslt.Transform($file, $result)
-          }        
-        }
-        gci -r bazel-out -filter "test*.xml" -exclude "*-junit.xml" | foreach { doProcess($_.FullName) }
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit
-        testResultsFiles: 'bazel-testlogs/**/test-junit.xml' 
-        #searchFolder: '$(System.DefaultWorkingDirectory)' # Optional
-        #mergeTestResults: false # Optional
-        #testRunTitle: # Optional
-        #buildPlatform: # Optional
-        #buildConfiguration: # Optional
-        #publishRunAttachments: true # Optional
 
-- job: linux
-  pool:
-      vmImage: ubuntu-16.04
-  steps:
-    - script: |
-        echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
-        curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
-        sudo apt-get update && sudo apt-get install -y bazel
-      displayName: 'Install dependencies'
-    - script: |
-        bazel version
-        dotnet --info
-        mono --version
-      displayName: 'Show env'
-    - script: |
-        bazel clean --expunge
-      displayName: 'Clean all'
-    - script: |
-        bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build -s --local_resources=400,1,1.0 --spawn_strategy=standalone //... 
-      displayName: 'Build all'
-    - script: |
-        bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s --local_resources=400,1,1.0 --spawn_strategy=standalone //tests/examples/example_binary:hello.exe
-      displayName: 'Run sample hello'
-    - script: |
-        bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s --local_resources=400,1,1.0 --spawn_strategy=standalone //tests/examples/example_binary:v2.1.200_hello-core.exe
-      displayName: 'Run sample core hello'
-    - script: |
-        bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m test -s --local_resources=400,1,1.0 --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
-      continueOnError: true
-      displayName: 'Run tests'
-    - powershell: |
-        $xslt = New-Object System.Xml.Xsl.XslCompiledTransform;
-        $template = Resolve-Path "tools/converttests/n3.xslt"
-        $xslt.Load($template);
-        function doProcess($file)
-        {
-          $result = [io.path]::GetDirectoryName($file) + "/" + [io.path]::GetFileNameWithoutExtension($file) + "-junit.xml" 
-          echo "Processing $file to $result"
-          [xml]$xml = Get-Content $file
-          $n = Select-Xml "//testsuites" $xml 
-          if ($n.count -gt 0) {
-            echo "junit"
-            copy-item $file $result
-          } else {
-            echo "Transforming"
-            $xslt.Transform($file, $result)
-          }        
-        }
-        gci -r bazel-out -filter "test*.xml" -exclude "*-junit.xml" | foreach { doProcess($_.FullName) }
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit
-        testResultsFiles: 'bazel-testlogs/**/test-junit.xml' 
-        #searchFolder: '$(System.DefaultWorkingDirectory)' # Optional
-        #mergeTestResults: false # Optional
-        #testRunTitle: # Optional
-        #buildPlatform: # Optional
-        #buildConfiguration: # Optional
-        #publishRunAttachments: true # Optional
-
-    - task: Bash@3
-      inputs:
-        targetType: 'inline' # Optional. Options: filePath, inline
-        script: |
-          echo $BUILDNUMBER > buildnumber
-      env:
-        BUILDNUMBER: $(Build.BuildNumber)
-
-    - task: PublishPipelineArtifact@0
-      inputs:
-        artifactName: 'buildnumber' 
-        targetPath: buildnumber
-        
