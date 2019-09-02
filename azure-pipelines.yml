@@ -25,6 +25,10 @@ jobs:
         version: '2.2.106' 
       displayName: 'Install dotnet on Window'
       condition: and(succeeded(), eq(variables['systemName'], 'windows'))
+    - script: |
+        del c:\users\tomek\_bazel_tomek\sfs5eyg3\server\server_info.rawproto
+      displayName: 'Delete files for windows'
+      condition: and(succeeded(), eq(variables['systemName'], 'windows'))
 
     - script: |
         echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
@@ -37,19 +41,11 @@ jobs:
         brew install bazel coreutils
       displayName: 'Install dependencies'
       condition: and(succeeded(), eq(variables['systemName'], 'mac'))
-
     - script: |
         brew cask install mono-mdk
       displayName: 'Install mono'
       condition: and(succeeded(), eq(variables['systemName'], 'mac'))
-
-    - script: |
-        del c:\users\tomek\_bazel_tomek\sfs5eyg3\server\server_info.rawproto
-      displayName: 'Delete files for windows'
-      condition: and(succeeded(), eq(variables['systemName'], 'windows'))
-
-        
-
+       
     - script: |
         bazel version
       displayName: 'Show bazel version'
@@ -60,3 +56,12 @@ jobs:
         mono --version
       displayName: 'Show mono version'
 
+    - script: |
+        bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build -s --local_resources=400,1,1.0 --spawn_strategy=standalone //... 
+      displayName: 'Build all'
+    - script: |
+        bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s --local_resources=400,1,1.0 --spawn_strategy=standalone //tests/examples/example_binary:hello.exe
+      displayName: 'Run sample hello'
+    - script: |
+        bazel --batch --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s --local_resources=400,1,1.0 --spawn_strategy=standalone //tests/examples/example_binary:v2.1.200_hello-core.exe
+      displayName: 'Run sample core hello'
