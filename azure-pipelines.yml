@@ -3,7 +3,7 @@ jobs:
   strategy:
     matrix:
       linux:
-        poolName: 'Default'
+        poolName: 'Azure Pipelines'
         vmImage: 'ubuntu-16.04'       
         system: 'linux'
       windows:
@@ -11,7 +11,7 @@ jobs:
         vmImage: ''
         system: 'windows'
       mac:
-        poolName: 'Default'
+        poolName: 'Azure Pipelines'
         vmImage: 'macOS-10.13'
         system: 'mac'
   pool:
@@ -34,7 +34,14 @@ jobs:
     - script: |
         brew cask install mono-mdk
       displayName: 'Install mono'
-      condition: and(succeeded(), eq(variables['system'], 'mac'))
+      condition: and(succeeded(), eq(variables['system'], 'windows'))
+
+    - script: |
+        del c:\users\tomek\_bazel_tomek\sfs5eyg3\server\server_info.rawproto
+      displayName: 'Delete files for windows'
+      condition: and(succeeded(), eq(variables['system'], 'windows'))
+
+        
 
     - script: |
         bazel version
