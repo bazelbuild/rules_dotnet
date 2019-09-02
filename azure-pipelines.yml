@@ -106,5 +106,5 @@ jobs:
 
     - script: |
         bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m test -s --local_resources=400,1,1.0 --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
-      workingDirectory: docs/examples/mono
+      workingDirectory: $(Build.SourcesDirectory)/docs/examples/mono
       displayName: 'Run mono standalone test'
