@@ -5,15 +5,15 @@ jobs:
       linux:
         poolName: 'Azure Pipelines'
         vmImage: 'ubuntu-16.04'       
-        system: 'linux'
+        systemName: 'linux'
       windows:
         poolName: 'home'
         vmImage: ''
-        system: 'windows'
+        systemName: 'windows'
       mac:
         poolName: 'Azure Pipelines'
         vmImage: 'macOS-10.13'
-        system: 'mac'
+        systemName: 'mac'
   pool:
     name: $(poolName)
     vmImage: $(vmImage)
@@ -24,22 +24,22 @@ jobs:
         curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
         sudo apt-get update && sudo apt-get install -y bazel
       displayName: 'Install dependencies'
-      condition: and(succeeded(), eq(variables['system'], 'linux'))
+      condition: and(succeeded(), eq(variables['systemName'], 'linux'))
 
     - script: |
         brew install bazel coreutils
       displayName: 'Install dependencies'
-      condition: and(succeeded(), eq(variables['system'], 'mac'))
+      condition: and(succeeded(), eq(variables['systemName'], 'mac'))
 
     - script: |
         brew cask install mono-mdk
       displayName: 'Install mono'
-      condition: and(succeeded(), eq(variables['system'], 'windows'))
+      condition: and(succeeded(), eq(variables['systemName'], 'windows'))
 
     - script: |
         del c:\users\tomek\_bazel_tomek\sfs5eyg3\server\server_info.rawproto
       displayName: 'Delete files for windows'
-      condition: and(succeeded(), eq(variables['system'], 'windows'))
+      condition: and(succeeded(), eq(variables['systemName'], 'windows'))
 
         
 
