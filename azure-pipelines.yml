@@ -116,33 +116,33 @@ jobs:
         contents: '**/*' 
         removeSourceFolder: true
 
-    - script: |
-        git clone https://github.com/tomaszstrejczek/rules_dotnet_3rd_party
-      workingDirectory: $(Pipeline.Workspace)
-      displayName: 'Clone 3rd party repo'
+    # - script: |
+    #     git clone https://github.com/tomaszstrejczek/rules_dotnet_3rd_party
+    #   workingDirectory: $(Pipeline.Workspace)
+    #   displayName: 'Clone 3rd party repo'
 
-    - script: |
-        git submodule init
-        git submodule update --recursive
-      workingDirectory: $(Pipeline.Workspace)/rules_dotnet_3rd_party
-      displayName: 'Update 3rd party repo'
+    # - script: |
+    #     git submodule init
+    #     git submodule update --recursive
+    #   workingDirectory: $(Pipeline.Workspace)/rules_dotnet_3rd_party
+    #   displayName: 'Update 3rd party repo'
 
-    - task: PowerShell@2
-      displayName: 'Patch WORKSPACE'
-      inputs:
-        workingDirectory: '$(Pipeline.Workspace)/rules_dotnet_3rd_party'
-        targetType: inline
-        script: |
-          ((Get-Content -path WORKSPACE -Raw) -replace 'e1bce290ca52f707cfa10498c85729baf01002b1','$(Build.SourceVersion)') | Set-Content -Path WORKSPACE
-          "Done"    
+    # - task: PowerShell@2
+    #   displayName: 'Patch WORKSPACE'
+    #   inputs:
+    #     workingDirectory: '$(Pipeline.Workspace)/rules_dotnet_3rd_party'
+    #     targetType: inline
+    #     script: |
+    #       ((Get-Content -path WORKSPACE -Raw) -replace 'e1bce290ca52f707cfa10498c85729baf01002b1','$(Build.SourceVersion)') | Set-Content -Path WORKSPACE
+    #       "Done"    
 
-    - script: |
-        bazel clean --expunge 
-        bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build -s --local_resources=400,1,1.0 --spawn_strategy=standalone //... 
-      workingDirectory: $(Build.SourcesDirectory)/docs/examples/mono
-      displayName: 'Run 3rd_party build'
+    # - script: |
+    #     bazel clean --expunge 
+    #     bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build -s --local_resources=400,1,1.0 --spawn_strategy=standalone //... 
+    #   workingDirectory: $(Build.SourcesDirectory)/docs/examples/mono
+    #   displayName: 'Run 3rd_party build'
 
-    - script: |
-        bazel shutdown 
-      workingDirectory: $(Build.SourcesDirectory)/docs/examples/mono
-      displayName: 'Bazel shutdown'
+    # - script: |
+    #     bazel shutdown 
+    #   workingDirectory: $(Build.SourcesDirectory)/docs/examples/mono
+    #   displayName: 'Bazel shutdown'
