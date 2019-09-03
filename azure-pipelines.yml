@@ -104,8 +104,19 @@ jobs:
     #     #buildConfiguration: # Optional
     #     #publishRunAttachments: true # Optional
 
+    # - script: |
+    #     pwd
+    #     bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m test -s --local_resources=400,1,1.0 --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
+    #   workingDirectory: $(Build.SourcesDirectory)/docs/examples/mono
+    #   displayName: 'Run mono standalone test'
+
+    - task: DeleteFiles@1
+      inputs:
+        sourceFolder: $(Pipeline.Workspace)/rules_dotnet_3rd_party
+        contents: '**/*' 
+        removeSourceFolder: true
+
     - script: |
-        pwd
-        bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m test -s --local_resources=400,1,1.0 --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
-      workingDirectory: $(Build.SourcesDirectory)/docs/examples/mono
-      displayName: 'Run mono standalone test'
+        git clone https://github.com/tomaszstrejczek/rules_dotnet_3rd_party
+      workingDirectory: $(Pipeline.Workspace)
+      displayName: 'Clone 3rd party repo'
