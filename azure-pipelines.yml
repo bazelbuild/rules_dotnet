@@ -141,3 +141,8 @@ jobs:
         bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build -s --local_resources=400,1,1.0 --spawn_strategy=standalone //... 
       workingDirectory: $(Build.SourcesDirectory)/docs/examples/mono
       displayName: 'Run 3rd_party build'
+
+    - script: |
+        bazel shutdown 
+      workingDirectory: $(Build.SourcesDirectory)/docs/examples/mono
+      displayName: 'Bazel shutdown'
