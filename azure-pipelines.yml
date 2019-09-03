@@ -26,7 +26,7 @@ jobs:
       displayName: 'Install dotnet on Window'
       condition: and(succeeded(), eq(variables['systemName'], 'windows'))
     - script: |
-        del c:\users\tomek\_bazel_tomek\sfs5eyg3\server\server_info.rawproto
+        del c:\users\tomek\_bazel_tomek\sfs5eyg3\server\server_info.rawproto  C:\users\tomek\_bazel_tomek\5ll4kt4o\server\server_info.rawproto
       displayName: 'Delete files for windows'
       condition: and(succeeded(), eq(variables['systemName'], 'windows'))
 
