@@ -121,7 +121,7 @@ jobs:
           } 
           "Done"    
     - script: |
-        git clean -f
+        git checkout -f
       workingDirectory: $(Pipeline.Workspace)/rules_dotnet_3rd_party
       displayName: 'Clean 3rd_party repo'
     - script: |
