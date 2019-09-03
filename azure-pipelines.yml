@@ -123,7 +123,7 @@ jobs:
 
     - script: |
         git submodule init
-        git submodule updata --recursive
+        git submodule update --recursive
       workingDirectory: $(Pipeline.Workspace)/rules_dotnet_3rd_party
       displayName: 'Update 3rd party repo'
 
