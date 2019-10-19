@@ -41,7 +41,7 @@ namespace testlib
                 myProcess.StartInfo.RedirectStandardOutput = true;
                 myProcess.Start();
 
-                bool r = myProcess.WaitForExit(600 * 1000);
+                bool r = myProcess.WaitForExit(1200 * 1000);
                 if (!r)
                     myProcess.Kill();
 
