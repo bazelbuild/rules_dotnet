@@ -174,21 +174,6 @@ def all_core_stdlib(framework):
     )
 
     core_stdlib(
-        name = "sos.netcore.dll",
-        deps = [
-            ":system.runtime.dll",
-            ":system.runtime.interopservices.dll",
-            ":system.reflection.metadata.dll",
-            ":system.collections.dll",
-            ":system.io.dll",
-            ":system.collections.immutable.dll",
-            ":system.diagnostics.debug.dll",
-            ":system.runtime.extensions.dll",
-            ":system.io.filesystem.dll",
-        ],
-        dotnet_context_data = context,
-    )
-    core_stdlib(
         name = "system.appcontext.dll",
         deps = [
             ":system.private.corelib.dll",
@@ -1944,13 +1929,6 @@ def all_core_stdlib(framework):
         dotnet_context_data = context,
     )
 
-    core_stdlib(
-        name = "system.xml.xpath.xmldocument.dll",
-        deps = [
-        ],
-        dotnet_context_data = context,
-    )
-
     if framework:
         core_stdlib(
             name = "system.io.compression.zipfile.dll",
@@ -2010,4 +1988,33 @@ def all_core_stdlib215(framework):
         dll = "system.private.corelib.dll",
         dotnet_context_data = context,
         deps = ["system.memory.dll"],
+    )
+
+def all_core_stdlibbelow3(framework):
+    if framework:
+        context = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework)
+    else:
+        context = "@io_bazel_rules_dotnet//:core_context_data"
+
+    core_stdlib(
+        name = "system.xml.xpath.xmldocument.dll",
+        deps = [
+        ],
+        dotnet_context_data = context,
+    )
+
+    core_stdlib(
+        name = "sos.netcore.dll",
+        deps = [
+            ":system.runtime.dll",
+            ":system.runtime.interopservices.dll",
+            ":system.reflection.metadata.dll",
+            ":system.collections.dll",
+            ":system.io.dll",
+            ":system.collections.immutable.dll",
+            ":system.diagnostics.debug.dll",
+            ":system.runtime.extensions.dll",
+            ":system.io.filesystem.dll",
+        ],
+        dotnet_context_data = context,
     )

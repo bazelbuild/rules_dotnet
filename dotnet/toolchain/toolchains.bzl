@@ -107,6 +107,34 @@ CORE_SDK_REPOSITORIES = {
             "fc695c2c797da757251ce643d408e99e6325563bf08d46f1bf8d45a8ebc1aac6",
         ),
     },
+    "v2.2.402": {
+        "core_windows_amd64": (
+            "https://download.visualstudio.microsoft.com/download/pr/8ac3e8b7-9918-4e0c-b1be-5aa3e6afd00f/0be99c6ab9362b3c47050cdd50cba846/dotnet-sdk-2.2.402-win-x64.zip",
+            "ffdd3d49efea67329cdad9262916bc0263831e79a89af0ee21bf2602a3a5c3b6",
+        ),
+        "core_linux_amd64": (
+            "https://download.visualstudio.microsoft.com/download/pr/46411df1-f625-45c8-b5e7-08ab736d3daa/0fbc446088b471b0a483f42eb3cbf7a2/dotnet-sdk-2.2.402-linux-x64.tar.gz",
+            "4dafe1e6e49c6ddeb658bd702ed7724c4eb393ed719e2d6f557536f17917579a",
+        ),
+        "core_darwin_amd64": (
+            "https://download.visualstudio.microsoft.com/download/pr/2079de3a-714b-4fa5-840f-70e898b393ef/d631b5018560873ac350d692290881db/dotnet-sdk-2.2.402-osx-x64.tar.gz",
+            "adb0aa3a809e097882f9a139af8a7fa9d8c7898ad5249f6cec376f843433c79f",
+        ),
+    },
+    "v3.0.100": {
+        "core_windows_amd64": (
+            "https://download.visualstudio.microsoft.com/download/pr/a24f4f34-ada1-433a-a437-5bc85fc2576a/7e886d06729949c15c96fe7e70faa8ae/dotnet-sdk-3.0.100-win-x64.zip",
+            "faf8a92a523558e1659a6f9750c86610fe8430430f58099ccc659b83e3eee1bf",
+        ),
+        "core_linux_amd64": (
+            "https://download.visualstudio.microsoft.com/download/pr/886b4a4c-30af-454b-8bec-81c72b7b4e1f/d1a0c8de9abb36d8535363ede4a15de6/dotnet-sdk-3.0.100-linux-x64.tar.gz",
+            "12098fe29d5c857fd6093b1fd63eda9f91b92798e3748fcedc0e0727f1ac01c2",
+        ),
+        "core_darwin_amd64": (
+            "https://download.visualstudio.microsoft.com/download/pr/b9251194-4118-41cb-ae05-6763fb002e5d/1d398b4e97069fa4968628080b617587/dotnet-sdk-3.0.100-osx-x64.tar.gz",
+            "f0f8af049e0ecbeea9c9c37c16679d6fc2cd4c165510b00e3fad3cd8d0fe0160",
+        ),
+    },
 }
 
 NET_ROSLYN_REPOSITORIES = {

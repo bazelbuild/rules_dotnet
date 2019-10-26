@@ -61,8 +61,10 @@ DOTNET_CORE_FRAMEWORKS = {
     "v2.1.502": (".NETCore,Version=v2.1", "NETCOREAPP2_1", "netcoreapp2.1"),
     "v2.1.503": (".NETCore,Version=v2.1", "NETCOREAPP2_1", "netcoreapp2.1"),
     "v2.2.101": (".NETCore,Version=v2.2", "NETCOREAPP2_2", "netcoreapp2.2"),
+    "v2.2.402": (".NETCore,Version=v2.2", "NETCOREAPP2_2", "netcoreapp2.2"),
+    "v3.0.100": (".NETCore,Version=v3.0", "NETCOREAPP3_0", "netcoreapp3.0"),
 }
-DEFAULT_DOTNET_CORE_FRAMEWORK = "v2.1.503"
+DEFAULT_DOTNET_CORE_FRAMEWORK = "v3.0.100"
 
 def declare_config_settings():
     for impl in DOTNETIMPL:
