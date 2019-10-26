@@ -4,6 +4,7 @@ core_library(
     name = "testlib.dll",
     srcs = [
         "BazelTestBase.cs",
+        "ProcessAsyncHelper.cs",
     ],
     dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data",
     visibility = ["//visibility:public"],

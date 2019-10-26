@@ -9,15 +9,14 @@ namespace nuget_single
     public class nuget_single : BazelTestBase
     {
         [Fact]
-        public void TestRoslyn()
+        public async Task TestRoslyn()
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return;
 
             var files = new string[] { "BUILD.in", "WORKSPACE.in", "MyTest.cs.in" };
 
-            string stdout, stderr;
-            int rc = DoTest(files, out stdout, out stderr);
+            int rc = await DoTest(files);
             Assert.Equal(0, rc);
         }
     }

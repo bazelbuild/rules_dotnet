@@ -13,19 +13,20 @@ namespace testlib
 {
     public class BazelTestBase
     {
-        public int DoTest(string[] files, out string stdout, out string stderr)
+        public async Task<int> DoTest(string[] files)
         {
             var result = GetHash(files);
 
             var dir = Path.Combine(Path.GetTempPath(), result);
             CopyFiles(files, dir);
-            int r = RunCommand(dir, out stdout, out stderr);
-            string o, e;
-            RunShutdown(dir, out o, out e);
+
+            var args = $"--output_base={dir}.out --noblock_for_lock --bazelrc bazelrc test -s //...";
+            int r = await RunCommand(dir, args);
+            await RunCommand(dir, "shutdown");
             return r;
         }
 
-        private int RunCommand(string dir, out string stdout, out string stderr)
+        private async Task<int> RunCommand(string dir, string args)
         {
             var bazel = GetBazelPath();
 
@@ -33,65 +34,14 @@ namespace testlib
 
             Console.WriteLine($"Starting {bazel} in {dir}");
 
-            using (var myProcess = new Process())
-            {
-                myProcess.StartInfo.UseShellExecute = false;
-                myProcess.StartInfo.FileName = bazel;
-                myProcess.StartInfo.CreateNoWindow = true;
-                myProcess.StartInfo.Arguments = $"--bazelrc bazelrc test //...";
-                myProcess.StartInfo.WorkingDirectory = dir;
-                myProcess.StartInfo.RedirectStandardError = true;
-                myProcess.StartInfo.RedirectStandardOutput = true;
-                myProcess.Start();
-
-                bool r = myProcess.WaitForExit(300 * 1000);
-                if (!r)
-                    myProcess.Kill();
-
-                var err = myProcess.StandardError.ReadToEnd();
-                var output = myProcess.StandardOutput.ReadToEnd();
-                Console.WriteLine(output);
-                Console.WriteLine(err);
-                stdout = output;
-                stderr = err;
-                return r ? myProcess.ExitCode : -100;
-            }
-
+            var r = await ProcessAsyncHelper.RunProcessAsync(bazel, args, dir, 10 * 60 * 1000);
+            Console.WriteLine($"{r.Output}");
+            Console.WriteLine($"{r.Error}");
+            var code = r.ExitCode ?? -100;
+            Console.WriteLine($"Exit code {r.ExitCode}");
+            return code;
         }
 
-        private int RunShutdown(string dir, out string stdout, out string stderr)
-        {
-            var bazel = GetBazelPath();
-
-            Environment.SetEnvironmentVariable("TEST_TMPDIR", "");
-
-            Console.WriteLine($"Starting {bazel} in {dir}");
-
-            using (var myProcess = new Process())
-            {
-                myProcess.StartInfo.UseShellExecute = false;
-                myProcess.StartInfo.FileName = bazel;
-                myProcess.StartInfo.CreateNoWindow = true;
-                myProcess.StartInfo.Arguments = $"shutdown";
-                myProcess.StartInfo.WorkingDirectory = dir;
-                myProcess.StartInfo.RedirectStandardError = true;
-                myProcess.StartInfo.RedirectStandardOutput = true;
-                myProcess.Start();
-
-                bool r = myProcess.WaitForExit(300 * 1000);
-                if (!r)
-                    myProcess.Kill();
-
-                var err = myProcess.StandardError.ReadToEnd();
-                var output = myProcess.StandardOutput.ReadToEnd();
-                Console.WriteLine(output);
-                Console.WriteLine(err);
-                stdout = output;
-                stderr = err;
-                return r ? myProcess.ExitCode : -100;
-            }
-
-        }
 
         private string GetBazelPath()
         {
@@ -174,9 +124,8 @@ namespace testlib
             using (var sha = SHA256.Create())
             {
                 var bytes = sha.ComputeHash(Encoding.ASCII.GetBytes(combined));
-                return Uri.EscapeDataString(Convert.ToBase64String(bytes));
+                return Uri.EscapeDataString(Convert.ToBase64String(bytes, Base64FormattingOptions.None).Replace('/', '_').Replace('+', '-').Replace('=', '-'));
             }
-
         }
 
         public string GetBazelRc()
@@ -190,6 +139,7 @@ build --genrule_strategy=standalone
 
 test --test_strategy=standalone
 test --nocache_test_results
+test --spawn_strategy=standalone
 ";
         }
 
