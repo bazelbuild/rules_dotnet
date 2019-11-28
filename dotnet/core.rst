@@ -49,7 +49,7 @@ Attributes
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`name`              | :type:`string`              | |mandatory|                           |
 +----------------------------+-----------------------------+---------------------------------------+
-| A unique name for this rule.                                                                     |
+| A unique name for this rule. It must have .dll extension.                                        |
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`deps`              | :type:`label_list`          | :value:`None`                         |
 +----------------------------+-----------------------------+---------------------------------------+
@@ -93,7 +93,7 @@ Example
 .. code:: python
 
   dotnet_library(
-      name = "foo_bar",
+      name = "foo_bar.dll",
       srcs = [
           "foo.cs",
           "bar.cs",
@@ -106,7 +106,7 @@ Example
   )
 
   [core_library(
-    name = "{}_TransitiveClass-core".format(framework),
+    name = "{}_TransitiveClass-core.dll".format(framework),
     srcs = [
         "TransitiveClass.cs",
     ],
@@ -140,7 +140,7 @@ Attributes
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`name`              | :type:`string`              | |mandatory|                           |
 +----------------------------+-----------------------------+---------------------------------------+
-| A unique name for this rule.                                                                     |
+| A unique name for this rule. It must have .exe extension.                                        |
 +----------------------------+-----------------------------+---------------------------------------+
 | :param:`deps`              | :type:`label_list`          | :value:`None`                         |
 +----------------------------+-----------------------------+---------------------------------------+
@@ -184,7 +184,7 @@ Example
 .. code:: python
 
   dotnet_binary(
-      name = "foo_bar",
+      name = "foo_bar.exe",
       srcs = [
           "foo.cs",
           "bar.cs",
@@ -220,7 +220,7 @@ Attributes
 +----------------------------+-----------------------------+--------------------------------------------+
 | :param:`name`              | :type:`string`              | |mandatory|                                |
 +----------------------------+-----------------------------+--------------------------------------------+
-| A unique name for this rule.                                                                          |
+| A unique name for this rule. It must have .dll extension.                                             |
 +----------------------------+-----------------------------+--------------------------------------------+
 | :param:`deps`              | :type:`label_list`          | :value:`None`                              |
 +----------------------------+-----------------------------+--------------------------------------------+
@@ -257,7 +257,7 @@ Test example
 .. code:: python
 
     dotnet_nunit_test(
-        name = "MyTest",
+        name = "MyTest.dll",
         srcs = [
             "MyTest.cs",
         ],

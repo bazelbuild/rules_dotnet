@@ -149,7 +149,7 @@ Examples
   .. code:: python
 
     dotnet_library(
-      name = "foo_bar",
+      name = "foo_bar.dll",
       srcs = [
           "foo.cs",
           "bar.cs",
@@ -160,12 +160,15 @@ Examples
       ],
     )
 
+  Note: The defined library must have extension .dll. Otherwise launchers used by rules_dotnet are not able 
+  to correctly locate necessary files. 
+
 * dotnet_binary_
 
   .. code:: python
 
     dotnet_binary(
-      name = "foo_bar",
+      name = "foo_bar.exe",
       srcs = [
           "foo.cs",
           "bar.cs",
@@ -177,12 +180,15 @@ Examples
       visibility = ["//visibility:public"],
     )
 
+  Note: The defined library must have extension .exe. Otherwise launchers used by rules_dotnet are not able 
+  to correctly locate necessary files. 
+
 * dotnet_nunit_test_
 
   .. code:: python
 
     dotnet_nunit_test(
-        name = "MyTest",
+        name = "MyTest.dll",
         srcs = [
             "MyTest.cs",
         ],
@@ -191,6 +197,9 @@ Examples
             "//dotnet/externals/nunit2:nunit.framework",
         ],
     )
+
+  Note: The defined library must have extension .dll. Otherwise launchers used by rules_dotnet are not able 
+  to correctly locate necessary files. 
 
 * dotnet_resx_
 
@@ -243,7 +252,7 @@ Examples
   .. code:: python
 
     dotnet_binary(
-        name = "foo_bar",
+        name = "foo_bar.exe",
         srcs = [
             "foo.cs",
             "bar.cs",
@@ -285,7 +294,7 @@ Examples
   .. code:: python
 
     dotnet_binary(
-        name = "foo_bar",
+        name = "foo_bar.exe",
         srcs = [
             "foo.cs",
             "bar.cs",

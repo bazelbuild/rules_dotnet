@@ -9,3 +9,6 @@ _static
 _build
 /packages
 .vs
+node_modules
+package-lock.json
+package.json
