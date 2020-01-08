@@ -395,7 +395,7 @@ Attributes
 | The default is the basename of the file name (no subfolder).                                     |
 +----------------------------+-----------------------------+---------------------------------------+
 
-net_resource_multi
+net_resource_multi, core_resource_multi
 ~~~~~~~~~~~~~~~~~~
 
 This wraps multiple resource files so they can be embeded into an assembly.

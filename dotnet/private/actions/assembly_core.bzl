@@ -143,8 +143,9 @@ def emit_assembly_core(
     dotnet.actions.write(output = paramfile, content = runner_args)
 
     deps_files = [d[DotnetLibrary].result for d in transitive.to_list()]
+    resource_files = [r.result for rs in resources for r in rs[DotnetResourceList].result]
     dotnet.actions.run(
-        inputs = attr_srcs + [paramfile] + deps_files + [dotnet.stdlib] + [r[DotnetResource].result for r in resources],
+        inputs = attr_srcs + [paramfile] + deps_files + [dotnet.stdlib] + resource_files,
         outputs = [result] + ([pdb] if pdb else []),
         executable = dotnet.runner,
         arguments = [dotnet.mcs.path, "/noconfig", "@" + paramfile.path],

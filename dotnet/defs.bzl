@@ -44,6 +44,7 @@ load(
     _core_resource = "core_resource",
     _net_resource = "net_resource",
     _net_resource_multi = "net_resource_multi",
+    _core_resource_multi = "core_resource_multi",
 )
 load(
     "@io_bazel_rules_dotnet//dotnet/private:rules/test.bzl",
@@ -109,6 +110,7 @@ net_resx_multi = _net_resx_multi
 core_resource = _core_resource
 net_resource = _net_resource
 net_resource_multi = _net_resource_multi
+core_resource_multi = _core_resource_multi
 core_xunit_test = _core_xunit_test
 dotnet_nunit_test = _dotnet_nunit_test
 dotnet_xunit_test = _dotnet_xunit_test

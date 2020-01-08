@@ -75,6 +75,19 @@ core_resource = rule(
     executable = False,
 )
 
+core_resource_multi = rule(
+    _resource_multi_impl,
+    attrs = {
+        # source files for this target.
+        "srcs": attr.label_list(allow_files = True, mandatory = True),
+        "identifierBase": attr.string(),
+        "fixedIdentifierBase": attr.string(),
+        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
+    },
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
+    executable = False,
+)
+
 net_resource = rule(
     _resource_impl,
     attrs = {
