@@ -11,6 +11,9 @@
 #include <process.h>
 #define F_OK 0
 #pragma comment(lib, "shlwapi.lib")
+#ifndef SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE
+#define SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE 0x2
+#endif
 #else
 #include <unistd.h>
 #include <errno.h>
