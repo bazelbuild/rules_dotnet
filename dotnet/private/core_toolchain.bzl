@@ -71,7 +71,7 @@ def _get_dotnet_stdlib_byname(shared, lib, libVersion, name):
         if basename.lower() != lname:
             continue
         return f
-    fail("Could not find %s in core_sdk (shared, lib)" % name)
+    fail("Could not find %s in core_sdk (shared: %r, lib: %r)" % (name, shared, lib))
 
 def _core_toolchain_impl(ctx):
     return [platform_common.ToolchainInfo(

@@ -1,8 +1,10 @@
 package(default_visibility = ["//visibility:public"])
 
-load("@io_bazel_rules_dotnet//dotnet/stdlib.core:macro.bzl", "all_core_stdlib", "all_core_stdlib215")
+load("@io_bazel_rules_dotnet//dotnet/stdlib.core:macro.bzl", "all_core_stdlib", "all_core_stdlib215", "all_core_stdlib_above3")
 load("@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl", "core_stdlib")
 
 all_core_stdlib(None)
 
 all_core_stdlib215(None)
+
+all_core_stdlib_above3(None)

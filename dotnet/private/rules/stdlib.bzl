@@ -18,7 +18,18 @@ def _stdlib_impl(ctx):
         library = dotnet.new_library(dotnet = dotnet)
         return [library]
 
-    result = dotnet.stdlib_byname(name = name, shared = dotnet.shared, lib = dotnet.lib, libVersion = dotnet.libVersion)
+    if ctx.attr.extra_shared_name:
+        extra_shared = dotnet.extra_shared
+        shared = None
+        for i in extra_shared:
+            if i.label.name.endswith(ctx.attr.extra_shared_name):
+                shared = i
+            
+        if shared == None:
+            fail("Shared " + ctx.attr.extra_shared_name + " was not found in " + ", ".join([str(i) for i in extra_shared]))
+    else:
+        shared = dotnet.shared
+    result = dotnet.stdlib_byname(name = name, shared = shared, lib = dotnet.lib, libVersion = dotnet.libVersion)
 
     deps = ctx.attr.deps
     transitive = depset(direct = deps, transitive = [a[DotnetLibrary].transitive for a in deps])
@@ -63,6 +74,7 @@ core_stdlib = rule(
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "data": attr.label_list(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
+        "extra_shared_name": attr.string(),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
     executable = False,

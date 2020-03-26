@@ -319,6 +319,7 @@ def core_register_sdk(core_version, name = None):
         version = core_version[1:],
         targetFrameworkString = DOTNET_CORE_FRAMEWORKS[core_version][0],
         sdks = CORE_SDK_REPOSITORIES[core_version],
+        additional_shared = DOTNET_CORE_FRAMEWORKS[core_version][3],
     )
 
 def mono_register_sdk():

@@ -5,6 +5,7 @@ load(
 
 def CopyRunfiles(dotnet, runfiles, copy, symlink, executable, subdir):
     created = []
+    version_copied = False
     for f in runfiles.files.to_list():
         if f.basename == "mono" or f.basename == "mono.exe":
             newfile = dotnet.declare_file(dotnet, path = subdir + f.basename)
@@ -22,6 +23,14 @@ def CopyRunfiles(dotnet, runfiles, copy, symlink, executable, subdir):
                 newfile = dotnet.declare_file(dotnet, path = "{}/host/fxr/{}/{}".format(subdir, version[-2], version[-1]))
             else:
                 newfile = dotnet.declare_file(dotnet, path = subdir + f.basename)
+            
+            if newfile.basename == ".version":
+                if not version_copied:
+                    version_copied = True
+                else:
+                    print("Skipping %s" % newfile)
+                    continue
+
             dotnet.actions.run(
                 outputs = [newfile],
                 inputs = [f],

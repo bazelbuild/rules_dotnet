@@ -11,6 +11,7 @@ dotnet_context_data(
 core_context_data(
     name = "core_context_data",
     framework = DEFAULT_DOTNET_CORE_FRAMEWORK,
+    extra_shared = ["@core_sdk//:shared-{}".format(extra) for extra in DOTNET_CORE_FRAMEWORKS[DEFAULT_DOTNET_CORE_FRAMEWORK][3]]
 )
 
 net_context_data(
@@ -50,6 +51,7 @@ exports_files(["AUTHORS"])
         shared = "@core_sdk_{}//:shared".format(framework),
         tools = "@core_sdk_{}//:lib".format(framework),
         visibility = ["//visibility:public"],
+        extra_shared = ["@core_sdk_{}//:shared-{}".format(framework, extra) for extra in DOTNET_CORE_FRAMEWORKS[framework][3]]
     )
     for framework in DOTNET_CORE_FRAMEWORKS
 ]

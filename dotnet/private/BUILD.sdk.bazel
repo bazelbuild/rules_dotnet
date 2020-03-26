@@ -37,5 +37,5 @@ filegroup(
 
 filegroup(
     name = "native_deps",
-    srcs = glob(["host/**/*"]) + glob(["shared/**/*"]) ,
+    srcs = glob(["host/**/*"]) + glob(["shared/**/*"]) EXTRA_SHARES,
     )

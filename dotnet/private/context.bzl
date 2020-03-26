@@ -82,6 +82,7 @@ def dotnet_context(ctx, attr = None):
         framework = context_data._framework,
         lib = context_data._lib,
         shared = context_data._shared,
+        extra_shared = context_data._extra_shared,
         debug = ctx.var["COMPILATION_MODE"] == "dbg",
         extra_srcs = context_data._extra_srcs,
         _ctx = ctx,
@@ -99,6 +100,7 @@ def _dotnet_context_data(ctx):
         _toolchain_type = ctx.attr._toolchain_type,
         _extra_srcs = ctx.attr.extra_srcs,
         _framework = ctx.attr.framework,
+        _extra_shared = ctx.attr.extra_shared,
     )
 
 dotnet_context_data = rule(
@@ -123,6 +125,11 @@ dotnet_context_data = rule(
         "shared": attr.label(
             allow_files = True,
             default = "@dotnet_sdk//:lib",
+        ),
+        "extra_shared": attr.label_list(
+            allow_files = True,
+            allow_empty = True,
+            default = [],
         ),
         "host": attr.label(
             allow_files = True,
@@ -166,6 +173,9 @@ core_context_data = rule(
         "shared": attr.label(
             allow_files = True,
             default = "@core_sdk//:shared",
+        ),
+        "extra_shared": attr.label_list(
+            allow_files = True,
         ),
         "host": attr.label(
             allow_files = True,
