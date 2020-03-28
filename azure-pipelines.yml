@@ -4,25 +4,25 @@ jobs:
     matrix:
       linux:
         poolName: 'Azure Pipelines'
-        vmImage: 'ubuntu-16.04'       
+        vmImage: 'ubuntu-latest'       
         systemName: 'linux'
       windows:
-        poolName: 'home'
-        vmImage: ''
+        poolName: 'Azure Pipelines'
+        vmImage: 'windows-2019'
         systemName: 'windows'
       mac:
         poolName: 'Azure Pipelines'
-        vmImage: 'macOS-10.13'
+        vmImage: 'macOS-10.15'
         systemName: 'mac'
   pool:
     name: $(poolName)
     vmImage: $(vmImage)
 
   steps:
-    - task: DotNetCoreInstaller@0
+    - task: UseDotNet@2
       inputs:
-        packageType: 'sdk' 
-        version: '2.2.106' 
+        packageType: sdk
+        version: 3.1.201
       displayName: 'Install dotnet on Window'
       condition: and(succeeded(), eq(variables['systemName'], 'windows'))
 
@@ -43,6 +43,11 @@ jobs:
       condition: and(succeeded(), eq(variables['systemName'], 'mac'))
        
     - script: |
+        choco install bazel mono
+      displayName: 'Install dependencies'
+      condition: and(succeeded(), eq(variables['systemName'], 'windows'))
+
+    - script: |
         bazel version
       displayName: 'Show bazel version'
     - script: |
@@ -51,6 +56,12 @@ jobs:
     - script: |
         mono --version
       displayName: 'Show mono version'
+      condition: and(succeeded(), ne(variables['systemName'], 'windows'))
+
+    - script: |
+        "c:\program files\mono\bin\mono.exe" --version
+      displayName: 'Show mono version'
+      condition: and(succeeded(), eq(variables['systemName'], 'windows'))
 
     - script: |
         bazel clean --expunge 

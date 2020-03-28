@@ -1,8 +1,6 @@
 # trusty beta image has jdk8, gcc4.8.4
-dist: trusty
+dist: bionic
 sudo: required
-# xcode8 has jdk8
-osx_image: xcode8.3
 # Not technically required but suppresses 'Ruby' in Job status message.
 language: java
 
@@ -10,85 +8,47 @@ os:
   - linux
   - osx
 
-env:
-  # TODO(bazelbuild/continuous-integration#95): re-enable HEAD builds with stable URL
-  # - V=HEAD
-  - V=0.10.0
-
 before_install:
   - |
     if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
       OS=darwin
-      brew install mono
+      brew cask install homebrew/cask-versions/adoptopenjdk8
+      brew install bazel coreutils
+      brew cask install mono-mdk
     else
-      sysctl kernel.unprivileged_userns_clone=1
       sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+      curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
       sudo apt install apt-transport-https
-      echo "deb https://download.mono-project.com/repo/ubuntu stable-trusty main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
+      echo "deb https://download.mono-project.com/repo/ubuntu stable-bionic main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
+      echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list    
       sudo apt update
-      sudo apt install mono-devel libunwind8-dev
-      export RULES_DOTNET_USE_LOCAL_MONO=true
+      sudo apt install -y mono-devel libunwind8-dev bazel 
       OS=linux
     fi
-    if [[ "${V}" == "HEAD" ]]; then
-      # Determine last successful build number. This may change while we are
-      # downloading, so it's important to determine ahead of time, in case
-      # we need to resume the download.
-      CI_BASE="http://ci.bazel.io/view/Bazel%20bootstrap%20and%20maintenance/job/Bazel/PLATFORM_NAME=${OS}-x86_64/"
-      CI_INDEX_URL="${CI_BASE}/lastSuccessfulBuild/"
-      wget -q -O build-index.html "${CI_INDEX_URL}"
-      CI_BUILD=$(grep '<title>' build-index.html | sed -e 's/^.*#\([0-9]*\).*$/\1/')
-      # Determine the artifact name. This is normally, bazel--installer.sh,
-      # but it may be, for example, bazel-0.5rc2-installer.sh before a release.
-      CI_ARTIFACT=$(grep -o 'bazel-[^\"-]*-installer.sh' build-index.html | head -n 1)
-      URL="${CI_BASE}/${CI_BUILD}/artifact/output/ci/${CI_ARTIFACT}"
-      rm build-index.html
-    else
-      URL="https://github.com/bazelbuild/bazel/releases/download/${V}/bazel-${V}-installer-${OS}-x86_64.sh"
-    fi
-    wget -O install.sh "${URL}"
-    chmod +x install.sh
-    ./install.sh --user
-    rm -f install.sh
 
 script:
   - |
-    bazel \
-      --batch \
-      --host_jvm_args=-Xmx500m \
-      --host_jvm_args=-Xms500m \
-      build \
-      -s \
-      --local_resources=400,1,1.0 \
-      //...
+    bazel version
+
   - |
-    bazel \
-      --batch \
-      --host_jvm_args=-Xmx500m \
-      --host_jvm_args=-Xms500m \
-      run \
-      -s \
-      --local_resources=400,1,1.0 \
-      //tests/examples/example_binary:hello
+    export PATH=$PATH:/Library/Frameworks/Mono.framework/Versions/6.8.0/bin/
+    mono --version
+
   - |
-    bazel \
-      --batch \
-      --host_jvm_args=-Xmx500m \
-      --host_jvm_args=-Xms500m \
-      run \
-      -s \
-      --local_resources=400,1,1.0 \
-      //tests/examples/example_binary:hello-core
+    export PATH=$PATH:/Library/Frameworks/Mono.framework/Versions/6.8.0/bin/
+    bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build --spawn_strategy=standalone //...
+
   - |
-    bazel \
-      --batch \
-      --host_jvm_args=-Xmx500m \
-      --host_jvm_args=-Xms500m \
-      test \
-      -s \
-      --local_resources=400,1,1.0 \
-      --test_summary=detailed \
-      --test_output=all \
-      //...
+    export PATH=$PATH:/Library/Frameworks/Mono.framework/Versions/6.8.0/bin/
+    bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run --spawn_strategy=standalone //tests/examples/example_binary:hello.exe
+
+  - |
+    export PATH=$PATH:/Library/Frameworks/Mono.framework/Versions/6.8.0/bin/
+    bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run --spawn_strategy=standalone //tests/examples/example_binary:v2.1.200_hello-core.exe
+
+  - |
+    export PATH=$PATH:/Library/Frameworks/Mono.framework/Versions/6.8.0/bin/
+    bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m test --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
+    
 notifications:
   email: false

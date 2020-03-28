@@ -25,6 +25,7 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 	char torun[64 * 1024] = {0};
 	char *p = NULL;
 	char **newargv = NULL;
+	int i;
 
 	// Based on current exe calculate _0.dll to run
 	//
@@ -56,7 +57,7 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 	sprintf(dotnet, "%s/dotnet", manifestDir);
 	newargv[0] = dotnet;
 	newargv[1] = torun;
-	for (int i = 1; i < argc; ++i)
+	for (i = 1; i < argc; ++i)
 	{
 		newargv[i + 1] = argv[i];
 	}
@@ -64,7 +65,7 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 
 	if (IsVerbose())
 	{
-		for (int i = 0; i < argc + 2; ++i)
+		for (i = 0; i < argc + 2; ++i)
 		{
 			printf("argv[%d] = %s\n", i, newargv[i]);
 		}
