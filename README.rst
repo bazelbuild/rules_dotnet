@@ -7,6 +7,10 @@ C# Rules for Bazel_
    :target: https://buildkite.com/bazel/rules-dotnet-edge
 .. |badgeAzure| image:: https://dev.azure.com/tomaszstrejczek/rules_dotnet/_apis/build/status/tomaszstrejczek.rules_dotnet?branchName=master
    :target: https://dev.azure.com/tomaszstrejczek/rules_dotnet/_build
+.. |badgeTravis| image:: https://travis-ci.org/bazelbuild/rules_dotnet.svg?branch=master
+    :target: https://travis-ci.org/bazelbuild/rules_dotnet   
+.. |badgeAppveyor| image:: https://ci.appveyor.com/api/projects/status/obpncs8e7wab1yty/branch/master
+    :target: https://ci.appveyor.com/project/tomek1909/rules-dotnet/branch/master
 .. _Mono: http://www.mono-project.com/
 .. _Net: https://en.wikipedia.org/wiki/.NET_Framework
 .. _Core: https://en.wikipedia.org/wiki/.NET_Core
@@ -26,13 +30,14 @@ C# Rules for Bazel_
 .. ;;
 
 
-* Buildkite:
+* Build status:
 
-  |badge|
+  +-----------------+---------------+-----------------+
+  | Azure pipelines | Travis CI     | Appveyor        |
+  +=================+===============+=================+
+  | |badgeAzure|    | |badgeTravis| | |badgeAppveyor| |
+  +-----------------+---------------+-----------------+
 
-* Azure pipelines
-
-  |badgeAzure| 
 
 .. contents:: 
   :depth: 2
