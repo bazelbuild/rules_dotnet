@@ -1,12 +1,16 @@
 load(
+    "@io_bazel_rules_dotnet//dotnet/private:common.bzl",
+    "as_iterable",
+)
+load(
     "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
-    "dotnet_context",
     "new_library",
 )
 load(
     "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
     "DotnetLibrary",
 )
+load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
 
 def _import_library_impl(ctx):
     """net_import_library_impl emits actions for importing an external dll (for example provided by nuget)."""
@@ -16,22 +20,31 @@ def _import_library_impl(ctx):
     src = ctx.attr.src
     result = src.files.to_list()[0]
 
-    if ctx.attr.data != None:
-        data = depset(direct = [], transitive = [t.files for t in ctx.attr.data])
-    else:
-        data = depset()
+    (transitive_refs, transitive_runfiles, transitive_deps) = collect_transitive_info(deps)
 
-    runfiles = depset(direct = [result], transitive = [d[DotnetLibrary].runfiles for d in deps] + [data])
-    transitive = depset(direct = deps, transitive = [a[DotnetLibrary].transitive for a in deps])
+    direct_runfiles = []
+    direct_runfiles.append(result)
+
+    direct_refs = []
+    if ctx.attr.ref:
+        direct_refs.append(ctx.attr.ref)
+    else:
+        direct_refs.append(result)
+
+    if ctx.attr.data:
+        data_l = [f for t in ctx.attr.data for f in as_iterable(t.files)]
+        direct_runfiles += data_l
 
     library = new_library(
         dotnet = ctx,
         name = name,
         deps = deps,
-        transitive = transitive,
-        runfiles = runfiles,
+        transitive = transitive_deps,
+        runfiles = depset(direct = direct_runfiles, transitive = [transitive_runfiles]),
         result = result,
         version = ctx.attr.version,
+        ref = ctx.attr.ref,
+        transitive_refs = depset(direct = direct_refs, transitive = [transitive_refs]),
     )
 
     return [
@@ -49,6 +62,7 @@ dotnet_import_library = rule(
         "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True),
         "data": attr.label_list(allow_files = True),
         "version": attr.string(),
+        "ref": attr.label(allow_files = True, mandatory = False),
     },
     executable = False,
 )
@@ -60,6 +74,7 @@ dotnet_import_binary = rule(
         "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True),
         "data": attr.label_list(allow_files = True),
         "version": attr.string(),
+        "ref": attr.label(allow_files = True, mandatory = False),
     },
     executable = False,
 )
@@ -71,6 +86,7 @@ core_import_library = rule(
         "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True),
         "data": attr.label_list(allow_files = True),
         "version": attr.string(),
+        "ref": attr.label(allow_files = True, mandatory = False),
     },
     executable = False,
 )
@@ -82,6 +98,7 @@ core_import_binary = rule(
         "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True),
         "data": attr.label_list(allow_files = True),
         "version": attr.string(),
+        "ref": attr.label(allow_files = True, mandatory = False),
     },
     executable = False,
 )
@@ -93,6 +110,7 @@ net_import_library = rule(
         "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True),
         "data": attr.label_list(allow_files = True),
         "version": attr.string(),
+        "ref": attr.label(allow_files = True, mandatory = False),
     },
     executable = False,
 )
@@ -104,6 +122,7 @@ net_import_binary = rule(
         "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True),
         "data": attr.label_list(allow_files = True),
         "version": attr.string(),
+        "ref": attr.label(allow_files = True, mandatory = False),
     },
     executable = False,
 )

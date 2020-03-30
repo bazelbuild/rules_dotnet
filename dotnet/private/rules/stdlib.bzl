@@ -1,4 +1,8 @@
 load(
+    "@io_bazel_rules_dotnet//dotnet/private:common.bzl",
+    "as_iterable",
+)
+load(
     "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
     "dotnet_context",
 )
@@ -6,6 +10,7 @@ load(
     "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
     "DotnetLibrary",
 )
+load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
 
 def _stdlib_impl(ctx):
     dotnet = dotnet_context(ctx)
@@ -20,27 +25,30 @@ def _stdlib_impl(ctx):
 
     result = dotnet.stdlib_byname(name = name, shared = dotnet.shared, lib = dotnet.lib, libVersion = dotnet.libVersion)
 
-    deps = ctx.attr.deps
-    transitive = depset(direct = deps, transitive = [a[DotnetLibrary].transitive for a in deps])
-    extra = depset(direct = [result], transitive = [t.files for t in ctx.attr.data])
-    direct = extra.to_list()
+    (transitive_refs, transitive_runfiles, transitive_deps) = collect_transitive_info(ctx.attr.deps)
 
-    runfiles = depset(direct = direct, transitive = [a[DotnetLibrary].runfiles for a in deps])
+    direct_runfiles = []
+    direct_runfiles.append(result)
+
+    if ctx.attr.data:
+        data_l = [f for t in ctx.attr.data for f in as_iterable(t.files)]
+        direct_runfiles += data_l
 
     library = dotnet.new_library(
         dotnet = dotnet,
         name = name,
-        deps = deps,
-        transitive = transitive,
-        runfiles = runfiles,
+        deps = ctx.attr.deps,
+        transitive = transitive_deps,
+        runfiles = depset(direct = direct_runfiles, transitive = [transitive_runfiles]),
         result = result,
+        transitive_refs = transitive_refs,
     )
 
     return [
         library,
         DefaultInfo(
             files = depset([library.result]),
-            runfiles = ctx.runfiles(files = [], transitive_files = runfiles),
+            runfiles = ctx.runfiles(files = [], transitive_files = library.runfiles),
         ),
     ]
 

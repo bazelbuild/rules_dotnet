@@ -37,12 +37,19 @@ API
 DotnetLibrary
 ~~~~~~~~~~~~~
 
-DotnetLibrary is a provider that exposes a compiled library along with it's full transitive
+DotnetLibrary is a provider that exposes a compiled assembly along with it's full transitive
 dependencies.
-This represents a compile dotnet binary.
 
 +--------------------------------+-----------------------------------------------------------------+
 | **Name**                       | **Type**                                                        |
++--------------------------------+-----------------------------------------------------------------+
+| :param:`label`                 | :type:`Label`                                                   |
++--------------------------------+-----------------------------------------------------------------+
+| Label of the rules used to create this assembly                                                  |
++--------------------------------+-----------------------------------------------------------------+
+| :param:`name`                  | :type:`string`                                                  |
++--------------------------------+-----------------------------------------------------------------+
+| Name of the assembly. Label.name is used if not provided                                         |
 +--------------------------------+-----------------------------------------------------------------+
 | :param:`version`               | :type:`string`                                                  |
 +--------------------------------+-----------------------------------------------------------------+
@@ -70,6 +77,17 @@ This represents a compile dotnet binary.
 | The depset of files required to run given assembly. It should include result and pdb             |
 | (if generated).                                                                                  |
 +--------------------------------+-----------------------------------------------------------------+
+| :param:`ref`                   | :type:`file`                                                    |
++--------------------------------+-----------------------------------------------------------------+
+| The reference assembly file to be used. If not provided then ``result`` is used for compilation  |
+| of dependant targets.                                                                            |
++--------------------------------+-----------------------------------------------------------------+
+| :param:`transitive_refs`       | :type:`depset of File`                                          |
++--------------------------------+-----------------------------------------------------------------+
+| The full set of transitive refs. This includes ref or result for this assembly                   |
+| and all ``transitive_refs`` members transitively reachable through ``deps``.                     |
++--------------------------------+-----------------------------------------------------------------+
+
 
 DotnetResource
 ~~~~~~~~~~~~~~

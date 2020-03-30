@@ -11,10 +11,6 @@ load(
     "@io_bazel_rules_dotnet//dotnet/private:rules/runfiles.bzl",
     "CopyRunfiles",
 )
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:actions/resolve.bzl",
-    "ResolveVersions",
-)
 
 def _unit_test(ctx):
     dotnet = dotnet_context(ctx)
@@ -63,12 +59,7 @@ def _unit_test(ctx):
     else:
         runner = []
 
-    #runfiles = ctx.runfiles(files = [launcher] + runner + ctx.attr.native_deps.files.to_list() + ctx.attr._xslt.files.to_list(), transitive_files = depset(transitive = [executable.runfiles, ctx.attr.testlauncher[DotnetLibrary].runfiles]))
-
-    transitive, transitive_runfiles = ResolveVersions(executable, ctx.attr.testlauncher)
-
-    d_runfiles = runner + ctx.attr.native_deps.files.to_list() + ctx.attr._xslt.files.to_list()
-    runfiles = ctx.runfiles(files = d_runfiles, transitive_files = transitive_runfiles)
+    runfiles = ctx.runfiles(files = [launcher] + runner + ctx.attr.native_deps.files.to_list() + ctx.attr._xslt.files.to_list(), transitive_files = depset(transitive = [executable.runfiles, ctx.attr.testlauncher[DotnetLibrary].runfiles]))
     runfiles = CopyRunfiles(dotnet, runfiles, ctx.attr._copy, ctx.attr._symlink, executable, subdir)
 
     return [
