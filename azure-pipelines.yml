@@ -48,7 +48,7 @@ jobs:
       condition: and(succeeded(), eq(variables['systemName'], 'windows'))
 
     - script: |
-        bazel version
+        bazel --output_user_root=/tmp version
       displayName: 'Show bazel version'
     - script: |
         dotnet --info
@@ -64,20 +64,17 @@ jobs:
       condition: and(succeeded(), eq(variables['systemName'], 'windows'))
 
     - script: |
-        bazel clean --expunge 
-
-    - script: |
-        bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build -s --local_resources=400,1,1.0 --spawn_strategy=standalone //... 
+        bazel --output_user_root=/tmp --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build -s --local_resources=400,1,1.0 --spawn_strategy=standalone //... 
       displayName: 'Build all'
     - script: |
-        bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s --local_resources=400,1,1.0 --spawn_strategy=standalone //tests/examples/example_binary:hello.exe
+        bazel --output_user_root=/tmp --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s --local_resources=400,1,1.0 --spawn_strategy=standalone //tests/examples/example_binary:hello.exe
       displayName: 'Run sample hello'
     - script: |
-        bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s --local_resources=400,1,1.0 --spawn_strategy=standalone //tests/examples/example_binary:v2.1.200_hello-core.exe
+        bazel --output_user_root=/tmp --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run -s --local_resources=400,1,1.0 --spawn_strategy=standalone //tests/examples/example_binary:v2.1.200_hello-core.exe
       displayName: 'Run sample core hello'
 
     - script: |
-        bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m test -s --local_resources=400,1,1.0 --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
+        bazel --output_user_root=/tmp --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m test -s --local_resources=400,1,1.0 --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
       continueOnError: true
       displayName: 'Run tests'
     - powershell: |
@@ -157,7 +154,4 @@ jobs:
       workingDirectory: $(Build.SourcesDirectory)/docs/examples/mono
       displayName: 'Run 3rd_party build'
 
-    - script: |
-        bazel shutdown 
-      workingDirectory: $(Build.SourcesDirectory)/docs/examples/mono
-      displayName: 'Bazel shutdown'
+    
