@@ -6,7 +6,7 @@ jobs:
         poolName: 'Azure Pipelines'
         vmImage: 'ubuntu-latest'       
         systemName: 'linux'
-        bazel_startup: '--output_user_root=/tmp --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build'
+        bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build'
       windows:
         poolName: 'Azure Pipelines'
         vmImage: 'windows-2019'
@@ -16,7 +16,7 @@ jobs:
         poolName: 'Azure Pipelines'
         vmImage: 'macOS-10.15'
         systemName: 'mac'
-        bazel_startup: '--output_user_root=/tmp --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build'
+        bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build'
   pool:
     name: $(poolName)
     vmImage: $(vmImage)
@@ -52,7 +52,7 @@ jobs:
       condition: and(succeeded(), eq(variables['systemName'], 'windows'))
 
     - script: |
-        bazel $(bazel_startup) version
+        bazel version
       displayName: 'Show bazel version'
     - script: |
         dotnet --info
