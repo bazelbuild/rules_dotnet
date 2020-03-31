@@ -4,12 +4,12 @@ package(default_visibility = ["//visibility:public"])
 
 cc_library(
     name = "common",
-    srcs = glob([
+    srcs = [
         "manifest.c",
-        "misc.c,",
-    ]) + select({
+        "misc.c",
+    ] + select({
         "@bazel_tools//src/conditions:windows": [],
-        "//conditions:default": [":copyfile.c"],
+        "//conditions:default": ["copyfile.c"],
     }),
     hdrs = glob([
         "*.h",
