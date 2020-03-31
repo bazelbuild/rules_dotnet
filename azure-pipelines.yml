@@ -109,7 +109,7 @@ jobs:
         #mergeTestResults: false # Optional
         #buildPlatform: # Optional
         #buildConfiguration: # Optional
-        #publishRunAttachments: true # Optional
+        publishRunAttachments: true # Optional
 
     - script: |
         pwd
