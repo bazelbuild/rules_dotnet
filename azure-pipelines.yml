@@ -6,17 +6,17 @@ jobs:
         poolName: 'Azure Pipelines'
         vmImage: 'ubuntu-latest'       
         systemName: 'linux'
-        bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build'
+        bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
       windows:
         poolName: 'Azure Pipelines'
         vmImage: 'windows-2019'
         systemName: 'windows'
-        bazel_startup: '--output_user_root=c:\tmp --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build'
+        bazel_startup: '--output_user_root=c:\tmp --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
       mac:
         poolName: 'Azure Pipelines'
         vmImage: 'macOS-10.15'
         systemName: 'mac'
-        bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build'
+        bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
   pool:
     name: $(poolName)
     vmImage: $(vmImage)
