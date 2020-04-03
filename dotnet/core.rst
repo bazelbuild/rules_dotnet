@@ -430,7 +430,7 @@ Attributes
 | The logical name for given resource is constructred from fixedIdentiferBase + "." +               |
 | "." + filename. The resulting name that is used to load the resource.                             |
 | Either identifierBase of fixedIdentifierBase must be specified                                    |
-+----------------------------+-----------------------------+---------------------------------------+
++----------------------------+-----------------------------+----------------------------------------+
 
 
 dotnet_import_library, core_import_library, net_import_library, dotnet_import_binary, core_import_binary, net_import_binary

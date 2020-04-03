@@ -19,8 +19,12 @@ Welcome to rules_dotnet's documentation!
    tests/README
    tests/core/README.rst
    tests/core/dotnet_library/README.rst
+   tests/core/core_library/README.rst
    tests/core/dotnet_binary/README.rst
+   tests/core/core_binary/README.rst
    tests/core/nuget_single/README.rst
+   tests/core/roslyn_2_10_0/README.rst
+   tests/examples/README.rst
    tools/nuget2bazel/README.rst
    docs/runtime.rst
    docs/multiversion.rst
