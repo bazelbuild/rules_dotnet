@@ -8,9 +8,13 @@ local_repository(
     path = "../../..",
 )
 
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "mono_register_sdk", "dotnet_repositories", "dotnet_register_toolchains", "nuget_package")
+load("@io_bazel_rules_dotnet//dotnet:deps.bzl", "dotnet_repositories")
 
 dotnet_repositories()
+
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "mono_register_sdk", "dotnet_repositories_nugets", "dotnet_register_toolchains", "nuget_package")
+
+dotnet_repositories_nugets()
 
 dotnet_register_toolchains()
 

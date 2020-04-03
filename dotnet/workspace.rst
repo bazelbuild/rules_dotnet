@@ -30,7 +30,14 @@ workspace rule.
 dotnet_repositories
 ~~~~~~~~~~~~~~~~~~~
 
-Fetches remote repositories required by dotnet rules.
+Fetches remote repositories required before loading other rules_dotnet files. It fetches basic dependencies.
+
+For example: bazel_skylib is loaded.
+
+dotnet_repositories_nugets
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Fetches nuget repositories required by rules.
 
 
 dotnet_nuget

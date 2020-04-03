@@ -21,6 +21,7 @@ C# Rules for Bazel_
 .. _dotnet_resx: dotnet/core.rst#dotnet_resx
 .. _dotnet_import_library: dotnet/core.rst#dotnet_import_library
 .. _dotnet_repositories: dotnet/workspace.rst#dotnet_repositories
+.. _dotnet_repositories_nugets: dotnet/workspace.rst#dotnet_repositories_nugets
 .. _dotnet_register_toolchains: dotnet/toolchains.rst#dotnet_register_toolchains
 .. _net_register_sdk: dotnet/toolchains.rst#net_register_sdk
 .. _core_register_sdk: dotnet/toolchains.rst#core_register_sdk
@@ -113,14 +114,18 @@ Setup
     git_repository(
         name = "io_bazel_rules_dotnet",
         remote = "https://github.com/bazelbuild/rules_dotnet",
-        tag = "0.0.3",
+        tag = "0.0.5",
     )
 
+    load("@io_bazel_rules_dotnet//dotnet:deps.bzl", "dotnet_repositories")
+
+    dotnet_repositories()
+
     load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_register_sdk", "net_register_sdk", "mono_register_sdk",
-        "dotnet_register_toolchains", "dotnet_repositories", "nuget_package")
+        "dotnet_register_toolchains", "dotnet_repositories_nugets", "nuget_package")
 
     dotnet_register_toolchains()
-    dotnet_repositories()
+    dotnet_repositories_nugets()
     # For .NET Core:
     core_register_sdk("v2.1.502", name = "core_sdk")
     # For .NET Framework:
@@ -128,8 +133,11 @@ Setup
     # For Mono:
     mono_register_sdk()
 
-  The dotnet_repositories_ rule fetches external dependencies, namely the nuget binary.
+  The dotnet_repositories_ rule fetches external dependencies which have to be defined before loading
+  any other file of rules_dotnet. dotnet_repositories_nugets_ loads nuget packages required by test rules.
+
   The dotnet_register_toolchains_ configures toolchains.
+
   The mono_register_sdk_, core_register_sdk_, net_register_sdk_ "glue" toolchains with 
   appropriate SDKs.
 

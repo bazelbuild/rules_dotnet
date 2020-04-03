@@ -1,7 +1,4 @@
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:skylib/lib/paths.bzl",
-    "paths",
-)
+load("@rules_dotnet_skylib//lib:paths.bzl", "paths")
 
 _gac2_path = "C:/Windows/assembly"
 _gac4_path = "C:/Windows/Microsoft.NET/assembly"

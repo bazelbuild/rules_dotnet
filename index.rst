@@ -11,12 +11,12 @@ Welcome to rules_dotnet's documentation!
    :caption: Contents:
 
    README
+   CHANGELOG
    dotnet/core
    dotnet/workspace
    dotnet/providers
    dotnet/toolchains
    tests/README
-   dotnet/private/skylib/README
    tests/core/README.rst
    tests/core/dotnet_library/README.rst
    tests/core/dotnet_binary/README.rst

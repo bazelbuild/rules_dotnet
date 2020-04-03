@@ -17,10 +17,6 @@ load(
     _dotnet_toolchain = "dotnet_toolchain",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:repositories.bzl",
-    _dotnet_repositories = "dotnet_repositories",
-)
-load(
     "@io_bazel_rules_dotnet//dotnet/private:rules/binary.bzl",
     _core_binary = "core_binary",
     _dotnet_binary = "dotnet_binary",
@@ -88,6 +84,10 @@ load(
     _DOTNET_CORE_FRAMEWORKS = "DOTNET_CORE_FRAMEWORKS",
     _DOTNET_NET_FRAMEWORKS = "DOTNET_NET_FRAMEWORKS",
 )
+load(
+    "@io_bazel_rules_dotnet//dotnet/private:nugets.bzl",
+    _dotnet_repositories_nugets = "dotnet_repositories_nugets",
+)
 
 dotnet_context = _dotnet_context
 dotnet_register_toolchains = _dotnet_register_toolchains
@@ -95,7 +95,6 @@ mono_register_sdk = _mono_register_sdk
 net_register_sdk = _net_register_sdk
 core_register_sdk = _core_register_sdk
 dotnet_toolchain = _dotnet_toolchain
-dotnet_repositories = _dotnet_repositories
 core_binary = _core_binary
 dotnet_binary = _dotnet_binary
 net_binary = _net_binary
@@ -134,3 +133,4 @@ DEFAULT_DOTNET_CORE_FRAMEWORK = _DEFAULT_DOTNET_CORE_FRAMEWORK
 core_context_data = _core_context_data
 dotnet_context_data = _dotnet_context_data
 net_context_data = _net_context_data
+dotnet_repositories_nugets = _dotnet_repositories_nugets

@@ -1,15 +1,8 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
-    "dotnet_context",
-)
-load(
     "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
     "DotnetLibrary",
 )
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:skylib/lib/dicts.bzl",
-    "dicts",
-)
+load("@rules_dotnet_skylib//lib:dicts.bzl", "dicts")
 
 def _dotnet_nuget_impl(
         ctx,

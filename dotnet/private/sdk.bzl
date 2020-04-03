@@ -1,8 +1,5 @@
 load("@io_bazel_rules_dotnet//dotnet/private:common.bzl", "bat_extension", "executable_extension")
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:skylib/lib/paths.bzl",
-    "paths",
-)
+load("@rules_dotnet_skylib//lib:paths.bzl", "paths")
 
 # Mono for linux, windows and macos layouts fies differentely
 # So we provide an implementation for each host
@@ -67,7 +64,6 @@ dotnet_host_sdk = repository_rule(
     implementation = _dotnet_host_sdk_impl,
     local = True,
 )
-
 
 """See /dotnet/toolchains.rst#dotnet-sdk for full documentation."""
 

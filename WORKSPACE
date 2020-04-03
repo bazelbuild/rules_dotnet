@@ -1,25 +1,25 @@
 workspace(name = "io_bazel_rules_dotnet")
 
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@io_bazel_rules_dotnet//dotnet:deps.bzl", "dotnet_repositories")
+
+dotnet_repositories()
+
 load(
-    "//dotnet:defs.bzl",
+    "@io_bazel_rules_dotnet//dotnet:defs.bzl",
     "DEFAULT_DOTNET_CORE_FRAMEWORK",
     "DOTNET_CORE_FRAMEWORKS",
     "DOTNET_NET_FRAMEWORKS",
     "core_register_sdk",
-    "dotnet_nuget_new",
     "dotnet_register_toolchains",
-    "dotnet_repositories",
+    "dotnet_repositories_nugets",
     "mono_register_sdk",
     "net_gac4",
     "net_register_sdk",
-    "nuget_package",
-    "vs2017_ref_net",
 )
 
-dotnet_repositories()
-
 dotnet_register_toolchains()
+
+dotnet_repositories_nugets()
 
 mono_register_sdk()
 
@@ -55,13 +55,3 @@ net_gac4(
 load("@io_bazel_rules_dotnet//tests:bazel_tests.bzl", "test_environment")
 
 test_environment()
-
-# local_repository(
-#     name = "io_bazel_rules_dotnet_3rd_party",
-#     #path = "/home/nest-user/work/gopath/rules_dotnet",
-#     path = "c:/rules_dotnet_3rd_party",
-# )
-
-# load("@io_bazel_rules_dotnet_3rd_party//:repositories.bzl", "rules_dotnet_3rd_party_dependencies")
-
-# rules_dotnet_3rd_party_dependencies()
