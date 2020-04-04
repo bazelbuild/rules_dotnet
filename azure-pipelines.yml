@@ -38,12 +38,10 @@ jobs:
       condition: and(succeeded(), eq(variables['systemName'], 'linux'))
 
     - script: |
-        brew install bazel coreutils
-      displayName: 'Install dependencies'
-      condition: and(succeeded(), eq(variables['systemName'], 'mac'))
-    - script: |
+        brew list bazel &>/dev/null || brew install bazel 
+        brew install coreutils
         brew cask install mono-mdk
-      displayName: 'Install mono'
+      displayName: 'Install dependencies osx'
       condition: and(succeeded(), eq(variables['systemName'], 'mac'))
        
     - script: |
