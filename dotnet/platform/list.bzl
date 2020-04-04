@@ -42,6 +42,7 @@ DOTNET_NET_FRAMEWORKS = {
     "net47": (".NETFramework,Version=v4.7", None, "NET47", "4.7"),
     "net471": (".NETFramework,Version=v4.7.1", None, "NET471", "4.7.1"),
     "net472": (".NETFramework,Version=v4.7.2", None, "NET472", "4.7.2"),
+    "net48": (".NETFramework,Version=v4.8", None, "NET48", "4.8"),
     "netstandard1.0": (".NETStandard,Version=v1.0", "net472", "NETSTANDARD1_0", "4.7.2"),
     "netstandard1.1": (".NETStandard,Version=v1.1", "net472", "NETSTANDARD1_1", "4.7.2"),
     "netstandard1.2": (".NETStandard,Version=v1.2", "net472", "NETSTANDARD1_2", "4.7.2"),

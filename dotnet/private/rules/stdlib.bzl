@@ -80,6 +80,7 @@ net_stdlib = rule(
     _stdlib_impl,
     attrs = {
         "dll": attr.string(),
+        "ref": attr.label(allow_files = True),
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "data": attr.label_list(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),

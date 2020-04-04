@@ -10,6 +10,8 @@ def dotnet_repositories_nunit():
         core_lib = {
             "netcoreapp2.0": "lib/netstandard2.0/nunit.framework.dll",
             "netcoreapp2.1": "lib/netstandard2.0/nunit.framework.dll",
+            "netcoreapp3.0": "lib/netstandard2.0/nunit.framework.dll",
+            "netcoreapp3.1": "lib/netstandard2.0/nunit.framework.dll",
         },
         net_lib = {
             "net45": "lib/net45/nunit.framework.dll",
@@ -21,10 +23,12 @@ def dotnet_repositories_nunit():
             "net47": "lib/net45/nunit.framework.dll",
             "net471": "lib/net45/nunit.framework.dll",
             "net472": "lib/net45/nunit.framework.dll",
+            "net48": "lib/net45/nunit.framework.dll",
             "netstandard1.4": "lib/netstandard1.4/nunit.framework.dll",
             "netstandard1.5": "lib/netstandard1.4/nunit.framework.dll",
             "netstandard1.6": "lib/netstandard1.4/nunit.framework.dll",
             "netstandard2.0": "lib/netstandard2.0/nunit.framework.dll",
+            "netstandard2.1": "lib/netstandard2.0/nunit.framework.dll",
         },
         mono_lib = "lib/net45/nunit.framework.dll",
         core_files = {
@@ -34,6 +38,16 @@ def dotnet_repositories_nunit():
                "lib/netstandard2.0/nunit.framework.xml",
             ],
             "netcoreapp2.1": [
+               "lib/netstandard2.0/nunit.framework.dll",
+               "lib/netstandard2.0/nunit.framework.pdb",
+               "lib/netstandard2.0/nunit.framework.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard2.0/nunit.framework.dll",
+               "lib/netstandard2.0/nunit.framework.pdb",
+               "lib/netstandard2.0/nunit.framework.xml",
+            ],
+            "netcoreapp3.1": [
                "lib/netstandard2.0/nunit.framework.dll",
                "lib/netstandard2.0/nunit.framework.pdb",
                "lib/netstandard2.0/nunit.framework.xml",
@@ -85,6 +99,11 @@ def dotnet_repositories_nunit():
                "lib/net45/nunit.framework.pdb",
                "lib/net45/nunit.framework.xml",
             ],
+            "net48": [
+               "lib/net45/nunit.framework.dll",
+               "lib/net45/nunit.framework.pdb",
+               "lib/net45/nunit.framework.xml",
+            ],
             "netstandard1.4": [
                "lib/netstandard1.4/nunit.framework.dll",
                "lib/netstandard1.4/nunit.framework.pdb",
@@ -105,6 +124,11 @@ def dotnet_repositories_nunit():
                "lib/netstandard2.0/nunit.framework.pdb",
                "lib/netstandard2.0/nunit.framework.xml",
             ],
+            "netstandard2.1": [
+               "lib/netstandard2.0/nunit.framework.dll",
+               "lib/netstandard2.0/nunit.framework.pdb",
+               "lib/netstandard2.0/nunit.framework.xml",
+            ],
         },
         mono_files = [
             "lib/net45/nunit.framework.dll",
@@ -120,6 +144,8 @@ def dotnet_repositories_nunit():
         core_lib = {
             "netcoreapp2.0": "tools/Mono.Cecil.dll",
             "netcoreapp2.1": "tools/Mono.Cecil.dll",
+            "netcoreapp3.0": "tools/Mono.Cecil.dll",
+            "netcoreapp3.1": "tools/Mono.Cecil.dll",
         },
         net_lib = {
             "net45": "tools/Mono.Cecil.dll",
@@ -131,6 +157,7 @@ def dotnet_repositories_nunit():
             "net47": "tools/Mono.Cecil.dll",
             "net471": "tools/Mono.Cecil.dll",
             "net472": "tools/Mono.Cecil.dll",
+            "net48": "tools/Mono.Cecil.dll",
             "netstandard1.0": "tools/Mono.Cecil.dll",
             "netstandard1.1": "tools/Mono.Cecil.dll",
             "netstandard1.2": "tools/Mono.Cecil.dll",
@@ -139,11 +166,14 @@ def dotnet_repositories_nunit():
             "netstandard1.5": "tools/Mono.Cecil.dll",
             "netstandard1.6": "tools/Mono.Cecil.dll",
             "netstandard2.0": "tools/Mono.Cecil.dll",
+            "netstandard2.1": "tools/Mono.Cecil.dll",
         },
         mono_lib = "tools/Mono.Cecil.dll",
        core_tool = {
            "netcoreapp2.0": "tools/nunit3-console.exe",
            "netcoreapp2.1": "tools/nunit3-console.exe",
+           "netcoreapp3.0": "tools/nunit3-console.exe",
+           "netcoreapp3.1": "tools/nunit3-console.exe",
        },
        net_tool = {
            "net45": "tools/nunit3-console.exe",
@@ -155,6 +185,7 @@ def dotnet_repositories_nunit():
            "net47": "tools/nunit3-console.exe",
            "net471": "tools/nunit3-console.exe",
            "net472": "tools/nunit3-console.exe",
+           "net48": "tools/nunit3-console.exe",
            "netstandard1.0": "tools/nunit3-console.exe",
            "netstandard1.1": "tools/nunit3-console.exe",
            "netstandard1.2": "tools/nunit3-console.exe",
@@ -163,6 +194,7 @@ def dotnet_repositories_nunit():
            "netstandard1.5": "tools/nunit3-console.exe",
            "netstandard1.6": "tools/nunit3-console.exe",
            "netstandard2.0": "tools/nunit3-console.exe",
+           "netstandard2.1": "tools/nunit3-console.exe",
        },
         mono_tool = "tools/nunit3-console.exe",
         core_files = {
@@ -192,6 +224,32 @@ def dotnet_repositories_nunit():
                "tools/nunit3-console.exe",
                "tools/nunit3-console.exe.config",
             ],
+            "netcoreapp3.0": [
+               "tools/Mono.Cecil.dll",
+               "tools/nunit-agent-x86.exe",
+               "tools/nunit-agent-x86.exe.config",
+               "tools/nunit-agent.exe",
+               "tools/nunit-agent.exe.config",
+               "tools/nunit.engine.api.dll",
+               "tools/nunit.engine.api.xml",
+               "tools/nunit.engine.dll",
+               "tools/nunit.nuget.addins",
+               "tools/nunit3-console.exe",
+               "tools/nunit3-console.exe.config",
+            ],
+            "netcoreapp3.1": [
+               "tools/Mono.Cecil.dll",
+               "tools/nunit-agent-x86.exe",
+               "tools/nunit-agent-x86.exe.config",
+               "tools/nunit-agent.exe",
+               "tools/nunit-agent.exe.config",
+               "tools/nunit.engine.api.dll",
+               "tools/nunit.engine.api.xml",
+               "tools/nunit.engine.dll",
+               "tools/nunit.nuget.addins",
+               "tools/nunit3-console.exe",
+               "tools/nunit3-console.exe.config",
+            ],
         },
         net_files = {
             "net45": [
@@ -299,6 +357,19 @@ def dotnet_repositories_nunit():
                "tools/nunit3-console.exe.config",
             ],
             "net472": [
+               "tools/Mono.Cecil.dll",
+               "tools/nunit-agent-x86.exe",
+               "tools/nunit-agent-x86.exe.config",
+               "tools/nunit-agent.exe",
+               "tools/nunit-agent.exe.config",
+               "tools/nunit.engine.api.dll",
+               "tools/nunit.engine.api.xml",
+               "tools/nunit.engine.dll",
+               "tools/nunit.nuget.addins",
+               "tools/nunit3-console.exe",
+               "tools/nunit3-console.exe.config",
+            ],
+            "net48": [
                "tools/Mono.Cecil.dll",
                "tools/nunit-agent-x86.exe",
                "tools/nunit-agent-x86.exe.config",
@@ -403,6 +474,19 @@ def dotnet_repositories_nunit():
                "tools/nunit3-console.exe.config",
             ],
             "netstandard2.0": [
+               "tools/Mono.Cecil.dll",
+               "tools/nunit-agent-x86.exe",
+               "tools/nunit-agent-x86.exe.config",
+               "tools/nunit-agent.exe",
+               "tools/nunit-agent.exe.config",
+               "tools/nunit.engine.api.dll",
+               "tools/nunit.engine.api.xml",
+               "tools/nunit.engine.dll",
+               "tools/nunit.nuget.addins",
+               "tools/nunit3-console.exe",
+               "tools/nunit3-console.exe.config",
+            ],
+            "netstandard2.1": [
                "tools/Mono.Cecil.dll",
                "tools/nunit-agent-x86.exe",
                "tools/nunit-agent-x86.exe.config",

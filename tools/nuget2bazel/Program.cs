@@ -9,8 +9,8 @@ namespace nuget2bazel
     {
         static void Main(string[] args)
         {
-            var parsed = Parser.Default.ParseArguments<AddVerb, DeleteVerb, SyncVerb, UpdateVerb>(args);
-            var result = parsed.MapResult<AddVerb, DeleteVerb, SyncVerb, UpdateVerb, int>(
+            var parsed = Parser.Default.ParseArguments<AddVerb, DeleteVerb, SyncVerb, UpdateVerb, RulesVerb>(args);
+            var result = parsed.MapResult<AddVerb, DeleteVerb, SyncVerb, UpdateVerb, RulesVerb, int>(
                 (AddVerb opts) =>
                 {
                     var prjConfig = new ProjectBazelConfig(opts);
@@ -36,6 +36,12 @@ namespace nuget2bazel
                 {
                     var prjConfig = new ProjectBazelConfig(opts);
                     var res = new UpdateCommand().Do(prjConfig, opts.Package, opts.Version, opts.MainFile, opts.SkipSha256, opts.Lowest, opts.Variable);
+                    res.Wait();
+                    return 0;
+                },
+                (RulesVerb opts) =>
+                {
+                    var res = new RulesCommand().Do(opts.Path);
                     res.Wait();
                     return 0;
                 },

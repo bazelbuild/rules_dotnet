@@ -9,6 +9,104 @@ def dotnet_repositories_nuget():
         sha256 = "15e338d24b5c39b4099389cc612841eb51ff13c07bb4829f97d39b27420e7023",
     )
     nuget_package(
+        name = "microsoft.win32.primitives",
+        package = "microsoft.win32.primitives",
+        version = "4.3.0",
+        sha256 = "98134398f5cd4d6e785cb9cf014c0146f90839114ceff8f40f42364b240f0c48",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/Microsoft.Win32.Primitives.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/Microsoft.Win32.Primitives.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/Microsoft.Win32.Primitives.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/Microsoft.Win32.Primitives.dll",
+        },
+        net_lib = {
+            "net46": "ref/net46/Microsoft.Win32.Primitives.dll",
+            "net461": "ref/net46/Microsoft.Win32.Primitives.dll",
+            "net462": "ref/net46/Microsoft.Win32.Primitives.dll",
+            "net47": "ref/net46/Microsoft.Win32.Primitives.dll",
+            "net471": "ref/net46/Microsoft.Win32.Primitives.dll",
+            "net472": "ref/net46/Microsoft.Win32.Primitives.dll",
+            "net48": "ref/net46/Microsoft.Win32.Primitives.dll",
+            "netstandard1.3": "ref/netstandard1.3/Microsoft.Win32.Primitives.dll",
+            "netstandard1.4": "ref/netstandard1.3/Microsoft.Win32.Primitives.dll",
+            "netstandard1.5": "ref/netstandard1.3/Microsoft.Win32.Primitives.dll",
+            "netstandard1.6": "ref/netstandard1.3/Microsoft.Win32.Primitives.dll",
+            "netstandard2.0": "ref/netstandard1.3/Microsoft.Win32.Primitives.dll",
+            "netstandard2.1": "ref/netstandard1.3/Microsoft.Win32.Primitives.dll",
+        },
+        mono_lib = "ref/net46/Microsoft.Win32.Primitives.dll",
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+        net_files = {
+            "net46": [
+               "lib/net46/Microsoft.Win32.Primitives.dll",
+            ],
+            "net461": [
+               "lib/net46/Microsoft.Win32.Primitives.dll",
+            ],
+            "net462": [
+               "lib/net46/Microsoft.Win32.Primitives.dll",
+            ],
+            "net47": [
+               "lib/net46/Microsoft.Win32.Primitives.dll",
+            ],
+            "net471": [
+               "lib/net46/Microsoft.Win32.Primitives.dll",
+            ],
+            "net472": [
+               "lib/net46/Microsoft.Win32.Primitives.dll",
+            ],
+            "net48": [
+               "lib/net46/Microsoft.Win32.Primitives.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net46/Microsoft.Win32.Primitives.dll",
+        ],
+    )
+    nuget_package(
         name = "newtonsoft.json",
         package = "newtonsoft.json",
         version = "9.0.1",
@@ -16,6 +114,8 @@ def dotnet_repositories_nuget():
         core_lib = {
             "netcoreapp2.0": "lib/netstandard1.0/Newtonsoft.Json.dll",
             "netcoreapp2.1": "lib/netstandard1.0/Newtonsoft.Json.dll",
+            "netcoreapp3.0": "lib/netstandard1.0/Newtonsoft.Json.dll",
+            "netcoreapp3.1": "lib/netstandard1.0/Newtonsoft.Json.dll",
         },
         net_lib = {
             "net45": "lib/net45/Newtonsoft.Json.dll",
@@ -27,6 +127,7 @@ def dotnet_repositories_nuget():
             "net47": "lib/net45/Newtonsoft.Json.dll",
             "net471": "lib/net45/Newtonsoft.Json.dll",
             "net472": "lib/net45/Newtonsoft.Json.dll",
+            "net48": "lib/net45/Newtonsoft.Json.dll",
             "netstandard1.0": "lib/netstandard1.0/Newtonsoft.Json.dll",
             "netstandard1.1": "lib/netstandard1.0/Newtonsoft.Json.dll",
             "netstandard1.2": "lib/netstandard1.0/Newtonsoft.Json.dll",
@@ -35,6 +136,7 @@ def dotnet_repositories_nuget():
             "netstandard1.5": "lib/netstandard1.0/Newtonsoft.Json.dll",
             "netstandard1.6": "lib/netstandard1.0/Newtonsoft.Json.dll",
             "netstandard2.0": "lib/netstandard1.0/Newtonsoft.Json.dll",
+            "netstandard2.1": "lib/netstandard1.0/Newtonsoft.Json.dll",
         },
         mono_lib = "lib/net45/Newtonsoft.Json.dll",
         core_files = {
@@ -44,6 +146,16 @@ def dotnet_repositories_nuget():
                "tools/install.ps1",
             ],
             "netcoreapp2.1": [
+               "lib/netstandard1.0/Newtonsoft.Json.dll",
+               "lib/netstandard1.0/Newtonsoft.Json.xml",
+               "tools/install.ps1",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.0/Newtonsoft.Json.dll",
+               "lib/netstandard1.0/Newtonsoft.Json.xml",
+               "tools/install.ps1",
+            ],
+            "netcoreapp3.1": [
                "lib/netstandard1.0/Newtonsoft.Json.dll",
                "lib/netstandard1.0/Newtonsoft.Json.xml",
                "tools/install.ps1",
@@ -91,6 +203,11 @@ def dotnet_repositories_nuget():
                "tools/install.ps1",
             ],
             "net472": [
+               "lib/net45/Newtonsoft.Json.dll",
+               "lib/net45/Newtonsoft.Json.xml",
+               "tools/install.ps1",
+            ],
+            "net48": [
                "lib/net45/Newtonsoft.Json.dll",
                "lib/net45/Newtonsoft.Json.xml",
                "tools/install.ps1",
@@ -135,6 +252,11 @@ def dotnet_repositories_nuget():
                "lib/netstandard1.0/Newtonsoft.Json.xml",
                "tools/install.ps1",
             ],
+            "netstandard2.1": [
+               "lib/netstandard1.0/Newtonsoft.Json.dll",
+               "lib/netstandard1.0/Newtonsoft.Json.xml",
+               "tools/install.ps1",
+            ],
         },
         mono_files = [
             "lib/net45/Newtonsoft.Json.dll",
@@ -150,6 +272,8 @@ def dotnet_repositories_nuget():
         core_lib = {
             "netcoreapp2.0": "lib/netstandard1.6/NuGet.Frameworks.dll",
             "netcoreapp2.1": "lib/netstandard1.6/NuGet.Frameworks.dll",
+            "netcoreapp3.0": "lib/netstandard1.6/NuGet.Frameworks.dll",
+            "netcoreapp3.1": "lib/netstandard1.6/NuGet.Frameworks.dll",
         },
         net_lib = {
             "net45": "lib/net40/NuGet.Frameworks.dll",
@@ -161,8 +285,10 @@ def dotnet_repositories_nuget():
             "net47": "lib/net46/NuGet.Frameworks.dll",
             "net471": "lib/net46/NuGet.Frameworks.dll",
             "net472": "lib/net46/NuGet.Frameworks.dll",
+            "net48": "lib/net46/NuGet.Frameworks.dll",
             "netstandard1.6": "lib/netstandard1.6/NuGet.Frameworks.dll",
             "netstandard2.0": "lib/netstandard1.6/NuGet.Frameworks.dll",
+            "netstandard2.1": "lib/netstandard1.6/NuGet.Frameworks.dll",
         },
         mono_lib = "lib/net46/NuGet.Frameworks.dll",
         core_files = {
@@ -171,6 +297,14 @@ def dotnet_repositories_nuget():
                "lib/netstandard1.6/NuGet.Frameworks.xml",
             ],
             "netcoreapp2.1": [
+               "lib/netstandard1.6/NuGet.Frameworks.dll",
+               "lib/netstandard1.6/NuGet.Frameworks.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.6/NuGet.Frameworks.dll",
+               "lib/netstandard1.6/NuGet.Frameworks.xml",
+            ],
+            "netcoreapp3.1": [
                "lib/netstandard1.6/NuGet.Frameworks.dll",
                "lib/netstandard1.6/NuGet.Frameworks.xml",
             ],
@@ -212,11 +346,19 @@ def dotnet_repositories_nuget():
                "lib/net46/NuGet.Frameworks.dll",
                "lib/net46/NuGet.Frameworks.xml",
             ],
+            "net48": [
+               "lib/net46/NuGet.Frameworks.dll",
+               "lib/net46/NuGet.Frameworks.xml",
+            ],
             "netstandard1.6": [
                "lib/netstandard1.6/NuGet.Frameworks.dll",
                "lib/netstandard1.6/NuGet.Frameworks.xml",
             ],
             "netstandard2.0": [
+               "lib/netstandard1.6/NuGet.Frameworks.dll",
+               "lib/netstandard1.6/NuGet.Frameworks.xml",
+            ],
+            "netstandard2.1": [
                "lib/netstandard1.6/NuGet.Frameworks.dll",
                "lib/netstandard1.6/NuGet.Frameworks.xml",
             ],
@@ -234,6 +376,8 @@ def dotnet_repositories_nuget():
         core_lib = {
             "netcoreapp2.0": "lib/netstandard1.6/NuGet.Common.dll",
             "netcoreapp2.1": "lib/netstandard1.6/NuGet.Common.dll",
+            "netcoreapp3.0": "lib/netstandard1.6/NuGet.Common.dll",
+            "netcoreapp3.1": "lib/netstandard1.6/NuGet.Common.dll",
         },
         net_lib = {
             "net46": "lib/net46/NuGet.Common.dll",
@@ -242,8 +386,10 @@ def dotnet_repositories_nuget():
             "net47": "lib/net46/NuGet.Common.dll",
             "net471": "lib/net46/NuGet.Common.dll",
             "net472": "lib/net46/NuGet.Common.dll",
+            "net48": "lib/net46/NuGet.Common.dll",
             "netstandard1.6": "lib/netstandard1.6/NuGet.Common.dll",
             "netstandard2.0": "lib/netstandard1.6/NuGet.Common.dll",
+            "netstandard2.1": "lib/netstandard1.6/NuGet.Common.dll",
         },
         mono_lib = "lib/net46/NuGet.Common.dll",
         core_deps = {
@@ -252,6 +398,12 @@ def dotnet_repositories_nuget():
             ],
             "netcoreapp2.1": [
                "@nuget.frameworks//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@nuget.frameworks//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@nuget.frameworks//:netcoreapp3.1_core",
             ],
         },
         net_deps = {
@@ -273,11 +425,17 @@ def dotnet_repositories_nuget():
             "net472": [
                "@nuget.frameworks//:net472_net",
             ],
+            "net48": [
+               "@nuget.frameworks//:net48_net",
+            ],
             "netstandard1.6": [
                "@nuget.frameworks//:netstandard1.6_net",
             ],
             "netstandard2.0": [
                "@nuget.frameworks//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@nuget.frameworks//:netstandard2.1_net",
             ],
         },
         mono_deps = [
@@ -289,6 +447,14 @@ def dotnet_repositories_nuget():
                "lib/netstandard1.6/NuGet.Common.xml",
             ],
             "netcoreapp2.1": [
+               "lib/netstandard1.6/NuGet.Common.dll",
+               "lib/netstandard1.6/NuGet.Common.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.6/NuGet.Common.dll",
+               "lib/netstandard1.6/NuGet.Common.xml",
+            ],
+            "netcoreapp3.1": [
                "lib/netstandard1.6/NuGet.Common.dll",
                "lib/netstandard1.6/NuGet.Common.xml",
             ],
@@ -318,11 +484,19 @@ def dotnet_repositories_nuget():
                "lib/net46/NuGet.Common.dll",
                "lib/net46/NuGet.Common.xml",
             ],
+            "net48": [
+               "lib/net46/NuGet.Common.dll",
+               "lib/net46/NuGet.Common.xml",
+            ],
             "netstandard1.6": [
                "lib/netstandard1.6/NuGet.Common.dll",
                "lib/netstandard1.6/NuGet.Common.xml",
             ],
             "netstandard2.0": [
+               "lib/netstandard1.6/NuGet.Common.dll",
+               "lib/netstandard1.6/NuGet.Common.xml",
+            ],
+            "netstandard2.1": [
                "lib/netstandard1.6/NuGet.Common.dll",
                "lib/netstandard1.6/NuGet.Common.xml",
             ],
@@ -340,6 +514,8 @@ def dotnet_repositories_nuget():
         core_lib = {
             "netcoreapp2.0": "lib/netstandard1.6/NuGet.Configuration.dll",
             "netcoreapp2.1": "lib/netstandard1.6/NuGet.Configuration.dll",
+            "netcoreapp3.0": "lib/netstandard1.6/NuGet.Configuration.dll",
+            "netcoreapp3.1": "lib/netstandard1.6/NuGet.Configuration.dll",
         },
         net_lib = {
             "net46": "lib/net46/NuGet.Configuration.dll",
@@ -348,8 +524,10 @@ def dotnet_repositories_nuget():
             "net47": "lib/net46/NuGet.Configuration.dll",
             "net471": "lib/net46/NuGet.Configuration.dll",
             "net472": "lib/net46/NuGet.Configuration.dll",
+            "net48": "lib/net46/NuGet.Configuration.dll",
             "netstandard1.6": "lib/netstandard1.6/NuGet.Configuration.dll",
             "netstandard2.0": "lib/netstandard1.6/NuGet.Configuration.dll",
+            "netstandard2.1": "lib/netstandard1.6/NuGet.Configuration.dll",
         },
         mono_lib = "lib/net46/NuGet.Configuration.dll",
         core_deps = {
@@ -358,6 +536,12 @@ def dotnet_repositories_nuget():
             ],
             "netcoreapp2.1": [
                "@nuget.common//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@nuget.common//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@nuget.common//:netcoreapp3.1_core",
             ],
         },
         net_deps = {
@@ -379,11 +563,17 @@ def dotnet_repositories_nuget():
             "net472": [
                "@nuget.common//:net472_net",
             ],
+            "net48": [
+               "@nuget.common//:net48_net",
+            ],
             "netstandard1.6": [
                "@nuget.common//:netstandard1.6_net",
             ],
             "netstandard2.0": [
                "@nuget.common//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@nuget.common//:netstandard2.1_net",
             ],
         },
         mono_deps = [
@@ -395,6 +585,14 @@ def dotnet_repositories_nuget():
                "lib/netstandard1.6/NuGet.Configuration.xml",
             ],
             "netcoreapp2.1": [
+               "lib/netstandard1.6/NuGet.Configuration.dll",
+               "lib/netstandard1.6/NuGet.Configuration.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.6/NuGet.Configuration.dll",
+               "lib/netstandard1.6/NuGet.Configuration.xml",
+            ],
+            "netcoreapp3.1": [
                "lib/netstandard1.6/NuGet.Configuration.dll",
                "lib/netstandard1.6/NuGet.Configuration.xml",
             ],
@@ -424,11 +622,19 @@ def dotnet_repositories_nuget():
                "lib/net46/NuGet.Configuration.dll",
                "lib/net46/NuGet.Configuration.xml",
             ],
+            "net48": [
+               "lib/net46/NuGet.Configuration.dll",
+               "lib/net46/NuGet.Configuration.xml",
+            ],
             "netstandard1.6": [
                "lib/netstandard1.6/NuGet.Configuration.dll",
                "lib/netstandard1.6/NuGet.Configuration.xml",
             ],
             "netstandard2.0": [
+               "lib/netstandard1.6/NuGet.Configuration.dll",
+               "lib/netstandard1.6/NuGet.Configuration.xml",
+            ],
+            "netstandard2.1": [
                "lib/netstandard1.6/NuGet.Configuration.dll",
                "lib/netstandard1.6/NuGet.Configuration.xml",
             ],
@@ -446,6 +652,8 @@ def dotnet_repositories_nuget():
         core_lib = {
             "netcoreapp2.0": "lib/netstandard1.6/NuGet.Versioning.dll",
             "netcoreapp2.1": "lib/netstandard1.6/NuGet.Versioning.dll",
+            "netcoreapp3.0": "lib/netstandard1.6/NuGet.Versioning.dll",
+            "netcoreapp3.1": "lib/netstandard1.6/NuGet.Versioning.dll",
         },
         net_lib = {
             "net46": "lib/net46/NuGet.Versioning.dll",
@@ -454,8 +662,10 @@ def dotnet_repositories_nuget():
             "net47": "lib/net46/NuGet.Versioning.dll",
             "net471": "lib/net46/NuGet.Versioning.dll",
             "net472": "lib/net46/NuGet.Versioning.dll",
+            "net48": "lib/net46/NuGet.Versioning.dll",
             "netstandard1.6": "lib/netstandard1.6/NuGet.Versioning.dll",
             "netstandard2.0": "lib/netstandard1.6/NuGet.Versioning.dll",
+            "netstandard2.1": "lib/netstandard1.6/NuGet.Versioning.dll",
         },
         mono_lib = "lib/net46/NuGet.Versioning.dll",
         core_files = {
@@ -464,6 +674,14 @@ def dotnet_repositories_nuget():
                "lib/netstandard1.6/NuGet.Versioning.xml",
             ],
             "netcoreapp2.1": [
+               "lib/netstandard1.6/NuGet.Versioning.dll",
+               "lib/netstandard1.6/NuGet.Versioning.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.6/NuGet.Versioning.dll",
+               "lib/netstandard1.6/NuGet.Versioning.xml",
+            ],
+            "netcoreapp3.1": [
                "lib/netstandard1.6/NuGet.Versioning.dll",
                "lib/netstandard1.6/NuGet.Versioning.xml",
             ],
@@ -493,11 +711,19 @@ def dotnet_repositories_nuget():
                "lib/net46/NuGet.Versioning.dll",
                "lib/net46/NuGet.Versioning.xml",
             ],
+            "net48": [
+               "lib/net46/NuGet.Versioning.dll",
+               "lib/net46/NuGet.Versioning.xml",
+            ],
             "netstandard1.6": [
                "lib/netstandard1.6/NuGet.Versioning.dll",
                "lib/netstandard1.6/NuGet.Versioning.xml",
             ],
             "netstandard2.0": [
+               "lib/netstandard1.6/NuGet.Versioning.dll",
+               "lib/netstandard1.6/NuGet.Versioning.xml",
+            ],
+            "netstandard2.1": [
                "lib/netstandard1.6/NuGet.Versioning.dll",
                "lib/netstandard1.6/NuGet.Versioning.xml",
             ],
@@ -515,6 +741,8 @@ def dotnet_repositories_nuget():
         core_lib = {
             "netcoreapp2.0": "lib/netstandard1.6/NuGet.LibraryModel.dll",
             "netcoreapp2.1": "lib/netstandard1.6/NuGet.LibraryModel.dll",
+            "netcoreapp3.0": "lib/netstandard1.6/NuGet.LibraryModel.dll",
+            "netcoreapp3.1": "lib/netstandard1.6/NuGet.LibraryModel.dll",
         },
         net_lib = {
             "net46": "lib/net46/NuGet.LibraryModel.dll",
@@ -523,8 +751,10 @@ def dotnet_repositories_nuget():
             "net47": "lib/net46/NuGet.LibraryModel.dll",
             "net471": "lib/net46/NuGet.LibraryModel.dll",
             "net472": "lib/net46/NuGet.LibraryModel.dll",
+            "net48": "lib/net46/NuGet.LibraryModel.dll",
             "netstandard1.6": "lib/netstandard1.6/NuGet.LibraryModel.dll",
             "netstandard2.0": "lib/netstandard1.6/NuGet.LibraryModel.dll",
+            "netstandard2.1": "lib/netstandard1.6/NuGet.LibraryModel.dll",
         },
         mono_lib = "lib/net46/NuGet.LibraryModel.dll",
         core_deps = {
@@ -535,6 +765,14 @@ def dotnet_repositories_nuget():
             "netcoreapp2.1": [
                "@nuget.common//:netcoreapp2.1_core",
                "@nuget.versioning//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@nuget.common//:netcoreapp3.0_core",
+               "@nuget.versioning//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@nuget.common//:netcoreapp3.1_core",
+               "@nuget.versioning//:netcoreapp3.1_core",
             ],
         },
         net_deps = {
@@ -562,6 +800,10 @@ def dotnet_repositories_nuget():
                "@nuget.common//:net472_net",
                "@nuget.versioning//:net472_net",
             ],
+            "net48": [
+               "@nuget.common//:net48_net",
+               "@nuget.versioning//:net48_net",
+            ],
             "netstandard1.6": [
                "@nuget.common//:netstandard1.6_net",
                "@nuget.versioning//:netstandard1.6_net",
@@ -569,6 +811,10 @@ def dotnet_repositories_nuget():
             "netstandard2.0": [
                "@nuget.common//:netstandard2.0_net",
                "@nuget.versioning//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@nuget.common//:netstandard2.1_net",
+               "@nuget.versioning//:netstandard2.1_net",
             ],
         },
         mono_deps = [
@@ -581,6 +827,14 @@ def dotnet_repositories_nuget():
                "lib/netstandard1.6/NuGet.LibraryModel.xml",
             ],
             "netcoreapp2.1": [
+               "lib/netstandard1.6/NuGet.LibraryModel.dll",
+               "lib/netstandard1.6/NuGet.LibraryModel.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.6/NuGet.LibraryModel.dll",
+               "lib/netstandard1.6/NuGet.LibraryModel.xml",
+            ],
+            "netcoreapp3.1": [
                "lib/netstandard1.6/NuGet.LibraryModel.dll",
                "lib/netstandard1.6/NuGet.LibraryModel.xml",
             ],
@@ -610,11 +864,19 @@ def dotnet_repositories_nuget():
                "lib/net46/NuGet.LibraryModel.dll",
                "lib/net46/NuGet.LibraryModel.xml",
             ],
+            "net48": [
+               "lib/net46/NuGet.LibraryModel.dll",
+               "lib/net46/NuGet.LibraryModel.xml",
+            ],
             "netstandard1.6": [
                "lib/netstandard1.6/NuGet.LibraryModel.dll",
                "lib/netstandard1.6/NuGet.LibraryModel.xml",
             ],
             "netstandard2.0": [
+               "lib/netstandard1.6/NuGet.LibraryModel.dll",
+               "lib/netstandard1.6/NuGet.LibraryModel.xml",
+            ],
+            "netstandard2.1": [
                "lib/netstandard1.6/NuGet.LibraryModel.dll",
                "lib/netstandard1.6/NuGet.LibraryModel.xml",
             ],
@@ -632,6 +894,8 @@ def dotnet_repositories_nuget():
         core_lib = {
             "netcoreapp2.0": "lib/netstandard1.6/NuGet.Packaging.Core.dll",
             "netcoreapp2.1": "lib/netstandard1.6/NuGet.Packaging.Core.dll",
+            "netcoreapp3.0": "lib/netstandard1.6/NuGet.Packaging.Core.dll",
+            "netcoreapp3.1": "lib/netstandard1.6/NuGet.Packaging.Core.dll",
         },
         net_lib = {
             "net46": "lib/net46/NuGet.Packaging.Core.dll",
@@ -640,8 +904,10 @@ def dotnet_repositories_nuget():
             "net47": "lib/net46/NuGet.Packaging.Core.dll",
             "net471": "lib/net46/NuGet.Packaging.Core.dll",
             "net472": "lib/net46/NuGet.Packaging.Core.dll",
+            "net48": "lib/net46/NuGet.Packaging.Core.dll",
             "netstandard1.6": "lib/netstandard1.6/NuGet.Packaging.Core.dll",
             "netstandard2.0": "lib/netstandard1.6/NuGet.Packaging.Core.dll",
+            "netstandard2.1": "lib/netstandard1.6/NuGet.Packaging.Core.dll",
         },
         mono_lib = "lib/net46/NuGet.Packaging.Core.dll",
         core_deps = {
@@ -652,6 +918,14 @@ def dotnet_repositories_nuget():
             "netcoreapp2.1": [
                "@nuget.common//:netcoreapp2.1_core",
                "@nuget.versioning//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@nuget.common//:netcoreapp3.0_core",
+               "@nuget.versioning//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@nuget.common//:netcoreapp3.1_core",
+               "@nuget.versioning//:netcoreapp3.1_core",
             ],
         },
         net_deps = {
@@ -679,6 +953,10 @@ def dotnet_repositories_nuget():
                "@nuget.common//:net472_net",
                "@nuget.versioning//:net472_net",
             ],
+            "net48": [
+               "@nuget.common//:net48_net",
+               "@nuget.versioning//:net48_net",
+            ],
             "netstandard1.6": [
                "@nuget.common//:netstandard1.6_net",
                "@nuget.versioning//:netstandard1.6_net",
@@ -686,6 +964,10 @@ def dotnet_repositories_nuget():
             "netstandard2.0": [
                "@nuget.common//:netstandard2.0_net",
                "@nuget.versioning//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@nuget.common//:netstandard2.1_net",
+               "@nuget.versioning//:netstandard2.1_net",
             ],
         },
         mono_deps = [
@@ -698,6 +980,14 @@ def dotnet_repositories_nuget():
                "lib/netstandard1.6/NuGet.Packaging.Core.xml",
             ],
             "netcoreapp2.1": [
+               "lib/netstandard1.6/NuGet.Packaging.Core.dll",
+               "lib/netstandard1.6/NuGet.Packaging.Core.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.6/NuGet.Packaging.Core.dll",
+               "lib/netstandard1.6/NuGet.Packaging.Core.xml",
+            ],
+            "netcoreapp3.1": [
                "lib/netstandard1.6/NuGet.Packaging.Core.dll",
                "lib/netstandard1.6/NuGet.Packaging.Core.xml",
             ],
@@ -727,11 +1017,19 @@ def dotnet_repositories_nuget():
                "lib/net46/NuGet.Packaging.Core.dll",
                "lib/net46/NuGet.Packaging.Core.xml",
             ],
+            "net48": [
+               "lib/net46/NuGet.Packaging.Core.dll",
+               "lib/net46/NuGet.Packaging.Core.xml",
+            ],
             "netstandard1.6": [
                "lib/netstandard1.6/NuGet.Packaging.Core.dll",
                "lib/netstandard1.6/NuGet.Packaging.Core.xml",
             ],
             "netstandard2.0": [
+               "lib/netstandard1.6/NuGet.Packaging.Core.dll",
+               "lib/netstandard1.6/NuGet.Packaging.Core.xml",
+            ],
+            "netstandard2.1": [
                "lib/netstandard1.6/NuGet.Packaging.Core.dll",
                "lib/netstandard1.6/NuGet.Packaging.Core.xml",
             ],
@@ -749,6 +1047,8 @@ def dotnet_repositories_nuget():
         core_lib = {
             "netcoreapp2.0": "lib/netstandard1.6/NuGet.Packaging.dll",
             "netcoreapp2.1": "lib/netstandard1.6/NuGet.Packaging.dll",
+            "netcoreapp3.0": "lib/netstandard1.6/NuGet.Packaging.dll",
+            "netcoreapp3.1": "lib/netstandard1.6/NuGet.Packaging.dll",
         },
         net_lib = {
             "net46": "lib/net46/NuGet.Packaging.dll",
@@ -757,8 +1057,10 @@ def dotnet_repositories_nuget():
             "net47": "lib/net46/NuGet.Packaging.dll",
             "net471": "lib/net46/NuGet.Packaging.dll",
             "net472": "lib/net46/NuGet.Packaging.dll",
+            "net48": "lib/net46/NuGet.Packaging.dll",
             "netstandard1.6": "lib/netstandard1.6/NuGet.Packaging.dll",
             "netstandard2.0": "lib/netstandard1.6/NuGet.Packaging.dll",
+            "netstandard2.1": "lib/netstandard1.6/NuGet.Packaging.dll",
         },
         mono_lib = "lib/net46/NuGet.Packaging.dll",
         core_deps = {
@@ -771,6 +1073,16 @@ def dotnet_repositories_nuget():
                "@nuget.configuration//:netcoreapp2.1_core",
                "@nuget.packaging.core//:netcoreapp2.1_core",
                "@newtonsoft.json//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@nuget.configuration//:netcoreapp3.0_core",
+               "@nuget.packaging.core//:netcoreapp3.0_core",
+               "@newtonsoft.json//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@nuget.configuration//:netcoreapp3.1_core",
+               "@nuget.packaging.core//:netcoreapp3.1_core",
+               "@newtonsoft.json//:netcoreapp3.1_core",
             ],
         },
         net_deps = {
@@ -804,6 +1116,11 @@ def dotnet_repositories_nuget():
                "@nuget.packaging.core//:net472_net",
                "@newtonsoft.json//:net472_net",
             ],
+            "net48": [
+               "@nuget.configuration//:net48_net",
+               "@nuget.packaging.core//:net48_net",
+               "@newtonsoft.json//:net48_net",
+            ],
             "netstandard1.6": [
                "@nuget.configuration//:netstandard1.6_net",
                "@nuget.packaging.core//:netstandard1.6_net",
@@ -813,6 +1130,11 @@ def dotnet_repositories_nuget():
                "@nuget.configuration//:netstandard2.0_net",
                "@nuget.packaging.core//:netstandard2.0_net",
                "@newtonsoft.json//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@nuget.configuration//:netstandard2.1_net",
+               "@nuget.packaging.core//:netstandard2.1_net",
+               "@newtonsoft.json//:netstandard2.1_net",
             ],
         },
         mono_deps = [
@@ -826,6 +1148,14 @@ def dotnet_repositories_nuget():
                "lib/netstandard1.6/NuGet.Packaging.xml",
             ],
             "netcoreapp2.1": [
+               "lib/netstandard1.6/NuGet.Packaging.dll",
+               "lib/netstandard1.6/NuGet.Packaging.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.6/NuGet.Packaging.dll",
+               "lib/netstandard1.6/NuGet.Packaging.xml",
+            ],
+            "netcoreapp3.1": [
                "lib/netstandard1.6/NuGet.Packaging.dll",
                "lib/netstandard1.6/NuGet.Packaging.xml",
             ],
@@ -855,11 +1185,19 @@ def dotnet_repositories_nuget():
                "lib/net46/NuGet.Packaging.dll",
                "lib/net46/NuGet.Packaging.xml",
             ],
+            "net48": [
+               "lib/net46/NuGet.Packaging.dll",
+               "lib/net46/NuGet.Packaging.xml",
+            ],
             "netstandard1.6": [
                "lib/netstandard1.6/NuGet.Packaging.dll",
                "lib/netstandard1.6/NuGet.Packaging.xml",
             ],
             "netstandard2.0": [
+               "lib/netstandard1.6/NuGet.Packaging.dll",
+               "lib/netstandard1.6/NuGet.Packaging.xml",
+            ],
+            "netstandard2.1": [
                "lib/netstandard1.6/NuGet.Packaging.dll",
                "lib/netstandard1.6/NuGet.Packaging.xml",
             ],
@@ -877,6 +1215,8 @@ def dotnet_repositories_nuget():
         core_lib = {
             "netcoreapp2.0": "lib/netstandard1.6/NuGet.Protocol.dll",
             "netcoreapp2.1": "lib/netstandard1.6/NuGet.Protocol.dll",
+            "netcoreapp3.0": "lib/netstandard1.6/NuGet.Protocol.dll",
+            "netcoreapp3.1": "lib/netstandard1.6/NuGet.Protocol.dll",
         },
         net_lib = {
             "net46": "lib/net46/NuGet.Protocol.dll",
@@ -885,8 +1225,10 @@ def dotnet_repositories_nuget():
             "net47": "lib/net46/NuGet.Protocol.dll",
             "net471": "lib/net46/NuGet.Protocol.dll",
             "net472": "lib/net46/NuGet.Protocol.dll",
+            "net48": "lib/net46/NuGet.Protocol.dll",
             "netstandard1.6": "lib/netstandard1.6/NuGet.Protocol.dll",
             "netstandard2.0": "lib/netstandard1.6/NuGet.Protocol.dll",
+            "netstandard2.1": "lib/netstandard1.6/NuGet.Protocol.dll",
         },
         mono_lib = "lib/net46/NuGet.Protocol.dll",
         core_deps = {
@@ -897,6 +1239,14 @@ def dotnet_repositories_nuget():
             "netcoreapp2.1": [
                "@nuget.configuration//:netcoreapp2.1_core",
                "@nuget.packaging//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@nuget.configuration//:netcoreapp3.0_core",
+               "@nuget.packaging//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@nuget.configuration//:netcoreapp3.1_core",
+               "@nuget.packaging//:netcoreapp3.1_core",
             ],
         },
         net_deps = {
@@ -924,6 +1274,10 @@ def dotnet_repositories_nuget():
                "@nuget.configuration//:net472_net",
                "@nuget.packaging//:net472_net",
             ],
+            "net48": [
+               "@nuget.configuration//:net48_net",
+               "@nuget.packaging//:net48_net",
+            ],
             "netstandard1.6": [
                "@nuget.configuration//:netstandard1.6_net",
                "@nuget.packaging//:netstandard1.6_net",
@@ -931,6 +1285,10 @@ def dotnet_repositories_nuget():
             "netstandard2.0": [
                "@nuget.configuration//:netstandard2.0_net",
                "@nuget.packaging//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@nuget.configuration//:netstandard2.1_net",
+               "@nuget.packaging//:netstandard2.1_net",
             ],
         },
         mono_deps = [
@@ -943,6 +1301,14 @@ def dotnet_repositories_nuget():
                "lib/netstandard1.6/NuGet.Protocol.xml",
             ],
             "netcoreapp2.1": [
+               "lib/netstandard1.6/NuGet.Protocol.dll",
+               "lib/netstandard1.6/NuGet.Protocol.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.6/NuGet.Protocol.dll",
+               "lib/netstandard1.6/NuGet.Protocol.xml",
+            ],
+            "netcoreapp3.1": [
                "lib/netstandard1.6/NuGet.Protocol.dll",
                "lib/netstandard1.6/NuGet.Protocol.xml",
             ],
@@ -972,11 +1338,19 @@ def dotnet_repositories_nuget():
                "lib/net46/NuGet.Protocol.dll",
                "lib/net46/NuGet.Protocol.xml",
             ],
+            "net48": [
+               "lib/net46/NuGet.Protocol.dll",
+               "lib/net46/NuGet.Protocol.xml",
+            ],
             "netstandard1.6": [
                "lib/netstandard1.6/NuGet.Protocol.dll",
                "lib/netstandard1.6/NuGet.Protocol.xml",
             ],
             "netstandard2.0": [
+               "lib/netstandard1.6/NuGet.Protocol.dll",
+               "lib/netstandard1.6/NuGet.Protocol.xml",
+            ],
+            "netstandard2.1": [
                "lib/netstandard1.6/NuGet.Protocol.dll",
                "lib/netstandard1.6/NuGet.Protocol.xml",
             ],
@@ -994,6 +1368,8 @@ def dotnet_repositories_nuget():
         core_lib = {
             "netcoreapp2.0": "lib/netstandard1.6/NuGet.Credentials.dll",
             "netcoreapp2.1": "lib/netstandard1.6/NuGet.Credentials.dll",
+            "netcoreapp3.0": "lib/netstandard1.6/NuGet.Credentials.dll",
+            "netcoreapp3.1": "lib/netstandard1.6/NuGet.Credentials.dll",
         },
         net_lib = {
             "net46": "lib/net46/NuGet.Credentials.dll",
@@ -1002,8 +1378,10 @@ def dotnet_repositories_nuget():
             "net47": "lib/net46/NuGet.Credentials.dll",
             "net471": "lib/net46/NuGet.Credentials.dll",
             "net472": "lib/net46/NuGet.Credentials.dll",
+            "net48": "lib/net46/NuGet.Credentials.dll",
             "netstandard1.6": "lib/netstandard1.6/NuGet.Credentials.dll",
             "netstandard2.0": "lib/netstandard1.6/NuGet.Credentials.dll",
+            "netstandard2.1": "lib/netstandard1.6/NuGet.Credentials.dll",
         },
         mono_lib = "lib/net46/NuGet.Credentials.dll",
         core_deps = {
@@ -1012,6 +1390,12 @@ def dotnet_repositories_nuget():
             ],
             "netcoreapp2.1": [
                "@nuget.protocol//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@nuget.protocol//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@nuget.protocol//:netcoreapp3.1_core",
             ],
         },
         net_deps = {
@@ -1033,11 +1417,17 @@ def dotnet_repositories_nuget():
             "net472": [
                "@nuget.protocol//:net472_net",
             ],
+            "net48": [
+               "@nuget.protocol//:net48_net",
+            ],
             "netstandard1.6": [
                "@nuget.protocol//:netstandard1.6_net",
             ],
             "netstandard2.0": [
                "@nuget.protocol//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@nuget.protocol//:netstandard2.1_net",
             ],
         },
         mono_deps = [
@@ -1048,6 +1438,12 @@ def dotnet_repositories_nuget():
                "lib/netstandard1.6/NuGet.Credentials.dll",
             ],
             "netcoreapp2.1": [
+               "lib/netstandard1.6/NuGet.Credentials.dll",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.6/NuGet.Credentials.dll",
+            ],
+            "netcoreapp3.1": [
                "lib/netstandard1.6/NuGet.Credentials.dll",
             ],
         },
@@ -1070,10 +1466,16 @@ def dotnet_repositories_nuget():
             "net472": [
                "lib/net46/NuGet.Credentials.dll",
             ],
+            "net48": [
+               "lib/net46/NuGet.Credentials.dll",
+            ],
             "netstandard1.6": [
                "lib/netstandard1.6/NuGet.Credentials.dll",
             ],
             "netstandard2.0": [
+               "lib/netstandard1.6/NuGet.Credentials.dll",
+            ],
+            "netstandard2.1": [
                "lib/netstandard1.6/NuGet.Credentials.dll",
             ],
         },
@@ -1089,6 +1491,8 @@ def dotnet_repositories_nuget():
         core_lib = {
             "netcoreapp2.0": "lib/netstandard1.6/NuGet.DependencyResolver.Core.dll",
             "netcoreapp2.1": "lib/netstandard1.6/NuGet.DependencyResolver.Core.dll",
+            "netcoreapp3.0": "lib/netstandard1.6/NuGet.DependencyResolver.Core.dll",
+            "netcoreapp3.1": "lib/netstandard1.6/NuGet.DependencyResolver.Core.dll",
         },
         net_lib = {
             "net46": "lib/net46/NuGet.DependencyResolver.Core.dll",
@@ -1097,8 +1501,10 @@ def dotnet_repositories_nuget():
             "net47": "lib/net46/NuGet.DependencyResolver.Core.dll",
             "net471": "lib/net46/NuGet.DependencyResolver.Core.dll",
             "net472": "lib/net46/NuGet.DependencyResolver.Core.dll",
+            "net48": "lib/net46/NuGet.DependencyResolver.Core.dll",
             "netstandard1.6": "lib/netstandard1.6/NuGet.DependencyResolver.Core.dll",
             "netstandard2.0": "lib/netstandard1.6/NuGet.DependencyResolver.Core.dll",
+            "netstandard2.1": "lib/netstandard1.6/NuGet.DependencyResolver.Core.dll",
         },
         mono_lib = "lib/net46/NuGet.DependencyResolver.Core.dll",
         core_deps = {
@@ -1109,6 +1515,14 @@ def dotnet_repositories_nuget():
             "netcoreapp2.1": [
                "@nuget.librarymodel//:netcoreapp2.1_core",
                "@nuget.protocol//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@nuget.librarymodel//:netcoreapp3.0_core",
+               "@nuget.protocol//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@nuget.librarymodel//:netcoreapp3.1_core",
+               "@nuget.protocol//:netcoreapp3.1_core",
             ],
         },
         net_deps = {
@@ -1136,6 +1550,10 @@ def dotnet_repositories_nuget():
                "@nuget.librarymodel//:net472_net",
                "@nuget.protocol//:net472_net",
             ],
+            "net48": [
+               "@nuget.librarymodel//:net48_net",
+               "@nuget.protocol//:net48_net",
+            ],
             "netstandard1.6": [
                "@nuget.librarymodel//:netstandard1.6_net",
                "@nuget.protocol//:netstandard1.6_net",
@@ -1143,6 +1561,10 @@ def dotnet_repositories_nuget():
             "netstandard2.0": [
                "@nuget.librarymodel//:netstandard2.0_net",
                "@nuget.protocol//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@nuget.librarymodel//:netstandard2.1_net",
+               "@nuget.protocol//:netstandard2.1_net",
             ],
         },
         mono_deps = [
@@ -1155,6 +1577,14 @@ def dotnet_repositories_nuget():
                "lib/netstandard1.6/NuGet.DependencyResolver.Core.xml",
             ],
             "netcoreapp2.1": [
+               "lib/netstandard1.6/NuGet.DependencyResolver.Core.dll",
+               "lib/netstandard1.6/NuGet.DependencyResolver.Core.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.6/NuGet.DependencyResolver.Core.dll",
+               "lib/netstandard1.6/NuGet.DependencyResolver.Core.xml",
+            ],
+            "netcoreapp3.1": [
                "lib/netstandard1.6/NuGet.DependencyResolver.Core.dll",
                "lib/netstandard1.6/NuGet.DependencyResolver.Core.xml",
             ],
@@ -1184,11 +1614,19 @@ def dotnet_repositories_nuget():
                "lib/net46/NuGet.DependencyResolver.Core.dll",
                "lib/net46/NuGet.DependencyResolver.Core.xml",
             ],
+            "net48": [
+               "lib/net46/NuGet.DependencyResolver.Core.dll",
+               "lib/net46/NuGet.DependencyResolver.Core.xml",
+            ],
             "netstandard1.6": [
                "lib/netstandard1.6/NuGet.DependencyResolver.Core.dll",
                "lib/netstandard1.6/NuGet.DependencyResolver.Core.xml",
             ],
             "netstandard2.0": [
+               "lib/netstandard1.6/NuGet.DependencyResolver.Core.dll",
+               "lib/netstandard1.6/NuGet.DependencyResolver.Core.xml",
+            ],
+            "netstandard2.1": [
                "lib/netstandard1.6/NuGet.DependencyResolver.Core.dll",
                "lib/netstandard1.6/NuGet.DependencyResolver.Core.xml",
             ],
@@ -1206,6 +1644,8 @@ def dotnet_repositories_nuget():
         core_lib = {
             "netcoreapp2.0": "lib/netstandard1.6/NuGet.ProjectModel.dll",
             "netcoreapp2.1": "lib/netstandard1.6/NuGet.ProjectModel.dll",
+            "netcoreapp3.0": "lib/netstandard1.6/NuGet.ProjectModel.dll",
+            "netcoreapp3.1": "lib/netstandard1.6/NuGet.ProjectModel.dll",
         },
         net_lib = {
             "net46": "lib/net46/NuGet.ProjectModel.dll",
@@ -1214,8 +1654,10 @@ def dotnet_repositories_nuget():
             "net47": "lib/net46/NuGet.ProjectModel.dll",
             "net471": "lib/net46/NuGet.ProjectModel.dll",
             "net472": "lib/net46/NuGet.ProjectModel.dll",
+            "net48": "lib/net46/NuGet.ProjectModel.dll",
             "netstandard1.6": "lib/netstandard1.6/NuGet.ProjectModel.dll",
             "netstandard2.0": "lib/netstandard1.6/NuGet.ProjectModel.dll",
+            "netstandard2.1": "lib/netstandard1.6/NuGet.ProjectModel.dll",
         },
         mono_lib = "lib/net46/NuGet.ProjectModel.dll",
         core_deps = {
@@ -1224,6 +1666,12 @@ def dotnet_repositories_nuget():
             ],
             "netcoreapp2.1": [
                "@nuget.dependencyresolver.core//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@nuget.dependencyresolver.core//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@nuget.dependencyresolver.core//:netcoreapp3.1_core",
             ],
         },
         net_deps = {
@@ -1245,11 +1693,17 @@ def dotnet_repositories_nuget():
             "net472": [
                "@nuget.dependencyresolver.core//:net472_net",
             ],
+            "net48": [
+               "@nuget.dependencyresolver.core//:net48_net",
+            ],
             "netstandard1.6": [
                "@nuget.dependencyresolver.core//:netstandard1.6_net",
             ],
             "netstandard2.0": [
                "@nuget.dependencyresolver.core//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@nuget.dependencyresolver.core//:netstandard2.1_net",
             ],
         },
         mono_deps = [
@@ -1261,6 +1715,14 @@ def dotnet_repositories_nuget():
                "lib/netstandard1.6/NuGet.ProjectModel.xml",
             ],
             "netcoreapp2.1": [
+               "lib/netstandard1.6/NuGet.ProjectModel.dll",
+               "lib/netstandard1.6/NuGet.ProjectModel.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.6/NuGet.ProjectModel.dll",
+               "lib/netstandard1.6/NuGet.ProjectModel.xml",
+            ],
+            "netcoreapp3.1": [
                "lib/netstandard1.6/NuGet.ProjectModel.dll",
                "lib/netstandard1.6/NuGet.ProjectModel.xml",
             ],
@@ -1290,11 +1752,19 @@ def dotnet_repositories_nuget():
                "lib/net46/NuGet.ProjectModel.dll",
                "lib/net46/NuGet.ProjectModel.xml",
             ],
+            "net48": [
+               "lib/net46/NuGet.ProjectModel.dll",
+               "lib/net46/NuGet.ProjectModel.xml",
+            ],
             "netstandard1.6": [
                "lib/netstandard1.6/NuGet.ProjectModel.dll",
                "lib/netstandard1.6/NuGet.ProjectModel.xml",
             ],
             "netstandard2.0": [
+               "lib/netstandard1.6/NuGet.ProjectModel.dll",
+               "lib/netstandard1.6/NuGet.ProjectModel.xml",
+            ],
+            "netstandard2.1": [
                "lib/netstandard1.6/NuGet.ProjectModel.dll",
                "lib/netstandard1.6/NuGet.ProjectModel.xml",
             ],
@@ -1312,6 +1782,8 @@ def dotnet_repositories_nuget():
         core_lib = {
             "netcoreapp2.0": "lib/netstandard1.6/NuGet.Commands.dll",
             "netcoreapp2.1": "lib/netstandard1.6/NuGet.Commands.dll",
+            "netcoreapp3.0": "lib/netstandard1.6/NuGet.Commands.dll",
+            "netcoreapp3.1": "lib/netstandard1.6/NuGet.Commands.dll",
         },
         net_lib = {
             "net46": "lib/net46/NuGet.Commands.dll",
@@ -1320,8 +1792,10 @@ def dotnet_repositories_nuget():
             "net47": "lib/net46/NuGet.Commands.dll",
             "net471": "lib/net46/NuGet.Commands.dll",
             "net472": "lib/net46/NuGet.Commands.dll",
+            "net48": "lib/net46/NuGet.Commands.dll",
             "netstandard1.6": "lib/netstandard1.6/NuGet.Commands.dll",
             "netstandard2.0": "lib/netstandard1.6/NuGet.Commands.dll",
+            "netstandard2.1": "lib/netstandard1.6/NuGet.Commands.dll",
         },
         mono_lib = "lib/net46/NuGet.Commands.dll",
         core_deps = {
@@ -1332,6 +1806,14 @@ def dotnet_repositories_nuget():
             "netcoreapp2.1": [
                "@nuget.credentials//:netcoreapp2.1_core",
                "@nuget.projectmodel//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@nuget.credentials//:netcoreapp3.0_core",
+               "@nuget.projectmodel//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@nuget.credentials//:netcoreapp3.1_core",
+               "@nuget.projectmodel//:netcoreapp3.1_core",
             ],
         },
         net_deps = {
@@ -1359,6 +1841,10 @@ def dotnet_repositories_nuget():
                "@nuget.credentials//:net472_net",
                "@nuget.projectmodel//:net472_net",
             ],
+            "net48": [
+               "@nuget.credentials//:net48_net",
+               "@nuget.projectmodel//:net48_net",
+            ],
             "netstandard1.6": [
                "@nuget.credentials//:netstandard1.6_net",
                "@nuget.projectmodel//:netstandard1.6_net",
@@ -1366,6 +1852,10 @@ def dotnet_repositories_nuget():
             "netstandard2.0": [
                "@nuget.credentials//:netstandard2.0_net",
                "@nuget.projectmodel//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@nuget.credentials//:netstandard2.1_net",
+               "@nuget.projectmodel//:netstandard2.1_net",
             ],
         },
         mono_deps = [
@@ -1378,6 +1868,14 @@ def dotnet_repositories_nuget():
                "lib/netstandard1.6/NuGet.Commands.xml",
             ],
             "netcoreapp2.1": [
+               "lib/netstandard1.6/NuGet.Commands.dll",
+               "lib/netstandard1.6/NuGet.Commands.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.6/NuGet.Commands.dll",
+               "lib/netstandard1.6/NuGet.Commands.xml",
+            ],
+            "netcoreapp3.1": [
                "lib/netstandard1.6/NuGet.Commands.dll",
                "lib/netstandard1.6/NuGet.Commands.xml",
             ],
@@ -1407,11 +1905,19 @@ def dotnet_repositories_nuget():
                "lib/net46/NuGet.Commands.dll",
                "lib/net46/NuGet.Commands.xml",
             ],
+            "net48": [
+               "lib/net46/NuGet.Commands.dll",
+               "lib/net46/NuGet.Commands.xml",
+            ],
             "netstandard1.6": [
                "lib/netstandard1.6/NuGet.Commands.dll",
                "lib/netstandard1.6/NuGet.Commands.xml",
             ],
             "netstandard2.0": [
+               "lib/netstandard1.6/NuGet.Commands.dll",
+               "lib/netstandard1.6/NuGet.Commands.xml",
+            ],
+            "netstandard2.1": [
                "lib/netstandard1.6/NuGet.Commands.dll",
                "lib/netstandard1.6/NuGet.Commands.xml",
             ],
@@ -1429,6 +1935,8 @@ def dotnet_repositories_nuget():
         core_lib = {
             "netcoreapp2.0": "lib/netstandard1.6/NuGet.Resolver.dll",
             "netcoreapp2.1": "lib/netstandard1.6/NuGet.Resolver.dll",
+            "netcoreapp3.0": "lib/netstandard1.6/NuGet.Resolver.dll",
+            "netcoreapp3.1": "lib/netstandard1.6/NuGet.Resolver.dll",
         },
         net_lib = {
             "net46": "lib/net46/NuGet.Resolver.dll",
@@ -1437,8 +1945,10 @@ def dotnet_repositories_nuget():
             "net47": "lib/net46/NuGet.Resolver.dll",
             "net471": "lib/net46/NuGet.Resolver.dll",
             "net472": "lib/net46/NuGet.Resolver.dll",
+            "net48": "lib/net46/NuGet.Resolver.dll",
             "netstandard1.6": "lib/netstandard1.6/NuGet.Resolver.dll",
             "netstandard2.0": "lib/netstandard1.6/NuGet.Resolver.dll",
+            "netstandard2.1": "lib/netstandard1.6/NuGet.Resolver.dll",
         },
         mono_lib = "lib/net46/NuGet.Resolver.dll",
         core_deps = {
@@ -1447,6 +1957,12 @@ def dotnet_repositories_nuget():
             ],
             "netcoreapp2.1": [
                "@nuget.protocol//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@nuget.protocol//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@nuget.protocol//:netcoreapp3.1_core",
             ],
         },
         net_deps = {
@@ -1468,11 +1984,17 @@ def dotnet_repositories_nuget():
             "net472": [
                "@nuget.protocol//:net472_net",
             ],
+            "net48": [
+               "@nuget.protocol//:net48_net",
+            ],
             "netstandard1.6": [
                "@nuget.protocol//:netstandard1.6_net",
             ],
             "netstandard2.0": [
                "@nuget.protocol//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@nuget.protocol//:netstandard2.1_net",
             ],
         },
         mono_deps = [
@@ -1484,6 +2006,14 @@ def dotnet_repositories_nuget():
                "lib/netstandard1.6/NuGet.Resolver.xml",
             ],
             "netcoreapp2.1": [
+               "lib/netstandard1.6/NuGet.Resolver.dll",
+               "lib/netstandard1.6/NuGet.Resolver.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.6/NuGet.Resolver.dll",
+               "lib/netstandard1.6/NuGet.Resolver.xml",
+            ],
+            "netcoreapp3.1": [
                "lib/netstandard1.6/NuGet.Resolver.dll",
                "lib/netstandard1.6/NuGet.Resolver.xml",
             ],
@@ -1513,11 +2043,19 @@ def dotnet_repositories_nuget():
                "lib/net46/NuGet.Resolver.dll",
                "lib/net46/NuGet.Resolver.xml",
             ],
+            "net48": [
+               "lib/net46/NuGet.Resolver.dll",
+               "lib/net46/NuGet.Resolver.xml",
+            ],
             "netstandard1.6": [
                "lib/netstandard1.6/NuGet.Resolver.dll",
                "lib/netstandard1.6/NuGet.Resolver.xml",
             ],
             "netstandard2.0": [
+               "lib/netstandard1.6/NuGet.Resolver.dll",
+               "lib/netstandard1.6/NuGet.Resolver.xml",
+            ],
+            "netstandard2.1": [
                "lib/netstandard1.6/NuGet.Resolver.dll",
                "lib/netstandard1.6/NuGet.Resolver.xml",
             ],
@@ -1528,6 +2066,4378 @@ def dotnet_repositories_nuget():
         ],
     )
     nuget_package(
+        name = "system.appcontext",
+        package = "system.appcontext",
+        version = "4.3.0",
+        sha256 = "ca0f792cd40ec05940d6d5b15dd42457226a4f8027a0373e0029ab36fcc68998",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.6/System.AppContext.dll",
+            "netcoreapp2.1": "ref/netstandard1.6/System.AppContext.dll",
+            "netcoreapp3.0": "ref/netstandard1.6/System.AppContext.dll",
+            "netcoreapp3.1": "ref/netstandard1.6/System.AppContext.dll",
+        },
+        net_lib = {
+            "net46": "ref/net46/System.AppContext.dll",
+            "net461": "ref/net46/System.AppContext.dll",
+            "net462": "ref/net46/System.AppContext.dll",
+            "net47": "ref/net463/System.AppContext.dll",
+            "net471": "ref/net463/System.AppContext.dll",
+            "net472": "ref/net463/System.AppContext.dll",
+            "net48": "ref/net463/System.AppContext.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.AppContext.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.AppContext.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.AppContext.dll",
+            "netstandard1.6": "ref/netstandard1.6/System.AppContext.dll",
+            "netstandard2.0": "ref/netstandard1.6/System.AppContext.dll",
+            "netstandard2.1": "ref/netstandard1.6/System.AppContext.dll",
+        },
+        mono_lib = "ref/net463/System.AppContext.dll",
+        core_files = {
+            "netcoreapp2.0": [
+               "lib/netstandard1.6/System.AppContext.dll",
+            ],
+            "netcoreapp2.1": [
+               "lib/netstandard1.6/System.AppContext.dll",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.6/System.AppContext.dll",
+            ],
+            "netcoreapp3.1": [
+               "lib/netstandard1.6/System.AppContext.dll",
+            ],
+        },
+        net_files = {
+            "net46": [
+               "lib/net46/System.AppContext.dll",
+            ],
+            "net461": [
+               "lib/net46/System.AppContext.dll",
+            ],
+            "net462": [
+               "lib/net46/System.AppContext.dll",
+            ],
+            "net47": [
+               "lib/net463/System.AppContext.dll",
+            ],
+            "net471": [
+               "lib/net463/System.AppContext.dll",
+            ],
+            "net472": [
+               "lib/net463/System.AppContext.dll",
+            ],
+            "net48": [
+               "lib/net463/System.AppContext.dll",
+            ],
+            "netstandard1.6": [
+               "lib/netstandard1.6/System.AppContext.dll",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard1.6/System.AppContext.dll",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard1.6/System.AppContext.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net463/System.AppContext.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.collections",
+        package = "system.collections",
+        version = "4.3.0",
+        sha256 = "69f63b554b43eb0ff9998aab71ef2442bbc321f4b61970c834387bdc88f124a7",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.Collections.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.Collections.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.Collections.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.Collections.dll",
+        },
+        net_lib = {
+            "netstandard1.0": "ref/netstandard1.0/System.Collections.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.Collections.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.Collections.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Collections.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Collections.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.Collections.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.Collections.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.Collections.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.Collections.dll",
+        },
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.0": [
+               "@microsoft.netcore.platforms//:netstandard1.0_net",
+               "@microsoft.netcore.targets//:netstandard1.0_net",
+            ],
+            "netstandard1.1": [
+               "@microsoft.netcore.platforms//:netstandard1.1_net",
+               "@microsoft.netcore.targets//:netstandard1.1_net",
+            ],
+            "netstandard1.2": [
+               "@microsoft.netcore.platforms//:netstandard1.2_net",
+               "@microsoft.netcore.targets//:netstandard1.2_net",
+            ],
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+    )
+    nuget_package(
+        name = "system.collections.concurrent",
+        package = "system.collections.concurrent",
+        version = "4.3.0",
+        sha256 = "28c6390df2670de22c6b5dc3a6abf237c36445e644300167966360955a052172",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.Collections.Concurrent.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.Collections.Concurrent.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.Collections.Concurrent.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.Collections.Concurrent.dll",
+        },
+        net_lib = {
+            "netstandard1.1": "ref/netstandard1.1/System.Collections.Concurrent.dll",
+            "netstandard1.2": "ref/netstandard1.1/System.Collections.Concurrent.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Collections.Concurrent.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Collections.Concurrent.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.Collections.Concurrent.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.Collections.Concurrent.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.Collections.Concurrent.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.Collections.Concurrent.dll",
+        },
+        core_files = {
+            "netcoreapp2.0": [
+               "lib/netstandard1.3/System.Collections.Concurrent.dll",
+            ],
+            "netcoreapp2.1": [
+               "lib/netstandard1.3/System.Collections.Concurrent.dll",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.3/System.Collections.Concurrent.dll",
+            ],
+            "netcoreapp3.1": [
+               "lib/netstandard1.3/System.Collections.Concurrent.dll",
+            ],
+        },
+        net_files = {
+            "netstandard1.3": [
+               "lib/netstandard1.3/System.Collections.Concurrent.dll",
+            ],
+            "netstandard1.4": [
+               "lib/netstandard1.3/System.Collections.Concurrent.dll",
+            ],
+            "netstandard1.5": [
+               "lib/netstandard1.3/System.Collections.Concurrent.dll",
+            ],
+            "netstandard1.6": [
+               "lib/netstandard1.3/System.Collections.Concurrent.dll",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard1.3/System.Collections.Concurrent.dll",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard1.3/System.Collections.Concurrent.dll",
+            ],
+        },
+    )
+    nuget_package(
+        name = "system.console",
+        package = "system.console",
+        version = "4.3.0",
+        sha256 = "5e1dcf3c166bd290db0da2bc0041db746cfb78f2ba622d59c91588d4933a99ba",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.Console.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.Console.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.Console.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.Console.dll",
+        },
+        net_lib = {
+            "net46": "ref/net46/System.Console.dll",
+            "net461": "ref/net46/System.Console.dll",
+            "net462": "ref/net46/System.Console.dll",
+            "net47": "ref/net46/System.Console.dll",
+            "net471": "ref/net46/System.Console.dll",
+            "net472": "ref/net46/System.Console.dll",
+            "net48": "ref/net46/System.Console.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Console.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Console.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.Console.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.Console.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.Console.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.Console.dll",
+        },
+        mono_lib = "ref/net46/System.Console.dll",
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+        net_files = {
+            "net46": [
+               "lib/net46/System.Console.dll",
+            ],
+            "net461": [
+               "lib/net46/System.Console.dll",
+            ],
+            "net462": [
+               "lib/net46/System.Console.dll",
+            ],
+            "net47": [
+               "lib/net46/System.Console.dll",
+            ],
+            "net471": [
+               "lib/net46/System.Console.dll",
+            ],
+            "net472": [
+               "lib/net46/System.Console.dll",
+            ],
+            "net48": [
+               "lib/net46/System.Console.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net46/System.Console.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.diagnostics.debug",
+        package = "system.diagnostics.debug",
+        version = "4.3.0",
+        sha256 = "7e403bf528cf6d27a211cadb6d4b1bef4bbd07bc2a6ec74cf6cd4b9e82a3d203",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.Diagnostics.Debug.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.Diagnostics.Debug.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.Diagnostics.Debug.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.Diagnostics.Debug.dll",
+        },
+        net_lib = {
+            "netstandard1.0": "ref/netstandard1.0/System.Diagnostics.Debug.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.Diagnostics.Debug.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.Diagnostics.Debug.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Diagnostics.Debug.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Diagnostics.Debug.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.Diagnostics.Debug.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.Diagnostics.Debug.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.Diagnostics.Debug.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.Diagnostics.Debug.dll",
+        },
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.0": [
+               "@microsoft.netcore.platforms//:netstandard1.0_net",
+               "@microsoft.netcore.targets//:netstandard1.0_net",
+            ],
+            "netstandard1.1": [
+               "@microsoft.netcore.platforms//:netstandard1.1_net",
+               "@microsoft.netcore.targets//:netstandard1.1_net",
+            ],
+            "netstandard1.2": [
+               "@microsoft.netcore.platforms//:netstandard1.2_net",
+               "@microsoft.netcore.targets//:netstandard1.2_net",
+            ],
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+    )
+    nuget_package(
+        name = "system.diagnostics.diagnosticsource",
+        package = "system.diagnostics.diagnosticsource",
+        version = "4.3.0",
+        sha256 = "3852516f4ca07a9d19df20c12f002033f4e47ece09083b6c361c031fd71dd57c",
+        core_lib = {
+            "netcoreapp2.0": "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+            "netcoreapp2.1": "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+            "netcoreapp3.0": "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+            "netcoreapp3.1": "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+        },
+        net_lib = {
+            "net45": "lib/portable-net45+win8+wpa81/System.Diagnostics.DiagnosticSource.dll",
+            "net451": "lib/portable-net45+win8+wpa81/System.Diagnostics.DiagnosticSource.dll",
+            "net452": "lib/portable-net45+win8+wpa81/System.Diagnostics.DiagnosticSource.dll",
+            "net46": "lib/net46/System.Diagnostics.DiagnosticSource.dll",
+            "net461": "lib/net46/System.Diagnostics.DiagnosticSource.dll",
+            "net462": "lib/net46/System.Diagnostics.DiagnosticSource.dll",
+            "net47": "lib/net46/System.Diagnostics.DiagnosticSource.dll",
+            "net471": "lib/net46/System.Diagnostics.DiagnosticSource.dll",
+            "net472": "lib/net46/System.Diagnostics.DiagnosticSource.dll",
+            "net48": "lib/net46/System.Diagnostics.DiagnosticSource.dll",
+            "netstandard1.1": "lib/netstandard1.1/System.Diagnostics.DiagnosticSource.dll",
+            "netstandard1.2": "lib/netstandard1.1/System.Diagnostics.DiagnosticSource.dll",
+            "netstandard1.3": "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+            "netstandard1.4": "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+            "netstandard1.5": "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+            "netstandard1.6": "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+            "netstandard2.0": "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+            "netstandard2.1": "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+        },
+        mono_lib = "lib/net46/System.Diagnostics.DiagnosticSource.dll",
+        core_files = {
+            "netcoreapp2.0": [
+               "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+               "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.xml",
+            ],
+            "netcoreapp2.1": [
+               "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+               "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+               "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.xml",
+            ],
+            "netcoreapp3.1": [
+               "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+               "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.xml",
+            ],
+        },
+        net_files = {
+            "net45": [
+               "lib/portable-net45+win8+wpa81/System.Diagnostics.DiagnosticSource.dll",
+               "lib/portable-net45+win8+wpa81/System.Diagnostics.DiagnosticSource.xml",
+            ],
+            "net451": [
+               "lib/portable-net45+win8+wpa81/System.Diagnostics.DiagnosticSource.dll",
+               "lib/portable-net45+win8+wpa81/System.Diagnostics.DiagnosticSource.xml",
+            ],
+            "net452": [
+               "lib/portable-net45+win8+wpa81/System.Diagnostics.DiagnosticSource.dll",
+               "lib/portable-net45+win8+wpa81/System.Diagnostics.DiagnosticSource.xml",
+            ],
+            "net46": [
+               "lib/net46/System.Diagnostics.DiagnosticSource.dll",
+               "lib/net46/System.Diagnostics.DiagnosticSource.xml",
+            ],
+            "net461": [
+               "lib/net46/System.Diagnostics.DiagnosticSource.dll",
+               "lib/net46/System.Diagnostics.DiagnosticSource.xml",
+            ],
+            "net462": [
+               "lib/net46/System.Diagnostics.DiagnosticSource.dll",
+               "lib/net46/System.Diagnostics.DiagnosticSource.xml",
+            ],
+            "net47": [
+               "lib/net46/System.Diagnostics.DiagnosticSource.dll",
+               "lib/net46/System.Diagnostics.DiagnosticSource.xml",
+            ],
+            "net471": [
+               "lib/net46/System.Diagnostics.DiagnosticSource.dll",
+               "lib/net46/System.Diagnostics.DiagnosticSource.xml",
+            ],
+            "net472": [
+               "lib/net46/System.Diagnostics.DiagnosticSource.dll",
+               "lib/net46/System.Diagnostics.DiagnosticSource.xml",
+            ],
+            "net48": [
+               "lib/net46/System.Diagnostics.DiagnosticSource.dll",
+               "lib/net46/System.Diagnostics.DiagnosticSource.xml",
+            ],
+            "netstandard1.1": [
+               "lib/netstandard1.1/System.Diagnostics.DiagnosticSource.dll",
+               "lib/netstandard1.1/System.Diagnostics.DiagnosticSource.xml",
+            ],
+            "netstandard1.2": [
+               "lib/netstandard1.1/System.Diagnostics.DiagnosticSource.dll",
+               "lib/netstandard1.1/System.Diagnostics.DiagnosticSource.xml",
+            ],
+            "netstandard1.3": [
+               "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+               "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.xml",
+            ],
+            "netstandard1.4": [
+               "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+               "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.xml",
+            ],
+            "netstandard1.5": [
+               "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+               "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.xml",
+            ],
+            "netstandard1.6": [
+               "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+               "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.xml",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+               "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.xml",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+               "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.xml",
+            ],
+        },
+        mono_files = [
+            "lib/net46/System.Diagnostics.DiagnosticSource.dll",
+            "lib/net46/System.Diagnostics.DiagnosticSource.xml",
+        ],
+    )
+    nuget_package(
+        name = "system.diagnostics.tools",
+        package = "system.diagnostics.tools",
+        version = "4.3.0",
+        sha256 = "8153afd522ba0297b415084256534e77d72f40a06f331457f4ad093d58bcc346",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.0/System.Diagnostics.Tools.dll",
+            "netcoreapp2.1": "ref/netstandard1.0/System.Diagnostics.Tools.dll",
+            "netcoreapp3.0": "ref/netstandard1.0/System.Diagnostics.Tools.dll",
+            "netcoreapp3.1": "ref/netstandard1.0/System.Diagnostics.Tools.dll",
+        },
+        net_lib = {
+            "netstandard1.0": "ref/netstandard1.0/System.Diagnostics.Tools.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.Diagnostics.Tools.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.Diagnostics.Tools.dll",
+            "netstandard1.3": "ref/netstandard1.0/System.Diagnostics.Tools.dll",
+            "netstandard1.4": "ref/netstandard1.0/System.Diagnostics.Tools.dll",
+            "netstandard1.5": "ref/netstandard1.0/System.Diagnostics.Tools.dll",
+            "netstandard1.6": "ref/netstandard1.0/System.Diagnostics.Tools.dll",
+            "netstandard2.0": "ref/netstandard1.0/System.Diagnostics.Tools.dll",
+            "netstandard2.1": "ref/netstandard1.0/System.Diagnostics.Tools.dll",
+        },
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.0": [
+               "@microsoft.netcore.platforms//:netstandard1.0_net",
+               "@microsoft.netcore.targets//:netstandard1.0_net",
+            ],
+            "netstandard1.1": [
+               "@microsoft.netcore.platforms//:netstandard1.1_net",
+               "@microsoft.netcore.targets//:netstandard1.1_net",
+            ],
+            "netstandard1.2": [
+               "@microsoft.netcore.platforms//:netstandard1.2_net",
+               "@microsoft.netcore.targets//:netstandard1.2_net",
+            ],
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+    )
+    nuget_package(
+        name = "system.diagnostics.tracing",
+        package = "system.diagnostics.tracing",
+        version = "4.3.0",
+        sha256 = "8421136691c719584f62f6f80b47e1e33b3ef33bf818fa22c5a8242d98e96bd4",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.5/System.Diagnostics.Tracing.dll",
+            "netcoreapp2.1": "ref/netstandard1.5/System.Diagnostics.Tracing.dll",
+            "netcoreapp3.0": "ref/netstandard1.5/System.Diagnostics.Tracing.dll",
+            "netcoreapp3.1": "ref/netstandard1.5/System.Diagnostics.Tracing.dll",
+        },
+        net_lib = {
+            "net462": "ref/net462/System.Diagnostics.Tracing.dll",
+            "net47": "ref/net462/System.Diagnostics.Tracing.dll",
+            "net471": "ref/net462/System.Diagnostics.Tracing.dll",
+            "net472": "ref/net462/System.Diagnostics.Tracing.dll",
+            "net48": "ref/net462/System.Diagnostics.Tracing.dll",
+            "netstandard1.1": "ref/netstandard1.1/System.Diagnostics.Tracing.dll",
+            "netstandard1.2": "ref/netstandard1.2/System.Diagnostics.Tracing.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Diagnostics.Tracing.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Diagnostics.Tracing.dll",
+            "netstandard1.5": "ref/netstandard1.5/System.Diagnostics.Tracing.dll",
+            "netstandard1.6": "ref/netstandard1.5/System.Diagnostics.Tracing.dll",
+            "netstandard2.0": "ref/netstandard1.5/System.Diagnostics.Tracing.dll",
+            "netstandard2.1": "ref/netstandard1.5/System.Diagnostics.Tracing.dll",
+        },
+        mono_lib = "ref/net462/System.Diagnostics.Tracing.dll",
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.1": [
+               "@microsoft.netcore.platforms//:netstandard1.1_net",
+               "@microsoft.netcore.targets//:netstandard1.1_net",
+            ],
+            "netstandard1.2": [
+               "@microsoft.netcore.platforms//:netstandard1.2_net",
+               "@microsoft.netcore.targets//:netstandard1.2_net",
+            ],
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+        net_files = {
+            "net462": [
+               "lib/net462/System.Diagnostics.Tracing.dll",
+            ],
+            "net47": [
+               "lib/net462/System.Diagnostics.Tracing.dll",
+            ],
+            "net471": [
+               "lib/net462/System.Diagnostics.Tracing.dll",
+            ],
+            "net472": [
+               "lib/net462/System.Diagnostics.Tracing.dll",
+            ],
+            "net48": [
+               "lib/net462/System.Diagnostics.Tracing.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net462/System.Diagnostics.Tracing.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.globalization",
+        package = "system.globalization",
+        version = "4.3.0",
+        sha256 = "71a2f4a51985484b1aa1e65e58de414d0b46ac0b5a40fc058bc60e64f646e6b2",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.Globalization.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.Globalization.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.Globalization.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.Globalization.dll",
+        },
+        net_lib = {
+            "netstandard1.0": "ref/netstandard1.0/System.Globalization.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.Globalization.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.Globalization.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Globalization.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Globalization.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.Globalization.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.Globalization.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.Globalization.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.Globalization.dll",
+        },
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.0": [
+               "@microsoft.netcore.platforms//:netstandard1.0_net",
+               "@microsoft.netcore.targets//:netstandard1.0_net",
+            ],
+            "netstandard1.1": [
+               "@microsoft.netcore.platforms//:netstandard1.1_net",
+               "@microsoft.netcore.targets//:netstandard1.1_net",
+            ],
+            "netstandard1.2": [
+               "@microsoft.netcore.platforms//:netstandard1.2_net",
+               "@microsoft.netcore.targets//:netstandard1.2_net",
+            ],
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+    )
+    nuget_package(
+        name = "system.globalization.calendars",
+        package = "system.globalization.calendars",
+        version = "4.3.0",
+        sha256 = "b8d383d043951609d2d9f30abcc884b48f5a3b0d34f8f7f2fc7faab9c01094f7",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.Globalization.Calendars.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.Globalization.Calendars.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.Globalization.Calendars.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.Globalization.Calendars.dll",
+        },
+        net_lib = {
+            "net46": "ref/net46/System.Globalization.Calendars.dll",
+            "net461": "ref/net46/System.Globalization.Calendars.dll",
+            "net462": "ref/net46/System.Globalization.Calendars.dll",
+            "net47": "ref/net46/System.Globalization.Calendars.dll",
+            "net471": "ref/net46/System.Globalization.Calendars.dll",
+            "net472": "ref/net46/System.Globalization.Calendars.dll",
+            "net48": "ref/net46/System.Globalization.Calendars.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Globalization.Calendars.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Globalization.Calendars.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.Globalization.Calendars.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.Globalization.Calendars.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.Globalization.Calendars.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.Globalization.Calendars.dll",
+        },
+        mono_lib = "ref/net46/System.Globalization.Calendars.dll",
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+        net_files = {
+            "net46": [
+               "lib/net46/System.Globalization.Calendars.dll",
+            ],
+            "net461": [
+               "lib/net46/System.Globalization.Calendars.dll",
+            ],
+            "net462": [
+               "lib/net46/System.Globalization.Calendars.dll",
+            ],
+            "net47": [
+               "lib/net46/System.Globalization.Calendars.dll",
+            ],
+            "net471": [
+               "lib/net46/System.Globalization.Calendars.dll",
+            ],
+            "net472": [
+               "lib/net46/System.Globalization.Calendars.dll",
+            ],
+            "net48": [
+               "lib/net46/System.Globalization.Calendars.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net46/System.Globalization.Calendars.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.io",
+        package = "system.io",
+        version = "4.3.0",
+        sha256 = "aeeca74077a414fe703eb0e257284d891217799fc8f4da632b9a54f873c38916",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.5/System.IO.dll",
+            "netcoreapp2.1": "ref/netstandard1.5/System.IO.dll",
+            "netcoreapp3.0": "ref/netstandard1.5/System.IO.dll",
+            "netcoreapp3.1": "ref/netstandard1.5/System.IO.dll",
+        },
+        net_lib = {
+            "net462": "ref/net462/System.IO.dll",
+            "net47": "ref/net462/System.IO.dll",
+            "net471": "ref/net462/System.IO.dll",
+            "net472": "ref/net462/System.IO.dll",
+            "net48": "ref/net462/System.IO.dll",
+            "netstandard1.0": "ref/netstandard1.0/System.IO.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.IO.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.IO.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.IO.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.IO.dll",
+            "netstandard1.5": "ref/netstandard1.5/System.IO.dll",
+            "netstandard1.6": "ref/netstandard1.5/System.IO.dll",
+            "netstandard2.0": "ref/netstandard1.5/System.IO.dll",
+            "netstandard2.1": "ref/netstandard1.5/System.IO.dll",
+        },
+        mono_lib = "ref/net462/System.IO.dll",
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.0": [
+               "@microsoft.netcore.platforms//:netstandard1.0_net",
+               "@microsoft.netcore.targets//:netstandard1.0_net",
+            ],
+            "netstandard1.1": [
+               "@microsoft.netcore.platforms//:netstandard1.1_net",
+               "@microsoft.netcore.targets//:netstandard1.1_net",
+            ],
+            "netstandard1.2": [
+               "@microsoft.netcore.platforms//:netstandard1.2_net",
+               "@microsoft.netcore.targets//:netstandard1.2_net",
+            ],
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+        net_files = {
+            "net462": [
+               "lib/net462/System.IO.dll",
+            ],
+            "net47": [
+               "lib/net462/System.IO.dll",
+            ],
+            "net471": [
+               "lib/net462/System.IO.dll",
+            ],
+            "net472": [
+               "lib/net462/System.IO.dll",
+            ],
+            "net48": [
+               "lib/net462/System.IO.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net462/System.IO.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.io.compression",
+        package = "system.io.compression",
+        version = "4.3.0",
+        sha256 = "7f93eb4254208f95e3d999c7c575bc5e23a2bda06f7ea0daa3d49be805629f20",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.IO.Compression.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.IO.Compression.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.IO.Compression.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.IO.Compression.dll",
+        },
+        net_lib = {
+            "net46": "ref/net46/System.IO.Compression.dll",
+            "net461": "ref/net46/System.IO.Compression.dll",
+            "net462": "ref/net46/System.IO.Compression.dll",
+            "net47": "ref/net46/System.IO.Compression.dll",
+            "net471": "ref/net46/System.IO.Compression.dll",
+            "net472": "ref/net46/System.IO.Compression.dll",
+            "net48": "ref/net46/System.IO.Compression.dll",
+            "netstandard1.1": "ref/netstandard1.1/System.IO.Compression.dll",
+            "netstandard1.2": "ref/netstandard1.1/System.IO.Compression.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.IO.Compression.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.IO.Compression.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.IO.Compression.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.IO.Compression.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.IO.Compression.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.IO.Compression.dll",
+        },
+        mono_lib = "ref/net46/System.IO.Compression.dll",
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@runtime.native.system//:netcoreapp2.0_core",
+               "@runtime.native.system.io.compression//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@runtime.native.system//:netcoreapp2.1_core",
+               "@runtime.native.system.io.compression//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@runtime.native.system//:netcoreapp3.0_core",
+               "@runtime.native.system.io.compression//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@runtime.native.system//:netcoreapp3.1_core",
+               "@runtime.native.system.io.compression//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@runtime.native.system//:netstandard1.3_net",
+               "@runtime.native.system.io.compression//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@runtime.native.system//:netstandard1.4_net",
+               "@runtime.native.system.io.compression//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@runtime.native.system//:netstandard1.5_net",
+               "@runtime.native.system.io.compression//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@runtime.native.system//:netstandard1.6_net",
+               "@runtime.native.system.io.compression//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@runtime.native.system//:netstandard2.0_net",
+               "@runtime.native.system.io.compression//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@runtime.native.system//:netstandard2.1_net",
+               "@runtime.native.system.io.compression//:netstandard2.1_net",
+            ],
+        },
+        net_files = {
+            "net46": [
+               "lib/net46/System.IO.Compression.dll",
+            ],
+            "net461": [
+               "lib/net46/System.IO.Compression.dll",
+            ],
+            "net462": [
+               "lib/net46/System.IO.Compression.dll",
+            ],
+            "net47": [
+               "lib/net46/System.IO.Compression.dll",
+            ],
+            "net471": [
+               "lib/net46/System.IO.Compression.dll",
+            ],
+            "net472": [
+               "lib/net46/System.IO.Compression.dll",
+            ],
+            "net48": [
+               "lib/net46/System.IO.Compression.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net46/System.IO.Compression.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.io.compression.zipfile",
+        package = "system.io.compression.zipfile",
+        version = "4.3.0",
+        sha256 = "59097e2605acf8669131e89a8531546eb8655c81daa737294c55db46f02dbefb",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.IO.Compression.ZipFile.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.IO.Compression.ZipFile.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.IO.Compression.ZipFile.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.IO.Compression.ZipFile.dll",
+        },
+        net_lib = {
+            "net46": "ref/net46/System.IO.Compression.ZipFile.dll",
+            "net461": "ref/net46/System.IO.Compression.ZipFile.dll",
+            "net462": "ref/net46/System.IO.Compression.ZipFile.dll",
+            "net47": "ref/net46/System.IO.Compression.ZipFile.dll",
+            "net471": "ref/net46/System.IO.Compression.ZipFile.dll",
+            "net472": "ref/net46/System.IO.Compression.ZipFile.dll",
+            "net48": "ref/net46/System.IO.Compression.ZipFile.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.IO.Compression.ZipFile.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.IO.Compression.ZipFile.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.IO.Compression.ZipFile.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.IO.Compression.ZipFile.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.IO.Compression.ZipFile.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.IO.Compression.ZipFile.dll",
+        },
+        mono_lib = "ref/net46/System.IO.Compression.ZipFile.dll",
+        core_files = {
+            "netcoreapp2.0": [
+               "lib/netstandard1.3/System.IO.Compression.ZipFile.dll",
+            ],
+            "netcoreapp2.1": [
+               "lib/netstandard1.3/System.IO.Compression.ZipFile.dll",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.3/System.IO.Compression.ZipFile.dll",
+            ],
+            "netcoreapp3.1": [
+               "lib/netstandard1.3/System.IO.Compression.ZipFile.dll",
+            ],
+        },
+        net_files = {
+            "net46": [
+               "lib/net46/System.IO.Compression.ZipFile.dll",
+            ],
+            "net461": [
+               "lib/net46/System.IO.Compression.ZipFile.dll",
+            ],
+            "net462": [
+               "lib/net46/System.IO.Compression.ZipFile.dll",
+            ],
+            "net47": [
+               "lib/net46/System.IO.Compression.ZipFile.dll",
+            ],
+            "net471": [
+               "lib/net46/System.IO.Compression.ZipFile.dll",
+            ],
+            "net472": [
+               "lib/net46/System.IO.Compression.ZipFile.dll",
+            ],
+            "net48": [
+               "lib/net46/System.IO.Compression.ZipFile.dll",
+            ],
+            "netstandard1.3": [
+               "lib/netstandard1.3/System.IO.Compression.ZipFile.dll",
+            ],
+            "netstandard1.4": [
+               "lib/netstandard1.3/System.IO.Compression.ZipFile.dll",
+            ],
+            "netstandard1.5": [
+               "lib/netstandard1.3/System.IO.Compression.ZipFile.dll",
+            ],
+            "netstandard1.6": [
+               "lib/netstandard1.3/System.IO.Compression.ZipFile.dll",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard1.3/System.IO.Compression.ZipFile.dll",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard1.3/System.IO.Compression.ZipFile.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net46/System.IO.Compression.ZipFile.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.io.filesystem.primitives",
+        package = "system.io.filesystem.primitives",
+        version = "4.3.0",
+        sha256 = "2cc9df83c5706afb3d70c9eaf67347f085ad02d49f934fc5cb8b3846df6bd648",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.IO.FileSystem.Primitives.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.IO.FileSystem.Primitives.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.IO.FileSystem.Primitives.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.IO.FileSystem.Primitives.dll",
+        },
+        net_lib = {
+            "net46": "ref/net46/System.IO.FileSystem.Primitives.dll",
+            "net461": "ref/net46/System.IO.FileSystem.Primitives.dll",
+            "net462": "ref/net46/System.IO.FileSystem.Primitives.dll",
+            "net47": "ref/net46/System.IO.FileSystem.Primitives.dll",
+            "net471": "ref/net46/System.IO.FileSystem.Primitives.dll",
+            "net472": "ref/net46/System.IO.FileSystem.Primitives.dll",
+            "net48": "ref/net46/System.IO.FileSystem.Primitives.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.IO.FileSystem.Primitives.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.IO.FileSystem.Primitives.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.IO.FileSystem.Primitives.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.IO.FileSystem.Primitives.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.IO.FileSystem.Primitives.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.IO.FileSystem.Primitives.dll",
+        },
+        mono_lib = "ref/net46/System.IO.FileSystem.Primitives.dll",
+        core_files = {
+            "netcoreapp2.0": [
+               "lib/netstandard1.3/System.IO.FileSystem.Primitives.dll",
+            ],
+            "netcoreapp2.1": [
+               "lib/netstandard1.3/System.IO.FileSystem.Primitives.dll",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.3/System.IO.FileSystem.Primitives.dll",
+            ],
+            "netcoreapp3.1": [
+               "lib/netstandard1.3/System.IO.FileSystem.Primitives.dll",
+            ],
+        },
+        net_files = {
+            "net46": [
+               "lib/net46/System.IO.FileSystem.Primitives.dll",
+            ],
+            "net461": [
+               "lib/net46/System.IO.FileSystem.Primitives.dll",
+            ],
+            "net462": [
+               "lib/net46/System.IO.FileSystem.Primitives.dll",
+            ],
+            "net47": [
+               "lib/net46/System.IO.FileSystem.Primitives.dll",
+            ],
+            "net471": [
+               "lib/net46/System.IO.FileSystem.Primitives.dll",
+            ],
+            "net472": [
+               "lib/net46/System.IO.FileSystem.Primitives.dll",
+            ],
+            "net48": [
+               "lib/net46/System.IO.FileSystem.Primitives.dll",
+            ],
+            "netstandard1.3": [
+               "lib/netstandard1.3/System.IO.FileSystem.Primitives.dll",
+            ],
+            "netstandard1.4": [
+               "lib/netstandard1.3/System.IO.FileSystem.Primitives.dll",
+            ],
+            "netstandard1.5": [
+               "lib/netstandard1.3/System.IO.FileSystem.Primitives.dll",
+            ],
+            "netstandard1.6": [
+               "lib/netstandard1.3/System.IO.FileSystem.Primitives.dll",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard1.3/System.IO.FileSystem.Primitives.dll",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard1.3/System.IO.FileSystem.Primitives.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net46/System.IO.FileSystem.Primitives.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.io.filesystem",
+        package = "system.io.filesystem",
+        version = "4.3.0",
+        sha256 = "bcd2189ef95acae563d167d17d82a90eb843a6d961a75a4df026269557764d7c",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.IO.FileSystem.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.IO.FileSystem.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.IO.FileSystem.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.IO.FileSystem.dll",
+        },
+        net_lib = {
+            "net46": "ref/net46/System.IO.FileSystem.dll",
+            "net461": "ref/net46/System.IO.FileSystem.dll",
+            "net462": "ref/net46/System.IO.FileSystem.dll",
+            "net47": "ref/net46/System.IO.FileSystem.dll",
+            "net471": "ref/net46/System.IO.FileSystem.dll",
+            "net472": "ref/net46/System.IO.FileSystem.dll",
+            "net48": "ref/net46/System.IO.FileSystem.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.IO.FileSystem.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.IO.FileSystem.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.IO.FileSystem.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.IO.FileSystem.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.IO.FileSystem.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.IO.FileSystem.dll",
+        },
+        mono_lib = "ref/net46/System.IO.FileSystem.dll",
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "net46": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.io.filesystem.primitives.dll",
+            ],
+            "net461": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.io.filesystem.primitives.dll",
+            ],
+            "net462": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.io.filesystem.primitives.dll",
+            ],
+            "net47": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.io.filesystem.primitives.dll",
+            ],
+            "net471": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.io.filesystem.primitives.dll",
+            ],
+            "net472": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.io.filesystem.primitives.dll",
+            ],
+            "net48": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.io.filesystem.primitives.dll",
+            ],
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+        mono_deps = [
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.io.filesystem.primitives.dll",
+        ],
+        net_files = {
+            "net46": [
+               "lib/net46/System.IO.FileSystem.dll",
+            ],
+            "net461": [
+               "lib/net46/System.IO.FileSystem.dll",
+            ],
+            "net462": [
+               "lib/net46/System.IO.FileSystem.dll",
+            ],
+            "net47": [
+               "lib/net46/System.IO.FileSystem.dll",
+            ],
+            "net471": [
+               "lib/net46/System.IO.FileSystem.dll",
+            ],
+            "net472": [
+               "lib/net46/System.IO.FileSystem.dll",
+            ],
+            "net48": [
+               "lib/net46/System.IO.FileSystem.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net46/System.IO.FileSystem.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.linq",
+        package = "system.linq",
+        version = "4.3.0",
+        sha256 = "479ba248bde5e9add7ad74922fa8f3faafcf732550cc4001ca2b9764d4aa0ff0",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.6/System.Linq.dll",
+            "netcoreapp2.1": "ref/netstandard1.6/System.Linq.dll",
+            "netcoreapp3.0": "ref/netstandard1.6/System.Linq.dll",
+            "netcoreapp3.1": "ref/netstandard1.6/System.Linq.dll",
+        },
+        net_lib = {
+            "net47": "ref/net463/System.Linq.dll",
+            "net471": "ref/net463/System.Linq.dll",
+            "net472": "ref/net463/System.Linq.dll",
+            "net48": "ref/net463/System.Linq.dll",
+            "netstandard1.0": "ref/netstandard1.0/System.Linq.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.Linq.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.Linq.dll",
+            "netstandard1.3": "ref/netstandard1.0/System.Linq.dll",
+            "netstandard1.4": "ref/netstandard1.0/System.Linq.dll",
+            "netstandard1.5": "ref/netstandard1.0/System.Linq.dll",
+            "netstandard1.6": "ref/netstandard1.6/System.Linq.dll",
+            "netstandard2.0": "ref/netstandard1.6/System.Linq.dll",
+            "netstandard2.1": "ref/netstandard1.6/System.Linq.dll",
+        },
+        mono_lib = "ref/net463/System.Linq.dll",
+        core_files = {
+            "netcoreapp2.0": [
+               "lib/netstandard1.6/System.Linq.dll",
+            ],
+            "netcoreapp2.1": [
+               "lib/netstandard1.6/System.Linq.dll",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.6/System.Linq.dll",
+            ],
+            "netcoreapp3.1": [
+               "lib/netstandard1.6/System.Linq.dll",
+            ],
+        },
+        net_files = {
+            "net47": [
+               "lib/net463/System.Linq.dll",
+            ],
+            "net471": [
+               "lib/net463/System.Linq.dll",
+            ],
+            "net472": [
+               "lib/net463/System.Linq.dll",
+            ],
+            "net48": [
+               "lib/net463/System.Linq.dll",
+            ],
+            "netstandard1.6": [
+               "lib/netstandard1.6/System.Linq.dll",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard1.6/System.Linq.dll",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard1.6/System.Linq.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net463/System.Linq.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.linq.expressions",
+        package = "system.linq.expressions",
+        version = "4.3.0",
+        sha256 = "fb7a6f85963bae2a7c1c26df7542f38e50bd14f645a58a10c6191cb859b6c24f",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.6/System.Linq.Expressions.dll",
+            "netcoreapp2.1": "ref/netstandard1.6/System.Linq.Expressions.dll",
+            "netcoreapp3.0": "ref/netstandard1.6/System.Linq.Expressions.dll",
+            "netcoreapp3.1": "ref/netstandard1.6/System.Linq.Expressions.dll",
+        },
+        net_lib = {
+            "net47": "ref/net463/System.Linq.Expressions.dll",
+            "net471": "ref/net463/System.Linq.Expressions.dll",
+            "net472": "ref/net463/System.Linq.Expressions.dll",
+            "net48": "ref/net463/System.Linq.Expressions.dll",
+            "netstandard1.0": "ref/netstandard1.0/System.Linq.Expressions.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.Linq.Expressions.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.Linq.Expressions.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Linq.Expressions.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Linq.Expressions.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.Linq.Expressions.dll",
+            "netstandard1.6": "ref/netstandard1.6/System.Linq.Expressions.dll",
+            "netstandard2.0": "ref/netstandard1.6/System.Linq.Expressions.dll",
+            "netstandard2.1": "ref/netstandard1.6/System.Linq.Expressions.dll",
+        },
+        mono_lib = "ref/net463/System.Linq.Expressions.dll",
+        core_files = {
+            "netcoreapp2.0": [
+               "lib/netstandard1.6/System.Linq.Expressions.dll",
+            ],
+            "netcoreapp2.1": [
+               "lib/netstandard1.6/System.Linq.Expressions.dll",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.6/System.Linq.Expressions.dll",
+            ],
+            "netcoreapp3.1": [
+               "lib/netstandard1.6/System.Linq.Expressions.dll",
+            ],
+        },
+        net_files = {
+            "net47": [
+               "lib/net463/System.Linq.Expressions.dll",
+            ],
+            "net471": [
+               "lib/net463/System.Linq.Expressions.dll",
+            ],
+            "net472": [
+               "lib/net463/System.Linq.Expressions.dll",
+            ],
+            "net48": [
+               "lib/net463/System.Linq.Expressions.dll",
+            ],
+            "netstandard1.6": [
+               "lib/netstandard1.6/System.Linq.Expressions.dll",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard1.6/System.Linq.Expressions.dll",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard1.6/System.Linq.Expressions.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net463/System.Linq.Expressions.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.net.primitives",
+        package = "system.net.primitives",
+        version = "4.3.0",
+        sha256 = "318ed9eaf3ad14c6c429a2d6f6739265e023716a700ad74eeff5b59a41990731",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.Net.Primitives.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.Net.Primitives.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.Net.Primitives.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.Net.Primitives.dll",
+        },
+        net_lib = {
+            "netstandard1.0": "ref/netstandard1.0/System.Net.Primitives.dll",
+            "netstandard1.1": "ref/netstandard1.1/System.Net.Primitives.dll",
+            "netstandard1.2": "ref/netstandard1.1/System.Net.Primitives.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Net.Primitives.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Net.Primitives.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.Net.Primitives.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.Net.Primitives.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.Net.Primitives.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.Net.Primitives.dll",
+        },
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.0": [
+               "@microsoft.netcore.platforms//:netstandard1.0_net",
+               "@microsoft.netcore.targets//:netstandard1.0_net",
+            ],
+            "netstandard1.1": [
+               "@microsoft.netcore.platforms//:netstandard1.1_net",
+               "@microsoft.netcore.targets//:netstandard1.1_net",
+            ],
+            "netstandard1.2": [
+               "@microsoft.netcore.platforms//:netstandard1.2_net",
+               "@microsoft.netcore.targets//:netstandard1.2_net",
+            ],
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+    )
+    nuget_package(
+        name = "system.net.sockets",
+        package = "system.net.sockets",
+        version = "4.3.0",
+        sha256 = "8a5eddaf9553fd058383fd1cba1fb812cdaef0b63fffeaaa898f416666314aeb",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.Net.Sockets.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.Net.Sockets.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.Net.Sockets.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.Net.Sockets.dll",
+        },
+        net_lib = {
+            "net46": "ref/net46/System.Net.Sockets.dll",
+            "net461": "ref/net46/System.Net.Sockets.dll",
+            "net462": "ref/net46/System.Net.Sockets.dll",
+            "net47": "ref/net46/System.Net.Sockets.dll",
+            "net471": "ref/net46/System.Net.Sockets.dll",
+            "net472": "ref/net46/System.Net.Sockets.dll",
+            "net48": "ref/net46/System.Net.Sockets.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Net.Sockets.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Net.Sockets.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.Net.Sockets.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.Net.Sockets.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.Net.Sockets.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.Net.Sockets.dll",
+        },
+        mono_lib = "ref/net46/System.Net.Sockets.dll",
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+        net_files = {
+            "net46": [
+               "lib/net46/System.Net.Sockets.dll",
+            ],
+            "net461": [
+               "lib/net46/System.Net.Sockets.dll",
+            ],
+            "net462": [
+               "lib/net46/System.Net.Sockets.dll",
+            ],
+            "net47": [
+               "lib/net46/System.Net.Sockets.dll",
+            ],
+            "net471": [
+               "lib/net46/System.Net.Sockets.dll",
+            ],
+            "net472": [
+               "lib/net46/System.Net.Sockets.dll",
+            ],
+            "net48": [
+               "lib/net46/System.Net.Sockets.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net46/System.Net.Sockets.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.objectmodel",
+        package = "system.objectmodel",
+        version = "4.3.0",
+        sha256 = "82d9919163f62b0af79c7b43874c98b5c7b7f33d70ac6cdbe9f8e6e2ff3037a4",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.ObjectModel.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.ObjectModel.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.ObjectModel.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.ObjectModel.dll",
+        },
+        net_lib = {
+            "netstandard1.0": "ref/netstandard1.0/System.ObjectModel.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.ObjectModel.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.ObjectModel.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.ObjectModel.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.ObjectModel.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.ObjectModel.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.ObjectModel.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.ObjectModel.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.ObjectModel.dll",
+        },
+        core_files = {
+            "netcoreapp2.0": [
+               "lib/netstandard1.3/System.ObjectModel.dll",
+            ],
+            "netcoreapp2.1": [
+               "lib/netstandard1.3/System.ObjectModel.dll",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.3/System.ObjectModel.dll",
+            ],
+            "netcoreapp3.1": [
+               "lib/netstandard1.3/System.ObjectModel.dll",
+            ],
+        },
+        net_files = {
+            "netstandard1.3": [
+               "lib/netstandard1.3/System.ObjectModel.dll",
+            ],
+            "netstandard1.4": [
+               "lib/netstandard1.3/System.ObjectModel.dll",
+            ],
+            "netstandard1.5": [
+               "lib/netstandard1.3/System.ObjectModel.dll",
+            ],
+            "netstandard1.6": [
+               "lib/netstandard1.3/System.ObjectModel.dll",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard1.3/System.ObjectModel.dll",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard1.3/System.ObjectModel.dll",
+            ],
+        },
+    )
+    nuget_package(
+        name = "system.reflection",
+        package = "system.reflection",
+        version = "4.3.0",
+        sha256 = "35049946964bbed3d60e5be6308746c5c56ec949f0f76654468d215ec12c8576",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.5/System.Reflection.dll",
+            "netcoreapp2.1": "ref/netstandard1.5/System.Reflection.dll",
+            "netcoreapp3.0": "ref/netstandard1.5/System.Reflection.dll",
+            "netcoreapp3.1": "ref/netstandard1.5/System.Reflection.dll",
+        },
+        net_lib = {
+            "net462": "ref/net462/System.Reflection.dll",
+            "net47": "ref/net462/System.Reflection.dll",
+            "net471": "ref/net462/System.Reflection.dll",
+            "net472": "ref/net462/System.Reflection.dll",
+            "net48": "ref/net462/System.Reflection.dll",
+            "netstandard1.0": "ref/netstandard1.0/System.Reflection.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.Reflection.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.Reflection.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Reflection.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Reflection.dll",
+            "netstandard1.5": "ref/netstandard1.5/System.Reflection.dll",
+            "netstandard1.6": "ref/netstandard1.5/System.Reflection.dll",
+            "netstandard2.0": "ref/netstandard1.5/System.Reflection.dll",
+            "netstandard2.1": "ref/netstandard1.5/System.Reflection.dll",
+        },
+        mono_lib = "ref/net462/System.Reflection.dll",
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.0": [
+               "@microsoft.netcore.platforms//:netstandard1.0_net",
+               "@microsoft.netcore.targets//:netstandard1.0_net",
+            ],
+            "netstandard1.1": [
+               "@microsoft.netcore.platforms//:netstandard1.1_net",
+               "@microsoft.netcore.targets//:netstandard1.1_net",
+            ],
+            "netstandard1.2": [
+               "@microsoft.netcore.platforms//:netstandard1.2_net",
+               "@microsoft.netcore.targets//:netstandard1.2_net",
+            ],
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+        net_files = {
+            "net462": [
+               "lib/net462/System.Reflection.dll",
+            ],
+            "net47": [
+               "lib/net462/System.Reflection.dll",
+            ],
+            "net471": [
+               "lib/net462/System.Reflection.dll",
+            ],
+            "net472": [
+               "lib/net462/System.Reflection.dll",
+            ],
+            "net48": [
+               "lib/net462/System.Reflection.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net462/System.Reflection.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.reflection.extensions",
+        package = "system.reflection.extensions",
+        version = "4.3.0",
+        sha256 = "98c38263351e9e3778ad621fabbcc85fd3c5624fdd694c85d00f25d616f27409",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.0/System.Reflection.Extensions.dll",
+            "netcoreapp2.1": "ref/netstandard1.0/System.Reflection.Extensions.dll",
+            "netcoreapp3.0": "ref/netstandard1.0/System.Reflection.Extensions.dll",
+            "netcoreapp3.1": "ref/netstandard1.0/System.Reflection.Extensions.dll",
+        },
+        net_lib = {
+            "netstandard1.0": "ref/netstandard1.0/System.Reflection.Extensions.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.Reflection.Extensions.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.Reflection.Extensions.dll",
+            "netstandard1.3": "ref/netstandard1.0/System.Reflection.Extensions.dll",
+            "netstandard1.4": "ref/netstandard1.0/System.Reflection.Extensions.dll",
+            "netstandard1.5": "ref/netstandard1.0/System.Reflection.Extensions.dll",
+            "netstandard1.6": "ref/netstandard1.0/System.Reflection.Extensions.dll",
+            "netstandard2.0": "ref/netstandard1.0/System.Reflection.Extensions.dll",
+            "netstandard2.1": "ref/netstandard1.0/System.Reflection.Extensions.dll",
+        },
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.0": [
+               "@microsoft.netcore.platforms//:netstandard1.0_net",
+               "@microsoft.netcore.targets//:netstandard1.0_net",
+            ],
+            "netstandard1.1": [
+               "@microsoft.netcore.platforms//:netstandard1.1_net",
+               "@microsoft.netcore.targets//:netstandard1.1_net",
+            ],
+            "netstandard1.2": [
+               "@microsoft.netcore.platforms//:netstandard1.2_net",
+               "@microsoft.netcore.targets//:netstandard1.2_net",
+            ],
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+    )
+    nuget_package(
+        name = "system.reflection.primitives",
+        package = "system.reflection.primitives",
+        version = "4.3.0",
+        sha256 = "e68830581e2f9504e5de38e4d718e7886da8cdb1488d94cbf6e834bac650b813",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.0/System.Reflection.Primitives.dll",
+            "netcoreapp2.1": "ref/netstandard1.0/System.Reflection.Primitives.dll",
+            "netcoreapp3.0": "ref/netstandard1.0/System.Reflection.Primitives.dll",
+            "netcoreapp3.1": "ref/netstandard1.0/System.Reflection.Primitives.dll",
+        },
+        net_lib = {
+            "netstandard1.0": "ref/netstandard1.0/System.Reflection.Primitives.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.Reflection.Primitives.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.Reflection.Primitives.dll",
+            "netstandard1.3": "ref/netstandard1.0/System.Reflection.Primitives.dll",
+            "netstandard1.4": "ref/netstandard1.0/System.Reflection.Primitives.dll",
+            "netstandard1.5": "ref/netstandard1.0/System.Reflection.Primitives.dll",
+            "netstandard1.6": "ref/netstandard1.0/System.Reflection.Primitives.dll",
+            "netstandard2.0": "ref/netstandard1.0/System.Reflection.Primitives.dll",
+            "netstandard2.1": "ref/netstandard1.0/System.Reflection.Primitives.dll",
+        },
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.0": [
+               "@microsoft.netcore.platforms//:netstandard1.0_net",
+               "@microsoft.netcore.targets//:netstandard1.0_net",
+            ],
+            "netstandard1.1": [
+               "@microsoft.netcore.platforms//:netstandard1.1_net",
+               "@microsoft.netcore.targets//:netstandard1.1_net",
+            ],
+            "netstandard1.2": [
+               "@microsoft.netcore.platforms//:netstandard1.2_net",
+               "@microsoft.netcore.targets//:netstandard1.2_net",
+            ],
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+    )
+    nuget_package(
+        name = "system.resources.resourcemanager",
+        package = "system.resources.resourcemanager",
+        version = "4.3.0",
+        sha256 = "89d88e0fddf16dbadbc304a70f898e440f51622fc3fd4e3c79152c9ff5a7586a",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.0/System.Resources.ResourceManager.dll",
+            "netcoreapp2.1": "ref/netstandard1.0/System.Resources.ResourceManager.dll",
+            "netcoreapp3.0": "ref/netstandard1.0/System.Resources.ResourceManager.dll",
+            "netcoreapp3.1": "ref/netstandard1.0/System.Resources.ResourceManager.dll",
+        },
+        net_lib = {
+            "netstandard1.0": "ref/netstandard1.0/System.Resources.ResourceManager.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.Resources.ResourceManager.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.Resources.ResourceManager.dll",
+            "netstandard1.3": "ref/netstandard1.0/System.Resources.ResourceManager.dll",
+            "netstandard1.4": "ref/netstandard1.0/System.Resources.ResourceManager.dll",
+            "netstandard1.5": "ref/netstandard1.0/System.Resources.ResourceManager.dll",
+            "netstandard1.6": "ref/netstandard1.0/System.Resources.ResourceManager.dll",
+            "netstandard2.0": "ref/netstandard1.0/System.Resources.ResourceManager.dll",
+            "netstandard2.1": "ref/netstandard1.0/System.Resources.ResourceManager.dll",
+        },
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.0": [
+               "@microsoft.netcore.platforms//:netstandard1.0_net",
+               "@microsoft.netcore.targets//:netstandard1.0_net",
+            ],
+            "netstandard1.1": [
+               "@microsoft.netcore.platforms//:netstandard1.1_net",
+               "@microsoft.netcore.targets//:netstandard1.1_net",
+            ],
+            "netstandard1.2": [
+               "@microsoft.netcore.platforms//:netstandard1.2_net",
+               "@microsoft.netcore.targets//:netstandard1.2_net",
+            ],
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+    )
+    nuget_package(
+        name = "system.runtime",
+        package = "system.runtime",
+        version = "4.3.0",
+        sha256 = "e75f35dd65e9048b2e03a7d4b44e57691423716750dbf966128909b7deeed118",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.5/System.Runtime.dll",
+            "netcoreapp2.1": "ref/netstandard1.5/System.Runtime.dll",
+            "netcoreapp3.0": "ref/netstandard1.5/System.Runtime.dll",
+            "netcoreapp3.1": "ref/netstandard1.5/System.Runtime.dll",
+        },
+        net_lib = {
+            "net462": "ref/net462/System.Runtime.dll",
+            "net47": "ref/net462/System.Runtime.dll",
+            "net471": "ref/net462/System.Runtime.dll",
+            "net472": "ref/net462/System.Runtime.dll",
+            "net48": "ref/net462/System.Runtime.dll",
+            "netstandard1.0": "ref/netstandard1.0/System.Runtime.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.Runtime.dll",
+            "netstandard1.2": "ref/netstandard1.2/System.Runtime.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Runtime.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Runtime.dll",
+            "netstandard1.5": "ref/netstandard1.5/System.Runtime.dll",
+            "netstandard1.6": "ref/netstandard1.5/System.Runtime.dll",
+            "netstandard2.0": "ref/netstandard1.5/System.Runtime.dll",
+            "netstandard2.1": "ref/netstandard1.5/System.Runtime.dll",
+        },
+        mono_lib = "ref/net462/System.Runtime.dll",
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.0": [
+               "@microsoft.netcore.platforms//:netstandard1.0_net",
+               "@microsoft.netcore.targets//:netstandard1.0_net",
+            ],
+            "netstandard1.1": [
+               "@microsoft.netcore.platforms//:netstandard1.1_net",
+               "@microsoft.netcore.targets//:netstandard1.1_net",
+            ],
+            "netstandard1.2": [
+               "@microsoft.netcore.platforms//:netstandard1.2_net",
+               "@microsoft.netcore.targets//:netstandard1.2_net",
+            ],
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+        net_files = {
+            "net462": [
+               "lib/net462/System.Runtime.dll",
+            ],
+            "net47": [
+               "lib/net462/System.Runtime.dll",
+            ],
+            "net471": [
+               "lib/net462/System.Runtime.dll",
+            ],
+            "net472": [
+               "lib/net462/System.Runtime.dll",
+            ],
+            "net48": [
+               "lib/net462/System.Runtime.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net462/System.Runtime.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.runtime.extensions",
+        package = "system.runtime.extensions",
+        version = "4.3.0",
+        sha256 = "c0b0c79a8cebf38bf55b6cd8096631c63d0547424360749545a46e0e6d1b77fa",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.5/System.Runtime.Extensions.dll",
+            "netcoreapp2.1": "ref/netstandard1.5/System.Runtime.Extensions.dll",
+            "netcoreapp3.0": "ref/netstandard1.5/System.Runtime.Extensions.dll",
+            "netcoreapp3.1": "ref/netstandard1.5/System.Runtime.Extensions.dll",
+        },
+        net_lib = {
+            "net462": "ref/net462/System.Runtime.Extensions.dll",
+            "net47": "ref/net462/System.Runtime.Extensions.dll",
+            "net471": "ref/net462/System.Runtime.Extensions.dll",
+            "net472": "ref/net462/System.Runtime.Extensions.dll",
+            "net48": "ref/net462/System.Runtime.Extensions.dll",
+            "netstandard1.0": "ref/netstandard1.0/System.Runtime.Extensions.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.Runtime.Extensions.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.Runtime.Extensions.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Runtime.Extensions.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Runtime.Extensions.dll",
+            "netstandard1.5": "ref/netstandard1.5/System.Runtime.Extensions.dll",
+            "netstandard1.6": "ref/netstandard1.5/System.Runtime.Extensions.dll",
+            "netstandard2.0": "ref/netstandard1.5/System.Runtime.Extensions.dll",
+            "netstandard2.1": "ref/netstandard1.5/System.Runtime.Extensions.dll",
+        },
+        mono_lib = "ref/net462/System.Runtime.Extensions.dll",
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.0": [
+               "@microsoft.netcore.platforms//:netstandard1.0_net",
+               "@microsoft.netcore.targets//:netstandard1.0_net",
+            ],
+            "netstandard1.1": [
+               "@microsoft.netcore.platforms//:netstandard1.1_net",
+               "@microsoft.netcore.targets//:netstandard1.1_net",
+            ],
+            "netstandard1.2": [
+               "@microsoft.netcore.platforms//:netstandard1.2_net",
+               "@microsoft.netcore.targets//:netstandard1.2_net",
+            ],
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+        net_files = {
+            "net462": [
+               "lib/net462/System.Runtime.Extensions.dll",
+            ],
+            "net47": [
+               "lib/net462/System.Runtime.Extensions.dll",
+            ],
+            "net471": [
+               "lib/net462/System.Runtime.Extensions.dll",
+            ],
+            "net472": [
+               "lib/net462/System.Runtime.Extensions.dll",
+            ],
+            "net48": [
+               "lib/net462/System.Runtime.Extensions.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net462/System.Runtime.Extensions.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.runtime.handles",
+        package = "system.runtime.handles",
+        version = "4.3.0",
+        sha256 = "289e5a5e81a9079e98ebe89ea4191da71fc07da243022b71e2fae42ea47b826b",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.Runtime.Handles.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.Runtime.Handles.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.Runtime.Handles.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.Runtime.Handles.dll",
+        },
+        net_lib = {
+            "netstandard1.3": "ref/netstandard1.3/System.Runtime.Handles.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Runtime.Handles.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.Runtime.Handles.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.Runtime.Handles.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.Runtime.Handles.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.Runtime.Handles.dll",
+        },
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+    )
+    nuget_package(
+        name = "system.runtime.interopservices",
+        package = "system.runtime.interopservices",
+        version = "4.3.0",
+        sha256 = "f2c0c7f965097c247eedee277e97ed8fffa5b2d122662c56501b9e476ce61e02",
+        core_lib = {
+            "netcoreapp2.0": "ref/netcoreapp1.1/System.Runtime.InteropServices.dll",
+            "netcoreapp2.1": "ref/netcoreapp1.1/System.Runtime.InteropServices.dll",
+            "netcoreapp3.0": "ref/netcoreapp1.1/System.Runtime.InteropServices.dll",
+            "netcoreapp3.1": "ref/netcoreapp1.1/System.Runtime.InteropServices.dll",
+        },
+        net_lib = {
+            "net462": "ref/net462/System.Runtime.InteropServices.dll",
+            "net47": "ref/net463/System.Runtime.InteropServices.dll",
+            "net471": "ref/net463/System.Runtime.InteropServices.dll",
+            "net472": "ref/net463/System.Runtime.InteropServices.dll",
+            "net48": "ref/net463/System.Runtime.InteropServices.dll",
+            "netstandard1.1": "ref/netstandard1.1/System.Runtime.InteropServices.dll",
+            "netstandard1.2": "ref/netstandard1.2/System.Runtime.InteropServices.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Runtime.InteropServices.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Runtime.InteropServices.dll",
+            "netstandard1.5": "ref/netstandard1.5/System.Runtime.InteropServices.dll",
+            "netstandard1.6": "ref/netstandard1.5/System.Runtime.InteropServices.dll",
+            "netstandard2.0": "ref/netstandard1.5/System.Runtime.InteropServices.dll",
+            "netstandard2.1": "ref/netstandard1.5/System.Runtime.InteropServices.dll",
+        },
+        mono_lib = "ref/net463/System.Runtime.InteropServices.dll",
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "net462": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.runtime.dll",
+            ],
+            "net47": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.runtime.dll",
+            ],
+            "net471": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.runtime.dll",
+            ],
+            "net472": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.runtime.dll",
+            ],
+            "net48": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.runtime.dll",
+            ],
+            "netstandard1.1": [
+               "@microsoft.netcore.platforms//:netstandard1.1_net",
+               "@microsoft.netcore.targets//:netstandard1.1_net",
+            ],
+            "netstandard1.2": [
+               "@microsoft.netcore.platforms//:netstandard1.2_net",
+               "@microsoft.netcore.targets//:netstandard1.2_net",
+            ],
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+        mono_deps = [
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.runtime.dll",
+        ],
+        net_files = {
+            "net462": [
+               "lib/net462/System.Runtime.InteropServices.dll",
+            ],
+            "net47": [
+               "lib/net463/System.Runtime.InteropServices.dll",
+            ],
+            "net471": [
+               "lib/net463/System.Runtime.InteropServices.dll",
+            ],
+            "net472": [
+               "lib/net463/System.Runtime.InteropServices.dll",
+            ],
+            "net48": [
+               "lib/net463/System.Runtime.InteropServices.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net463/System.Runtime.InteropServices.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.runtime.interopservices.runtimeinformation",
+        package = "system.runtime.interopservices.runtimeinformation",
+        version = "4.3.0",
+        sha256 = "318a65ebf6720ba8639b359121efa20e895d38c5b599f6f05ec76e0275c82860",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            "netcoreapp2.1": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            "netcoreapp3.0": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            "netcoreapp3.1": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+        },
+        net_lib = {
+            "net45": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            "net451": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            "net452": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            "net46": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            "net461": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            "net462": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            "net47": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            "net471": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            "net472": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            "net48": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            "netstandard1.1": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            "netstandard1.2": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            "netstandard1.3": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            "netstandard1.4": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            "netstandard1.5": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            "netstandard1.6": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            "netstandard2.0": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            "netstandard2.1": "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+        },
+        mono_lib = "ref/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+        core_deps = {
+            "netcoreapp2.0": [
+               "@runtime.native.system//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@runtime.native.system//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@runtime.native.system//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@runtime.native.system//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.1": [
+               "@runtime.native.system//:netstandard1.1_net",
+            ],
+            "netstandard1.2": [
+               "@runtime.native.system//:netstandard1.2_net",
+            ],
+            "netstandard1.3": [
+               "@runtime.native.system//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@runtime.native.system//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@runtime.native.system//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@runtime.native.system//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@runtime.native.system//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@runtime.native.system//:netstandard2.1_net",
+            ],
+        },
+        core_files = {
+            "netcoreapp2.0": [
+               "lib/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+            "netcoreapp2.1": [
+               "lib/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+            "netcoreapp3.1": [
+               "lib/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+        },
+        net_files = {
+            "net45": [
+               "lib/net45/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+            "net451": [
+               "lib/net45/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+            "net452": [
+               "lib/net45/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+            "net46": [
+               "lib/net45/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+            "net461": [
+               "lib/net45/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+            "net462": [
+               "lib/net45/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+            "net47": [
+               "lib/net45/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+            "net471": [
+               "lib/net45/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+            "net472": [
+               "lib/net45/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+            "net48": [
+               "lib/net45/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+            "netstandard1.1": [
+               "lib/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+            "netstandard1.2": [
+               "lib/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+            "netstandard1.3": [
+               "lib/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+            "netstandard1.4": [
+               "lib/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+            "netstandard1.5": [
+               "lib/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+            "netstandard1.6": [
+               "lib/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard1.1/System.Runtime.InteropServices.RuntimeInformation.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net45/System.Runtime.InteropServices.RuntimeInformation.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.runtime.numerics",
+        package = "system.runtime.numerics",
+        version = "4.3.0",
+        sha256 = "3f98c70a031b80531888e36fce668a15e3aa7002033eefd4f1b395acd3d82aa7",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.1/System.Runtime.Numerics.dll",
+            "netcoreapp2.1": "ref/netstandard1.1/System.Runtime.Numerics.dll",
+            "netcoreapp3.0": "ref/netstandard1.1/System.Runtime.Numerics.dll",
+            "netcoreapp3.1": "ref/netstandard1.1/System.Runtime.Numerics.dll",
+        },
+        net_lib = {
+            "netstandard1.1": "ref/netstandard1.1/System.Runtime.Numerics.dll",
+            "netstandard1.2": "ref/netstandard1.1/System.Runtime.Numerics.dll",
+            "netstandard1.3": "ref/netstandard1.1/System.Runtime.Numerics.dll",
+            "netstandard1.4": "ref/netstandard1.1/System.Runtime.Numerics.dll",
+            "netstandard1.5": "ref/netstandard1.1/System.Runtime.Numerics.dll",
+            "netstandard1.6": "ref/netstandard1.1/System.Runtime.Numerics.dll",
+            "netstandard2.0": "ref/netstandard1.1/System.Runtime.Numerics.dll",
+            "netstandard2.1": "ref/netstandard1.1/System.Runtime.Numerics.dll",
+        },
+        core_files = {
+            "netcoreapp2.0": [
+               "lib/netstandard1.3/System.Runtime.Numerics.dll",
+            ],
+            "netcoreapp2.1": [
+               "lib/netstandard1.3/System.Runtime.Numerics.dll",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.3/System.Runtime.Numerics.dll",
+            ],
+            "netcoreapp3.1": [
+               "lib/netstandard1.3/System.Runtime.Numerics.dll",
+            ],
+        },
+        net_files = {
+            "netstandard1.3": [
+               "lib/netstandard1.3/System.Runtime.Numerics.dll",
+            ],
+            "netstandard1.4": [
+               "lib/netstandard1.3/System.Runtime.Numerics.dll",
+            ],
+            "netstandard1.5": [
+               "lib/netstandard1.3/System.Runtime.Numerics.dll",
+            ],
+            "netstandard1.6": [
+               "lib/netstandard1.3/System.Runtime.Numerics.dll",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard1.3/System.Runtime.Numerics.dll",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard1.3/System.Runtime.Numerics.dll",
+            ],
+        },
+    )
+    nuget_package(
+        name = "system.security.cryptography.encoding",
+        package = "system.security.cryptography.encoding",
+        version = "4.3.0",
+        sha256 = "62e81ef3d37a33e35c6e572f5cc7b21d9ea46437f006fdcb3cc0e217c1e126cb",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.Security.Cryptography.Encoding.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.Security.Cryptography.Encoding.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.Security.Cryptography.Encoding.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.Security.Cryptography.Encoding.dll",
+        },
+        net_lib = {
+            "net46": "ref/net46/System.Security.Cryptography.Encoding.dll",
+            "net461": "ref/net46/System.Security.Cryptography.Encoding.dll",
+            "net462": "ref/net46/System.Security.Cryptography.Encoding.dll",
+            "net47": "ref/net46/System.Security.Cryptography.Encoding.dll",
+            "net471": "ref/net46/System.Security.Cryptography.Encoding.dll",
+            "net472": "ref/net46/System.Security.Cryptography.Encoding.dll",
+            "net48": "ref/net46/System.Security.Cryptography.Encoding.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Security.Cryptography.Encoding.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Security.Cryptography.Encoding.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.Security.Cryptography.Encoding.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.Security.Cryptography.Encoding.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.Security.Cryptography.Encoding.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.Security.Cryptography.Encoding.dll",
+        },
+        mono_lib = "ref/net46/System.Security.Cryptography.Encoding.dll",
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@runtime.native.system.security.cryptography.openssl//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@runtime.native.system.security.cryptography.openssl//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@runtime.native.system.security.cryptography.openssl//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@runtime.native.system.security.cryptography.openssl//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@runtime.native.system.security.cryptography.openssl//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@runtime.native.system.security.cryptography.openssl//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@runtime.native.system.security.cryptography.openssl//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@runtime.native.system.security.cryptography.openssl//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@runtime.native.system.security.cryptography.openssl//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@runtime.native.system.security.cryptography.openssl//:netstandard2.1_net",
+            ],
+        },
+        net_files = {
+            "net46": [
+               "lib/net46/System.Security.Cryptography.Encoding.dll",
+            ],
+            "net461": [
+               "lib/net46/System.Security.Cryptography.Encoding.dll",
+            ],
+            "net462": [
+               "lib/net46/System.Security.Cryptography.Encoding.dll",
+            ],
+            "net47": [
+               "lib/net46/System.Security.Cryptography.Encoding.dll",
+            ],
+            "net471": [
+               "lib/net46/System.Security.Cryptography.Encoding.dll",
+            ],
+            "net472": [
+               "lib/net46/System.Security.Cryptography.Encoding.dll",
+            ],
+            "net48": [
+               "lib/net46/System.Security.Cryptography.Encoding.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net46/System.Security.Cryptography.Encoding.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.security.cryptography.primitives",
+        package = "system.security.cryptography.primitives",
+        version = "4.3.0",
+        sha256 = "7e7162ec1dd29d58f96be05b8179db8e718dbd6ac2114e87a7fc23b235b3df5f",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.Security.Cryptography.Primitives.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.Security.Cryptography.Primitives.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.Security.Cryptography.Primitives.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.Security.Cryptography.Primitives.dll",
+        },
+        net_lib = {
+            "net46": "ref/net46/System.Security.Cryptography.Primitives.dll",
+            "net461": "ref/net46/System.Security.Cryptography.Primitives.dll",
+            "net462": "ref/net46/System.Security.Cryptography.Primitives.dll",
+            "net47": "ref/net46/System.Security.Cryptography.Primitives.dll",
+            "net471": "ref/net46/System.Security.Cryptography.Primitives.dll",
+            "net472": "ref/net46/System.Security.Cryptography.Primitives.dll",
+            "net48": "ref/net46/System.Security.Cryptography.Primitives.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Security.Cryptography.Primitives.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Security.Cryptography.Primitives.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.Security.Cryptography.Primitives.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.Security.Cryptography.Primitives.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.Security.Cryptography.Primitives.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.Security.Cryptography.Primitives.dll",
+        },
+        mono_lib = "ref/net46/System.Security.Cryptography.Primitives.dll",
+        core_files = {
+            "netcoreapp2.0": [
+               "lib/netstandard1.3/System.Security.Cryptography.Primitives.dll",
+            ],
+            "netcoreapp2.1": [
+               "lib/netstandard1.3/System.Security.Cryptography.Primitives.dll",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.3/System.Security.Cryptography.Primitives.dll",
+            ],
+            "netcoreapp3.1": [
+               "lib/netstandard1.3/System.Security.Cryptography.Primitives.dll",
+            ],
+        },
+        net_files = {
+            "net46": [
+               "lib/net46/System.Security.Cryptography.Primitives.dll",
+            ],
+            "net461": [
+               "lib/net46/System.Security.Cryptography.Primitives.dll",
+            ],
+            "net462": [
+               "lib/net46/System.Security.Cryptography.Primitives.dll",
+            ],
+            "net47": [
+               "lib/net46/System.Security.Cryptography.Primitives.dll",
+            ],
+            "net471": [
+               "lib/net46/System.Security.Cryptography.Primitives.dll",
+            ],
+            "net472": [
+               "lib/net46/System.Security.Cryptography.Primitives.dll",
+            ],
+            "net48": [
+               "lib/net46/System.Security.Cryptography.Primitives.dll",
+            ],
+            "netstandard1.3": [
+               "lib/netstandard1.3/System.Security.Cryptography.Primitives.dll",
+            ],
+            "netstandard1.4": [
+               "lib/netstandard1.3/System.Security.Cryptography.Primitives.dll",
+            ],
+            "netstandard1.5": [
+               "lib/netstandard1.3/System.Security.Cryptography.Primitives.dll",
+            ],
+            "netstandard1.6": [
+               "lib/netstandard1.3/System.Security.Cryptography.Primitives.dll",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard1.3/System.Security.Cryptography.Primitives.dll",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard1.3/System.Security.Cryptography.Primitives.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net46/System.Security.Cryptography.Primitives.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.security.cryptography.algorithms",
+        package = "system.security.cryptography.algorithms",
+        version = "4.3.0",
+        sha256 = "b4026f35295ccd8049dc4776e007b6edae79b6afe7e03ddfb9b35077070a580f",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.6/System.Security.Cryptography.Algorithms.dll",
+            "netcoreapp2.1": "ref/netstandard1.6/System.Security.Cryptography.Algorithms.dll",
+            "netcoreapp3.0": "ref/netstandard1.6/System.Security.Cryptography.Algorithms.dll",
+            "netcoreapp3.1": "ref/netstandard1.6/System.Security.Cryptography.Algorithms.dll",
+        },
+        net_lib = {
+            "net46": "ref/net46/System.Security.Cryptography.Algorithms.dll",
+            "net461": "ref/net461/System.Security.Cryptography.Algorithms.dll",
+            "net462": "ref/net461/System.Security.Cryptography.Algorithms.dll",
+            "net47": "ref/net463/System.Security.Cryptography.Algorithms.dll",
+            "net471": "ref/net463/System.Security.Cryptography.Algorithms.dll",
+            "net472": "ref/net463/System.Security.Cryptography.Algorithms.dll",
+            "net48": "ref/net463/System.Security.Cryptography.Algorithms.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Security.Cryptography.Algorithms.dll",
+            "netstandard1.4": "ref/netstandard1.4/System.Security.Cryptography.Algorithms.dll",
+            "netstandard1.5": "ref/netstandard1.4/System.Security.Cryptography.Algorithms.dll",
+            "netstandard1.6": "ref/netstandard1.6/System.Security.Cryptography.Algorithms.dll",
+            "netstandard2.0": "ref/netstandard1.6/System.Security.Cryptography.Algorithms.dll",
+            "netstandard2.1": "ref/netstandard1.6/System.Security.Cryptography.Algorithms.dll",
+        },
+        mono_lib = "ref/net463/System.Security.Cryptography.Algorithms.dll",
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@runtime.native.system.security.cryptography.apple//:netcoreapp2.0_core",
+               "@runtime.native.system.security.cryptography.openssl//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@runtime.native.system.security.cryptography.apple//:netcoreapp2.1_core",
+               "@runtime.native.system.security.cryptography.openssl//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@runtime.native.system.security.cryptography.apple//:netcoreapp3.0_core",
+               "@runtime.native.system.security.cryptography.openssl//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@runtime.native.system.security.cryptography.apple//:netcoreapp3.1_core",
+               "@runtime.native.system.security.cryptography.openssl//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "net46": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.security.cryptography.primitives.dll",
+            ],
+            "net461": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.security.cryptography.primitives.dll",
+            ],
+            "net462": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.security.cryptography.primitives.dll",
+            ],
+            "net47": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.io.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.runtime.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.security.cryptography.encoding.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.security.cryptography.primitives.dll",
+            ],
+            "net471": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.io.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.runtime.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.security.cryptography.encoding.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.security.cryptography.primitives.dll",
+            ],
+            "net472": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.io.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.runtime.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.security.cryptography.encoding.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.security.cryptography.primitives.dll",
+            ],
+            "net48": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.io.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.runtime.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.security.cryptography.encoding.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.security.cryptography.primitives.dll",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@runtime.native.system.security.cryptography.apple//:netstandard1.6_net",
+               "@runtime.native.system.security.cryptography.openssl//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@runtime.native.system.security.cryptography.apple//:netstandard2.0_net",
+               "@runtime.native.system.security.cryptography.openssl//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@runtime.native.system.security.cryptography.apple//:netstandard2.1_net",
+               "@runtime.native.system.security.cryptography.openssl//:netstandard2.1_net",
+            ],
+        },
+        mono_deps = [
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.io.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.runtime.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.security.cryptography.encoding.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.security.cryptography.primitives.dll",
+        ],
+        net_files = {
+            "net46": [
+               "lib/net46/System.Security.Cryptography.Algorithms.dll",
+            ],
+            "net461": [
+               "lib/net461/System.Security.Cryptography.Algorithms.dll",
+            ],
+            "net462": [
+               "lib/net461/System.Security.Cryptography.Algorithms.dll",
+            ],
+            "net47": [
+               "lib/net463/System.Security.Cryptography.Algorithms.dll",
+            ],
+            "net471": [
+               "lib/net463/System.Security.Cryptography.Algorithms.dll",
+            ],
+            "net472": [
+               "lib/net463/System.Security.Cryptography.Algorithms.dll",
+            ],
+            "net48": [
+               "lib/net463/System.Security.Cryptography.Algorithms.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net463/System.Security.Cryptography.Algorithms.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.security.cryptography.x509certificates",
+        package = "system.security.cryptography.x509certificates",
+        version = "4.3.0",
+        sha256 = "306dd5fe8c03876ef718250fb061ab68dc1a56973276ea65dc4b4f5e3e93546d",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.4/System.Security.Cryptography.X509Certificates.dll",
+            "netcoreapp2.1": "ref/netstandard1.4/System.Security.Cryptography.X509Certificates.dll",
+            "netcoreapp3.0": "ref/netstandard1.4/System.Security.Cryptography.X509Certificates.dll",
+            "netcoreapp3.1": "ref/netstandard1.4/System.Security.Cryptography.X509Certificates.dll",
+        },
+        net_lib = {
+            "net46": "ref/net46/System.Security.Cryptography.X509Certificates.dll",
+            "net461": "ref/net461/System.Security.Cryptography.X509Certificates.dll",
+            "net462": "ref/net461/System.Security.Cryptography.X509Certificates.dll",
+            "net47": "ref/net461/System.Security.Cryptography.X509Certificates.dll",
+            "net471": "ref/net461/System.Security.Cryptography.X509Certificates.dll",
+            "net472": "ref/net461/System.Security.Cryptography.X509Certificates.dll",
+            "net48": "ref/net461/System.Security.Cryptography.X509Certificates.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Security.Cryptography.X509Certificates.dll",
+            "netstandard1.4": "ref/netstandard1.4/System.Security.Cryptography.X509Certificates.dll",
+            "netstandard1.5": "ref/netstandard1.4/System.Security.Cryptography.X509Certificates.dll",
+            "netstandard1.6": "ref/netstandard1.4/System.Security.Cryptography.X509Certificates.dll",
+            "netstandard2.0": "ref/netstandard1.4/System.Security.Cryptography.X509Certificates.dll",
+            "netstandard2.1": "ref/netstandard1.4/System.Security.Cryptography.X509Certificates.dll",
+        },
+        mono_lib = "ref/net461/System.Security.Cryptography.X509Certificates.dll",
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@runtime.native.system//:netcoreapp2.0_core",
+               "@runtime.native.system.net.http//:netcoreapp2.0_core",
+               "@runtime.native.system.security.cryptography.openssl//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@runtime.native.system//:netcoreapp2.1_core",
+               "@runtime.native.system.net.http//:netcoreapp2.1_core",
+               "@runtime.native.system.security.cryptography.openssl//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@runtime.native.system//:netcoreapp3.0_core",
+               "@runtime.native.system.net.http//:netcoreapp3.0_core",
+               "@runtime.native.system.security.cryptography.openssl//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@runtime.native.system//:netcoreapp3.1_core",
+               "@runtime.native.system.net.http//:netcoreapp3.1_core",
+               "@runtime.native.system.security.cryptography.openssl//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "net46": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.security.cryptography.algorithms.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.security.cryptography.encoding.dll",
+            ],
+            "net461": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.security.cryptography.algorithms.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.security.cryptography.encoding.dll",
+            ],
+            "net462": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.security.cryptography.algorithms.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.security.cryptography.encoding.dll",
+            ],
+            "net47": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.security.cryptography.algorithms.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.security.cryptography.encoding.dll",
+            ],
+            "net471": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.security.cryptography.algorithms.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.security.cryptography.encoding.dll",
+            ],
+            "net472": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.security.cryptography.algorithms.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.security.cryptography.encoding.dll",
+            ],
+            "net48": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.security.cryptography.algorithms.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.security.cryptography.encoding.dll",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@runtime.native.system//:netstandard1.6_net",
+               "@runtime.native.system.net.http//:netstandard1.6_net",
+               "@runtime.native.system.security.cryptography.openssl//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@runtime.native.system//:netstandard2.0_net",
+               "@runtime.native.system.net.http//:netstandard2.0_net",
+               "@runtime.native.system.security.cryptography.openssl//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@runtime.native.system//:netstandard2.1_net",
+               "@runtime.native.system.net.http//:netstandard2.1_net",
+               "@runtime.native.system.security.cryptography.openssl//:netstandard2.1_net",
+            ],
+        },
+        mono_deps = [
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.security.cryptography.algorithms.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.security.cryptography.encoding.dll",
+        ],
+        net_files = {
+            "net46": [
+               "lib/net46/System.Security.Cryptography.X509Certificates.dll",
+            ],
+            "net461": [
+               "lib/net461/System.Security.Cryptography.X509Certificates.dll",
+            ],
+            "net462": [
+               "lib/net461/System.Security.Cryptography.X509Certificates.dll",
+            ],
+            "net47": [
+               "lib/net461/System.Security.Cryptography.X509Certificates.dll",
+            ],
+            "net471": [
+               "lib/net461/System.Security.Cryptography.X509Certificates.dll",
+            ],
+            "net472": [
+               "lib/net461/System.Security.Cryptography.X509Certificates.dll",
+            ],
+            "net48": [
+               "lib/net461/System.Security.Cryptography.X509Certificates.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net461/System.Security.Cryptography.X509Certificates.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.net.http",
+        package = "system.net.http",
+        version = "4.3.0",
+        sha256 = "528041ed63c3a760677bf7f0c4a1749c4f20ac9e85cd3317753fe37eca618fc4",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.Net.Http.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.Net.Http.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.Net.Http.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.Net.Http.dll",
+        },
+        net_lib = {
+            "net46": "ref/net46/System.Net.Http.dll",
+            "net461": "ref/net46/System.Net.Http.dll",
+            "net462": "ref/net46/System.Net.Http.dll",
+            "net47": "ref/net46/System.Net.Http.dll",
+            "net471": "ref/net46/System.Net.Http.dll",
+            "net472": "ref/net46/System.Net.Http.dll",
+            "net48": "ref/net46/System.Net.Http.dll",
+            "netstandard1.1": "ref/netstandard1.1/System.Net.Http.dll",
+            "netstandard1.2": "ref/netstandard1.1/System.Net.Http.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Net.Http.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Net.Http.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.Net.Http.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.Net.Http.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.Net.Http.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.Net.Http.dll",
+        },
+        mono_lib = "ref/net46/System.Net.Http.dll",
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@runtime.native.system//:netcoreapp2.0_core",
+               "@runtime.native.system.net.http//:netcoreapp2.0_core",
+               "@runtime.native.system.security.cryptography.openssl//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@runtime.native.system//:netcoreapp2.1_core",
+               "@runtime.native.system.net.http//:netcoreapp2.1_core",
+               "@runtime.native.system.security.cryptography.openssl//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@runtime.native.system//:netcoreapp3.0_core",
+               "@runtime.native.system.net.http//:netcoreapp3.0_core",
+               "@runtime.native.system.security.cryptography.openssl//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@runtime.native.system//:netcoreapp3.1_core",
+               "@runtime.native.system.net.http//:netcoreapp3.1_core",
+               "@runtime.native.system.security.cryptography.openssl//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "net46": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.diagnostics.diagnosticsource.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.security.cryptography.x509certificates.dll",
+            ],
+            "net461": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.diagnostics.diagnosticsource.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.security.cryptography.x509certificates.dll",
+            ],
+            "net462": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.diagnostics.diagnosticsource.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.security.cryptography.x509certificates.dll",
+            ],
+            "net47": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.diagnostics.diagnosticsource.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.security.cryptography.x509certificates.dll",
+            ],
+            "net471": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.diagnostics.diagnosticsource.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.security.cryptography.x509certificates.dll",
+            ],
+            "net472": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.diagnostics.diagnosticsource.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.security.cryptography.x509certificates.dll",
+            ],
+            "net48": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.diagnostics.diagnosticsource.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.security.cryptography.x509certificates.dll",
+            ],
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@runtime.native.system//:netstandard1.6_net",
+               "@runtime.native.system.net.http//:netstandard1.6_net",
+               "@runtime.native.system.security.cryptography.openssl//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@runtime.native.system//:netstandard2.0_net",
+               "@runtime.native.system.net.http//:netstandard2.0_net",
+               "@runtime.native.system.security.cryptography.openssl//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@runtime.native.system//:netstandard2.1_net",
+               "@runtime.native.system.net.http//:netstandard2.1_net",
+               "@runtime.native.system.security.cryptography.openssl//:netstandard2.1_net",
+            ],
+        },
+        mono_deps = [
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.diagnostics.diagnosticsource.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.security.cryptography.x509certificates.dll",
+        ],
+        net_files = {
+            "net46": [
+               "lib/net46/System.Net.Http.dll",
+            ],
+            "net461": [
+               "lib/net46/System.Net.Http.dll",
+            ],
+            "net462": [
+               "lib/net46/System.Net.Http.dll",
+            ],
+            "net47": [
+               "lib/net46/System.Net.Http.dll",
+            ],
+            "net471": [
+               "lib/net46/System.Net.Http.dll",
+            ],
+            "net472": [
+               "lib/net46/System.Net.Http.dll",
+            ],
+            "net48": [
+               "lib/net46/System.Net.Http.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net46/System.Net.Http.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.text.encoding",
+        package = "system.text.encoding",
+        version = "4.3.0",
+        sha256 = "19cb475462d901afebaa404d86c0469ec89674acafe950ee6d8a4692e3a404b8",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.Text.Encoding.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.Text.Encoding.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.Text.Encoding.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.Text.Encoding.dll",
+        },
+        net_lib = {
+            "netstandard1.0": "ref/netstandard1.0/System.Text.Encoding.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.Text.Encoding.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.Text.Encoding.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Text.Encoding.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Text.Encoding.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.Text.Encoding.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.Text.Encoding.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.Text.Encoding.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.Text.Encoding.dll",
+        },
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.0": [
+               "@microsoft.netcore.platforms//:netstandard1.0_net",
+               "@microsoft.netcore.targets//:netstandard1.0_net",
+            ],
+            "netstandard1.1": [
+               "@microsoft.netcore.platforms//:netstandard1.1_net",
+               "@microsoft.netcore.targets//:netstandard1.1_net",
+            ],
+            "netstandard1.2": [
+               "@microsoft.netcore.platforms//:netstandard1.2_net",
+               "@microsoft.netcore.targets//:netstandard1.2_net",
+            ],
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+    )
+    nuget_package(
+        name = "system.text.encoding.extensions",
+        package = "system.text.encoding.extensions",
+        version = "4.3.0",
+        sha256 = "bee7c75e0f1000ac4796e8cf1c772bb46c00a859ac083e872a37c30221f20187",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.Text.Encoding.Extensions.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.Text.Encoding.Extensions.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.Text.Encoding.Extensions.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.Text.Encoding.Extensions.dll",
+        },
+        net_lib = {
+            "netstandard1.0": "ref/netstandard1.0/System.Text.Encoding.Extensions.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.Text.Encoding.Extensions.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.Text.Encoding.Extensions.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Text.Encoding.Extensions.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Text.Encoding.Extensions.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.Text.Encoding.Extensions.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.Text.Encoding.Extensions.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.Text.Encoding.Extensions.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.Text.Encoding.Extensions.dll",
+        },
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.0": [
+               "@microsoft.netcore.platforms//:netstandard1.0_net",
+               "@microsoft.netcore.targets//:netstandard1.0_net",
+            ],
+            "netstandard1.1": [
+               "@microsoft.netcore.platforms//:netstandard1.1_net",
+               "@microsoft.netcore.targets//:netstandard1.1_net",
+            ],
+            "netstandard1.2": [
+               "@microsoft.netcore.platforms//:netstandard1.2_net",
+               "@microsoft.netcore.targets//:netstandard1.2_net",
+            ],
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+    )
+    nuget_package(
+        name = "system.text.regularexpressions",
+        package = "system.text.regularexpressions",
+        version = "4.3.0",
+        sha256 = "54b0a4d43d6470ddb06c07b777461033f3ea0ac3c73aeaa5058d72776628f8ad",
+        core_lib = {
+            "netcoreapp2.0": "ref/netcoreapp1.1/System.Text.RegularExpressions.dll",
+            "netcoreapp2.1": "ref/netcoreapp1.1/System.Text.RegularExpressions.dll",
+            "netcoreapp3.0": "ref/netcoreapp1.1/System.Text.RegularExpressions.dll",
+            "netcoreapp3.1": "ref/netcoreapp1.1/System.Text.RegularExpressions.dll",
+        },
+        net_lib = {
+            "net47": "ref/net463/System.Text.RegularExpressions.dll",
+            "net471": "ref/net463/System.Text.RegularExpressions.dll",
+            "net472": "ref/net463/System.Text.RegularExpressions.dll",
+            "net48": "ref/net463/System.Text.RegularExpressions.dll",
+            "netstandard1.0": "ref/netstandard1.0/System.Text.RegularExpressions.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.Text.RegularExpressions.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.Text.RegularExpressions.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Text.RegularExpressions.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Text.RegularExpressions.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.Text.RegularExpressions.dll",
+            "netstandard1.6": "ref/netstandard1.6/System.Text.RegularExpressions.dll",
+            "netstandard2.0": "ref/netstandard1.6/System.Text.RegularExpressions.dll",
+            "netstandard2.1": "ref/netstandard1.6/System.Text.RegularExpressions.dll",
+        },
+        mono_lib = "ref/net463/System.Text.RegularExpressions.dll",
+        core_files = {
+            "netcoreapp2.0": [
+               "lib/netstandard1.6/System.Text.RegularExpressions.dll",
+            ],
+            "netcoreapp2.1": [
+               "lib/netstandard1.6/System.Text.RegularExpressions.dll",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.6/System.Text.RegularExpressions.dll",
+            ],
+            "netcoreapp3.1": [
+               "lib/netstandard1.6/System.Text.RegularExpressions.dll",
+            ],
+        },
+        net_files = {
+            "net47": [
+               "lib/net463/System.Text.RegularExpressions.dll",
+            ],
+            "net471": [
+               "lib/net463/System.Text.RegularExpressions.dll",
+            ],
+            "net472": [
+               "lib/net463/System.Text.RegularExpressions.dll",
+            ],
+            "net48": [
+               "lib/net463/System.Text.RegularExpressions.dll",
+            ],
+            "netstandard1.6": [
+               "lib/netstandard1.6/System.Text.RegularExpressions.dll",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard1.6/System.Text.RegularExpressions.dll",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard1.6/System.Text.RegularExpressions.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net463/System.Text.RegularExpressions.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.threading",
+        package = "system.threading",
+        version = "4.3.0",
+        sha256 = "643437751e29cd5c266aa060e2169c65a55e9d0ff7c8017fb95ec15d95e38967",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.Threading.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.Threading.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.Threading.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.Threading.dll",
+        },
+        net_lib = {
+            "netstandard1.0": "ref/netstandard1.0/System.Threading.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.Threading.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.Threading.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Threading.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Threading.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.Threading.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.Threading.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.Threading.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.Threading.dll",
+        },
+        core_files = {
+            "netcoreapp2.0": [
+               "lib/netstandard1.3/System.Threading.dll",
+            ],
+            "netcoreapp2.1": [
+               "lib/netstandard1.3/System.Threading.dll",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.3/System.Threading.dll",
+            ],
+            "netcoreapp3.1": [
+               "lib/netstandard1.3/System.Threading.dll",
+            ],
+        },
+        net_files = {
+            "netstandard1.3": [
+               "lib/netstandard1.3/System.Threading.dll",
+            ],
+            "netstandard1.4": [
+               "lib/netstandard1.3/System.Threading.dll",
+            ],
+            "netstandard1.5": [
+               "lib/netstandard1.3/System.Threading.dll",
+            ],
+            "netstandard1.6": [
+               "lib/netstandard1.3/System.Threading.dll",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard1.3/System.Threading.dll",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard1.3/System.Threading.dll",
+            ],
+        },
+    )
+    nuget_package(
+        name = "system.threading.tasks",
+        package = "system.threading.tasks",
+        version = "4.3.0",
+        sha256 = "679ad77c9d445e9dc6df620a646899ea4a0c8d1bb49fc0b5346af0a5d21e9f8c",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.Threading.Tasks.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.Threading.Tasks.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.Threading.Tasks.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.Threading.Tasks.dll",
+        },
+        net_lib = {
+            "netstandard1.0": "ref/netstandard1.0/System.Threading.Tasks.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.Threading.Tasks.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.Threading.Tasks.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Threading.Tasks.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Threading.Tasks.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.Threading.Tasks.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.Threading.Tasks.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.Threading.Tasks.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.Threading.Tasks.dll",
+        },
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.0": [
+               "@microsoft.netcore.platforms//:netstandard1.0_net",
+               "@microsoft.netcore.targets//:netstandard1.0_net",
+            ],
+            "netstandard1.1": [
+               "@microsoft.netcore.platforms//:netstandard1.1_net",
+               "@microsoft.netcore.targets//:netstandard1.1_net",
+            ],
+            "netstandard1.2": [
+               "@microsoft.netcore.platforms//:netstandard1.2_net",
+               "@microsoft.netcore.targets//:netstandard1.2_net",
+            ],
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+    )
+    nuget_package(
+        name = "system.threading.timer",
+        package = "system.threading.timer",
+        version = "4.3.0",
+        sha256 = "a6686c96685084fdf64d66c1ce82132d9e01a0e441a98936e4e59baeed38a7db",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.2/System.Threading.Timer.dll",
+            "netcoreapp2.1": "ref/netstandard1.2/System.Threading.Timer.dll",
+            "netcoreapp3.0": "ref/netstandard1.2/System.Threading.Timer.dll",
+            "netcoreapp3.1": "ref/netstandard1.2/System.Threading.Timer.dll",
+        },
+        net_lib = {
+            "netstandard1.2": "ref/netstandard1.2/System.Threading.Timer.dll",
+            "netstandard1.3": "ref/netstandard1.2/System.Threading.Timer.dll",
+            "netstandard1.4": "ref/netstandard1.2/System.Threading.Timer.dll",
+            "netstandard1.5": "ref/netstandard1.2/System.Threading.Timer.dll",
+            "netstandard1.6": "ref/netstandard1.2/System.Threading.Timer.dll",
+            "netstandard2.0": "ref/netstandard1.2/System.Threading.Timer.dll",
+            "netstandard2.1": "ref/netstandard1.2/System.Threading.Timer.dll",
+        },
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+               "@microsoft.netcore.targets//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+               "@microsoft.netcore.targets//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+               "@microsoft.netcore.targets//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+               "@microsoft.netcore.targets//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "netstandard1.2": [
+               "@microsoft.netcore.platforms//:netstandard1.2_net",
+               "@microsoft.netcore.targets//:netstandard1.2_net",
+            ],
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+               "@microsoft.netcore.targets//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+               "@microsoft.netcore.targets//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+               "@microsoft.netcore.targets//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+               "@microsoft.netcore.targets//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+               "@microsoft.netcore.targets//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+               "@microsoft.netcore.targets//:netstandard2.1_net",
+            ],
+        },
+    )
+    nuget_package(
+        name = "system.xml.readerwriter",
+        package = "system.xml.readerwriter",
+        version = "4.3.0",
+        sha256 = "410f0a814d25bb817952787e4db79c84efffcda00667831f82f5bbd829f58730",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.Xml.ReaderWriter.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.Xml.ReaderWriter.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.Xml.ReaderWriter.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.Xml.ReaderWriter.dll",
+        },
+        net_lib = {
+            "net46": "ref/net46/System.Xml.ReaderWriter.dll",
+            "net461": "ref/net46/System.Xml.ReaderWriter.dll",
+            "net462": "ref/net46/System.Xml.ReaderWriter.dll",
+            "net47": "ref/net46/System.Xml.ReaderWriter.dll",
+            "net471": "ref/net46/System.Xml.ReaderWriter.dll",
+            "net472": "ref/net46/System.Xml.ReaderWriter.dll",
+            "net48": "ref/net46/System.Xml.ReaderWriter.dll",
+            "netstandard1.0": "ref/netstandard1.0/System.Xml.ReaderWriter.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.Xml.ReaderWriter.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.Xml.ReaderWriter.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Xml.ReaderWriter.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Xml.ReaderWriter.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.Xml.ReaderWriter.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.Xml.ReaderWriter.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.Xml.ReaderWriter.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.Xml.ReaderWriter.dll",
+        },
+        mono_lib = "ref/net46/System.Xml.ReaderWriter.dll",
+        core_files = {
+            "netcoreapp2.0": [
+               "lib/netstandard1.3/System.Xml.ReaderWriter.dll",
+            ],
+            "netcoreapp2.1": [
+               "lib/netstandard1.3/System.Xml.ReaderWriter.dll",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.3/System.Xml.ReaderWriter.dll",
+            ],
+            "netcoreapp3.1": [
+               "lib/netstandard1.3/System.Xml.ReaderWriter.dll",
+            ],
+        },
+        net_files = {
+            "net46": [
+               "lib/net46/System.Xml.ReaderWriter.dll",
+            ],
+            "net461": [
+               "lib/net46/System.Xml.ReaderWriter.dll",
+            ],
+            "net462": [
+               "lib/net46/System.Xml.ReaderWriter.dll",
+            ],
+            "net47": [
+               "lib/net46/System.Xml.ReaderWriter.dll",
+            ],
+            "net471": [
+               "lib/net46/System.Xml.ReaderWriter.dll",
+            ],
+            "net472": [
+               "lib/net46/System.Xml.ReaderWriter.dll",
+            ],
+            "net48": [
+               "lib/net46/System.Xml.ReaderWriter.dll",
+            ],
+            "netstandard1.3": [
+               "lib/netstandard1.3/System.Xml.ReaderWriter.dll",
+            ],
+            "netstandard1.4": [
+               "lib/netstandard1.3/System.Xml.ReaderWriter.dll",
+            ],
+            "netstandard1.5": [
+               "lib/netstandard1.3/System.Xml.ReaderWriter.dll",
+            ],
+            "netstandard1.6": [
+               "lib/netstandard1.3/System.Xml.ReaderWriter.dll",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard1.3/System.Xml.ReaderWriter.dll",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard1.3/System.Xml.ReaderWriter.dll",
+            ],
+        },
+        mono_files = [
+            "lib/net46/System.Xml.ReaderWriter.dll",
+        ],
+    )
+    nuget_package(
+        name = "system.xml.xdocument",
+        package = "system.xml.xdocument",
+        version = "4.3.0",
+        sha256 = "ad6b5d72672e12534e4b309e85f9722b01e40d1a623a1249b3c09e4349750822",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard1.3/System.Xml.XDocument.dll",
+            "netcoreapp2.1": "ref/netstandard1.3/System.Xml.XDocument.dll",
+            "netcoreapp3.0": "ref/netstandard1.3/System.Xml.XDocument.dll",
+            "netcoreapp3.1": "ref/netstandard1.3/System.Xml.XDocument.dll",
+        },
+        net_lib = {
+            "netstandard1.0": "ref/netstandard1.0/System.Xml.XDocument.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.Xml.XDocument.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.Xml.XDocument.dll",
+            "netstandard1.3": "ref/netstandard1.3/System.Xml.XDocument.dll",
+            "netstandard1.4": "ref/netstandard1.3/System.Xml.XDocument.dll",
+            "netstandard1.5": "ref/netstandard1.3/System.Xml.XDocument.dll",
+            "netstandard1.6": "ref/netstandard1.3/System.Xml.XDocument.dll",
+            "netstandard2.0": "ref/netstandard1.3/System.Xml.XDocument.dll",
+            "netstandard2.1": "ref/netstandard1.3/System.Xml.XDocument.dll",
+        },
+        core_files = {
+            "netcoreapp2.0": [
+               "lib/netstandard1.3/System.Xml.XDocument.dll",
+            ],
+            "netcoreapp2.1": [
+               "lib/netstandard1.3/System.Xml.XDocument.dll",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.3/System.Xml.XDocument.dll",
+            ],
+            "netcoreapp3.1": [
+               "lib/netstandard1.3/System.Xml.XDocument.dll",
+            ],
+        },
+        net_files = {
+            "netstandard1.3": [
+               "lib/netstandard1.3/System.Xml.XDocument.dll",
+            ],
+            "netstandard1.4": [
+               "lib/netstandard1.3/System.Xml.XDocument.dll",
+            ],
+            "netstandard1.5": [
+               "lib/netstandard1.3/System.Xml.XDocument.dll",
+            ],
+            "netstandard1.6": [
+               "lib/netstandard1.3/System.Xml.XDocument.dll",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard1.3/System.Xml.XDocument.dll",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard1.3/System.Xml.XDocument.dll",
+            ],
+        },
+    )
+    nuget_package(
+        name = "netstandard.library",
+        package = "netstandard.library",
+        version = "1.6.1",
+        sha256 = "88d6a7d62c7b46d9dc1960bd023019dac93bd03a313ac9843a0435d1f5e6e0fc",
+        core_deps = {
+            "netcoreapp2.0": [
+               "@microsoft.netcore.platforms//:netcoreapp2.0_core",
+            ],
+            "netcoreapp2.1": [
+               "@microsoft.netcore.platforms//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@microsoft.netcore.platforms//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@microsoft.netcore.platforms//:netcoreapp3.1_core",
+            ],
+        },
+        net_deps = {
+            "net45": [
+               "@microsoft.netcore.platforms//:net45_net",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.collections.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.collections.concurrent.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.diagnostics.debug.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.diagnostics.tools.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.diagnostics.tracing.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.globalization.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.io.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.io.compression.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.linq.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.linq.expressions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.net.http.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.net.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.objectmodel.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.reflection.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.reflection.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.reflection.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.resources.resourcemanager.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.runtime.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.runtime.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.runtime.interopservices.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.runtime.interopservices.runtimeinformation.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.runtime.numerics.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.text.encoding.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.text.encoding.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.text.regularexpressions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.threading.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.threading.tasks.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.xml.readerwriter.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.xml.xdocument.dll",
+            ],
+            "net451": [
+               "@microsoft.netcore.platforms//:net451_net",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.collections.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.collections.concurrent.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.diagnostics.debug.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.diagnostics.tools.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.diagnostics.tracing.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.globalization.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.io.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.io.compression.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.linq.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.linq.expressions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.net.http.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.net.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.objectmodel.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.reflection.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.reflection.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.reflection.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.resources.resourcemanager.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.runtime.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.runtime.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.runtime.interopservices.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.runtime.interopservices.runtimeinformation.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.runtime.numerics.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.text.encoding.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.text.encoding.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.text.regularexpressions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.threading.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.threading.tasks.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.threading.timer.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.xml.readerwriter.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.xml.xdocument.dll",
+            ],
+            "net452": [
+               "@microsoft.netcore.platforms//:net452_net",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.collections.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.collections.concurrent.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.diagnostics.debug.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.diagnostics.tools.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.diagnostics.tracing.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.globalization.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.io.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.io.compression.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.linq.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.linq.expressions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.net.http.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.net.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.objectmodel.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.reflection.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.reflection.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.reflection.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.resources.resourcemanager.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.runtime.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.runtime.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.runtime.interopservices.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.runtime.interopservices.runtimeinformation.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.runtime.numerics.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.text.encoding.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.text.encoding.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.text.regularexpressions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.threading.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.threading.tasks.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.threading.timer.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.xml.readerwriter.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.xml.xdocument.dll",
+            ],
+            "net46": [
+               "@microsoft.netcore.platforms//:net46_net",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_microsoft.win32.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.appcontext.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.collections.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.collections.concurrent.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.console.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.diagnostics.debug.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.diagnostics.tools.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.diagnostics.tracing.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.globalization.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.globalization.calendars.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.io.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.io.compression.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.io.compression.zipfile.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.io.filesystem.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.io.filesystem.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.linq.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.linq.expressions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.net.http.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.net.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.net.sockets.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.objectmodel.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.reflection.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.reflection.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.reflection.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.resources.resourcemanager.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.runtime.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.runtime.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.runtime.handles.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.runtime.interopservices.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.runtime.interopservices.runtimeinformation.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.runtime.numerics.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.security.cryptography.algorithms.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.security.cryptography.encoding.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.security.cryptography.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.security.cryptography.x509certificates.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.text.encoding.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.text.encoding.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.text.regularexpressions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.threading.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.threading.tasks.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.threading.timer.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.xml.readerwriter.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.xml.xdocument.dll",
+            ],
+            "net461": [
+               "@microsoft.netcore.platforms//:net461_net",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_microsoft.win32.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.appcontext.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.collections.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.collections.concurrent.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.console.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.diagnostics.debug.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.diagnostics.tools.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.diagnostics.tracing.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.globalization.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.globalization.calendars.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.io.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.io.compression.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.io.compression.zipfile.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.io.filesystem.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.io.filesystem.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.linq.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.linq.expressions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.net.http.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.net.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.net.sockets.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.objectmodel.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.reflection.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.reflection.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.reflection.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.resources.resourcemanager.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.runtime.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.runtime.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.runtime.handles.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.runtime.interopservices.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.runtime.interopservices.runtimeinformation.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.runtime.numerics.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.security.cryptography.algorithms.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.security.cryptography.encoding.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.security.cryptography.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.security.cryptography.x509certificates.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.text.encoding.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.text.encoding.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.text.regularexpressions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.threading.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.threading.tasks.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.threading.timer.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.xml.readerwriter.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.xml.xdocument.dll",
+            ],
+            "net462": [
+               "@microsoft.netcore.platforms//:net462_net",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_microsoft.win32.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.appcontext.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.collections.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.collections.concurrent.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.console.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.diagnostics.debug.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.diagnostics.tools.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.diagnostics.tracing.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.globalization.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.globalization.calendars.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.io.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.io.compression.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.io.compression.zipfile.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.io.filesystem.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.io.filesystem.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.linq.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.linq.expressions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.net.http.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.net.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.net.sockets.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.objectmodel.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.reflection.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.reflection.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.reflection.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.resources.resourcemanager.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.runtime.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.runtime.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.runtime.handles.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.runtime.interopservices.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.runtime.interopservices.runtimeinformation.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.runtime.numerics.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.security.cryptography.algorithms.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.security.cryptography.encoding.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.security.cryptography.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.security.cryptography.x509certificates.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.text.encoding.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.text.encoding.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.text.regularexpressions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.threading.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.threading.tasks.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.threading.timer.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.xml.readerwriter.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.xml.xdocument.dll",
+            ],
+            "net47": [
+               "@microsoft.netcore.platforms//:net47_net",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_microsoft.win32.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.appcontext.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.collections.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.collections.concurrent.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.console.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.diagnostics.debug.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.diagnostics.tools.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.diagnostics.tracing.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.globalization.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.globalization.calendars.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.io.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.io.compression.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.io.compression.zipfile.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.io.filesystem.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.io.filesystem.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.linq.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.linq.expressions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.net.http.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.net.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.net.sockets.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.objectmodel.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.reflection.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.reflection.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.reflection.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.resources.resourcemanager.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.runtime.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.runtime.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.runtime.handles.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.runtime.interopservices.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.runtime.interopservices.runtimeinformation.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.runtime.numerics.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.security.cryptography.algorithms.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.security.cryptography.encoding.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.security.cryptography.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.security.cryptography.x509certificates.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.text.encoding.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.text.encoding.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.text.regularexpressions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.threading.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.threading.tasks.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.threading.timer.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.xml.readerwriter.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.xml.xdocument.dll",
+            ],
+            "net471": [
+               "@microsoft.netcore.platforms//:net471_net",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_microsoft.win32.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.appcontext.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.collections.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.collections.concurrent.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.console.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.diagnostics.debug.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.diagnostics.tools.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.diagnostics.tracing.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.globalization.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.globalization.calendars.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.io.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.io.compression.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.io.compression.zipfile.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.io.filesystem.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.io.filesystem.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.linq.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.linq.expressions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.net.http.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.net.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.net.sockets.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.objectmodel.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.reflection.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.reflection.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.reflection.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.resources.resourcemanager.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.runtime.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.runtime.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.runtime.handles.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.runtime.interopservices.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.runtime.interopservices.runtimeinformation.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.runtime.numerics.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.security.cryptography.algorithms.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.security.cryptography.encoding.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.security.cryptography.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.security.cryptography.x509certificates.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.text.encoding.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.text.encoding.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.text.regularexpressions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.threading.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.threading.tasks.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.threading.timer.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.xml.readerwriter.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.xml.xdocument.dll",
+            ],
+            "net472": [
+               "@microsoft.netcore.platforms//:net472_net",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_microsoft.win32.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.appcontext.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.collections.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.collections.concurrent.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.console.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.diagnostics.debug.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.diagnostics.tools.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.diagnostics.tracing.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.globalization.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.globalization.calendars.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.io.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.io.compression.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.io.compression.zipfile.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.io.filesystem.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.io.filesystem.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.linq.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.linq.expressions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.net.http.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.net.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.net.sockets.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.objectmodel.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.reflection.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.reflection.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.reflection.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.resources.resourcemanager.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.runtime.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.runtime.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.runtime.handles.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.runtime.interopservices.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.runtime.interopservices.runtimeinformation.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.runtime.numerics.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.security.cryptography.algorithms.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.security.cryptography.encoding.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.security.cryptography.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.security.cryptography.x509certificates.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.text.encoding.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.text.encoding.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.text.regularexpressions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.threading.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.threading.tasks.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.threading.timer.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.xml.readerwriter.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.xml.xdocument.dll",
+            ],
+            "net48": [
+               "@microsoft.netcore.platforms//:net48_net",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_microsoft.win32.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.appcontext.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.collections.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.collections.concurrent.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.console.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.diagnostics.debug.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.diagnostics.tools.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.diagnostics.tracing.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.globalization.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.globalization.calendars.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.io.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.io.compression.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.io.compression.zipfile.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.io.filesystem.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.io.filesystem.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.linq.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.linq.expressions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.net.http.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.net.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.net.sockets.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.objectmodel.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.reflection.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.reflection.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.reflection.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.resources.resourcemanager.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.runtime.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.runtime.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.runtime.handles.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.runtime.interopservices.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.runtime.interopservices.runtimeinformation.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.runtime.numerics.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.security.cryptography.algorithms.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.security.cryptography.encoding.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.security.cryptography.primitives.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.security.cryptography.x509certificates.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.text.encoding.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.text.encoding.extensions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.text.regularexpressions.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.threading.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.threading.tasks.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.threading.timer.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.xml.readerwriter.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.xml.xdocument.dll",
+            ],
+            "netstandard1.0": [
+               "@microsoft.netcore.platforms//:netstandard1.0_net",
+            ],
+            "netstandard1.1": [
+               "@microsoft.netcore.platforms//:netstandard1.1_net",
+            ],
+            "netstandard1.2": [
+               "@microsoft.netcore.platforms//:netstandard1.2_net",
+            ],
+            "netstandard1.3": [
+               "@microsoft.netcore.platforms//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@microsoft.netcore.platforms//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@microsoft.netcore.platforms//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@microsoft.netcore.platforms//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@microsoft.netcore.platforms//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@microsoft.netcore.platforms//:netstandard2.1_net",
+            ],
+        },
+        mono_deps = [
+            "@microsoft.netcore.platforms//:mono",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:microsoft.win32.primitives.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.appcontext.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.collections.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.collections.concurrent.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.console.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.diagnostics.debug.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.diagnostics.tools.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.diagnostics.tracing.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.globalization.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.globalization.calendars.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.io.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.io.compression.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.io.compression.zipfile.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.io.filesystem.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.io.filesystem.primitives.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.linq.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.linq.expressions.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.net.http.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.net.primitives.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.net.sockets.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.objectmodel.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.reflection.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.reflection.extensions.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.reflection.primitives.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.resources.resourcemanager.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.runtime.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.runtime.extensions.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.runtime.handles.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.runtime.interopservices.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.runtime.interopservices.runtimeinformation.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.runtime.numerics.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.security.cryptography.algorithms.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.security.cryptography.encoding.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.security.cryptography.primitives.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.security.cryptography.x509certificates.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.text.encoding.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.text.encoding.extensions.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.text.regularexpressions.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.threading.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.threading.tasks.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.threading.timer.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.xml.readerwriter.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.xml.xdocument.dll",
+        ],
+    )
+    nuget_package(
         name = "nuget.packagemanagement.netstandard",
         package = "nuget.packagemanagement.netstandard",
         version = "4.9.2",
@@ -1535,6 +6445,8 @@ def dotnet_repositories_nuget():
         core_lib = {
             "netcoreapp2.0": "lib/netstandard1.6/NuGet.PackageManagement.dll",
             "netcoreapp2.1": "lib/netstandard1.6/NuGet.PackageManagement.dll",
+            "netcoreapp3.0": "lib/netstandard1.6/NuGet.PackageManagement.dll",
+            "netcoreapp3.1": "lib/netstandard1.6/NuGet.PackageManagement.dll",
         },
         net_lib = {
             "net461": "lib/netstandard1.6/NuGet.PackageManagement.dll",
@@ -1542,8 +6454,10 @@ def dotnet_repositories_nuget():
             "net47": "lib/netstandard1.6/NuGet.PackageManagement.dll",
             "net471": "lib/netstandard1.6/NuGet.PackageManagement.dll",
             "net472": "lib/netstandard1.6/NuGet.PackageManagement.dll",
+            "net48": "lib/netstandard1.6/NuGet.PackageManagement.dll",
             "netstandard1.6": "lib/netstandard1.6/NuGet.PackageManagement.dll",
             "netstandard2.0": "lib/netstandard1.6/NuGet.PackageManagement.dll",
+            "netstandard2.1": "lib/netstandard1.6/NuGet.PackageManagement.dll",
         },
         mono_lib = "lib/netstandard1.6/NuGet.PackageManagement.dll",
         core_deps = {
@@ -1554,6 +6468,14 @@ def dotnet_repositories_nuget():
             "netcoreapp2.1": [
                "@nuget.commands//:netcoreapp2.1_core",
                "@nuget.resolver//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@nuget.commands//:netcoreapp3.0_core",
+               "@nuget.resolver//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@nuget.commands//:netcoreapp3.1_core",
+               "@nuget.resolver//:netcoreapp3.1_core",
             ],
         },
         net_deps = {
@@ -1577,6 +6499,10 @@ def dotnet_repositories_nuget():
                "@nuget.commands//:net472_net",
                "@nuget.resolver//:net472_net",
             ],
+            "net48": [
+               "@nuget.commands//:net48_net",
+               "@nuget.resolver//:net48_net",
+            ],
             "netstandard1.6": [
                "@nuget.commands//:netstandard1.6_net",
                "@nuget.resolver//:netstandard1.6_net",
@@ -1584,6 +6510,10 @@ def dotnet_repositories_nuget():
             "netstandard2.0": [
                "@nuget.commands//:netstandard2.0_net",
                "@nuget.resolver//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@nuget.commands//:netstandard2.1_net",
+               "@nuget.resolver//:netstandard2.1_net",
             ],
         },
         mono_deps = [
@@ -1597,6 +6527,14 @@ def dotnet_repositories_nuget():
                "lib/netstandard1.6/NuGet.PackageManagement.xml",
             ],
             "netcoreapp2.1": [
+               "lib/netstandard1.6/NuGet.PackageManagement.dll",
+               "lib/netstandard1.6/NuGet.PackageManagement.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.6/NuGet.PackageManagement.dll",
+               "lib/netstandard1.6/NuGet.PackageManagement.xml",
+            ],
+            "netcoreapp3.1": [
                "lib/netstandard1.6/NuGet.PackageManagement.dll",
                "lib/netstandard1.6/NuGet.PackageManagement.xml",
             ],
@@ -1622,11 +6560,19 @@ def dotnet_repositories_nuget():
                "lib/netstandard1.6/NuGet.PackageManagement.dll",
                "lib/netstandard1.6/NuGet.PackageManagement.xml",
             ],
+            "net48": [
+               "lib/netstandard1.6/NuGet.PackageManagement.dll",
+               "lib/netstandard1.6/NuGet.PackageManagement.xml",
+            ],
             "netstandard1.6": [
                "lib/netstandard1.6/NuGet.PackageManagement.dll",
                "lib/netstandard1.6/NuGet.PackageManagement.xml",
             ],
             "netstandard2.0": [
+               "lib/netstandard1.6/NuGet.PackageManagement.dll",
+               "lib/netstandard1.6/NuGet.PackageManagement.xml",
+            ],
+            "netstandard2.1": [
                "lib/netstandard1.6/NuGet.PackageManagement.dll",
                "lib/netstandard1.6/NuGet.PackageManagement.xml",
             ],
@@ -1644,6 +6590,8 @@ def dotnet_repositories_nuget():
         core_lib = {
             "netcoreapp2.0": "lib/netstandard2.0/CommandLine.dll",
             "netcoreapp2.1": "lib/netstandard2.0/CommandLine.dll",
+            "netcoreapp3.0": "lib/netstandard2.0/CommandLine.dll",
+            "netcoreapp3.1": "lib/netstandard2.0/CommandLine.dll",
         },
         net_lib = {
             "net45": "lib/net45/CommandLine.dll",
@@ -1655,7 +6603,9 @@ def dotnet_repositories_nuget():
             "net47": "lib/net461/CommandLine.dll",
             "net471": "lib/net461/CommandLine.dll",
             "net472": "lib/net461/CommandLine.dll",
+            "net48": "lib/net461/CommandLine.dll",
             "netstandard2.0": "lib/netstandard2.0/CommandLine.dll",
+            "netstandard2.1": "lib/netstandard2.0/CommandLine.dll",
         },
         mono_lib = "lib/net461/CommandLine.dll",
         core_files = {
@@ -1664,6 +6614,14 @@ def dotnet_repositories_nuget():
                "lib/netstandard2.0/CommandLine.xml",
             ],
             "netcoreapp2.1": [
+               "lib/netstandard2.0/CommandLine.dll",
+               "lib/netstandard2.0/CommandLine.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard2.0/CommandLine.dll",
+               "lib/netstandard2.0/CommandLine.xml",
+            ],
+            "netcoreapp3.1": [
                "lib/netstandard2.0/CommandLine.dll",
                "lib/netstandard2.0/CommandLine.xml",
             ],
@@ -1705,7 +6663,15 @@ def dotnet_repositories_nuget():
                "lib/net461/CommandLine.dll",
                "lib/net461/CommandLine.xml",
             ],
+            "net48": [
+               "lib/net461/CommandLine.dll",
+               "lib/net461/CommandLine.xml",
+            ],
             "netstandard2.0": [
+               "lib/netstandard2.0/CommandLine.dll",
+               "lib/netstandard2.0/CommandLine.xml",
+            ],
+            "netstandard2.1": [
                "lib/netstandard2.0/CommandLine.dll",
                "lib/netstandard2.0/CommandLine.xml",
             ],
@@ -1713,6 +6679,1025 @@ def dotnet_repositories_nuget():
         mono_files = [
             "lib/net461/CommandLine.dll",
             "lib/net461/CommandLine.xml",
+        ],
+    )
+    nuget_package(
+        name = "system.buffers",
+        package = "system.buffers",
+        version = "4.5.1",
+        sha256 = "c30b3dd2c7e2f4cee4b823d692fd42118309b42ab1f5007f923d329a5b0d6b12",
+        net_lib = {
+            "net45": "ref/net45/System.Buffers.dll",
+            "net451": "ref/net45/System.Buffers.dll",
+            "net452": "ref/net45/System.Buffers.dll",
+            "net46": "ref/net45/System.Buffers.dll",
+            "net461": "ref/net45/System.Buffers.dll",
+            "net462": "ref/net45/System.Buffers.dll",
+            "net47": "ref/net45/System.Buffers.dll",
+            "net471": "ref/net45/System.Buffers.dll",
+            "net472": "ref/net45/System.Buffers.dll",
+            "net48": "ref/net45/System.Buffers.dll",
+            "netstandard1.1": "ref/netstandard1.1/System.Buffers.dll",
+            "netstandard1.2": "ref/netstandard1.1/System.Buffers.dll",
+            "netstandard1.3": "ref/netstandard1.1/System.Buffers.dll",
+            "netstandard1.4": "ref/netstandard1.1/System.Buffers.dll",
+            "netstandard1.5": "ref/netstandard1.1/System.Buffers.dll",
+            "netstandard1.6": "ref/netstandard1.1/System.Buffers.dll",
+            "netstandard2.0": "ref/netstandard2.0/System.Buffers.dll",
+            "netstandard2.1": "ref/netstandard2.0/System.Buffers.dll",
+        },
+        mono_lib = "ref/net45/System.Buffers.dll",
+        net_files = {
+            "net45": [
+               "lib/netstandard1.1/System.Buffers.dll",
+               "lib/netstandard1.1/System.Buffers.xml",
+            ],
+            "net451": [
+               "lib/netstandard1.1/System.Buffers.dll",
+               "lib/netstandard1.1/System.Buffers.xml",
+            ],
+            "net452": [
+               "lib/netstandard1.1/System.Buffers.dll",
+               "lib/netstandard1.1/System.Buffers.xml",
+            ],
+            "net46": [
+               "lib/netstandard1.1/System.Buffers.dll",
+               "lib/netstandard1.1/System.Buffers.xml",
+            ],
+            "net461": [
+               "lib/net461/System.Buffers.dll",
+               "lib/net461/System.Buffers.xml",
+            ],
+            "net462": [
+               "lib/net461/System.Buffers.dll",
+               "lib/net461/System.Buffers.xml",
+            ],
+            "net47": [
+               "lib/net461/System.Buffers.dll",
+               "lib/net461/System.Buffers.xml",
+            ],
+            "net471": [
+               "lib/net461/System.Buffers.dll",
+               "lib/net461/System.Buffers.xml",
+            ],
+            "net472": [
+               "lib/net461/System.Buffers.dll",
+               "lib/net461/System.Buffers.xml",
+            ],
+            "net48": [
+               "lib/net461/System.Buffers.dll",
+               "lib/net461/System.Buffers.xml",
+            ],
+            "netstandard1.1": [
+               "lib/netstandard1.1/System.Buffers.dll",
+               "lib/netstandard1.1/System.Buffers.xml",
+            ],
+            "netstandard1.2": [
+               "lib/netstandard1.1/System.Buffers.dll",
+               "lib/netstandard1.1/System.Buffers.xml",
+            ],
+            "netstandard1.3": [
+               "lib/netstandard1.1/System.Buffers.dll",
+               "lib/netstandard1.1/System.Buffers.xml",
+            ],
+            "netstandard1.4": [
+               "lib/netstandard1.1/System.Buffers.dll",
+               "lib/netstandard1.1/System.Buffers.xml",
+            ],
+            "netstandard1.5": [
+               "lib/netstandard1.1/System.Buffers.dll",
+               "lib/netstandard1.1/System.Buffers.xml",
+            ],
+            "netstandard1.6": [
+               "lib/netstandard1.1/System.Buffers.dll",
+               "lib/netstandard1.1/System.Buffers.xml",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard2.0/System.Buffers.dll",
+               "lib/netstandard2.0/System.Buffers.xml",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard2.0/System.Buffers.dll",
+               "lib/netstandard2.0/System.Buffers.xml",
+            ],
+        },
+        mono_files = [
+            "lib/net461/System.Buffers.dll",
+            "lib/net461/System.Buffers.xml",
+        ],
+    )
+    nuget_package(
+        name = "system.numerics.vectors",
+        package = "system.numerics.vectors",
+        version = "4.5.0",
+        sha256 = "a9d49320581fda1b4f4be6212c68c01a22cdf228026099c20a8eabefcf90f9cf",
+        net_lib = {
+            "net45": "ref/net45/System.Numerics.Vectors.dll",
+            "net451": "ref/net45/System.Numerics.Vectors.dll",
+            "net452": "ref/net45/System.Numerics.Vectors.dll",
+            "net46": "ref/net46/System.Numerics.Vectors.dll",
+            "net461": "ref/net46/System.Numerics.Vectors.dll",
+            "net462": "ref/net46/System.Numerics.Vectors.dll",
+            "net47": "ref/net46/System.Numerics.Vectors.dll",
+            "net471": "ref/net46/System.Numerics.Vectors.dll",
+            "net472": "ref/net46/System.Numerics.Vectors.dll",
+            "net48": "ref/net46/System.Numerics.Vectors.dll",
+            "netstandard1.0": "ref/netstandard1.0/System.Numerics.Vectors.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.Numerics.Vectors.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.Numerics.Vectors.dll",
+            "netstandard1.3": "ref/netstandard1.0/System.Numerics.Vectors.dll",
+            "netstandard1.4": "ref/netstandard1.0/System.Numerics.Vectors.dll",
+            "netstandard1.5": "ref/netstandard1.0/System.Numerics.Vectors.dll",
+            "netstandard1.6": "ref/netstandard1.0/System.Numerics.Vectors.dll",
+            "netstandard2.0": "ref/netstandard2.0/System.Numerics.Vectors.dll",
+            "netstandard2.1": "ref/netstandard2.0/System.Numerics.Vectors.dll",
+        },
+        mono_lib = "ref/net46/System.Numerics.Vectors.dll",
+        net_files = {
+            "net45": [
+               "lib/portable-net45+win8+wp8+wpa81/System.Numerics.Vectors.dll",
+               "lib/portable-net45+win8+wp8+wpa81/System.Numerics.Vectors.xml",
+            ],
+            "net451": [
+               "lib/portable-net45+win8+wp8+wpa81/System.Numerics.Vectors.dll",
+               "lib/portable-net45+win8+wp8+wpa81/System.Numerics.Vectors.xml",
+            ],
+            "net452": [
+               "lib/portable-net45+win8+wp8+wpa81/System.Numerics.Vectors.dll",
+               "lib/portable-net45+win8+wp8+wpa81/System.Numerics.Vectors.xml",
+            ],
+            "net46": [
+               "lib/net46/System.Numerics.Vectors.dll",
+               "lib/net46/System.Numerics.Vectors.xml",
+            ],
+            "net461": [
+               "lib/net46/System.Numerics.Vectors.dll",
+               "lib/net46/System.Numerics.Vectors.xml",
+            ],
+            "net462": [
+               "lib/net46/System.Numerics.Vectors.dll",
+               "lib/net46/System.Numerics.Vectors.xml",
+            ],
+            "net47": [
+               "lib/net46/System.Numerics.Vectors.dll",
+               "lib/net46/System.Numerics.Vectors.xml",
+            ],
+            "net471": [
+               "lib/net46/System.Numerics.Vectors.dll",
+               "lib/net46/System.Numerics.Vectors.xml",
+            ],
+            "net472": [
+               "lib/net46/System.Numerics.Vectors.dll",
+               "lib/net46/System.Numerics.Vectors.xml",
+            ],
+            "net48": [
+               "lib/net46/System.Numerics.Vectors.dll",
+               "lib/net46/System.Numerics.Vectors.xml",
+            ],
+            "netstandard1.0": [
+               "lib/netstandard1.0/System.Numerics.Vectors.dll",
+               "lib/netstandard1.0/System.Numerics.Vectors.xml",
+            ],
+            "netstandard1.1": [
+               "lib/netstandard1.0/System.Numerics.Vectors.dll",
+               "lib/netstandard1.0/System.Numerics.Vectors.xml",
+            ],
+            "netstandard1.2": [
+               "lib/netstandard1.0/System.Numerics.Vectors.dll",
+               "lib/netstandard1.0/System.Numerics.Vectors.xml",
+            ],
+            "netstandard1.3": [
+               "lib/netstandard1.0/System.Numerics.Vectors.dll",
+               "lib/netstandard1.0/System.Numerics.Vectors.xml",
+            ],
+            "netstandard1.4": [
+               "lib/netstandard1.0/System.Numerics.Vectors.dll",
+               "lib/netstandard1.0/System.Numerics.Vectors.xml",
+            ],
+            "netstandard1.5": [
+               "lib/netstandard1.0/System.Numerics.Vectors.dll",
+               "lib/netstandard1.0/System.Numerics.Vectors.xml",
+            ],
+            "netstandard1.6": [
+               "lib/netstandard1.0/System.Numerics.Vectors.dll",
+               "lib/netstandard1.0/System.Numerics.Vectors.xml",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard2.0/System.Numerics.Vectors.dll",
+               "lib/netstandard2.0/System.Numerics.Vectors.xml",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard2.0/System.Numerics.Vectors.dll",
+               "lib/netstandard2.0/System.Numerics.Vectors.xml",
+            ],
+        },
+        mono_files = [
+            "lib/net46/System.Numerics.Vectors.dll",
+            "lib/net46/System.Numerics.Vectors.xml",
+        ],
+    )
+    nuget_package(
+        name = "system.runtime.compilerservices.unsafe",
+        package = "system.runtime.compilerservices.unsafe",
+        version = "4.7.1",
+        sha256 = "52fca80d5f0ed286371cf1b519b039e9855dbf04c611f8d8479816d4eec82b85",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
+            "netcoreapp2.1": "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
+            "netcoreapp3.0": "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
+            "netcoreapp3.1": "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
+        },
+        net_lib = {
+            "net45": "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+            "net451": "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+            "net452": "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+            "net46": "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+            "net461": "ref/net461/System.Runtime.CompilerServices.Unsafe.dll",
+            "net462": "ref/net461/System.Runtime.CompilerServices.Unsafe.dll",
+            "net47": "ref/net461/System.Runtime.CompilerServices.Unsafe.dll",
+            "net471": "ref/net461/System.Runtime.CompilerServices.Unsafe.dll",
+            "net472": "ref/net461/System.Runtime.CompilerServices.Unsafe.dll",
+            "net48": "ref/net461/System.Runtime.CompilerServices.Unsafe.dll",
+            "netstandard1.0": "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+            "netstandard1.1": "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+            "netstandard1.2": "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+            "netstandard1.3": "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+            "netstandard1.4": "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+            "netstandard1.5": "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+            "netstandard1.6": "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+            "netstandard2.0": "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
+            "netstandard2.1": "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
+        },
+        mono_lib = "ref/net461/System.Runtime.CompilerServices.Unsafe.dll",
+        core_files = {
+            "netcoreapp2.0": [
+               "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "netcoreapp2.1": [
+               "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "netcoreapp3.1": [
+               "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+        },
+        net_files = {
+            "net45": [
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "net451": [
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "net452": [
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "net46": [
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "net461": [
+               "lib/net461/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/net461/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "net462": [
+               "lib/net461/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/net461/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "net47": [
+               "lib/net461/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/net461/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "net471": [
+               "lib/net461/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/net461/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "net472": [
+               "lib/net461/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/net461/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "net48": [
+               "lib/net461/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/net461/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "netstandard1.0": [
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "netstandard1.1": [
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "netstandard1.2": [
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "netstandard1.3": [
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "netstandard1.4": [
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "netstandard1.5": [
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "netstandard1.6": [
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
+               "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+        },
+        mono_files = [
+            "lib/net461/System.Runtime.CompilerServices.Unsafe.dll",
+            "lib/net461/System.Runtime.CompilerServices.Unsafe.xml",
+        ],
+    )
+    nuget_package(
+        name = "system.memory",
+        package = "system.memory",
+        version = "4.5.4",
+        sha256 = "dec0847f33b8823e4260672d97d657411461c00ada3107ec7bbcb32a845eeb91",
+        core_lib = {
+            "netcoreapp2.0": "lib/netstandard2.0/System.Memory.dll",
+        },
+        net_lib = {
+            "net45": "lib/netstandard1.1/System.Memory.dll",
+            "net451": "lib/netstandard1.1/System.Memory.dll",
+            "net452": "lib/netstandard1.1/System.Memory.dll",
+            "net46": "lib/netstandard1.1/System.Memory.dll",
+            "net461": "lib/net461/System.Memory.dll",
+            "net462": "lib/net461/System.Memory.dll",
+            "net47": "lib/net461/System.Memory.dll",
+            "net471": "lib/net461/System.Memory.dll",
+            "net472": "lib/net461/System.Memory.dll",
+            "net48": "lib/net461/System.Memory.dll",
+            "netstandard1.1": "lib/netstandard1.1/System.Memory.dll",
+            "netstandard1.2": "lib/netstandard1.1/System.Memory.dll",
+            "netstandard1.3": "lib/netstandard1.1/System.Memory.dll",
+            "netstandard1.4": "lib/netstandard1.1/System.Memory.dll",
+            "netstandard1.5": "lib/netstandard1.1/System.Memory.dll",
+            "netstandard1.6": "lib/netstandard1.1/System.Memory.dll",
+            "netstandard2.0": "lib/netstandard2.0/System.Memory.dll",
+            "netstandard2.1": "lib/netstandard2.0/System.Memory.dll",
+        },
+        mono_lib = "lib/net461/System.Memory.dll",
+        core_deps = {
+            "netcoreapp2.0": [
+               "@system.runtime.compilerservices.unsafe//:netcoreapp2.0_core",
+            ],
+        },
+        net_deps = {
+            "net45": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.buffers.dll",
+               "@system.runtime.compilerservices.unsafe//:net45_net",
+            ],
+            "net451": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.buffers.dll",
+               "@system.runtime.compilerservices.unsafe//:net451_net",
+            ],
+            "net452": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.buffers.dll",
+               "@system.runtime.compilerservices.unsafe//:net452_net",
+            ],
+            "net46": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.buffers.dll",
+               "@system.runtime.compilerservices.unsafe//:net46_net",
+            ],
+            "net461": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.buffers.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.numerics.vectors.dll",
+               "@system.runtime.compilerservices.unsafe//:net461_net",
+            ],
+            "net462": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.buffers.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.numerics.vectors.dll",
+               "@system.runtime.compilerservices.unsafe//:net462_net",
+            ],
+            "net47": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.buffers.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.numerics.vectors.dll",
+               "@system.runtime.compilerservices.unsafe//:net47_net",
+            ],
+            "net471": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.buffers.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.numerics.vectors.dll",
+               "@system.runtime.compilerservices.unsafe//:net471_net",
+            ],
+            "net472": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.buffers.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.numerics.vectors.dll",
+               "@system.runtime.compilerservices.unsafe//:net472_net",
+            ],
+            "net48": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.buffers.dll",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.numerics.vectors.dll",
+               "@system.runtime.compilerservices.unsafe//:net48_net",
+            ],
+            "netstandard1.1": [
+               "@system.runtime.compilerservices.unsafe//:netstandard1.1_net",
+            ],
+            "netstandard1.2": [
+               "@system.runtime.compilerservices.unsafe//:netstandard1.2_net",
+            ],
+            "netstandard1.3": [
+               "@system.runtime.compilerservices.unsafe//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@system.runtime.compilerservices.unsafe//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@system.runtime.compilerservices.unsafe//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@system.runtime.compilerservices.unsafe//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@system.runtime.compilerservices.unsafe//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@system.runtime.compilerservices.unsafe//:netstandard2.1_net",
+            ],
+        },
+        mono_deps = [
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.buffers.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.numerics.vectors.dll",
+            "@system.runtime.compilerservices.unsafe//:mono",
+        ],
+        core_files = {
+            "netcoreapp2.0": [
+               "lib/netstandard2.0/System.Memory.dll",
+               "lib/netstandard2.0/System.Memory.xml",
+            ],
+        },
+        net_files = {
+            "net45": [
+               "lib/netstandard1.1/System.Memory.dll",
+               "lib/netstandard1.1/System.Memory.xml",
+            ],
+            "net451": [
+               "lib/netstandard1.1/System.Memory.dll",
+               "lib/netstandard1.1/System.Memory.xml",
+            ],
+            "net452": [
+               "lib/netstandard1.1/System.Memory.dll",
+               "lib/netstandard1.1/System.Memory.xml",
+            ],
+            "net46": [
+               "lib/netstandard1.1/System.Memory.dll",
+               "lib/netstandard1.1/System.Memory.xml",
+            ],
+            "net461": [
+               "lib/net461/System.Memory.dll",
+               "lib/net461/System.Memory.xml",
+            ],
+            "net462": [
+               "lib/net461/System.Memory.dll",
+               "lib/net461/System.Memory.xml",
+            ],
+            "net47": [
+               "lib/net461/System.Memory.dll",
+               "lib/net461/System.Memory.xml",
+            ],
+            "net471": [
+               "lib/net461/System.Memory.dll",
+               "lib/net461/System.Memory.xml",
+            ],
+            "net472": [
+               "lib/net461/System.Memory.dll",
+               "lib/net461/System.Memory.xml",
+            ],
+            "net48": [
+               "lib/net461/System.Memory.dll",
+               "lib/net461/System.Memory.xml",
+            ],
+            "netstandard1.1": [
+               "lib/netstandard1.1/System.Memory.dll",
+               "lib/netstandard1.1/System.Memory.xml",
+            ],
+            "netstandard1.2": [
+               "lib/netstandard1.1/System.Memory.dll",
+               "lib/netstandard1.1/System.Memory.xml",
+            ],
+            "netstandard1.3": [
+               "lib/netstandard1.1/System.Memory.dll",
+               "lib/netstandard1.1/System.Memory.xml",
+            ],
+            "netstandard1.4": [
+               "lib/netstandard1.1/System.Memory.dll",
+               "lib/netstandard1.1/System.Memory.xml",
+            ],
+            "netstandard1.5": [
+               "lib/netstandard1.1/System.Memory.dll",
+               "lib/netstandard1.1/System.Memory.xml",
+            ],
+            "netstandard1.6": [
+               "lib/netstandard1.1/System.Memory.dll",
+               "lib/netstandard1.1/System.Memory.xml",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard2.0/System.Memory.dll",
+               "lib/netstandard2.0/System.Memory.xml",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard2.0/System.Memory.dll",
+               "lib/netstandard2.0/System.Memory.xml",
+            ],
+        },
+        mono_files = [
+            "lib/net461/System.Memory.dll",
+            "lib/net461/System.Memory.xml",
+        ],
+    )
+    nuget_package(
+        name = "system.collections.immutable",
+        package = "system.collections.immutable",
+        version = "1.7.0",
+        sha256 = "fd1301c5452e6e519a5844409d393be109ab4906d7fb1b3ce3216a99ac2633be",
+        core_lib = {
+            "netcoreapp2.0": "lib/netstandard2.0/System.Collections.Immutable.dll",
+            "netcoreapp2.1": "lib/netstandard2.0/System.Collections.Immutable.dll",
+            "netcoreapp3.0": "lib/netstandard2.0/System.Collections.Immutable.dll",
+            "netcoreapp3.1": "lib/netstandard2.0/System.Collections.Immutable.dll",
+        },
+        net_lib = {
+            "net45": "lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.dll",
+            "net451": "lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.dll",
+            "net452": "lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.dll",
+            "net46": "lib/netstandard1.3/System.Collections.Immutable.dll",
+            "net461": "lib/netstandard2.0/System.Collections.Immutable.dll",
+            "net462": "lib/netstandard2.0/System.Collections.Immutable.dll",
+            "net47": "lib/netstandard2.0/System.Collections.Immutable.dll",
+            "net471": "lib/netstandard2.0/System.Collections.Immutable.dll",
+            "net472": "lib/netstandard2.0/System.Collections.Immutable.dll",
+            "net48": "lib/netstandard2.0/System.Collections.Immutable.dll",
+            "netstandard1.0": "lib/netstandard1.0/System.Collections.Immutable.dll",
+            "netstandard1.1": "lib/netstandard1.0/System.Collections.Immutable.dll",
+            "netstandard1.2": "lib/netstandard1.0/System.Collections.Immutable.dll",
+            "netstandard1.3": "lib/netstandard1.3/System.Collections.Immutable.dll",
+            "netstandard1.4": "lib/netstandard1.3/System.Collections.Immutable.dll",
+            "netstandard1.5": "lib/netstandard1.3/System.Collections.Immutable.dll",
+            "netstandard1.6": "lib/netstandard1.3/System.Collections.Immutable.dll",
+            "netstandard2.0": "lib/netstandard2.0/System.Collections.Immutable.dll",
+            "netstandard2.1": "lib/netstandard2.0/System.Collections.Immutable.dll",
+        },
+        mono_lib = "lib/netstandard2.0/System.Collections.Immutable.dll",
+        core_deps = {
+            "netcoreapp2.0": [
+               "@system.memory//:netcoreapp2.0_core",
+            ],
+        },
+        net_deps = {
+            "net46": [
+               "@system.memory//:net46_net",
+            ],
+            "net461": [
+               "@system.memory//:net461_net",
+            ],
+            "net462": [
+               "@system.memory//:net462_net",
+            ],
+            "net47": [
+               "@system.memory//:net47_net",
+            ],
+            "net471": [
+               "@system.memory//:net471_net",
+            ],
+            "net472": [
+               "@system.memory//:net472_net",
+            ],
+            "net48": [
+               "@system.memory//:net48_net",
+            ],
+            "netstandard1.3": [
+               "@system.memory//:netstandard1.3_net",
+            ],
+            "netstandard1.4": [
+               "@system.memory//:netstandard1.4_net",
+            ],
+            "netstandard1.5": [
+               "@system.memory//:netstandard1.5_net",
+            ],
+            "netstandard1.6": [
+               "@system.memory//:netstandard1.6_net",
+            ],
+            "netstandard2.0": [
+               "@system.memory//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@system.memory//:netstandard2.1_net",
+            ],
+        },
+        mono_deps = [
+            "@system.memory//:mono",
+        ],
+        core_files = {
+            "netcoreapp2.0": [
+               "lib/netstandard2.0/System.Collections.Immutable.dll",
+               "lib/netstandard2.0/System.Collections.Immutable.xml",
+            ],
+            "netcoreapp2.1": [
+               "lib/netstandard2.0/System.Collections.Immutable.dll",
+               "lib/netstandard2.0/System.Collections.Immutable.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard2.0/System.Collections.Immutable.dll",
+               "lib/netstandard2.0/System.Collections.Immutable.xml",
+            ],
+            "netcoreapp3.1": [
+               "lib/netstandard2.0/System.Collections.Immutable.dll",
+               "lib/netstandard2.0/System.Collections.Immutable.xml",
+            ],
+        },
+        net_files = {
+            "net45": [
+               "lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.dll",
+               "lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.xml",
+            ],
+            "net451": [
+               "lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.dll",
+               "lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.xml",
+            ],
+            "net452": [
+               "lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.dll",
+               "lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.xml",
+            ],
+            "net46": [
+               "lib/netstandard1.3/System.Collections.Immutable.dll",
+               "lib/netstandard1.3/System.Collections.Immutable.xml",
+            ],
+            "net461": [
+               "lib/netstandard2.0/System.Collections.Immutable.dll",
+               "lib/netstandard2.0/System.Collections.Immutable.xml",
+            ],
+            "net462": [
+               "lib/netstandard2.0/System.Collections.Immutable.dll",
+               "lib/netstandard2.0/System.Collections.Immutable.xml",
+            ],
+            "net47": [
+               "lib/netstandard2.0/System.Collections.Immutable.dll",
+               "lib/netstandard2.0/System.Collections.Immutable.xml",
+            ],
+            "net471": [
+               "lib/netstandard2.0/System.Collections.Immutable.dll",
+               "lib/netstandard2.0/System.Collections.Immutable.xml",
+            ],
+            "net472": [
+               "lib/netstandard2.0/System.Collections.Immutable.dll",
+               "lib/netstandard2.0/System.Collections.Immutable.xml",
+            ],
+            "net48": [
+               "lib/netstandard2.0/System.Collections.Immutable.dll",
+               "lib/netstandard2.0/System.Collections.Immutable.xml",
+            ],
+            "netstandard1.0": [
+               "lib/netstandard1.0/System.Collections.Immutable.dll",
+               "lib/netstandard1.0/System.Collections.Immutable.xml",
+            ],
+            "netstandard1.1": [
+               "lib/netstandard1.0/System.Collections.Immutable.dll",
+               "lib/netstandard1.0/System.Collections.Immutable.xml",
+            ],
+            "netstandard1.2": [
+               "lib/netstandard1.0/System.Collections.Immutable.dll",
+               "lib/netstandard1.0/System.Collections.Immutable.xml",
+            ],
+            "netstandard1.3": [
+               "lib/netstandard1.3/System.Collections.Immutable.dll",
+               "lib/netstandard1.3/System.Collections.Immutable.xml",
+            ],
+            "netstandard1.4": [
+               "lib/netstandard1.3/System.Collections.Immutable.dll",
+               "lib/netstandard1.3/System.Collections.Immutable.xml",
+            ],
+            "netstandard1.5": [
+               "lib/netstandard1.3/System.Collections.Immutable.dll",
+               "lib/netstandard1.3/System.Collections.Immutable.xml",
+            ],
+            "netstandard1.6": [
+               "lib/netstandard1.3/System.Collections.Immutable.dll",
+               "lib/netstandard1.3/System.Collections.Immutable.xml",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard2.0/System.Collections.Immutable.dll",
+               "lib/netstandard2.0/System.Collections.Immutable.xml",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard2.0/System.Collections.Immutable.dll",
+               "lib/netstandard2.0/System.Collections.Immutable.xml",
+            ],
+        },
+        mono_files = [
+            "lib/netstandard2.0/System.Collections.Immutable.dll",
+            "lib/netstandard2.0/System.Collections.Immutable.xml",
+        ],
+    )
+    nuget_package(
+        name = "system.reflection.metadata",
+        package = "system.reflection.metadata",
+        version = "1.8.0",
+        sha256 = "9cbd25bc46375f63fc31bad67d58591322067cf06c5b4a59f5912884799fecdf",
+        core_lib = {
+            "netcoreapp2.0": "lib/netstandard2.0/System.Reflection.Metadata.dll",
+            "netcoreapp2.1": "lib/netstandard2.0/System.Reflection.Metadata.dll",
+            "netcoreapp3.0": "lib/netstandard2.0/System.Reflection.Metadata.dll",
+            "netcoreapp3.1": "lib/netstandard2.0/System.Reflection.Metadata.dll",
+        },
+        net_lib = {
+            "net45": "lib/portable-net45+win8/System.Reflection.Metadata.dll",
+            "net451": "lib/portable-net45+win8/System.Reflection.Metadata.dll",
+            "net452": "lib/portable-net45+win8/System.Reflection.Metadata.dll",
+            "net46": "lib/portable-net45+win8/System.Reflection.Metadata.dll",
+            "net461": "lib/netstandard2.0/System.Reflection.Metadata.dll",
+            "net462": "lib/netstandard2.0/System.Reflection.Metadata.dll",
+            "net47": "lib/netstandard2.0/System.Reflection.Metadata.dll",
+            "net471": "lib/netstandard2.0/System.Reflection.Metadata.dll",
+            "net472": "lib/netstandard2.0/System.Reflection.Metadata.dll",
+            "net48": "lib/netstandard2.0/System.Reflection.Metadata.dll",
+            "netstandard1.1": "lib/netstandard1.1/System.Reflection.Metadata.dll",
+            "netstandard1.2": "lib/netstandard1.1/System.Reflection.Metadata.dll",
+            "netstandard1.3": "lib/netstandard1.1/System.Reflection.Metadata.dll",
+            "netstandard1.4": "lib/netstandard1.1/System.Reflection.Metadata.dll",
+            "netstandard1.5": "lib/netstandard1.1/System.Reflection.Metadata.dll",
+            "netstandard1.6": "lib/netstandard1.1/System.Reflection.Metadata.dll",
+            "netstandard2.0": "lib/netstandard2.0/System.Reflection.Metadata.dll",
+            "netstandard2.1": "lib/netstandard2.0/System.Reflection.Metadata.dll",
+        },
+        mono_lib = "lib/netstandard2.0/System.Reflection.Metadata.dll",
+        net_deps = {
+            "net45": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net45_system.collections.immutable.dll",
+            ],
+            "net451": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net451_system.collections.immutable.dll",
+            ],
+            "net452": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net452_system.collections.immutable.dll",
+            ],
+            "net46": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net46_system.collections.immutable.dll",
+            ],
+            "net461": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.collections.immutable.dll",
+            ],
+            "net462": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.collections.immutable.dll",
+            ],
+            "net47": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.collections.immutable.dll",
+            ],
+            "net471": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.collections.immutable.dll",
+            ],
+            "net472": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.collections.immutable.dll",
+            ],
+            "net48": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.collections.immutable.dll",
+            ],
+        },
+        mono_deps = [
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.collections.immutable.dll",
+        ],
+        core_files = {
+            "netcoreapp2.0": [
+               "lib/netstandard2.0/System.Reflection.Metadata.dll",
+               "lib/netstandard2.0/System.Reflection.Metadata.xml",
+            ],
+            "netcoreapp2.1": [
+               "lib/netstandard2.0/System.Reflection.Metadata.dll",
+               "lib/netstandard2.0/System.Reflection.Metadata.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard2.0/System.Reflection.Metadata.dll",
+               "lib/netstandard2.0/System.Reflection.Metadata.xml",
+            ],
+            "netcoreapp3.1": [
+               "lib/netstandard2.0/System.Reflection.Metadata.dll",
+               "lib/netstandard2.0/System.Reflection.Metadata.xml",
+            ],
+        },
+        net_files = {
+            "net45": [
+               "lib/portable-net45+win8/System.Reflection.Metadata.dll",
+               "lib/portable-net45+win8/System.Reflection.Metadata.xml",
+            ],
+            "net451": [
+               "lib/portable-net45+win8/System.Reflection.Metadata.dll",
+               "lib/portable-net45+win8/System.Reflection.Metadata.xml",
+            ],
+            "net452": [
+               "lib/portable-net45+win8/System.Reflection.Metadata.dll",
+               "lib/portable-net45+win8/System.Reflection.Metadata.xml",
+            ],
+            "net46": [
+               "lib/portable-net45+win8/System.Reflection.Metadata.dll",
+               "lib/portable-net45+win8/System.Reflection.Metadata.xml",
+            ],
+            "net461": [
+               "lib/netstandard2.0/System.Reflection.Metadata.dll",
+               "lib/netstandard2.0/System.Reflection.Metadata.xml",
+            ],
+            "net462": [
+               "lib/netstandard2.0/System.Reflection.Metadata.dll",
+               "lib/netstandard2.0/System.Reflection.Metadata.xml",
+            ],
+            "net47": [
+               "lib/netstandard2.0/System.Reflection.Metadata.dll",
+               "lib/netstandard2.0/System.Reflection.Metadata.xml",
+            ],
+            "net471": [
+               "lib/netstandard2.0/System.Reflection.Metadata.dll",
+               "lib/netstandard2.0/System.Reflection.Metadata.xml",
+            ],
+            "net472": [
+               "lib/netstandard2.0/System.Reflection.Metadata.dll",
+               "lib/netstandard2.0/System.Reflection.Metadata.xml",
+            ],
+            "net48": [
+               "lib/netstandard2.0/System.Reflection.Metadata.dll",
+               "lib/netstandard2.0/System.Reflection.Metadata.xml",
+            ],
+            "netstandard1.1": [
+               "lib/netstandard1.1/System.Reflection.Metadata.dll",
+               "lib/netstandard1.1/System.Reflection.Metadata.xml",
+            ],
+            "netstandard1.2": [
+               "lib/netstandard1.1/System.Reflection.Metadata.dll",
+               "lib/netstandard1.1/System.Reflection.Metadata.xml",
+            ],
+            "netstandard1.3": [
+               "lib/netstandard1.1/System.Reflection.Metadata.dll",
+               "lib/netstandard1.1/System.Reflection.Metadata.xml",
+            ],
+            "netstandard1.4": [
+               "lib/netstandard1.1/System.Reflection.Metadata.dll",
+               "lib/netstandard1.1/System.Reflection.Metadata.xml",
+            ],
+            "netstandard1.5": [
+               "lib/netstandard1.1/System.Reflection.Metadata.dll",
+               "lib/netstandard1.1/System.Reflection.Metadata.xml",
+            ],
+            "netstandard1.6": [
+               "lib/netstandard1.1/System.Reflection.Metadata.dll",
+               "lib/netstandard1.1/System.Reflection.Metadata.xml",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard2.0/System.Reflection.Metadata.dll",
+               "lib/netstandard2.0/System.Reflection.Metadata.xml",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard2.0/System.Reflection.Metadata.dll",
+               "lib/netstandard2.0/System.Reflection.Metadata.xml",
+            ],
+        },
+        mono_files = [
+            "lib/netstandard2.0/System.Reflection.Metadata.dll",
+            "lib/netstandard2.0/System.Reflection.Metadata.xml",
+        ],
+    )
+    nuget_package(
+        name = "system.reflection.metadataloadcontext",
+        package = "system.reflection.metadataloadcontext",
+        version = "4.7.1",
+        sha256 = "c0956a29a6827be6e15fa01507ab2cd7f0fbfab3eb32fe778f788f8ace492590",
+        core_lib = {
+            "netcoreapp2.0": "ref/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+            "netcoreapp2.1": "ref/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+            "netcoreapp3.0": "ref/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+            "netcoreapp3.1": "ref/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+        },
+        net_lib = {
+            "net461": "ref/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+            "net462": "ref/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+            "net47": "ref/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+            "net471": "ref/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+            "net472": "ref/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+            "net48": "ref/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+            "netstandard2.0": "ref/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+            "netstandard2.1": "ref/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+        },
+        mono_lib = "ref/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+        core_deps = {
+            "netcoreapp2.0": [
+               "@system.memory//:netcoreapp2.0_core",
+            ],
+        },
+        net_deps = {
+            "net461": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.collections.immutable.dll",
+               "@system.memory//:net461_net",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net461_system.reflection.metadata.dll",
+            ],
+            "net462": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.collections.immutable.dll",
+               "@system.memory//:net462_net",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net462_system.reflection.metadata.dll",
+            ],
+            "net47": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.collections.immutable.dll",
+               "@system.memory//:net47_net",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net47_system.reflection.metadata.dll",
+            ],
+            "net471": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.collections.immutable.dll",
+               "@system.memory//:net471_net",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net471_system.reflection.metadata.dll",
+            ],
+            "net472": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.collections.immutable.dll",
+               "@system.memory//:net472_net",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net472_system.reflection.metadata.dll",
+            ],
+            "net48": [
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.collections.immutable.dll",
+               "@system.memory//:net48_net",
+               "@io_bazel_rules_dotnet//dotnet/stdlib.net:net48_system.reflection.metadata.dll",
+            ],
+            "netstandard2.0": [
+               "@system.memory//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@system.memory//:netstandard2.1_net",
+            ],
+        },
+        mono_deps = [
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.collections.immutable.dll",
+            "@system.memory//:mono",
+            "@io_bazel_rules_dotnet//dotnet/stdlib:system.reflection.metadata.dll",
+        ],
+        core_files = {
+            "netcoreapp2.0": [
+               "lib/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+               "lib/netstandard2.0/System.Reflection.MetadataLoadContext.xml",
+            ],
+            "netcoreapp2.1": [
+               "lib/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+               "lib/netstandard2.0/System.Reflection.MetadataLoadContext.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netcoreapp3.0/System.Reflection.MetadataLoadContext.dll",
+               "lib/netcoreapp3.0/System.Reflection.MetadataLoadContext.xml",
+            ],
+            "netcoreapp3.1": [
+               "lib/netcoreapp3.0/System.Reflection.MetadataLoadContext.dll",
+               "lib/netcoreapp3.0/System.Reflection.MetadataLoadContext.xml",
+            ],
+        },
+        net_files = {
+            "net461": [
+               "lib/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+               "lib/netstandard2.0/System.Reflection.MetadataLoadContext.xml",
+            ],
+            "net462": [
+               "lib/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+               "lib/netstandard2.0/System.Reflection.MetadataLoadContext.xml",
+            ],
+            "net47": [
+               "lib/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+               "lib/netstandard2.0/System.Reflection.MetadataLoadContext.xml",
+            ],
+            "net471": [
+               "lib/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+               "lib/netstandard2.0/System.Reflection.MetadataLoadContext.xml",
+            ],
+            "net472": [
+               "lib/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+               "lib/netstandard2.0/System.Reflection.MetadataLoadContext.xml",
+            ],
+            "net48": [
+               "lib/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+               "lib/netstandard2.0/System.Reflection.MetadataLoadContext.xml",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+               "lib/netstandard2.0/System.Reflection.MetadataLoadContext.xml",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+               "lib/netstandard2.0/System.Reflection.MetadataLoadContext.xml",
+            ],
+        },
+        mono_files = [
+            "lib/netstandard2.0/System.Reflection.MetadataLoadContext.dll",
+            "lib/netstandard2.0/System.Reflection.MetadataLoadContext.xml",
         ],
     )
     ### End of generated by the tool

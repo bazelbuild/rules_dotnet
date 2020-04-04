@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NET_FRAMEWORKS", "core_xunit_test", "dotnet_xunit_test", "net_xunit_test")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "core_xunit_test", "dotnet_xunit_test", "net_xunit_test")
 
 [core_xunit_test(
     name = "{}_example_xunit.dll".format(framework),

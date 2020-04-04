@@ -1,7 +1,6 @@
 load(
     "@io_bazel_rules_dotnet//dotnet:defs.bzl",
     "DOTNET_CORE_FRAMEWORKS",
-    "DOTNET_NET_FRAMEWORKS",
     "core_resx",
     "core_xunit_test",
     "dotnet_resx",
@@ -82,8 +81,8 @@ load(
     "net461",
     "net462",
     "net47",
-    "net471",
-    "net472",
+    #"net471",
+    #"net472",
     # "netstandard1.1",
     # "netstandard1.2",
     # "netstandard1.3",

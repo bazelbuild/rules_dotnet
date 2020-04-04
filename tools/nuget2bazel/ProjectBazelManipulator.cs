@@ -169,10 +169,10 @@ namespace nuget2bazel
             var entry = new WorkspaceEntry(packageIdentity, sha256,
                 depsGroups, libItemGroups, toolItemGroups, refItemGroups, _mainFile, _variable);
 
-            if (!SdkList.Dlls.Contains(entry.PackageIdentity.Id.ToLower()))
-            {
-                await AddEntry(entry);
-            }
+            //if (!SdkList.Dlls.Contains(entry.PackageIdentity.Id.ToLower()))
+            //{
+            await AddEntry(entry);
+            //}
 
             return await base.InstallPackageAsync(packageIdentity, downloadResourceResult, nuGetProjectContext, token);
         }

@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DEFAULT_DOTNET_CORE_FRAMEWORK", "DOTNET_CORE_FRAMEWORKS", "core_binary")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_binary")
 
 core_binary(
     name = "nuget2bazel.exe",
@@ -45,5 +45,6 @@ core_binary(
         "@nuget.protocol//:netcoreapp2.1_core",
         "@nuget.resolver//:netcoreapp2.1_core",
         "@nuget.versioning//:netcoreapp2.1_core",
+        "@system.reflection.metadataloadcontext//:netcoreapp2.1_core",
     ],
 )

@@ -10,6 +10,8 @@ def dotnet_repositories_xunit():
         core_lib = {
             "netcoreapp2.0": "tools/netcoreapp2.0/xunit.abstractions.dll",
             "netcoreapp2.1": "tools/netcoreapp2.0/xunit.abstractions.dll",
+            "netcoreapp3.0": "tools/netcoreapp2.0/xunit.abstractions.dll",
+            "netcoreapp3.1": "tools/netcoreapp2.0/xunit.abstractions.dll",
         },
         net_lib = {
             "net452": "tools/net452/xunit.abstractions.dll",
@@ -19,11 +21,14 @@ def dotnet_repositories_xunit():
             "net47": "tools/net47/xunit.abstractions.dll",
             "net471": "tools/net471/xunit.abstractions.dll",
             "net472": "tools/net472/xunit.abstractions.dll",
+            "net48": "tools/net472/xunit.abstractions.dll",
         },
         mono_lib = "tools/net472/xunit.abstractions.dll",
        core_tool = {
            "netcoreapp2.0": "tools/netcoreapp2.0/xunit.console.dll",
            "netcoreapp2.1": "tools/netcoreapp2.0/xunit.console.dll",
+           "netcoreapp3.0": "tools/netcoreapp2.0/xunit.console.dll",
+           "netcoreapp3.1": "tools/netcoreapp2.0/xunit.console.dll",
        },
        net_tool = {
            "net452": "tools/net452/xunit.console.exe",
@@ -33,6 +38,7 @@ def dotnet_repositories_xunit():
            "net47": "tools/net47/xunit.console.exe",
            "net471": "tools/net471/xunit.console.exe",
            "net472": "tools/net472/xunit.console.exe",
+           "net48": "tools/net472/xunit.console.exe",
        },
         mono_tool = "tools/net472/xunit.console.exe",
         core_files = {
@@ -47,6 +53,26 @@ def dotnet_repositories_xunit():
                "tools/netcoreapp2.0/xunit.runner.utility.netcoreapp10.xml",
             ],
             "netcoreapp2.1": [
+               "tools/netcoreapp2.0/xunit.abstractions.dll",
+               "tools/netcoreapp2.0/xunit.console.deps.json",
+               "tools/netcoreapp2.0/xunit.console.dll",
+               "tools/netcoreapp2.0/xunit.console.dll.config",
+               "tools/netcoreapp2.0/xunit.console.runtimeconfig.json",
+               "tools/netcoreapp2.0/xunit.runner.reporters.netcoreapp10.dll",
+               "tools/netcoreapp2.0/xunit.runner.utility.netcoreapp10.dll",
+               "tools/netcoreapp2.0/xunit.runner.utility.netcoreapp10.xml",
+            ],
+            "netcoreapp3.0": [
+               "tools/netcoreapp2.0/xunit.abstractions.dll",
+               "tools/netcoreapp2.0/xunit.console.deps.json",
+               "tools/netcoreapp2.0/xunit.console.dll",
+               "tools/netcoreapp2.0/xunit.console.dll.config",
+               "tools/netcoreapp2.0/xunit.console.runtimeconfig.json",
+               "tools/netcoreapp2.0/xunit.runner.reporters.netcoreapp10.dll",
+               "tools/netcoreapp2.0/xunit.runner.utility.netcoreapp10.dll",
+               "tools/netcoreapp2.0/xunit.runner.utility.netcoreapp10.xml",
+            ],
+            "netcoreapp3.1": [
                "tools/netcoreapp2.0/xunit.abstractions.dll",
                "tools/netcoreapp2.0/xunit.console.deps.json",
                "tools/netcoreapp2.0/xunit.console.dll",
@@ -121,6 +147,15 @@ def dotnet_repositories_xunit():
                "tools/net472/xunit.runner.reporters.net452.dll",
                "tools/net472/xunit.runner.utility.net452.dll",
             ],
+            "net48": [
+               "tools/net472/xunit.abstractions.dll",
+               "tools/net472/xunit.console.exe",
+               "tools/net472/xunit.console.exe.config",
+               "tools/net472/xunit.console.x86.exe",
+               "tools/net472/xunit.console.x86.exe.config",
+               "tools/net472/xunit.runner.reporters.net452.dll",
+               "tools/net472/xunit.runner.utility.net452.dll",
+            ],
         },
         mono_files = [
             "tools/net472/xunit.abstractions.dll",
@@ -140,6 +175,8 @@ def dotnet_repositories_xunit():
         core_lib = {
             "netcoreapp2.0": "lib/netstandard1.1/xunit.assert.dll",
             "netcoreapp2.1": "lib/netstandard1.1/xunit.assert.dll",
+            "netcoreapp3.0": "lib/netstandard1.1/xunit.assert.dll",
+            "netcoreapp3.1": "lib/netstandard1.1/xunit.assert.dll",
         },
         net_lib = {
             "net45": "lib/netstandard1.1/xunit.assert.dll",
@@ -151,6 +188,7 @@ def dotnet_repositories_xunit():
             "net47": "lib/netstandard1.1/xunit.assert.dll",
             "net471": "lib/netstandard1.1/xunit.assert.dll",
             "net472": "lib/netstandard1.1/xunit.assert.dll",
+            "net48": "lib/netstandard1.1/xunit.assert.dll",
             "netstandard1.1": "lib/netstandard1.1/xunit.assert.dll",
             "netstandard1.2": "lib/netstandard1.1/xunit.assert.dll",
             "netstandard1.3": "lib/netstandard1.1/xunit.assert.dll",
@@ -158,6 +196,7 @@ def dotnet_repositories_xunit():
             "netstandard1.5": "lib/netstandard1.1/xunit.assert.dll",
             "netstandard1.6": "lib/netstandard1.1/xunit.assert.dll",
             "netstandard2.0": "lib/netstandard1.1/xunit.assert.dll",
+            "netstandard2.1": "lib/netstandard1.1/xunit.assert.dll",
         },
         mono_lib = "lib/netstandard1.1/xunit.assert.dll",
         core_files = {
@@ -166,6 +205,14 @@ def dotnet_repositories_xunit():
                "lib/netstandard1.1/xunit.assert.xml",
             ],
             "netcoreapp2.1": [
+               "lib/netstandard1.1/xunit.assert.dll",
+               "lib/netstandard1.1/xunit.assert.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.1/xunit.assert.dll",
+               "lib/netstandard1.1/xunit.assert.xml",
+            ],
+            "netcoreapp3.1": [
                "lib/netstandard1.1/xunit.assert.dll",
                "lib/netstandard1.1/xunit.assert.xml",
             ],
@@ -207,6 +254,10 @@ def dotnet_repositories_xunit():
                "lib/netstandard1.1/xunit.assert.dll",
                "lib/netstandard1.1/xunit.assert.xml",
             ],
+            "net48": [
+               "lib/netstandard1.1/xunit.assert.dll",
+               "lib/netstandard1.1/xunit.assert.xml",
+            ],
             "netstandard1.1": [
                "lib/netstandard1.1/xunit.assert.dll",
                "lib/netstandard1.1/xunit.assert.xml",
@@ -232,6 +283,10 @@ def dotnet_repositories_xunit():
                "lib/netstandard1.1/xunit.assert.xml",
             ],
             "netstandard2.0": [
+               "lib/netstandard1.1/xunit.assert.dll",
+               "lib/netstandard1.1/xunit.assert.xml",
+            ],
+            "netstandard2.1": [
                "lib/netstandard1.1/xunit.assert.dll",
                "lib/netstandard1.1/xunit.assert.xml",
             ],
@@ -249,6 +304,8 @@ def dotnet_repositories_xunit():
         core_lib = {
             "netcoreapp2.0": "lib/netstandard2.0/xunit.abstractions.dll",
             "netcoreapp2.1": "lib/netstandard2.0/xunit.abstractions.dll",
+            "netcoreapp3.0": "lib/netstandard2.0/xunit.abstractions.dll",
+            "netcoreapp3.1": "lib/netstandard2.0/xunit.abstractions.dll",
         },
         net_lib = {
             "net45": "lib/net35/xunit.abstractions.dll",
@@ -260,6 +317,7 @@ def dotnet_repositories_xunit():
             "net47": "lib/net35/xunit.abstractions.dll",
             "net471": "lib/net35/xunit.abstractions.dll",
             "net472": "lib/net35/xunit.abstractions.dll",
+            "net48": "lib/net35/xunit.abstractions.dll",
             "netstandard1.0": "lib/netstandard1.0/xunit.abstractions.dll",
             "netstandard1.1": "lib/netstandard1.0/xunit.abstractions.dll",
             "netstandard1.2": "lib/netstandard1.0/xunit.abstractions.dll",
@@ -268,6 +326,7 @@ def dotnet_repositories_xunit():
             "netstandard1.5": "lib/netstandard1.0/xunit.abstractions.dll",
             "netstandard1.6": "lib/netstandard1.0/xunit.abstractions.dll",
             "netstandard2.0": "lib/netstandard2.0/xunit.abstractions.dll",
+            "netstandard2.1": "lib/netstandard2.0/xunit.abstractions.dll",
         },
         mono_lib = "lib/net35/xunit.abstractions.dll",
         core_files = {
@@ -276,6 +335,14 @@ def dotnet_repositories_xunit():
                "lib/netstandard2.0/xunit.abstractions.xml",
             ],
             "netcoreapp2.1": [
+               "lib/netstandard2.0/xunit.abstractions.dll",
+               "lib/netstandard2.0/xunit.abstractions.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard2.0/xunit.abstractions.dll",
+               "lib/netstandard2.0/xunit.abstractions.xml",
+            ],
+            "netcoreapp3.1": [
                "lib/netstandard2.0/xunit.abstractions.dll",
                "lib/netstandard2.0/xunit.abstractions.xml",
             ],
@@ -317,6 +384,10 @@ def dotnet_repositories_xunit():
                "lib/net35/xunit.abstractions.dll",
                "lib/net35/xunit.abstractions.xml",
             ],
+            "net48": [
+               "lib/net35/xunit.abstractions.dll",
+               "lib/net35/xunit.abstractions.xml",
+            ],
             "netstandard1.0": [
                "lib/netstandard1.0/xunit.abstractions.dll",
                "lib/netstandard1.0/xunit.abstractions.xml",
@@ -346,6 +417,10 @@ def dotnet_repositories_xunit():
                "lib/netstandard1.0/xunit.abstractions.xml",
             ],
             "netstandard2.0": [
+               "lib/netstandard2.0/xunit.abstractions.dll",
+               "lib/netstandard2.0/xunit.abstractions.xml",
+            ],
+            "netstandard2.1": [
                "lib/netstandard2.0/xunit.abstractions.dll",
                "lib/netstandard2.0/xunit.abstractions.xml",
             ],
@@ -363,6 +438,8 @@ def dotnet_repositories_xunit():
         core_lib = {
             "netcoreapp2.0": "",
             "netcoreapp2.1": "",
+            "netcoreapp3.0": "",
+            "netcoreapp3.1": "",
         },
         net_lib = {
             "net45": "",
@@ -374,6 +451,7 @@ def dotnet_repositories_xunit():
             "net47": "",
             "net471": "",
             "net472": "",
+            "net48": "",
             "netstandard1.0": "",
             "netstandard1.1": "",
             "netstandard1.2": "",
@@ -382,6 +460,7 @@ def dotnet_repositories_xunit():
             "netstandard1.5": "",
             "netstandard1.6": "",
             "netstandard2.0": "",
+            "netstandard2.1": "",
         },
         core_files = {
             "netcoreapp2.0": [
@@ -389,6 +468,14 @@ def dotnet_repositories_xunit():
                "tools/uninstall.ps1",
             ],
             "netcoreapp2.1": [
+               "tools/install.ps1",
+               "tools/uninstall.ps1",
+            ],
+            "netcoreapp3.0": [
+               "tools/install.ps1",
+               "tools/uninstall.ps1",
+            ],
+            "netcoreapp3.1": [
                "tools/install.ps1",
                "tools/uninstall.ps1",
             ],
@@ -430,6 +517,10 @@ def dotnet_repositories_xunit():
                "tools/install.ps1",
                "tools/uninstall.ps1",
             ],
+            "net48": [
+               "tools/install.ps1",
+               "tools/uninstall.ps1",
+            ],
             "netstandard1.0": [
                "tools/install.ps1",
                "tools/uninstall.ps1",
@@ -462,6 +553,10 @@ def dotnet_repositories_xunit():
                "tools/install.ps1",
                "tools/uninstall.ps1",
             ],
+            "netstandard2.1": [
+               "tools/install.ps1",
+               "tools/uninstall.ps1",
+            ],
         },
         mono_files = [
             "tools/install.ps1",
@@ -476,6 +571,8 @@ def dotnet_repositories_xunit():
         core_lib = {
             "netcoreapp2.0": "lib/netstandard1.1/xunit.core.dll",
             "netcoreapp2.1": "lib/netstandard1.1/xunit.core.dll",
+            "netcoreapp3.0": "lib/netstandard1.1/xunit.core.dll",
+            "netcoreapp3.1": "lib/netstandard1.1/xunit.core.dll",
         },
         net_lib = {
             "net45": "lib/netstandard1.1/xunit.core.dll",
@@ -487,6 +584,7 @@ def dotnet_repositories_xunit():
             "net47": "lib/net452/xunit.core.dll",
             "net471": "lib/net452/xunit.core.dll",
             "net472": "lib/net452/xunit.core.dll",
+            "net48": "lib/net452/xunit.core.dll",
             "netstandard1.1": "lib/netstandard1.1/xunit.core.dll",
             "netstandard1.2": "lib/netstandard1.1/xunit.core.dll",
             "netstandard1.3": "lib/netstandard1.1/xunit.core.dll",
@@ -494,6 +592,7 @@ def dotnet_repositories_xunit():
             "netstandard1.5": "lib/netstandard1.1/xunit.core.dll",
             "netstandard1.6": "lib/netstandard1.1/xunit.core.dll",
             "netstandard2.0": "lib/netstandard1.1/xunit.core.dll",
+            "netstandard2.1": "lib/netstandard1.1/xunit.core.dll",
         },
         mono_lib = "lib/net452/xunit.core.dll",
         core_deps = {
@@ -502,6 +601,12 @@ def dotnet_repositories_xunit():
             ],
             "netcoreapp2.1": [
                "@xunit.abstractions//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@xunit.abstractions//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@xunit.abstractions//:netcoreapp3.1_core",
             ],
         },
         net_deps = {
@@ -532,6 +637,9 @@ def dotnet_repositories_xunit():
             "net472": [
                "@xunit.abstractions//:net472_net",
             ],
+            "net48": [
+               "@xunit.abstractions//:net48_net",
+            ],
             "netstandard1.1": [
                "@xunit.abstractions//:netstandard1.1_net",
             ],
@@ -553,6 +661,9 @@ def dotnet_repositories_xunit():
             "netstandard2.0": [
                "@xunit.abstractions//:netstandard2.0_net",
             ],
+            "netstandard2.1": [
+               "@xunit.abstractions//:netstandard2.1_net",
+            ],
         },
         mono_deps = [
             "@xunit.abstractions//:mono",
@@ -563,6 +674,14 @@ def dotnet_repositories_xunit():
                "lib/netstandard1.1/xunit.core.xml",
             ],
             "netcoreapp2.1": [
+               "lib/netstandard1.1/xunit.core.dll",
+               "lib/netstandard1.1/xunit.core.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.1/xunit.core.dll",
+               "lib/netstandard1.1/xunit.core.xml",
+            ],
+            "netcoreapp3.1": [
                "lib/netstandard1.1/xunit.core.dll",
                "lib/netstandard1.1/xunit.core.xml",
             ],
@@ -625,6 +744,13 @@ def dotnet_repositories_xunit():
                "lib/net452/xunit.runner.tdnet.dll",
                "lib/net452/xunit.runner.utility.net452.dll",
             ],
+            "net48": [
+               "lib/net452/xunit.core.dll",
+               "lib/net452/xunit.core.dll.tdnet",
+               "lib/net452/xunit.core.xml",
+               "lib/net452/xunit.runner.tdnet.dll",
+               "lib/net452/xunit.runner.utility.net452.dll",
+            ],
             "netstandard1.1": [
                "lib/netstandard1.1/xunit.core.dll",
                "lib/netstandard1.1/xunit.core.xml",
@@ -653,6 +779,10 @@ def dotnet_repositories_xunit():
                "lib/netstandard1.1/xunit.core.dll",
                "lib/netstandard1.1/xunit.core.xml",
             ],
+            "netstandard2.1": [
+               "lib/netstandard1.1/xunit.core.dll",
+               "lib/netstandard1.1/xunit.core.xml",
+            ],
         },
         mono_files = [
             "lib/net452/xunit.core.dll",
@@ -670,6 +800,8 @@ def dotnet_repositories_xunit():
         core_lib = {
             "netcoreapp2.0": "lib/netstandard1.1/xunit.execution.dotnet.dll",
             "netcoreapp2.1": "lib/netstandard1.1/xunit.execution.dotnet.dll",
+            "netcoreapp3.0": "lib/netstandard1.1/xunit.execution.dotnet.dll",
+            "netcoreapp3.1": "lib/netstandard1.1/xunit.execution.dotnet.dll",
         },
         net_lib = {
             "net45": "lib/netstandard1.1/xunit.execution.dotnet.dll",
@@ -681,6 +813,7 @@ def dotnet_repositories_xunit():
             "net47": "lib/net452/xunit.execution.desktop.dll",
             "net471": "lib/net452/xunit.execution.desktop.dll",
             "net472": "lib/net452/xunit.execution.desktop.dll",
+            "net48": "lib/net452/xunit.execution.desktop.dll",
             "netstandard1.1": "lib/netstandard1.1/xunit.execution.dotnet.dll",
             "netstandard1.2": "lib/netstandard1.1/xunit.execution.dotnet.dll",
             "netstandard1.3": "lib/netstandard1.1/xunit.execution.dotnet.dll",
@@ -688,6 +821,7 @@ def dotnet_repositories_xunit():
             "netstandard1.5": "lib/netstandard1.1/xunit.execution.dotnet.dll",
             "netstandard1.6": "lib/netstandard1.1/xunit.execution.dotnet.dll",
             "netstandard2.0": "lib/netstandard1.1/xunit.execution.dotnet.dll",
+            "netstandard2.1": "lib/netstandard1.1/xunit.execution.dotnet.dll",
         },
         mono_lib = "lib/net452/xunit.execution.desktop.dll",
         core_deps = {
@@ -696,6 +830,12 @@ def dotnet_repositories_xunit():
             ],
             "netcoreapp2.1": [
                "@xunit.extensibility.core//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@xunit.extensibility.core//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@xunit.extensibility.core//:netcoreapp3.1_core",
             ],
         },
         net_deps = {
@@ -726,6 +866,9 @@ def dotnet_repositories_xunit():
             "net472": [
                "@xunit.extensibility.core//:net472_net",
             ],
+            "net48": [
+               "@xunit.extensibility.core//:net48_net",
+            ],
             "netstandard1.1": [
                "@xunit.extensibility.core//:netstandard1.1_net",
             ],
@@ -747,6 +890,9 @@ def dotnet_repositories_xunit():
             "netstandard2.0": [
                "@xunit.extensibility.core//:netstandard2.0_net",
             ],
+            "netstandard2.1": [
+               "@xunit.extensibility.core//:netstandard2.1_net",
+            ],
         },
         mono_deps = [
             "@xunit.extensibility.core//:mono",
@@ -757,6 +903,14 @@ def dotnet_repositories_xunit():
                "lib/netstandard1.1/xunit.execution.dotnet.xml",
             ],
             "netcoreapp2.1": [
+               "lib/netstandard1.1/xunit.execution.dotnet.dll",
+               "lib/netstandard1.1/xunit.execution.dotnet.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard1.1/xunit.execution.dotnet.dll",
+               "lib/netstandard1.1/xunit.execution.dotnet.xml",
+            ],
+            "netcoreapp3.1": [
                "lib/netstandard1.1/xunit.execution.dotnet.dll",
                "lib/netstandard1.1/xunit.execution.dotnet.xml",
             ],
@@ -798,6 +952,10 @@ def dotnet_repositories_xunit():
                "lib/net452/xunit.execution.desktop.dll",
                "lib/net452/xunit.execution.desktop.xml",
             ],
+            "net48": [
+               "lib/net452/xunit.execution.desktop.dll",
+               "lib/net452/xunit.execution.desktop.xml",
+            ],
             "netstandard1.1": [
                "lib/netstandard1.1/xunit.execution.dotnet.dll",
                "lib/netstandard1.1/xunit.execution.dotnet.xml",
@@ -826,6 +984,10 @@ def dotnet_repositories_xunit():
                "lib/netstandard1.1/xunit.execution.dotnet.dll",
                "lib/netstandard1.1/xunit.execution.dotnet.xml",
             ],
+            "netstandard2.1": [
+               "lib/netstandard1.1/xunit.execution.dotnet.dll",
+               "lib/netstandard1.1/xunit.execution.dotnet.xml",
+            ],
         },
         mono_files = [
             "lib/net452/xunit.execution.desktop.dll",
@@ -845,6 +1007,14 @@ def dotnet_repositories_xunit():
             "netcoreapp2.1": [
                "@xunit.extensibility.core//:netcoreapp2.1_core",
                "@xunit.extensibility.execution//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@xunit.extensibility.core//:netcoreapp3.0_core",
+               "@xunit.extensibility.execution//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@xunit.extensibility.core//:netcoreapp3.1_core",
+               "@xunit.extensibility.execution//:netcoreapp3.1_core",
             ],
         },
         net_deps = {
@@ -884,6 +1054,10 @@ def dotnet_repositories_xunit():
                "@xunit.extensibility.core//:net472_net",
                "@xunit.extensibility.execution//:net472_net",
             ],
+            "net48": [
+               "@xunit.extensibility.core//:net48_net",
+               "@xunit.extensibility.execution//:net48_net",
+            ],
             "netstandard1.0": [
                "@xunit.extensibility.core//:netstandard1.0_net",
                "@xunit.extensibility.execution//:netstandard1.0_net",
@@ -916,6 +1090,10 @@ def dotnet_repositories_xunit():
                "@xunit.extensibility.core//:netstandard2.0_net",
                "@xunit.extensibility.execution//:netstandard2.0_net",
             ],
+            "netstandard2.1": [
+               "@xunit.extensibility.core//:netstandard2.1_net",
+               "@xunit.extensibility.execution//:netstandard2.1_net",
+            ],
         },
         mono_deps = [
             "@xunit.extensibility.core//:mono",
@@ -937,6 +1115,16 @@ def dotnet_repositories_xunit():
                "@xunit.core//:netcoreapp2.1_core",
                "@xunit.assert//:netcoreapp2.1_core",
                "@xunit.analyzers//:netcoreapp2.1_core",
+            ],
+            "netcoreapp3.0": [
+               "@xunit.core//:netcoreapp3.0_core",
+               "@xunit.assert//:netcoreapp3.0_core",
+               "@xunit.analyzers//:netcoreapp3.0_core",
+            ],
+            "netcoreapp3.1": [
+               "@xunit.core//:netcoreapp3.1_core",
+               "@xunit.assert//:netcoreapp3.1_core",
+               "@xunit.analyzers//:netcoreapp3.1_core",
             ],
         },
         net_deps = {
@@ -985,6 +1173,11 @@ def dotnet_repositories_xunit():
                "@xunit.assert//:net472_net",
                "@xunit.analyzers//:net472_net",
             ],
+            "net48": [
+               "@xunit.core//:net48_net",
+               "@xunit.assert//:net48_net",
+               "@xunit.analyzers//:net48_net",
+            ],
             "netstandard1.0": [
                "@xunit.core//:netstandard1.0_net",
                "@xunit.assert//:netstandard1.0_net",
@@ -1024,6 +1217,11 @@ def dotnet_repositories_xunit():
                "@xunit.core//:netstandard2.0_net",
                "@xunit.assert//:netstandard2.0_net",
                "@xunit.analyzers//:netstandard2.0_net",
+            ],
+            "netstandard2.1": [
+               "@xunit.core//:netstandard2.1_net",
+               "@xunit.assert//:netstandard2.1_net",
+               "@xunit.analyzers//:netstandard2.1_net",
             ],
         },
         mono_deps = [

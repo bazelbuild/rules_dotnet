@@ -23,13 +23,13 @@ namespace nuget2bazel
         {
             var netFrameworkTFMs = new string[]
             {
-                "net45", "net451", "net452", "net46", "net461", "net462", "net47", "net471", "net472", "netstandard1.0",
+                "net45", "net451", "net452", "net46", "net461", "net462", "net47", "net471", "net472", "net48", "netstandard1.0",
                 "netstandard1.1", "netstandard1.2", "netstandard1.3",
-                "netstandard1.4", "netstandard1.5", "netstandard1.6", "netstandard2.0",
+                "netstandard1.4", "netstandard1.5", "netstandard1.6", "netstandard2.0", "netstandard2.1",
             };
             var coreFrameworkTFMs = new string[]
             {
-                "netcoreapp2.0", "netcoreapp2.1",
+                "netcoreapp2.0", "netcoreapp2.1", "netcoreapp3.0", "netcoreapp3.1",
             };
             PackageIdentity = identity;
             Sha256 = sha256;
