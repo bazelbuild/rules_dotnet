@@ -11,7 +11,7 @@ def dotnet_repositories_nugets():
     dotnet_repositories_nunit()
 
     dotnet_nuget_new(
-        name = "Microsoft.NETFramework.ReferenceAssemblies.net45",
+        name = "Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0",
         package = "Microsoft.NETFramework.ReferenceAssemblies.net45",
         version = "1.0.0",
         sha256 = "9b9e76d6497bfc6d0328528eb50f5fcc886a3eba4f47cdabd3df66f94174eac6",
@@ -19,7 +19,7 @@ def dotnet_repositories_nugets():
     )
 
     dotnet_nuget_new(
-        name = "Microsoft.NETFramework.ReferenceAssemblies.net451",
+        name = "Microsoft.NETFramework.ReferenceAssemblies.net451.1.0.0",
         package = "Microsoft.NETFramework.ReferenceAssemblies.net451",
         version = "1.0.0",
         sha256 = "706278539689d45219715ff3fa19ff459127fc90104102eefcc236c1550f71e7",
@@ -27,7 +27,7 @@ def dotnet_repositories_nugets():
     )
 
     dotnet_nuget_new(
-        name = "Microsoft.NETFramework.ReferenceAssemblies.net452",
+        name = "Microsoft.NETFramework.ReferenceAssemblies.net452.1.0.0",
         package = "Microsoft.NETFramework.ReferenceAssemblies.net452",
         version = "1.0.0",
         sha256 = "e8a90f1699d9b542e1bd6fdbc9f60f36acf420b95cace59e23d6be376dc61bb8",
@@ -35,7 +35,7 @@ def dotnet_repositories_nugets():
     )
 
     dotnet_nuget_new(
-        name = "Microsoft.NETFramework.ReferenceAssemblies.net46",
+        name = "Microsoft.NETFramework.ReferenceAssemblies.net46.1.0.0",
         package = "Microsoft.NETFramework.ReferenceAssemblies.net46",
         version = "1.0.0",
         sha256 = "514e991aaacd84759f01b2933e6f4aa44a7d4caa39599f7d6c0a454b630286fa",
@@ -43,7 +43,7 @@ def dotnet_repositories_nugets():
     )
 
     dotnet_nuget_new(
-        name = "Microsoft.NETFramework.ReferenceAssemblies.net461",
+        name = "Microsoft.NETFramework.ReferenceAssemblies.net461.1.0.0",
         package = "Microsoft.NETFramework.ReferenceAssemblies.net461",
         version = "1.0.0",
         sha256 = "a12eec50ccca0642e686082a6c8e9e06a6f538f022a47d130d36836818b17303",
@@ -51,7 +51,7 @@ def dotnet_repositories_nugets():
     )
 
     dotnet_nuget_new(
-        name = "Microsoft.NETFramework.ReferenceAssemblies.net462",
+        name = "Microsoft.NETFramework.ReferenceAssemblies.net462.1.0.0",
         package = "Microsoft.NETFramework.ReferenceAssemblies.net462",
         version = "1.0.0",
         sha256 = "c4115c862f5ca778dc3fb649f455d38c095dfd10a1dc116b687944111462734d",
@@ -59,7 +59,7 @@ def dotnet_repositories_nugets():
     )
 
     dotnet_nuget_new(
-        name = "Microsoft.NETFramework.ReferenceAssemblies.net47",
+        name = "Microsoft.NETFramework.ReferenceAssemblies.net47.1.0.0",
         package = "Microsoft.NETFramework.ReferenceAssemblies.net47",
         version = "1.0.0",
         sha256 = "261e3476e6be010a525064ce0901b8f77b09cdb7ea1fec88832a00ebe0356503",
@@ -67,7 +67,7 @@ def dotnet_repositories_nugets():
     )
 
     dotnet_nuget_new(
-        name = "Microsoft.NETFramework.ReferenceAssemblies.net471",
+        name = "Microsoft.NETFramework.ReferenceAssemblies.net471.1.0.0",
         package = "Microsoft.NETFramework.ReferenceAssemblies.net471",
         version = "1.0.0",
         sha256 = "554c9305a9f064086861ae7db57b407147ec0850de2dfc5d86adabfa35b33180",
@@ -75,7 +75,7 @@ def dotnet_repositories_nugets():
     )
 
     dotnet_nuget_new(
-        name = "Microsoft.NETFramework.ReferenceAssemblies.net472",
+        name = "Microsoft.NETFramework.ReferenceAssemblies.net472.1.0.0",
         package = "Microsoft.NETFramework.ReferenceAssemblies.net472",
         version = "1.0.0",
         sha256 = "2c8fd79ea19bd03cece40ed92b7bafde024f87c73abcebe3eff8da6e05b611af",
@@ -83,9 +83,25 @@ def dotnet_repositories_nugets():
     )
 
     dotnet_nuget_new(
-        name = "Microsoft.NETFramework.ReferenceAssemblies.net48",
+        name = "Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.0",
         package = "Microsoft.NETFramework.ReferenceAssemblies.net48",
         version = "1.0.0",
         sha256 = "fd0ba0a0c5ccce36e104abd055d2f4bf596ff3afc0dbc1f201d6cf9a50b783ce",
         build_file_content = """exports_files(glob(["build/.NETFramework/v4.8/**/*.dll"]), visibility = ["//visibility:public"])""",
+    )
+
+    dotnet_nuget_new(
+        name = "Microsoft.NETCore.App.2.0.7",
+        package = "Microsoft.NETCore.App",
+        version = "2.0.7",
+        sha256 = "9f1f0d5c98b5819ea89ef86aeecd5ce8750ae03bd471113601e20a1cdab651f2",
+        build_file_content = """exports_files(glob(["ref/netcoreapp2.0/*.dll"]), visibility = ["//visibility:public"])""",
+    )
+
+    dotnet_nuget_new(
+        name = "Microsoft.NETCore.App.2.1.6",
+        package = "Microsoft.NETCore.App",
+        version = "2.1.6",
+        sha256 = "6648eb1432cac1996560a6c2fbf29a9b731e351a86e4c822b740916838fc8f98",
+        build_file_content = """exports_files(glob(["ref/netcoreapp2.1/*.dll"]), visibility = ["//visibility:public"])""",
     )

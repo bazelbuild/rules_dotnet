@@ -21,7 +21,6 @@ dotnet_binary(
         "//tests/examples/example_lib:{}_MyClass-core.dll".format(framework),
         "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.console.dll".format(framework),
         "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.io.filesystem.dll".format(framework),
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.private.corelib.dll".format(framework),
         "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.runtime.dll".format(framework),
         "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.runtime.extensions.dll".format(framework),
     ],

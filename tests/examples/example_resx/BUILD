@@ -27,6 +27,8 @@ load(
     testlauncher = "@xunit.runner.console//:netcoreapp2.0_core_tool",
     deps = [
         "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.runtime.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.diagnostics.debug.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.resources.resourcemanager.dll".format(framework),
         "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.diagnostics.tools.dll".format(framework),
         "@xunit.assert//:netcoreapp2.0_core",
         "@xunit.extensibility.core//:netcoreapp2.0_core",

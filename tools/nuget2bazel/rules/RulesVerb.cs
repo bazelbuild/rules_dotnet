@@ -1,6 +1,6 @@
 using CommandLine;
 
-namespace nuget2bazel
+namespace nuget2bazel.rules
 {
     [Verb("rules", HelpText = "Generates all files required by rules_dotnet")]
     public class RulesVerb : BaseVerb

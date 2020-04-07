@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using CommandLine;
 using CommandLine.Text;
+using nuget2bazel.rules;
 
 namespace nuget2bazel
 {

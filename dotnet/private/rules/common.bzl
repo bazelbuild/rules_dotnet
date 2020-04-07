@@ -24,7 +24,7 @@ def collect_transitive_info(deps):
         assembly = dep[DotnetLibrary]
 
         if assembly.ref:
-            direct_refs.append(assembly.ref)
+            direct_refs += assembly.ref.files.to_list()
         elif assembly.result:
             direct_refs.append(assembly.result)
 

@@ -2,7 +2,10 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_binary")
 
 core_binary(
     name = "nuget2bazel.exe",
-    srcs = glob(["*.cs"]),
+    srcs = glob([
+        "*.cs",
+        "rules/*.cs",
+    ]),
     visibility = ["//visibility:public"],
     deps = [
         "@commandlineparser//:netcoreapp2.1_core",
@@ -15,7 +18,6 @@ core_binary(
         "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.io.filesystem.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.io.filesystem.primitives.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.linq.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.private.corelib.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.extensions.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.security.cryptography.primitives.dll",

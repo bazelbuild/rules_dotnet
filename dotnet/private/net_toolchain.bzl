@@ -53,7 +53,7 @@ def _get_dotnet_stdlib(context_data):
         return f
     fail("Could not find mscorlib in net_sdk (lib, %s)" % context_data._libVersion)
 
-def _get_dotnet_stdlib_byname(shared, lib, libVersion, name):
+def _get_dotnet_stdlib_byname(shared, lib, libVersion, name, attr_ref = None):
     lname = name.lower()
     for f in shared.files.to_list():
         basename = paths.basename(f.path)

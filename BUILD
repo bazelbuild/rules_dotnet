@@ -1,7 +1,7 @@
-package(default_visibility = ["//visibility:public"])
-
 load("@io_bazel_rules_dotnet//dotnet/private:context.bzl", "core_context_data", "dotnet_context_data", "net_context_data")
 load("//dotnet:defs.bzl", "DEFAULT_DOTNET_CORE_FRAMEWORK", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NET_FRAMEWORKS")
+
+package(default_visibility = ["//visibility:public"])
 
 dotnet_context_data(
     name = "dotnet_context_data",

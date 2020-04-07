@@ -55,7 +55,7 @@ def _get_dotnet_stdlib(context_data):
         return f
     fail("Could not find mscorlib in core_sdk (lib, %s)" % context_data._shared)
 
-def _get_dotnet_stdlib_byname(shared, lib, libVersion, name):
+def _get_dotnet_stdlib_byname(shared, lib, libVersion, name, attr_ref = None):
     lname = name.lower()
     for f in shared.files.to_list():
         basename = paths.basename(f.path)
@@ -68,7 +68,10 @@ def _get_dotnet_stdlib_byname(shared, lib, libVersion, name):
         if basename.lower() != lname:
             continue
         return f
-    fail("Could not find %s in core_sdk (shared, lib)" % name)
+    if attr_ref:
+        return attr_ref.files.to_list()[0]
+    else:
+        fail("Could not find %s in core_sdk (shared, lib)" % name)
 
 def _core_toolchain_impl(ctx):
     return [platform_common.ToolchainInfo(

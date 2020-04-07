@@ -45,7 +45,7 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 	*p = '\0';
 
 	// Prepare arguments
-	newargv[0] = mono;
+	newargv[0] = (char*)mono;
 	newargv[1] = xunit;
 	newargv[2] = torun;
 	newargv[3] = "-junit";
