@@ -105,3 +105,27 @@ def dotnet_repositories_nugets():
         sha256 = "6648eb1432cac1996560a6c2fbf29a9b731e351a86e4c822b740916838fc8f98",
         build_file_content = """exports_files(glob(["ref/netcoreapp2.1/*.dll"]), visibility = ["//visibility:public"])""",
     )
+
+    dotnet_nuget_new(
+        name = "Microsoft.NETCore.App.2.1.7",
+        package = "Microsoft.NETCore.App",
+        version = "2.1.7",
+        sha256 = "d7b3716f5f8f600ca7aff52bdacb2633d95920614749a4cc76c9a504f86a15c3",
+        build_file_content = """exports_files(glob(["ref/netcoreapp2.1/*.dll"]), visibility = ["//visibility:public"])""",
+    )
+
+    dotnet_nuget_new(
+        name = "Microsoft.NETCore.App.2.2.0",
+        package = "Microsoft.NETCore.App",
+        version = "2.2.0",
+        sha256 = "73a6bcc97f02eebef0335ace25adcdd6e204dac83430706737a453f0330b8b6f",
+        build_file_content = """exports_files(glob(["ref/netcoreapp2.2/*.dll"]), visibility = ["//visibility:public"])""",
+    )
+
+    dotnet_nuget_new(
+        name = "Microsoft.NETCore.App.2.2.7",
+        package = "Microsoft.NETCore.App",
+        version = "2.2.7",
+        sha256 = "a4f166be783dedac38def8e9357ac74a4739119611635ac520b5fdd96645835e",
+        build_file_content = """exports_files(glob(["ref/netcoreapp2.2/*.dll"]), visibility = ["//visibility:public"])""",
+    )

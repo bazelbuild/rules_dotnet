@@ -36,6 +36,22 @@ load(
     ],
 ) for framework in DOTNET_CORE_FRAMEWORKS]
 
+core_xunit_test(
+    name = "v2.1.200_example_resx2.dll",
+    size = "small",
+    srcs = glob(["*.cs"]),
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_v2.1.200",
+    native_deps = "@core_sdk_v2.1.200//:native_deps",
+    resources = [":v2.1.200_core.resx"],
+    testlauncher = "@xunit.runner.console//:netcoreapp2.0_core_tool",
+    deps = [
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core/v2.1.200:libraryset",
+        "@xunit.assert//:netcoreapp2.0_core",
+        "@xunit.extensibility.core//:netcoreapp2.0_core",
+        "@xunit.extensibility.execution//:netcoreapp2.0_core",
+    ],
+)
+
 [net_resx(
     name = "{}_net.resx".format(framework),
     src = "Resources.resx",

@@ -1,14 +1,7 @@
-package(default_visibility = ["//visibility:public"])
+load("generated.bzl", "define_stdlib")
 
-load("@io_bazel_rules_dotnet//dotnet/stdlib.core:macro.bzl", "all_core_stdlib", "all_core_stdlib215", "all_core_stdlibbelow3")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl", "core_stdlib")
+package(default_visibility = ["//visibility:public"])
 
 framework = "v2.1.503"
 
-# system.memory.dll is not present in netcoreapp 2.1.200
-
-all_core_stdlib(framework)
-
-all_core_stdlib215(framework)
-
-all_core_stdlibbelow3(framework)
+define_stdlib("@io_bazel_rules_dotnet//:core_context_data_{}".format(framework))

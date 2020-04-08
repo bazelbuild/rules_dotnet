@@ -22,7 +22,11 @@ namespace nuget2bazel.rules
         {
             foreach (var tfm in new[]
             {
-                new Tuple<string, string, string>("2.0.7", "v2.1.200", "https://download.microsoft.com/download/3/7/1/37189942-C91D-46E9-907B-CF2B2DE584C7/dotnet-sdk-2.1.200-win-x64.zip")
+                new Tuple<string, string, string>("2.0.7", "v2.1.200", "https://download.microsoft.com/download/3/7/1/37189942-C91D-46E9-907B-CF2B2DE584C7/dotnet-sdk-2.1.200-win-x64.zip"),
+                new Tuple<string, string, string>("2.1.6", "v2.1.502", "https://download.visualstudio.microsoft.com/download/pr/c88b53e5-121c-4bc9-af5d-47a9d154ea64/e62eff84357c48dc8052a9c6ce5dfb8a/dotnet-sdk-2.1.502-win-x64.zip"),
+                new Tuple<string, string, string>("2.1.7", "v2.1.503", "https://download.visualstudio.microsoft.com/download/pr/81e18dc2-7747-4b2d-9912-3be0f83050f1/5bc41cb27df3da63378df2d051be4b7f/dotnet-sdk-2.1.503-win-x64.zip"),
+                new Tuple<string, string, string>("2.2.0", "v2.2.101", "https://download.visualstudio.microsoft.com/download/pr/25d4104d-1776-41cb-b96e-dff9e9bf1542/b878c013de90f0e6c91f6f3c98a2d592/dotnet-sdk-2.2.101-win-x64.zip"),
+                new Tuple<string, string, string>("2.2.7", "v2.2.402", "https://download.visualstudio.microsoft.com/download/pr/8ac3e8b7-9918-4e0c-b1be-5aa3e6afd00f/0be99c6ab9362b3c47050cdd50cba846/dotnet-sdk-2.2.402-win-x64.zip"),
             })
             {
                 await Handle(Path.Combine(_rulesPath, $"dotnet/stdlib.core/{tfm.Item2}/generated.bzl"),
@@ -52,11 +56,11 @@ namespace nuget2bazel.rules
             //    result.Add(r);
             //}
 
-            foreach (var s in sdks)
-            {
-                if (result.All(x => x.Name != s.Name))
-                    result.Add(s);
-            }
+            //foreach (var s in sdks)
+            //{
+            //    if (result.All(x => x.Name != s.Name))
+            //        result.Add(s);
+            //}
 
             return result;
         }
@@ -141,8 +145,20 @@ namespace nuget2bazel.rules
         {
             await using var f = new StreamWriter(outpath);
             await f.WriteLineAsync("load(\"@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl\", \"core_stdlib\")");
+            await f.WriteLineAsync("load(\"@io_bazel_rules_dotnet//dotnet/private:rules/libraryset.bzl\", \"core_libraryset\")");
             await f.WriteLineAsync();
             await f.WriteLineAsync("def define_stdlib(context_data):");
+
+            await f.WriteLineAsync("    core_libraryset(");
+            await f.WriteLineAsync("        name = \"libraryset\",");
+            await f.WriteLineAsync("        dotnet_context_data = context_data,");
+            await f.WriteLineAsync("        deps = [");
+            foreach (var d in libs)
+            {
+                await f.WriteLineAsync($"            \":{d.Name}\",");
+            }
+            await f.WriteLineAsync("        ],");
+            await f.WriteLineAsync("    )");
 
             foreach (var d in libs)
             {

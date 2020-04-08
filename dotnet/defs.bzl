@@ -29,6 +29,12 @@ load(
     _net_library = "net_library",
 )
 load(
+    "@io_bazel_rules_dotnet//dotnet/private:rules/libraryset.bzl",
+    _core_libraryset = "core_libraryset",
+    _dotnet_libraryset = "dotnet_libraryset",
+    _net_libraryset = "net_libraryset",
+)
+load(
     "@io_bazel_rules_dotnet//dotnet/private:rules/resx.bzl",
     _core_resx = "core_resx",
     _dotnet_resx = "dotnet_resx",
@@ -101,6 +107,9 @@ net_binary = _net_binary
 core_library = _core_library
 dotnet_library = _dotnet_library
 net_library = _net_library
+core_libraryset = _core_libraryset
+dotnet_libraryset = _dotnet_libraryset
+net_libraryset = _net_libraryset
 core_resx = _core_resx
 dotnet_resx = _dotnet_resx
 net_resx = _net_resx
