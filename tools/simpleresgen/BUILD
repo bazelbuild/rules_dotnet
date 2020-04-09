@@ -8,12 +8,7 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "core_
     unsafe = True,
     visibility = ["//visibility:public"],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.dll".format(framework),
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.xml.dll".format(framework),
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.runtime.serialization.formatters.dll".format(framework),
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.drawing.primitives.dll".format(framework),
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.console.dll".format(framework),
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.io.filesystem.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:libraryset".format(framework),
     ],
 ) for framework in DOTNET_CORE_FRAMEWORKS]
 
@@ -25,11 +20,6 @@ core_binary(
     unsafe = True,
     visibility = ["//visibility:public"],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.console.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.drawing.primitives.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.io.filesystem.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.serialization.formatters.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.xml.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
     ],
 )

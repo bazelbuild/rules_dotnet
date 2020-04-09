@@ -22,7 +22,7 @@ dotnet_library(
     visibility = ["//visibility:public"],
     deps = [
         "//tests/examples/example_transitive_lib:{}_TransitiveClass-core.dll".format(framework),
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.runtime.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:libraryset".format(framework),
     ],
 ) for framework in DOTNET_CORE_FRAMEWORKS]
 

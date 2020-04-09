@@ -12,6 +12,7 @@ namespace nuget2bazel.rules
         }
         public string Name { get; set; }
         public string Ref { get; set; }
+        public string StdlibPath { get; set; }
         public List<string> Deps { get; set; }
     }
 }

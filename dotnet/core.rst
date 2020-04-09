@@ -502,6 +502,32 @@ Attributes
 +----------------------------+-----------------------------+---------------------------------------+
 | The file to be transformed into DotnetLibrary_ provider. If empty then `name` is used.           |
 +----------------------------+-----------------------------+---------------------------------------+
+| :param:`stdlib_path`       | :type:`label`               | :value:`""`                           |
++----------------------------+-----------------------------+---------------------------------------+
+| The stdlib_path to be used instead of looking for one in sdk by name. Providing the parameter    |
+| speeds up the rule execution because the proper file needs not to be searched for within sdk     |
++----------------------------+-----------------------------+---------------------------------------+
+
+
+dotnet_libraryset, core_libraryset, net_libraryset
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Groups libraries into sets which may be used as dependency. 
+
+Providers
+^^^^^^^^^
+
+* DotnetLibrary_
+
+Attributes
+^^^^^^^^^^
+
++----------------------------+-----------------------------+---------------------------------------+
+| **Name**                   | **Type**                    | **Default value**                     |
++----------------------------+-----------------------------+---------------------------------------+
+| :param:`deps`              | :type:`label_list`          | :value:`None`                         |
++----------------------------+-----------------------------+---------------------------------------+
+
 
 
 

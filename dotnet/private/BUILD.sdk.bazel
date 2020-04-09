@@ -39,3 +39,5 @@ filegroup(
     name = "native_deps",
     srcs = glob(["host/**/*"]) + glob(["shared/**/*"]) ,
     )
+
+exports_files(glob(["core/**/*.dll"]))

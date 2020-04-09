@@ -1,10 +1,7 @@
-package(default_visibility = ["//visibility:public"])
+load("generated.bzl", "define_stdlib")
 
-load("@io_bazel_rules_dotnet//dotnet/stdlib.core:macro.bzl", "all_core_stdlib", "all_core_stdlib215")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl", "core_stdlib")
+package(default_visibility = ["//visibility:public"])
 
 framework = "v3.0.100"
 
-all_core_stdlib(framework)
-
-all_core_stdlib215(framework)
+define_stdlib("@io_bazel_rules_dotnet//:core_context_data_{}".format(framework))

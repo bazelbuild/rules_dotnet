@@ -32,6 +32,10 @@ namespace nuget2bazel.rules
 
             var stdlibCoreGenerator = new StdlibCoreGenerator(configDir, path);
             await stdlibCoreGenerator.Do();
+
+            var stdlibCoreGenerator3 = new StdlibCoreGenerator3(configDir, path);
+            await stdlibCoreGenerator3.Do();
+
         }
     }
 }
