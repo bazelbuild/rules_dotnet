@@ -3522,699 +3522,152 @@ def define_stdlib(context_data):
         ]
     )
     core_libraryset(
-        name = "Microsoft.WindowsDesktop.App",
-        dotnet_context_data = context_data,
-        deps = [
-            ":p2_accessibility.dll",
-            ":p2_microsoft.win32.registry.accesscontrol.dll",
-            ":p2_microsoft.win32.registry.dll",
-            ":p2_microsoft.win32.systemevents.dll",
-            ":p2_presentationcore.dll",
-            ":p2_presentationframework.aero.dll",
-            ":p2_presentationframework.aero2.dll",
-            ":p2_presentationframework.aerolite.dll",
-            ":p2_presentationframework.classic.dll",
-            ":p2_presentationframework.dll",
-            ":p2_presentationframework.luna.dll",
-            ":p2_presentationframework.royale.dll",
-            ":p2_presentationui.dll",
-            ":p2_reachframework.dll",
-            ":p2_system.codedom.dll",
-            ":p2_system.configuration.configurationmanager.dll",
-            ":p2_system.design.dll",
-            ":p2_system.diagnostics.eventlog.dll",
-            ":p2_system.diagnostics.performancecounter.dll",
-            ":p2_system.directoryservices.dll",
-            ":p2_system.drawing.common.dll",
-            ":p2_system.drawing.design.dll",
-            ":p2_system.drawing.dll",
-            ":p2_system.io.filesystem.accesscontrol.dll",
-            ":p2_system.io.packaging.dll",
-            ":p2_system.io.pipes.accesscontrol.dll",
-            ":p2_system.printing.dll",
-            ":p2_system.resources.extensions.dll",
-            ":p2_system.security.accesscontrol.dll",
-            ":p2_system.security.cryptography.cng.dll",
-            ":p2_system.security.cryptography.pkcs.dll",
-            ":p2_system.security.cryptography.protecteddata.dll",
-            ":p2_system.security.cryptography.xml.dll",
-            ":p2_system.security.permissions.dll",
-            ":p2_system.security.principal.windows.dll",
-            ":p2_system.threading.accesscontrol.dll",
-            ":p2_system.windows.controls.ribbon.dll",
-            ":p2_system.windows.extensions.dll",
-            ":p2_system.windows.forms.design.dll",
-            ":p2_system.windows.forms.design.editors.dll",
-            ":p2_system.windows.forms.dll",
-            ":p2_system.windows.input.manipulations.dll",
-            ":p2_system.windows.presentation.dll",
-            ":p2_system.xaml.dll",
-            ":p2_uiautomationclient.dll",
-            ":p2_uiautomationclientsideproviders.dll",
-            ":p2_uiautomationprovider.dll",
-            ":p2_uiautomationtypes.dll",
-            ":p2_windowsbase.dll",
-            ":p2_windowsformsintegration.dll",
-        ],
-    )
-    core_stdlib(
-        name = "p2_accessibility.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/Accessibility.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/Accessibility.dll",
-        deps = [
-        ]
-    )
-    core_stdlib(
-        name = "p2_microsoft.win32.registry.accesscontrol.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/Microsoft.Win32.Registry.AccessControl.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/Microsoft.Win32.Registry.AccessControl.dll",
-        deps = [
-            ":p2_microsoft.win32.registry.dll",
-            ":p2_system.security.accesscontrol.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_microsoft.win32.registry.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/Microsoft.Win32.Registry.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/Microsoft.Win32.Registry.dll",
-        deps = [
-            ":p2_system.security.accesscontrol.dll",
-            ":p2_system.security.principal.windows.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_microsoft.win32.systemevents.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/Microsoft.Win32.SystemEvents.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/Microsoft.Win32.SystemEvents.dll",
-        deps = [
-        ]
-    )
-    core_stdlib(
-        name = "p2_presentationcore.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/PresentationCore.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/PresentationCore.dll",
-        deps = [
-            ":p2_system.xaml.dll",
-            ":p2_windowsbase.dll",
-            ":p2_system.windows.input.manipulations.dll",
-            ":p2_uiautomationprovider.dll",
-            ":p2_uiautomationtypes.dll",
-            ":p2_system.io.packaging.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_presentationframework.aero.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/PresentationFramework.Aero.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/PresentationFramework.Aero.dll",
-        deps = [
-            ":p2_windowsbase.dll",
-            ":p2_presentationcore.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_presentationframework.aero2.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/PresentationFramework.Aero2.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/PresentationFramework.Aero2.dll",
-        deps = [
-            ":p2_windowsbase.dll",
-            ":p2_presentationcore.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_presentationframework.aerolite.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/PresentationFramework.AeroLite.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/PresentationFramework.AeroLite.dll",
-        deps = [
-            ":p2_windowsbase.dll",
-            ":p2_presentationcore.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_presentationframework.classic.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/PresentationFramework.Classic.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/PresentationFramework.Classic.dll",
-        deps = [
-            ":p2_windowsbase.dll",
-            ":p2_presentationcore.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_presentationframework.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/PresentationFramework.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/PresentationFramework.dll",
-        deps = [
-            ":p2_system.xaml.dll",
-            ":p2_windowsbase.dll",
-            ":p2_presentationcore.dll",
-            ":p2_reachframework.dll",
-            ":p2_uiautomationprovider.dll",
-            ":p2_uiautomationtypes.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_presentationframework.luna.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/PresentationFramework.Luna.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/PresentationFramework.Luna.dll",
-        deps = [
-            ":p2_windowsbase.dll",
-            ":p2_presentationcore.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_presentationframework.royale.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/PresentationFramework.Royale.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/PresentationFramework.Royale.dll",
-        deps = [
-            ":p2_windowsbase.dll",
-            ":p2_presentationcore.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_presentationui.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/PresentationUI.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/PresentationUI.dll",
-        deps = [
-        ]
-    )
-    core_stdlib(
-        name = "p2_reachframework.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/ReachFramework.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/ReachFramework.dll",
-        deps = [
-            ":p2_presentationcore.dll",
-            ":p2_windowsbase.dll",
-            ":p2_system.io.packaging.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.codedom.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.CodeDom.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.CodeDom.dll",
-        deps = [
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.configuration.configurationmanager.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Configuration.ConfigurationManager.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Configuration.ConfigurationManager.dll",
-        deps = [
-            ":p2_system.security.permissions.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.design.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Design.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Design.dll",
-        deps = [
-            ":p2_system.windows.forms.design.editors.dll",
-            ":p2_system.windows.forms.design.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.diagnostics.eventlog.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Diagnostics.EventLog.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Diagnostics.EventLog.dll",
-        deps = [
-            ":p2_system.security.principal.windows.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.diagnostics.performancecounter.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Diagnostics.PerformanceCounter.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Diagnostics.PerformanceCounter.dll",
-        deps = [
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.directoryservices.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.DirectoryServices.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.DirectoryServices.dll",
-        deps = [
-            ":p2_system.security.accesscontrol.dll",
-            ":p2_system.security.principal.windows.dll",
-            ":p2_system.io.filesystem.accesscontrol.dll",
-            ":p2_system.security.permissions.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.drawing.common.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Drawing.Common.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Drawing.Common.dll",
-        deps = [
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.drawing.design.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Drawing.Design.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Drawing.Design.dll",
-        deps = [
-            ":p2_system.windows.forms.design.editors.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.drawing.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Drawing.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Drawing.dll",
-        deps = [
-            ":p2_system.drawing.common.dll",
-            ":p2_system.configuration.configurationmanager.dll",
-            ":p2_system.windows.forms.dll",
-            ":p2_system.windows.forms.design.dll",
-            ":p2_system.windows.extensions.dll",
-            ":p2_system.security.permissions.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.io.filesystem.accesscontrol.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.IO.FileSystem.AccessControl.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.IO.FileSystem.AccessControl.dll",
-        deps = [
-            ":p2_system.security.accesscontrol.dll",
-            ":p2_system.security.principal.windows.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.io.packaging.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.IO.Packaging.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.IO.Packaging.dll",
-        deps = [
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.io.pipes.accesscontrol.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.IO.Pipes.AccessControl.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.IO.Pipes.AccessControl.dll",
-        deps = [
-            ":p2_system.security.accesscontrol.dll",
-            ":p2_system.security.principal.windows.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.printing.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Printing.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Printing.dll",
-        deps = [
-            ":p2_presentationcore.dll",
-            ":p2_reachframework.dll",
-            ":p2_windowsbase.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.resources.extensions.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Resources.Extensions.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Resources.Extensions.dll",
-        deps = [
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.security.accesscontrol.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Security.AccessControl.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Security.AccessControl.dll",
-        deps = [
-            ":p2_system.security.principal.windows.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.security.cryptography.cng.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Security.Cryptography.Cng.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Security.Cryptography.Cng.dll",
-        deps = [
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.security.cryptography.pkcs.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Security.Cryptography.Pkcs.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Security.Cryptography.Pkcs.dll",
-        deps = [
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.security.cryptography.protecteddata.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Security.Cryptography.ProtectedData.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Security.Cryptography.ProtectedData.dll",
-        deps = [
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.security.cryptography.xml.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Security.Cryptography.Xml.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Security.Cryptography.Xml.dll",
-        deps = [
-            ":p2_system.security.permissions.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.security.permissions.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Security.Permissions.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Security.Permissions.dll",
-        deps = [
-            ":p2_system.windows.extensions.dll",
-            ":p2_system.security.accesscontrol.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.security.principal.windows.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Security.Principal.Windows.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Security.Principal.Windows.dll",
-        deps = [
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.threading.accesscontrol.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Threading.AccessControl.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Threading.AccessControl.dll",
-        deps = [
-            ":p2_system.security.accesscontrol.dll",
-            ":p2_system.security.principal.windows.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.windows.controls.ribbon.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Windows.Controls.Ribbon.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Windows.Controls.Ribbon.dll",
-        deps = [
-            ":p2_system.xaml.dll",
-            ":p2_presentationcore.dll",
-            ":p2_windowsbase.dll",
-            ":p2_uiautomationprovider.dll",
-            ":p2_uiautomationtypes.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.windows.extensions.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Windows.Extensions.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Windows.Extensions.dll",
-        deps = [
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.windows.forms.design.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Windows.Forms.Design.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Windows.Forms.Design.dll",
-        deps = [
-            ":p2_system.drawing.common.dll",
-            ":p2_system.windows.forms.dll",
-            ":p2_system.codedom.dll",
-            ":p2_accessibility.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.windows.forms.design.editors.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Windows.Forms.Design.Editors.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Windows.Forms.Design.Editors.dll",
-        deps = [
-            ":p2_system.drawing.common.dll",
-            ":p2_system.windows.forms.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.windows.forms.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Windows.Forms.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Windows.Forms.dll",
-        deps = [
-            ":p2_system.drawing.common.dll",
-            ":p2_accessibility.dll",
-            ":p2_microsoft.win32.registry.dll",
-            ":p2_system.configuration.configurationmanager.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.windows.input.manipulations.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Windows.Input.Manipulations.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Windows.Input.Manipulations.dll",
-        deps = [
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.windows.presentation.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Windows.Presentation.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Windows.Presentation.dll",
-        deps = [
-            ":p2_windowsbase.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_system.xaml.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/System.Xaml.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/System.Xaml.dll",
-        deps = [
-            ":p2_system.windows.extensions.dll",
-            ":p2_system.security.permissions.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_uiautomationclient.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/UIAutomationClient.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/UIAutomationClient.dll",
-        deps = [
-            ":p2_uiautomationtypes.dll",
-            ":p2_uiautomationprovider.dll",
-            ":p2_windowsbase.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_uiautomationclientsideproviders.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/UIAutomationClientSideProviders.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/UIAutomationClientSideProviders.dll",
-        deps = [
-            ":p2_uiautomationclient.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_uiautomationprovider.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/UIAutomationProvider.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/UIAutomationProvider.dll",
-        deps = [
-            ":p2_uiautomationtypes.dll",
-            ":p2_windowsbase.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_uiautomationtypes.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/UIAutomationTypes.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/UIAutomationTypes.dll",
-        deps = [
-        ]
-    )
-    core_stdlib(
-        name = "p2_windowsbase.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/WindowsBase.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/WindowsBase.dll",
-        deps = [
-            ":p2_system.xaml.dll",
-            ":p2_system.io.packaging.dll",
-            ":p2_system.security.cryptography.xml.dll",
-            ":p2_system.security.permissions.dll",
-        ]
-    )
-    core_stdlib(
-        name = "p2_windowsformsintegration.dll",
-        dotnet_context_data = context_data,
-        ref = "@core_sdk_v3.0.100//:core/packs/Microsoft.WindowsDesktop.App.Ref/3.0.0/ref/netcoreapp3.0/WindowsFormsIntegration.dll",
-        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.WindowsDesktop.App/3.0.0/WindowsFormsIntegration.dll",
-        deps = [
-            ":p2_system.xaml.dll",
-            ":p2_system.windows.forms.dll",
-            ":p2_presentationcore.dll",
-            ":p2_windowsbase.dll",
-        ]
-    )
-    core_libraryset(
         name = "NETStandard.Library",
         dotnet_context_data = context_data,
         deps = [
-            ":p3_microsoft.win32.primitives.dll",
-            ":p3_mscorlib.dll",
-            ":p3_netstandard.dll",
-            ":p3_system.appcontext.dll",
-            ":p3_system.buffers.dll",
-            ":p3_system.collections.concurrent.dll",
-            ":p3_system.collections.dll",
-            ":p3_system.collections.nongeneric.dll",
-            ":p3_system.collections.specialized.dll",
-            ":p3_system.componentmodel.composition.dll",
-            ":p3_system.componentmodel.dll",
-            ":p3_system.componentmodel.eventbasedasync.dll",
-            ":p3_system.componentmodel.primitives.dll",
-            ":p3_system.componentmodel.typeconverter.dll",
-            ":p3_system.console.dll",
-            ":p3_system.core.dll",
-            ":p3_system.data.common.dll",
-            ":p3_system.data.dll",
-            ":p3_system.diagnostics.contracts.dll",
-            ":p3_system.diagnostics.debug.dll",
-            ":p3_system.diagnostics.fileversioninfo.dll",
-            ":p3_system.diagnostics.process.dll",
-            ":p3_system.diagnostics.stacktrace.dll",
-            ":p3_system.diagnostics.textwritertracelistener.dll",
-            ":p3_system.diagnostics.tools.dll",
-            ":p3_system.diagnostics.tracesource.dll",
-            ":p3_system.diagnostics.tracing.dll",
-            ":p3_system.dll",
-            ":p3_system.drawing.dll",
-            ":p3_system.drawing.primitives.dll",
-            ":p3_system.dynamic.runtime.dll",
-            ":p3_system.globalization.calendars.dll",
-            ":p3_system.globalization.dll",
-            ":p3_system.globalization.extensions.dll",
-            ":p3_system.io.compression.dll",
-            ":p3_system.io.compression.filesystem.dll",
-            ":p3_system.io.compression.zipfile.dll",
-            ":p3_system.io.dll",
-            ":p3_system.io.filesystem.dll",
-            ":p3_system.io.filesystem.driveinfo.dll",
-            ":p3_system.io.filesystem.primitives.dll",
-            ":p3_system.io.filesystem.watcher.dll",
-            ":p3_system.io.isolatedstorage.dll",
-            ":p3_system.io.memorymappedfiles.dll",
-            ":p3_system.io.pipes.dll",
-            ":p3_system.io.unmanagedmemorystream.dll",
-            ":p3_system.linq.dll",
-            ":p3_system.linq.expressions.dll",
-            ":p3_system.linq.parallel.dll",
-            ":p3_system.linq.queryable.dll",
-            ":p3_system.memory.dll",
-            ":p3_system.net.dll",
-            ":p3_system.net.http.dll",
-            ":p3_system.net.nameresolution.dll",
-            ":p3_system.net.networkinformation.dll",
-            ":p3_system.net.ping.dll",
-            ":p3_system.net.primitives.dll",
-            ":p3_system.net.requests.dll",
-            ":p3_system.net.security.dll",
-            ":p3_system.net.sockets.dll",
-            ":p3_system.net.webheadercollection.dll",
-            ":p3_system.net.websockets.client.dll",
-            ":p3_system.net.websockets.dll",
-            ":p3_system.numerics.dll",
-            ":p3_system.numerics.vectors.dll",
-            ":p3_system.objectmodel.dll",
-            ":p3_system.reflection.dispatchproxy.dll",
-            ":p3_system.reflection.dll",
-            ":p3_system.reflection.emit.dll",
-            ":p3_system.reflection.emit.ilgeneration.dll",
-            ":p3_system.reflection.emit.lightweight.dll",
-            ":p3_system.reflection.extensions.dll",
-            ":p3_system.reflection.primitives.dll",
-            ":p3_system.resources.reader.dll",
-            ":p3_system.resources.resourcemanager.dll",
-            ":p3_system.resources.writer.dll",
-            ":p3_system.runtime.compilerservices.visualc.dll",
-            ":p3_system.runtime.dll",
-            ":p3_system.runtime.extensions.dll",
-            ":p3_system.runtime.handles.dll",
-            ":p3_system.runtime.interopservices.dll",
-            ":p3_system.runtime.interopservices.runtimeinformation.dll",
-            ":p3_system.runtime.numerics.dll",
-            ":p3_system.runtime.serialization.dll",
-            ":p3_system.runtime.serialization.formatters.dll",
-            ":p3_system.runtime.serialization.json.dll",
-            ":p3_system.runtime.serialization.primitives.dll",
-            ":p3_system.runtime.serialization.xml.dll",
-            ":p3_system.security.claims.dll",
-            ":p3_system.security.cryptography.algorithms.dll",
-            ":p3_system.security.cryptography.csp.dll",
-            ":p3_system.security.cryptography.encoding.dll",
-            ":p3_system.security.cryptography.primitives.dll",
-            ":p3_system.security.cryptography.x509certificates.dll",
-            ":p3_system.security.principal.dll",
-            ":p3_system.security.securestring.dll",
-            ":p3_system.servicemodel.web.dll",
-            ":p3_system.text.encoding.dll",
-            ":p3_system.text.encoding.extensions.dll",
-            ":p3_system.text.regularexpressions.dll",
-            ":p3_system.threading.dll",
-            ":p3_system.threading.overlapped.dll",
-            ":p3_system.threading.tasks.dll",
-            ":p3_system.threading.tasks.extensions.dll",
-            ":p3_system.threading.tasks.parallel.dll",
-            ":p3_system.threading.thread.dll",
-            ":p3_system.threading.threadpool.dll",
-            ":p3_system.threading.timer.dll",
-            ":p3_system.transactions.dll",
-            ":p3_system.valuetuple.dll",
-            ":p3_system.web.dll",
-            ":p3_system.windows.dll",
-            ":p3_system.xml.dll",
-            ":p3_system.xml.linq.dll",
-            ":p3_system.xml.readerwriter.dll",
-            ":p3_system.xml.serialization.dll",
-            ":p3_system.xml.xdocument.dll",
-            ":p3_system.xml.xmldocument.dll",
-            ":p3_system.xml.xmlserializer.dll",
-            ":p3_system.xml.xpath.dll",
-            ":p3_system.xml.xpath.xdocument.dll",
+            ":p2_microsoft.win32.primitives.dll",
+            ":p2_mscorlib.dll",
+            ":p2_netstandard.dll",
+            ":p2_system.appcontext.dll",
+            ":p2_system.buffers.dll",
+            ":p2_system.collections.concurrent.dll",
+            ":p2_system.collections.dll",
+            ":p2_system.collections.nongeneric.dll",
+            ":p2_system.collections.specialized.dll",
+            ":p2_system.componentmodel.composition.dll",
+            ":p2_system.componentmodel.dll",
+            ":p2_system.componentmodel.eventbasedasync.dll",
+            ":p2_system.componentmodel.primitives.dll",
+            ":p2_system.componentmodel.typeconverter.dll",
+            ":p2_system.console.dll",
+            ":p2_system.core.dll",
+            ":p2_system.data.common.dll",
+            ":p2_system.data.dll",
+            ":p2_system.diagnostics.contracts.dll",
+            ":p2_system.diagnostics.debug.dll",
+            ":p2_system.diagnostics.fileversioninfo.dll",
+            ":p2_system.diagnostics.process.dll",
+            ":p2_system.diagnostics.stacktrace.dll",
+            ":p2_system.diagnostics.textwritertracelistener.dll",
+            ":p2_system.diagnostics.tools.dll",
+            ":p2_system.diagnostics.tracesource.dll",
+            ":p2_system.diagnostics.tracing.dll",
+            ":p2_system.dll",
+            ":p2_system.drawing.dll",
+            ":p2_system.drawing.primitives.dll",
+            ":p2_system.dynamic.runtime.dll",
+            ":p2_system.globalization.calendars.dll",
+            ":p2_system.globalization.dll",
+            ":p2_system.globalization.extensions.dll",
+            ":p2_system.io.compression.dll",
+            ":p2_system.io.compression.filesystem.dll",
+            ":p2_system.io.compression.zipfile.dll",
+            ":p2_system.io.dll",
+            ":p2_system.io.filesystem.dll",
+            ":p2_system.io.filesystem.driveinfo.dll",
+            ":p2_system.io.filesystem.primitives.dll",
+            ":p2_system.io.filesystem.watcher.dll",
+            ":p2_system.io.isolatedstorage.dll",
+            ":p2_system.io.memorymappedfiles.dll",
+            ":p2_system.io.pipes.dll",
+            ":p2_system.io.unmanagedmemorystream.dll",
+            ":p2_system.linq.dll",
+            ":p2_system.linq.expressions.dll",
+            ":p2_system.linq.parallel.dll",
+            ":p2_system.linq.queryable.dll",
+            ":p2_system.memory.dll",
+            ":p2_system.net.dll",
+            ":p2_system.net.http.dll",
+            ":p2_system.net.nameresolution.dll",
+            ":p2_system.net.networkinformation.dll",
+            ":p2_system.net.ping.dll",
+            ":p2_system.net.primitives.dll",
+            ":p2_system.net.requests.dll",
+            ":p2_system.net.security.dll",
+            ":p2_system.net.sockets.dll",
+            ":p2_system.net.webheadercollection.dll",
+            ":p2_system.net.websockets.client.dll",
+            ":p2_system.net.websockets.dll",
+            ":p2_system.numerics.dll",
+            ":p2_system.numerics.vectors.dll",
+            ":p2_system.objectmodel.dll",
+            ":p2_system.reflection.dispatchproxy.dll",
+            ":p2_system.reflection.dll",
+            ":p2_system.reflection.emit.dll",
+            ":p2_system.reflection.emit.ilgeneration.dll",
+            ":p2_system.reflection.emit.lightweight.dll",
+            ":p2_system.reflection.extensions.dll",
+            ":p2_system.reflection.primitives.dll",
+            ":p2_system.resources.reader.dll",
+            ":p2_system.resources.resourcemanager.dll",
+            ":p2_system.resources.writer.dll",
+            ":p2_system.runtime.compilerservices.visualc.dll",
+            ":p2_system.runtime.dll",
+            ":p2_system.runtime.extensions.dll",
+            ":p2_system.runtime.handles.dll",
+            ":p2_system.runtime.interopservices.dll",
+            ":p2_system.runtime.interopservices.runtimeinformation.dll",
+            ":p2_system.runtime.numerics.dll",
+            ":p2_system.runtime.serialization.dll",
+            ":p2_system.runtime.serialization.formatters.dll",
+            ":p2_system.runtime.serialization.json.dll",
+            ":p2_system.runtime.serialization.primitives.dll",
+            ":p2_system.runtime.serialization.xml.dll",
+            ":p2_system.security.claims.dll",
+            ":p2_system.security.cryptography.algorithms.dll",
+            ":p2_system.security.cryptography.csp.dll",
+            ":p2_system.security.cryptography.encoding.dll",
+            ":p2_system.security.cryptography.primitives.dll",
+            ":p2_system.security.cryptography.x509certificates.dll",
+            ":p2_system.security.principal.dll",
+            ":p2_system.security.securestring.dll",
+            ":p2_system.servicemodel.web.dll",
+            ":p2_system.text.encoding.dll",
+            ":p2_system.text.encoding.extensions.dll",
+            ":p2_system.text.regularexpressions.dll",
+            ":p2_system.threading.dll",
+            ":p2_system.threading.overlapped.dll",
+            ":p2_system.threading.tasks.dll",
+            ":p2_system.threading.tasks.extensions.dll",
+            ":p2_system.threading.tasks.parallel.dll",
+            ":p2_system.threading.thread.dll",
+            ":p2_system.threading.threadpool.dll",
+            ":p2_system.threading.timer.dll",
+            ":p2_system.transactions.dll",
+            ":p2_system.valuetuple.dll",
+            ":p2_system.web.dll",
+            ":p2_system.windows.dll",
+            ":p2_system.xml.dll",
+            ":p2_system.xml.linq.dll",
+            ":p2_system.xml.readerwriter.dll",
+            ":p2_system.xml.serialization.dll",
+            ":p2_system.xml.xdocument.dll",
+            ":p2_system.xml.xmldocument.dll",
+            ":p2_system.xml.xmlserializer.dll",
+            ":p2_system.xml.xpath.dll",
+            ":p2_system.xml.xpath.xdocument.dll",
         ],
     )
     core_stdlib(
-        name = "p3_microsoft.win32.primitives.dll",
+        name = "p2_microsoft.win32.primitives.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/Microsoft.Win32.Primitives.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/Microsoft.Win32.Primitives.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_mscorlib.dll",
+        name = "p2_mscorlib.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/mscorlib.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/mscorlib.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_netstandard.dll",
+        name = "p2_netstandard.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/netstandard.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/netstandard.dll",
@@ -4222,1063 +3675,1063 @@ def define_stdlib(context_data):
         ]
     )
     core_stdlib(
-        name = "p3_system.appcontext.dll",
+        name = "p2_system.appcontext.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.AppContext.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.AppContext.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.buffers.dll",
+        name = "p2_system.buffers.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Buffers.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Buffers.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.collections.concurrent.dll",
+        name = "p2_system.collections.concurrent.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Collections.Concurrent.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Collections.Concurrent.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.collections.dll",
+        name = "p2_system.collections.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Collections.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Collections.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.collections.nongeneric.dll",
+        name = "p2_system.collections.nongeneric.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Collections.NonGeneric.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Collections.NonGeneric.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.collections.specialized.dll",
+        name = "p2_system.collections.specialized.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Collections.Specialized.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Collections.Specialized.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.componentmodel.composition.dll",
+        name = "p2_system.componentmodel.composition.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.ComponentModel.Composition.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.componentmodel.dll",
+        name = "p2_system.componentmodel.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.ComponentModel.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.ComponentModel.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.componentmodel.eventbasedasync.dll",
+        name = "p2_system.componentmodel.eventbasedasync.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.ComponentModel.EventBasedAsync.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.ComponentModel.EventBasedAsync.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.componentmodel.primitives.dll",
+        name = "p2_system.componentmodel.primitives.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.ComponentModel.Primitives.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.ComponentModel.Primitives.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.componentmodel.typeconverter.dll",
+        name = "p2_system.componentmodel.typeconverter.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.ComponentModel.TypeConverter.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.ComponentModel.TypeConverter.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.console.dll",
+        name = "p2_system.console.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Console.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Console.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.core.dll",
+        name = "p2_system.core.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Core.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Core.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.data.common.dll",
+        name = "p2_system.data.common.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Data.Common.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Data.Common.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.data.dll",
+        name = "p2_system.data.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Data.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Data.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.diagnostics.contracts.dll",
+        name = "p2_system.diagnostics.contracts.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Diagnostics.Contracts.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Diagnostics.Contracts.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.diagnostics.debug.dll",
+        name = "p2_system.diagnostics.debug.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Diagnostics.Debug.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Diagnostics.Debug.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.diagnostics.fileversioninfo.dll",
+        name = "p2_system.diagnostics.fileversioninfo.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Diagnostics.FileVersionInfo.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Diagnostics.FileVersionInfo.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.diagnostics.process.dll",
+        name = "p2_system.diagnostics.process.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Diagnostics.Process.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Diagnostics.Process.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.diagnostics.stacktrace.dll",
+        name = "p2_system.diagnostics.stacktrace.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Diagnostics.StackTrace.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Diagnostics.StackTrace.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.diagnostics.textwritertracelistener.dll",
+        name = "p2_system.diagnostics.textwritertracelistener.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Diagnostics.TextWriterTraceListener.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Diagnostics.TextWriterTraceListener.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.diagnostics.tools.dll",
+        name = "p2_system.diagnostics.tools.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Diagnostics.Tools.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Diagnostics.Tools.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.diagnostics.tracesource.dll",
+        name = "p2_system.diagnostics.tracesource.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Diagnostics.TraceSource.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Diagnostics.TraceSource.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.diagnostics.tracing.dll",
+        name = "p2_system.diagnostics.tracing.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Diagnostics.Tracing.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Diagnostics.Tracing.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.dll",
+        name = "p2_system.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.drawing.dll",
+        name = "p2_system.drawing.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Drawing.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Drawing.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.drawing.primitives.dll",
+        name = "p2_system.drawing.primitives.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Drawing.Primitives.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Drawing.Primitives.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.dynamic.runtime.dll",
+        name = "p2_system.dynamic.runtime.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Dynamic.Runtime.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Dynamic.Runtime.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.globalization.calendars.dll",
+        name = "p2_system.globalization.calendars.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Globalization.Calendars.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Globalization.Calendars.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.globalization.dll",
+        name = "p2_system.globalization.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Globalization.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Globalization.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.globalization.extensions.dll",
+        name = "p2_system.globalization.extensions.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Globalization.Extensions.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Globalization.Extensions.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.io.compression.dll",
+        name = "p2_system.io.compression.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.IO.Compression.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.IO.Compression.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.io.compression.filesystem.dll",
+        name = "p2_system.io.compression.filesystem.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.IO.Compression.FileSystem.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.IO.Compression.FileSystem.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.io.compression.zipfile.dll",
+        name = "p2_system.io.compression.zipfile.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.IO.Compression.ZipFile.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.IO.Compression.ZipFile.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.io.dll",
+        name = "p2_system.io.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.IO.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.IO.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.io.filesystem.dll",
+        name = "p2_system.io.filesystem.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.IO.FileSystem.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.IO.FileSystem.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.io.filesystem.driveinfo.dll",
+        name = "p2_system.io.filesystem.driveinfo.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.IO.FileSystem.DriveInfo.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.IO.FileSystem.DriveInfo.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.io.filesystem.primitives.dll",
+        name = "p2_system.io.filesystem.primitives.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.IO.FileSystem.Primitives.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.IO.FileSystem.Primitives.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.io.filesystem.watcher.dll",
+        name = "p2_system.io.filesystem.watcher.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.IO.FileSystem.Watcher.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.IO.FileSystem.Watcher.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.io.isolatedstorage.dll",
+        name = "p2_system.io.isolatedstorage.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.IO.IsolatedStorage.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.IO.IsolatedStorage.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.io.memorymappedfiles.dll",
+        name = "p2_system.io.memorymappedfiles.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.IO.MemoryMappedFiles.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.IO.MemoryMappedFiles.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.io.pipes.dll",
+        name = "p2_system.io.pipes.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.IO.Pipes.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.IO.Pipes.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.io.unmanagedmemorystream.dll",
+        name = "p2_system.io.unmanagedmemorystream.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.IO.UnmanagedMemoryStream.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.IO.UnmanagedMemoryStream.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.linq.dll",
+        name = "p2_system.linq.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Linq.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Linq.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.linq.expressions.dll",
+        name = "p2_system.linq.expressions.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Linq.Expressions.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Linq.Expressions.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.linq.parallel.dll",
+        name = "p2_system.linq.parallel.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Linq.Parallel.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Linq.Parallel.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.linq.queryable.dll",
+        name = "p2_system.linq.queryable.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Linq.Queryable.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Linq.Queryable.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.memory.dll",
+        name = "p2_system.memory.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Memory.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Memory.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.net.dll",
+        name = "p2_system.net.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Net.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Net.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.net.http.dll",
+        name = "p2_system.net.http.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Net.Http.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Net.Http.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.net.nameresolution.dll",
+        name = "p2_system.net.nameresolution.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Net.NameResolution.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Net.NameResolution.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.net.networkinformation.dll",
+        name = "p2_system.net.networkinformation.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Net.NetworkInformation.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Net.NetworkInformation.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.net.ping.dll",
+        name = "p2_system.net.ping.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Net.Ping.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Net.Ping.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.net.primitives.dll",
+        name = "p2_system.net.primitives.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Net.Primitives.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Net.Primitives.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.net.requests.dll",
+        name = "p2_system.net.requests.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Net.Requests.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Net.Requests.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.net.security.dll",
+        name = "p2_system.net.security.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Net.Security.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Net.Security.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.net.sockets.dll",
+        name = "p2_system.net.sockets.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Net.Sockets.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Net.Sockets.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.net.webheadercollection.dll",
+        name = "p2_system.net.webheadercollection.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Net.WebHeaderCollection.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Net.WebHeaderCollection.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.net.websockets.client.dll",
+        name = "p2_system.net.websockets.client.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Net.WebSockets.Client.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Net.WebSockets.Client.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.net.websockets.dll",
+        name = "p2_system.net.websockets.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Net.WebSockets.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Net.WebSockets.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.numerics.dll",
+        name = "p2_system.numerics.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Numerics.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Numerics.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.numerics.vectors.dll",
+        name = "p2_system.numerics.vectors.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Numerics.Vectors.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Numerics.Vectors.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.objectmodel.dll",
+        name = "p2_system.objectmodel.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.ObjectModel.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.ObjectModel.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.reflection.dispatchproxy.dll",
+        name = "p2_system.reflection.dispatchproxy.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Reflection.DispatchProxy.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Reflection.DispatchProxy.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.reflection.dll",
+        name = "p2_system.reflection.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Reflection.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Reflection.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.reflection.emit.dll",
+        name = "p2_system.reflection.emit.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Reflection.Emit.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Reflection.Emit.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.reflection.emit.ilgeneration.dll",
+        name = "p2_system.reflection.emit.ilgeneration.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Reflection.Emit.ILGeneration.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Reflection.Emit.ILGeneration.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.reflection.emit.lightweight.dll",
+        name = "p2_system.reflection.emit.lightweight.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Reflection.Emit.Lightweight.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Reflection.Emit.Lightweight.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.reflection.extensions.dll",
+        name = "p2_system.reflection.extensions.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Reflection.Extensions.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Reflection.Extensions.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.reflection.primitives.dll",
+        name = "p2_system.reflection.primitives.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Reflection.Primitives.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Reflection.Primitives.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.resources.reader.dll",
+        name = "p2_system.resources.reader.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Resources.Reader.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Resources.Reader.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.resources.resourcemanager.dll",
+        name = "p2_system.resources.resourcemanager.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Resources.ResourceManager.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Resources.ResourceManager.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.resources.writer.dll",
+        name = "p2_system.resources.writer.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Resources.Writer.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Resources.Writer.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.runtime.compilerservices.visualc.dll",
+        name = "p2_system.runtime.compilerservices.visualc.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Runtime.CompilerServices.VisualC.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Runtime.CompilerServices.VisualC.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.runtime.dll",
+        name = "p2_system.runtime.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Runtime.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Runtime.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.runtime.extensions.dll",
+        name = "p2_system.runtime.extensions.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Runtime.Extensions.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Runtime.Extensions.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.runtime.handles.dll",
+        name = "p2_system.runtime.handles.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Runtime.Handles.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Runtime.Handles.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.runtime.interopservices.dll",
+        name = "p2_system.runtime.interopservices.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Runtime.InteropServices.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Runtime.InteropServices.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.runtime.interopservices.runtimeinformation.dll",
+        name = "p2_system.runtime.interopservices.runtimeinformation.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Runtime.InteropServices.RuntimeInformation.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Runtime.InteropServices.RuntimeInformation.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.runtime.numerics.dll",
+        name = "p2_system.runtime.numerics.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Runtime.Numerics.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Runtime.Numerics.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.runtime.serialization.dll",
+        name = "p2_system.runtime.serialization.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Runtime.Serialization.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Runtime.Serialization.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.runtime.serialization.formatters.dll",
+        name = "p2_system.runtime.serialization.formatters.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Runtime.Serialization.Formatters.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Runtime.Serialization.Formatters.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.runtime.serialization.json.dll",
+        name = "p2_system.runtime.serialization.json.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Runtime.Serialization.Json.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Runtime.Serialization.Json.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.runtime.serialization.primitives.dll",
+        name = "p2_system.runtime.serialization.primitives.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Runtime.Serialization.Primitives.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Runtime.Serialization.Primitives.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.runtime.serialization.xml.dll",
+        name = "p2_system.runtime.serialization.xml.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Runtime.Serialization.Xml.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Runtime.Serialization.Xml.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.security.claims.dll",
+        name = "p2_system.security.claims.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Security.Claims.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Security.Claims.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.security.cryptography.algorithms.dll",
+        name = "p2_system.security.cryptography.algorithms.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Security.Cryptography.Algorithms.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Security.Cryptography.Algorithms.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.security.cryptography.csp.dll",
+        name = "p2_system.security.cryptography.csp.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Security.Cryptography.Csp.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Security.Cryptography.Csp.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.security.cryptography.encoding.dll",
+        name = "p2_system.security.cryptography.encoding.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Security.Cryptography.Encoding.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Security.Cryptography.Encoding.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.security.cryptography.primitives.dll",
+        name = "p2_system.security.cryptography.primitives.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Security.Cryptography.Primitives.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Security.Cryptography.Primitives.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.security.cryptography.x509certificates.dll",
+        name = "p2_system.security.cryptography.x509certificates.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Security.Cryptography.X509Certificates.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Security.Cryptography.X509Certificates.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.security.principal.dll",
+        name = "p2_system.security.principal.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Security.Principal.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Security.Principal.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.security.securestring.dll",
+        name = "p2_system.security.securestring.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Security.SecureString.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Security.SecureString.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.servicemodel.web.dll",
+        name = "p2_system.servicemodel.web.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.ServiceModel.Web.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.ServiceModel.Web.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.text.encoding.dll",
+        name = "p2_system.text.encoding.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Text.Encoding.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Text.Encoding.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.text.encoding.extensions.dll",
+        name = "p2_system.text.encoding.extensions.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Text.Encoding.Extensions.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Text.Encoding.Extensions.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.text.regularexpressions.dll",
+        name = "p2_system.text.regularexpressions.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Text.RegularExpressions.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Text.RegularExpressions.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.threading.dll",
+        name = "p2_system.threading.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Threading.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Threading.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.threading.overlapped.dll",
+        name = "p2_system.threading.overlapped.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Threading.Overlapped.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Threading.Overlapped.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.threading.tasks.dll",
+        name = "p2_system.threading.tasks.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Threading.Tasks.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Threading.Tasks.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.threading.tasks.extensions.dll",
+        name = "p2_system.threading.tasks.extensions.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Threading.Tasks.Extensions.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Threading.Tasks.Extensions.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.threading.tasks.parallel.dll",
+        name = "p2_system.threading.tasks.parallel.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Threading.Tasks.Parallel.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Threading.Tasks.Parallel.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.threading.thread.dll",
+        name = "p2_system.threading.thread.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Threading.Thread.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Threading.Thread.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.threading.threadpool.dll",
+        name = "p2_system.threading.threadpool.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Threading.ThreadPool.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Threading.ThreadPool.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.threading.timer.dll",
+        name = "p2_system.threading.timer.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Threading.Timer.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Threading.Timer.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.transactions.dll",
+        name = "p2_system.transactions.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Transactions.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Transactions.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.valuetuple.dll",
+        name = "p2_system.valuetuple.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.ValueTuple.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.ValueTuple.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.web.dll",
+        name = "p2_system.web.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Web.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Web.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.windows.dll",
+        name = "p2_system.windows.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Windows.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Windows.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.xml.dll",
+        name = "p2_system.xml.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Xml.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Xml.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.xml.linq.dll",
+        name = "p2_system.xml.linq.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Xml.Linq.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Xml.Linq.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.xml.readerwriter.dll",
+        name = "p2_system.xml.readerwriter.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Xml.ReaderWriter.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Xml.ReaderWriter.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.xml.serialization.dll",
+        name = "p2_system.xml.serialization.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Xml.Serialization.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Xml.Serialization.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.xml.xdocument.dll",
+        name = "p2_system.xml.xdocument.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Xml.XDocument.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Xml.XDocument.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.xml.xmldocument.dll",
+        name = "p2_system.xml.xmldocument.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Xml.XmlDocument.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Xml.XmlDocument.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.xml.xmlserializer.dll",
+        name = "p2_system.xml.xmlserializer.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Xml.XmlSerializer.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Xml.XmlSerializer.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.xml.xpath.dll",
+        name = "p2_system.xml.xpath.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Xml.XPath.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Xml.XPath.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
     core_stdlib(
-        name = "p3_system.xml.xpath.xdocument.dll",
+        name = "p2_system.xml.xpath.xdocument.dll",
         dotnet_context_data = context_data,
         ref = "@core_sdk_v3.0.100//:core/packs/NETStandard.Library.Ref/2.1.0/ref/netstandard2.1/System.Xml.XPath.XDocument.dll",
         stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Xml.XPath.XDocument.dll",
         deps = [
-            ":p3_netstandard.dll",
+            ":p2_netstandard.dll",
         ]
     )
