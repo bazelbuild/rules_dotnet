@@ -7,7 +7,7 @@ Welcome to rules_dotnet's documentation!
 ========================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
    README
@@ -22,7 +22,9 @@ Welcome to rules_dotnet's documentation!
    tests/core/core_library/README.rst
    tests/core/dotnet_binary/README.rst
    tests/core/core_binary/README.rst
+   tests/core/core_binary/README.rst
    tests/core/nuget_single/README.rst
+   tests/core/core_library/README.rst
    tests/core/roslyn_2_10_0/README.rst
    tests/examples/README.rst
    tools/nuget2bazel/README.rst
