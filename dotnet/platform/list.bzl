@@ -43,14 +43,14 @@ DOTNET_NET_FRAMEWORKS = {
     "net471": (".NETFramework,Version=v4.7.1", None, "NET471", "4.7.1"),
     "net472": (".NETFramework,Version=v4.7.2", None, "NET472", "4.7.2"),
     "net48": (".NETFramework,Version=v4.8", None, "NET48", "4.8"),
-    "netstandard1.0": (".NETStandard,Version=v1.0", "net472", "NETSTANDARD1_0", "4.7.2"),
-    "netstandard1.1": (".NETStandard,Version=v1.1", "net472", "NETSTANDARD1_1", "4.7.2"),
-    "netstandard1.2": (".NETStandard,Version=v1.2", "net472", "NETSTANDARD1_2", "4.7.2"),
-    "netstandard1.3": (".NETStandard,Version=v1.3", "net472", "NETSTANDARD1_3", "4.7.2"),
-    "netstandard1.4": (".NETStandard,Version=v1.4", "net472", "NETSTANDARD1_4", "4.7.2"),
-    "netstandard1.5": (".NETStandard,Version=v1.5", "net472", "NETSTANDARD1_5", "4.7.2"),
-    "netstandard1.6": (".NETStandard,Version=v1.6", "net472", "NETSTANDARD1_6", "4.7.2"),
-    "netstandard2.0": (".NETStandard,Version=v2.0", "net472", "NETSTANDARD2_0", "4.7.2"),
+    # "netstandard1.0": (".NETStandard,Version=v1.0", "net472", "NETSTANDARD1_0", "4.7.2"),
+    # "netstandard1.1": (".NETStandard,Version=v1.1", "net472", "NETSTANDARD1_1", "4.7.2"),
+    # "netstandard1.2": (".NETStandard,Version=v1.2", "net472", "NETSTANDARD1_2", "4.7.2"),
+    # "netstandard1.3": (".NETStandard,Version=v1.3", "net472", "NETSTANDARD1_3", "4.7.2"),
+    # "netstandard1.4": (".NETStandard,Version=v1.4", "net472", "NETSTANDARD1_4", "4.7.2"),
+    # "netstandard1.5": (".NETStandard,Version=v1.5", "net472", "NETSTANDARD1_5", "4.7.2"),
+    # "netstandard1.6": (".NETStandard,Version=v1.6", "net472", "NETSTANDARD1_6", "4.7.2"),
+    # "netstandard2.0": (".NETStandard,Version=v2.0", "net472", "NETSTANDARD2_0", "4.7.2"),
 }
 
 # struct:

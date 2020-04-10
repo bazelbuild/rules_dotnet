@@ -27,6 +27,8 @@ workspace rule.
 -----
 
 
+.. _dotnet_repositories:
+
 dotnet_repositories
 ~~~~~~~~~~~~~~~~~~~
 

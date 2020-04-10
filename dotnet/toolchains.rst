@@ -53,9 +53,9 @@ are a predictable
 So for instance if the rules_dotnet repository is loaded with
 it's default name, the following toolchain labels (along with many others) will be available
 
-.. code::
+  .. code:: python
 
-  @io_bazel_rules_dotnet//dotnet/toolchain:net_linux_amd64
+    @io_bazel_rules_dotnet//dotnet/toolchain:net_linux_amd64
   
 The toolchains are not usable until you register them.
 

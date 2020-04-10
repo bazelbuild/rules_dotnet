@@ -5,13 +5,6 @@ Core dotnet rules
 .. _test_arg: https://docs.bazel.build/versions/master/user-manual.html#flag--test_arg
 .. _DotnetLibrary: providers.rst#DotnetLibrary
 .. _DotnetResource: providers.rst#DotnetResource
-.. _"Make variable": https://docs.bazel.build/versions/master/be/make-variables.html
-.. _Bourne shell tokenization: https://docs.bazel.build/versions/master/be/common-definitions.html#sh-tokenization
-.. _data dependencies: https://docs.bazel.build/versions/master/build-ref.html#data
-.. _shard_count: https://docs.bazel.build/versions/master/be/common-definitions.html#test.shard_count
-.. _build constraints: https://golang.org/pkg/go/build/#hdr-Build_Constraints
-.. _select: https://docs.bazel.build/versions/master/be/functions.html#select
-.. _config_setting: https://docs.bazel.build/versions/master/be/general.html#config_setting
 .. _dotnet_nuget_new: workspace.rst#dotnet_nuget_new
 
 .. role:: param(literal)
@@ -113,7 +106,7 @@ Example
     dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
     visibility = ["//visibility:public"],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:system.runtime.dll".format(framework),
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:libraryset".format(framework),
     ],
   ) for framework in DOTNET_CORE_FRAMEWORKS]
 

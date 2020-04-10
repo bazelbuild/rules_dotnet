@@ -30,9 +30,6 @@ Unfoortunately, Bazel dotnet rules currently are not able to generate these file
 Therefore, if multiple versions of .NET Core are mixed then a user has to provide 
 them manually.
 
-That's the reason for rules_dotnet to provide its own builds of xunit. This way
-it does not require the generation of deps.json or runtimeconfig.json.
-
 .NET Framework
 --------------
 
