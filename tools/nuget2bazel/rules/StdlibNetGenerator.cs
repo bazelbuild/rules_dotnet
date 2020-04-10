@@ -22,7 +22,7 @@ namespace nuget2bazel.rules
 
         public async Task Do()
         {
-            foreach (var tfm in new string[]
+            foreach (var tfm in new[]
                 {"net45", "net451", "net452", "net46", "net461", "net462", "net47", "net471", "net472", "net48"})
             {
                 await HandleMetapackage(Path.Combine(_rulesPath, $"dotnet/stdlib.net/{tfm}/generated.bzl"),
@@ -73,6 +73,7 @@ namespace nuget2bazel.rules
                     var refInfo = new RefInfo();
                     refInfo.Name = name.ToLower();
                     refInfo.Ref = refname;
+                    refInfo.StdlibPath = refname;   // Real implementation assemblies are in GAC
                     refInfo.Deps.AddRange(depNames);
                     result.Add(refInfo);
                 }
@@ -94,10 +95,31 @@ namespace nuget2bazel.rules
             foreach (var d in libs)
             {
                 var depsString = String.Join(", ", d.Deps);
-                await f.WriteLineAsync(
-                    $"    net_stdlib(name = \"{d.Name}\", dotnet_context_data = context_data, ref = \"{d.Ref}\", deps = [{depsString}])");
+
+                await f.WriteLineAsync($"    net_stdlib(");
+                await f.WriteLineAsync($"        name = \"{d.Name}\",");
+                await f.WriteLineAsync($"        dotnet_context_data = context_data,");
+                if (d.Ref != null)
+                    await f.WriteLineAsync($"        ref = \"{d.Ref}\",");
+                if (d.StdlibPath != null)
+                    await f.WriteLineAsync($"        stdlib_path = \"{d.StdlibPath}\",");
+                await f.WriteLineAsync($"        deps = [");
+                foreach (var dep in d.Deps)
+                    await f.WriteLineAsync($"            {dep},");
+                await f.WriteLineAsync($"        ]");
+                await f.WriteLineAsync($"    )");
             }
         }
+
+        //private string GetStdlibPath(string sdk, string sdkVersion, string name, )
+        //{
+        //    var p = Path.Combine(sdk, "shared", "Microsoft.NETCore.App", version, name);
+        //    if (File.Exists(p))
+        //        return $"@core_sdk_{sdkVersion}//:core/shared/Microsoft.NETCore.App/{version}/{name}";
+
+        //    return null;
+        //}
+
         public string GetPackagePath(string srcdir, string package, string version)
         {
             var p = Path.Combine(srcdir, "packages", $"{package}.{version}");
