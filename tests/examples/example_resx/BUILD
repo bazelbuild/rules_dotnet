@@ -39,7 +39,7 @@ load(
     src = "Resources.resx",
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
     identifier = "example_resx.Resources.resources",
-) for framework in [DOTNET_NET_FRAMEWORKS]
+) for framework in DOTNET_NET_FRAMEWORKS]
 
 [net_xunit_test(
     name = "net.example_resx_{}.dll".format(framework),
