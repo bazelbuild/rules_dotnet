@@ -20,7 +20,7 @@ load(
 
 [core_xunit_test(
     name = "{}_example_resx.dll".format(framework),
-    size = "small",
+    size = "medium",
     srcs = glob(["*.cs"]),
     dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
     native_deps = "@core_sdk_{}//:native_deps".format(framework),
@@ -43,7 +43,7 @@ load(
 
 [net_xunit_test(
     name = "net.example_resx_{}.dll".format(framework),
-    size = "small",
+    size = "medium",
     srcs = glob(["*.cs"]),
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
     native_deps = "@net_sdk_{}//:native_deps".format(framework),
