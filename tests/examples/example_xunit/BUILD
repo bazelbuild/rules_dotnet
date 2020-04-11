@@ -2,7 +2,7 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "core_
 
 [core_xunit_test(
     name = "{}_example_xunit.dll".format(framework),
-    size = "small",
+    size = "medium",
     srcs = [
         "MyTest.cs",
     ],
@@ -19,7 +19,7 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "core_
 
 [net_xunit_test(
     name = "net.example_xunit_{}.dll".format(framework),
-    size = "small",
+    size = "medium",
     srcs = [
         "MyTest.cs",
     ],
