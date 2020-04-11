@@ -8,6 +8,7 @@ dotnet_nunit_test(
     ],
     deps = [
         "//tests/examples/example_lib:MyClass.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib:system.dll",
         "@nunitv2//:netstandard1.0_net",
     ],
 )

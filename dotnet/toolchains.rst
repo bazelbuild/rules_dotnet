@@ -193,8 +193,7 @@ core_download_sdk
 ~~~~~~~~~~~~~~~~~
 
 This downloads .NET Core SDK for given version. It usually is not used directly. Use core_register_sdk_
-instead. It also generates a file with System.Runtime.Versioning.TargetFramework declaration for given
-target framework.
+instead. 
 
 +--------------------------------+-----------------------------+-----------------------------------+
 | **Name**                       | **Type**                    | **Default value**                 |
@@ -207,10 +206,6 @@ target framework.
 | :param:`version`               | :type:`string`              |                                   |
 +--------------------------------+-----------------------------+-----------------------------------+
 | The version for the framework                                                                    |
-+--------------------------------+-----------------------------+-----------------------------------+
-| :param:`targetFrameworkString` | :type:`string`              |                                   |
-+--------------------------------+-----------------------------+-----------------------------------+
-| The version of the framework as required by System.Runtime.Versioning.TargetFramework            |
 +--------------------------------+-----------------------------+-----------------------------------+
 
 

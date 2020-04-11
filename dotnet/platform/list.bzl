@@ -68,6 +68,19 @@ DOTNET_CORE_FRAMEWORKS = {
 }
 DEFAULT_DOTNET_CORE_FRAMEWORK = "v3.1.100"
 
+DOTNET_NETSTANDARD = {
+    "netstandard1.0": (".NETStandard,Version=v1.0", "NETSTANDARD1_0"),
+    "netstandard1.1": (".NETStandard,Version=v1.1", "NETSTANDARD1_1"),
+    "netstandard1.2": (".NETStandard,Version=v1.2", "NETSTANDARD1_2"),
+    "netstandard1.3": (".NETStandard,Version=v1.3", "NETSTANDARD1_3"),
+    "netstandard1.4": (".NETStandard,Version=v1.4", "NETSTANDARD1_4"),
+    "netstandard1.5": (".NETStandard,Version=v1.5", "NETSTANDARD1_5"),
+    "netstandard1.6": (".NETStandard,Version=v1.6", "NETSTANDARD1_6"),
+    "netstandard2.0": (".NETStandard,Version=v2.0", "NETSTANDARD2_0"),
+    "netstandard2.1": (".NETStandard,Version=v2.1", "NETSTANDARD2_1"),
+    "netstandard2.2": (".NETStandard,Version=v2.2", "NETSTANDARD2_2"),
+}
+
 def declare_config_settings():
     for impl in DOTNETIMPL:
         native.config_setting(

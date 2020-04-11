@@ -2,6 +2,7 @@ load("@io_bazel_rules_dotnet//dotnet/private:deps/nunitv2.bzl", "dotnet_reposito
 load("@io_bazel_rules_dotnet//dotnet/private:deps/nuget.bzl", "dotnet_repositories_nuget")
 load("@io_bazel_rules_dotnet//dotnet/private:deps/xunit.bzl", "dotnet_repositories_xunit")
 load("@io_bazel_rules_dotnet//dotnet/private:deps/nunit.bzl", "dotnet_repositories_nunit")
+load("@io_bazel_rules_dotnet//dotnet/private:deps/netstandard.bzl", "dotnet_repositories_netstandard")
 load("@io_bazel_rules_dotnet//dotnet/private:rules/nuget.bzl", "dotnet_nuget_new")
 
 def dotnet_repositories_nugets():
@@ -9,6 +10,7 @@ def dotnet_repositories_nugets():
     dotnet_repositories_nuget()
     dotnet_repositories_xunit()
     dotnet_repositories_nunit()
+    dotnet_repositories_netstandard()
 
     dotnet_nuget_new(
         name = "Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0",
@@ -128,4 +130,12 @@ def dotnet_repositories_nugets():
         version = "2.2.7",
         sha256 = "a4f166be783dedac38def8e9357ac74a4739119611635ac520b5fdd96645835e",
         build_file_content = """exports_files(glob(["ref/netcoreapp2.2/*.dll"]), visibility = ["//visibility:public"])""",
+    )
+
+    dotnet_nuget_new(
+        name = "Mono.ReferenceAssemblies.v4.5",
+        package = "Mono.ReferenceAssemblies.v4.5",
+        version = "1.0.0",
+        sha256 = "dc73a56713f8448681d90dbfd09e6ec80568926925b7f93619cf733ff2a2c96c",
+        build_file_content = """exports_files(glob(["build/.NETFramework/v4.5/**/*.dll"]), visibility = ["//visibility:public"])""",
     )

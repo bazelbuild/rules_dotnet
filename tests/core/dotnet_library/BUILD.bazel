@@ -5,6 +5,9 @@ dotnet_library(
     srcs = [
         "main.cs",
     ],
+    deps = [
+        "@io_bazel_rules_dotnet//dotnet/stdlib:system.dll",
+    ],
 )
 
 dotnet_nunit_test(
@@ -17,6 +20,7 @@ dotnet_nunit_test(
         ":custom_bin.dll",
     ],
     deps = [
+        "@io_bazel_rules_dotnet//dotnet/stdlib:system.dll",
         "@nunitv2//:netstandard1.0_net",
     ],
 )

@@ -24,7 +24,8 @@ def emit_assembly_common(
         unsafe = False,
         data = None,
         keyfile = None,
-        subdir = "./"):
+        subdir = "./",
+        target_framework = ""):
     """See dotnet/toolchains.rst#binary for full documentation. Emits actions for assembly build.
 
     The function is used by all frameworks.
@@ -119,14 +120,18 @@ def emit_assembly_common(
     args.add_all(attr_srcs)
     direct_inputs += attr_srcs
 
-    attr_extra_srcs = [f for t in dotnet.extra_srcs for f in as_iterable(t.files)]
-    args.add_all(attr_extra_srcs)
-    direct_inputs += attr_extra_srcs
+    # Generate the source file for target framework
+    if target_framework != "":
+        f = dotnet._ctx.actions.declare_file(result.basename + "._tf_.cs", sibling = result)
+        content = """
+        [assembly:System.Runtime.Versioning.TargetFramework("{}")]
+        """.format(target_framework)
+        dotnet._ctx.actions.write(f, content)
+        args.add(f)
+        direct_inputs.append(f)
 
     # References - also needs to include transitive dependencies
     (transitive_refs, transitive_runfiles, transitive_deps) = collect_transitive_info(deps)
-    args.add(dotnet.stdlib, format = "/r:%s")
-    direct_inputs.append(dotnet.stdlib)
 
     args.add_all(transitive_refs, format_each = "/r:%s")
 

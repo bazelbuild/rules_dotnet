@@ -84,7 +84,6 @@ def dotnet_context(ctx, attr = None):
         lib = context_data._lib,
         shared = context_data._shared,
         debug = ctx.var["COMPILATION_MODE"] == "dbg",
-        extra_srcs = context_data._extra_srcs,
         _ctx = ctx,
     )
 
@@ -98,7 +97,6 @@ def _dotnet_context_data(ctx):
         _host = ctx.attr.host,
         _libVersion = ctx.attr.libVersion,
         _toolchain_type = ctx.attr._toolchain_type,
-        _extra_srcs = ctx.attr.extra_srcs,
         _framework = ctx.attr.framework,
     )
 
@@ -137,10 +135,6 @@ dotnet_context_data = rule(
         ),
         "_toolchain_type": attr.string(
             default = "@io_bazel_rules_dotnet//dotnet:toolchain",
-        ),
-        "extra_srcs": attr.label_list(
-            allow_files = True,
-            default = [],
         ),
     },
 )
@@ -181,10 +175,6 @@ core_context_data = rule(
         "_toolchain_type": attr.string(
             default = "@io_bazel_rules_dotnet//dotnet:toolchain_core",
         ),
-        "extra_srcs": attr.label_list(
-            allow_files = True,
-            default = [],
-        ),
     },
 )
 
@@ -223,10 +213,6 @@ net_context_data = rule(
         ),
         "_toolchain_type": attr.string(
             default = "@io_bazel_rules_dotnet//dotnet:toolchain_net",
-        ),
-        "extra_srcs": attr.label_list(
-            allow_files = True,
-            default = ["@net_sdk//:targetframework"],
         ),
     },
 )

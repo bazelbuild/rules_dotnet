@@ -6,6 +6,7 @@ dotnet_nunit_test(
         "MyTest.cs",
     ],
     deps = [
+        "@io_bazel_rules_dotnet//dotnet/stdlib:system.dll",
         "@nunitv2//:netstandard1.0_net",
         "@npgsql//:lib",
     ],

@@ -32,7 +32,6 @@ load(
     "DOTNETIMPL",
     "DOTNETIMPL_OS_ARCH",
     "DOTNETOS",
-    "DOTNET_CORE_FRAMEWORKS",
     "DOTNET_NET_FRAMEWORKS",
 )
 
@@ -306,7 +305,6 @@ def net_register_sdk(net_version, net_roslyn_version = NET_ROSLYN_DEFAULT_VERSIO
         name = name if name else "net_sdk_" + net_version,
         version = DOTNET_NET_FRAMEWORKS[net_version][3],
         toolsVersion = DOTNET_NET_FRAMEWORKS[tools_version][3],
-        targetFrameworkString = DOTNET_NET_FRAMEWORKS[net_version][0],
         sdks = NET_ROSLYN_REPOSITORIES[net_roslyn_version],
     )
 
@@ -317,7 +315,6 @@ def core_register_sdk(core_version, name = None):
     core_download_sdk(
         name = name if name else "core_sdk_{}".format(core_version),
         version = core_version[1:],
-        targetFrameworkString = DOTNET_CORE_FRAMEWORKS[core_version][0],
         sdks = CORE_SDK_REPOSITORIES[core_version],
     )
 

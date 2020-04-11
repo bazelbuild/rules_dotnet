@@ -1,5 +1,3 @@
-load("@io_bazel_rules_dotnet//dotnet/private:common.bzl", "bat_extension", "executable_extension")
-
 def _get_shared_dir(ctx):
     p = ctx.path("core/shared/Microsoft.NETCore.App")
     content = p.readdir()
@@ -37,7 +35,6 @@ core_download_sdk = repository_rule(
         "sdks": attr.string_list_dict(),
         "urls": attr.string_list(),
         "version": attr.string(),
-        "targetFrameworkString": attr.string(),
         "strip_prefix": attr.string(default = ""),
     },
 )

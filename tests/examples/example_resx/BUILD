@@ -80,7 +80,6 @@ dotnet_xunit_test(
     srcs = glob(["*.cs"]),
     resources = [":mono.resx"],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib:System.dll",
         "@io_bazel_rules_dotnet//dotnet/stdlib:system.runtime.dll",
         "@xunit.assert//:mono",
         "@xunit.extensibility.core//:mono",

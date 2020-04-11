@@ -7,6 +7,9 @@ dotnet_library(
         "TransitiveClass.cs",
     ],
     visibility = ["//visibility:public"],
+    deps = [
+        "@io_bazel_rules_dotnet//dotnet/stdlib:system.dll",
+    ],
 )
 
 [core_library(
@@ -29,5 +32,6 @@ dotnet_library(
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
     visibility = ["//visibility:public"],
     deps = [
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.dll",
     ],
 ) for framework in DOTNET_NET_FRAMEWORKS]

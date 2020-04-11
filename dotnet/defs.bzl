@@ -88,6 +88,7 @@ load(
     "@io_bazel_rules_dotnet//dotnet/platform:list.bzl",
     _DEFAULT_DOTNET_CORE_FRAMEWORK = "DEFAULT_DOTNET_CORE_FRAMEWORK",
     _DOTNET_CORE_FRAMEWORKS = "DOTNET_CORE_FRAMEWORKS",
+    _DOTNET_NETSTANDARD = "DOTNET_NETSTANDARD",
     _DOTNET_NET_FRAMEWORKS = "DOTNET_NET_FRAMEWORKS",
 )
 load(
@@ -139,6 +140,7 @@ vs2017_ref_net = _vs2017_ref_net
 DOTNET_NET_FRAMEWORKS = _DOTNET_NET_FRAMEWORKS
 DOTNET_CORE_FRAMEWORKS = _DOTNET_CORE_FRAMEWORKS
 DEFAULT_DOTNET_CORE_FRAMEWORK = _DEFAULT_DOTNET_CORE_FRAMEWORK
+DOTNET_NETSTANDARD = _DOTNET_NETSTANDARD
 core_context_data = _core_context_data
 dotnet_context_data = _dotnet_context_data
 net_context_data = _net_context_data

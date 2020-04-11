@@ -1,5 +1,3 @@
-load("@io_bazel_rules_dotnet//dotnet/private:common.bzl", "bat_extension", "executable_extension")
-
 def _detect_net_framework(ctx, version):
     defpath = ctx.path("C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v" + version)
     if defpath.exists:
@@ -41,12 +39,6 @@ def _net_download_sdk_impl(ctx):
 
     ctx.symlink(tools, "tools")
 
-    # Generate file with target framework attribute
-    content = """
-    [assembly:System.Runtime.Versioning.TargetFramework("{}")]
-    """.format(ctx.attr.targetFrameworkString)
-    ctx.file("targetframework.cs", content)
-
 def _net_empty_download_sdk_impl(ctx):
     sdks = ctx.attr.sdks
     _sdk_build_file(ctx)
@@ -62,7 +54,6 @@ net_download_sdk = repository_rule(
         "urls": attr.string_list(),
         "version": attr.string(),
         "toolsVersion": attr.string(),
-        "targetFrameworkString": attr.string(),
         "strip_prefix": attr.string(default = ""),
     },
 )

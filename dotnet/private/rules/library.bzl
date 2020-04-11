@@ -1,12 +1,10 @@
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
-    "dotnet_context",
-)
+load("@io_bazel_rules_dotnet//dotnet/private:context.bzl", "dotnet_context")
 load(
     "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
     "DotnetLibrary",
     "DotnetResourceList",
 )
+load("@io_bazel_rules_dotnet//dotnet/platform:list.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NETSTANDARD", "DOTNET_NET_FRAMEWORKS")
 
 def _library_impl(ctx):
     """_library_impl emits actions for compiling dotnet executable assembly."""
@@ -30,6 +28,7 @@ def _library_impl(ctx):
         data = ctx.attr.data,
         keyfile = ctx.attr.keyfile,
         executable = False,
+        target_framework = ctx.attr.target_framework,
     )
 
     runfiles = ctx.runfiles(files = [], transitive_files = library.runfiles)
@@ -54,6 +53,7 @@ dotnet_library = rule(
         "data": attr.label_list(allow_files = True),
         "keyfile": attr.label(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
+        "target_framework": attr.string(values = DOTNET_NET_FRAMEWORKS.keys() + DOTNET_NETSTANDARD.keys() + [""], default = ""),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
     executable = False,
@@ -71,6 +71,7 @@ core_library = rule(
         "data": attr.label_list(allow_files = True),
         "keyfile": attr.label(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
+        "target_framework": attr.string(values = DOTNET_CORE_FRAMEWORKS.keys() + DOTNET_NETSTANDARD.keys() + [""], default = ""),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
     executable = False,
@@ -88,6 +89,7 @@ net_library = rule(
         "data": attr.label_list(allow_files = True),
         "keyfile": attr.label(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
+        "target_framework": attr.string(values = DOTNET_NET_FRAMEWORKS.keys() + DOTNET_NETSTANDARD.keys() + [""], default = ""),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = False,

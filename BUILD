@@ -24,7 +24,6 @@ exports_files(["AUTHORS"])
 [
     net_context_data(
         name = "net_context_data_" + framework,
-        extra_srcs = ["@net_sdk_{}//:targetframework".format(framework)],
         framework = framework,
         host = "@net_sdk_{}//:mcs_bin".format(framework),
         lib = "@net_sdk_{}//:lib".format(framework),
