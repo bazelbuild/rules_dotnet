@@ -14,7 +14,7 @@ core_binary(
 
 core_xunit_test(
     name = "custom_bin_test.dll",
-    size = "small",
+    size = "medium",
     srcs = [
         "main_test.cs",
     ],

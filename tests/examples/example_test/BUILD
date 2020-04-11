@@ -15,7 +15,7 @@ dotnet_nunit_test(
 
 [net_nunit_test(
     name = "net.example_test_{}.dll".format(framework),
-    size = "small",
+    size = "medium",
     srcs = [
         "MyTest.cs",
     ],
@@ -29,7 +29,7 @@ dotnet_nunit_test(
 
 [net_nunit3_test(
     name = "net.example_test3_{}.dll".format(framework),
-    size = "small",
+    size = "medium",
     srcs = [
         "MyTest.cs",
     ],
