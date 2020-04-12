@@ -20,22 +20,27 @@ namespace nuget2bazel.rules
 
         public async Task Do()
         {
+            var defSdk = new Tuple<string, string, string, string[]>("3.1.0", "v3.1.100",
+                    "https://download.visualstudio.microsoft.com/download/pr/28a2c4ff-6154-473b-bd51-c62c76171551/ea47eab2219f323596c039b3b679c3d6/dotnet-sdk-3.1.100-win-x64.zip",
+                    new[] { "Microsoft.AspNetCore.App.Ref", "Microsoft.NETCore.App.Ref", "NETStandard.Library.Ref" });
+
             foreach (var tfm in new[]
             {
                 new Tuple<string, string, string, string[]>("3.0.0", "v3.0.100",
                     "https://download.visualstudio.microsoft.com/download/pr/a24f4f34-ada1-433a-a437-5bc85fc2576a/7e886d06729949c15c96fe7e70faa8ae/dotnet-sdk-3.0.100-win-x64.zip",
                     new []{"Microsoft.AspNetCore.App.Ref", "Microsoft.NETCore.App.Ref", "NETStandard.Library.Ref"}),
-                new Tuple<string, string, string, string[]>("3.1.0", "v3.1.100",
-                    "https://download.visualstudio.microsoft.com/download/pr/28a2c4ff-6154-473b-bd51-c62c76171551/ea47eab2219f323596c039b3b679c3d6/dotnet-sdk-3.1.100-win-x64.zip",
-                    new []{"Microsoft.AspNetCore.App.Ref", "Microsoft.NETCore.App.Ref", "NETStandard.Library.Ref"}),
+                defSdk
             })
             {
                 await Handle(Path.Combine(_rulesPath, $"dotnet/stdlib.core/{tfm.Item2}/generated.bzl"),
                      tfm.Item1, tfm.Item2, tfm.Item3, tfm.Item4);
             }
+
+            await Handle(Path.Combine(_rulesPath, $"dotnet/stdlib.core/generated.bzl"),
+                defSdk.Item1, defSdk.Item2, defSdk.Item3, defSdk.Item4, true);
         }
 
-        private async Task Handle(string outpath, string version, string sdkVersion, string sdk, string[] packs)
+        private async Task Handle(string outpath, string version, string sdkVersion, string sdk, string[] packs, bool useDefault = false)
         {
             var sdkDir = await ZipDownloader.DownloadIfNedeed(_configDir, sdk);
             var packRefs = new Dictionary<string, List<RefInfo>>();
@@ -43,6 +48,13 @@ namespace nuget2bazel.rules
             {
                 var refs = GetRefInfos(sdkDir, version, sdkVersion, pack);
                 packRefs.Add(pack, refs);
+
+                if (useDefault)
+                    foreach (var r in refs)
+                    {
+                        r.Ref = r.Ref?.Replace($"_{sdkVersion}", "");
+                        r.StdlibPath = r.StdlibPath?.Replace($"_{sdkVersion}", "");
+                    }
             }
             await GenerateBazelFile(outpath, packRefs);
         }
