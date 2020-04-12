@@ -25,7 +25,8 @@ def emit_assembly_common(
         data = None,
         keyfile = None,
         subdir = "./",
-        target_framework = ""):
+        target_framework = "",
+        nowarn = None):
     """See dotnet/toolchains.rst#binary for full documentation. Emits actions for assembly build.
 
     The function is used by all frameworks.
@@ -44,6 +45,8 @@ def emit_assembly_common(
       data: list of targets (as passed from rules). Additional depdendencies of the target
       keyfile: File to be used for signing if provided
       subdir: specific subdirectory to be used for target location. Default ./
+      target_framework: target framework to define via System.Runtime.Versioning.TargetFramework
+      nowarn: list of warnings to ignore
     """
 
     if name == "" and out == None:
@@ -107,6 +110,11 @@ def emit_assembly_common(
     # Defines
     if defines and len(defines) > 0:
         args.add_all(defines, format_each = "/d:%s")
+
+    # Warnings
+    if nowarn and len(nowarn) > 0:
+        w = ",".join(nowarn)
+        args.add("-nowarn:" + w)
 
     # Resources
     for r in resources:

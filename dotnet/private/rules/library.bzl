@@ -29,6 +29,7 @@ def _library_impl(ctx):
         keyfile = ctx.attr.keyfile,
         executable = False,
         target_framework = ctx.attr.target_framework,
+        nowarn = ctx.attr.nowarn,
     )
 
     runfiles = ctx.runfiles(files = [], transitive_files = library.runfiles)
@@ -54,6 +55,7 @@ dotnet_library = rule(
         "keyfile": attr.label(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
         "target_framework": attr.string(values = DOTNET_NET_FRAMEWORKS.keys() + DOTNET_NETSTANDARD.keys() + [""], default = ""),
+        "nowarn": attr.string_list(),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
     executable = False,
@@ -72,6 +74,7 @@ core_library = rule(
         "keyfile": attr.label(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
         "target_framework": attr.string(values = DOTNET_CORE_FRAMEWORKS.keys() + DOTNET_NETSTANDARD.keys() + [""], default = ""),
+        "nowarn": attr.string_list(),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
     executable = False,
@@ -90,6 +93,7 @@ net_library = rule(
         "keyfile": attr.label(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
         "target_framework": attr.string(values = DOTNET_NET_FRAMEWORKS.keys() + DOTNET_NETSTANDARD.keys() + [""], default = ""),
+        "nowarn": attr.string_list(),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = False,

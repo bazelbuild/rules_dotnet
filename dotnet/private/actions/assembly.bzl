@@ -13,7 +13,8 @@ def emit_assembly(
         data = None,
         keyfile = None,
         subdir = "./",
-        target_framework = ""):
+        target_framework = "",
+        nowarn = None):
     return emit_assembly_common(
         kind = "mono",
         dotnet = dotnet,
@@ -29,4 +30,5 @@ def emit_assembly(
         keyfile = keyfile,
         subdir = subdir,
         target_framework = target_framework,
+        nowarn = nowarn,
     )

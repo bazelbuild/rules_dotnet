@@ -6,6 +6,7 @@ dotnet_library(
         "Properties/AssemblyInfo.cs",
         "TransitiveClass.cs",
     ],
+    nowarn = ["CS0618"],
     visibility = ["//visibility:public"],
     deps = [
         "@io_bazel_rules_dotnet//dotnet/stdlib:system.dll",
@@ -18,6 +19,10 @@ dotnet_library(
         "TransitiveClass.cs",
     ],
     dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+    nowarn = [
+        "CS0618",
+        "CS0612",
+    ],
     visibility = ["//visibility:public"],
     deps = [
         "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:libraryset".format(framework),
@@ -30,6 +35,7 @@ dotnet_library(
         "TransitiveClass.cs",
     ],
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
+    nowarn = ["CS0618"],
     visibility = ["//visibility:public"],
     deps = [
         "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.dll",
