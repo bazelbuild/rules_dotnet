@@ -2,7 +2,7 @@
   "profiles": {
     "nuget2bazel": {
       "commandName": "Project",
-      "commandLineArgs": "rules c:\\rules_dotnet"
+      "commandLineArgs": "rules c:/rules_dotnet"
     }
   }
 }

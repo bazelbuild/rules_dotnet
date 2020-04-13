@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -154,6 +155,12 @@ namespace nuget2bazel
             var toolItemGroups = await packageContentReader.GetToolItemsAsync(token);
             var depsGroups = await packageContentReader.GetPackageDependenciesAsync(token);
 
+            // Very ugly hack to extract build folder content
+            // Unfortunately, the original implementation only returns .prop and .targets files.
+            var readerBase = (PackageReaderBase)packageContentReader;
+            var dynMethod = readerBase.GetType().BaseType.GetMethod("GetFileGroups", BindingFlags.NonPublic | BindingFlags.Instance);
+            var allBuildFileGroups = (IEnumerable<FrameworkSpecificGroup>)dynMethod.Invoke(readerBase, new object?[] { "build" });
+
             IEnumerable<FrameworkSpecificGroup> refItemGroups = null;
 
             if (packageReader is PackageArchiveReader reader)
@@ -167,7 +174,7 @@ namespace nuget2bazel
                 sha256 = GetSha(downloadResourceResult.PackageStream);
             }
             var entry = new WorkspaceEntry(packageIdentity, sha256,
-                depsGroups, libItemGroups, toolItemGroups, refItemGroups, _mainFile, _variable);
+                depsGroups, libItemGroups, toolItemGroups, refItemGroups, allBuildFileGroups, _mainFile, _variable);
 
             //if (!SdkList.Dlls.Contains(entry.PackageIdentity.Id.ToLower()))
             //{

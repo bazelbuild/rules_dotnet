@@ -1,7 +1,18 @@
 ﻿{
   "externals": {},
   "dependencies": {
-    "NUnit": "3.12.0",
-    "NUnit.ConsoleRunner": "3.10.0"
+    "Microsoft.DotNet.InternalAbstractions": "1.0.500-preview2-1-003177",
+    "System.Collections.NonGeneric": "4.3.0",
+    "System.ComponentModel.EventBasedAsync": "4.3.0",
+    "System.ComponentModel.Primitives": "4.3.0",
+    "System.ComponentModel.TypeConverter": "4.3.0",
+    "System.Diagnostics.Process": "4.3.0",
+    "System.Reflection": "4.3.0",
+    "System.Runtime.InteropServices.RuntimeInformation": "4.3.0",
+    "System.Threading.Thread": "4.3.0",
+    "System.Xml.XmlDocument": "4.3.0",
+    "System.Xml.XPath": "4.3.0",
+    "System.Xml.XPath.XmlDocument": "4.3.0",
+    "NUnit3TestAdapter": "3.16.1"
   }
 }

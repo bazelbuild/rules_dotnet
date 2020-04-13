@@ -38,6 +38,30 @@ namespace nuget2bazel.rules
 
             await Handle(Path.Combine(_rulesPath, $"dotnet/stdlib.core/generated.bzl"),
                 defSdk.Item1, defSdk.Item2, defSdk.Item3, defSdk.Item4, true);
+            await GenerateSdkList(Path.Combine(_rulesPath, $"tools/nuget2bazel/SdkList.cs"),
+                defSdk.Item1, defSdk.Item2, defSdk.Item3, defSdk.Item4);
+        }
+
+        private async Task GenerateSdkList(string outpath, string version, string sdkVersion, string sdk, string[] packs)
+        {
+            var sdkList = new List<string>();
+            var sdkDir = await ZipDownloader.DownloadIfNedeed(_configDir, sdk);
+            foreach (var pack in packs)
+            {
+                var refs = GetRefInfos(sdkDir, version, sdkVersion, pack);
+                sdkList = sdkList.Union(refs.Select(x => x.Name.Replace(".dll", ""))).ToList();
+            }
+            await using var f = new StreamWriter(outpath);
+            await f.WriteLineAsync("namespace nuget2bazel");
+            await f.WriteLineAsync("{");
+            await f.WriteLineAsync("   public static class SdkList");
+            await f.WriteLineAsync("   {");
+            await f.WriteLineAsync("        public static string[] Dlls = {");
+            foreach (var s in sdkList)
+                await f.WriteLineAsync($"            \"{s}\",");
+            await f.WriteLineAsync("        };");
+            await f.WriteLineAsync("   }");
+            await f.WriteLineAsync("}");
         }
 
         private async Task Handle(string outpath, string version, string sdkVersion, string sdk, string[] packs, bool useDefault = false)
