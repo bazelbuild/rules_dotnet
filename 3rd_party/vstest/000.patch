@@ -1,0 +1,13 @@
+diff --git a/src/Microsoft.TestPlatform.TestHostProvider/Hosting/DotnetTestHostManager.cs b/src/Microsoft.TestPlatform.TestHostProvider/Hosting/DotnetTestHostManager.cs
+index 8d55c50e..c3b71eb5 100644
+--- src/Microsoft.TestPlatform.TestHostProvider/Hosting/DotnetTestHostManager.cs
++++ src/Microsoft.TestPlatform.TestHostProvider/Hosting/DotnetTestHostManager.cs
+@@ -278,7 +278,7 @@ namespace Microsoft.VisualStudio.TestPlatform.CrossPlatEngine.Hosting
+                 }
+ 
+                 EqtTrace.Verbose("DotnetTestHostmanager: Full path of testhost.dll is {0}", testHostPath);
+-                args = "exec" + args;
++                args = /*"exec" +*/ args;
+                 args += " " + testHostPath.AddDoubleQuote();
+             }
+ 

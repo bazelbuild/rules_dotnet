@@ -79,7 +79,7 @@ static void LaunchProcess(int argc, char *argv[], const char *workingDir)
 
 static void Execute(int argc, char *argv[], const char *manifestDir)
 {
-	char dotnet[64 * 1024], torun[64 * 1024], *p, xunit[64 * 1024];
+	char dotnet[64 * 1024], torun[64 * 1024], *p, xunit[64 * 1024], output[64*1024];
 	char **newargv = (char **)malloc((argc + 5) * sizeof(char *));
 	//char *newargv[1024];
 	int i;
@@ -88,7 +88,10 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 	sprintf(dotnet, "%s/dotnet", manifestDir);
 
 	// xunit runner
-	sprintf(xunit, "%s/xunit.console.dll", manifestDir);
+	sprintf(xunit, "%s/vstest.console.exe", manifestDir);
+
+	// output
+	sprintf(output, "/logger:junit;LogFilePath=%s", getenv("XML_OUTPUT_FILE"));
 
 	// Based on current exe calculate _0.dll to run
 	p = strrchr(Exe, '/');
@@ -96,7 +99,7 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 	p = strrchr(torun, '_');
 	if (p == NULL)
 	{
-		printf("launcher_core_xunit: _ not found in %s\n", torun);
+		printf("launcher_core_nunit3: _ not found in %s\n", torun);
 		exit(-1);
 	}
 	*p = '\0';
@@ -105,15 +108,14 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 	newargv[0] = dotnet;
 	newargv[1] = xunit;
 	newargv[2] = torun;
-	newargv[3] = "-junit";
-	newargv[4] = getenv("XML_OUTPUT_FILE");
+	newargv[3] = output;
 	for (i = 1; i < argc; ++i)
-		newargv[i + 4] = argv[i];
-	newargv[i + 4] = NULL;
+		newargv[i + 3] = argv[i];
+	newargv[i + 3] = NULL;
 
 	if (IsVerbose())
 	{
-		for (i = 0; i < argc + 5; ++i)
+		for (i = 0; i < argc + 4; ++i)
 			printf("argv[%d] = %s\n", i, newargv[i]);
 	}
 #ifdef _MSC_VER

@@ -55,6 +55,7 @@ load(
 )
 load(
     "@io_bazel_rules_dotnet//dotnet/private:rules/test.bzl",
+    _core_nunit3_test = "core_nunit3_test",
     _core_xunit_test = "core_xunit_test",
     _dotnet_nunit_test = "dotnet_nunit_test",
     _dotnet_xunit_test = "dotnet_xunit_test",
@@ -128,6 +129,7 @@ core_stdlib = _core_stdlib
 dotnet_stdlib = _dotnet_stdlib
 net_stdlib = _net_stdlib
 core_xunit_test = _core_xunit_test
+core_nunit3_test = _core_nunit3_test
 dotnet_nunit_test = _dotnet_nunit_test
 dotnet_xunit_test = _dotnet_xunit_test
 net_nunit3_test = _net_nunit3_test

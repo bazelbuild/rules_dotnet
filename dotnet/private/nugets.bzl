@@ -2,15 +2,18 @@ load("@io_bazel_rules_dotnet//dotnet/private:deps/nunitv2.bzl", "dotnet_reposito
 load("@io_bazel_rules_dotnet//dotnet/private:deps/nuget.bzl", "dotnet_repositories_nuget")
 load("@io_bazel_rules_dotnet//dotnet/private:deps/xunit.bzl", "dotnet_repositories_xunit")
 load("@io_bazel_rules_dotnet//dotnet/private:deps/nunit.bzl", "dotnet_repositories_nunit")
+load("@io_bazel_rules_dotnet//dotnet/private:deps/vstest.bzl", "dotnet_repositories_vstest")
 load("@io_bazel_rules_dotnet//dotnet/private:deps/netstandard.bzl", "dotnet_repositories_netstandard")
 load("@io_bazel_rules_dotnet//dotnet/private:rules/nuget.bzl", "dotnet_nuget_new")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 def dotnet_repositories_nugets():
     dotnet_repositories_nunitv2()
     dotnet_repositories_nuget()
     dotnet_repositories_xunit()
-    dotnet_repositories_nunit()
     dotnet_repositories_netstandard()
+    dotnet_repositories_nunit()
+    dotnet_repositories_vstest()
 
     dotnet_nuget_new(
         name = "Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0",
@@ -138,4 +141,29 @@ def dotnet_repositories_nugets():
         version = "1.0.0",
         sha256 = "dc73a56713f8448681d90dbfd09e6ec80568926925b7f93619cf733ff2a2c96c",
         build_file_content = """exports_files(glob(["build/.NETFramework/v4.5/**/*.dll"]), visibility = ["//visibility:public"])""",
+    )
+
+    dotnet_nuget_new(
+        name = "NUnit3TestAdapter",
+        package = "NUnit3TestAdapter",
+        version = "3.16.1",
+        sha256 = "0913e56087ab02a2cc91b4f2e8756f5a3bf269fe23cb7fd477faebe6aeaaf0df",
+        build_file_content = """filegroup(name = "extension", srcs = glob(["build/netcoreapp2.1/*.dll", "build/netcoreapp2.1/*.pdb"]), visibility = ["//visibility:public"])""",
+    )
+
+    dotnet_nuget_new(
+        name = "JunitXml.TestLogger",
+        package = "JunitXml.TestLogger",
+        version = "2.1.15",
+        sha256 = "8c340bdd24f118d7046c18099c3f5994b85cd35ec0cf6528c04e57e5352b588c",
+        build_file_content = """filegroup(name = "extension", srcs = glob(["build/_common/*.dll"]), visibility = ["//visibility:public"])""",
+    )
+
+    http_archive(
+        name = "vstest",
+        build_file = "@io_bazel_rules_dotnet//3rd_party/vstest:repo.bzl",
+        sha256 = "9a3e1cec6a841a82001b443878ea5dff5ac54247bcb5ad86136c365b308a91ac",
+        strip_prefix = "vstest-16.5.0",
+        urls = ["https://github.com/microsoft/vstest/archive/v16.5.0.tar.gz"],
+        patches = ["@io_bazel_rules_dotnet//3rd_party/vstest:000.patch"],
     )

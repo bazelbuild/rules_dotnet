@@ -11,6 +11,10 @@ load(
     "@io_bazel_rules_dotnet//dotnet/private:rules/runfiles.bzl",
     "CopyRunfiles",
 )
+load(
+    "@io_bazel_rules_dotnet//dotnet/private:rules/data_with_dirs.bzl",
+    "CopyDataWithDirs",
+)
 
 def _unit_test(ctx):
     dotnet = dotnet_context(ctx)
@@ -55,13 +59,24 @@ def _unit_test(ctx):
         mnemonic = "CopyLauncher",
     )
 
-    if dotnet.runner != None:
-        runner = [dotnet.runner]
-    else:
-        runner = []
+    direct_runfiles = [launcher]
+    transitive_runfiles = []
 
-    runfiles = ctx.runfiles(files = [launcher] + runner + ctx.attr.native_deps.files.to_list() + ctx.attr._xslt.files.to_list(), transitive_files = depset(transitive = [executable.runfiles, ctx.attr.testlauncher[DotnetLibrary].runfiles]))
+    if dotnet.runner != None:
+        direct_runfiles.append(dotnet.runner)
+
+    transitive_runfiles.append(ctx.attr.native_deps.files)
+    if ctx.attr._xslt:
+        transitive_runfiles.append(ctx.attr._xslt.files)
+
+    transitive_runfiles.append(executable.runfiles)
+    transitive_runfiles.append(ctx.attr.testlauncher[DotnetLibrary].runfiles)
+
+    runfiles = ctx.runfiles(files = direct_runfiles, transitive_files = depset(transitive = transitive_runfiles))
     runfiles = CopyRunfiles(dotnet, runfiles, ctx.attr._copy, ctx.attr._symlink, executable, subdir)
+
+    if ctx.attr.data_with_dirs:
+        runfiles = runfiles.merge(CopyDataWithDirs(dotnet, ctx.attr.data_with_dirs, ctx.attr._copy, subdir))
 
     return [
         executable,
@@ -93,6 +108,7 @@ dotnet_nunit_test = rule(
         "keyfile": attr.label(allow_files = True),
         "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
         "nowarn": attr.string_list(),
+        "data_with_dirs": attr.label_keyed_string_dict(allow_files = True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
     executable = True,
@@ -120,6 +136,7 @@ net_nunit_test = rule(
         "keyfile": attr.label(allow_files = True),
         "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
         "nowarn": attr.string_list(),
+        "data_with_dirs": attr.label_keyed_string_dict(allow_files = True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = True,
@@ -147,6 +164,7 @@ net_nunit3_test = rule(
         "keyfile": attr.label(allow_files = True),
         "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
         "nowarn": attr.string_list(),
+        "data_with_dirs": attr.label_keyed_string_dict(allow_files = True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = True,
@@ -173,6 +191,41 @@ core_xunit_test = rule(
         "keyfile": attr.label(allow_files = True),
         "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
         "nowarn": attr.string_list(),
+        "data_with_dirs": attr.label_keyed_string_dict(allow_files = True),
+    },
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
+    executable = True,
+    test = True,
+)
+
+core_nunit3_test = rule(
+    _unit_test,
+    attrs = {
+        "deps": attr.label_list(providers = [DotnetLibrary]),
+        "resources": attr.label_list(providers = [DotnetResource]),
+        "srcs": attr.label_list(allow_files = [".cs"]),
+        "out": attr.string(),
+        "defines": attr.string_list(),
+        "unsafe": attr.bool(default = False),
+        "data": attr.label_list(allow_files = True),
+        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
+        "native_deps": attr.label(default = Label("@core_sdk//:native_deps")),
+        "testlauncher": attr.label(default = "@vstest//:vstest.console.exe", providers = [DotnetLibrary]),
+        "_launcher": attr.label(default = Label("//dotnet/tools/launcher_core_nunit3:launcher_core_nunit3.exe")),
+        "_copy": attr.label(default = Label("//dotnet/tools/copy")),
+        "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
+        "_xslt": attr.label(allow_files = True),
+        "keyfile": attr.label(allow_files = True),
+        "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
+        "nowarn": attr.string_list(),
+        "data_with_dirs": attr.label_keyed_string_dict(
+            allow_files = True,
+            default = {
+                "@vstest//:Microsoft.TestPlatform.TestHostRuntimeProvider.dll": "Extensions",
+                "@NUnit3TestAdapter//:extension": "Extensions",
+                "@JunitXml.TestLogger//:extension": "Extensions",
+            },
+        ),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
     executable = True,
@@ -200,6 +253,7 @@ net_xunit_test = rule(
         "keyfile": attr.label(allow_files = True),
         "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
         "nowarn": attr.string_list(),
+        "data_with_dirs": attr.label_keyed_string_dict(allow_files = True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = True,
@@ -227,6 +281,7 @@ dotnet_xunit_test = rule(
         "keyfile": attr.label(allow_files = True),
         "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
         "nowarn": attr.string_list(),
+        "data_with_dirs": attr.label_keyed_string_dict(allow_files = True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
     executable = True,
