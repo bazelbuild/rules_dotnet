@@ -7,6 +7,7 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "core_
         "MyTest.cs",
     ],
     dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+    langversion = "7.3",
     native_deps = "@core_sdk_{}//:native_deps".format(framework),
     testlauncher = "@xunit.runner.console//:netcoreapp2.0_core_tool",
     deps = [

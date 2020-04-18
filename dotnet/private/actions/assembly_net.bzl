@@ -14,7 +14,8 @@ def emit_assembly_net(
         keyfile = None,
         subdir = "./",
         target_framework = "",
-        nowarn = None):
+        nowarn = None,
+        langversion = "latest"):
     return emit_assembly_common(
         kind = "net",
         dotnet = dotnet,
@@ -31,4 +32,5 @@ def emit_assembly_net(
         subdir = subdir,
         target_framework = target_framework,
         nowarn = nowarn,
+        langversion = langversion,
     )

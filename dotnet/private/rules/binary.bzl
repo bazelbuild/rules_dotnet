@@ -39,6 +39,8 @@ def _binary_impl(ctx):
         keyfile = ctx.attr.keyfile,
         subdir = subdir,
         target_framework = ctx.attr.target_framework,
+        nowarn = ctx.attr.nowarn,
+        langversion = ctx.attr.langversion,
     )
 
     launcher = dotnet.declare_file(dotnet, path = subdir + executable.result.basename + "_0.exe")
@@ -86,6 +88,8 @@ dotnet_binary = rule(
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
         "target_framework": attr.string(values = DOTNET_NET_FRAMEWORKS.keys() + DOTNET_NETSTANDARD.keys() + [""], default = ""),
+        "nowarn": attr.string_list(),
+        "langversion": attr.string(default = "latest"),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
     executable = True,
@@ -108,6 +112,8 @@ core_binary = rule(
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
         "target_framework": attr.string(values = DOTNET_CORE_FRAMEWORKS.keys() + DOTNET_NETSTANDARD.keys() + [""], default = ""),
+        "nowarn": attr.string_list(),
+        "langversion": attr.string(default = "latest"),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
     executable = True,
@@ -130,6 +136,8 @@ net_binary = rule(
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
         "target_framework": attr.string(values = DOTNET_NET_FRAMEWORKS.keys() + DOTNET_NETSTANDARD.keys() + [""], default = ""),
+        "nowarn": attr.string_list(),
+        "langversion": attr.string(default = "latest"),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
     executable = True,

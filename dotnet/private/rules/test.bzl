@@ -48,6 +48,7 @@ def _unit_test(ctx):
         keyfile = ctx.attr.keyfile,
         subdir = subdir,
         nowarn = ctx.attr.nowarn,
+        langversion = ctx.attr.langversion,
     )
 
     launcher = dotnet.declare_file(dotnet, path = subdir + executable.result.basename + "_0.exe")
@@ -108,6 +109,7 @@ dotnet_nunit_test = rule(
         "keyfile": attr.label(allow_files = True),
         "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
         "nowarn": attr.string_list(),
+        "langversion": attr.string(default = "latest"),
         "data_with_dirs": attr.label_keyed_string_dict(allow_files = True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
@@ -136,6 +138,7 @@ net_nunit_test = rule(
         "keyfile": attr.label(allow_files = True),
         "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
         "nowarn": attr.string_list(),
+        "langversion": attr.string(default = "latest"),
         "data_with_dirs": attr.label_keyed_string_dict(allow_files = True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
@@ -164,6 +167,7 @@ net_nunit3_test = rule(
         "keyfile": attr.label(allow_files = True),
         "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
         "nowarn": attr.string_list(),
+        "langversion": attr.string(default = "latest"),
         "data_with_dirs": attr.label_keyed_string_dict(allow_files = True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
@@ -191,6 +195,7 @@ core_xunit_test = rule(
         "keyfile": attr.label(allow_files = True),
         "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
         "nowarn": attr.string_list(),
+        "langversion": attr.string(default = "latest"),
         "data_with_dirs": attr.label_keyed_string_dict(allow_files = True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
@@ -218,6 +223,7 @@ core_nunit3_test = rule(
         "keyfile": attr.label(allow_files = True),
         "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
         "nowarn": attr.string_list(),
+        "langversion": attr.string(default = "latest"),
         "data_with_dirs": attr.label_keyed_string_dict(
             allow_files = True,
             default = {
@@ -253,6 +259,7 @@ net_xunit_test = rule(
         "keyfile": attr.label(allow_files = True),
         "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
         "nowarn": attr.string_list(),
+        "langversion": attr.string(default = "latest"),
         "data_with_dirs": attr.label_keyed_string_dict(allow_files = True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
@@ -281,6 +288,7 @@ dotnet_xunit_test = rule(
         "keyfile": attr.label(allow_files = True),
         "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
         "nowarn": attr.string_list(),
+        "langversion": attr.string(default = "latest"),
         "data_with_dirs": attr.label_keyed_string_dict(allow_files = True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],

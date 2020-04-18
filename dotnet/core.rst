@@ -83,6 +83,11 @@ Attributes
 +----------------------------+-----------------------------+---------------------------------------+
 | The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion.           |
 +----------------------------+-----------------------------+---------------------------------------+
+| :param:`langversion`       | :type:`string`              | :value:`latest`                       |
++----------------------------+-----------------------------+---------------------------------------+
+| Version of the language to use. See                                                              |
+| https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version     |
++----------------------------+-----------------------------+---------------------------------------+
 
 Example
 ^^^^^^^
@@ -177,6 +182,11 @@ Attributes
 +----------------------------+-----------------------------+---------------------------------------+
 | The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion.           |
 +----------------------------+-----------------------------+---------------------------------------+
+| :param:`langversion`       | :type:`string`              | :value:`latest`                       |
++----------------------------+-----------------------------+---------------------------------------+
+| Version of the language to use. See                                                              |
+| https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version     |
++----------------------------+-----------------------------+---------------------------------------+
 
 Example
 ^^^^^^^
@@ -249,10 +259,15 @@ Attributes
 +----------------------------+-----------------------------+--------------------------------------------+
 | The list of defines passed via /define compiler option                                                |
 +----------------------------+-----------------------------+--------------------------------------------+
-| :param:`nowarn`            | :type:`string_list`         | :value:`None`                         |
-+----------------------------+-----------------------------+---------------------------------------+
-| The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion.           |
-+----------------------------+-----------------------------+---------------------------------------+
+| :param:`nowarn`            | :type:`string_list`         | :value:`None`                              |
++----------------------------+-----------------------------+--------------------------------------------+
+| The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion.                |
++----------------------------+-----------------------------+--------------------------------------------+
+| :param:`langversion`       | :type:`string`              | :value:`latest `                           |
++----------------------------+-----------------------------+--------------------------------------------+
+| Version of the language to use. See                                                                   |
+| https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version          |
++----------------------------+-----------------------------+--------------------------------------------+
 
 
 Test example

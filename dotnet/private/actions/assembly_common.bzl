@@ -26,7 +26,8 @@ def emit_assembly_common(
         keyfile = None,
         subdir = "./",
         target_framework = "",
-        nowarn = None):
+        nowarn = None,
+        langversion = "latest"):
     """See dotnet/toolchains.rst#binary for full documentation. Emits actions for assembly build.
 
     The function is used by all frameworks.
@@ -47,6 +48,7 @@ def emit_assembly_common(
       subdir: specific subdirectory to be used for target location. Default ./
       target_framework: target framework to define via System.Runtime.Versioning.TargetFramework
       nowarn: list of warnings to ignore
+      langversion: version of the language to use (see https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version)
     """
 
     if name == "" and out == None:
@@ -84,7 +86,7 @@ def emit_assembly_common(
     args.add("/filealign:512")
     args.add("/nologo")
     args.add("/highentropyva+")
-    args.add("/langversion:latest")
+    args.add("/langversion:{}".format(langversion))
 
     # Debug parameters
     if pdb:
