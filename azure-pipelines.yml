@@ -38,7 +38,8 @@ jobs:
       condition: and(succeeded(), eq(variables['systemName'], 'linux'))
 
     - script: |
-        brew list bazel &>/dev/null || brew install --overwrite bazel 
+        rm /usr/local/bin/bazel || true
+        brew list bazel &>/dev/null || brew install bazel 
         brew install coreutils
         brew cask install mono-mdk
       displayName: 'Install dependencies osx'
