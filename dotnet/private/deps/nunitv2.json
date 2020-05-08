@@ -1,7 +1,0 @@
-﻿{
-  "externals": {},
-  "dependencies": {
-    "NUnit": "2.7.1",
-    "NUnit.Runners": "2.7.1"
-  }
-}

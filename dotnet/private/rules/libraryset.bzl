@@ -18,7 +18,7 @@ def _libraryset_impl(ctx):
         library = dotnet.new_library(dotnet = dotnet)
         return [library]
 
-    (transitive_refs, transitive_runfiles, transitive_deps) = collect_transitive_info(ctx.attr.deps)
+    (transitive_refs, transitive_runfiles, transitive_deps) = collect_transitive_info(ctx.attr.deps, ctx.attr.data)
 
     library = dotnet.new_library(
         dotnet = dotnet,
@@ -40,6 +40,7 @@ dotnet_libraryset = rule(
     _libraryset_impl,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
+        "data": attr.label_list(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
@@ -50,6 +51,7 @@ core_libraryset = rule(
     _libraryset_impl,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
+        "data": attr.label_list(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
@@ -60,6 +62,7 @@ net_libraryset = rule(
     _libraryset_impl,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
+        "data": attr.label_list(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],

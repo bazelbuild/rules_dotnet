@@ -3,6 +3,11 @@ load(
     "DotnetLibrary",
 )
 load("@rules_dotnet_skylib//lib:dicts.bzl", "dicts")
+load(
+    "@io_bazel_rules_dotnet//dotnet/platform:list.bzl",
+    "DOTNET_CORE_NAMES",
+    "DOTNET_NET_NAMES",
+)
 
 def _dotnet_nuget_impl(
         ctx,
@@ -93,7 +98,20 @@ _FUNC = """
 
 """
 
-def _get_importlib(func, name, lib, deps, files, version):
+_FUNC2 = """
+{}(
+    name = "{}",
+    deps = [
+        {}
+    ],
+    data = [
+        {}
+    ],
+)
+
+"""
+
+def _get_importlib(func, func2, name, lib, deps, files, version):
     depsstr = ""
     for d in deps:
         depsstr += "    \"{}\",\n".format(d)
@@ -101,12 +119,16 @@ def _get_importlib(func, name, lib, deps, files, version):
     for f in files:
         datastr += "    \"{}\",\n".format(f)
 
-    result = _FUNC.format(func, name, lib, depsstr, datastr, version)
+    if lib != "":
+        result = _FUNC.format(func, name, lib, depsstr, datastr, version)
+    else:
+        result = _FUNC2.format(func2, name, depsstr, datastr)
+
     return result
 
-def _get_importlib_withframework(func, name, lib, deps, files, version):
+def _get_importlib_withframework(func, func2, name, frameworks, lib, deps, files, version):
     result = ""
-    for framework in lib:
+    for framework in frameworks:
         depsstr = ""
         if deps.get(framework) != None:
             for d in deps[framework]:
@@ -117,31 +139,34 @@ def _get_importlib_withframework(func, name, lib, deps, files, version):
             for f in files[framework]:
                 datastr += "    \"{}\",\n".format(f)
 
-        result += _FUNC.format(func, "{}_{}".format(framework, name), lib[framework], depsstr, datastr, version)
+        if lib.get(framework) != None:
+            result += _FUNC.format(func, "{}_{}".format(framework, name), lib[framework], depsstr, datastr, version)
+        else:
+            result += _FUNC2.format(func2, "{}_{}".format(framework, name), depsstr, datastr)
+
     return result
 
 _TEMPLATE2 = """
 package(default_visibility = [ "//visibility:public" ])
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_import_library", "core_import_library", "net_import_library", "core_import_binary", "net_import_binary")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_import_library", "core_import_library", "net_import_library", "core_import_binary", "net_import_binary", "core_libraryset", "net_libraryset", "dotnet_libraryset")
 """
 
 def _nuget_package_impl(ctx):
     """nuget_package_impl emits actions for exposing nuget assmeblies."""
 
     content = _TEMPLATE2
-    if ctx.attr.core_lib != "":
-        content += _get_importlib_withframework("core_import_library", "core", ctx.attr.core_lib, ctx.attr.core_deps, ctx.attr.core_files, ctx.attr.version)
-    if ctx.attr.net_lib != {} and ctx.attr.net_lib != None:
-        content += _get_importlib_withframework("net_import_library", "net", ctx.attr.net_lib, ctx.attr.net_deps, ctx.attr.net_files, ctx.attr.version)
-    if ctx.attr.mono_lib != "":
-        content += _get_importlib("dotnet_import_library", "mono", ctx.attr.mono_lib, ctx.attr.mono_deps, ctx.attr.mono_files, ctx.attr.version)
+
+    #if ctx.attr.core_lib != "":
+    content += _get_importlib_withframework("core_import_library", "core_libraryset", "core", DOTNET_CORE_NAMES, ctx.attr.core_lib, ctx.attr.core_deps, ctx.attr.core_files, ctx.attr.version)
+    content += _get_importlib_withframework("net_import_library", "net_libraryset", "net", DOTNET_NET_NAMES, ctx.attr.net_lib, ctx.attr.net_deps, ctx.attr.net_files, ctx.attr.version)
+    content += _get_importlib("dotnet_import_library", "dotnet_libraryset", "mono", ctx.attr.mono_lib, ctx.attr.mono_deps, ctx.attr.mono_files, ctx.attr.version)
 
     if ctx.attr.core_tool != "":
-        content += _get_importlib_withframework("core_import_binary", "core_tool", ctx.attr.core_tool, ctx.attr.core_deps, ctx.attr.core_files, ctx.attr.version)
+        content += _get_importlib_withframework("core_import_binary", "core_libraryset", "core_tool", DOTNET_CORE_NAMES, ctx.attr.core_tool, ctx.attr.core_deps, ctx.attr.core_files, ctx.attr.version)
     if ctx.attr.net_tool != "":
-        content += _get_importlib_withframework("net_import_binary", "net_tool", ctx.attr.net_tool, ctx.attr.net_deps, ctx.attr.net_files, ctx.attr.version)
+        content += _get_importlib_withframework("net_import_binary", "net_libraryset", "net_tool", DOTNET_NET_NAMES, ctx.attr.net_tool, ctx.attr.net_deps, ctx.attr.net_files, ctx.attr.version)
     if ctx.attr.mono_tool != "":
-        content += _get_importlib("dotnet_import_library", "mono_tool", ctx.attr.mono_tool, ctx.attr.mono_deps, ctx.attr.mono_files, ctx.attr.version)
+        content += _get_importlib("dotnet_import_library", "dotnet_libraryset", "mono_tool", ctx.attr.mono_tool, ctx.attr.mono_deps, ctx.attr.mono_files, ctx.attr.version)
 
     package = ctx.attr.package
     output_dir = ctx.path("")

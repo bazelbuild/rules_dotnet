@@ -33,6 +33,8 @@ namespace nuget2bazel
 
         public ProjectBazelConfig ProjectConfig { get; private set; }
 
+        private Dictionary<PackageIdentity, WorkspaceEntry> _entries = new Dictionary<PackageIdentity, WorkspaceEntry>();
+
         public ProjectBazelManipulator(ProjectBazelConfig prjConfig, string mainFile, bool skipSha256, string variable) : base(Path.Combine(prjConfig.RootPath, "packages"))
         {
             ProjectConfig = prjConfig;
@@ -173,13 +175,11 @@ namespace nuget2bazel
             {
                 sha256 = GetSha(downloadResourceResult.PackageStream);
             }
-            var entry = new WorkspaceEntry(packageIdentity, sha256,
+            var entry = new WorkspaceEntry(json.dependencies, packageIdentity, sha256,
                 depsGroups, libItemGroups, toolItemGroups, refItemGroups, allBuildFileGroups, _mainFile, _variable);
 
-            //if (!SdkList.Dlls.Contains(entry.PackageIdentity.Id.ToLower()))
-            //{
+            _entries.Add(packageIdentity, entry);
             await AddEntry(entry);
-            //}
 
             return await base.InstallPackageAsync(packageIdentity, downloadResourceResult, nuGetProjectContext, token);
         }

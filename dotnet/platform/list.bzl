@@ -26,6 +26,19 @@ DOTNETIMPL_OS_ARCH = (
     ("net", "darwin", "amd64"),
 )
 
+DOTNET_NETSTANDARD = {
+    "netstandard1.0": (".NETStandard,Version=v1.0", "NETSTANDARD1_0"),
+    "netstandard1.1": (".NETStandard,Version=v1.1", "NETSTANDARD1_1"),
+    "netstandard1.2": (".NETStandard,Version=v1.2", "NETSTANDARD1_2"),
+    "netstandard1.3": (".NETStandard,Version=v1.3", "NETSTANDARD1_3"),
+    "netstandard1.4": (".NETStandard,Version=v1.4", "NETSTANDARD1_4"),
+    "netstandard1.5": (".NETStandard,Version=v1.5", "NETSTANDARD1_5"),
+    "netstandard1.6": (".NETStandard,Version=v1.6", "NETSTANDARD1_6"),
+    "netstandard2.0": (".NETStandard,Version=v2.0", "NETSTANDARD2_0"),
+    "netstandard2.1": (".NETStandard,Version=v2.1", "NETSTANDARD2_1"),
+    "netstandard2.2": (".NETStandard,Version=v2.2", "NETSTANDARD2_2"),
+}
+
 # struct:
 # 0. Version string - as required by TargetFrameworkAttribute
 # 1. FacadedBy - for netstandard  contains net framework which supports given version
@@ -66,20 +79,10 @@ DOTNET_CORE_FRAMEWORKS = {
     "v3.0.100": (".NETCore,Version=v3.0", "NETCOREAPP3_0", "netcoreapp3.0"),
     "v3.1.100": (".NETCore,Version=v3.1", "NETCOREAPP3_1", "netcoreapp3.1"),
 }
-DEFAULT_DOTNET_CORE_FRAMEWORK = "v3.1.100"
+DOTNET_CORE_NAMES = ["netcoreapp2.0", "netcoreapp2.1", "netcoreapp2.2", "netcoreapp3.0", "netcoreapp3.1"] + DOTNET_NETSTANDARD.keys()
+DOTNET_NET_NAMES = DOTNET_NET_FRAMEWORKS.keys() + DOTNET_NETSTANDARD.keys()
 
-DOTNET_NETSTANDARD = {
-    "netstandard1.0": (".NETStandard,Version=v1.0", "NETSTANDARD1_0"),
-    "netstandard1.1": (".NETStandard,Version=v1.1", "NETSTANDARD1_1"),
-    "netstandard1.2": (".NETStandard,Version=v1.2", "NETSTANDARD1_2"),
-    "netstandard1.3": (".NETStandard,Version=v1.3", "NETSTANDARD1_3"),
-    "netstandard1.4": (".NETStandard,Version=v1.4", "NETSTANDARD1_4"),
-    "netstandard1.5": (".NETStandard,Version=v1.5", "NETSTANDARD1_5"),
-    "netstandard1.6": (".NETStandard,Version=v1.6", "NETSTANDARD1_6"),
-    "netstandard2.0": (".NETStandard,Version=v2.0", "NETSTANDARD2_0"),
-    "netstandard2.1": (".NETStandard,Version=v2.1", "NETSTANDARD2_1"),
-    "netstandard2.2": (".NETStandard,Version=v2.2", "NETSTANDARD2_2"),
-}
+DEFAULT_DOTNET_CORE_FRAMEWORK = "v3.1.100"
 
 def declare_config_settings():
     for impl in DOTNETIMPL:

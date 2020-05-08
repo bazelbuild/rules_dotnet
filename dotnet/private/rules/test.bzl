@@ -187,7 +187,7 @@ core_xunit_test = rule(
         "data": attr.label_list(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
         "native_deps": attr.label(default = Label("@core_sdk//:native_deps")),
-        "testlauncher": attr.label(default = "@xunit.runner.console//:netcoreapp2.0_core_tool", providers = [DotnetLibrary]),
+        "testlauncher": attr.label(default = "@xunit.runner.console//:netcoreapp2.1_core_tool", providers = [DotnetLibrary]),
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_core_xunit:launcher_core_xunit.exe")),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),

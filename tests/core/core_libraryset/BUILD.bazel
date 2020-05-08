@@ -1,0 +1,39 @@
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_libraryset", "core_xunit_test")
+
+core_libraryset(
+    name = "level1",
+    data = [":test.txt"],
+)
+
+core_libraryset(
+    name = "level2",
+    deps = [":level1"],
+)
+
+core_xunit_test(
+    name = "libraryset.dll",
+    srcs = [
+        "main_test.cs",
+    ],
+    deps = [
+        ":level1",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
+        "@xunit.assert//:netcoreapp2.0_core",
+        "@xunit.extensibility.core//:netcoreapp2.0_core",
+        "@xunit.extensibility.execution//:netcoreapp2.0_core",
+    ],
+)
+
+core_xunit_test(
+    name = "libraryset2.dll",
+    srcs = [
+        "main_test.cs",
+    ],
+    deps = [
+        ":level2",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
+        "@xunit.assert//:netcoreapp2.0_core",
+        "@xunit.extensibility.core//:netcoreapp2.0_core",
+        "@xunit.extensibility.execution//:netcoreapp2.0_core",
+    ],
+)

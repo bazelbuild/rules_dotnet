@@ -49,8 +49,8 @@ namespace nuget2bazel
             var readback = await File.ReadAllTextAsync(packagesJsonPath);
             var readbackJson = JsonConvert.DeserializeObject<PackagesJson>(readback);
 
-            var filtered = readbackJson.dependencies.Where(x => !SdkList.Dlls.Contains(x.Key.ToLower())).Select(y => y.Key).ToList();
-            Assert.Equal(5, filtered.Count);
+            var filtered = readbackJson.dependencies.Select(y => y.Key).ToList();
+            Assert.Equal(18, filtered.Count);
             Assert.Contains("CommandLineParser", filtered);
             Assert.Contains("xunit.abstractions", filtered);
             Assert.Contains("xunit.core", filtered);

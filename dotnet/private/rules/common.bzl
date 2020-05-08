@@ -3,11 +3,12 @@ load(
     "DotnetLibrary",
 )
 
-def collect_transitive_info(deps):
+def collect_transitive_info(deps, data = None):
     """Collects transitive information.
 
     Args:
       deps: Dependencies that the DotnetLibrary depends on.
+      data: Data dependencies
 
     Returns:
       A depsets of the references, runfiles and deps. References and deps also include direct dependencies provided by deps.
@@ -18,6 +19,7 @@ def collect_transitive_info(deps):
     direct_deps = []
     transitive_refs = []
     transitive_runfiles = []
+    direct_runfiles = []
     transitive_deps = []
 
     for dep in deps:
@@ -37,8 +39,12 @@ def collect_transitive_info(deps):
         if assembly.transitive:
             transitive_deps.append(assembly.transitive)
 
+    if data:
+        for i in data:
+            transitive_runfiles.append(i.files)
+
     return (
         depset(direct = direct_refs, transitive = transitive_refs),
-        depset(direct = [], transitive = transitive_runfiles),
+        depset(direct = direct_runfiles, transitive = transitive_runfiles),
         depset(direct = direct_deps, transitive = transitive_deps),
     )

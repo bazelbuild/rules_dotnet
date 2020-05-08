@@ -17,7 +17,8 @@ namespace nuget2bazel
         public WorkspaceEntry()
         {
         }
-        public WorkspaceEntry(PackageIdentity identity, string sha256, IEnumerable<PackageDependencyGroup> deps,
+        public WorkspaceEntry(IDictionary<string, string> knownDependencies,
+            PackageIdentity identity, string sha256, IEnumerable<PackageDependencyGroup> deps,
             IEnumerable<FrameworkSpecificGroup> libs, IEnumerable<FrameworkSpecificGroup> tools,
             IEnumerable<FrameworkSpecificGroup> references, IEnumerable<FrameworkSpecificGroup> buildFiles,
             string mainFile, string variable)
@@ -45,59 +46,58 @@ namespace nuget2bazel
 
             var depConverted = deps.Select(x =>
                 new FrameworkSpecificGroup(x.TargetFramework, x.Packages.Select(y => y.Id.ToLower())));
-            Core_Deps = GetDepsCore(coreFrameworks, depConverted);
-            Net_Deps = GetDepsNet(netFrameworks, depConverted);
+            Core_Deps = GetDepsCore(coreFrameworks, depConverted, knownDependencies);
+            Net_Deps = GetDepsNet(netFrameworks, depConverted, knownDependencies);
             Mono_Deps = MSBuildNuGetProjectSystemUtility.GetMostCompatibleGroup(monoFramework, depConverted)?.Items?.Select(x => ToRefMono(x));
 
             CoreLib = new Dictionary<string, string>();
             foreach (var framework in coreFrameworks)
             {
                 var lib = GetMostCompatibleItem(framework, references, libs, mainFile);
-                if (lib != null)
+                if (!string.IsNullOrEmpty(lib))
                     CoreLib.Add(framework.GetShortFolderName(), lib);
             }
             NetLib = new Dictionary<string, string>();
             foreach (var framework in netFrameworks)
             {
                 var lib = GetMostCompatibleItem(framework, references, libs, mainFile);
-                if (lib != null)
+                if (!string.IsNullOrEmpty(lib))
                     NetLib.Add(framework.GetShortFolderName(), lib);
             }
-            MonoLib = GetMostCompatibleItem(monoFramework, references, mainFile);
+            MonoLib = GetMostCompatibleItem(monoFramework, references, libs, mainFile);
 
             CoreTool = new Dictionary<string, string>();
             foreach (var framework in coreFrameworks)
             {
                 var tool = GetMostCompatibleItem(framework, tools, mainFile);
-                if (tool != null)
+                if (!string.IsNullOrEmpty(tool))
                     CoreTool.Add(framework.GetShortFolderName(), tool);
             }
             NetTool = new Dictionary<string, string>();
             foreach (var framework in netFrameworks)
             {
                 var tool = GetMostCompatibleItem(framework, tools, mainFile);
-                if (tool != null)
+                if (!string.IsNullOrEmpty(tool))
                     NetTool.Add(framework.GetShortFolderName(), tool);
             }
             MonoTool = GetMostCompatibleItem(monoFramework, tools, mainFile);
 
-            if (CoreLib == null)
-                CoreLib = Core_Files?.ToDictionary(key => key.Key, val => val.Value.FirstOrDefault(z => Path.GetExtension(z) == ".dll"));
-            if (NetLib == null || !NetLib.Any())
-                NetLib = Net_Files?.ToDictionary(key => key.Key, val => val.Value.FirstOrDefault(z => Path.GetExtension(z) == ".dll"));
-            if (CoreLib == null || !CoreLib.Any())
-                CoreLib = Core_Files?.ToDictionary(key => key.Key, val => val.Value.FirstOrDefault(z => Path.GetExtension(z) == ".dll"));
-
-            if (MonoLib == null)
-                MonoLib = Mono_Files?.FirstOrDefault(x => Path.GetExtension(x) == ".dll");
+            //if (NetLib == null || !NetLib.Any())
+            //    NetLib = Net_Files?.ToDictionary(key => key.Key, val => val.Value.FirstOrDefault(z => Path.GetExtension(z) == ".dll"));
+            //if (CoreLib == null || !CoreLib.Any())
+            //    CoreLib = Core_Files?.ToDictionary(key => key.Key, val => val.Value.FirstOrDefault(z => Path.GetExtension(z) == ".dll"));
+            //if (MonoLib == null)
+            //    MonoLib = Mono_Files?.FirstOrDefault(x => Path.GetExtension(x) == ".dll");
         }
 
-        private IDictionary<string, IEnumerable<string>> GetDepsNet(IEnumerable<NuGetFramework> frameworks, IEnumerable<FrameworkSpecificGroup> groups)
+        private IDictionary<string, IEnumerable<string>> GetDepsNet(IEnumerable<NuGetFramework> frameworks, IEnumerable<FrameworkSpecificGroup> groups, IDictionary<string, string> knownDependencies)
         {
             var result = new Dictionary<string, IEnumerable<string>>();
             foreach (var framework in frameworks)
             {
-                var deps = MSBuildNuGetProjectSystemUtility.GetMostCompatibleGroup(framework, groups)?.Items?.Select(x => ToRefNet(x, framework))?.Where(y => y != null);
+                var rawDeps = MSBuildNuGetProjectSystemUtility.GetMostCompatibleGroup(framework, groups)?.Items;
+                var knownRawDeps = rawDeps?.Where(x => knownDependencies.ContainsKey(x));
+                var deps = knownRawDeps?.Select(x => ToRefNet(x, framework))?.Where(y => y != null);
                 if (deps != null)
                     result.Add(framework.GetShortFolderName(), deps);
             }
@@ -105,12 +105,14 @@ namespace nuget2bazel
             return result;
         }
 
-        private IDictionary<string, IEnumerable<string>> GetDepsCore(IEnumerable<NuGetFramework> frameworks, IEnumerable<FrameworkSpecificGroup> groups)
+        private IDictionary<string, IEnumerable<string>> GetDepsCore(IEnumerable<NuGetFramework> frameworks, IEnumerable<FrameworkSpecificGroup> groups, IDictionary<string, string> knownDependencies)
         {
             var result = new Dictionary<string, IEnumerable<string>>();
             foreach (var framework in frameworks)
             {
-                var deps = MSBuildNuGetProjectSystemUtility.GetMostCompatibleGroup(framework, groups)?.Items?.Select(x => ToRefCore(x, framework))?.Where(y => y != null);
+                var rawDeps = MSBuildNuGetProjectSystemUtility.GetMostCompatibleGroup(framework, groups)?.Items;
+                var knownRawDeps = rawDeps?.Where(x => knownDependencies.ContainsKey(x));
+                var deps = knownRawDeps?.Select(x => ToRefCore(x, framework))?.Where(y => y != null);
                 if (deps != null)
                     result.Add(framework.GetShortFolderName(), deps);
             }
@@ -133,7 +135,7 @@ namespace nuget2bazel
             if (items != null)
                 result.AddRange(items);
 
-            return result;
+            return result.Where(x => x.Substring(x.Length - 1) != "/");
         }
         private IDictionary<string, IEnumerable<string>> GetFiles(IEnumerable<NuGetFramework> frameworks, IEnumerable<FrameworkSpecificGroup> libs,
             IEnumerable<FrameworkSpecificGroup> tools, IEnumerable<FrameworkSpecificGroup> buildFiles)
@@ -313,34 +315,16 @@ namespace nuget2bazel
 
         private string ToRefCore(string id, NuGetFramework framework)
         {
-            if (SdkList.Dlls.Contains(id.ToLower()))
-                return null;
-
             return $"@{id.ToLower()}//:{framework.GetShortFolderName()}_core";
         }
 
         private string ToRefMono(string id)
         {
-            if (SdkList.Dlls.Contains(id.ToLower()))
-                return $"@io_bazel_rules_dotnet//dotnet/stdlib:{id.ToLower()}.dll";
-
             return $"@{id.ToLower()}//:mono";
         }
 
         private string ToRefNet(string id, NuGetFramework framework)
         {
-            // netstandard.library must be manually handled
-            if (id == "netstandard.library")
-                return null;
-
-            if (SdkList.Dlls.Contains(id.ToLower()))
-            {
-                if (framework.Framework == ".NETFramework")
-                    return $"@io_bazel_rules_dotnet//dotnet/stdlib.net:{framework.GetShortFolderName()}_{id.ToLower()}.dll";
-                // ".NETStandard"
-                return null;
-            }
-
             return $"@{id.ToLower()}//:{framework.GetShortFolderName()}_net";
         }
 

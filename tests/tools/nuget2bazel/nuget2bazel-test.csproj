@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>nuget2bazel_test</RootNamespace>
 
     <IsPackable>false</IsPackable>
@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\rules_dotnet_3rd_party\nuget.netstandard\nuget\src\NuGet.Core\NuGet.PackageManagement\NuGet.PackageManagement.csproj" />
     <ProjectReference Include="..\..\..\tools\nuget2bazel\nuget2bazel.csproj" />
   </ItemGroup>
 

@@ -1,7 +1,0 @@
-﻿{
-  "externals": {},
-  "dependencies": {
-    "Microsoft.NETCore.Platforms": "1.1.0",
-    "NETStandard.Library": "2.0.3"
-  }
-}
