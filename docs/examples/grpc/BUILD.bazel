@@ -6,20 +6,29 @@ net_xunit_test(
     srcs = [
         "SomeServerTest.cs",
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net462",
-    native_deps = "@net_sdk_net462//:native_deps",
-    testlauncher = "@xunit.runner.console//:net462_net_tool",
     data = select({
-        "@bazel_tools//src/conditions:windows": ["@grpc.core.runtime//:runtimes/win/native/grpc_csharp_ext.x64.dll", "@grpc.core.runtime//:runtimes/win/native/grpc_csharp_ext.x86.dll"],
-        "@bazel_tools//src/conditions:darwin": ["@grpc.core.runtime//:runtimes/osx/native/libgrpc_csharp_ext.x64.dylib", "@grpc.core.runtime//:runtimes/osx/native/libgrpc_csharp_ext.x86.dylib"],
-        "//conditions:default": ["@grpc.core.runtime//:runtimes/linux/native/libgrpc_csharp_ext.x64.so", "@grpc.core.runtime//:runtimes/linux/native/libgrpc_csharp_ext.x86.so"],
+        "@bazel_tools//src/conditions:windows": [
+            "@grpc.core.runtime//:runtimes/win/native/grpc_csharp_ext.x64.dll",
+            "@grpc.core.runtime//:runtimes/win/native/grpc_csharp_ext.x86.dll",
+        ],
+        "@bazel_tools//src/conditions:darwin": [
+            "@grpc.core.runtime//:runtimes/osx/native/libgrpc_csharp_ext.x64.dylib",
+            "@grpc.core.runtime//:runtimes/osx/native/libgrpc_csharp_ext.x86.dylib",
+        ],
+        "//conditions:default": [
+            "@grpc.core.runtime//:runtimes/linux/native/libgrpc_csharp_ext.x64.so",
+            "@grpc.core.runtime//:runtimes/linux/native/libgrpc_csharp_ext.x86.so",
+        ],
     }),
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_net48",
+    native_deps = "@net_sdk_net48//:native_deps",
+    testlauncher = "@xunit.runner.console//:net48_net_tool",
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net/net462:system.runtime.dll",
-        "@xunit.assert//:net462_net",
-        "@xunit.extensibility.core//:net462_net",
-        "@xunit.extensibility.execution//:net462_net",
-        "@grpc.core//:net462_net",
-        "@grpc.healthcheck//:net462_net",
+        "@grpc.core//:net48_net",
+        "@grpc.healthcheck//:net48_net",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net/net48:system.runtime.dll",
+        "@xunit.assert//:net48_net",
+        "@xunit.extensibility.core//:net48_net",
+        "@xunit.extensibility.execution//:net48_net",
     ],
 )
