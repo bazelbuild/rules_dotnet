@@ -1,0 +1,15 @@
+﻿{
+  "externals": {},
+  "dependencies": {
+    "System.Buffers": "4.5.1",
+    "System.Numerics.Vectors": "4.5.0",
+    "System.Runtime.CompilerServices.Unsafe": "4.7.1",
+    "System.Memory": "4.5.4",
+    "Google.Protobuf": "3.12.0-rc1",
+    "Grpc.Core.Api": "2.28.1",
+    "System.Threading.Tasks.Extensions": "4.5.4",
+    "System.Threading.Channels": "4.7.0",
+    "Grpc.HealthCheck": "2.28.1",
+    "Grpc.Core": "2.28.1"
+  }
+}
