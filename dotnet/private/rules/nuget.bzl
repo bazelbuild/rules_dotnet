@@ -98,6 +98,22 @@ _FUNC = """
 
 """
 
+_FUNC_WITH_REF = """
+{}(
+    name = "{}",
+    src = "{}",
+    ref = "{}",
+    deps = [
+        {}
+    ],
+    data = [
+        {}
+    ],
+    version = "{}",
+)
+
+"""
+
 _FUNC2 = """
 {}(
     name = "{}",
@@ -111,7 +127,7 @@ _FUNC2 = """
 
 """
 
-def _get_importlib(func, func2, name, lib, deps, files, version):
+def _get_importlib(func, func2, name, lib, ref, deps, files, version):
     depsstr = ""
     for d in deps:
         depsstr += "    \"{}\",\n".format(d)
@@ -120,13 +136,16 @@ def _get_importlib(func, func2, name, lib, deps, files, version):
         datastr += "    \"{}\",\n".format(f)
 
     if lib != "":
-        result = _FUNC.format(func, name, lib, depsstr, datastr, version)
+        if ref != "" and ref != None:
+            result = _FUNC_WITH_REF.format(func, name, lib, ref, depsstr, datastr, version)
+        else:
+            result = _FUNC.format(func, name, lib, depsstr, datastr, version)
     else:
         result = _FUNC2.format(func2, name, depsstr, datastr)
 
     return result
 
-def _get_importlib_withframework(func, func2, name, frameworks, lib, deps, files, version):
+def _get_importlib_withframework(func, func2, name, frameworks, lib, ref, deps, files, version):
     result = ""
     for framework in frameworks:
         depsstr = ""
@@ -140,7 +159,10 @@ def _get_importlib_withframework(func, func2, name, frameworks, lib, deps, files
                 datastr += "    \"{}\",\n".format(f)
 
         if lib.get(framework) != None:
-            result += _FUNC.format(func, "{}_{}".format(framework, name), lib[framework], depsstr, datastr, version)
+            if ref != None and ref.get(framework) != None:
+                result += _FUNC_WITH_REF.format(func, "{}_{}".format(framework, name), lib[framework], ref[framework], depsstr, datastr, version)
+            else:
+                result += _FUNC.format(func, "{}_{}".format(framework, name), lib[framework], depsstr, datastr, version)
         else:
             result += _FUNC2.format(func2, "{}_{}".format(framework, name), depsstr, datastr)
 
@@ -157,16 +179,16 @@ def _nuget_package_impl(ctx):
     content = _TEMPLATE2
 
     #if ctx.attr.core_lib != "":
-    content += _get_importlib_withframework("core_import_library", "core_libraryset", "core", DOTNET_CORE_NAMES, ctx.attr.core_lib, ctx.attr.core_deps, ctx.attr.core_files, ctx.attr.version)
-    content += _get_importlib_withframework("net_import_library", "net_libraryset", "net", DOTNET_NET_NAMES, ctx.attr.net_lib, ctx.attr.net_deps, ctx.attr.net_files, ctx.attr.version)
-    content += _get_importlib("dotnet_import_library", "dotnet_libraryset", "mono", ctx.attr.mono_lib, ctx.attr.mono_deps, ctx.attr.mono_files, ctx.attr.version)
+    content += _get_importlib_withframework("core_import_library", "core_libraryset", "core", DOTNET_CORE_NAMES, ctx.attr.core_lib, ctx.attr.core_ref, ctx.attr.core_deps, ctx.attr.core_files, ctx.attr.version)
+    content += _get_importlib_withframework("net_import_library", "net_libraryset", "net", DOTNET_NET_NAMES, ctx.attr.net_lib, ctx.attr.net_ref, ctx.attr.net_deps, ctx.attr.net_files, ctx.attr.version)
+    content += _get_importlib("dotnet_import_library", "dotnet_libraryset", "mono", ctx.attr.mono_lib, ctx.attr.mono_ref, ctx.attr.mono_deps, ctx.attr.mono_files, ctx.attr.version)
 
     if ctx.attr.core_tool != "":
-        content += _get_importlib_withframework("core_import_binary", "core_libraryset", "core_tool", DOTNET_CORE_NAMES, ctx.attr.core_tool, ctx.attr.core_deps, ctx.attr.core_files, ctx.attr.version)
+        content += _get_importlib_withframework("core_import_binary", "core_libraryset", "core_tool", DOTNET_CORE_NAMES, ctx.attr.core_tool, None, ctx.attr.core_deps, ctx.attr.core_files, ctx.attr.version)
     if ctx.attr.net_tool != "":
-        content += _get_importlib_withframework("net_import_binary", "net_libraryset", "net_tool", DOTNET_NET_NAMES, ctx.attr.net_tool, ctx.attr.net_deps, ctx.attr.net_files, ctx.attr.version)
+        content += _get_importlib_withframework("net_import_binary", "net_libraryset", "net_tool", DOTNET_NET_NAMES, ctx.attr.net_tool, None, ctx.attr.net_deps, ctx.attr.net_files, ctx.attr.version)
     if ctx.attr.mono_tool != "":
-        content += _get_importlib("dotnet_import_library", "dotnet_libraryset", "mono_tool", ctx.attr.mono_tool, ctx.attr.mono_deps, ctx.attr.mono_files, ctx.attr.version)
+        content += _get_importlib("dotnet_import_library", "dotnet_libraryset", "mono_tool", ctx.attr.mono_tool, None, ctx.attr.mono_deps, ctx.attr.mono_files, ctx.attr.version)
 
     package = ctx.attr.package
     output_dir = ctx.path("")
@@ -188,6 +210,9 @@ _nuget_package_attrs = {
     "core_lib": attr.string_dict(default = {}),
     "net_lib": attr.string_dict(default = {}),
     "mono_lib": attr.string(default = ""),
+    "core_ref": attr.string_dict(default = {}),
+    "net_ref": attr.string_dict(default = {}),
+    "mono_ref": attr.string(default = ""),
     "core_tool": attr.string_dict(default = {}),
     "net_tool": attr.string_dict(default = {}),
     "mono_tool": attr.string(default = ""),

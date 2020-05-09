@@ -53,18 +53,34 @@ namespace nuget2bazel
             CoreLib = new Dictionary<string, string>();
             foreach (var framework in coreFrameworks)
             {
-                var lib = GetMostCompatibleItem(framework, references, libs, mainFile);
+                var lib = GetMostCompatibleItem(framework, libs, mainFile);
                 if (!string.IsNullOrEmpty(lib))
                     CoreLib.Add(framework.GetShortFolderName(), lib);
             }
+            CoreRef = new Dictionary<string, string>();
+            foreach (var framework in coreFrameworks)
+            {
+                var reflib = GetMostCompatibleItem(framework, references, mainFile);
+                if (!string.IsNullOrEmpty(reflib))
+                    CoreRef.Add(framework.GetShortFolderName(), reflib);
+            }
+
             NetLib = new Dictionary<string, string>();
             foreach (var framework in netFrameworks)
             {
-                var lib = GetMostCompatibleItem(framework, references, libs, mainFile);
+                var lib = GetMostCompatibleItem(framework, libs, mainFile);
                 if (!string.IsNullOrEmpty(lib))
                     NetLib.Add(framework.GetShortFolderName(), lib);
             }
-            MonoLib = GetMostCompatibleItem(monoFramework, references, libs, mainFile);
+            NetRef = new Dictionary<string, string>();
+            foreach (var framework in netFrameworks)
+            {
+                var reflib = GetMostCompatibleItem(framework, references, mainFile);
+                if (!string.IsNullOrEmpty(reflib))
+                    NetRef.Add(framework.GetShortFolderName(), reflib);
+            }
+            MonoLib = GetMostCompatibleItem(monoFramework, libs, mainFile);
+            MonoRef = GetMostCompatibleItem(monoFramework, references, mainFile);
 
             CoreTool = new Dictionary<string, string>();
             foreach (var framework in coreFrameworks)
@@ -204,6 +220,13 @@ namespace nuget2bazel
                     sb.Append($"{i}        \"{pair.Key}\": \"{pair.Value}\",\n");
                 sb.Append($"{i}    }},\n");
             }
+            if (CoreRef != null && CoreRef.Any())
+            {
+                sb.Append($"{i}    core_ref = {{\n");
+                foreach (var pair in CoreRef)
+                    sb.Append($"{i}        \"{pair.Key}\": \"{pair.Value}\",\n");
+                sb.Append($"{i}    }},\n");
+            }
             if (NetLib != null && NetLib.Any())
             {
                 sb.Append($"{i}    net_lib = {{\n");
@@ -211,8 +234,17 @@ namespace nuget2bazel
                     sb.Append($"{i}        \"{pair.Key}\": \"{pair.Value}\",\n");
                 sb.Append($"{i}    }},\n");
             }
+            if (NetRef != null && NetRef.Any())
+            {
+                sb.Append($"{i}    net_ref = {{\n");
+                foreach (var pair in NetRef)
+                    sb.Append($"{i}        \"{pair.Key}\": \"{pair.Value}\",\n");
+                sb.Append($"{i}    }},\n");
+            }
             if (!String.IsNullOrEmpty(MonoLib))
                 sb.Append($"{i}    mono_lib = \"{MonoLib}\",\n");
+            if (!String.IsNullOrEmpty(MonoRef))
+                sb.Append($"{i}    mono_ref = \"{MonoRef}\",\n");
             if (CoreTool != null && CoreTool.Sum(x => x.Value.Count()) > 0)
             {
                 sb.Append($"{i}   core_tool = {{\n");
@@ -334,6 +366,9 @@ namespace nuget2bazel
         public IDictionary<string, string> CoreLib { get; set; }
         public IDictionary<string, string> NetLib { get; set; }
         public string MonoLib { get; set; }
+        public IDictionary<string, string> CoreRef { get; set; }
+        public IDictionary<string, string> NetRef { get; set; }
+        public string MonoRef { get; set; }
         public IDictionary<string, string> CoreTool { get; set; }
         public IDictionary<string, string> NetTool { get; set; }
         public string MonoTool { get; set; }

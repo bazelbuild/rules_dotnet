@@ -87,6 +87,9 @@ namespace nuget2bazel
                     case TokenCode.CORE_LIB:
                         result.CoreLib = RequireDictionary(TokenCode.CORE_LIB);
                         break;
+                    case TokenCode.CORE_REF:
+                        result.CoreRef = RequireDictionary(TokenCode.CORE_REF);
+                        break;
                     case TokenCode.MONO_DEPS:
                         result.Mono_Deps = RequireArray(TokenCode.MONO_DEPS);
                         break;
@@ -96,6 +99,9 @@ namespace nuget2bazel
                     case TokenCode.MONO_LIB:
                         result.MonoLib = RequireAssignment(TokenCode.MONO_LIB);
                         break;
+                    case TokenCode.MONO_REF:
+                        result.MonoRef = RequireAssignment(TokenCode.MONO_REF);
+                        break;
                     case TokenCode.NET_DEPS:
                         result.Net_Deps = RequireDictionaryList(TokenCode.NET_DEPS);
                         break;
@@ -104,6 +110,9 @@ namespace nuget2bazel
                         break;
                     case TokenCode.NET_LIB:
                         result.NetLib = RequireDictionary(TokenCode.NET_LIB);
+                        break;
+                    case TokenCode.NET_REF:
+                        result.NetRef = RequireDictionary(TokenCode.NET_REF);
                         break;
                     case TokenCode.PACKAGE:
                         package = RequireAssignment(TokenCode.PACKAGE);
@@ -267,6 +276,9 @@ namespace nuget2bazel
             CORE_LIB,
             NET_LIB,
             MONO_LIB,
+            CORE_REF,
+            NET_REF,
+            MONO_REF,
             CORE_TOOL,
             NET_TOOL,
             MONO_TOOL,
@@ -346,6 +358,9 @@ namespace nuget2bazel
             if (str == "core_lib") return (TokenCode.CORE_LIB, null);
             if (str == "net_lib") return (TokenCode.NET_LIB, null);
             if (str == "mono_lib") return (TokenCode.MONO_LIB, null);
+            if (str == "core_ref") return (TokenCode.CORE_REF, null);
+            if (str == "net_ref") return (TokenCode.NET_REF, null);
+            if (str == "mono_ref") return (TokenCode.MONO_REF, null);
             if (str == "core_tool") return (TokenCode.CORE_TOOL, null);
             if (str == "net_tool") return (TokenCode.NET_TOOL, null);
             if (str == "mono_tool") return (TokenCode.MONO_TOOL, null);

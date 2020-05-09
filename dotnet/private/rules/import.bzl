@@ -27,7 +27,7 @@ def _import_library_impl(ctx):
 
     direct_refs = []
     if ctx.attr.ref:
-        direct_refs.append(ctx.attr.ref)
+        direct_refs.append(ctx.attr.ref.files.to_list()[0])
     else:
         direct_refs.append(result)
 

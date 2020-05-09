@@ -17,7 +17,8 @@ namespace nuget2bazel_test
 
             Assert.Single(project.Entries);
             var entry = project.Entries.First();
-            Assert.Equal("ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll", entry.CoreLib["netcoreapp2.0"]);
+            Assert.Equal("lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll", entry.CoreLib["netcoreapp2.0"]);
+            Assert.Equal("ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll", entry.CoreRef["netcoreapp2.0"]);
         }
     }
 }

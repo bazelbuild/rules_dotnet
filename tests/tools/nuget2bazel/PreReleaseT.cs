@@ -17,7 +17,7 @@ namespace nuget2bazel_test
 
             var entry = project.Entries.Last();
             Assert.Equal(4, entry.CoreLib.Count);
-            Assert.Equal("ref/netstandard2.0/System.Security.Permissions.dll", entry.CoreLib["netcoreapp2.0"]);
+            Assert.Equal("lib/netstandard2.0/System.Security.Permissions.dll", entry.CoreLib["netcoreapp2.0"]);
         }
     }
 }
