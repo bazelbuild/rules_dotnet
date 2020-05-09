@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 using NuGet.Packaging.Core;
 using NuGet.Versioning;
+using nuget2bazel;
 using Xunit;
 
-namespace nuget2bazel
+namespace nuget2bazel_test
 {
     public class WorkspaceWriterT
     {

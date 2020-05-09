@@ -5,20 +5,19 @@ using Xunit;
 
 namespace nuget2bazel_test
 {
-    public class RemotionLinq : TestBase
+    public class RefT : TestBase
     {
         [Fact]
-        public async Task RemotionLinqT()
+        public async Task SystemRuntimeCompilerServicesUnsafe()
         {
             var project = new TestProject(_prjConfig);
             var addCmd = new AddCommand();
 
-            await addCmd.DoWithProject("Remotion.Linq", "2.2.0", project, false);
+            await addCmd.DoWithProject("System.Runtime.CompilerServices.Unsafe", "4.7.1", project, false);
 
             Assert.Single(project.Entries);
             var entry = project.Entries.First();
-            Assert.Equal(4, entry.CoreLib.Count);
-            Assert.Equal("lib/netstandard1.0/Remotion.Linq.dll", entry.CoreLib["netcoreapp2.0"]);
+            Assert.Equal("ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll", entry.CoreLib["netcoreapp2.0"]);
         }
     }
 }
