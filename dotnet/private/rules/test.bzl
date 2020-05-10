@@ -228,8 +228,8 @@ core_nunit3_test = rule(
             allow_files = True,
             default = {
                 "@vstest//:Microsoft.TestPlatform.TestHostRuntimeProvider.dll": "Extensions",
-                "@NUnit3TestAdapter//:extension": "Extensions",
-                "@JunitXml.TestLogger//:extension": "Extensions",
+                "@NUnit3TestAdapter//:extension": ".",
+                "@JunitXml.TestLogger//:extension": ".",
             },
         ),
     },

@@ -42,7 +42,7 @@ def emit_resx_core(
 
     dotnet.actions.run(
         inputs = inputs + resolve[0].to_list(),
-        tools = customresgen.files,
+        tools = customresgen.default_runfiles.files,
         outputs = [result],
         executable = customresgen.files_to_run.executable,
         arguments = [args],

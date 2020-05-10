@@ -7,6 +7,7 @@
 #include <Shlwapi.h>
 #include <io.h>
 #include <process.h>
+#define access _access
 #define F_OK 0
 #pragma comment(lib, "shlwapi.lib")
 #else
@@ -67,7 +68,7 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 	{
 		for (i = 0; i < argc + 2; ++i)
 		{
-			printf("argv[%d] = %s\n", i, newargv[i]);
+			printf("argv[%d] = %s (access: %d)\n", i, newargv[i], access(newargv[i], F_OK));
 		}
 	}
 
@@ -77,7 +78,7 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 	_execvp(newargv[0], newargv);
 #endif
 
-	printf("Call failed with errnor %d\n", errno);
+	printf("Call failed with errno %d\n", errno);
 }
 
 int main(int argc, char *argv[], char *envp[])

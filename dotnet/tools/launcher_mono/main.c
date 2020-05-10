@@ -56,7 +56,7 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 #else
 	_execvp(newargv[0], newargv);
 #endif
-	printf("Call failed with errnor %d\n", errno);
+	printf("Call failed with errno %d\n", errno);
 }
 
 int main(int argc, char *argv[], char *envp[])
