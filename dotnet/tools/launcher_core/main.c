@@ -68,7 +68,7 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 	{
 		for (i = 0; i < argc + 2; ++i)
 		{
-			printf("argv[%d] = %s (access: %d)\n", i, newargv[i], access(newargv[i], F_OK));
+			printf("argv[%d] = %s (access: %d)\n", i, newargv[i], newargv[i]!=NULL?access(newargv[i], F_OK):0);
 		}
 	}
 
