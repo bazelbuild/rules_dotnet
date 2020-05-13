@@ -15,7 +15,7 @@ def _libraryset_impl(ctx):
 
     # Handle case of empty toolchain on linux and darwin
     if dotnet.assembly == None:
-        library = dotnet.new_library(dotnet = dotnet)
+        library = dotnet.new_library(dotnet = dotnet, runfiles=depset())
         return [library]
 
     (transitive_refs, transitive_runfiles, transitive_deps) = collect_transitive_info(ctx.attr.deps, ctx.attr.data)
