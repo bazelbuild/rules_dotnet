@@ -109,10 +109,11 @@ namespace nuget2bazel
         private IDictionary<string, IEnumerable<string>> GetDepsNet(IEnumerable<NuGetFramework> frameworks, IEnumerable<FrameworkSpecificGroup> groups, IDictionary<string, string> knownDependencies)
         {
             var result = new Dictionary<string, IEnumerable<string>>();
+            var knownDependenciesLower = knownDependencies.Keys.Select(x => x.ToLower()).ToList();
             foreach (var framework in frameworks)
             {
                 var rawDeps = MSBuildNuGetProjectSystemUtility.GetMostCompatibleGroup(framework, groups)?.Items;
-                var knownRawDeps = rawDeps?.Where(x => knownDependencies.ContainsKey(x));
+                var knownRawDeps = rawDeps?.Where(knownDependenciesLower.Contains);
                 var deps = knownRawDeps?.Select(x => ToRefNet(x, framework))?.Where(y => y != null);
                 if (deps != null)
                     result.Add(framework.GetShortFolderName(), deps);
@@ -124,10 +125,11 @@ namespace nuget2bazel
         private IDictionary<string, IEnumerable<string>> GetDepsCore(IEnumerable<NuGetFramework> frameworks, IEnumerable<FrameworkSpecificGroup> groups, IDictionary<string, string> knownDependencies)
         {
             var result = new Dictionary<string, IEnumerable<string>>();
+            var knownDependenciesLower = knownDependencies.Keys.Select(x => x.ToLower()).ToList();
             foreach (var framework in frameworks)
             {
                 var rawDeps = MSBuildNuGetProjectSystemUtility.GetMostCompatibleGroup(framework, groups)?.Items;
-                var knownRawDeps = rawDeps?.Where(x => knownDependencies.ContainsKey(x));
+                var knownRawDeps = rawDeps?.Where(knownDependenciesLower.Contains);
                 var deps = knownRawDeps?.Select(x => ToRefCore(x, framework))?.Where(y => y != null);
                 if (deps != null)
                     result.Add(framework.GetShortFolderName(), deps);
