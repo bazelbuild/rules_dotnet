@@ -39,6 +39,7 @@ jobs:
 
     - script: |
         rm /usr/local/bin/bazel || true
+        brew list bazel || true
         brew list bazel &>/dev/null || brew install bazel 
         brew install coreutils
         brew cask install mono-mdk
