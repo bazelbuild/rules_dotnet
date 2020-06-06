@@ -27,19 +27,23 @@ def collect_transitive_info(deps):
             basename = assembly.result.basename
             found = lookup.get(basename)
         else:
+            basename = assembly.name + "__libraryset__"
             found = None
 
         if found == None or compare_versions(assembly.version, found.version) > 0:
-            if assembly.result != None:
-                result.append(assembly)
-                lookup[basename] = assembly
+            result.append(assembly)
+            lookup[basename] = assembly
             if assembly.transitive != None:
                 for t in assembly.transitive:
                     if t.result != None:
                         tbasename = t.result.basename
                         tfound = lookup.get(tbasename)
-                        if tfound == None or compare_versions(t.version, tfound.version) > 0:
-                            result.append(t)
-                            lookup[tbasename] = t
+                    else:
+                        tbasename = t.name + "__libraryset__"
+                        tfound = None
+
+                    if tfound == None or compare_versions(t.version, tfound.version) > 0:
+                        result.append(t)
+                        lookup[tbasename] = t
 
     return result

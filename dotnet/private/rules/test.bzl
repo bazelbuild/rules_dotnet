@@ -73,7 +73,9 @@ def _unit_test(ctx):
         transitive_runfiles.append(ctx.attr._xslt.files)
 
     transitive_runfiles.append(executable.runfiles)
+    transitive_runfiles += [t.runfiles for t in executable.transitive]
     transitive_runfiles.append(ctx.attr.testlauncher[DotnetLibrary].runfiles)
+    transitive_runfiles += [t.runfiles for t in ctx.attr.testlauncher[DotnetLibrary].transitive]
 
     runfiles = ctx.runfiles(files = direct_runfiles, transitive_files = depset(transitive = transitive_runfiles))
     runfiles = CopyRunfiles(dotnet, runfiles, ctx.attr._copy, ctx.attr._symlink, executable, subdir)
