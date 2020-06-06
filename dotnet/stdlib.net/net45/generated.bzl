@@ -3,6 +3,7 @@ load("@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl", "net_stdlib")
 def define_stdlib(context_data):
     net_stdlib(
         name = "accessibility.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Accessibility.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Accessibility.dll",
@@ -12,6 +13,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "custommarshalers.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/CustomMarshalers.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/CustomMarshalers.dll",
@@ -21,6 +23,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "isymwrapper.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/ISymWrapper.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/ISymWrapper.dll",
@@ -31,6 +34,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "microsoft.activities.build.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.Activities.Build.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.Activities.Build.dll",
@@ -47,6 +51,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "microsoft.build.conversion.v4.0.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.Build.Conversion.v4.0.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.Build.Conversion.v4.0.dll",
@@ -60,6 +65,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "microsoft.build.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.Build.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.Build.dll",
@@ -73,6 +79,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "microsoft.build.engine.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.Build.Engine.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.Build.Engine.dll",
@@ -84,6 +91,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "microsoft.build.framework.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.Build.Framework.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.Build.Framework.dll",
@@ -95,6 +103,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "microsoft.build.tasks.v4.0.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.Build.Tasks.v4.0.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.Build.Tasks.v4.0.dll",
@@ -110,6 +119,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "microsoft.build.utilities.v4.0.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.Build.Utilities.v4.0.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.Build.Utilities.v4.0.dll",
@@ -122,6 +132,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "microsoft.csharp.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.CSharp.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.CSharp.dll",
@@ -133,6 +144,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "microsoft.jscript.dll",
+        version = "10.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.JScript.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.JScript.dll",
@@ -143,6 +155,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "microsoft.visualbasic.compatibility.data.dll",
+        version = "10.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.VisualBasic.Compatibility.Data.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.VisualBasic.Compatibility.Data.dll",
@@ -157,6 +170,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "microsoft.visualbasic.compatibility.dll",
+        version = "10.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.VisualBasic.Compatibility.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.VisualBasic.Compatibility.dll",
@@ -169,6 +183,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "microsoft.visualbasic.dll",
+        version = "10.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.VisualBasic.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.VisualBasic.dll",
@@ -184,6 +199,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "microsoft.visualc.dll",
+        version = "10.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.VisualC.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.VisualC.dll",
@@ -193,6 +209,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "microsoft.visualc.stlclr.dll",
+        version = "2.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.VisualC.STLCLR.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Microsoft.VisualC.STLCLR.dll",
@@ -203,6 +220,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "mscorlib.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/mscorlib.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/mscorlib.dll",
@@ -211,6 +229,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "presentationbuildtasks.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/PresentationBuildTasks.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/PresentationBuildTasks.dll",
@@ -223,6 +242,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "presentationcore.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/PresentationCore.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/PresentationCore.dll",
@@ -239,6 +259,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "presentationframework.aero.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/PresentationFramework.Aero.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/PresentationFramework.Aero.dll",
@@ -252,6 +273,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "presentationframework.aero2.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/PresentationFramework.Aero2.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/PresentationFramework.Aero2.dll",
@@ -265,6 +287,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "presentationframework.aerolite.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/PresentationFramework.AeroLite.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/PresentationFramework.AeroLite.dll",
@@ -278,6 +301,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "presentationframework.classic.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/PresentationFramework.Classic.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/PresentationFramework.Classic.dll",
@@ -291,6 +315,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "presentationframework.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/PresentationFramework.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/PresentationFramework.dll",
@@ -310,6 +335,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "presentationframework.luna.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/PresentationFramework.Luna.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/PresentationFramework.Luna.dll",
@@ -323,6 +349,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "presentationframework.royale.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/PresentationFramework.Royale.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/PresentationFramework.Royale.dll",
@@ -336,6 +363,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "reachframework.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/ReachFramework.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/ReachFramework.dll",
@@ -350,6 +378,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "sysglobl.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/sysglobl.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/sysglobl.dll",
@@ -359,6 +388,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.activities.core.presentation.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Activities.Core.Presentation.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Activities.Core.Presentation.dll",
@@ -379,6 +409,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.activities.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Activities.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Activities.dll",
@@ -395,6 +426,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.activities.durableinstancing.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Activities.DurableInstancing.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Activities.DurableInstancing.dll",
@@ -410,6 +442,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.activities.presentation.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Activities.Presentation.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Activities.Presentation.dll",
@@ -433,6 +466,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.addin.contract.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.AddIn.Contract.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.AddIn.Contract.dll",
@@ -442,6 +476,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.addin.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.AddIn.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.AddIn.dll",
@@ -453,6 +488,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.componentmodel.composition.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ComponentModel.Composition.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ComponentModel.Composition.dll",
@@ -464,6 +500,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.componentmodel.composition.registration.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ComponentModel.Composition.Registration.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ComponentModel.Composition.Registration.dll",
@@ -477,6 +514,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.componentmodel.dataannotations.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ComponentModel.DataAnnotations.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ComponentModel.DataAnnotations.dll",
@@ -488,6 +526,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.configuration.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Configuration.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Configuration.dll",
@@ -499,6 +538,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.configuration.install.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Configuration.Install.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Configuration.Install.dll",
@@ -510,6 +550,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.core.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Core.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Core.dll",
@@ -522,6 +563,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.data.datasetextensions.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Data.DataSetExtensions.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Data.DataSetExtensions.dll",
@@ -533,6 +575,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.data.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Data.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Data.dll",
@@ -546,6 +589,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.data.entity.design.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Data.Entity.Design.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Data.Entity.Design.dll",
@@ -560,6 +604,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.data.entity.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Data.Entity.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Data.Entity.dll",
@@ -574,6 +619,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.data.linq.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Data.Linq.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Data.Linq.dll",
@@ -587,6 +633,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.data.oracleclient.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Data.OracleClient.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Data.OracleClient.dll",
@@ -598,6 +645,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.data.services.client.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Data.Services.Client.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Data.Services.Client.dll",
@@ -610,6 +658,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.data.services.design.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Data.Services.Design.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Data.Services.Design.dll",
@@ -625,6 +674,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.data.services.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Data.Services.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Data.Services.dll",
@@ -643,6 +693,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.data.sqlxml.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Data.SqlXml.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Data.SqlXml.dll",
@@ -653,6 +704,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.deployment.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Deployment.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Deployment.dll",
@@ -666,6 +718,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.design.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Design.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Design.dll",
@@ -683,6 +736,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.device.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Device.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Device.dll",
@@ -693,6 +747,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.directoryservices.accountmanagement.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.DirectoryServices.AccountManagement.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.DirectoryServices.AccountManagement.dll",
@@ -705,6 +760,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.directoryservices.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.DirectoryServices.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.DirectoryServices.dll",
@@ -715,6 +771,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.directoryservices.protocols.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.DirectoryServices.Protocols.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.DirectoryServices.Protocols.dll",
@@ -726,6 +783,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.dll",
@@ -735,6 +793,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.drawing.design.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Drawing.Design.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Drawing.Design.dll",
@@ -746,6 +805,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.drawing.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Drawing.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Drawing.dll",
@@ -756,6 +816,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.enterpriseservices.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.EnterpriseServices.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.EnterpriseServices.dll",
@@ -767,6 +828,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.identitymodel.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.IdentityModel.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.IdentityModel.dll",
@@ -781,6 +843,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.identitymodel.selectors.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.IdentityModel.Selectors.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.IdentityModel.Selectors.dll",
@@ -793,6 +856,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.identitymodel.services.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.IdentityModel.Services.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.IdentityModel.Services.dll",
@@ -806,6 +870,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.io.compression.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.IO.Compression.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.IO.Compression.dll",
@@ -816,6 +881,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.io.compression.filesystem.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.IO.Compression.FileSystem.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.IO.Compression.FileSystem.dll",
@@ -827,6 +893,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.io.log.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.IO.Log.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.IO.Log.dll",
@@ -837,6 +904,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.management.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Management.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Management.dll",
@@ -849,6 +917,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.management.instrumentation.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Management.Instrumentation.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Management.Instrumentation.dll",
@@ -862,6 +931,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.messaging.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Messaging.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Messaging.dll",
@@ -875,6 +945,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.net.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Net.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Net.dll",
@@ -885,6 +956,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.net.http.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Net.Http.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Net.Http.dll",
@@ -896,6 +968,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.net.http.webrequest.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Net.Http.WebRequest.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Net.Http.WebRequest.dll",
@@ -907,6 +980,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.numerics.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Numerics.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Numerics.dll",
@@ -916,6 +990,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.printing.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Printing.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Printing.dll",
@@ -931,6 +1006,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.reflection.context.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Reflection.Context.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Reflection.Context.dll",
@@ -940,6 +1016,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.runtime.caching.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Runtime.Caching.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Runtime.Caching.dll",
@@ -950,6 +1027,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.runtime.durableinstancing.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Runtime.DurableInstancing.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Runtime.DurableInstancing.dll",
@@ -963,6 +1041,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.runtime.remoting.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Runtime.Remoting.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Runtime.Remoting.dll",
@@ -975,6 +1054,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.runtime.serialization.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Runtime.Serialization.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Runtime.Serialization.dll",
@@ -985,6 +1065,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.runtime.serialization.formatters.soap.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Runtime.Serialization.Formatters.Soap.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Runtime.Serialization.Formatters.Soap.dll",
@@ -994,6 +1075,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.security.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Security.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Security.dll",
@@ -1004,6 +1086,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.servicemodel.activation.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ServiceModel.Activation.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ServiceModel.Activation.dll",
@@ -1022,6 +1105,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.servicemodel.activities.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ServiceModel.Activities.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ServiceModel.Activities.dll",
@@ -1040,6 +1124,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.servicemodel.channels.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ServiceModel.Channels.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ServiceModel.Channels.dll",
@@ -1054,6 +1139,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.servicemodel.discovery.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ServiceModel.Discovery.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ServiceModel.Discovery.dll",
@@ -1067,6 +1153,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.servicemodel.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ServiceModel.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ServiceModel.dll",
@@ -1093,6 +1180,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.servicemodel.routing.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ServiceModel.Routing.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ServiceModel.Routing.dll",
@@ -1106,6 +1194,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.servicemodel.web.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ServiceModel.Web.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ServiceModel.Web.dll",
@@ -1122,6 +1211,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.serviceprocess.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ServiceProcess.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.ServiceProcess.dll",
@@ -1134,6 +1224,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.speech.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Speech.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Speech.dll",
@@ -1144,6 +1235,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.transactions.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Transactions.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Transactions.dll",
@@ -1155,6 +1247,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.web.abstractions.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.Abstractions.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.Abstractions.dll",
@@ -1164,6 +1257,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.web.applicationservices.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.ApplicationServices.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.ApplicationServices.dll",
@@ -1174,6 +1268,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.web.datavisualization.design.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.DataVisualization.Design.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.DataVisualization.Design.dll",
@@ -1187,6 +1282,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.web.datavisualization.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.DataVisualization.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.DataVisualization.dll",
@@ -1198,6 +1294,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.web.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.dll",
@@ -1223,6 +1320,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.web.dynamicdata.design.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.DynamicData.Design.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.DynamicData.Design.dll",
@@ -1236,6 +1334,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.web.dynamicdata.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.DynamicData.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.DynamicData.dll",
@@ -1254,6 +1353,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.web.entity.design.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.Entity.Design.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.Entity.Design.dll",
@@ -1268,6 +1368,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.web.entity.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.Entity.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.Entity.dll",
@@ -1282,6 +1383,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.web.extensions.design.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.Extensions.Design.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.Extensions.Design.dll",
@@ -1295,6 +1397,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.web.extensions.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.Extensions.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.Extensions.dll",
@@ -1314,6 +1417,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.web.mobile.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.Mobile.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.Mobile.dll",
@@ -1326,6 +1430,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.web.regularexpressions.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.RegularExpressions.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.RegularExpressions.dll",
@@ -1336,6 +1441,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.web.routing.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.Routing.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.Routing.dll",
@@ -1345,6 +1451,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.web.services.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.Services.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Web.Services.dll",
@@ -1357,6 +1464,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.windows.controls.ribbon.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Windows.Controls.Ribbon.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Windows.Controls.Ribbon.dll",
@@ -1372,6 +1480,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.windows.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Windows.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Windows.dll",
@@ -1382,6 +1491,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.windows.forms.datavisualization.design.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Windows.Forms.DataVisualization.Design.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Windows.Forms.DataVisualization.Design.dll",
@@ -1395,6 +1505,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.windows.forms.datavisualization.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Windows.Forms.DataVisualization.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Windows.Forms.DataVisualization.dll",
@@ -1406,6 +1517,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.windows.forms.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Windows.Forms.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Windows.Forms.dll",
@@ -1422,6 +1534,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.windows.input.manipulations.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Windows.Input.Manipulations.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Windows.Input.Manipulations.dll",
@@ -1433,6 +1546,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.windows.presentation.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Windows.Presentation.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Windows.Presentation.dll",
@@ -1447,6 +1561,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.workflow.activities.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Workflow.Activities.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Workflow.Activities.dll",
@@ -1463,6 +1578,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.workflow.componentmodel.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Workflow.ComponentModel.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Workflow.ComponentModel.dll",
@@ -1478,6 +1594,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.workflow.runtime.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Workflow.Runtime.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Workflow.Runtime.dll",
@@ -1494,6 +1611,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.workflowservices.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.WorkflowServices.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.WorkflowServices.dll",
@@ -1513,6 +1631,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.xaml.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Xaml.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Xaml.dll",
@@ -1523,6 +1642,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.xml.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Xml.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Xml.dll",
@@ -1534,6 +1654,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.xml.linq.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Xml.Linq.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Xml.Linq.dll",
@@ -1546,6 +1667,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.xml.serialization.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Xml.Serialization.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/System.Xml.Serialization.dll",
@@ -1555,6 +1677,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "uiautomationclient.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/UIAutomationClient.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/UIAutomationClient.dll",
@@ -1569,6 +1692,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "uiautomationclientsideproviders.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/UIAutomationClientsideProviders.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/UIAutomationClientsideProviders.dll",
@@ -1584,6 +1708,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "uiautomationprovider.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/UIAutomationProvider.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/UIAutomationProvider.dll",
@@ -1595,6 +1720,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "uiautomationtypes.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/UIAutomationTypes.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/UIAutomationTypes.dll",
@@ -1604,6 +1730,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "windowsbase.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/WindowsBase.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/WindowsBase.dll",
@@ -1617,6 +1744,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "windowsformsintegration.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/WindowsFormsIntegration.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/WindowsFormsIntegration.dll",
@@ -1632,6 +1760,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "xamlbuildtask.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/XamlBuildTask.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/XamlBuildTask.dll",
@@ -1647,6 +1776,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.collections.concurrent.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Collections.Concurrent.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Collections.Concurrent.dll",
@@ -1657,6 +1787,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.collections.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Collections.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Collections.dll",
@@ -1668,6 +1799,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.componentmodel.annotations.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.ComponentModel.Annotations.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.ComponentModel.Annotations.dll",
@@ -1678,6 +1810,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.componentmodel.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.ComponentModel.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.ComponentModel.dll",
@@ -1688,6 +1821,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.componentmodel.eventbasedasync.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.ComponentModel.EventBasedAsync.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.ComponentModel.EventBasedAsync.dll",
@@ -1698,6 +1832,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.diagnostics.contracts.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Diagnostics.Contracts.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Diagnostics.Contracts.dll",
@@ -1707,6 +1842,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.diagnostics.debug.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Diagnostics.Debug.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Diagnostics.Debug.dll",
@@ -1717,6 +1853,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.diagnostics.tools.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Diagnostics.Tools.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Diagnostics.Tools.dll",
@@ -1727,6 +1864,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.diagnostics.tracing.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Diagnostics.Tracing.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Diagnostics.Tracing.dll",
@@ -1736,6 +1874,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.dynamic.runtime.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Dynamic.Runtime.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Dynamic.Runtime.dll",
@@ -1746,6 +1885,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.globalization.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Globalization.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Globalization.dll",
@@ -1755,6 +1895,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.io.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.IO.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.IO.dll",
@@ -1765,6 +1906,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.linq.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Linq.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Linq.dll",
@@ -1775,6 +1917,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.linq.expressions.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Linq.Expressions.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Linq.Expressions.dll",
@@ -1785,6 +1928,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.linq.parallel.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Linq.Parallel.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Linq.Parallel.dll",
@@ -1795,6 +1939,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.linq.queryable.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Linq.Queryable.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Linq.Queryable.dll",
@@ -1805,6 +1950,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.net.networkinformation.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Net.NetworkInformation.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Net.NetworkInformation.dll",
@@ -1815,6 +1961,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.net.primitives.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Net.Primitives.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Net.Primitives.dll",
@@ -1825,6 +1972,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.net.requests.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Net.Requests.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Net.Requests.dll",
@@ -1835,6 +1983,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.objectmodel.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.ObjectModel.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.ObjectModel.dll",
@@ -1845,6 +1994,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.reflection.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Reflection.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Reflection.dll",
@@ -1854,6 +2004,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.reflection.emit.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Reflection.Emit.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Reflection.Emit.dll",
@@ -1863,6 +2014,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.reflection.emit.ilgeneration.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Reflection.Emit.ILGeneration.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Reflection.Emit.ILGeneration.dll",
@@ -1872,6 +2024,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.reflection.emit.lightweight.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Reflection.Emit.Lightweight.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Reflection.Emit.Lightweight.dll",
@@ -1881,6 +2034,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.reflection.extensions.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Reflection.Extensions.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Reflection.Extensions.dll",
@@ -1890,6 +2044,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.reflection.primitives.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Reflection.Primitives.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Reflection.Primitives.dll",
@@ -1899,6 +2054,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.resources.resourcemanager.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Resources.ResourceManager.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Resources.ResourceManager.dll",
@@ -1908,6 +2064,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.runtime.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Runtime.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Runtime.dll",
@@ -1920,6 +2077,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.runtime.extensions.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Runtime.Extensions.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Runtime.Extensions.dll",
@@ -1930,6 +2088,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.runtime.interopservices.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Runtime.InteropServices.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Runtime.InteropServices.dll",
@@ -1941,6 +2100,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.runtime.interopservices.windowsruntime.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Runtime.InteropServices.WindowsRuntime.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Runtime.InteropServices.WindowsRuntime.dll",
@@ -1950,6 +2110,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.runtime.numerics.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Runtime.Numerics.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Runtime.Numerics.dll",
@@ -1960,6 +2121,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.runtime.serialization.json.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Runtime.Serialization.Json.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Runtime.Serialization.Json.dll",
@@ -1970,6 +2132,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.runtime.serialization.primitives.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Runtime.Serialization.Primitives.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Runtime.Serialization.Primitives.dll",
@@ -1980,6 +2143,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.runtime.serialization.xml.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Runtime.Serialization.Xml.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Runtime.Serialization.Xml.dll",
@@ -1990,6 +2154,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.security.principal.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Security.Principal.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Security.Principal.dll",
@@ -1999,6 +2164,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.servicemodel.duplex.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.ServiceModel.Duplex.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.ServiceModel.Duplex.dll",
@@ -2008,6 +2174,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.servicemodel.http.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.ServiceModel.Http.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.ServiceModel.Http.dll",
@@ -2017,6 +2184,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.servicemodel.nettcp.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.ServiceModel.NetTcp.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.ServiceModel.NetTcp.dll",
@@ -2026,6 +2194,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.servicemodel.primitives.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.ServiceModel.Primitives.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.ServiceModel.Primitives.dll",
@@ -2035,6 +2204,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.servicemodel.security.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.ServiceModel.Security.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.ServiceModel.Security.dll",
@@ -2044,6 +2214,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.text.encoding.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Text.Encoding.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Text.Encoding.dll",
@@ -2053,6 +2224,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.text.encoding.extensions.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Text.Encoding.Extensions.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Text.Encoding.Extensions.dll",
@@ -2062,6 +2234,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.text.regularexpressions.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Text.RegularExpressions.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Text.RegularExpressions.dll",
@@ -2072,6 +2245,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.threading.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Threading.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Threading.dll",
@@ -2083,6 +2257,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.threading.tasks.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Threading.Tasks.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Threading.Tasks.dll",
@@ -2093,6 +2268,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.threading.tasks.parallel.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Threading.Tasks.Parallel.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Threading.Tasks.Parallel.dll",
@@ -2102,6 +2278,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.xml.readerwriter.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Xml.ReaderWriter.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Xml.ReaderWriter.dll",
@@ -2111,6 +2288,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.xml.xdocument.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Xml.XDocument.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Xml.XDocument.dll",
@@ -2121,6 +2299,7 @@ def define_stdlib(context_data):
     )
     net_stdlib(
         name = "system.xml.xmlserializer.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Xml.XmlSerializer.dll",
         stdlib_path = "@Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.0//:build/.NETFramework/v4.5/Facades/System.Xml.XmlSerializer.dll",

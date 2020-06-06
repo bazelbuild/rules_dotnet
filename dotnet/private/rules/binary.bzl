@@ -12,6 +12,7 @@ load(
     "CopyRunfiles",
 )
 load("@io_bazel_rules_dotnet//dotnet/platform:list.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NETSTANDARD", "DOTNET_NET_FRAMEWORKS")
+load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "parse_version")
 
 def _binary_impl(ctx):
     """_binary_impl emits actions for compiling executable assembly."""
@@ -41,6 +42,7 @@ def _binary_impl(ctx):
         target_framework = ctx.attr.target_framework,
         nowarn = ctx.attr.nowarn,
         langversion = ctx.attr.langversion,
+        version = (0, 0, 0, 0, "") if ctx.attr.version == "" else parse_version(ctx.attr.version),
     )
 
     launcher = dotnet.declare_file(dotnet, path = subdir + executable.result.basename + "_0.exe")
@@ -75,6 +77,7 @@ dotnet_binary = rule(
     _binary_impl,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
+        "version": attr.string(),
         "resources": attr.label_list(providers = [DotnetResourceList]),
         "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
@@ -99,6 +102,7 @@ core_binary = rule(
     _binary_impl,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
+        "version": attr.string(),
         "resources": attr.label_list(providers = [DotnetResourceList]),
         "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
@@ -123,6 +127,7 @@ net_binary = rule(
     _binary_impl,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
+        "version": attr.string(),
         "resources": attr.label_list(providers = [DotnetResourceList]),
         "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),

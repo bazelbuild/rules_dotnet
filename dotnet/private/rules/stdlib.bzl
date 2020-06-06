@@ -11,6 +11,7 @@ load(
     "DotnetLibrary",
 )
 load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
+load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "parse_version")
 
 def _stdlib_impl(ctx):
     dotnet = dotnet_context(ctx)
@@ -40,6 +41,7 @@ def _stdlib_impl(ctx):
     library = dotnet.new_library(
         dotnet = dotnet,
         name = name,
+        version = parse_version(ctx.attr.version),
         deps = ctx.attr.deps,
         ref = ctx.attr.ref,
         transitive = transitive_deps,
@@ -60,6 +62,7 @@ dotnet_stdlib = rule(
     _stdlib_impl,
     attrs = {
         "dll": attr.string(),
+        "version": attr.string(mandatory = True),
         "ref": attr.label(allow_files = True),
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "data": attr.label_list(allow_files = True),
@@ -74,6 +77,7 @@ core_stdlib = rule(
     _stdlib_impl,
     attrs = {
         "dll": attr.string(),
+        "version": attr.string(mandatory = True),
         "ref": attr.label(allow_files = True),
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "data": attr.label_list(allow_files = True),
@@ -88,6 +92,7 @@ net_stdlib = rule(
     _stdlib_impl,
     attrs = {
         "dll": attr.string(),
+        "version": attr.string(mandatory = True),
         "ref": attr.label(allow_files = True),
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "data": attr.label_list(allow_files = True),

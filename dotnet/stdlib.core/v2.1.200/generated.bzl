@@ -152,6 +152,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "microsoft.csharp.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/Microsoft.CSharp.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/Microsoft.CSharp.dll",
@@ -160,6 +161,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "microsoft.visualbasic.dll",
+        version = "10.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/Microsoft.VisualBasic.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/Microsoft.VisualBasic.dll",
@@ -168,6 +170,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "microsoft.win32.primitives.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/Microsoft.Win32.Primitives.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/Microsoft.Win32.Primitives.dll",
@@ -177,6 +180,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "mscorlib.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/mscorlib.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/mscorlib.dll",
@@ -226,6 +230,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "netstandard.dll",
+        version = "2.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/netstandard.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/netstandard.dll",
@@ -320,6 +325,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.appcontext.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.AppContext.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.AppContext.dll",
@@ -329,6 +335,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.buffers.dll",
+        version = "4.0.2.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Buffers.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Buffers.dll",
@@ -337,6 +344,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.collections.concurrent.dll",
+        version = "4.0.14.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Collections.Concurrent.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Collections.Concurrent.dll",
@@ -346,6 +354,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.collections.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Collections.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Collections.dll",
@@ -355,6 +364,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.collections.immutable.dll",
+        version = "1.2.2.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Collections.Immutable.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Collections.Immutable.dll",
@@ -365,6 +375,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.collections.nongeneric.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Collections.NonGeneric.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Collections.NonGeneric.dll",
@@ -375,6 +386,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.collections.specialized.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Collections.Specialized.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Collections.Specialized.dll",
@@ -385,6 +397,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.componentmodel.annotations.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.ComponentModel.Annotations.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.ComponentModel.Annotations.dll",
@@ -393,6 +406,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.componentmodel.composition.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.ComponentModel.Composition.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.ComponentModel.Composition.dll",
@@ -402,6 +416,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.componentmodel.dataannotations.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.ComponentModel.DataAnnotations.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.ComponentModel.DataAnnotations.dll",
@@ -412,6 +427,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.componentmodel.dll",
+        version = "4.0.3.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.ComponentModel.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.ComponentModel.dll",
@@ -421,6 +437,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.componentmodel.eventbasedasync.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.ComponentModel.EventBasedAsync.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.ComponentModel.EventBasedAsync.dll",
@@ -433,6 +450,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.componentmodel.primitives.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.ComponentModel.Primitives.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.ComponentModel.Primitives.dll",
@@ -444,6 +462,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.componentmodel.typeconverter.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.ComponentModel.TypeConverter.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.ComponentModel.TypeConverter.dll",
@@ -459,6 +478,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.configuration.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Configuration.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Configuration.dll",
@@ -468,6 +488,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.console.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Console.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Console.dll",
@@ -478,6 +499,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.core.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Core.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Core.dll",
@@ -500,6 +522,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.data.common.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Data.Common.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Data.Common.dll",
@@ -516,6 +539,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.data.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Data.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Data.dll",
@@ -526,6 +550,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.diagnostics.contracts.dll",
+        version = "4.0.3.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Diagnostics.Contracts.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Diagnostics.Contracts.dll",
@@ -535,6 +560,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.diagnostics.debug.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Diagnostics.Debug.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Diagnostics.Debug.dll",
@@ -544,6 +570,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.diagnostics.diagnosticsource.dll",
+        version = "4.0.2.1",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Diagnostics.DiagnosticSource.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Diagnostics.DiagnosticSource.dll",
@@ -552,6 +579,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.diagnostics.fileversioninfo.dll",
+        version = "4.0.2.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Diagnostics.FileVersionInfo.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Diagnostics.FileVersionInfo.dll",
@@ -561,6 +589,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.diagnostics.process.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Diagnostics.Process.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Diagnostics.Process.dll",
@@ -576,6 +605,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.diagnostics.stacktrace.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Diagnostics.StackTrace.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Diagnostics.StackTrace.dll",
@@ -585,6 +615,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.diagnostics.textwritertracelistener.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Diagnostics.TextWriterTraceListener.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Diagnostics.TextWriterTraceListener.dll",
@@ -596,6 +627,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.diagnostics.tools.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Diagnostics.Tools.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Diagnostics.Tools.dll",
@@ -605,6 +637,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.diagnostics.tracesource.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Diagnostics.TraceSource.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Diagnostics.TraceSource.dll",
@@ -616,6 +649,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.diagnostics.tracing.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Diagnostics.Tracing.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Diagnostics.Tracing.dll",
@@ -625,6 +659,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.dll",
@@ -674,6 +709,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.drawing.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Drawing.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Drawing.dll",
@@ -685,6 +721,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.drawing.primitives.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Drawing.Primitives.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Drawing.Primitives.dll",
@@ -695,6 +732,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.dynamic.runtime.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Dynamic.Runtime.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Dynamic.Runtime.dll",
@@ -705,6 +743,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.globalization.calendars.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Globalization.Calendars.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Globalization.Calendars.dll",
@@ -714,6 +753,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.globalization.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Globalization.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Globalization.dll",
@@ -723,6 +763,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.globalization.extensions.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Globalization.Extensions.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Globalization.Extensions.dll",
@@ -733,6 +774,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.io.compression.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.IO.Compression.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.IO.Compression.dll",
@@ -742,6 +784,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.io.compression.filesystem.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.IO.Compression.FileSystem.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.IO.Compression.FileSystem.dll",
@@ -752,6 +795,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.io.compression.zipfile.dll",
+        version = "4.0.3.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.IO.Compression.ZipFile.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.IO.Compression.ZipFile.dll",
@@ -762,6 +806,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.io.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.IO.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.IO.dll",
@@ -772,6 +817,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.io.filesystem.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.IO.FileSystem.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.IO.FileSystem.dll",
@@ -782,6 +828,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.io.filesystem.driveinfo.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.IO.FileSystem.DriveInfo.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.IO.FileSystem.DriveInfo.dll",
@@ -792,6 +839,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.io.filesystem.primitives.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.IO.FileSystem.Primitives.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.IO.FileSystem.Primitives.dll",
@@ -801,6 +849,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.io.filesystem.watcher.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.IO.FileSystem.Watcher.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.IO.FileSystem.Watcher.dll",
@@ -811,6 +860,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.io.isolatedstorage.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.IO.IsolatedStorage.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.IO.IsolatedStorage.dll",
@@ -820,6 +870,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.io.memorymappedfiles.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.IO.MemoryMappedFiles.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.IO.MemoryMappedFiles.dll",
@@ -830,6 +881,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.io.pipes.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.IO.Pipes.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.IO.Pipes.dll",
@@ -840,6 +892,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.io.unmanagedmemorystream.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.IO.UnmanagedMemoryStream.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.IO.UnmanagedMemoryStream.dll",
@@ -850,6 +903,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.linq.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Linq.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Linq.dll",
@@ -860,6 +914,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.linq.expressions.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Linq.Expressions.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Linq.Expressions.dll",
@@ -870,6 +925,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.linq.parallel.dll",
+        version = "4.0.3.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Linq.Parallel.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Linq.Parallel.dll",
@@ -882,6 +938,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.linq.queryable.dll",
+        version = "4.0.3.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Linq.Queryable.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Linq.Queryable.dll",
@@ -893,6 +950,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.net.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Net.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Net.dll",
@@ -908,6 +966,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.net.http.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Net.Http.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Net.Http.dll",
@@ -919,6 +978,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.net.httplistener.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Net.HttpListener.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Net.HttpListener.dll",
@@ -937,6 +997,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.net.mail.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Net.Mail.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Net.Mail.dll",
@@ -951,6 +1012,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.net.nameresolution.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Net.NameResolution.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Net.NameResolution.dll",
@@ -961,6 +1023,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.net.networkinformation.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Net.NetworkInformation.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Net.NetworkInformation.dll",
@@ -972,6 +1035,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.net.ping.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Net.Ping.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Net.Ping.dll",
@@ -984,6 +1048,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.net.primitives.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Net.Primitives.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Net.Primitives.dll",
@@ -995,6 +1060,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.net.requests.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Net.Requests.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Net.Requests.dll",
@@ -1011,6 +1077,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.net.security.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Net.Security.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Net.Security.dll",
@@ -1024,6 +1091,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.net.servicepoint.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Net.ServicePoint.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Net.ServicePoint.dll",
@@ -1036,6 +1104,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.net.sockets.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Net.Sockets.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Net.Sockets.dll",
@@ -1046,6 +1115,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.net.webclient.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Net.WebClient.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Net.WebClient.dll",
@@ -1061,6 +1131,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.net.webheadercollection.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Net.WebHeaderCollection.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Net.WebHeaderCollection.dll",
@@ -1071,6 +1142,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.net.webproxy.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Net.WebProxy.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Net.WebProxy.dll",
@@ -1082,6 +1154,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.net.websockets.client.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Net.WebSockets.Client.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Net.WebSockets.Client.dll",
@@ -1094,6 +1167,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.net.websockets.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Net.WebSockets.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Net.WebSockets.dll",
@@ -1107,6 +1181,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.numerics.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Numerics.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Numerics.dll",
@@ -1118,6 +1193,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.numerics.vectors.dll",
+        version = "4.1.3.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Numerics.Vectors.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Numerics.Vectors.dll",
@@ -1127,6 +1203,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.objectmodel.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.ObjectModel.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.ObjectModel.dll",
@@ -1137,6 +1214,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.reflection.dispatchproxy.dll",
+        version = "4.0.3.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Reflection.DispatchProxy.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Reflection.DispatchProxy.dll",
@@ -1145,6 +1223,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.reflection.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Reflection.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Reflection.dll",
@@ -1154,6 +1233,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.reflection.emit.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Reflection.Emit.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Reflection.Emit.dll",
@@ -1165,6 +1245,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.reflection.emit.ilgeneration.dll",
+        version = "4.0.3.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Reflection.Emit.ILGeneration.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Reflection.Emit.ILGeneration.dll",
@@ -1175,6 +1256,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.reflection.emit.lightweight.dll",
+        version = "4.0.3.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Reflection.Emit.Lightweight.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Reflection.Emit.Lightweight.dll",
@@ -1185,6 +1267,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.reflection.extensions.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Reflection.Extensions.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Reflection.Extensions.dll",
@@ -1194,6 +1277,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.reflection.metadata.dll",
+        version = "1.4.2.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Reflection.Metadata.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Reflection.Metadata.dll",
@@ -1204,6 +1288,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.reflection.primitives.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Reflection.Primitives.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Reflection.Primitives.dll",
@@ -1213,6 +1298,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.reflection.typeextensions.dll",
+        version = "4.1.2.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Reflection.TypeExtensions.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Reflection.TypeExtensions.dll",
@@ -1221,6 +1307,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.resources.reader.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Resources.Reader.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Resources.Reader.dll",
@@ -1231,6 +1318,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.resources.resourcemanager.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Resources.ResourceManager.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Resources.ResourceManager.dll",
@@ -1241,6 +1329,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.resources.writer.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Resources.Writer.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Resources.Writer.dll",
@@ -1250,6 +1339,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.runtime.compilerservices.visualc.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Runtime.CompilerServices.VisualC.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Runtime.CompilerServices.VisualC.dll",
@@ -1259,6 +1349,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.runtime.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Runtime.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Runtime.dll",
@@ -1267,6 +1358,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.runtime.extensions.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Runtime.Extensions.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Runtime.Extensions.dll",
@@ -1277,6 +1369,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.runtime.handles.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Runtime.Handles.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Runtime.Handles.dll",
@@ -1286,6 +1379,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.runtime.interopservices.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Runtime.InteropServices.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Runtime.InteropServices.dll",
@@ -1295,6 +1389,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.runtime.interopservices.runtimeinformation.dll",
+        version = "4.0.2.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Runtime.InteropServices.RuntimeInformation.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Runtime.InteropServices.RuntimeInformation.dll",
@@ -1304,6 +1399,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.runtime.interopservices.windowsruntime.dll",
+        version = "4.0.3.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Runtime.InteropServices.WindowsRuntime.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Runtime.InteropServices.WindowsRuntime.dll",
@@ -1313,6 +1409,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.runtime.loader.dll",
+        version = "4.0.2.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Runtime.Loader.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Runtime.Loader.dll",
@@ -1322,6 +1419,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.runtime.numerics.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Runtime.Numerics.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Runtime.Numerics.dll",
@@ -1331,6 +1429,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.runtime.serialization.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Runtime.Serialization.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Runtime.Serialization.dll",
@@ -1343,6 +1442,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.runtime.serialization.formatters.dll",
+        version = "4.0.2.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Runtime.Serialization.Formatters.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Runtime.Serialization.Formatters.dll",
@@ -1353,6 +1453,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.runtime.serialization.json.dll",
+        version = "4.0.4.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Runtime.Serialization.Json.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Runtime.Serialization.Json.dll",
@@ -1364,6 +1465,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.runtime.serialization.primitives.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Runtime.Serialization.Primitives.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Runtime.Serialization.Primitives.dll",
@@ -1373,6 +1475,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.runtime.serialization.xml.dll",
+        version = "4.1.3.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Runtime.Serialization.Xml.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Runtime.Serialization.Xml.dll",
@@ -1384,6 +1487,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.security.claims.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Security.Claims.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Security.Claims.dll",
@@ -1395,6 +1499,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.security.cryptography.algorithms.dll",
+        version = "4.3.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Security.Cryptography.Algorithms.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Security.Cryptography.Algorithms.dll",
@@ -1407,6 +1512,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.security.cryptography.csp.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Security.Cryptography.Csp.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Security.Cryptography.Csp.dll",
@@ -1419,6 +1525,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.security.cryptography.encoding.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Security.Cryptography.Encoding.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Security.Cryptography.Encoding.dll",
@@ -1429,6 +1536,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.security.cryptography.primitives.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Security.Cryptography.Primitives.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Security.Cryptography.Primitives.dll",
@@ -1438,6 +1546,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.security.cryptography.x509certificates.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Security.Cryptography.X509Certificates.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Security.Cryptography.X509Certificates.dll",
@@ -1453,6 +1562,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.security.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Security.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Security.dll",
@@ -1462,6 +1572,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.security.principal.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Security.Principal.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Security.Principal.dll",
@@ -1471,6 +1582,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.security.securestring.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Security.SecureString.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Security.SecureString.dll",
@@ -1481,6 +1593,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.servicemodel.web.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.ServiceModel.Web.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.ServiceModel.Web.dll",
@@ -1491,6 +1604,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.serviceprocess.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.ServiceProcess.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.ServiceProcess.dll",
@@ -1500,6 +1614,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.text.encoding.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Text.Encoding.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Text.Encoding.dll",
@@ -1509,6 +1624,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.text.encoding.extensions.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Text.Encoding.Extensions.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Text.Encoding.Extensions.dll",
@@ -1518,6 +1634,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.text.regularexpressions.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Text.RegularExpressions.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Text.RegularExpressions.dll",
@@ -1528,6 +1645,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.threading.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Threading.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Threading.dll",
@@ -1537,6 +1655,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.threading.overlapped.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Threading.Overlapped.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Threading.Overlapped.dll",
@@ -1546,6 +1665,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.threading.tasks.dataflow.dll",
+        version = "4.6.2.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Threading.Tasks.Dataflow.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Threading.Tasks.Dataflow.dll",
@@ -1554,6 +1674,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.threading.tasks.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Threading.Tasks.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Threading.Tasks.dll",
@@ -1563,6 +1684,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.threading.tasks.extensions.dll",
+        version = "4.1.1.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Threading.Tasks.Extensions.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Threading.Tasks.Extensions.dll",
@@ -1573,6 +1695,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.threading.tasks.parallel.dll",
+        version = "4.0.3.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Threading.Tasks.Parallel.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Threading.Tasks.Parallel.dll",
@@ -1583,6 +1706,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.threading.thread.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Threading.Thread.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Threading.Thread.dll",
@@ -1595,6 +1719,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.threading.threadpool.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Threading.ThreadPool.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Threading.ThreadPool.dll",
@@ -1605,6 +1730,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.threading.timer.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Threading.Timer.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Threading.Timer.dll",
@@ -1614,6 +1740,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.transactions.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Transactions.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Transactions.dll",
@@ -1624,6 +1751,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.transactions.local.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Transactions.Local.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Transactions.Local.dll",
@@ -1633,6 +1761,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.valuetuple.dll",
+        version = "4.0.2.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.ValueTuple.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.ValueTuple.dll",
@@ -1642,6 +1771,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.web.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Web.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Web.dll",
@@ -1652,6 +1782,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.web.httputility.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Web.HttpUtility.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Web.HttpUtility.dll",
@@ -1663,6 +1794,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.windows.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Windows.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Windows.dll",
@@ -1673,6 +1805,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.xml.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Xml.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Xml.dll",
@@ -1685,6 +1818,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.xml.linq.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Xml.Linq.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Xml.Linq.dll",
@@ -1696,6 +1830,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.xml.readerwriter.dll",
+        version = "4.2.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Xml.ReaderWriter.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Xml.ReaderWriter.dll",
@@ -1709,6 +1844,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.xml.serialization.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Xml.Serialization.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Xml.Serialization.dll",
@@ -1720,6 +1856,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.xml.xdocument.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Xml.XDocument.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Xml.XDocument.dll",
@@ -1731,6 +1868,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.xml.xmldocument.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Xml.XmlDocument.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Xml.XmlDocument.dll",
@@ -1741,6 +1879,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.xml.xmlserializer.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Xml.XmlSerializer.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Xml.XmlSerializer.dll",
@@ -1754,6 +1893,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.xml.xpath.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Xml.XPath.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Xml.XPath.dll",
@@ -1765,6 +1905,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "system.xml.xpath.xdocument.dll",
+        version = "4.1.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/System.Xml.XPath.XDocument.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Xml.XPath.XDocument.dll",
@@ -1776,6 +1917,7 @@ def define_stdlib(context_data):
     )
     core_stdlib(
         name = "windowsbase.dll",
+        version = "4.0.0.0",
         dotnet_context_data = context_data,
         ref = "@Microsoft.NETCore.App.2.0.7//:ref/netcoreapp2.0/WindowsBase.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/WindowsBase.dll",

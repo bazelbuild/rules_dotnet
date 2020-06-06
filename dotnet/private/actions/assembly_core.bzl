@@ -15,7 +15,8 @@ def emit_assembly_core(
         subdir = "./",
         target_framework = "",
         nowarn = None,
-        langversion = "latest"):
+        langversion = "latest",
+        version = (0, 0, 0, 0, "")):
     return emit_assembly_common(
         kind = "core",
         dotnet = dotnet,
@@ -33,4 +34,5 @@ def emit_assembly_core(
         target_framework = target_framework,
         nowarn = nowarn,
         langversion = langversion,
+        version = version,
     )

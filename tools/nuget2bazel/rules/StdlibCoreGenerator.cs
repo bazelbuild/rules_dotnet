@@ -71,6 +71,7 @@ namespace nuget2bazel.rules
 
                     var refInfo = new RefInfo();
                     refInfo.Name = name.ToLower();
+                    refInfo.Version = metadata.GetName().Version.ToString();
                     refInfo.Ref = refname;
                     refInfo.StdlibPath = stdlibpath;
                     refInfo.Deps.AddRange(depNames);
@@ -109,6 +110,7 @@ namespace nuget2bazel.rules
 
                     var refInfo = new RefInfo();
                     refInfo.Name = name.ToLower();
+                    refInfo.Version = metadata.GetName().Version.ToString();
                     refInfo.Deps.AddRange(depNames);
                     result.Add(refInfo);
                 }
@@ -143,6 +145,7 @@ namespace nuget2bazel.rules
             {
                 await f.WriteLineAsync($"    core_stdlib(");
                 await f.WriteLineAsync($"        name = \"{d.Name}\",");
+                await f.WriteLineAsync($"        version = \"{d.Version}\",");
                 await f.WriteLineAsync($"        dotnet_context_data = context_data,");
                 if (d.Ref != null)
                     await f.WriteLineAsync($"        ref = \"{d.Ref}\",");

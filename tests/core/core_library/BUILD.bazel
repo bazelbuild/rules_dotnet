@@ -20,6 +20,7 @@ core_xunit_test(
     data = [
         ":custom_bin.dll",
     ],
+    version = "1.0",
     deps = [
         "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
         "@xunit.assert//:netcoreapp2.1_core",

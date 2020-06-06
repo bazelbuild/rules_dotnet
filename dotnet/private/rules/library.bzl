@@ -5,6 +5,7 @@ load(
     "DotnetResourceList",
 )
 load("@io_bazel_rules_dotnet//dotnet/platform:list.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NETSTANDARD", "DOTNET_NET_FRAMEWORKS")
+load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "parse_version")
 
 def _library_impl(ctx):
     """_library_impl emits actions for compiling dotnet executable assembly."""
@@ -31,6 +32,7 @@ def _library_impl(ctx):
         target_framework = ctx.attr.target_framework,
         nowarn = ctx.attr.nowarn,
         langversion = ctx.attr.langversion,
+        version = (0, 0, 0, 0, "") if ctx.attr.version == "" else parse_version(ctx.attr.version),
     )
 
     runfiles = ctx.runfiles(files = [], transitive_files = library.runfiles)
@@ -47,6 +49,7 @@ dotnet_library = rule(
     _library_impl,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
+        "version": attr.string(),
         "resources": attr.label_list(providers = [DotnetResourceList]),
         "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
@@ -67,6 +70,7 @@ core_library = rule(
     _library_impl,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
+        "version": attr.string(),
         "resources": attr.label_list(providers = [DotnetResourceList]),
         "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
@@ -87,6 +91,7 @@ net_library = rule(
     _library_impl,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
+        "version": attr.string(),
         "resources": attr.label_list(providers = [DotnetResourceList]),
         "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),

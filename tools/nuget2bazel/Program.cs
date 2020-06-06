@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using CommandLine;
 using CommandLine.Text;
 using nuget2bazel.rules;
@@ -8,48 +9,43 @@ namespace nuget2bazel
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var parsed = Parser.Default.ParseArguments<AddVerb, DeleteVerb, SyncVerb, UpdateVerb, RulesVerb>(args);
-            var result = parsed.MapResult<AddVerb, DeleteVerb, SyncVerb, UpdateVerb, RulesVerb, int>(
-                (AddVerb opts) =>
+            var result = await parsed.MapResult<AddVerb, DeleteVerb, SyncVerb, UpdateVerb, RulesVerb, Task<int>>(
+                async (AddVerb opts) =>
                 {
                     var prjConfig = new ProjectBazelConfig(opts);
-                    var res = new AddCommand().Do(prjConfig, opts.Package, opts.Version, opts.MainFile, opts.SkipSha256, opts.Lowest, opts.Variable);
-                    res.Wait();
+                    await new AddCommand().Do(prjConfig, opts.Package, opts.Version, opts.MainFile, opts.SkipSha256, opts.Lowest, opts.Variable);
                     return 0;
                 },
-                (DeleteVerb opts) =>
+                async (DeleteVerb opts) =>
                 {
                     var prjConfig = new ProjectBazelConfig(opts);
-                    var res = new DeleteCommand().Do(prjConfig, opts.Package);
-                    res.Wait();
+                    await new DeleteCommand().Do(prjConfig, opts.Package);
                     return 0;
                 },
-                (SyncVerb opts) =>
+                async (SyncVerb opts) =>
                 {
                     var prjConfig = new ProjectBazelConfig(opts);
-                    var res = new SyncCommand().Do(prjConfig);
-                    res.Wait();
+                    await new SyncCommand().Do(prjConfig);
                     return 0;
                 },
-                (UpdateVerb opts) =>
+                async (UpdateVerb opts) =>
                 {
                     var prjConfig = new ProjectBazelConfig(opts);
-                    var res = new UpdateCommand().Do(prjConfig, opts.Package, opts.Version, opts.MainFile, opts.SkipSha256, opts.Lowest, opts.Variable);
-                    res.Wait();
+                    await new UpdateCommand().Do(prjConfig, opts.Package, opts.Version, opts.MainFile, opts.SkipSha256, opts.Lowest, opts.Variable);
                     return 0;
                 },
-                (RulesVerb opts) =>
+                async (RulesVerb opts) =>
                 {
-                    var res = new RulesCommand().Do(opts.Path);
-                    res.Wait();
+                    await new RulesCommand().Do(opts.Path);
                     return 0;
                 },
                 errs =>
                 {
                     HelpText.AutoBuild(parsed);
-                    return -1;
+                    return Task.FromResult(-1);
                 }
             );
 

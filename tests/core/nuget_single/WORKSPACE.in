@@ -22,7 +22,8 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_import_library")
 
 dotnet_import_library(
     name = "lib",
-    src = "lib/net451/Npgsql.dll"
+    src = "lib/net451/Npgsql.dll",
+    version = "3.2.7",
 )
 """,
 )

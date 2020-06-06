@@ -10,7 +10,14 @@ namespace example_test
         [Fact]
         public void MyTest2()
         {
-            Assert.True("bar"=="bar");
+            Assert.True("bar" == "bar");
+        }
+        [Fact]
+        public void CheckVersion()
+        {
+            var version = GetType().Assembly.GetName().Version;
+            Assert.Equal(1, version.Major);
+            Assert.Equal(0, version.Minor);
         }
     }
 }

@@ -3,7 +3,7 @@ DotnetLibrary = provider(
     fields = {
         "label": "Label of the rule used to create this DotnetLibrary",
         "name": "Name of the assembly (label.name if not provided)",
-        "version": "Version number of the library",
+        "version": "Version number of the library. Tuple with 4 elements",
         "deps": "The direct dependencies of this library",
         "transitive": "The full set of transitive dependencies. This includes deps for this assembly",
         "result": "The assembly file",

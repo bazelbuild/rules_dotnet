@@ -7,6 +7,7 @@ load(
     "DotnetResourceList",
 )
 load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
+load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "version2string")
 
 def _map_resource(d):
     return d.result.path + "," + d.identifier
@@ -27,7 +28,8 @@ def emit_assembly_common(
         subdir = "./",
         target_framework = "",
         nowarn = None,
-        langversion = "latest"):
+        langversion = "latest",
+        version = (0, 0, 0, 0, "")):
     """See dotnet/toolchains.rst#binary for full documentation. Emits actions for assembly build.
 
     The function is used by all frameworks.
@@ -140,6 +142,16 @@ def emit_assembly_common(
         args.add(f)
         direct_inputs.append(f)
 
+    # Generate the source file for assembly version
+    if version != (0, 0, 0, 0, ""):
+        f = dotnet._ctx.actions.declare_file(result.basename + "._tv_.cs", sibling = result)
+        content = """
+        [assembly:System.Reflection.AssemblyVersion("{}")]
+        """.format(version2string(version))
+        dotnet._ctx.actions.write(f, content)
+        args.add(f)
+        direct_inputs.append(f)
+
     # References - also needs to include transitive dependencies
     (transitive_refs, transitive_runfiles, transitive_deps) = collect_transitive_info(deps)
 
@@ -196,4 +208,5 @@ def emit_assembly_common(
         result = result,
         pdb = pdb,
         transitive_refs = depset(direct = [result], transitive = [transitive_refs]),
+        version = version,
     )
