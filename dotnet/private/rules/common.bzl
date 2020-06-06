@@ -33,12 +33,13 @@ def collect_transitive_info(deps):
             if assembly.result != None:
                 result.append(assembly)
                 lookup[basename] = assembly
-            for t in assembly.transitive:
-                if t.result != None:
-                    tbasename = t.result.basename
-                    tfound = lookup.get(tbasename)
-                    if tfound == None or compare_versions(t.version, tfound.version) > 0:
-                        result.append(t)
-                        lookup[tbasename] = t
+            if assembly.transitive != None:
+                for t in assembly.transitive:
+                    if t.result != None:
+                        tbasename = t.result.basename
+                        tfound = lookup.get(tbasename)
+                        if tfound == None or compare_versions(t.version, tfound.version) > 0:
+                            result.append(t)
+                            lookup[tbasename] = t
 
     return result
