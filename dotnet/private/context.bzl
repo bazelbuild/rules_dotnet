@@ -12,7 +12,7 @@ def _declare_file(dotnet, path = None, ext = None, sibling = None):
         result += ext
     return dotnet.actions.declare_file(result, sibling = sibling)
 
-def new_library(dotnet, name = None, deps = None, transitive = None, result = None, pdb = None, runfiles = None, version = None, ref = None, transitive_refs = None):
+def new_library(dotnet, name = None, deps = None, transitive = None, result = None, pdb = None, runfiles = None, version = None, ref = None):
     return DotnetLibrary(
         name = dotnet.label.name if not name else name,
         label = dotnet.label,
@@ -23,7 +23,6 @@ def new_library(dotnet, name = None, deps = None, transitive = None, result = No
         runfiles = runfiles,
         version = version,
         ref = ref,
-        transitive_refs = transitive_refs,
     )
 
 def _new_resource(dotnet, name, result, identifier = None, **kwargs):

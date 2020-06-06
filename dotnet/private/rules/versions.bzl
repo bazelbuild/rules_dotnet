@@ -118,3 +118,39 @@ def test_version2string():
     if c != a:
         print("Unexpected result:", c)
         fail("test 1 failed")
+
+def compare_versions(tversion1, tversion2):
+    for i in range(4):
+        if tversion1[i] > tversion2[i]:
+            return 1
+
+        if tversion1[i] < tversion2[i]:
+            return -1
+
+    if tversion1[4] == "":
+        if tversion2[4] == "":
+            return 0
+        return 1
+
+    if tversion2[4] == "":
+        if tversion1[4] == "":
+            return 0
+        return -1
+
+    if tversion1[4] > tversion2[4]:
+        return 1
+
+    if tversion1[4] < tversion2[4]:
+        return -1
+
+    return 0
+
+def test_compare_versions():
+    z = [["1.1", "1.1", 0], ["1.1", "1.2", -1], ["1.2", "1.1", 1], ["1.1.1", "1.1", 1], ["1.1", "1.1.1", -1], ["1.1.2.4", "1.1.2.3-beta", 1], ["1.1.2.3", "1.1.2.3-beta", 1]]
+    for k in z:
+        c = parse_version(k[0])
+        d = parse_version(k[1])
+        v = compare_versions(c, d)
+        if v != k[2]:
+            print("Unexpected result {} {} = {} (expected {})".format(k[0], k[1], v, k[2]))
+            fail("test failed")

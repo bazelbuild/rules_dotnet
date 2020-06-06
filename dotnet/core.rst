@@ -88,6 +88,10 @@ Attributes
 | Version of the language to use. See                                                              |
 | https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version     |
 +----------------------------+-----------------------------+---------------------------------------+
+| :param:`version`           | :type:`string`              | :value:``                             |
++----------------------------+-----------------------------+---------------------------------------+
+| Version to be set for the assembly. The version is set by compiling in AssemblyVersion attribute |
++----------------------------+-----------------------------+---------------------------------------+
 
 Example
 ^^^^^^^
@@ -187,6 +191,10 @@ Attributes
 | Version of the language to use. See                                                              |
 | https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version     |
 +----------------------------+-----------------------------+---------------------------------------+
+| :param:`version`           | :type:`string`              | :value:``                             |
++----------------------------+-----------------------------+---------------------------------------+
+| Version to be set for the assembly. The version is set by compiling in AssemblyVersion attribute |
++----------------------------+-----------------------------+---------------------------------------+
 
 Example
 ^^^^^^^
@@ -267,6 +275,10 @@ Attributes
 +----------------------------+-----------------------------+--------------------------------------------+
 | Version of the language to use. See                                                                   |
 | https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version          |
++----------------------------+-----------------------------+--------------------------------------------+
+| :param:`version`           | :type:`string`              | :value:``                                  |
++----------------------------+-----------------------------+--------------------------------------------+
+| Version to be set for the assembly. The version is set by compiling in AssemblyVersion attribute      |
 +----------------------------+-----------------------------+--------------------------------------------+
 
 

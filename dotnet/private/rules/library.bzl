@@ -41,7 +41,7 @@ def _library_impl(ctx):
         library,
         DefaultInfo(
             files = depset([library.result]),
-            runfiles = runfiles,
+            runfiles = ctx.runfiles(files = [], transitive_files = depset(transitive = [t.runfiles for t in library.transitive])),
         ),
     ]
 

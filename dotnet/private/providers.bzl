@@ -3,14 +3,13 @@ DotnetLibrary = provider(
     fields = {
         "label": "Label of the rule used to create this DotnetLibrary",
         "name": "Name of the assembly (label.name if not provided)",
-        "version": "Version number of the library. Tuple with 4 elements",
+        "version": "Version number of the library. Tuple with 5 elements",
+        "ref": "Reference assembly for this DotnetLibrary. Must be set to ctx.attr.ref or result if not provided",
         "deps": "The direct dependencies of this library",
-        "transitive": "The full set of transitive dependencies. This includes deps for this assembly",
         "result": "The assembly file",
         "pdb": "The pdb file (with compilation mode dbg)",
-        "runfiles": "The depset of files required to run given assembly. It should include result and pdb",
-        "ref": "Reference assembly for this DotnetLibrary. If provided it is used as the compilation reference",
-        "transitive_refs": "Transitive paths to be used as references during compilation (either ref or result)",
+        "runfiles": "The depset of direct runfiles (File)",
+        "transitive": "The full set of transitive dependencies. This does not include this assembly. List of DotnetLibrary",
     },
 )
 

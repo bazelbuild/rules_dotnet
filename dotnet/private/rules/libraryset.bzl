@@ -7,6 +7,7 @@ load(
     "DotnetLibrary",
 )
 load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
+load("@io_bazel_rules_dotnet//dotnet/private:common.bzl", "as_iterable")
 
 def _libraryset_impl(ctx):
     """_libraryset_impl implements the set of libraries."""
@@ -15,24 +16,31 @@ def _libraryset_impl(ctx):
 
     # Handle case of empty toolchain on linux and darwin
     if dotnet.assembly == None:
-        library = dotnet.new_library(dotnet = dotnet, runfiles=depset())
+        library = dotnet.new_library(dotnet = dotnet, runfiles = depset())
         return [library]
 
-    (transitive_refs, transitive_runfiles, transitive_deps) = collect_transitive_info(ctx.attr.deps, ctx.attr.data)
+    transitive = collect_transitive_info(ctx.attr.deps)
+
+    direct_runfiles = []
+
+    if ctx.attr.data:
+        data_l = [f for t in ctx.attr.data for f in as_iterable(t.files)]
+        direct_runfiles += data_l
+
+    runfiles = depset(direct = direct_runfiles)
 
     library = dotnet.new_library(
         dotnet = dotnet,
         name = name,
         deps = ctx.attr.deps,
-        transitive = transitive_deps,
-        runfiles = transitive_runfiles,
-        transitive_refs = transitive_refs,
+        transitive = transitive,
+        runfiles = runfiles,
     )
 
     return [
         library,
         DefaultInfo(
-            runfiles = ctx.runfiles(files = [], transitive_files = library.runfiles),
+            runfiles = ctx.runfiles(files = library.runfiles.to_list(), transitive_files = depset(transitive = [t.runfiles for t in library.transitive])),
         ),
     ]
 

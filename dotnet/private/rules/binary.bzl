@@ -61,7 +61,7 @@ def _binary_impl(ctx):
 
     #runfiles = ctx.runfiles(files = [launcher] + runner + ctx.attr.native_deps.files.to_list(), transitive_files = executable.runfiles)
 
-    runfiles = ctx.runfiles(files = runner + ctx.attr.native_deps.files.to_list(), transitive_files = executable.runfiles)
+    runfiles = ctx.runfiles(files = runner + ctx.attr.native_deps.files.to_list(), transitive_files = depset(transitive = [t.runfiles for t in executable.transitive]))
     runfiles = CopyRunfiles(dotnet, runfiles, ctx.attr._copy, ctx.attr._symlink, executable, subdir)
 
     return [
