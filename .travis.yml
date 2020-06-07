@@ -32,7 +32,7 @@ script:
 
   - |
     ls /Library/Frameworks/Mono.framework/Versions
-    export PATH=$PATH:/Library/Frameworks/Mono.framework/Versions/6.8.0/bin/
+    export PATH=$PATH:/Library/Frameworks/Mono.framework/Versions/Current/bin/
     mono --version
 
   - |
