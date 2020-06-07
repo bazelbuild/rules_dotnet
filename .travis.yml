@@ -31,6 +31,7 @@ script:
     bazel version
 
   - |
+    ls /Library/Frameworks/Mono.framework/Versions
     export PATH=$PATH:/Library/Frameworks/Mono.framework/Versions/6.8.0/bin/
     mono --version
 
