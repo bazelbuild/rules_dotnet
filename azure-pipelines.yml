@@ -124,6 +124,11 @@ jobs:
       workingDirectory: $(Build.SourcesDirectory)/docs/examples/grpc
       displayName: 'Run grpc standalone test'
 
+    - script: |
+        pwd
+        bazel $(bazel_startup) test --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
+      workingDirectory: $(Build.SourcesDirectory)/docs/examples/ef
+      displayName: 'Run ef standalone test'
 
     
     
