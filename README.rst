@@ -116,7 +116,7 @@ Setup
     git_repository(
         name = "io_bazel_rules_dotnet",
         remote = "https://github.com/bazelbuild/rules_dotnet",
-        tag = "0.0.5",
+        branch = "master",
     )
 
     load("@io_bazel_rules_dotnet//dotnet:deps.bzl", "dotnet_repositories")
@@ -129,9 +129,9 @@ Setup
     dotnet_register_toolchains()
     dotnet_repositories_nugets()
     # For .NET Core:
-    core_register_sdk("v2.1.502", name = "core_sdk")
+    core_register_sdk()
     # For .NET Framework:
-    net_register_sdk("net471", name = "net_sdk")
+    net_register_sdk()
     # For Mono:
     mono_register_sdk()
 

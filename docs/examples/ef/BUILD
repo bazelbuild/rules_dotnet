@@ -9,9 +9,9 @@ core_xunit_test(
     deps = [
         "@io_bazel_rules_dotnet//dotnet/stdlib.core:Microsoft.AspNetCore.App",
         "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
-        "@microsoft.entityframeworkcore//:netcoreapp3.1_core",
-        "@xunit.assert//:netcoreapp3.1_core",
-        "@xunit.extensibility.core//:netcoreapp3.1_core",
-        "@xunit.extensibility.execution//:netcoreapp3.1_core",
+        "@microsoft.entityframeworkcore//:core",
+        "@xunit.assert//:core",
+        "@xunit.extensibility.core//:core",
+        "@xunit.extensibility.execution//:core",
     ],
 )

@@ -36,9 +36,10 @@ load(
 )
 
 DEFAULT_VERSION = "4.2.3"
-CORE_DEFAULT_VERSION = "v2.1.502"
+CORE_DEFAULT_VERSION = "v3.1.100"
 NET_ROSLYN_DEFAULT_VERSION = "2.10.0"
-NET_DEFAULT_VERSION = "4.7.2"
+NET_DEFAULT_VERSION = "net48"
+NET_DEFAULT_TOOLS_VERSION = "net48"
 
 SDK_REPOSITORIES = {
     "4.2.3": {
@@ -297,7 +298,7 @@ def declare_toolchains():
                     host = toolchain["host"],
                 )
 
-def net_register_sdk(net_version, net_roslyn_version = NET_ROSLYN_DEFAULT_VERSION, tools_version = "net472", name = None):
+def net_register_sdk(net_version = NET_DEFAULT_VERSION, net_roslyn_version = NET_ROSLYN_DEFAULT_VERSION, tools_version = NET_DEFAULT_TOOLS_VERSION, name = "net_sdk"):
     if net_roslyn_version not in NET_ROSLYN_REPOSITORIES:
         fail("Unknown .net Roslyn version {}".format(net_roslyn_version))
 
@@ -308,7 +309,7 @@ def net_register_sdk(net_version, net_roslyn_version = NET_ROSLYN_DEFAULT_VERSIO
         sdks = NET_ROSLYN_REPOSITORIES[net_roslyn_version],
     )
 
-def core_register_sdk(core_version, name = None):
+def core_register_sdk(core_version = CORE_DEFAULT_VERSION, name = "core_sdk"):
     if core_version not in CORE_SDK_REPOSITORIES:
         fail("Unknown core version {}".format(core_version))
 

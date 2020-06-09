@@ -260,7 +260,7 @@ net_xunit_test = rule(
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
         "native_deps": attr.label(default = Label("@net_sdk//:native_deps")),
-        "testlauncher": attr.label(default = "@xunit.runner.console//:net472_net_tool", providers = [DotnetLibrary]),
+        "testlauncher": attr.label(default = "@xunit.runner.console//:net_tool", providers = [DotnetLibrary]),
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_net_xunit:launcher_net_xunit.exe")),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),

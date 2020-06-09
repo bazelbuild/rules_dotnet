@@ -22,16 +22,10 @@ dotnet_register_toolchains()
 dotnet_repositories_nugets()
 
 # For .NET Framework:
-net_register_sdk(
-    net_version = "net48",
-    tools_version = "net48",
-)
+net_register_sdk()
 
 # (only useful for nuget2bazel)
-core_register_sdk(
-    "v3.1.100",
-    name = "core_sdk",
-)
+core_register_sdk()
 
 dotnet_nuget_new(
     name = "grpc.core.runtime",
@@ -40,6 +34,42 @@ dotnet_nuget_new(
     sha256 = "b625817b7e8dfe66e0894b232001b4c2f0e80aa41dc4dccb59d5a452ca36a755",
     version = "2.28.1",
 )
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+# GRPC
+http_archive(
+    name = "rules_proto_grpc",
+    sha256 = "5f0f2fc0199810c65a2de148a52ba0aff14d631d4e8202f41aff6a9d590a471b",
+    strip_prefix = "rules_proto_grpc-1.0.2",
+    urls = ["https://github.com/rules-proto-grpc/rules_proto_grpc/archive/1.0.2.tar.gz"],
+)
+
+load("@rules_proto_grpc//:repositories.bzl", "rules_proto_grpc_repos", "rules_proto_grpc_toolchains")
+
+rules_proto_grpc_toolchains()
+
+rules_proto_grpc_repos()
+
+load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
+
+grpc_deps()
+
+http_archive(
+    name = "rules_proto",
+    sha256 = "602e7161d9195e50246177e7c55b2f39950a9cf7366f74ed5f22fd45750cd208",
+    strip_prefix = "rules_proto-97d8af4dc474595af3900dd85cb3a29ad28cc313",
+    urls = [
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_proto/archive/97d8af4dc474595af3900dd85cb3a29ad28cc313.tar.gz",
+        "https://github.com/bazelbuild/rules_proto/archive/97d8af4dc474595af3900dd85cb3a29ad28cc313.tar.gz",
+    ],
+)
+
+load("@rules_proto//proto:repositories.bzl", "rules_proto_dependencies", "rules_proto_toolchains")
+
+rules_proto_dependencies()
+
+rules_proto_toolchains()
 
 # bazel run @io_bazel_rules_dotnet//tools/nuget2bazel:nuget2bazel.exe -- add -l grpc 2.28.1 -p C:/path/to/rules_dotnet_memory_deps/
 # bazel run @io_bazel_rules_dotnet//tools/nuget2bazel:nuget2bazel.exe -- add -l grpc.healthcheck 2.28.1 -p C:/path/to/rules_dotnet_memory_deps/
@@ -1814,4 +1844,390 @@ nuget_package(
     sha256 = "b625817b7e8dfe66e0894b232001b4c2f0e80aa41dc4dccb59d5a452ca36a755",
     version = "2.28.1",
 )
+
+nuget_package(
+    name = "microsoft.bcl.asyncinterfaces",
+    core_deps = {
+        "netcoreapp2.0": [
+            "@system.threading.tasks.extensions//:netcoreapp2.0_core",
+        ],
+    },
+    core_files = {
+        "netcoreapp2.0": [
+            "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
+            "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.xml",
+        ],
+        "netcoreapp2.1": [
+            "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
+            "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.xml",
+        ],
+        "netcoreapp3.0": [
+            "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
+            "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.xml",
+        ],
+        "netcoreapp3.1": [
+            "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
+            "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.xml",
+        ],
+    },
+    core_lib = {
+        "netcoreapp2.0": "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
+        "netcoreapp2.1": "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
+        "netcoreapp3.0": "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
+        "netcoreapp3.1": "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
+    },
+    core_ref = {
+        "netcoreapp2.0": "ref/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
+        "netcoreapp2.1": "ref/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
+        "netcoreapp3.0": "ref/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
+        "netcoreapp3.1": "ref/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
+    },
+    mono_deps = [
+        "@system.threading.tasks.extensions//:mono",
+    ],
+    mono_files = [
+        "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
+        "lib/net461/Microsoft.Bcl.AsyncInterfaces.xml",
+    ],
+    mono_lib = "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
+    mono_ref = "ref/net461/Microsoft.Bcl.AsyncInterfaces.dll",
+    net_deps = {
+        "net461": [
+            "@system.threading.tasks.extensions//:net461_net",
+        ],
+        "net462": [
+            "@system.threading.tasks.extensions//:net462_net",
+        ],
+        "net47": [
+            "@system.threading.tasks.extensions//:net47_net",
+        ],
+        "net471": [
+            "@system.threading.tasks.extensions//:net471_net",
+        ],
+        "net472": [
+            "@system.threading.tasks.extensions//:net472_net",
+        ],
+        "net48": [
+            "@system.threading.tasks.extensions//:net48_net",
+        ],
+        "netstandard2.0": [
+            "@system.threading.tasks.extensions//:netstandard2.0_net",
+        ],
+        "netstandard2.1": [
+            "@system.threading.tasks.extensions//:netstandard2.1_net",
+        ],
+    },
+    net_files = {
+        "net461": [
+            "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
+            "lib/net461/Microsoft.Bcl.AsyncInterfaces.xml",
+        ],
+        "net462": [
+            "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
+            "lib/net461/Microsoft.Bcl.AsyncInterfaces.xml",
+        ],
+        "net47": [
+            "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
+            "lib/net461/Microsoft.Bcl.AsyncInterfaces.xml",
+        ],
+        "net471": [
+            "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
+            "lib/net461/Microsoft.Bcl.AsyncInterfaces.xml",
+        ],
+        "net472": [
+            "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
+            "lib/net461/Microsoft.Bcl.AsyncInterfaces.xml",
+        ],
+        "net48": [
+            "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
+            "lib/net461/Microsoft.Bcl.AsyncInterfaces.xml",
+        ],
+        "netstandard2.0": [
+            "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
+            "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.xml",
+        ],
+        "netstandard2.1": [
+            "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll",
+            "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.xml",
+        ],
+    },
+    net_lib = {
+        "net461": "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
+        "net462": "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
+        "net47": "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
+        "net471": "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
+        "net472": "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
+        "net48": "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
+        "netstandard2.0": "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
+        "netstandard2.1": "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll",
+    },
+    net_ref = {
+        "net461": "ref/net461/Microsoft.Bcl.AsyncInterfaces.dll",
+        "net462": "ref/net461/Microsoft.Bcl.AsyncInterfaces.dll",
+        "net47": "ref/net461/Microsoft.Bcl.AsyncInterfaces.dll",
+        "net471": "ref/net461/Microsoft.Bcl.AsyncInterfaces.dll",
+        "net472": "ref/net461/Microsoft.Bcl.AsyncInterfaces.dll",
+        "net48": "ref/net461/Microsoft.Bcl.AsyncInterfaces.dll",
+        "netstandard2.0": "ref/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
+        "netstandard2.1": "ref/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll",
+    },
+    package = "microsoft.bcl.asyncinterfaces",
+    sha256 = "7c0717e2cc44d2f79633509906d5d1fd49e4cbeeac137df2ad5ee886b5862a28",
+    version = "1.1.1",
+)
+
+nuget_package(
+    name = "system.linq.async",
+    core_deps = {
+        "netcoreapp2.0": [
+            "@microsoft.bcl.asyncinterfaces//:netcoreapp2.0_core",
+        ],
+        "netcoreapp2.1": [
+            "@microsoft.bcl.asyncinterfaces//:netcoreapp2.1_core",
+        ],
+    },
+    core_files = {
+        "netcoreapp2.0": [
+            "lib/netstandard2.0/System.Linq.Async.dll",
+            "lib/netstandard2.0/System.Linq.Async.xml",
+        ],
+        "netcoreapp2.1": [
+            "lib/netstandard2.0/System.Linq.Async.dll",
+            "lib/netstandard2.0/System.Linq.Async.xml",
+        ],
+        "netcoreapp3.0": [
+            "lib/netcoreapp3.0/System.Linq.Async.dll",
+            "lib/netcoreapp3.0/System.Linq.Async.xml",
+        ],
+        "netcoreapp3.1": [
+            "lib/netcoreapp3.0/System.Linq.Async.dll",
+            "lib/netcoreapp3.0/System.Linq.Async.xml",
+        ],
+    },
+    core_lib = {
+        "netcoreapp2.0": "lib/netstandard2.0/System.Linq.Async.dll",
+        "netcoreapp2.1": "lib/netstandard2.0/System.Linq.Async.dll",
+        "netcoreapp3.0": "lib/netcoreapp3.0/System.Linq.Async.dll",
+        "netcoreapp3.1": "lib/netcoreapp3.0/System.Linq.Async.dll",
+    },
+    core_ref = {
+        "netcoreapp2.0": "ref/netstandard2.0/System.Linq.Async.dll",
+        "netcoreapp2.1": "ref/netstandard2.0/System.Linq.Async.dll",
+        "netcoreapp3.0": "ref/netcoreapp3.0/System.Linq.Async.dll",
+        "netcoreapp3.1": "ref/netcoreapp3.0/System.Linq.Async.dll",
+    },
+    mono_deps = [
+        "@microsoft.bcl.asyncinterfaces//:mono",
+    ],
+    mono_files = [
+        "lib/net461/System.Linq.Async.dll",
+        "lib/net461/System.Linq.Async.xml",
+    ],
+    mono_lib = "lib/net461/System.Linq.Async.dll",
+    mono_ref = "ref/net461/System.Linq.Async.dll",
+    net_deps = {
+        "net461": [
+            "@microsoft.bcl.asyncinterfaces//:net461_net",
+        ],
+        "net462": [
+            "@microsoft.bcl.asyncinterfaces//:net462_net",
+        ],
+        "net47": [
+            "@microsoft.bcl.asyncinterfaces//:net47_net",
+        ],
+        "net471": [
+            "@microsoft.bcl.asyncinterfaces//:net471_net",
+        ],
+        "net472": [
+            "@microsoft.bcl.asyncinterfaces//:net472_net",
+        ],
+        "net48": [
+            "@microsoft.bcl.asyncinterfaces//:net48_net",
+        ],
+        "netstandard2.0": [
+            "@microsoft.bcl.asyncinterfaces//:netstandard2.0_net",
+        ],
+    },
+    net_files = {
+        "net461": [
+            "lib/net461/System.Linq.Async.dll",
+            "lib/net461/System.Linq.Async.xml",
+        ],
+        "net462": [
+            "lib/net461/System.Linq.Async.dll",
+            "lib/net461/System.Linq.Async.xml",
+        ],
+        "net47": [
+            "lib/net461/System.Linq.Async.dll",
+            "lib/net461/System.Linq.Async.xml",
+        ],
+        "net471": [
+            "lib/net461/System.Linq.Async.dll",
+            "lib/net461/System.Linq.Async.xml",
+        ],
+        "net472": [
+            "lib/net461/System.Linq.Async.dll",
+            "lib/net461/System.Linq.Async.xml",
+        ],
+        "net48": [
+            "lib/net461/System.Linq.Async.dll",
+            "lib/net461/System.Linq.Async.xml",
+        ],
+        "netstandard2.0": [
+            "lib/netstandard2.0/System.Linq.Async.dll",
+            "lib/netstandard2.0/System.Linq.Async.xml",
+        ],
+        "netstandard2.1": [
+            "lib/netstandard2.1/System.Linq.Async.dll",
+            "lib/netstandard2.1/System.Linq.Async.xml",
+        ],
+    },
+    net_lib = {
+        "net461": "lib/net461/System.Linq.Async.dll",
+        "net462": "lib/net461/System.Linq.Async.dll",
+        "net47": "lib/net461/System.Linq.Async.dll",
+        "net471": "lib/net461/System.Linq.Async.dll",
+        "net472": "lib/net461/System.Linq.Async.dll",
+        "net48": "lib/net461/System.Linq.Async.dll",
+        "netstandard2.0": "lib/netstandard2.0/System.Linq.Async.dll",
+        "netstandard2.1": "lib/netstandard2.1/System.Linq.Async.dll",
+    },
+    net_ref = {
+        "net461": "ref/net461/System.Linq.Async.dll",
+        "net462": "ref/net461/System.Linq.Async.dll",
+        "net47": "ref/net461/System.Linq.Async.dll",
+        "net471": "ref/net461/System.Linq.Async.dll",
+        "net472": "ref/net461/System.Linq.Async.dll",
+        "net48": "ref/net461/System.Linq.Async.dll",
+        "netstandard2.0": "ref/netstandard2.0/System.Linq.Async.dll",
+        "netstandard2.1": "ref/netstandard2.1/System.Linq.Async.dll",
+    },
+    package = "system.linq.async",
+    sha256 = "08b9708f4473f5475104f29141924860a0ef5ef31b8f7f71577409840bb859d6",
+    version = "4.1.1",
+)
+
+nuget_package(
+    name = "system.interactive.async",
+    core_deps = {
+        "netcoreapp2.0": [
+            "@system.linq.async//:netcoreapp2.0_core",
+        ],
+        "netcoreapp2.1": [
+            "@system.linq.async//:netcoreapp2.1_core",
+        ],
+        "netcoreapp3.0": [
+            "@system.linq.async//:netcoreapp3.0_core",
+        ],
+        "netcoreapp3.1": [
+            "@system.linq.async//:netcoreapp3.1_core",
+        ],
+    },
+    core_files = {
+        "netcoreapp2.0": [
+            "lib/netstandard2.0/System.Interactive.Async.dll",
+            "lib/netstandard2.0/System.Interactive.Async.xml",
+        ],
+        "netcoreapp2.1": [
+            "lib/netstandard2.0/System.Interactive.Async.dll",
+            "lib/netstandard2.0/System.Interactive.Async.xml",
+        ],
+        "netcoreapp3.0": [
+            "lib/netcoreapp3.0/System.Interactive.Async.dll",
+            "lib/netcoreapp3.0/System.Interactive.Async.xml",
+        ],
+        "netcoreapp3.1": [
+            "lib/netcoreapp3.0/System.Interactive.Async.dll",
+            "lib/netcoreapp3.0/System.Interactive.Async.xml",
+        ],
+    },
+    core_lib = {
+        "netcoreapp2.0": "lib/netstandard2.0/System.Interactive.Async.dll",
+        "netcoreapp2.1": "lib/netstandard2.0/System.Interactive.Async.dll",
+        "netcoreapp3.0": "lib/netcoreapp3.0/System.Interactive.Async.dll",
+        "netcoreapp3.1": "lib/netcoreapp3.0/System.Interactive.Async.dll",
+    },
+    mono_deps = [
+        "@system.linq.async//:mono",
+    ],
+    mono_files = [
+        "lib/net461/System.Interactive.Async.dll",
+        "lib/net461/System.Interactive.Async.xml",
+    ],
+    mono_lib = "lib/net461/System.Interactive.Async.dll",
+    net_deps = {
+        "net461": [
+            "@system.linq.async//:net461_net",
+        ],
+        "net462": [
+            "@system.linq.async//:net462_net",
+        ],
+        "net47": [
+            "@system.linq.async//:net47_net",
+        ],
+        "net471": [
+            "@system.linq.async//:net471_net",
+        ],
+        "net472": [
+            "@system.linq.async//:net472_net",
+        ],
+        "net48": [
+            "@system.linq.async//:net48_net",
+        ],
+        "netstandard2.0": [
+            "@system.linq.async//:netstandard2.0_net",
+        ],
+        "netstandard2.1": [
+            "@system.linq.async//:netstandard2.1_net",
+        ],
+    },
+    net_files = {
+        "net461": [
+            "lib/net461/System.Interactive.Async.dll",
+            "lib/net461/System.Interactive.Async.xml",
+        ],
+        "net462": [
+            "lib/net461/System.Interactive.Async.dll",
+            "lib/net461/System.Interactive.Async.xml",
+        ],
+        "net47": [
+            "lib/net461/System.Interactive.Async.dll",
+            "lib/net461/System.Interactive.Async.xml",
+        ],
+        "net471": [
+            "lib/net461/System.Interactive.Async.dll",
+            "lib/net461/System.Interactive.Async.xml",
+        ],
+        "net472": [
+            "lib/net461/System.Interactive.Async.dll",
+            "lib/net461/System.Interactive.Async.xml",
+        ],
+        "net48": [
+            "lib/net461/System.Interactive.Async.dll",
+            "lib/net461/System.Interactive.Async.xml",
+        ],
+        "netstandard2.0": [
+            "lib/netstandard2.0/System.Interactive.Async.dll",
+            "lib/netstandard2.0/System.Interactive.Async.xml",
+        ],
+        "netstandard2.1": [
+            "lib/netstandard2.1/System.Interactive.Async.dll",
+            "lib/netstandard2.1/System.Interactive.Async.xml",
+        ],
+    },
+    net_lib = {
+        "net461": "lib/net461/System.Interactive.Async.dll",
+        "net462": "lib/net461/System.Interactive.Async.dll",
+        "net47": "lib/net461/System.Interactive.Async.dll",
+        "net471": "lib/net461/System.Interactive.Async.dll",
+        "net472": "lib/net461/System.Interactive.Async.dll",
+        "net48": "lib/net461/System.Interactive.Async.dll",
+        "netstandard2.0": "lib/netstandard2.0/System.Interactive.Async.dll",
+        "netstandard2.1": "lib/netstandard2.1/System.Interactive.Async.dll",
+    },
+    package = "system.interactive.async",
+    sha256 = "bc05eb62ff7882f55ad2a98c1a3dfdc45d8b64a4864a0b55e13dce0ef22180f3",
+    version = "4.1.1",
+)
+
 ### End of generated by the tool

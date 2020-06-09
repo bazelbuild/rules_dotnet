@@ -15,8 +15,8 @@ core_context_data(
 
 net_context_data(
     name = "net_context_data",
-    framework = "net472",
-    libVersion = "4.7.2",
+    framework = "net48",
+    libVersion = "4.8",
 )
 
 exports_files(["AUTHORS"])

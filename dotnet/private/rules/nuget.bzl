@@ -182,11 +182,15 @@ def _nuget_package_impl(ctx):
     content += _get_importlib_withframework("core_import_library", "core_libraryset", "core", DOTNET_CORE_NAMES, ctx.attr.core_lib, ctx.attr.core_ref, ctx.attr.core_deps, ctx.attr.core_files, ctx.attr.version)
     content += _get_importlib_withframework("net_import_library", "net_libraryset", "net", DOTNET_NET_NAMES, ctx.attr.net_lib, ctx.attr.net_ref, ctx.attr.net_deps, ctx.attr.net_files, ctx.attr.version)
     content += _get_importlib("dotnet_import_library", "dotnet_libraryset", "mono", ctx.attr.mono_lib, ctx.attr.mono_ref, ctx.attr.mono_deps, ctx.attr.mono_files, ctx.attr.version)
+    content += "alias(name=\"net\", actual=\":net48_net\")\n"
+    content += "alias(name=\"core\", actual=\":netcoreapp3.1_core\")\n"
 
     if ctx.attr.core_tool != "":
         content += _get_importlib_withframework("core_import_binary", "core_libraryset", "core_tool", DOTNET_CORE_NAMES, ctx.attr.core_tool, None, ctx.attr.core_deps, ctx.attr.core_files, ctx.attr.version)
+        content += "alias(name=\"core_too\", actual=\":netcoreapp3.1_core_tool\")\n"
     if ctx.attr.net_tool != "":
         content += _get_importlib_withframework("net_import_binary", "net_libraryset", "net_tool", DOTNET_NET_NAMES, ctx.attr.net_tool, None, ctx.attr.net_deps, ctx.attr.net_files, ctx.attr.version)
+        content += "alias(name=\"net_tool\", actual=\":net48_net_tool\")\n"
     if ctx.attr.mono_tool != "":
         content += _get_importlib("dotnet_import_library", "dotnet_libraryset", "mono_tool", ctx.attr.mono_tool, None, ctx.attr.mono_deps, ctx.attr.mono_files, ctx.attr.version)
 

@@ -20,10 +20,7 @@ dotnet_register_toolchains()
 
 dotnet_repositories_nugets()
 
-core_register_sdk(
-    "v3.1.100",
-    name = "core_sdk",
-)
+core_register_sdk()
 
 # load NUGET deps
 load("//:nuget.bzl", "project_dotnet_repositories_nuget")

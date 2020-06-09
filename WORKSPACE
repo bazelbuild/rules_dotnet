@@ -6,7 +6,6 @@ dotnet_repositories()
 
 load(
     "@io_bazel_rules_dotnet//dotnet:defs.bzl",
-    "DEFAULT_DOTNET_CORE_FRAMEWORK",
     "DOTNET_CORE_FRAMEWORKS",
     "DOTNET_NET_FRAMEWORKS",
     "core_register_sdk",
@@ -25,23 +24,19 @@ mono_register_sdk()
 
 [net_register_sdk(
     framework,
+    name = "net_sdk_" + framework,
 ) for framework in DOTNET_NET_FRAMEWORKS]
 
 [core_register_sdk(
     framework,
+    name = "core_sdk_{}".format(framework),
 ) for framework in DOTNET_CORE_FRAMEWORKS]
 
 # Default core_sdk
-core_register_sdk(
-    DEFAULT_DOTNET_CORE_FRAMEWORK,
-    name = "core_sdk",
-)
+core_register_sdk()
 
 # Default net_sdk
-net_register_sdk(
-    "net471",
-    name = "net_sdk",
-)
+net_register_sdk()
 
 net_gac4(
     name = "System.ComponentModel.DataAnnotations",
