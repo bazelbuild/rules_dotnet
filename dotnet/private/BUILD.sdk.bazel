@@ -54,6 +54,6 @@ filegroup(
 
 filegroup(
     name = "csc",
-    srcs = glob(["mcs_bin/**/mcs.exe", "lib/**/mcs.exe"]),
+    srcs = glob(["mcs_bin/**/mcs.exe", "lib/**/mcs.exe", "mono_bin/**/mcs.exe"]),
 )
 
