@@ -84,6 +84,7 @@ def dotnet_context(ctx, attr = None):
         shared = context_data._shared,
         debug = ctx.var["COMPILATION_MODE"] == "dbg",
         _ctx = ctx,
+        native_deps = context_data._native_deps,
     )
 
 def _dotnet_context_data(ctx):
@@ -94,9 +95,12 @@ def _dotnet_context_data(ctx):
         _tools = ctx.attr.tools,
         _shared = ctx.attr.shared,
         _host = ctx.attr.host,
+        _native_deps = ctx.attr.native_deps,
         _libVersion = ctx.attr.libVersion,
         _toolchain_type = ctx.attr._toolchain_type,
         _framework = ctx.attr.framework,
+        _runner = ctx.attr.runner,
+        _csc = ctx.attr.csc,
     )
 
 dotnet_context_data = rule(
@@ -126,6 +130,10 @@ dotnet_context_data = rule(
             allow_files = True,
             default = "@dotnet_sdk//:lib",
         ),
+        "native_deps": attr.label(
+            allow_files = True,
+            default = "@dotnet_sdk//:native_deps",
+        ),
         "libVersion": attr.string(
             default = "4.5",
         ),
@@ -135,6 +143,8 @@ dotnet_context_data = rule(
         "_toolchain_type": attr.string(
             default = "@io_bazel_rules_dotnet//dotnet:toolchain",
         ),
+        "runner": attr.label(executable = True, cfg = "host",  default = "@dotnet_sdk//:runner"),
+        "csc": attr.label(executable = True, cfg = "host",  default = "@dotnet_sdk//:csc"),
     },
 )
 
@@ -165,6 +175,10 @@ core_context_data = rule(
             allow_files = True,
             default = "@core_sdk//:host",
         ),
+        "native_deps": attr.label(
+            allow_files = True,
+            default = "@core_sdk//:native_deps",
+        ),
         "libVersion": attr.string(
             default = "",
         ),
@@ -174,6 +188,8 @@ core_context_data = rule(
         "_toolchain_type": attr.string(
             default = "@io_bazel_rules_dotnet//dotnet:toolchain_core",
         ),
+        "runner": attr.label(executable = True, cfg = "host", default = "@core_sdk//:runner"),
+        "csc": attr.label(executable = True, cfg = "host",  default = "@core_sdk//:csc"),
     },
 )
 
@@ -204,6 +220,10 @@ net_context_data = rule(
             allow_files = True,
             default = "@net_sdk//:mcs_bin",
         ),
+        "native_deps": attr.label(
+            allow_files = True,
+            default = "@net_sdk//:native_deps",
+        ),
         "libVersion": attr.string(
             mandatory = True,
         ),
@@ -213,5 +233,7 @@ net_context_data = rule(
         "_toolchain_type": attr.string(
             default = "@io_bazel_rules_dotnet//dotnet:toolchain_net",
         ),
+        "runner": attr.label(default = None),
+        "csc": attr.label(executable = True, cfg = "host",  default = "@net_sdk//:csc"),
     },
 )

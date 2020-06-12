@@ -37,23 +37,25 @@ filegroup(
 
 filegroup(
     name = "native_deps",
-    srcs = glob(["host/**/*"]) + glob(["shared/**/*"]),
+    srcs = glob(["host/**/*"]) + glob(["shared/**/*"]) ,
     )
 
 filegroup(
     name = "runner",
     srcs = select({
-        "@bazel_tools//src/conditions:windows": ["mono_bin/mono.exe"],
-        "//conditions:default": ["mono_bin/mono"],
+        "@bazel_tools//src/conditions:windows": ["core/dotnet.exe"],
+        "//conditions:default": ["core/dotnet"],
     }),
-    data = select({
-        "@bazel_tools//src/conditions:windows": glob(["mono_bin/**/*.dll"]),
-        "//conditions:default": glob(["mono_bin/**/*.so"]),
-    }),
+    data = glob(["core/host/**/*"]),
 )
 
 filegroup(
     name = "csc",
-    srcs = glob(["mcs_bin/**/mcs.exe"]),
+    srcs = glob(["core/**/csc.dll"]),
+    data = select({
+        "@bazel_tools//src/conditions:windows": glob(["core/**/hostpolicy.dll"]),
+        "//conditions:default": glob(["core/**/libhostpolicy.so"]),
+    }),
 )
 
+exports_files(glob(["core/**/*.dll"]))

@@ -20,26 +20,10 @@ load("@io_bazel_rules_dotnet//dotnet/private:actions/assembly_core.bzl", "emit_a
 load("@io_bazel_rules_dotnet//dotnet/private:actions/resx_core.bzl", "emit_resx_core")
 
 def _get_dotnet_runner(context_data, ext):
-    for f in context_data._mono_bin.files.to_list():
-        basename = paths.basename(f.path)
-        if basename != "dotnet" + ext:
-            continue
-        return f
-    fail("Could not find dotnet core executable in core_sdk (mono_bin)")
+    return context_data._runner
 
 def _get_dotnet_mcs(context_data):
-    for f in context_data._mcs_bin.files.to_list():
-        basename = paths.basename(f.path)
-        if basename != "csc.dll":
-            continue
-        return f
-
-    for f in context_data._lib.files.to_list():
-        basename = paths.basename(f.path)
-        if basename != "csc.dll":
-            continue
-        return f
-    fail("Could not find csc.dll in core_sdk (mcs_bin, lib)")
+    return context_data._csc
 
 def _get_dotnet_resgen(context_data):
     return None

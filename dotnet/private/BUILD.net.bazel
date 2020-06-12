@@ -40,3 +40,10 @@ filegroup(
     srcs = [],
 )
 
+filegroup(
+    name = "csc",
+    srcs = select({
+        "@bazel_tools//src/conditions:windows": glob(["net/**/csc.exe"]),
+        "//conditions:default": ["BUILD.bazel"],   # just a dummy file
+    }),
+)

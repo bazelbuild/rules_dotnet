@@ -44,7 +44,7 @@ def emit_resx_core(
         inputs = inputs + resolve[0].to_list(),
         tools = customresgen.default_runfiles.files,
         outputs = [result],
-        executable = customresgen.files_to_run.executable,
+        executable = customresgen.files_to_run,
         arguments = [args],
         env = {"RUNFILES_MANIFEST_FILE": customresgen.files_to_run.runfiles_manifest.path},
         mnemonic = "CoreResxCompile",

@@ -24,12 +24,7 @@ def _get_dotnet_runner(context_data, ext):
     return None
 
 def _get_dotnet_mcs(context_data):
-    for f in context_data._mcs_bin.files.to_list():
-        basename = paths.basename(f.path)
-        if basename != "csc.exe":
-            continue
-        return f
-    fail("Could not find csc.exe in net_sdk (mcs_bin)")
+    return context_data._csc
 
 def _get_dotnet_resgen(context_data):
     return _get_dotnet_tool(context_data, "resgen.exe")

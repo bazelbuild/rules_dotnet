@@ -66,7 +66,7 @@ def _unit_test(ctx):
     transitive_runfiles = []
 
     if dotnet.runner != None:
-        direct_runfiles.append(dotnet.runner)
+        direct_runfiles += dotnet.runner.files.to_list()
 
     transitive_runfiles.append(ctx.attr.native_deps.files)
     if ctx.attr._xslt:

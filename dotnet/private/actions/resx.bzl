@@ -46,9 +46,10 @@ def emit_resx(
     dotnet.actions.run(
         inputs = [copied_source],
         outputs = [result],
-        executable = dotnet.runner,
+        executable = dotnet.runner.files_to_run,
         arguments = [dotnet.resgen.path, copied_source.path],
         mnemonic = "MonoResxCompile",
+        tools = [dotnet.runner.files_to_run],
         progress_message = (
             "Compiling resoources" + dotnet.label.package + ":" + dotnet.label.name
         ),

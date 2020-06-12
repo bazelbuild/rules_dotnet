@@ -173,14 +173,13 @@ def emit_assembly_common(
 
     # select runner and action_args
     if kind != "net":
-        runner = dotnet.runner
-        action_args = [dotnet.mcs.path, "/noconfig", "@" + paramfile.path]
-        direct_inputs.append(runner)
-        direct_inputs.append(dotnet.mcs)
+        runner = dotnet.runner.files_to_run
+        runner_tools = depset(transitive=[dotnet.runner.default_runfiles.files, dotnet.mcs.default_runfiles.files])
+        action_args = [dotnet.mcs.files_to_run.executable.path, "/noconfig", "@" + paramfile.path]
     else:
-        runner = dotnet.mcs
+        runner = dotnet.mcs.files_to_run
+        runner_tools = dotnet.mcs.default_runfiles.files
         action_args = ["/noconfig", "@" + paramfile.path]
-        direct_inputs.append(runner)
 
     inputs = depset(direct = direct_inputs, transitive = [depset(direct = refs)])
     dotnet.actions.run(
@@ -189,6 +188,7 @@ def emit_assembly_common(
         executable = runner,
         arguments = action_args,
         mnemonic = "Compile" + kind,
+        tools = runner_tools,
         progress_message = (
             "Compiling " + kind + " " + dotnet.label.package + ":" + dotnet.label.name
         ),

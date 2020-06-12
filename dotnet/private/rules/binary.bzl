@@ -55,7 +55,7 @@ def _binary_impl(ctx):
     )
 
     if dotnet.runner != None:
-        runner = [dotnet.runner]
+        runner = dotnet.runner.files.to_list()
     else:
         runner = []
 
