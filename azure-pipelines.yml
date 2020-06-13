@@ -70,11 +70,6 @@ jobs:
         bazel $(bazel_startup) build -s --spawn_strategy=standalone //... 
       displayName: 'Build all'
     - script: |
-        ls -R /
-      continueOnError: true
-      displayName: 'Show mono directory'
-      condition: ne(variables['systemName'], 'windows')
-    - script: |
         bazel $(bazel_startup) run -s --spawn_strategy=standalone //tests/examples/example_binary:hello.exe
       displayName: 'Run sample hello'
     - script: |
