@@ -20,8 +20,6 @@ def _dotnet_host_sdk_impl_windows(ctx):
 # Instead we create a directory (named mono_bin) and put link to mono in it
 def _dotnet_host_sdk_impl_linux(ctx):
     mono, mcs = _detect_host_sdk(ctx)
-    print(mono)
-    print(mcs)
     _sdk_build_file(ctx)
     ctx.file(
         "mono_bin/README.md",
@@ -36,7 +34,6 @@ def _dotnet_host_sdk_impl_linux(ctx):
     bin = paths.join("{}".format(monoroot), "4.5")
     ctx.symlink(bin, "mcs_bin")
     ctx.symlink(monoroot, "mono")
-    print(monoroot)
 
 def _dotnet_host_sdk_impl_osx(ctx):
     mono, mcs = _detect_host_sdk(ctx)
