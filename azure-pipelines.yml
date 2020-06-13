@@ -73,7 +73,7 @@ jobs:
         ls `readlink bazel-out`/../../../external/dotnet_sdk/
       continueOnError: true
       displayName: 'Show mono directory'
-      condition: and(succeeded(), ne(variables['systemName'], 'windows'))
+      condition: ne(variables['systemName'], 'windows')
     - script: |
         bazel $(bazel_startup) run -s --spawn_strategy=standalone //tests/examples/example_binary:hello.exe
       displayName: 'Run sample hello'
