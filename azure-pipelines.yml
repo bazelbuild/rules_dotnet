@@ -70,6 +70,7 @@ jobs:
         bazel $(bazel_startup) build -s --spawn_strategy=standalone //... 
       displayName: 'Build all'
     - script: |
+        ls -l
         ls `readlink bazel-out`/../../../external/dotnet_sdk/
       continueOnError: true
       displayName: 'Show mono directory'
