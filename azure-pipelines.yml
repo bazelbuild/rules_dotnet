@@ -58,11 +58,9 @@ jobs:
         dotnet --info
       displayName: 'Show dotnet version'
     - script: |
-        ls `readlink bazel-out`/../../../external/dotnet_sdk/
         mono --version
       displayName: 'Show mono version'
       condition: and(succeeded(), ne(variables['systemName'], 'windows'))
-
     - script: |
         "c:\program files\mono\bin\mono.exe" --version
       displayName: 'Show mono version'
@@ -72,12 +70,16 @@ jobs:
         bazel $(bazel_startup) build -s --spawn_strategy=standalone //... 
       displayName: 'Build all'
     - script: |
+        ls `readlink bazel-out`/../../../external/dotnet_sdk/
+      continueOnError: true
+      displayName: 'Show mono directory'
+      condition: and(succeeded(), ne(variables['systemName'], 'windows'))
+    - script: |
         bazel $(bazel_startup) run -s --spawn_strategy=standalone //tests/examples/example_binary:hello.exe
       displayName: 'Run sample hello'
     - script: |
         bazel $(bazel_startup) run -s  --spawn_strategy=standalone //tests/examples/example_binary:v2.1.200_hello-core.exe
       displayName: 'Run sample core hello'
-
     - script: |
         bazel $(bazel_startup) test -s --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
       continueOnError: true
