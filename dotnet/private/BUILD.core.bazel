@@ -21,12 +21,6 @@ filegroup(
     ]),
 )
 
-filegroup(
-    name = "shared",
-    srcs = glob([
-        "shared/**/*",
-    ]),
-)
 
 filegroup(
     name = "host",
@@ -58,4 +52,11 @@ filegroup(
         "@bazel_tools//src/conditions:windows": glob(["core/**/hostpolicy.dll"]),
         "//conditions:default": glob(["core/**/libhostpolicy.so"]),
     }),
+)
+
+filegroup(
+    name = "shared",
+    srcs = glob([
+        "core/shared/**/*",
+    ]),
 )
