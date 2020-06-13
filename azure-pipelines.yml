@@ -66,7 +66,11 @@ jobs:
       displayName: 'Show mono version'
       condition: and(succeeded(), eq(variables['systemName'], 'windows'))
 
-    - script: |
+    - script: |    
+        bazel $(bazel_startup) query 'deps(@dotnet_sdk//:csc)'
+      displayName: 'Query'
+
+    - script: |    
         bazel $(bazel_startup) build -s --spawn_strategy=standalone //... 
       displayName: 'Build all'
     - script: |
