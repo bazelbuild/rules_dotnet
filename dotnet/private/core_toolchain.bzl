@@ -32,12 +32,7 @@ def _get_dotnet_tlbimp(context_data):
     return None
 
 def _get_dotnet_stdlib(context_data):
-    for f in context_data._shared.files.to_list():
-        basename = paths.basename(f.path)
-        if basename != "mscorlib.dll":
-            continue
-        return f
-    fail("Could not find mscorlib in core_sdk (lib, %s)" % context_data._shared)
+    return None
 
 def _get_dotnet_stdlib_byname(shared, lib, libVersion, name, attr_ref = None):
     lname = name.lower()

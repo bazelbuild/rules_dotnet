@@ -124,7 +124,7 @@ namespace testlib
             using (var sha = SHA256.Create())
             {
                 var bytes = sha.ComputeHash(Encoding.ASCII.GetBytes(combined));
-                return Uri.EscapeDataString(Convert.ToBase64String(bytes, Base64FormattingOptions.None).Replace('/', '_').Replace('+', '-').Replace('=', '-'));
+                return Uri.EscapeDataString(Convert.ToBase64String(bytes, Base64FormattingOptions.None).Replace('/', '_').Replace('+', '-').Replace('=', '-')).Substring(0, 6);
             }
         }
 

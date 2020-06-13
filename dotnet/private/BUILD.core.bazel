@@ -40,6 +40,8 @@ filegroup(
     srcs = glob(["host/**/*"]) + glob(["shared/**/*"]) ,
     )
 
+exports_files(glob(["core/**/*.dll"]))
+
 filegroup(
     name = "runner",
     srcs = select({
@@ -57,5 +59,3 @@ filegroup(
         "//conditions:default": glob(["core/**/libhostpolicy.so"]),
     }),
 )
-
-exports_files(glob(["core/**/*.dll"]))
