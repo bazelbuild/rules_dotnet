@@ -12,6 +12,8 @@ def _dotnet_host_sdk_impl_windows(ctx):
     ctx.symlink(bin, "mono_bin")
     lib = paths.join("{}".format(ctx.path(mcs).dirname), "../lib")
     ctx.symlink(lib, "lib")
+    dotnet = paths.join("{}".format(ctx.path(mcs).dirname), "..")
+    ctx.symlink(dotnet, "mono")
 
 # Mono launcher is on Linux usually placed in /usr/bin. Since the directory
 # may contain forbidden file names ('[') we cannot link it in dotnet_sdk
@@ -31,6 +33,7 @@ def _dotnet_host_sdk_impl_linux(ctx):
     ctx.symlink(monoroot, "lib")
     bin = paths.join("{}".format(monoroot), "4.5")
     ctx.symlink(bin, "mcs_bin")
+    ctx.symlink(monoroot, "mono")
 
 def _dotnet_host_sdk_impl_osx(ctx):
     mono, mcs = _detect_host_sdk(ctx)
@@ -51,6 +54,7 @@ def _dotnet_host_sdk_impl_osx(ctx):
     ctx.symlink(monoroot, "lib")
     bin = paths.join("{}".format(monoroot), "4.5")
     ctx.symlink(bin, "mcs_bin")
+    ctx.symlink(monoroot, "mono")
 
 def _dotnet_host_sdk_impl(ctx):
     if ctx.os.name == "linux":

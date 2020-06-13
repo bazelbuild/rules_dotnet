@@ -58,6 +58,7 @@ jobs:
         dotnet --info
       displayName: 'Show dotnet version'
     - script: |
+        ls `readlink bazel-out`/../../../external/dotnet_sdk/
         mono --version
       displayName: 'Show mono version'
       condition: and(succeeded(), ne(variables['systemName'], 'windows'))
