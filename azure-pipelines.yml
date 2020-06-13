@@ -67,7 +67,7 @@ jobs:
       condition: and(succeeded(), eq(variables['systemName'], 'windows'))
 
     - script: |    
-        bazel $(bazel_startup) query 'deps(@dotnet_sdk//:csc)'
+        bazel $(bazel_startup) query "deps(@dotnet_sdk//:csc)"
       displayName: 'Query'
 
     - script: |    
