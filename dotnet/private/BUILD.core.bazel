@@ -31,8 +31,9 @@ filegroup(
 
 filegroup(
     name = "native_deps",
-    srcs = glob(["host/**/*"]) + glob(["shared/**/*"]) ,
+    srcs = glob(["core/host/**/*"]) + glob(["core/shared/Microsoft.NETCore.App/**/*"], exclude = ["**/System.*", "**/Microsoft.*"]),
     )
+
 
 exports_files(glob(["core/**/*.dll"]))
 
