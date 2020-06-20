@@ -84,29 +84,23 @@ _core_toolchain = rule(
     },
 )
 
-def core_toolchain(name, host, constraints = [], **kwargs):
+def core_toolchain(name, arch, os,  constraints, **kwargs):
     """See dotnet/toolchains.rst#core-toolchain for full documentation."""
-
-    elems = host.split("_")
-    impl, os, arch = elems[0], elems[1], elems[2]
-    host_constraints = constraints + [
-        "@io_bazel_rules_dotnet//dotnet/toolchain:" + os,
-        "@io_bazel_rules_dotnet//dotnet/toolchain:" + arch,
-    ]
 
     impl_name = name + "-impl"
     _core_toolchain(
         name = impl_name,
-        dotnetimpl = impl,
+        dotnetimpl = "core",
         dotnetos = os,
         dotnetarch = arch,
         tags = ["manual"],
         visibility = ["//visibility:public"],
         **kwargs
     )
+
     native.toolchain(
         name = name,
-        toolchain_type = "@io_bazel_rules_dotnet//dotnet:toolchain_core",
-        exec_compatible_with = host_constraints,
+        toolchain_type = "@io_bazel_rules_dotnet//dotnet:toolchain_type_core",
+        exec_compatible_with = constraints,
         toolchain = ":" + impl_name,
     )

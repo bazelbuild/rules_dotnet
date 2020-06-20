@@ -96,7 +96,7 @@ First, you have to declare that you want to consume the toolchain on the rule de
           ...
          "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data"))
      },
-     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
+     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
  )
 
 And then in the rule body, you need to get the toolchain itself and use it's action generators.
@@ -225,7 +225,7 @@ the dotnet context data as an attribute.
           ...
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data"))
       },
-      toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
+      toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
   )
   my_rule_core = rule(
       _my_rule_impl,
@@ -233,7 +233,7 @@ the dotnet context data as an attribute.
           ...
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data"))
       },
-      toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
+      toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
   )
   my_rule_net = rule(
       _my_rule_impl,
@@ -241,7 +241,7 @@ the dotnet context data as an attribute.
           ...
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data"))
       },
-      toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
+      toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
   )
 
 

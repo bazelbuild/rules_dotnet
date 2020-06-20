@@ -1,8 +1,8 @@
-DOTNETIMPL = {
-    "mono": None,
-    "core": None,
-    "net": None,
-}
+DOTNETIMPL = [
+    "mono",
+    "core",
+    "net",
+]
 
 DOTNETOS = {
     "darwin": "@bazel_tools//platforms:osx",
@@ -83,32 +83,4 @@ DOTNET_CORE_NAMES = ["netcoreapp2.0", "netcoreapp2.1", "netcoreapp2.2", "netcore
 DOTNET_NET_NAMES = DOTNET_NET_FRAMEWORKS.keys() + DOTNET_NETSTANDARD.keys()
 
 DEFAULT_DOTNET_CORE_FRAMEWORK = "v3.1.100"
-
-def declare_config_settings():
-    for impl in DOTNETIMPL:
-        native.config_setting(
-            name = impl,
-            #constraint_values = ["//dotnet/toolchain:" + impl],
-            values = {
-                "compilation_mode": impl,
-            },
-        )
-    for os in DOTNETOS:
-        native.config_setting(
-            name = os,
-            constraint_values = ["//dotnet/toolchain:" + os],
-        )
-    for arch in DOTNETARCH:
-        native.config_setting(
-            name = arch,
-            constraint_values = ["//dotnet/toolchain:" + arch],
-        )
-    for impl, os, arch in DOTNETIMPL_OS_ARCH:
-        native.config_setting(
-            name = impl + "_" + os + "_" + arch,
-            constraint_values = [
-                "//dotnet/toolchain:" + os,
-                "//dotnet/toolchain:" + arch,
-                "//dotnet/toolchain:" + impl,
-            ],
-        )
+DEFAULT_DOTNET_NET_FRAMEWORK = "net48"

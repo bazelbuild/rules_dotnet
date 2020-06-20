@@ -82,7 +82,7 @@ net_resx = rule(
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
         "simpleresgen": attr.label(),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
     executable = False,
 )
 dotnet_resx = rule(
@@ -95,7 +95,7 @@ dotnet_resx = rule(
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
         "simpleresgen": attr.label(),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
     executable = False,
 )
 
@@ -109,7 +109,7 @@ core_resx = rule(
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
         "simpleresgen": attr.label(default = Label("@io_bazel_rules_dotnet//tools/simpleresgen:simpleresgen.exe")),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
     executable = False,
 )
 
@@ -123,6 +123,6 @@ net_resx_multi = rule(
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
         "simpleresgen": attr.label(),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
     executable = False,
 )

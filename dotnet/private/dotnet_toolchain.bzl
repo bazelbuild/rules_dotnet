@@ -98,20 +98,13 @@ _dotnet_toolchain = rule(
     },
 )
 
-def dotnet_toolchain(name, host, constraints = [], **kwargs):
+def dotnet_toolchain(name, arch, os, constraints, **kwargs):
     """See dotnet/toolchains.rst#dotnet-toolchain for full documentation."""
-
-    elems = host.split("_")
-    impl, os, arch = elems[0], elems[1], elems[2]
-    host_constraints = constraints + [
-        "@io_bazel_rules_dotnet//dotnet/toolchain:" + os,
-        "@io_bazel_rules_dotnet//dotnet/toolchain:" + arch,
-    ]
 
     impl_name = name + "-impl"
     _dotnet_toolchain(
         name = impl_name,
-        dotnetimpl = impl,
+        dotnetimpl = "mono",
         dotnetos = os,
         dotnetarch = arch,
         tags = ["manual"],
@@ -120,7 +113,7 @@ def dotnet_toolchain(name, host, constraints = [], **kwargs):
     )
     native.toolchain(
         name = name,
-        toolchain_type = "@io_bazel_rules_dotnet//dotnet:toolchain",
-        exec_compatible_with = host_constraints,
+        toolchain_type = "@io_bazel_rules_dotnet//dotnet:toolchain_type_mono",
+        exec_compatible_with = constraints,
         toolchain = ":" + impl_name,
     )

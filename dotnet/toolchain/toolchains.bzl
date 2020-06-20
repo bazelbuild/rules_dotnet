@@ -29,10 +29,12 @@ load(
 load(
     "@io_bazel_rules_dotnet//dotnet/platform:list.bzl",
     "DOTNETARCH",
-    "DOTNETIMPL",
-    "DOTNETIMPL_OS_ARCH",
     "DOTNETOS",
+    "DOTNETIMPL",
     "DOTNET_NET_FRAMEWORKS",
+    "DOTNET_CORE_FRAMEWORKS",
+    "DEFAULT_DOTNET_CORE_FRAMEWORK",
+    "DEFAULT_DOTNET_NET_FRAMEWORK",
 )
 
 DEFAULT_VERSION = "4.2.3"
@@ -207,18 +209,23 @@ NET_ROSLYN_REPOSITORIES = {
 
 def _generate_toolchains():
     # Use all the above information to generate all the possible toolchains we might support
-    toolchains = []
-    for impl, os, arch in DOTNETIMPL_OS_ARCH:
-        host = "{}_{}_{}".format(impl, os, arch)
-        toolchain_name = "dotnet_{}".format(host)
-        csc_flags = []
-        toolchains.append(dict(
-            name = toolchain_name,
-            impl = impl,
-            host = host,
-            csc_flags = csc_flags,
-        ))
+    toolchains = []   
+    for arch in DOTNETARCH:
+        for os in DOTNETOS:
+            for impl in DOTNETIMPL:
+                constraints = [DOTNETARCH[arch], DOTNETOS[os]]
+
+                host = "{}_{}_{}".format(impl, os, arch)
+                toolchain_name = "dotnet_{}".format(host)
+                toolchains.append(dict(
+                    name = toolchain_name,
+                    impl = impl,
+                    os = os,
+                    arch = arch,
+                    constraints = constraints,
+                ))
     return toolchains
+
 
 _toolchains = _generate_toolchains()
 
@@ -231,46 +238,7 @@ def dotnet_register_toolchains(dotnet_version = DEFAULT_VERSION, core_version = 
     for toolchain in _toolchains:
         name = _label_prefix + toolchain["name"]
         native.register_toolchains(name)
-
-def declare_constraints():
-    for os, constraint in DOTNETOS.items():
-        if constraint:
-            native.alias(
-                name = os,
-                actual = constraint,
-            )
-        else:
-            native.constraint_value(
-                name = os,
-                constraint_setting = "@bazel_tools//platforms:os",
-            )
-    for arch, constraint in DOTNETARCH.items():
-        if constraint:
-            native.alias(
-                name = arch,
-                actual = constraint,
-            )
-        else:
-            native.constraint_value(
-                name = arch,
-                constraint_setting = "@bazel_tools//platforms:cpu",
-            )
-    native.constraint_setting(name = "dotnetimpl")
-    for impl, constraint in DOTNETIMPL.items():
-        native.constraint_value(
-            name = impl,
-            constraint_setting = ":dotnetimpl",
-        )
-
-    for impl, os, arch in DOTNETIMPL_OS_ARCH:
-        native.platform(
-            name = impl + "_" + os + "_" + arch,
-            constraint_values = [
-                ":" + impl,
-                ":" + os,
-                ":" + arch,
-            ],
-        )
+    
 
 def declare_toolchains():
     # Use the final dictionaries to create all the toolchains
@@ -278,24 +246,32 @@ def declare_toolchains():
         if toolchain["impl"] == "mono":
             dotnet_toolchain(
                 name = toolchain["name"],
-                host = toolchain["host"],
+                arch = toolchain["arch"],
+                os = toolchain["os"],
+                constraints = toolchain["constraints"],
             )
         elif toolchain["impl"] == "core":
             core_toolchain(
                 name = toolchain["name"],
-                host = toolchain["host"],
+                arch = toolchain["arch"],
+                os = toolchain["os"],
+                constraints = toolchain["constraints"],
             )
         elif toolchain["impl"] == "net":
-            if toolchain["name"] == "dotnet_net_windows_amd64":
+            if toolchain["os"] == "windows" and toolchain["arch"]=="amd64":
                 net_toolchain(
                     name = toolchain["name"],
-                    host = toolchain["host"],
+                    arch = toolchain["arch"],
+                    os = toolchain["os"],
+                    constraints = toolchain["constraints"],
                 )
             else:
                 # Hardcoded empty rules for .NET on Linux and ocx
                 net_empty_toolchain(
                     name = toolchain["name"],
-                    host = toolchain["host"],
+                    arch = toolchain["arch"],
+                    os = toolchain["os"],
+                    constraints = toolchain["constraints"],
                 )
 
 def net_register_sdk(net_version = NET_DEFAULT_VERSION, net_roslyn_version = NET_ROSLYN_DEFAULT_VERSION, tools_version = NET_DEFAULT_TOOLS_VERSION, name = "net_sdk"):

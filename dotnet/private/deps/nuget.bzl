@@ -7548,5 +7548,121 @@ def dotnet_repositories_nuget():
             "lib/netstandard2.0/System.Reflection.MetadataLoadContext.xml",
         ],
     )
+    nuget_package(
+        name = "sharpziplib",
+        package = "sharpziplib",
+        version = "1.2.0",
+        sha256 = "a5e21787aa106a999f6a22a8dbec57498b1678dc2d6b2ef91ae2543971e8d07a",
+        core_lib = {
+            "netcoreapp2.0": "lib/netstandard2.0/ICSharpCode.SharpZipLib.dll",
+            "netcoreapp2.1": "lib/netstandard2.0/ICSharpCode.SharpZipLib.dll",
+            "netcoreapp3.0": "lib/netstandard2.0/ICSharpCode.SharpZipLib.dll",
+            "netcoreapp3.1": "lib/netstandard2.0/ICSharpCode.SharpZipLib.dll",
+        },
+        net_lib = {
+            "net45": "lib/net45/ICSharpCode.SharpZipLib.dll",
+            "net451": "lib/net45/ICSharpCode.SharpZipLib.dll",
+            "net452": "lib/net45/ICSharpCode.SharpZipLib.dll",
+            "net46": "lib/net45/ICSharpCode.SharpZipLib.dll",
+            "net461": "lib/net45/ICSharpCode.SharpZipLib.dll",
+            "net462": "lib/net45/ICSharpCode.SharpZipLib.dll",
+            "net47": "lib/net45/ICSharpCode.SharpZipLib.dll",
+            "net471": "lib/net45/ICSharpCode.SharpZipLib.dll",
+            "net472": "lib/net45/ICSharpCode.SharpZipLib.dll",
+            "net48": "lib/net45/ICSharpCode.SharpZipLib.dll",
+            "netstandard2.0": "lib/netstandard2.0/ICSharpCode.SharpZipLib.dll",
+            "netstandard2.1": "lib/netstandard2.0/ICSharpCode.SharpZipLib.dll",
+        },
+        mono_lib = "lib/net45/ICSharpCode.SharpZipLib.dll",
+        core_files = {
+            "netcoreapp2.0": [
+               "lib/netstandard2.0/ICSharpCode.SharpZipLib.dll",
+               "lib/netstandard2.0/ICSharpCode.SharpZipLib.pdb",
+               "lib/netstandard2.0/ICSharpCode.SharpZipLib.xml",
+            ],
+            "netcoreapp2.1": [
+               "lib/netstandard2.0/ICSharpCode.SharpZipLib.dll",
+               "lib/netstandard2.0/ICSharpCode.SharpZipLib.pdb",
+               "lib/netstandard2.0/ICSharpCode.SharpZipLib.xml",
+            ],
+            "netcoreapp3.0": [
+               "lib/netstandard2.0/ICSharpCode.SharpZipLib.dll",
+               "lib/netstandard2.0/ICSharpCode.SharpZipLib.pdb",
+               "lib/netstandard2.0/ICSharpCode.SharpZipLib.xml",
+            ],
+            "netcoreapp3.1": [
+               "lib/netstandard2.0/ICSharpCode.SharpZipLib.dll",
+               "lib/netstandard2.0/ICSharpCode.SharpZipLib.pdb",
+               "lib/netstandard2.0/ICSharpCode.SharpZipLib.xml",
+            ],
+        },
+        net_files = {
+            "net45": [
+               "lib/net45/ICSharpCode.SharpZipLib.dll",
+               "lib/net45/ICSharpCode.SharpZipLib.pdb",
+               "lib/net45/ICSharpCode.SharpZipLib.xml",
+            ],
+            "net451": [
+               "lib/net45/ICSharpCode.SharpZipLib.dll",
+               "lib/net45/ICSharpCode.SharpZipLib.pdb",
+               "lib/net45/ICSharpCode.SharpZipLib.xml",
+            ],
+            "net452": [
+               "lib/net45/ICSharpCode.SharpZipLib.dll",
+               "lib/net45/ICSharpCode.SharpZipLib.pdb",
+               "lib/net45/ICSharpCode.SharpZipLib.xml",
+            ],
+            "net46": [
+               "lib/net45/ICSharpCode.SharpZipLib.dll",
+               "lib/net45/ICSharpCode.SharpZipLib.pdb",
+               "lib/net45/ICSharpCode.SharpZipLib.xml",
+            ],
+            "net461": [
+               "lib/net45/ICSharpCode.SharpZipLib.dll",
+               "lib/net45/ICSharpCode.SharpZipLib.pdb",
+               "lib/net45/ICSharpCode.SharpZipLib.xml",
+            ],
+            "net462": [
+               "lib/net45/ICSharpCode.SharpZipLib.dll",
+               "lib/net45/ICSharpCode.SharpZipLib.pdb",
+               "lib/net45/ICSharpCode.SharpZipLib.xml",
+            ],
+            "net47": [
+               "lib/net45/ICSharpCode.SharpZipLib.dll",
+               "lib/net45/ICSharpCode.SharpZipLib.pdb",
+               "lib/net45/ICSharpCode.SharpZipLib.xml",
+            ],
+            "net471": [
+               "lib/net45/ICSharpCode.SharpZipLib.dll",
+               "lib/net45/ICSharpCode.SharpZipLib.pdb",
+               "lib/net45/ICSharpCode.SharpZipLib.xml",
+            ],
+            "net472": [
+               "lib/net45/ICSharpCode.SharpZipLib.dll",
+               "lib/net45/ICSharpCode.SharpZipLib.pdb",
+               "lib/net45/ICSharpCode.SharpZipLib.xml",
+            ],
+            "net48": [
+               "lib/net45/ICSharpCode.SharpZipLib.dll",
+               "lib/net45/ICSharpCode.SharpZipLib.pdb",
+               "lib/net45/ICSharpCode.SharpZipLib.xml",
+            ],
+            "netstandard2.0": [
+               "lib/netstandard2.0/ICSharpCode.SharpZipLib.dll",
+               "lib/netstandard2.0/ICSharpCode.SharpZipLib.pdb",
+               "lib/netstandard2.0/ICSharpCode.SharpZipLib.xml",
+            ],
+            "netstandard2.1": [
+               "lib/netstandard2.0/ICSharpCode.SharpZipLib.dll",
+               "lib/netstandard2.0/ICSharpCode.SharpZipLib.pdb",
+               "lib/netstandard2.0/ICSharpCode.SharpZipLib.xml",
+            ],
+        },
+        mono_files = [
+            "lib/net45/ICSharpCode.SharpZipLib.dll",
+            "lib/net45/ICSharpCode.SharpZipLib.pdb",
+            "lib/net45/ICSharpCode.SharpZipLib.xml",
+        ],
+    )
     ### End of generated by the tool
 

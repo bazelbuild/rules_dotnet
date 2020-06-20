@@ -117,7 +117,7 @@ dotnet_nunit_test = rule(
         "data_with_dirs": attr.label_keyed_string_dict(allow_files = True),
         "version": attr.string(),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
     executable = True,
     test = True,
 )
@@ -147,7 +147,7 @@ net_nunit_test = rule(
         "data_with_dirs": attr.label_keyed_string_dict(allow_files = True),
         "version": attr.string(),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
     executable = True,
     test = True,
 )
@@ -177,7 +177,7 @@ net_nunit3_test = rule(
         "data_with_dirs": attr.label_keyed_string_dict(allow_files = True),
         "version": attr.string(),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
     executable = True,
     test = True,
 )
@@ -206,7 +206,7 @@ core_xunit_test = rule(
         "data_with_dirs": attr.label_keyed_string_dict(allow_files = True),
         "version": attr.string(),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
     executable = True,
     test = True,
 )
@@ -242,7 +242,7 @@ core_nunit3_test = rule(
         ),
         "version": attr.string(),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
     executable = True,
     test = True,
 )
@@ -272,7 +272,7 @@ net_xunit_test = rule(
         "data_with_dirs": attr.label_keyed_string_dict(allow_files = True),
         "version": attr.string(),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
     executable = True,
     test = True,
 )
@@ -302,7 +302,7 @@ dotnet_xunit_test = rule(
         "data_with_dirs": attr.label_keyed_string_dict(allow_files = True),
         "version": attr.string(),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
     executable = True,
     test = True,
 )

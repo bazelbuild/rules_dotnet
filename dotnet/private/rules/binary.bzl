@@ -94,7 +94,7 @@ dotnet_binary = rule(
         "nowarn": attr.string_list(),
         "langversion": attr.string(default = "latest"),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
     executable = True,
 )
 
@@ -119,7 +119,7 @@ core_binary = rule(
         "nowarn": attr.string_list(),
         "langversion": attr.string(default = "latest"),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
     executable = True,
 )
 
@@ -144,6 +144,6 @@ net_binary = rule(
         "nowarn": attr.string_list(),
         "langversion": attr.string(default = "latest"),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
     executable = True,
 )

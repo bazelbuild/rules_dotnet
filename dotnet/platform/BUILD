@@ -7,10 +7,6 @@
 
 package(default_visibility = ["//visibility:public"])
 
-load(":list.bzl", "declare_config_settings")
-
-declare_config_settings()
-
 filegroup(
     name = "all_rules",
     srcs = glob([

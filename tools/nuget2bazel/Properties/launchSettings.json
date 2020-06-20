@@ -2,7 +2,7 @@
   "profiles": {
     "nuget2bazel": {
       "commandName": "Project",
-      "commandLineArgs": "add -p c:/temp/rules_dotnet_memory_deps Grpc.Core 2.28.1"
+      "commandLineArgs": "rules c:/rules_dotnet"
     }
   }
 }

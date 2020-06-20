@@ -62,7 +62,7 @@ dotnet_library = rule(
         "nowarn": attr.string_list(),
         "langversion": attr.string(default = "latest"),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
     executable = False,
 )
 
@@ -83,7 +83,7 @@ core_library = rule(
         "nowarn": attr.string_list(),
         "langversion": attr.string(default = "latest"),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
     executable = False,
 )
 
@@ -104,6 +104,6 @@ net_library = rule(
         "nowarn": attr.string_list(),
         "langversion": attr.string(default = "latest"),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
     executable = False,
 )

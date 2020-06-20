@@ -85,7 +85,7 @@ namespace nuget2bazel.rules
             return result;
         }
 
-        private List<RefInfo> GetSdkInfos(string sdk, string package, string version)
+        public static List<RefInfo> GetSdkInfos(string sdk, string package, string version)
         {
             var brokenDependencies = new string[] { };
 

@@ -51,7 +51,7 @@ dotnet_libraryset = rule(
         "data": attr.label_list(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
     executable = False,
 )
 
@@ -62,7 +62,7 @@ core_libraryset = rule(
         "data": attr.label_list(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_core"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
     executable = False,
 )
 
@@ -73,6 +73,6 @@ net_libraryset = rule(
         "data": attr.label_list(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
     executable = False,
 )

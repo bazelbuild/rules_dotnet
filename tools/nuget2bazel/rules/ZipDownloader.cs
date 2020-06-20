@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using ICSharpCode.SharpZipLib.Tar;
 
 namespace nuget2bazel.rules
 {
@@ -22,7 +23,17 @@ namespace nuget2bazel.rules
             if (!File.Exists(downloadedFile))
                 await client.DownloadFileTaskAsync(new Uri(url), downloadedFile);
 
-            using var archive = ZipFile.OpenRead(downloadedFile);
+            if (Path.GetExtension(fname) != ".zip")
+                UntarFile(downloadedFile, dir);
+            else
+                UnzipFile(downloadedFile, dir);
+
+            return dir;
+        }
+
+        private static void UnzipFile(string file, string dir)
+        {
+            using var archive = ZipFile.OpenRead(file);
             foreach (var entry in archive.Entries)
             {
                 var dest = Path.Combine(dir, entry.FullName);
@@ -30,9 +41,15 @@ namespace nuget2bazel.rules
                 if (!File.Exists(dest))
                     entry.ExtractToFile(dest);
             }
+        }
 
-            return dir;
+        private static void UntarFile(string file, string dir)
+        {
+            using var instream = File.OpenRead(file);
+            using var decompressed = new GZipStream(instream, CompressionMode.Decompress);
+            using var archive = TarArchive.CreateInputTarArchive(decompressed);
 
+            archive.ExtractContents(dir);
         }
     }
 }

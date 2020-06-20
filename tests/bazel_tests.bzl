@@ -263,7 +263,7 @@ _bazel_test_script = rule(
         "_settings": attr.label(default = Label("@bazel_test//:settings")),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
 )
 
 def bazel_test(name, command = None, args = None, targets = None, dotnet_version = None, tags = [], externals = [], workspace = "", build = "", check = "", config = None, workspace_in = None, build_in = None, srcs = None):

@@ -79,6 +79,6 @@ net_com_library = rule(
             default = {Label("@io_bazel_rules_dotnet//dotnet/tools/tlbimp_wrapper:tlbimp_wrapper_{}.exe".format(framework)): framework for framework in DOTNET_NET_FRAMEWORKS},
         ),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_net"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
     executable = False,
 )

@@ -4,6 +4,9 @@ load(
     "DotnetResource",
 )
 
+load("@io_bazel_rules_dotnet//dotnet/private:runtime_generated.bzl","RUNTIME_DEPS_NATIVE","RUNTIME_DEPS")
+
+
 DotnetContext = provider()
 
 def _declare_file(dotnet, path = None, ext = None, sibling = None):
@@ -87,6 +90,18 @@ def dotnet_context(ctx, attr = None):
         native_deps = context_data._native_deps,
     )
 
+def _os_name(ctx):
+    cvi = platform_common.ConstraintValueInfo
+    osx = cvi(key="@bazel_tools//src/conditions:darwin")
+
+    if ctx.target_platform_has_constraint(osx):
+        return "osx"
+
+    if ctx.target_platform_has_constraint("@bazel_tools//src/conditions:windows"):
+        return "windows"
+
+    return "linux"
+
 def _dotnet_context_data(ctx):
     return struct(
         _mcs_bin = ctx.attr.mcs_bin,
@@ -141,7 +156,7 @@ dotnet_context_data = rule(
             default = "",
         ),
         "_toolchain_type": attr.string(
-            default = "@io_bazel_rules_dotnet//dotnet:toolchain",
+            default = "@io_bazel_rules_dotnet//dotnet:toolchain_type_mono",
         ),
         "runner": attr.label(executable = True, cfg = "host",  default = "@dotnet_sdk//:runner"),
         "csc": attr.label(executable = True, cfg = "host",  default = "@dotnet_sdk//:csc"),
@@ -186,7 +201,7 @@ core_context_data = rule(
             default = "",
         ),
         "_toolchain_type": attr.string(
-            default = "@io_bazel_rules_dotnet//dotnet:toolchain_core",
+            default = "@io_bazel_rules_dotnet//dotnet:toolchain_type_core",
         ),
         "runner": attr.label(executable = True, cfg = "host", default = "@core_sdk//:runner"),
         "csc": attr.label(executable = True, cfg = "host",  default = "@core_sdk//:csc"),
@@ -231,7 +246,7 @@ net_context_data = rule(
             default = "",
         ),
         "_toolchain_type": attr.string(
-            default = "@io_bazel_rules_dotnet//dotnet:toolchain_net",
+            default = "@io_bazel_rules_dotnet//dotnet:toolchain_type_net",
         ),
         "runner": attr.label(default = None),
         "csc": attr.label(executable = True, cfg = "host",  default = "@net_sdk//:csc"),

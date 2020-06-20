@@ -18,3 +18,4 @@ set tool=C:\rules_dotnet\tools\nuget2bazel\bin\Debug\netcoreapp3.1\nuget2bazel.e
 %tool% add -p c:/rules_dotnet/dotnet/private/deps/gen -b nuget.bzl -c nuget.json -i -l NuGet.PackageManagement.NetStandard 4.9.2
 %tool% add -p c:/rules_dotnet/dotnet/private/deps/gen -b nuget.bzl -c nuget.json -i -l CommandLineParser 2.6.0
 %tool% add -p c:/rules_dotnet/dotnet/private/deps/gen -b nuget.bzl -c nuget.json -i -l System.Reflection.MetadataLoadContext 4.7.1
+%tool% add -p c:/rules_dotnet/dotnet/private/deps/gen -b nuget.bzl -c nuget.json -i -l SharpZipLib 1.2.0
