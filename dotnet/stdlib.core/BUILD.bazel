@@ -1,5 +1,7 @@
 load("@io_bazel_rules_dotnet//dotnet/stdlib.core:generated.bzl", "define_stdlib")
+load("@io_bazel_rules_dotnet//dotnet/stdlib.core:generated2.bzl", "define_runtime")
 
 package(default_visibility = ["//visibility:public"])
 
 define_stdlib("//:core_context_data")
+define_runtime("//:core_context_data")

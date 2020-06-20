@@ -62,3 +62,5 @@ filegroup(
         "core/shared/**/*",
     ]),
 )
+
+exports_files(glob(["core/shared/**/*"]))

@@ -60,9 +60,9 @@ def _get_dotnet_stdlib_byname(shared, lib, libVersion, name, attr_ref = None):
 def _net_toolchain_impl(ctx):
     return [platform_common.ToolchainInfo(
         name = ctx.label.name,
-        default_dotnetimpl = ctx.attr.dotnetimpl,
-        default_dotnetos = ctx.attr.dotnetos,
-        default_dotnetarch = ctx.attr.dotnetarch,
+        dotnetimpl = ctx.attr.dotnetimpl,
+        dotnetos = ctx.attr.dotnetos,
+        dotnetarch = ctx.attr.dotnetarch,
         get_dotnet_runner = _get_dotnet_runner,
         get_dotnet_mcs = _get_dotnet_mcs,
         get_dotnet_resgen = _get_dotnet_resgen,

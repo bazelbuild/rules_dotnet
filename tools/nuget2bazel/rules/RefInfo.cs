@@ -14,6 +14,7 @@ namespace nuget2bazel.rules
         public string Ref { get; set; }
         public string StdlibPath { get; set; }
         public string Version { get; set; }
+        public string Pack { get; set; }
         public List<string> Deps { get; set; }
     }
 }

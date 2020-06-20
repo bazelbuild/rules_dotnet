@@ -21,108 +21,148 @@ namespace nuget2bazel.rules
 
         public async Task Do()
         {
-            await using var f = new StreamWriter(Path.Combine(_rulesPath, "dotnet/private/runtime_generated.bzl"));
-            var sdks = new[]
+            foreach (var tfm in SdkInfos.Sdks)
             {
-                new Tuple<string, string, string, string, string>("2.0.7", "v2.1.200",
-                    "https://download.microsoft.com/download/3/7/1/37189942-C91D-46E9-907B-CF2B2DE584C7/dotnet-sdk-2.1.200-win-x64.zip",
-                    "https://download.microsoft.com/download/3/7/1/37189942-C91D-46E9-907B-CF2B2DE584C7/dotnet-sdk-2.1.200-linux-x64.tar.gz",
-                    "https://download.microsoft.com/download/3/7/1/37189942-C91D-46E9-907B-CF2B2DE584C7/dotnet-sdk-2.1.200-osx-x64.tar.gz"
-                ),
-                new Tuple<string, string, string, string, string>("2.1.6", "v2.1.502",
-                    "https://download.visualstudio.microsoft.com/download/pr/c88b53e5-121c-4bc9-af5d-47a9d154ea64/e62eff84357c48dc8052a9c6ce5dfb8a/dotnet-sdk-2.1.502-win-x64.zip",
-                    "https://download.visualstudio.microsoft.com/download/pr/4c8893df-3b05-48a5-b760-20f2db692c45/ff0545dbbb3c52f6fa38657ad97d65d8/dotnet-sdk-2.1.502-linux-x64.tar.gz",
-                    "https://download.visualstudio.microsoft.com/download/pr/50729ca4-03ce-4e19-af87-bfae014b0431/1c830d9dcffa7663702e32fab6953425/dotnet-sdk-2.1.502-osx-x64.tar.gz"
-                ),
-                new Tuple<string, string, string, string, string>("2.1.7", "v2.1.503",
-                    "https://download.visualstudio.microsoft.com/download/pr/81e18dc2-7747-4b2d-9912-3be0f83050f1/5bc41cb27df3da63378df2d051be4b7f/dotnet-sdk-2.1.503-win-x64.zip",
-                    "https://download.visualstudio.microsoft.com/download/pr/04d83723-8370-4b54-b8b9-55708822fcde/63aab1f4d0be5246e3a92e1eb3063935/dotnet-sdk-2.1.503-linux-x64.tar.gz",
-                    "https://download.visualstudio.microsoft.com/download/pr/c922688d-74e8-4af5-bcc8-5850eafbca7f/cf3b9a0b06c0dfa3a5098f893a9730bd/dotnet-sdk-2.1.503-osx-x64.tar.gz"
-                ),
-                new Tuple<string, string, string, string, string>("2.2.0", "v2.2.101",
-                    "https://download.visualstudio.microsoft.com/download/pr/25d4104d-1776-41cb-b96e-dff9e9bf1542/b878c013de90f0e6c91f6f3c98a2d592/dotnet-sdk-2.2.101-win-x64.zip",
-                    "https://download.visualstudio.microsoft.com/download/pr/80e1d007-d6f0-402f-b047-779464dd989b/9ae5e2df9aa166b720bdb92d19977044/dotnet-sdk-2.2.101-linux-x64.tar.gz",
-                    "https://download.visualstudio.microsoft.com/download/pr/55c65d12-5f99-45d3-aa14-35359a6d02ca/3f6bcd694e3bfbb84e6b99e65279bd1e/dotnet-sdk-2.2.101-osx-x64.tar.gz"
-                ),
-                new Tuple<string, string, string, string, string>("2.2.7", "v2.2.402",
-                    "https://download.visualstudio.microsoft.com/download/pr/8ac3e8b7-9918-4e0c-b1be-5aa3e6afd00f/0be99c6ab9362b3c47050cdd50cba846/dotnet-sdk-2.2.402-win-x64.zip",
-                    "https://download.visualstudio.microsoft.com/download/pr/46411df1-f625-45c8-b5e7-08ab736d3daa/0fbc446088b471b0a483f42eb3cbf7a2/dotnet-sdk-2.2.402-linux-x64.tar.gz",
-                    "https://download.visualstudio.microsoft.com/download/pr/2079de3a-714b-4fa5-840f-70e898b393ef/d631b5018560873ac350d692290881db/dotnet-sdk-2.2.402-osx-x64.tar.gz"
-                ),
-                new Tuple<string, string, string, string, string>("3.0.0", "v3.0.100",
-                    "https://download.visualstudio.microsoft.com/download/pr/a24f4f34-ada1-433a-a437-5bc85fc2576a/7e886d06729949c15c96fe7e70faa8ae/dotnet-sdk-3.0.100-win-x64.zip",
-                    "https://download.visualstudio.microsoft.com/download/pr/886b4a4c-30af-454b-8bec-81c72b7b4e1f/d1a0c8de9abb36d8535363ede4a15de6/dotnet-sdk-3.0.100-linux-x64.tar.gz",
-                    "https://download.visualstudio.microsoft.com/download/pr/b9251194-4118-41cb-ae05-6763fb002e5d/1d398b4e97069fa4968628080b617587/dotnet-sdk-3.0.100-osx-x64.tar.gz"
-                ),
-                new Tuple<string, string, string, string, string>("3.1.0", "v3.1.100",
-                    "https://download.visualstudio.microsoft.com/download/pr/28a2c4ff-6154-473b-bd51-c62c76171551/ea47eab2219f323596c039b3b679c3d6/dotnet-sdk-3.1.100-win-x64.zip",
-                    "https://download.visualstudio.microsoft.com/download/pr/d731f991-8e68-4c7c-8ea0-fad5605b077a/49497b5420eecbd905158d86d738af64/dotnet-sdk-3.1.100-linux-x64.tar.gz",
-                    "https://download.visualstudio.microsoft.com/download/pr/bea99127-a762-4f9e-aac8-542ad8aa9a94/afb5af074b879303b19c6069e9e8d75f/dotnet-sdk-3.1.100-osx-x64.tar.gz"
-                ),
-            };
+                await using var f = new StreamWriter(Path.Combine(_rulesPath, $"dotnet/stdlib.core/{tfm.Version}/generated2.bzl"));
 
-            foreach (var tfm in sdks)
-            {
-                await Handle(f,
-                    "Microsoft.NETCore.App", tfm.Item1, tfm.Item2, tfm.Item3, tfm.Item4, tfm.Item5);
+                await Handle(f, tfm, false);
             }
 
-            await f.WriteLineAsync("RUNTIME_DEPS_NATIVE = {");
-            foreach (var tfm in sdks)
-            {
-                await f.WriteLineAsync($"    \"{tfm.Item2}\":RUNTIME_DEPS_NATIVE_{tfm.Item2.Replace(".", "_")},");
-            }
-            await f.WriteLineAsync("}");
-
-            await f.WriteLineAsync("RUNTIME_DEPS = {");
-            foreach (var tfm in sdks)
-            {
-                await f.WriteLineAsync($"    \"{tfm.Item2}\":RUNTIME_DEPS_{tfm.Item2.Replace(".", "_")},");
-            }
-            await f.WriteLineAsync("}");
+            var defSdk = SdkInfos.Sdks.First(x => x.DefaultSdk);
+            await using var fd = new StreamWriter(Path.Combine(_rulesPath, $"dotnet/stdlib.core/generated2.bzl"));
+            await Handle(fd, defSdk, true);
         }
 
-        private async Task Handle(StreamWriter f, string package, string version, string sdkVersion,
-            string sdkWin, string sdkLinux, string sdkOsx)
+        private async Task Handle(StreamWriter f, Sdk sdk, bool defaultSdk)
         {
-            var sdkDirWin = await ZipDownloader.DownloadIfNedeed(_configDir, sdkWin);
-            var sdkDirLinux = await ZipDownloader.DownloadIfNedeed(_configDir, sdkLinux);
-            var sdkDirOsx = await ZipDownloader.DownloadIfNedeed(_configDir, sdkOsx);
+            var sdkDirWin = await ZipDownloader.DownloadIfNedeed(_configDir, sdk.WindowsUrl);
+            var sdkDirLinux = await ZipDownloader.DownloadIfNedeed(_configDir, sdk.LinuxUrl);
+            var sdkDirOsx = await ZipDownloader.DownloadIfNedeed(_configDir, sdk.DarwinUrl);
 
+            await f.WriteLineAsync("load(\"@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl\", \"core_stdlib\")");
+            await f.WriteLineAsync("load(\"@io_bazel_rules_dotnet//dotnet/private:rules/libraryset.bzl\", \"core_libraryset\")");
+            await f.WriteLineAsync();
+            await f.WriteLineAsync("def define_runtime(context_data):");
 
-            var suffix = sdkVersion.Replace(".", "_");
-            await ProcessDirectory(f, $"WINDOWS_RUNTIME_DEPS_{suffix}", sdkDirWin, package, version);
-            await ProcessDirectory(f, $"LINUX_RUNTIME_DEPS_{suffix}", sdkDirLinux, package, version);
-            await ProcessDirectory(f, $"OSX_RUNTIME_DEPS_{suffix}", sdkDirOsx, package, version);
+            if (sdk.Packs != null)
+            {
+                await f.WriteLineAsync("    native.alias(name=\"system.security.accesscontrol.dll\", actual=\":p1_system.security.accesscontrol.dll\")");
+                await f.WriteLineAsync("    native.alias(name=\"system.security.principal.windows.dll\", actual=\":p1_system.security.principal.windows.dll\")");
+                await f.WriteLineAsync("    native.alias(name=\"microsoft.win32.registry.dll\", actual=\":p1_microsoft.win32.registry.dll\")");
+                await f.WriteLineAsync("    native.alias(name=\"system.security.cryptography.cng.dll\", actual=\":p1_system.security.cryptography.cng.dll\")");
+            }
 
-            await f.WriteLineAsync($"RUNTIME_DEPS_NATIVE_{suffix} = {{");
-            await f.WriteLineAsync($"    \"windows\": WINDOWS_RUNTIME_DEPS_{suffix}_NATIVE,");
-            await f.WriteLineAsync($"    \"darwin\": OSX_RUNTIME_DEPS_{suffix}_NATIVE,");
-            await f.WriteLineAsync($"    \"linux\": LINUX_RUNTIME_DEPS_{suffix}_NATIVE,");
-            await f.WriteLineAsync("}");
+            var infosWindows = await ProcessDirectory(f, $"windows_runtime_deps", sdkDirWin, sdk, defaultSdk);
+            var infosLinux = await ProcessDirectory(f, $"linux_runtime_deps", sdkDirLinux, sdk, defaultSdk);
+            var infosDarwin = await ProcessDirectory(f, $"darwin_runtime_deps", sdkDirOsx, sdk, defaultSdk);
 
-            await f.WriteLineAsync($"RUNTIME_DEPS_{suffix} = {{");
-            await f.WriteLineAsync($"    \"windows\": WINDOWS_RUNTIME_DEPS_{suffix},");
-            await f.WriteLineAsync($"    \"darwin\": OSX_RUNTIME_DEPS_{suffix},");
-            await f.WriteLineAsync($"    \"linux\": LINUX_RUNTIME_DEPS_{suffix},");
-            await f.WriteLineAsync("}");
+            await f.WriteLineAsync();
+            await f.WriteLineAsync($"    core_libraryset(");
+            await f.WriteLineAsync($"        name = \"runtime\",");
+            await f.WriteLineAsync($"        dotnet_context_data = context_data,");
+            await f.WriteLineAsync($"        deps = select({{");
+            await f.WriteLineAsync($"            \"@bazel_tools//src/conditions:windows\": [");
+            foreach (var i in infosWindows.Item1)
+                await f.WriteLineAsync($"                \":{i.Name}\",");
+            await f.WriteLineAsync($"            ],");
+            await f.WriteLineAsync($"            \"@bazel_tools//src/conditions:darwin\": [");
+            foreach (var i in infosDarwin.Item1)
+                await f.WriteLineAsync($"                \":{i.Name}\",");
+            await f.WriteLineAsync($"            ],");
+            await f.WriteLineAsync($"            \"//conditions:default\": [");
+            foreach (var i in infosLinux.Item1)
+                await f.WriteLineAsync($"                \":{i.Name}\",");
+            await f.WriteLineAsync($"            ],");
+            await f.WriteLineAsync($"        }}),");
+            await f.WriteLineAsync($"        data = select({{");
+            await f.WriteLineAsync($"            \"@bazel_tools//src/conditions:windows\": [");
+            foreach (var i in infosWindows.Item2)
+                await f.WriteLineAsync($"                \"{i}\",");
+            await f.WriteLineAsync($"            ],");
+            await f.WriteLineAsync($"            \"@bazel_tools//src/conditions:darwin\": [");
+            foreach (var i in infosDarwin.Item2)
+                await f.WriteLineAsync($"                \"{i}\",");
+            await f.WriteLineAsync($"            ],");
+            await f.WriteLineAsync($"            \"//conditions:default\": [");
+            foreach (var i in infosLinux.Item2)
+                await f.WriteLineAsync($"                \"{i}\",");
+            await f.WriteLineAsync($"            ],");
+            await f.WriteLineAsync($"        }}),");
+            await f.WriteLineAsync($"    )");
         }
 
-        private async Task ProcessDirectory(StreamWriter f, string varname, string sdkDir, string package, string version)
+        private async Task<Tuple<List<RefInfo>, List<string>>> ProcessDirectory(StreamWriter f, string varname, string sdkDir, Sdk sdk, bool defaultSdk)
         {
-            var infos = StdlibCoreGenerator.GetSdkInfos(sdkDir, package, version);
-            var native = Directory.GetFiles(Path.Combine(sdkDir, "shared", package, version))
-                .Select(y => Path.GetFileName(y).ToLower()).Except(infos.Select(x => x.Name));
+            var pack = "Microsoft.NETCore.App";
+            var infos = GetSdkInfos(sdkDir, pack, sdk.InternalVersionFolder);
+            var alreadyDefined = (await sdk.GetRefInfos(_configDir)).Select(x => x.Name);
+            var infosMissing = infos.Where(x => !alreadyDefined.Contains(x.Name)).ToList();
 
-            await f.WriteLineAsync($"{varname}_NATIVE = [");
-            foreach (var n in native)
-                await f.WriteLineAsync($"    \"{n}\",");
-            await f.WriteLineAsync($"]");
+            if (varname == "windows_runtime_deps")
+                foreach (var d in infosMissing)
+                {
+                    await f.WriteLineAsync($"    core_stdlib(");
+                    await f.WriteLineAsync($"        name = \"{d.Name}\",");
+                    await f.WriteLineAsync($"        version = \"{d.Version}\",");
+                    await f.WriteLineAsync($"        dotnet_context_data = context_data,");
+                    if (d.Ref != null)
+                        await f.WriteLineAsync($"        ref = \"{d.Ref}\",");
+                    if (d.StdlibPath != null)
+                        await f.WriteLineAsync($"        stdlib_path = \"{d.StdlibPath}\",");
+                    await f.WriteLineAsync($"        deps = [");
+                    foreach (var dep in d.Deps)
+                        await f.WriteLineAsync($"            {dep},");
+                    await f.WriteLineAsync($"        ]");
+                    await f.WriteLineAsync($"    )");
+                }
 
-            await f.WriteLineAsync($"{varname} = {{");
-            foreach (var i in infos)
-                await f.WriteLineAsync($"    \"{i.Name}\":\"{i.Version}\",");
-            await f.WriteLineAsync("}");
+            var native = Directory.GetFiles(Path.Combine(sdkDir, "shared", pack, sdk.InternalVersionFolder))
+                .Select(y => Path.GetFileName(y))
+                .Where(z => !infos.Select(x => x.Name).Contains(z.ToLower()));
+
+            var coreSdkPrefix = defaultSdk ? "@core_sdk" : $"@core_sdk_{sdk.Version}";
+            var nativePaths = native.Select(x =>
+                $"{coreSdkPrefix}//:core/shared/Microsoft.NETCore.App/{sdk.InternalVersionFolder}/{x}").ToList();
+
+            return new Tuple<List<RefInfo>, List<string>>(infos, nativePaths);
         }
+
+        public static List<RefInfo> GetSdkInfos(string sdk, string package, string version)
+        {
+            var brokenDependencies = new string[] { };
+
+            var result = new List<RefInfo>();
+
+            var sdkDir = Path.Combine(sdk, "shared", package, version);
+            var dlls = Directory.GetFiles(sdkDir, "*.dll");
+
+            var resolver = new PathAssemblyResolver(dlls);
+            using var lc = new MetadataLoadContext(resolver);
+            var known = dlls.Select(x => Path.GetFileNameWithoutExtension(x).ToLower()).ToArray();
+            foreach (var d in dlls)
+            {
+                try
+                {
+                    var metadata = lc.LoadFromAssemblyPath(d);
+                    var deps = metadata.GetReferencedAssemblies();
+                    var depNames = deps
+                        .Where(y => !brokenDependencies.Contains(y.Name.ToLower()) && known.Contains(y.Name.ToLower()))
+                        .Select(x => $"\":{x.Name.ToLower()}.dll\"");
+                    var name = Path.GetFileName(d);
+
+                    var refInfo = new RefInfo();
+                    refInfo.Name = name.ToLower();
+                    refInfo.Version = metadata.GetName().Version.ToString();
+                    refInfo.Deps.AddRange(depNames);
+                    result.Add(refInfo);
+                }
+                catch (Exception)
+                {
+                }
+            }
+
+            return result;
+        }
+
     }
 }

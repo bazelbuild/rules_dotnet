@@ -20,9 +20,9 @@ and silently are skupped
 def _net_empty_toolchain_impl(ctx):
     return [platform_common.ToolchainInfo(
         name = ctx.label.name,
-        default_dotnetimpl = ctx.attr.dotnetimpl,
-        default_dotnetos = ctx.attr.dotnetos,
-        default_dotnetarch = ctx.attr.dotnetarch,
+        dotnetimpl = ctx.attr.dotnetimpl,
+        dotnetos = ctx.attr.dotnetos,
+        dotnetarch = ctx.attr.dotnetarch,
         get_dotnet_runner = None,
         get_dotnet_mcs = None,
         get_dotnet_resgen = None,

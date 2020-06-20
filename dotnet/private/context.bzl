@@ -5,6 +5,8 @@ load(
 )
 
 load("@io_bazel_rules_dotnet//dotnet/private:runtime_generated.bzl","RUNTIME_DEPS_NATIVE","RUNTIME_DEPS")
+load("@io_bazel_rules_dotnet//dotnet/platform:list.bzl","DOTNET_CORE_FRAMEWORKS")
+load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
 
 
 DotnetContext = provider()
@@ -45,7 +47,7 @@ def dotnet_context(ctx, attr = None):
     toolchain = ctx.toolchains[context_data._toolchain_type]
 
     ext = ""
-    if toolchain.default_dotnetos == "windows":
+    if toolchain.dotnetos == "windows":
         ext = ".exe"
 
     # Handle empty toolchain for .NET on linux and osx
@@ -89,18 +91,6 @@ def dotnet_context(ctx, attr = None):
         _ctx = ctx,
         native_deps = context_data._native_deps,
     )
-
-def _os_name(ctx):
-    cvi = platform_common.ConstraintValueInfo
-    osx = cvi(key="@bazel_tools//src/conditions:darwin")
-
-    if ctx.target_platform_has_constraint(osx):
-        return "osx"
-
-    if ctx.target_platform_has_constraint("@bazel_tools//src/conditions:windows"):
-        return "windows"
-
-    return "linux"
 
 def _dotnet_context_data(ctx):
     return struct(
@@ -161,6 +151,7 @@ dotnet_context_data = rule(
         "runner": attr.label(executable = True, cfg = "host",  default = "@dotnet_sdk//:runner"),
         "csc": attr.label(executable = True, cfg = "host",  default = "@dotnet_sdk//:csc"),
     },
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
 )
 
 core_context_data = rule(
@@ -206,6 +197,7 @@ core_context_data = rule(
         "runner": attr.label(executable = True, cfg = "host", default = "@core_sdk//:runner"),
         "csc": attr.label(executable = True, cfg = "host",  default = "@core_sdk//:csc"),
     },
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
 )
 
 net_context_data = rule(
@@ -251,4 +243,5 @@ net_context_data = rule(
         "runner": attr.label(default = None),
         "csc": attr.label(executable = True, cfg = "host",  default = "@net_sdk//:csc"),
     },
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
 )

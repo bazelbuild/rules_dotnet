@@ -30,8 +30,6 @@ namespace nuget2bazel.rules
             var runtimeCoreGenerator = new RuntimeCoreGenerator(configDir, path);
             await runtimeCoreGenerator.Do();
 
-            return;
-
             var netStdlibGenerator = new StdlibNetGenerator(configDir, path);
             await netStdlibGenerator.Do();
 

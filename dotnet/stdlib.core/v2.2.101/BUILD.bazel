@@ -1,7 +1,9 @@
 load("generated.bzl", "define_stdlib")
+load("generated2.bzl", "define_runtime")
 
 package(default_visibility = ["//visibility:public"])
 
 framework = "v2.2.101"
 
 define_stdlib("@io_bazel_rules_dotnet//:core_context_data_{}".format(framework))
+define_runtime("@io_bazel_rules_dotnet//:core_context_data_{}".format(framework))
