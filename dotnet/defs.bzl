@@ -50,6 +50,7 @@ load(
 load(
     "@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl",
     _core_stdlib = "core_stdlib",
+    _core_stdlib_internal = "core_stdlib_internal",
     _dotnet_stdlib = "dotnet_stdlib",
     _net_stdlib = "net_stdlib",
 )
@@ -128,6 +129,7 @@ core_resource = _core_resource
 net_resource = _net_resource
 net_resource_multi = _net_resource_multi
 core_stdlib = _core_stdlib
+core_stdlib_internal = _core_stdlib_internal
 dotnet_stdlib = _dotnet_stdlib
 net_stdlib = _net_stdlib
 core_xunit_test = _core_xunit_test

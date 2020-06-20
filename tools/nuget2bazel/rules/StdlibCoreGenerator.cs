@@ -31,14 +31,13 @@ namespace nuget2bazel.rules
         private async Task GenerateBazelFile(string outpath, List<RefInfo> libs)
         {
             await using var f = new StreamWriter(outpath);
-            await f.WriteLineAsync("load(\"@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl\", \"core_stdlib\")");
+            await f.WriteLineAsync("load(\"@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl\", \"core_stdlib_internal\")");
             await f.WriteLineAsync("load(\"@io_bazel_rules_dotnet//dotnet/private:rules/libraryset.bzl\", \"core_libraryset\")");
             await f.WriteLineAsync();
             await f.WriteLineAsync("def define_stdlib(context_data):");
 
             await f.WriteLineAsync("    core_libraryset(");
             await f.WriteLineAsync("        name = \"libraryset\",");
-            await f.WriteLineAsync("        dotnet_context_data = context_data,");
             await f.WriteLineAsync("        deps = [");
             foreach (var d in libs)
             {
@@ -49,10 +48,9 @@ namespace nuget2bazel.rules
 
             foreach (var d in libs)
             {
-                await f.WriteLineAsync($"    core_stdlib(");
+                await f.WriteLineAsync($"    core_stdlib_internal(");
                 await f.WriteLineAsync($"        name = \"{d.Name}\",");
                 await f.WriteLineAsync($"        version = \"{d.Version}\",");
-                await f.WriteLineAsync($"        dotnet_context_data = context_data,");
                 if (d.Ref != null)
                     await f.WriteLineAsync($"        ref = \"{d.Ref}\",");
                 if (d.StdlibPath != null)

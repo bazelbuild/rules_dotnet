@@ -1,11 +1,12 @@
-load("@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl", "core_stdlib")
+load("@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl", "core_stdlib_internal")
 load("@io_bazel_rules_dotnet//dotnet/private:rules/libraryset.bzl", "core_libraryset")
 
 def define_runtime(context_data):
-    core_stdlib(
+    core_stdlib_internal(
         name = "microsoft.win32.registry.dll",
         version = "4.1.1.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/Microsoft.Win32.Registry.dll",
+        stdlib_path = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/Microsoft.Win32.Registry.dll",
         deps = [
             ":system.runtime.dll",
             ":system.resources.resourcemanager.dll",
@@ -18,10 +19,11 @@ def define_runtime(context_data):
             ":system.memory.dll",
         ]
     )
-    core_stdlib(
+    core_stdlib_internal(
         name = "sos.netcore.dll",
         version = "1.0.0.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/SOS.NETCore.dll",
+        stdlib_path = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/SOS.NETCore.dll",
         deps = [
             ":system.runtime.dll",
             ":system.runtime.interopservices.dll",
@@ -34,10 +36,11 @@ def define_runtime(context_data):
             ":system.io.filesystem.dll",
         ]
     )
-    core_stdlib(
+    core_stdlib_internal(
         name = "system.io.filesystem.accesscontrol.dll",
         version = "4.0.3.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.IO.FileSystem.AccessControl.dll",
+        stdlib_path = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.IO.FileSystem.AccessControl.dll",
         deps = [
             ":system.runtime.dll",
             ":system.resources.resourcemanager.dll",
@@ -48,27 +51,30 @@ def define_runtime(context_data):
             ":system.collections.nongeneric.dll",
         ]
     )
-    core_stdlib(
+    core_stdlib_internal(
         name = "system.io.pipes.accesscontrol.dll",
         version = "4.0.3.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.IO.Pipes.AccessControl.dll",
+        stdlib_path = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.IO.Pipes.AccessControl.dll",
         deps = [
             ":system.runtime.dll",
             ":system.resources.resourcemanager.dll",
             ":system.io.pipes.dll",
         ]
     )
-    core_stdlib(
+    core_stdlib_internal(
         name = "system.private.corelib.dll",
         version = "4.0.0.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.Private.CoreLib.dll",
+        stdlib_path = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.Private.CoreLib.dll",
         deps = [
         ]
     )
-    core_stdlib(
+    core_stdlib_internal(
         name = "system.private.datacontractserialization.dll",
         version = "4.1.4.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.Private.DataContractSerialization.dll",
+        stdlib_path = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.Private.DataContractSerialization.dll",
         deps = [
             ":system.runtime.dll",
             ":system.resources.resourcemanager.dll",
@@ -92,18 +98,20 @@ def define_runtime(context_data):
             ":system.collections.specialized.dll",
         ]
     )
-    core_stdlib(
+    core_stdlib_internal(
         name = "system.private.uri.dll",
         version = "4.0.5.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.Private.Uri.dll",
+        stdlib_path = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.Private.Uri.dll",
         deps = [
             ":system.private.corelib.dll",
         ]
     )
-    core_stdlib(
+    core_stdlib_internal(
         name = "system.private.xml.dll",
         version = "4.0.1.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.Private.Xml.dll",
+        stdlib_path = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.Private.Xml.dll",
         deps = [
             ":system.runtime.dll",
             ":system.resources.resourcemanager.dll",
@@ -135,10 +143,11 @@ def define_runtime(context_data):
             ":system.io.filesystem.dll",
         ]
     )
-    core_stdlib(
+    core_stdlib_internal(
         name = "system.private.xml.linq.dll",
         version = "4.0.1.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.Private.Xml.Linq.dll",
+        stdlib_path = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.Private.Xml.Linq.dll",
         deps = [
             ":system.runtime.dll",
             ":system.resources.resourcemanager.dll",
@@ -152,10 +161,11 @@ def define_runtime(context_data):
             ":system.linq.dll",
         ]
     )
-    core_stdlib(
+    core_stdlib_internal(
         name = "system.security.accesscontrol.dll",
         version = "4.1.1.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.Security.AccessControl.dll",
+        stdlib_path = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.Security.AccessControl.dll",
         deps = [
             ":system.runtime.dll",
             ":system.resources.resourcemanager.dll",
@@ -169,10 +179,11 @@ def define_runtime(context_data):
             ":microsoft.win32.primitives.dll",
         ]
     )
-    core_stdlib(
+    core_stdlib_internal(
         name = "system.security.cryptography.cng.dll",
         version = "4.3.1.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.Security.Cryptography.Cng.dll",
+        stdlib_path = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.Security.Cryptography.Cng.dll",
         deps = [
             ":system.runtime.dll",
             ":system.resources.resourcemanager.dll",
@@ -186,10 +197,11 @@ def define_runtime(context_data):
             ":system.memory.dll",
         ]
     )
-    core_stdlib(
+    core_stdlib_internal(
         name = "system.security.cryptography.openssl.dll",
         version = "4.1.1.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.Security.Cryptography.OpenSsl.dll",
+        stdlib_path = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.Security.Cryptography.OpenSsl.dll",
         deps = [
             ":system.runtime.dll",
             ":system.resources.resourcemanager.dll",
@@ -199,10 +211,11 @@ def define_runtime(context_data):
             ":system.security.cryptography.primitives.dll",
         ]
     )
-    core_stdlib(
+    core_stdlib_internal(
         name = "system.security.principal.windows.dll",
         version = "4.1.1.1",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.Security.Principal.Windows.dll",
+        stdlib_path = "@core_sdk_v2.1.503//:core/shared/Microsoft.NETCore.App/2.1.7/System.Security.Principal.Windows.dll",
         deps = [
             ":system.runtime.dll",
             ":system.resources.resourcemanager.dll",
@@ -219,7 +232,6 @@ def define_runtime(context_data):
 
     core_libraryset(
         name = "runtime",
-        dotnet_context_data = context_data,
         deps = select({
             "@bazel_tools//src/conditions:windows": [
                 ":microsoft.csharp.dll",

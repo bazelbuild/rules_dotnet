@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl", "core_stdlib")
+load("@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl", "core_stdlib_internal")
 load("@io_bazel_rules_dotnet//dotnet/private:rules/libraryset.bzl", "core_libraryset")
 
 def define_runtime(context_data):
@@ -6,10 +6,11 @@ def define_runtime(context_data):
     native.alias(name="system.security.principal.windows.dll", actual=":p1_system.security.principal.windows.dll")
     native.alias(name="microsoft.win32.registry.dll", actual=":p1_microsoft.win32.registry.dll")
     native.alias(name="system.security.cryptography.cng.dll", actual=":p1_system.security.cryptography.cng.dll")
-    core_stdlib(
+    core_stdlib_internal(
         name = "system.io.filesystem.accesscontrol.dll",
         version = "4.0.4.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.IO.FileSystem.AccessControl.dll",
+        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.IO.FileSystem.AccessControl.dll",
         deps = [
             ":system.runtime.dll",
             ":system.runtime.extensions.dll",
@@ -20,26 +21,29 @@ def define_runtime(context_data):
             ":system.collections.nongeneric.dll",
         ]
     )
-    core_stdlib(
+    core_stdlib_internal(
         name = "system.io.pipes.accesscontrol.dll",
         version = "4.0.4.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.IO.Pipes.AccessControl.dll",
+        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.IO.Pipes.AccessControl.dll",
         deps = [
             ":system.runtime.dll",
             ":system.io.pipes.dll",
         ]
     )
-    core_stdlib(
+    core_stdlib_internal(
         name = "system.private.corelib.dll",
         version = "4.0.0.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Private.CoreLib.dll",
+        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Private.CoreLib.dll",
         deps = [
         ]
     )
-    core_stdlib(
+    core_stdlib_internal(
         name = "system.private.datacontractserialization.dll",
         version = "4.1.4.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Private.DataContractSerialization.dll",
+        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Private.DataContractSerialization.dll",
         deps = [
             ":system.runtime.dll",
             ":system.runtime.extensions.dll",
@@ -63,18 +67,20 @@ def define_runtime(context_data):
             ":system.collections.specialized.dll",
         ]
     )
-    core_stdlib(
+    core_stdlib_internal(
         name = "system.private.uri.dll",
         version = "4.0.5.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Private.Uri.dll",
+        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Private.Uri.dll",
         deps = [
             ":system.private.corelib.dll",
         ]
     )
-    core_stdlib(
+    core_stdlib_internal(
         name = "system.private.xml.dll",
         version = "4.0.1.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Private.Xml.dll",
+        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Private.Xml.dll",
         deps = [
             ":system.runtime.dll",
             ":system.runtime.interopservices.dll",
@@ -106,10 +112,11 @@ def define_runtime(context_data):
             ":system.io.filesystem.dll",
         ]
     )
-    core_stdlib(
+    core_stdlib_internal(
         name = "system.private.xml.linq.dll",
         version = "4.0.1.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Private.Xml.Linq.dll",
+        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Private.Xml.Linq.dll",
         deps = [
             ":system.runtime.dll",
             ":system.resources.resourcemanager.dll",
@@ -126,20 +133,22 @@ def define_runtime(context_data):
             ":system.memory.dll",
         ]
     )
-    core_stdlib(
+    core_stdlib_internal(
         name = "system.runtime.windowsruntime.dll",
         version = "4.0.14.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Runtime.WindowsRuntime.dll",
+        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Runtime.WindowsRuntime.dll",
         deps = [
             ":system.private.corelib.dll",
             ":system.objectmodel.dll",
             ":system.runtime.extensions.dll",
         ]
     )
-    core_stdlib(
+    core_stdlib_internal(
         name = "system.runtime.windowsruntime.ui.xaml.dll",
         version = "4.0.4.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Runtime.WindowsRuntime.UI.Xaml.dll",
+        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Runtime.WindowsRuntime.UI.Xaml.dll",
         deps = [
             ":system.runtime.dll",
             ":system.runtime.windowsruntime.dll",
@@ -147,10 +156,11 @@ def define_runtime(context_data):
             ":system.runtime.extensions.dll",
         ]
     )
-    core_stdlib(
+    core_stdlib_internal(
         name = "system.security.cryptography.openssl.dll",
         version = "4.1.2.0",
-        dotnet_context_data = context_data,
+        ref = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Security.Cryptography.OpenSsl.dll",
+        stdlib_path = "@core_sdk_v3.0.100//:core/shared/Microsoft.NETCore.App/3.0.0/System.Security.Cryptography.OpenSsl.dll",
         deps = [
             ":system.runtime.dll",
             ":system.runtime.interopservices.dll",
@@ -163,7 +173,6 @@ def define_runtime(context_data):
 
     core_libraryset(
         name = "runtime",
-        dotnet_context_data = context_data,
         deps = select({
             "@bazel_tools//src/conditions:windows": [
                 ":microsoft.csharp.dll",

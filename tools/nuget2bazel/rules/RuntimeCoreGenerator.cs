@@ -39,7 +39,7 @@ namespace nuget2bazel.rules
             var sdkDirLinux = await ZipDownloader.DownloadIfNedeed(_configDir, sdk.LinuxUrl);
             var sdkDirOsx = await ZipDownloader.DownloadIfNedeed(_configDir, sdk.DarwinUrl);
 
-            await f.WriteLineAsync("load(\"@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl\", \"core_stdlib\")");
+            await f.WriteLineAsync("load(\"@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl\", \"core_stdlib_internal\")");
             await f.WriteLineAsync("load(\"@io_bazel_rules_dotnet//dotnet/private:rules/libraryset.bzl\", \"core_libraryset\")");
             await f.WriteLineAsync();
             await f.WriteLineAsync("def define_runtime(context_data):");
@@ -59,7 +59,6 @@ namespace nuget2bazel.rules
             await f.WriteLineAsync();
             await f.WriteLineAsync($"    core_libraryset(");
             await f.WriteLineAsync($"        name = \"runtime\",");
-            await f.WriteLineAsync($"        dotnet_context_data = context_data,");
             await f.WriteLineAsync($"        deps = select({{");
             await f.WriteLineAsync($"            \"@bazel_tools//src/conditions:windows\": [");
             foreach (var i in infosWindows.Item1)
@@ -94,17 +93,16 @@ namespace nuget2bazel.rules
         private async Task<Tuple<List<RefInfo>, List<string>>> ProcessDirectory(StreamWriter f, string varname, string sdkDir, Sdk sdk, bool defaultSdk)
         {
             var pack = "Microsoft.NETCore.App";
-            var infos = GetSdkInfos(sdkDir, pack, sdk.InternalVersionFolder);
+            var infos = GetSdkInfos(sdkDir, pack, sdk);
             var alreadyDefined = (await sdk.GetRefInfos(_configDir)).Select(x => x.Name);
             var infosMissing = infos.Where(x => !alreadyDefined.Contains(x.Name)).ToList();
 
             if (varname == "windows_runtime_deps")
                 foreach (var d in infosMissing)
                 {
-                    await f.WriteLineAsync($"    core_stdlib(");
+                    await f.WriteLineAsync($"    core_stdlib_internal(");
                     await f.WriteLineAsync($"        name = \"{d.Name}\",");
                     await f.WriteLineAsync($"        version = \"{d.Version}\",");
-                    await f.WriteLineAsync($"        dotnet_context_data = context_data,");
                     if (d.Ref != null)
                         await f.WriteLineAsync($"        ref = \"{d.Ref}\",");
                     if (d.StdlibPath != null)
@@ -127,13 +125,13 @@ namespace nuget2bazel.rules
             return new Tuple<List<RefInfo>, List<string>>(infos, nativePaths);
         }
 
-        public static List<RefInfo> GetSdkInfos(string sdk, string package, string version)
+        public static List<RefInfo> GetSdkInfos(string sdkd, string package, Sdk sdk)
         {
             var brokenDependencies = new string[] { };
 
             var result = new List<RefInfo>();
 
-            var sdkDir = Path.Combine(sdk, "shared", package, version);
+            var sdkDir = Path.Combine(sdkd, "shared", package, sdk.InternalVersionFolder);
             var dlls = Directory.GetFiles(sdkDir, "*.dll");
 
             var resolver = new PathAssemblyResolver(dlls);
@@ -153,6 +151,10 @@ namespace nuget2bazel.rules
                     var refInfo = new RefInfo();
                     refInfo.Name = name.ToLower();
                     refInfo.Version = metadata.GetName().Version.ToString();
+                    refInfo.StdlibPath =
+                        $"@core_sdk_{sdk.Version}//:core/shared/Microsoft.NETCore.App/{sdk.InternalVersionFolder}/{name}";
+                    refInfo.Ref =
+                        $"@core_sdk_{sdk.Version}//:core/shared/Microsoft.NETCore.App/{sdk.InternalVersionFolder}/{name}";
                     refInfo.Deps.AddRange(depNames);
                     result.Add(refInfo);
                 }

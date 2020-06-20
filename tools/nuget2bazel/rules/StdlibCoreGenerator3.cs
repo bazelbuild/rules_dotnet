@@ -45,7 +45,7 @@ namespace nuget2bazel.rules
         private async Task GenerateBazelFile(string outpath, List<RefInfo> packRefs)
         {
             await using var f = new StreamWriter(outpath);
-            await f.WriteLineAsync("load(\"@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl\", \"core_stdlib\")");
+            await f.WriteLineAsync("load(\"@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl\", \"core_stdlib_internal\")");
             await f.WriteLineAsync("load(\"@io_bazel_rules_dotnet//dotnet/private:rules/libraryset.bzl\", \"core_libraryset\")");
             await f.WriteLineAsync();
             await f.WriteLineAsync("def define_stdlib(context_data):");
@@ -60,7 +60,6 @@ namespace nuget2bazel.rules
                 else
                     await f.WriteLineAsync($"        name = \"{p.Replace(".Ref", "")}\",");
 
-                await f.WriteLineAsync("        dotnet_context_data = context_data,");
                 await f.WriteLineAsync("        deps = [");
                 foreach (var d in packRefs.Where(x => x.Pack == p))
                 {
@@ -71,10 +70,9 @@ namespace nuget2bazel.rules
 
                 foreach (var d in packRefs.Where(x => x.Pack == p))
                 {
-                    await f.WriteLineAsync($"    core_stdlib(");
+                    await f.WriteLineAsync($"    core_stdlib_internal(");
                     await f.WriteLineAsync($"        name = \"{pfx}{d.Name}\",");
                     await f.WriteLineAsync($"        version = \"{d.Version}\",");
-                    await f.WriteLineAsync($"        dotnet_context_data = context_data,");
                     if (d.Ref != null)
                         await f.WriteLineAsync($"        ref = \"{d.Ref}\",");
                     if (d.StdlibPath != null)

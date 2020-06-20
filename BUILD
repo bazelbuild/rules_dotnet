@@ -45,6 +45,7 @@ exports_files(["AUTHORS"])
         framework = framework,
         host = "@core_sdk_{}//:host".format(framework),
         native_deps = "@core_sdk_{}//:native_deps".format(framework),
+        runtime = "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:runtime".format(framework),
         lib = "@core_sdk_{}//:lib".format(framework),
         libVersion = DOTNET_CORE_FRAMEWORKS[framework][1],
         mcs_bin = "@core_sdk_{}//:mcs_bin".format(framework),

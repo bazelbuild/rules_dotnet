@@ -80,12 +80,14 @@ def _stdlib_internal_impl(ctx):
 
     library = DotnetLibrary(
         name = name,
+        label = ctx.label,
         version = parse_version(ctx.attr.version),
         deps = ctx.attr.deps,
         ref = ctx.attr.ref.files.to_list()[0] if ctx.attr.ref != None else result,
         transitive = transitive,
         runfiles = runfiles,
         result = result,
+        pdb = None,
     )
 
     return [

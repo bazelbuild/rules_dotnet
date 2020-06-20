@@ -135,7 +135,8 @@ namespace nuget2bazel.rules
                     refInfo.StdlibPath = stdlibname;
                     refInfo.Pack = pack;
                     refInfo.Deps.AddRange(depNames);
-                    result.Add(refInfo);
+                    if (stdlibname != null)
+                        result.Add(refInfo);
                 }
                 catch (Exception)
                 {

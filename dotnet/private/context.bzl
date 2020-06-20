@@ -106,6 +106,7 @@ def _dotnet_context_data(ctx):
         _framework = ctx.attr.framework,
         _runner = ctx.attr.runner,
         _csc = ctx.attr.csc,
+        _runtime = ctx.attr.runtime,
     )
 
 dotnet_context_data = rule(
@@ -139,6 +140,7 @@ dotnet_context_data = rule(
             allow_files = True,
             default = "@dotnet_sdk//:native_deps",
         ),
+        "runtime": attr.label(providers = [DotnetLibrary]),
         "libVersion": attr.string(
             default = "4.5",
         ),
@@ -185,6 +187,7 @@ core_context_data = rule(
             allow_files = True,
             default = "@core_sdk//:native_deps",
         ),
+        "runtime": attr.label(providers = [DotnetLibrary], default = "@io_bazel_rules_dotnet//dotnet/stdlib.core:runtime"),
         "libVersion": attr.string(
             default = "",
         ),
@@ -231,6 +234,7 @@ net_context_data = rule(
             allow_files = True,
             default = "@net_sdk//:native_deps",
         ),
+        "runtime": attr.label(providers = [DotnetLibrary]),
         "libVersion": attr.string(
             mandatory = True,
         ),
