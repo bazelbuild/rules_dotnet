@@ -767,6 +767,7 @@ def define_runtime(context_data):
                 "@core_sdk_v2.2.402//:core/shared/Microsoft.NETCore.App/2.2.7/sos.dll",
                 "@core_sdk_v2.2.402//:core/shared/Microsoft.NETCore.App/2.2.7/sos_amd64_amd64_4.6.28008.02.dll",
                 "@core_sdk_v2.2.402//:core/shared/Microsoft.NETCore.App/2.2.7/ucrtbase.dll",
+                "@core_sdk_v2.2.402//:core/host/fxr/2.2.7/hostfxr.dll",
             ],
             "@bazel_tools//src/conditions:darwin": [
                 "@core_sdk_v2.2.402//:core/shared/Microsoft.NETCore.App/2.2.7/.version",
@@ -792,6 +793,7 @@ def define_runtime(context_data):
                 "@core_sdk_v2.2.402//:core/shared/Microsoft.NETCore.App/2.2.7/System.Security.Cryptography.Native.Apple.dylib",
                 "@core_sdk_v2.2.402//:core/shared/Microsoft.NETCore.App/2.2.7/System.Security.Cryptography.Native.OpenSsl.a",
                 "@core_sdk_v2.2.402//:core/shared/Microsoft.NETCore.App/2.2.7/System.Security.Cryptography.Native.OpenSsl.dylib",
+                "@core_sdk_v2.2.402//:core/host/fxr/2.2.7/libhostfxr.dylib",
             ],
             "//conditions:default": [
                 "@core_sdk_v2.2.402//:core/shared/Microsoft.NETCore.App/2.2.7/.version",
@@ -818,6 +820,7 @@ def define_runtime(context_data):
                 "@core_sdk_v2.2.402//:core/shared/Microsoft.NETCore.App/2.2.7/System.Net.Security.Native.so",
                 "@core_sdk_v2.2.402//:core/shared/Microsoft.NETCore.App/2.2.7/System.Security.Cryptography.Native.OpenSsl.a",
                 "@core_sdk_v2.2.402//:core/shared/Microsoft.NETCore.App/2.2.7/System.Security.Cryptography.Native.OpenSsl.so",
+                "@core_sdk_v2.2.402//:core/host/fxr/2.2.7/libhostfxr.so",
             ],
         }),
     )

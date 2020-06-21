@@ -16,6 +16,7 @@ load(
     "CopyDataWithDirs",
 )
 load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "parse_version")
+load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
 
 def _unit_test(ctx):
     dotnet = dotnet_context(ctx)
@@ -65,17 +66,18 @@ def _unit_test(ctx):
     direct_runfiles = [launcher]
     transitive_runfiles = []
 
+    # Calculate final runtiles including runtime-required files
+    run_transitive = collect_transitive_info(ctx.attr.deps + ([ctx.attr.dotnet_context_data._runtime] if ctx.attr.dotnet_context_data._runtime != None else []))
     if dotnet.runner != None:
         direct_runfiles += dotnet.runner.files.to_list()
 
-    transitive_runfiles.append(ctx.attr.native_deps.files)
     if ctx.attr._xslt:
         transitive_runfiles.append(ctx.attr._xslt.files)
 
-    transitive_runfiles.append(executable.runfiles)
-    transitive_runfiles += [t.runfiles for t in executable.transitive]
+    transitive_runfiles += [t.runfiles for t in run_transitive]
     transitive_runfiles.append(ctx.attr.testlauncher[DotnetLibrary].runfiles)
     transitive_runfiles += [t.runfiles for t in ctx.attr.testlauncher[DotnetLibrary].transitive]
+    transitive_runfiles.append(executable.runfiles)
 
     runfiles = ctx.runfiles(files = direct_runfiles, transitive_files = depset(transitive = transitive_runfiles))
     runfiles = CopyRunfiles(dotnet, runfiles, ctx.attr._copy, ctx.attr._symlink, executable, subdir)

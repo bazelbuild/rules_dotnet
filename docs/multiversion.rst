@@ -29,7 +29,7 @@ Two techniques are often used to build multiple versions:
 
   .. code:: python
 
-    load("//dotnet:defs.bzl", "net_register_sdk", "DOTNET_NET_FRAMEWORKS")
+    load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "net_register_sdk", "DOTNET_NET_FRAMEWORKS")
     ...
     [net_register_sdk(
         framework

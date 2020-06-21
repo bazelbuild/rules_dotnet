@@ -120,9 +120,14 @@ namespace nuget2bazel.rules
 
             var coreSdkPrefix = defaultSdk ? "@core_sdk" : $"@core_sdk_{sdk.Version}";
             var nativePaths = native.Select(x =>
-                $"{coreSdkPrefix}//:core/shared/Microsoft.NETCore.App/{sdk.InternalVersionFolder}/{x}").ToList();
+                $"{coreSdkPrefix}//:core/shared/Microsoft.NETCore.App/{sdk.InternalVersionFolder}/{x}");
 
-            return new Tuple<List<RefInfo>, List<string>>(infos, nativePaths);
+            var hostfxr = Directory.GetFiles(Path.Combine(sdkDir, "host", "fxr", sdk.InternalVersionFolder))
+                .Select(y => Path.GetFileName(y));
+            var hostfxrPaths = hostfxr.Select(x =>
+                $"{coreSdkPrefix}//:core/host/fxr/{sdk.InternalVersionFolder}/{x}");
+
+            return new Tuple<List<RefInfo>, List<string>>(infos, nativePaths.Union(hostfxrPaths).ToList());
         }
 
         public static List<RefInfo> GetSdkInfos(string sdkd, string package, Sdk sdk)
