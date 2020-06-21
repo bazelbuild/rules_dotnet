@@ -97,6 +97,14 @@ namespace nuget2bazel.rules
             var alreadyDefined = (await sdk.GetRefInfos(_configDir)).Select(x => x.Name);
             var infosMissing = infos.Where(x => !alreadyDefined.Contains(x.Name)).ToList();
 
+            var coreSdkPrefix = defaultSdk ? "@core_sdk" : $"@core_sdk_{sdk.Version}";
+            if (defaultSdk)
+                foreach (var d in infosMissing)
+                {
+                    d.Ref = d.Ref.Replace($"@core_sdk_{sdk.Version}", "@core_sdk");
+                    d.StdlibPath = d.StdlibPath.Replace($"@core_sdk_{sdk.Version}", "@core_sdk");
+                }
+
             if (varname == "windows_runtime_deps")
                 foreach (var d in infosMissing)
                 {
@@ -118,7 +126,6 @@ namespace nuget2bazel.rules
                 .Select(y => Path.GetFileName(y))
                 .Where(z => !infos.Select(x => x.Name).Contains(z.ToLower()));
 
-            var coreSdkPrefix = defaultSdk ? "@core_sdk" : $"@core_sdk_{sdk.Version}";
             var nativePaths = native.Select(x =>
                 $"{coreSdkPrefix}//:core/shared/Microsoft.NETCore.App/{sdk.InternalVersionFolder}/{x}");
 
