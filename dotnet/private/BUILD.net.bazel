@@ -36,11 +36,6 @@ filegroup(
 )
 
 filegroup(
-    name = "native_deps",
-    srcs = [],
-)
-
-filegroup(
     name = "csc",
     srcs = select({
         "@bazel_tools//src/conditions:windows": glob(["net/**/csc.exe"]),

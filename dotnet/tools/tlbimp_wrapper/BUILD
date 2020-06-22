@@ -10,7 +10,6 @@ load(
         "Program.cs",
     ],
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
-    native_deps = "@net_sdk_{}//:native_deps".format(framework),
     visibility = ["//visibility:public"],
     deps = [
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/{}:system.dll".format(framework),

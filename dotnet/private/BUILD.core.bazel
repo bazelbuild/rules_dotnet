@@ -29,13 +29,6 @@ filegroup(
     ]),
 )
 
-filegroup(
-    name = "native_deps",
-    srcs = 
-        glob(["core/host/**/*"]) + glob(["core/shared/Microsoft.NETCore.App/**/*"], exclude = ["**/System.*", "**/Microsoft.*"]) + glob(["core/shared/Microsoft.NETCore.App/**/System.Private.*"]),
-    )
-
-
 exports_files(glob(["core/**/*.dll"]))
 
 filegroup(

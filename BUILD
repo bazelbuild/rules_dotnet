@@ -24,9 +24,9 @@ exports_files(["AUTHORS"])
 [
     net_context_data(
         name = "net_context_data_" + framework,
+        csc = "@net_sdk_{}//:csc".format(framework),
         framework = framework,
         host = "@net_sdk_{}//:mcs_bin".format(framework),
-        native_deps = "@net_sdk_{}//:native_deps".format(framework),
         lib = "@net_sdk_{}//:lib".format(framework),
         libVersion = DOTNET_NET_FRAMEWORKS[framework][3],
         mcs_bin = "@net_sdk_{}//:mcs_bin".format(framework),
@@ -34,7 +34,6 @@ exports_files(["AUTHORS"])
         shared = "@net_sdk_{}//:lib".format(framework),
         tools = "@net_sdk_{}//:tools".format(framework),
         visibility = ["//visibility:public"],
-        csc = "@net_sdk_{}//:csc".format(framework),
     )
     for framework in DOTNET_NET_FRAMEWORKS
 ]
@@ -42,19 +41,18 @@ exports_files(["AUTHORS"])
 [
     core_context_data(
         name = "core_context_data_" + framework,
+        csc = "@core_sdk_{}//:csc".format(framework),
         framework = framework,
         host = "@core_sdk_{}//:host".format(framework),
-        native_deps = "@core_sdk_{}//:native_deps".format(framework),
-        runtime = "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:runtime".format(framework),
         lib = "@core_sdk_{}//:lib".format(framework),
         libVersion = DOTNET_CORE_FRAMEWORKS[framework][1],
         mcs_bin = "@core_sdk_{}//:mcs_bin".format(framework),
         mono_bin = "@core_sdk_{}//:mono_bin".format(framework),
+        runner = "@core_sdk_{}//:runner".format(framework),
+        runtime = "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:runtime".format(framework),
         shared = "@core_sdk_{}//:shared".format(framework),
         tools = "@core_sdk_{}//:lib".format(framework),
         visibility = ["//visibility:public"],
-        runner = "@core_sdk_{}//:runner".format(framework),
-        csc = "@core_sdk_{}//:csc".format(framework),
     )
     for framework in DOTNET_CORE_FRAMEWORKS
 ]

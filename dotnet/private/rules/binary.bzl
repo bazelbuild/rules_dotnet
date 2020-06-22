@@ -61,7 +61,7 @@ def _binary_impl(ctx):
     if dotnet.runner != None:
         direct_runfiles += dotnet.runner.files.to_list()
 
-    #runfiles = ctx.runfiles(files = runner + ctx.attr.native_deps.files.to_list(), transitive_files = depset(transitive = [t.runfiles for t in executable.transitive]))
+    #runfiles = ctx.runfiles(files = runner + ctx.attr.native_dep.files.to_list(), transitive_files = depset(transitive = [t.runfiles for t in executable.transitive]))
     runfiles = ctx.runfiles(files = direct_runfiles, transitive_files = depset(transitive = [t.runfiles for t in run_transitive] + [executable.runfiles]))
     runfiles = CopyRunfiles(dotnet, runfiles, ctx.attr._copy, ctx.attr._symlink, executable, subdir)
 
@@ -87,7 +87,6 @@ dotnet_binary = rule(
         "data": attr.label_list(allow_files = True),
         "keyfile": attr.label(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
-        "native_deps": attr.label(default = Label("@dotnet_sdk//:native_deps")),
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_mono:launcher_mono.exe")),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
@@ -112,7 +111,6 @@ core_binary = rule(
         "data": attr.label_list(allow_files = True),
         "keyfile": attr.label(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
-        "native_deps": attr.label(default = Label("@core_sdk//:native_deps")),
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_core:launcher_core.exe")),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
@@ -137,7 +135,6 @@ net_binary = rule(
         "data": attr.label_list(allow_files = True),
         "keyfile": attr.label(allow_files = True),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
-        "native_deps": attr.label(default = Label("@net_sdk//:native_deps")),
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_net:launcher_net.exe")),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),

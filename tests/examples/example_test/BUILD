@@ -20,7 +20,6 @@ dotnet_nunit_test(
         "MyTest.cs",
     ],
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
-    native_deps = "@net_sdk_{}//:native_deps".format(framework),
     deps = [
         "//tests/examples/example_lib:MyClass-net_{}.dll".format(framework),
         "@nunitv2//:net472_net",
@@ -34,7 +33,6 @@ dotnet_nunit_test(
         "MyTest.cs",
     ],
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
-    native_deps = "@net_sdk_{}//:native_deps".format(framework),
     deps = [
         #"@io_bazel_rules_dotnet//dotnet/stdlib.net/{}:system.runtime.dll".format(framework),
         "//tests/examples/example_lib:MyClass-net_{}.dll".format(framework),

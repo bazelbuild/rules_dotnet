@@ -36,11 +36,6 @@ filegroup(
 )
 
 filegroup(
-    name = "native_deps",
-    srcs = glob(["host/**/*"]) + glob(["shared/**/*"]),
-    )
-
-filegroup(
     name = "runner",
     srcs = select({
         "@bazel_tools//src/conditions:windows": ["mono_bin/mono.exe"],

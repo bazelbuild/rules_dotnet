@@ -8,7 +8,6 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "core_
     ],
     dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
     langversion = "7.3",
-    native_deps = "@core_sdk_{}//:native_deps".format(framework),
     testlauncher = "@xunit.runner.console//:netcoreapp2.0_core_tool",
     deps = [
         "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:libraryset".format(framework),
@@ -25,7 +24,6 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "core_
         "MyTest.cs",
     ],
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
-    native_deps = "@net_sdk_{}//:native_deps".format(framework),
     testlauncher = "@xunit.runner.console//:{}_net_tool".format(framework),
     deps = [
         "@io_bazel_rules_dotnet//dotnet/stdlib.net/{}:system.runtime.dll".format(framework),

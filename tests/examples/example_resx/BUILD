@@ -23,7 +23,6 @@ load(
     size = "medium",
     srcs = glob(["*.cs"]),
     dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
-    native_deps = "@core_sdk_{}//:native_deps".format(framework),
     resources = [":{}_core.resx".format(framework)],
     testlauncher = "@xunit.runner.console//:netcoreapp2.0_core_tool",
     deps = [
@@ -46,7 +45,6 @@ load(
     size = "medium",
     srcs = glob(["*.cs"]),
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
-    native_deps = "@net_sdk_{}//:native_deps".format(framework),
     resources = [":{}_net.resx".format(framework)],
     testlauncher = "@xunit.runner.console//:{}_net_tool".format(framework),
     deps = [

@@ -26,7 +26,6 @@ dotnet_binary(
         "Program.cs",
     ],
     dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
-    native_deps = "@core_sdk_{}//:native_deps".format(framework),
     deps = [
         "//tests/examples/example_lib:{}_MyClass-core.dll".format(framework),
         "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:libraryset".format(framework),
@@ -40,7 +39,6 @@ dotnet_binary(
         "Program.cs",
     ],
     dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
-    native_deps = "@net_sdk_{}//:native_deps".format(framework),
     deps = [
         "//tests/examples/example_lib:MyClass-net_{}.dll".format(framework),
         "@newtonsoft.json//:{}_net".format(framework),
