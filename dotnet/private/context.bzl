@@ -150,27 +150,21 @@ core_context_data = rule(
     attrs = {
         "mcs_bin": attr.label(
             allow_files = True,
-            default = "@core_sdk//:mcs_bin",
         ),
         "mono_bin": attr.label(
             allow_files = True,
-            default = "@core_sdk//:mono_bin",
         ),
         "lib": attr.label(
             allow_files = True,
-            default = "@core_sdk//:lib",
         ),
         "tools": attr.label(
             allow_files = True,
-            default = "@core_sdk//:lib",
         ),
         "shared": attr.label(
             allow_files = True,
-            default = "@core_sdk//:shared",
         ),
         "host": attr.label(
             allow_files = True,
-            default = "@core_sdk//:host",
         ),
         "runtime": attr.label(providers = [DotnetLibrary], default = "@io_bazel_rules_dotnet//dotnet/stdlib.core:runtime"),
         "libVersion": attr.string(

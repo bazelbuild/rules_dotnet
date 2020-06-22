@@ -43,15 +43,9 @@ exports_files(["AUTHORS"])
         name = "core_context_data_" + framework,
         csc = "@core_sdk_{}//:csc".format(framework),
         framework = framework,
-        host = "@core_sdk_{}//:host".format(framework),
-        lib = "@core_sdk_{}//:lib".format(framework),
         libVersion = DOTNET_CORE_FRAMEWORKS[framework][1],
-        mcs_bin = "@core_sdk_{}//:mcs_bin".format(framework),
-        mono_bin = "@core_sdk_{}//:mono_bin".format(framework),
         runner = "@core_sdk_{}//:runner".format(framework),
         runtime = "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:runtime".format(framework),
-        shared = "@core_sdk_{}//:shared".format(framework),
-        tools = "@core_sdk_{}//:lib".format(framework),
         visibility = ["//visibility:public"],
     )
     for framework in DOTNET_CORE_FRAMEWORKS
