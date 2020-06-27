@@ -41,13 +41,10 @@ filegroup(
 )
 
 filegroup(
-    name = "csc",
-    srcs = glob(["core/**/csc.dll"]),
-    data = select({
-        "@bazel_tools//src/conditions:windows": glob(["core/**/hostpolicy.dll"]),
-        "//conditions:default": glob(["core/**/libhostpolicy.so"]),
-    }),
+    name = "csc_deps",
+    srcs = glob(["core/**/bincore/*.dll"], exclude=["core/**/bincore/csc.dll"]),
 )
+
 
 filegroup(
     name = "shared",
@@ -57,3 +54,4 @@ filegroup(
 )
 
 exports_files(glob(["core/shared/**/*"]))
+exports_files(glob(["core/**/bincore/csc.dll"]))

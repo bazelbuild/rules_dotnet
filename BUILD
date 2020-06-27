@@ -41,7 +41,7 @@ exports_files(["AUTHORS"])
 [
     core_context_data(
         name = "core_context_data_" + framework,
-        csc = "@core_sdk_{}//:csc".format(framework),
+        csc = "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:csc.dll".format(framework),
         framework = framework,
         libVersion = DOTNET_CORE_FRAMEWORKS[framework][1],
         runner = "@core_sdk_{}//:runner".format(framework),

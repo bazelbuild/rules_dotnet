@@ -177,7 +177,8 @@ core_context_data = rule(
             default = "@io_bazel_rules_dotnet//dotnet:toolchain_type_core",
         ),
         "runner": attr.label(executable = True, cfg = "host", default = "@core_sdk//:runner"),
-        "csc": attr.label(executable = True, cfg = "host", default = "@core_sdk//:csc"),
+        #"csc": attr.label(executable = True, cfg = "host", default = "@core_sdk//:csc"),
+        "csc": attr.label(executable = True, cfg = "host", default = "@io_bazel_rules_dotnet//dotnet/stdlib.core:csc.dll"),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
 )
