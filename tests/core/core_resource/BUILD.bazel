@@ -1,0 +1,30 @@
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_resource", "core_resource_multi", "core_xunit_test")
+
+core_resource(
+    name = "data1",
+    src = ":data1.txt",
+    identifier = "example_test.data1.txt",
+)
+
+core_resource_multi(
+    name = "data_multi",
+    srcs = glob(["*.txt"]),
+    fixedIdentifierBase = "example_test2",
+)
+
+core_xunit_test(
+    name = "core_resource.dll",
+    srcs = [
+        "main_test.cs",
+    ],
+    resources = [
+        ":data1",
+        ":data_multi",
+    ],
+    deps = [
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
+        "@xunit.assert//:core",
+        "@xunit.extensibility.core//:core",
+        "@xunit.extensibility.execution//:core",
+    ],
+)

@@ -5,7 +5,7 @@ load(
 load(
     "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
     "DotnetLibrary",
-    "DotnetResource",
+    "DotnetResourceList",
 )
 load(
     "@io_bazel_rules_dotnet//dotnet/private:rules/runfiles.bzl",
@@ -98,7 +98,7 @@ dotnet_nunit_test = rule(
     _unit_test,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
-        "resources": attr.label_list(providers = [DotnetResource]),
+        "resources": attr.label_list(providers = [DotnetResourceList]),
         "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),
@@ -127,7 +127,7 @@ net_nunit_test = rule(
     _unit_test,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
-        "resources": attr.label_list(providers = [DotnetResource]),
+        "resources": attr.label_list(providers = [DotnetResourceList]),
         "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),
@@ -156,7 +156,7 @@ net_nunit3_test = rule(
     _unit_test,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
-        "resources": attr.label_list(providers = [DotnetResource]),
+        "resources": attr.label_list(providers = [DotnetResourceList]),
         "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),
@@ -185,7 +185,7 @@ core_xunit_test = rule(
     _unit_test,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
-        "resources": attr.label_list(providers = [DotnetResource]),
+        "resources": attr.label_list(providers = [DotnetResourceList]),
         "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),
@@ -213,7 +213,7 @@ core_nunit3_test = rule(
     _unit_test,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
-        "resources": attr.label_list(providers = [DotnetResource]),
+        "resources": attr.label_list(providers = [DotnetResourceList]),
         "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),
@@ -248,7 +248,7 @@ net_xunit_test = rule(
     _unit_test,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
-        "resources": attr.label_list(providers = [DotnetResource]),
+        "resources": attr.label_list(providers = [DotnetResourceList]),
         "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),
@@ -277,7 +277,7 @@ dotnet_xunit_test = rule(
     _unit_test,
     attrs = {
         "deps": attr.label_list(providers = [DotnetLibrary]),
-        "resources": attr.label_list(providers = [DotnetResource]),
+        "resources": attr.label_list(providers = [DotnetResourceList]),
         "srcs": attr.label_list(allow_files = [".cs"]),
         "out": attr.string(),
         "defines": attr.string_list(),
