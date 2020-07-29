@@ -24,9 +24,9 @@ Sample usage:
 
   .. code:: bash
 
-    bazel run //tools/nuget2bazel -- add -p c:/rules_dotnet ninject 3.3.0
+    bazel run //tools/nuget2bazel:nuget2bazel.exe -- add -p c:/rules_dotnet ninject 3.3.0
 
-    bazel run //tools/nuget2bazel -- delete -p c:/rules_dotnet ninject 
+    bazel run //tools/nuget2bazel:nuget2bazel.exe -- delete -p c:/rules_dotnet ninject 
 
 By default the tool modifies WORKSPACE file in the provided directory with proper directives.
 
