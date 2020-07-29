@@ -56,3 +56,15 @@ genrule(
         ":hello_tool.exe",
     ],
 )
+
+core_binary(
+    name = "hello_tool_core-v2.1.200.exe",
+    srcs = [
+        "MyTool.cs",
+    ],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_v2.1.200",
+    deps = [
+        "//tests/examples/example_lib:MyClass-core-v2.1.200-netstandard.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core/v2.1.200:libraryset",
+    ],
+)

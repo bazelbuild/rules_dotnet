@@ -41,3 +41,27 @@ dotnet_library(
         "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.dll",
     ],
 ) for framework in DOTNET_NET_FRAMEWORKS]
+
+core_library(
+    name = "TransitiveClass-core-netstandard.dll",
+    srcs = [
+        "TransitiveClass.cs",
+    ],
+    target_framework = "netstandard2.0",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:NETStandard.Library",
+    ],
+)
+
+core_library(
+    name = "TransitiveClass-core-v2.1.200-netstandard.dll",
+    srcs = [
+        "TransitiveClass.cs",
+    ],
+    target_framework = "netstandard2.0",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core/v2.1.200:netstandard.dll",
+    ],
+)

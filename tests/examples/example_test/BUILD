@@ -61,3 +61,15 @@ core_nunit3_test(
         "@nunit//:netcoreapp3.1_core",
     ],
 )
+
+core_nunit3_test(
+    name = "core.example_netstandard.dll",
+    size = "small",
+    srcs = [
+        "MyTest.cs",
+    ],
+    deps = [
+        "//tests/examples/example_lib:MyClass-core-netstandard.dll",
+        "@nunit//:netcoreapp3.1_core",
+    ],
+)
