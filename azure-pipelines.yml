@@ -39,6 +39,7 @@ jobs:
 
     - script: |
         rm /usr/local/bin/bazel || true
+        brew list bazelisk && brew remove bazelisk
         brew list bazel && brew remove bazel
         brew list bazel || brew install bazel 
         brew install coreutils
