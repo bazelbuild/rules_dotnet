@@ -23,15 +23,14 @@ namespace nuget2bazel
         {
             var project = new ProjectBazelManipulator(prjConfig, mainFile, skipSha256, variable);
 
-            return DoWithProject(package, version, project, lowest);
+            return DoWithProject(prjConfig.NugetSource, package, version, project, lowest);
         }
-        public async Task DoWithProject(string package, string version, ProjectBazelManipulator project, bool lowest)
+        public async Task DoWithProject(string nugetSource, string package, string version, ProjectBazelManipulator project, bool lowest)
         {
-
             var logger = new Logger();
             var providers = new List<Lazy<INuGetResourceProvider>>();
             providers.AddRange(Repository.Provider.GetCoreV3());  // Add v3 API support
-            var packageSource = new PackageSource("https://api.nuget.org/v3/index.json");
+            var packageSource = new PackageSource(nugetSource);
             var sourceRepository = new SourceRepository(packageSource, providers);
             var packageMetadataResource = await sourceRepository.GetResourceAsync<PackageMetadataResource>();
             var verParsed = NuGetVersion.Parse(version);

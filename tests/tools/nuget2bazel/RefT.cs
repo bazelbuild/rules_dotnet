@@ -13,7 +13,7 @@ namespace nuget2bazel_test
             var project = new TestProject(_prjConfig);
             var addCmd = new AddCommand();
 
-            await addCmd.DoWithProject("System.Runtime.CompilerServices.Unsafe", "4.7.1", project, false);
+            await addCmd.DoWithProject("https://api.nuget.org/v3/index.json", "System.Runtime.CompilerServices.Unsafe", "4.7.1", project, false);
 
             Assert.Single(project.Entries);
             var entry = project.Entries.First();

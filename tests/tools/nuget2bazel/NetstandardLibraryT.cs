@@ -13,7 +13,7 @@ namespace nuget2bazel_test
             var project = new TestProject(_prjConfig);
             var addCmd = new AddCommand();
 
-            await addCmd.DoWithProject("NETStandard.Library", "2.0.3", project, false);
+            await addCmd.DoWithProject("https://api.nuget.org/v3/index.json", "NETStandard.Library", "2.0.3", project, false);
 
             Assert.Equal(2, project.Entries.Count);
             var entry = project.Entries.Last();

@@ -21,7 +21,7 @@ namespace nuget2bazel
             PackageIdentity identity, string sha256, IEnumerable<PackageDependencyGroup> deps,
             IEnumerable<FrameworkSpecificGroup> libs, IEnumerable<FrameworkSpecificGroup> tools,
             IEnumerable<FrameworkSpecificGroup> references, IEnumerable<FrameworkSpecificGroup> buildFiles,
-            string mainFile, string variable)
+            string mainFile, string variable, bool nugetSourceCustom)
         {
             var netFrameworkTFMs = new string[]
             {
@@ -36,6 +36,7 @@ namespace nuget2bazel
             PackageIdentity = identity;
             Sha256 = sha256;
             Variable = variable;
+            NugetSourceCustom = nugetSourceCustom;
             var coreFrameworks = coreFrameworkTFMs.Select(x => NuGetFramework.Parse(x));
             var netFrameworks = netFrameworkTFMs.Select(x => NuGetFramework.Parse(x));
             var monoFramework = NuGetFramework.Parse("net70");
@@ -215,6 +216,8 @@ namespace nuget2bazel
             sb.Append($"{i}    version = \"{PackageIdentity.Version}\",\n");
             if (!String.IsNullOrEmpty(Sha256))
                 sb.Append($"{i}    sha256 = \"{Sha256}\",\n");
+            if (NugetSourceCustom)
+                sb.Append($"{i}    source = source,\n");
             if (CoreLib != null && CoreLib.Any())
             {
                 sb.Append($"{i}    core_lib = {{\n");
@@ -365,6 +368,7 @@ namespace nuget2bazel
         public PackageIdentity PackageIdentity { get; set; }
         public string Sha256 { get; set; }
         public string Variable { get; set; }
+        public bool NugetSourceCustom { get; set; }
         public IDictionary<string, string> CoreLib { get; set; }
         public IDictionary<string, string> NetLib { get; set; }
         public string MonoLib { get; set; }

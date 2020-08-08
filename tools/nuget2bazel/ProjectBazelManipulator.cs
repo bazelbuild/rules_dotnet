@@ -26,6 +26,7 @@ namespace nuget2bazel
         private readonly string _mainFile;
         private readonly bool _skipSha256;
         private readonly string _variable;
+        private readonly bool _nugetSourceCustom;
 
         public string JsonConfigPath { get; set; }
         public string WorkspacePath { get; set; }
@@ -41,6 +42,7 @@ namespace nuget2bazel
             _mainFile = mainFile;
             _skipSha256 = skipSha256;
             _variable = variable;
+            _nugetSourceCustom = prjConfig.NugetSourceCustom;
             JsonConfigPath = Path.Combine(ProjectConfig.RootPath, ProjectConfig.Nuget2BazelConfigName);
             WorkspacePath = Path.Combine(ProjectConfig.RootPath, ProjectConfig.BazelFileName);
         }
@@ -176,7 +178,7 @@ namespace nuget2bazel
                 sha256 = GetSha(downloadResourceResult.PackageStream);
             }
             var entry = new WorkspaceEntry(json.dependencies, packageIdentity, sha256,
-                depsGroups, libItemGroups, toolItemGroups, refItemGroups, allBuildFileGroups, _mainFile, _variable);
+                depsGroups, libItemGroups, toolItemGroups, refItemGroups, allBuildFileGroups, _mainFile, _variable, _nugetSourceCustom);
 
             _entries.Add(packageIdentity, entry);
             await AddEntry(entry);

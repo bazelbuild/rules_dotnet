@@ -24,5 +24,14 @@ namespace nuget2bazel
             HelpText = "Should the ouput be indented")]
         public bool Indent { get; set; }
 
+        [Option('n', "nugetsource",
+            Default = "https://api.nuget.org/v3/index.json",
+            HelpText = "Source of the nuget package; https://api.nuget.org/v3/index.json if not specified")]
+        public string Source { get; set; }
+
+        [Option('u', "nugetsourcecustom",
+            Default = false,
+            HelpText = "Should nuget_package reference source variable")]
+        public bool NugetSourceCustom { get; set; }
     }
 }

@@ -196,8 +196,8 @@ def _nuget_package_impl(ctx):
 
     package = ctx.attr.package
     output_dir = ctx.path("")
-    url = ctx.attr.source + "/" + ctx.attr.package + "/" + ctx.attr.version
-    ctx.download_and_extract(url, output_dir, ctx.attr.sha256, type = "zip")
+    urls = [s + "/" + ctx.attr.package + "/" + ctx.attr.version for s in ctx.attr.source]
+    ctx.download_and_extract(urls, output_dir, ctx.attr.sha256, type = "zip")
 
     build_file_name = "BUILD" if not ctx.path("BUILD").exists else "BUILD.bazel"
 
@@ -205,7 +205,7 @@ def _nuget_package_impl(ctx):
 
 _nuget_package_attrs = {
     # Sources to download the nuget packages from
-    "source": attr.string(default = "https://www.nuget.org/api/v2/package"),
+    "source": attr.string_list(default = ["https://www.nuget.org/api/v2/package"]),
     # The name of the nuget package
     "package": attr.string(mandatory = True),
     # The version of the nuget package

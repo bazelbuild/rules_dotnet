@@ -13,7 +13,7 @@ namespace nuget2bazel_test
             var project = new TestProject(_prjConfig);
             var addCmd = new AddCommand();
 
-            await addCmd.DoWithProject("System.Security.Permissions", "4.6.0-preview8.19405.3", project, false);
+            await addCmd.DoWithProject("https://api.nuget.org/v3/index.json", "System.Security.Permissions", "4.6.0-preview8.19405.3", project, false);
 
             var entry = project.Entries.Last();
             Assert.Equal(4, entry.CoreLib.Count);

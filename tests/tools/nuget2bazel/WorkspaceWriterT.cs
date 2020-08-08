@@ -88,6 +88,5 @@ nuget_package(
 
             Assert.Equal(tocompare, result);
         }
-
     }
 }

@@ -23,14 +23,14 @@ namespace nuget2bazel
         {
             var project = new ProjectBazelManipulator(prjConfig, mainFile, skipSha256, variable);
 
-            return DoWithProject(package, version, project, lowest);
+            return DoWithProject(prjConfig.NugetSource, package, version, project, lowest);
         }
-        public async Task DoWithProject(string package, string version, ProjectBazelManipulator project, bool lowest)
+        public async Task DoWithProject(string nugetSource, string package, string version, ProjectBazelManipulator project, bool lowest)
         {
             var logger = new Logger();
             var providers = new List<Lazy<INuGetResourceProvider>>();
             providers.AddRange(Repository.Provider.GetCoreV3());  // Add v3 API support
-            var packageSource = new PackageSource("https://api.nuget.org/v3/index.json");
+            var packageSource = new PackageSource(nugetSource);
             var sourceRepository = new SourceRepository(packageSource, providers);
             var packageMetadataResource = await sourceRepository.GetResourceAsync<PackageMetadataResource>();
             var verParsed = NuGetVersion.Parse(version);
@@ -38,7 +38,8 @@ namespace nuget2bazel
             var content = new SourceCacheContext();
             var found = await packageMetadataResource.GetMetadataAsync(identity, content, logger, CancellationToken.None);
 
-            var settings = Settings.LoadDefaultSettings(project.ProjectConfig.RootPath, null, new MachineWideSettings());
+            //var settings = Settings.LoadDefaultSettings(project.ProjectConfig.RootPath, null, new MachineWideSettings());
+            var settings = Settings.LoadDefaultSettings(project.ProjectConfig.RootPath, null, null);
             var sourceRepositoryProvider = new SourceRepositoryProvider(settings, providers);
             var packageManager = new NuGetPackageManager(sourceRepositoryProvider, settings, project.ProjectConfig.RootPath)
             {
@@ -54,13 +55,13 @@ namespace nuget2bazel
 
             var actions = await packageManager.PreviewInstallPackageAsync(packageManager.PackagesFolderNuGetProject,
                 identity, resolutionContext, projectContext, sourceRepository,
-                Array.Empty<SourceRepository>(),  // This is a list of secondary source respositories, probably empty
+                sourceRepositoryProvider.GetRepositories(),
                 CancellationToken.None);
             project.NuGetProjectActions = actions;
 
             await packageManager.InstallPackageAsync(packageManager.PackagesFolderNuGetProject,
                 identity, resolutionContext, projectContext, sourceRepository,
-                Array.Empty<SourceRepository>(),  // This is a list of secondary source respositories, probably empty
+                sourceRepositoryProvider.GetRepositories(),
                 CancellationToken.None);
 
             NuGetPackageManager.ClearDirectInstall(projectContext);

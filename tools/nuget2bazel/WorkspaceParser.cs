@@ -81,6 +81,12 @@ namespace nuget2bazel
                             result.Variable = ex.Literal;
                         }
                         break;
+                    case TokenCode.SOURCE:
+                        RequireToken(TokenCode.SOURCE);
+                        RequireToken(TokenCode.EQUAL);
+                        RequireToken(TokenCode.SOURCE);
+                        result.NugetSourceCustom = true;
+                        break;
                     case TokenCode.CORE_FILES:
                         result.Core_Files = RequireDictionaryList(TokenCode.CORE_FILES);
                         break;
@@ -300,6 +306,7 @@ namespace nuget2bazel
             LCURLY,
             RCURLY,
             LITERAL,
+            SOURCE,
         }
 
         public struct Token
@@ -350,6 +357,7 @@ namespace nuget2bazel
             var str = _toparse.Substring(_pos, q - _pos);
             _pos = q;
 
+            if (str == "source") return (TokenCode.SOURCE, null);
             if (str == "nuget_package") return (TokenCode.NUGET_PACKAGE, null);
             if (str == "name") return (TokenCode.NAME, null);
             if (str == "package") return (TokenCode.PACKAGE, null);

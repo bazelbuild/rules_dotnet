@@ -13,6 +13,8 @@ namespace nuget2bazel
             Nuget2BazelConfigName = "nuget2bazel.json";
             BazelFileName = "WORKSPACE";
             Indent = false;
+            NugetSource = "https://api.nuget.org/v3/index.json";
+            NugetSourceCustom = false;
         }
         public ProjectBazelConfig(BaseVerb verb)
         {
@@ -23,11 +25,15 @@ namespace nuget2bazel
             Nuget2BazelConfigName = verb.Nuget2BazelConfigName;
             BazelFileName = verb.BazelFileName;
             Indent = verb.Indent;
+            NugetSource = verb.Source;
+            NugetSourceCustom = verb.NugetSourceCustom;
         }
 
         public string RootPath { get; set; }
         public string Nuget2BazelConfigName { get; set; }
         public string BazelFileName { get; set; }
+        public string NugetSource { get; set; }
+        public bool NugetSourceCustom { get; set; }
         public bool Indent { get; set; }
     }
 }

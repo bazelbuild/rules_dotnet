@@ -19,13 +19,13 @@ def parse_version(version):
         if not lversion[i].isdigit():
             if suffix != "":
                 fail("Version suffix already defined:", version)
-            s = lversion[i].split("-")
-            if len(s) != 2:
+            s = lversion[i].partition("-")
+            if s[2] == "":
                 fail("Invalid version segment:", version)
             if not s[0].isdigit():
                 fail("Not a digit in a version:", version)
             lversion[i] = int(s[0])
-            suffix = s[1]
+            suffix = s[2]
         else:
             lversion[i] = int(lversion[i])
 

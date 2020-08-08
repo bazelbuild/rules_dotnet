@@ -13,7 +13,7 @@ namespace nuget2bazel_test
             var project = new TestProject(_prjConfig);
             var addCmd = new AddCommand();
 
-            await addCmd.DoWithProject("xunit.analyzers", "0.10.0", project, false);
+            await addCmd.DoWithProject("https://api.nuget.org/v3/index.json", "xunit.analyzers", "0.10.0", project, false);
 
             var analyzers = project.Entries.FirstOrDefault(x => x.PackageIdentity.Id == "xunit.analyzers");
             Assert.NotNull(analyzers);
@@ -36,7 +36,7 @@ namespace nuget2bazel_test
             var project = new TestProject(_prjConfig);
             var addCmd = new AddCommand();
 
-            await addCmd.DoWithProject("xunit", "2.4.0", project, false);
+            await addCmd.DoWithProject("https://api.nuget.org/v3/index.json", "xunit", "2.4.0", project, false);
 
             var lib = project.Entries.FirstOrDefault(x => x.PackageIdentity.Id == "xunit");
             Assert.NotNull(lib);
@@ -49,7 +49,7 @@ namespace nuget2bazel_test
             var project = new TestProject(_prjConfig);
             var addCmd = new AddCommand();
 
-            await addCmd.DoWithProject("xunit.assert", "2.4.1", project, false);
+            await addCmd.DoWithProject("https://api.nuget.org/v3/index.json", "xunit.assert", "2.4.1", project, false);
 
             var lib = project.Entries.FirstOrDefault(x => x.PackageIdentity.Id == "xunit.assert");
             Assert.NotNull(lib);

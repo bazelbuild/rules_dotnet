@@ -13,7 +13,7 @@ namespace nuget2bazel_test
             var project = new TestProject(_prjConfig);
             var addCmd = new AddCommand();
 
-            await addCmd.DoWithProject("Newtonsoft.Json", "9.0.1", project, false);
+            await addCmd.DoWithProject("https://api.nuget.org/v3/index.json", "Newtonsoft.Json", "9.0.1", project, false);
 
             Assert.Single(project.Entries);
             var entry = project.Entries.First();
