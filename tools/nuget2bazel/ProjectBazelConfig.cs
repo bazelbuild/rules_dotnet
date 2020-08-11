@@ -10,7 +10,7 @@ namespace nuget2bazel
         public ProjectBazelConfig(string root)
         {
             RootPath = root;
-            Nuget2BazelConfigName = "nuget2bazel.json";
+            Nuget2BazelConfigName = "nuget2config.json";
             BazelFileName = "WORKSPACE";
             Indent = false;
             NugetSource = "https://api.nuget.org/v3/index.json";
