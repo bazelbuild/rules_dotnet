@@ -75,10 +75,7 @@ Overview
 --------
 
 This is a minimal viable set of C# bindings for building C# code with
-Core_, Net_ and Mono_. It's still pretty rough but it works.
-
-**Warning: on Windows requires minimum 1.1.0 version of bazel (due to improper symbolic link targets handling 
-in previous versions).**
+Core_
 
 Caveats
 -------

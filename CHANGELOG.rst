@@ -17,3 +17,14 @@ Important changes:
 
 This release contains contributions from Pierre Lule, tomaszstrejczek and tomdegoede.
 
+Release 0.0.6 (2020-12-24)
+--------------------------
+
+Incompatible changes:
+
+  - support for Mono and .NET Framework is dropped. They do not mix well with 
+    Bazel because they cannot be used without previous installation. 
+
+
+This release contains contributions from Jimmy Reichley, Helgevold Consulting, and tomaszstrejczek.
+
