@@ -98,21 +98,6 @@ def _stdlib_internal_impl(ctx):
         ),
     ]
 
-dotnet_stdlib = rule(
-    _stdlib_impl,
-    attrs = {
-        "dll": attr.string(),
-        "version": attr.string(mandatory = True),
-        "ref": attr.label(allow_files = True),
-        "deps": attr.label_list(providers = [DotnetLibrary]),
-        "data": attr.label_list(allow_files = True),
-        "stdlib_path": attr.label(allow_files = True),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
-    },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
-    executable = False,
-)
-
 core_stdlib = rule(
     _stdlib_impl,
     attrs = {
@@ -142,17 +127,3 @@ core_stdlib_internal = rule(
     executable = False,
 )
 
-net_stdlib = rule(
-    _stdlib_impl,
-    attrs = {
-        "dll": attr.string(),
-        "version": attr.string(mandatory = True),
-        "ref": attr.label(allow_files = True),
-        "deps": attr.label_list(providers = [DotnetLibrary]),
-        "data": attr.label_list(allow_files = True),
-        "stdlib_path": attr.label(allow_files = True),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
-    },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
-    executable = False,
-)

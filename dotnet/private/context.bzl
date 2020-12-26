@@ -102,49 +102,6 @@ def _dotnet_context_data(ctx):
         _runtime = ctx.attr.runtime,
     )
 
-dotnet_context_data = rule(
-    _dotnet_context_data,
-    attrs = {
-        "mcs_bin": attr.label(
-            allow_files = True,
-            default = "@dotnet_sdk//:mcs_bin",
-        ),
-        "mono_bin": attr.label(
-            allow_files = True,
-            default = "@dotnet_sdk//:mono_bin",
-        ),
-        "lib": attr.label(
-            allow_files = True,
-            default = "@dotnet_sdk//:lib",
-        ),
-        "tools": attr.label(
-            allow_files = True,
-            default = "@dotnet_sdk//:lib",
-        ),
-        "shared": attr.label(
-            allow_files = True,
-            default = "@dotnet_sdk//:lib",
-        ),
-        "host": attr.label(
-            allow_files = True,
-            default = "@dotnet_sdk//:lib",
-        ),
-        "runtime": attr.label(providers = [DotnetLibrary]),
-        "libVersion": attr.string(
-            default = "4.5",
-        ),
-        "framework": attr.string(
-            default = "",
-        ),
-        "_toolchain_type": attr.string(
-            default = "@io_bazel_rules_dotnet//dotnet:toolchain_type_mono",
-        ),
-        "runner": attr.label(executable = True, cfg = "host", default = "@dotnet_sdk//:runner"),
-        "csc": attr.label(executable = True, cfg = "host", default = "@dotnet_sdk//:csc"),
-    },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
-)
-
 core_context_data = rule(
     _dotnet_context_data,
     attrs = {
@@ -183,45 +140,3 @@ core_context_data = rule(
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
 )
 
-net_context_data = rule(
-    _dotnet_context_data,
-    attrs = {
-        "mcs_bin": attr.label(
-            allow_files = True,
-            default = "@net_sdk//:mcs_bin",
-        ),
-        "mono_bin": attr.label(
-            allow_files = True,
-            default = "@net_sdk//:mono_bin",
-        ),
-        "lib": attr.label(
-            allow_files = True,
-            default = "@net_sdk//:lib",
-        ),
-        "tools": attr.label(
-            allow_files = True,
-            default = "@net_sdk//:tools",
-        ),
-        "shared": attr.label(
-            allow_files = True,
-            default = "@net_sdk//:lib",
-        ),
-        "host": attr.label(
-            allow_files = True,
-            default = "@net_sdk//:mcs_bin",
-        ),
-        "runtime": attr.label(providers = [DotnetLibrary]),
-        "libVersion": attr.string(
-            mandatory = True,
-        ),
-        "framework": attr.string(
-            default = "",
-        ),
-        "_toolchain_type": attr.string(
-            default = "@io_bazel_rules_dotnet//dotnet:toolchain_type_net",
-        ),
-        "runner": attr.label(default = None),
-        "csc": attr.label(executable = True, cfg = "host", default = "@net_sdk//:csc"),
-    },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
-)

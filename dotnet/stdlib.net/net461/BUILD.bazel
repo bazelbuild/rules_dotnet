@@ -1,7 +1,0 @@
-load("generated.bzl", "define_stdlib")
-
-package(default_visibility = ["//visibility:public"])
-
-framework = "net461"
-
-define_stdlib("@io_bazel_rules_dotnet//:net_context_data_{}".format(framework))

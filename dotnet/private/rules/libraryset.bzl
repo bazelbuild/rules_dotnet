@@ -42,16 +42,6 @@ def _libraryset_impl(ctx):
         ),
     ]
 
-dotnet_libraryset = rule(
-    _libraryset_impl,
-    attrs = {
-        "deps": attr.label_list(providers = [DotnetLibrary]),
-        "data": attr.label_list(allow_files = True),
-    },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
-    executable = False,
-)
-
 core_libraryset = rule(
     _libraryset_impl,
     attrs = {
@@ -62,12 +52,3 @@ core_libraryset = rule(
     executable = False,
 )
 
-net_libraryset = rule(
-    _libraryset_impl,
-    attrs = {
-        "deps": attr.label_list(providers = [DotnetLibrary]),
-        "data": attr.label_list(allow_files = True),
-    },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
-    executable = False,
-)

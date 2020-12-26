@@ -117,30 +117,6 @@ def _import_binary_internal_impl(ctx):
         ),
     ]
 
-dotnet_import_library = rule(
-    _import_library_impl,
-    attrs = {
-        "deps": attr.label_list(providers = [DotnetLibrary]),
-        "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True),
-        "data": attr.label_list(allow_files = True),
-        "version": attr.string(mandatory = True),
-        "ref": attr.label(allow_files = True, mandatory = False),
-    },
-    executable = False,
-)
-
-dotnet_import_binary = rule(
-    _import_library_impl,
-    attrs = {
-        "deps": attr.label_list(providers = [DotnetLibrary]),
-        "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True),
-        "data": attr.label_list(allow_files = True),
-        "version": attr.string(mandatory = True),
-        "ref": attr.label(allow_files = True, mandatory = False),
-    },
-    executable = False,
-)
-
 core_import_library = rule(
     _import_library_impl,
     attrs = {
@@ -182,26 +158,3 @@ core_import_binary_internal = rule(
     executable = True,
 )
 
-net_import_library = rule(
-    _import_library_impl,
-    attrs = {
-        "deps": attr.label_list(providers = [DotnetLibrary]),
-        "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True),
-        "data": attr.label_list(allow_files = True),
-        "version": attr.string(mandatory = True),
-        "ref": attr.label(allow_files = True, mandatory = False),
-    },
-    executable = False,
-)
-
-net_import_binary = rule(
-    _import_library_impl,
-    attrs = {
-        "deps": attr.label_list(providers = [DotnetLibrary]),
-        "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True),
-        "data": attr.label_list(allow_files = True),
-        "version": attr.string(mandatory = True),
-        "ref": attr.label(allow_files = True, mandatory = False),
-    },
-    executable = False,
-)

@@ -1,1 +1,7 @@
+title: bazel_rules 
+description: Rules for C# in .NET Core
+
 theme: jekyll-theme-cayman
+exclude: [examples/ef/bazel-bin, examples/ef/bazel-ef, examples/ef/bazel-out, examples/ef/bazel-testlogs,
+          examples/grpc/bazel-bin, examples/grpc/bazel-grpc, examples/grpc/bazel-out, examples/grpc/bazel-testlogs,
+          examples/mono/bazel-bin, examples/mono/bazel-mono, examples/mono/bazel-out, examples/mono/bazel-testlogs]
