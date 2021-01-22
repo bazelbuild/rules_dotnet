@@ -21,7 +21,7 @@ namespace nuget2bazel
             PackageIdentity identity, string sha256, IEnumerable<PackageDependencyGroup> deps,
             IEnumerable<FrameworkSpecificGroup> libs, IEnumerable<FrameworkSpecificGroup> tools,
             IEnumerable<FrameworkSpecificGroup> references, IEnumerable<FrameworkSpecificGroup> buildFiles,
-            string mainFile, string variable, bool nugetSourceCustom)
+            IEnumerable<FrameworkSpecificGroup> runtimeFiles, string mainFile, string variable, bool nugetSourceCustom)
         {
             var netFrameworkTFMs = new string[]
             {
@@ -41,9 +41,9 @@ namespace nuget2bazel
             var netFrameworks = netFrameworkTFMs.Select(x => NuGetFramework.Parse(x));
             var monoFramework = NuGetFramework.Parse("net70");
 
-            Core_Files = GetFiles(coreFrameworks, libs, tools, buildFiles);
-            Net_Files = GetFiles(netFrameworks, libs, tools, buildFiles);
-            Mono_Files = GetFiles(monoFramework, libs, tools, buildFiles);
+            Core_Files = GetFiles(coreFrameworks, libs, tools, buildFiles, runtimeFiles);
+            Net_Files = GetFiles(netFrameworks, libs, tools, buildFiles, runtimeFiles);
+            Mono_Files = GetFiles(monoFramework, libs, tools, buildFiles, runtimeFiles);
 
             var depConverted = deps.Select(x =>
                 new FrameworkSpecificGroup(x.TargetFramework, x.Packages.Select(y => y.Id.ToLower())));
@@ -140,8 +140,8 @@ namespace nuget2bazel
         }
 
         private IEnumerable<string> GetFiles(NuGetFramework framework,
-            IEnumerable<FrameworkSpecificGroup> libs,
-            IEnumerable<FrameworkSpecificGroup> tools, IEnumerable<FrameworkSpecificGroup> buildFiles)
+            IEnumerable<FrameworkSpecificGroup> libs, IEnumerable<FrameworkSpecificGroup> tools,
+            IEnumerable<FrameworkSpecificGroup> buildFiles, IEnumerable<FrameworkSpecificGroup> runtimeFiles)
         {
             var result = new List<string>();
             var items = MSBuildNuGetProjectSystemUtility.GetMostCompatibleGroup(framework, libs)?.Items;
@@ -153,16 +153,19 @@ namespace nuget2bazel
             items = MSBuildNuGetProjectSystemUtility.GetMostCompatibleGroup(framework, buildFiles)?.Items;
             if (items != null)
                 result.AddRange(items);
+            items = MSBuildNuGetProjectSystemUtility.GetMostCompatibleGroup(framework, runtimeFiles)?.Items;
+            if (items != null)
+                result.AddRange(items);
 
             return result.Where(x => x.Substring(x.Length - 1) != "/");
         }
         private IDictionary<string, IEnumerable<string>> GetFiles(IEnumerable<NuGetFramework> frameworks, IEnumerable<FrameworkSpecificGroup> libs,
-            IEnumerable<FrameworkSpecificGroup> tools, IEnumerable<FrameworkSpecificGroup> buildFiles)
+            IEnumerable<FrameworkSpecificGroup> tools, IEnumerable<FrameworkSpecificGroup> buildFiles, IEnumerable<FrameworkSpecificGroup> runtimeFiles)
         {
             var result = new Dictionary<string, IEnumerable<string>>();
             foreach (var framework in frameworks)
             {
-                var files = GetFiles(framework, libs, tools, buildFiles);
+                var files = GetFiles(framework, libs, tools, buildFiles, runtimeFiles);
                 if (files != null && files.Any())
                     result.Add(framework.GetShortFolderName(), files);
             }

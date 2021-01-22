@@ -159,11 +159,12 @@ namespace nuget2bazel
             var toolItemGroups = await packageContentReader.GetToolItemsAsync(token);
             var depsGroups = await packageContentReader.GetPackageDependenciesAsync(token);
 
-            // Very ugly hack to extract build folder content
+            // Very ugly hack to extract build folder and runtimes folder content
             // Unfortunately, the original implementation only returns .prop and .targets files.
             var readerBase = (PackageReaderBase)packageContentReader;
             var dynMethod = readerBase.GetType().BaseType.GetMethod("GetFileGroups", BindingFlags.NonPublic | BindingFlags.Instance);
             var allBuildFileGroups = (IEnumerable<FrameworkSpecificGroup>)dynMethod.Invoke(readerBase, new object?[] { "build" });
+            var allRuntimes = (IEnumerable<FrameworkSpecificGroup>)dynMethod.Invoke(readerBase, new object?[] { "runtimes" });
 
             IEnumerable<FrameworkSpecificGroup> refItemGroups = null;
 
@@ -178,7 +179,7 @@ namespace nuget2bazel
                 sha256 = GetSha(downloadResourceResult.PackageStream);
             }
             var entry = new WorkspaceEntry(json.dependencies, packageIdentity, sha256,
-                depsGroups, libItemGroups, toolItemGroups, refItemGroups, allBuildFileGroups, _mainFile, _variable, _nugetSourceCustom);
+                depsGroups, libItemGroups, toolItemGroups, refItemGroups, allBuildFileGroups, allRuntimes, _mainFile, _variable, _nugetSourceCustom);
 
             _entries.Add(packageIdentity, entry);
             await AddEntry(entry);
