@@ -168,12 +168,12 @@ def declare_toolchains():
 
 def core_register_sdk(core_version = CORE_DEFAULT_VERSION, name = "core_sdk"):
     """Registers .NET Core.
-  
+
     It downloads the sdk for given version. Uses [core_download_sdk](api.md#core_download_sdk).
-  
+
     Args:
       core_version: The exact version of the framework. The supported frameworks are listed in [list.bzl](../dotnet/platform/list.bzl).
-      name: The name under which the SDK will be registered.  
+      name: The name under which the SDK will be registered.
     """
     if core_version not in CORE_SDK_REPOSITORIES:
         fail("Unknown core version {}".format(core_version))

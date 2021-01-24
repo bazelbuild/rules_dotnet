@@ -17,6 +17,26 @@ def emit_assembly_core(
         nowarn = None,
         langversion = "latest",
         version = (0, 0, 0, 0, "")):
+    """ Emits actions and creates [DotnetLibrary](api.md#DotnetLibrary) for assembly compilation.
+
+    Args:
+        dotnet: [DotnetContext](api.md#DotnetContext)
+        name: name of the assembly
+        srcs: source files (as passed from rules: list of lables/targets)
+        deps: list of [DotnetLibrary](api.md#DotnetLibrary). Dependencies as passed from rules.
+        out: output file name if provided. Otherwise name is used.
+        resources: list of [DotnetResourceList](api.md#DotnetResourceList) providers.
+        executable: bool. True for executable assembly, False otherwise.
+        defines: list of string. Defines to pass to a compiler.
+        unsafe: /unsafe flag (False - default - /unsafe-, otherwise /unsafe+).
+        data: list of targets (as passed from rules). Additional depdendencies of the target.
+        keyfile: File to be used for signing (if provided).
+        subdir: specific subdirectory to be used for target location. Default ./
+        target_framework: target framework to define via System.Runtime.Versioning.TargetFramework
+        nowarn: list of warnings to ignore
+        langversion: version of the language to use (see https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version)
+        version: Version to set for the generated assembly
+    """
     return emit_assembly_common(
         kind = "core",
         dotnet = dotnet,

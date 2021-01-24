@@ -67,3 +67,9 @@ Setup
 
 * Depending on .NET Core version used it may be necessary to install libunwind-devel on Linux systems.
 
+* See [nuget2bazel](nuget2bazel.md) for handling Nuget dependencies.
+
+Advanced usage
+--------------
+
+See [toolchains](toolchains.md) for advanced toolchain usage.
