@@ -1,10 +1,9 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "//dotnet/private:providers.bzl",
     "DotnetLibrary",
 )
-load("@rules_dotnet_skylib//lib:dicts.bzl", "dicts")
 load(
-    "@io_bazel_rules_dotnet//dotnet/platform:list.bzl",
+    "//dotnet/platform:list.bzl",
     "DOTNET_CORE_NAMES",
 )
 
@@ -16,26 +15,8 @@ def _dotnet_nuget_impl(
 
     package = ctx.attr.package
     output_dir = ctx.path("")
-    if ctx.attr.use_nuget_client and ctx.os.name.startswith("windows"):
-        """use_nuget_client for private nuget feed (tfs/vsts/etc)"""
-        nuget = ctx.path(ctx.attr._nuget_exe)
-        nuget_cmd = [
-            nuget,
-            "install",
-            "-Version",
-            ctx.attr.version,
-            "-OutputDirectory",
-            output_dir,
-            "-Source",
-            ctx.attr.source,
-            ctx.attr.package,
-        ]
-        result = ctx.execute(nuget_cmd)
-        if result.return_code:
-            fail("Nuget command failed: %s (%s)" % (result.stderr, " ".join(nuget_cmd)))
-    else:
-        url = ctx.attr.source + "/" + ctx.attr.package + "/" + ctx.attr.version
-        ctx.download_and_extract(url, output_dir, ctx.attr.sha256, type = "zip")
+    url = ctx.attr.source + "/" + ctx.attr.package + "/" + ctx.attr.version
+    ctx.download_and_extract(url, output_dir, ctx.attr.sha256, type = "zip")
 
     build_file_name = "BUILD" if not ctx.path("BUILD").exists else "BUILD.bazel"
 
@@ -50,23 +31,6 @@ def _dotnet_nuget_impl(
             executable = False,
         )
 
-_dotnet_nuget_attrs = {
-    "_nuget_exe": attr.label(default = Label("@nuget//file:nuget.exe")),
-    # Sources to download the nuget packages from
-    "source": attr.string(default = "https://www.nuget.org/api/v2/package"),
-    # The name of the nuget package
-    "package": attr.string(mandatory = True),
-    # The version of the nuget package
-    "version": attr.string(mandatory = True),
-    "sha256": attr.string(mandatory = False),
-    "use_nuget_client": attr.bool(default = False),
-}
-
-dotnet_nuget = repository_rule(
-    _dotnet_nuget_impl,
-    attrs = _dotnet_nuget_attrs,
-)
-
 def _dotnet_nuget_new_impl(repository_ctx):
     build_file = repository_ctx.attr.build_file
     build_file_content = repository_ctx.attr.build_file_content
@@ -76,10 +40,47 @@ def _dotnet_nuget_new_impl(repository_ctx):
 
 dotnet_nuget_new = repository_rule(
     _dotnet_nuget_new_impl,
-    attrs = dicts.add(_dotnet_nuget_attrs, {
-        "build_file": attr.label(allow_files = True),
-        "build_file_content": attr.string(),
-    }),
+    attrs = {
+        "_nuget_exe": attr.label(default = Label("@nuget//file:nuget.exe")),
+        "source": attr.string(
+            default = "https://www.nuget.org/api/v2/package",
+            doc = "Nuget repository to download the nuget package from. The final url is in the format shape \\{source\\}/\\{package\\}/\\{version\\}.",
+        ),
+        "package": attr.string(mandatory = True, doc = "The name of the nuget package."),
+        "version": attr.string(mandatory = True, doc = "The version of the nuget package."),
+        "sha256": attr.string(mandatory = False, doc = "Sha256 digest of the downloaded package."),
+        "build_file": attr.label(
+            allow_files = True,
+            doc = "The file to use as the BUILD file for this repository. " +
+                  "This attribute is an absolute label (use '@//' for the main repo). The file does not need to be named BUILD, " +
+                  "but can be (something like BUILD.new-repo-name may work well for distinguishing it from the repository's " +
+                  "actual BUILD files. Either build_file or build_file_content can be specified, but not both.",
+        ),
+        "build_file_content": attr.string(doc = "The content for the BUILD file for this repository. Either build_file or build_file_content can be specified, but not both."),
+    },
+    doc = """Repository rule to download and extract nuget package. Usually [nuget_package](#nuget_package) is a better choice.
+    
+    Usually used with [dotnet_import_library](#dotnet_import_library).    
+    
+    Example:
+    ```python
+    dotnet_nuget_new(
+        name = "npgsql", 
+        package="Npgsql", 
+        version="3.2.7", 
+        sha256="fa3e0cfbb2caa9946d2ce3d8174031a06320aad2c9e69a60f7739b9ddf19f172",
+        build_file_content = \"\"\"
+    package(default_visibility = [ "//visibility:public" ])
+    load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_import_library")
+
+    dotnet_import_library(
+        name = "npgsqllib",
+        src = "lib/net451/Npgsql.dll"
+    )   
+        \"\"\"
+    )
+    ```
+    """,
 )
 
 _FUNC = """
@@ -169,7 +170,7 @@ def _get_importlib_withframework(func, func2, name, frameworks, lib, ref, deps, 
 
 _TEMPLATE2 = """
 package(default_visibility = [ "//visibility:public" ])
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_import_library", "core_import_binary", "core_libraryset")
+load("//dotnet:defs.bzl", "core_import_library", "core_import_binary", "core_libraryset")
 """
 
 def _nuget_package_impl(ctx):
@@ -196,25 +197,28 @@ def _nuget_package_impl(ctx):
 
 _nuget_package_attrs = {
     # Sources to download the nuget packages from
-    "source": attr.string_list(default = ["https://www.nuget.org/api/v2/package"]),
+    "source": attr.string_list(
+        default = ["https://www.nuget.org/api/v2/package"],
+        doc = "The nuget base url for downloading the package. The final url is in the format {source}/{package}/{version}.",
+    ),
     # The name of the nuget package
-    "package": attr.string(mandatory = True),
+    "package": attr.string(mandatory = True, doc = "The nuget package name."),
     # The version of the nuget package
-    "version": attr.string(mandatory = True),
-    "sha256": attr.string(mandatory = False),
-    "core_lib": attr.string_dict(default = {}),
+    "version": attr.string(mandatory = True, doc = "The nuget package version."),
+    "sha256": attr.string(mandatory = False, doc = "The nuget package sha256 digest."),
+    "core_lib": attr.string_dict(default = {}, doc = "The path to .net core assembly within the nuget package."),
     "net_lib": attr.string_dict(default = {}),
     "mono_lib": attr.string(default = ""),
-    "core_ref": attr.string_dict(default = {}),
+    "core_ref": attr.string_dict(default = {}, doc = "The path to .net core reference assembly within the nuget package."),
     "net_ref": attr.string_dict(default = {}),
     "mono_ref": attr.string(default = ""),
-    "core_tool": attr.string_dict(default = {}),
+    "core_tool": attr.string_dict(default = {}, doc = "The path to .net core assembly within the nuget package (tools subdirectory)."),
     "net_tool": attr.string_dict(default = {}),
     "mono_tool": attr.string(default = ""),
-    "core_deps": attr.string_list_dict(),
+    "core_deps": attr.string_list_dict(doc = "The list of the dependencies of the package (core)."),
     "net_deps": attr.string_list_dict(),
     "mono_deps": attr.label_list(providers = [DotnetLibrary]),
-    "core_files": attr.string_list_dict(),
+    "core_files": attr.string_list_dict(doc = "The list of additional files within the package to be used as runfiles (necessary to run)."),
     "net_files": attr.string_list_dict(),
     "mono_files": attr.string_list(),
 }
@@ -222,4 +226,37 @@ _nuget_package_attrs = {
 nuget_package = repository_rule(
     _nuget_package_impl,
     attrs = _nuget_package_attrs,
+    doc = """Repository rule to download and extract nuget package. The rule is usually generated by [nuget2bazel](nuget2bazel.md) tool.
+
+       Example
+       ^^^^^^^
+       
+       ```python
+       nuget_package(
+        name = "commandlineparser",
+        package = "commandlineparser",
+        sha256 = "09e60ff23e6953b4fe7d267ef552d8ece76404acf44842012f84430e8b877b13",
+        core_lib = "lib/netstandard1.5/CommandLine.dll",
+        core_deps = [
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.collections.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.console.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.diagnostics.debug.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.globalization.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.io.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.linq.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.linq.expressions.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.reflection.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.reflection.extensions.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.reflection.typeextensions.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.resources.resourcemanager.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.dll",
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.extensions.dll",
+        ],
+        core_files = [
+            "lib/netstandard1.5/CommandLine.dll",
+            "lib/netstandard1.5/CommandLine.xml",
+        ],
+        )
+        ```
+        """,
 )

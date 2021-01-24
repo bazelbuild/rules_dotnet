@@ -1,12 +1,3 @@
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:common.bzl",
-    "as_iterable",
-)
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
-    "DotnetLibrary",
-)
-
 def _make_runner_arglist(dotnet, source, output, resgen):
     args = dotnet.actions.args()
 

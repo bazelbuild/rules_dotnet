@@ -1,13 +1,13 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:common.bzl",
+    "//dotnet/private:common.bzl",
     "as_iterable",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "//dotnet/private:providers.bzl",
     "DotnetResourceList",
 )
-load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "version2string")
+load("//dotnet/private:rules/common.bzl", "collect_transitive_info")
+load("//dotnet/private:rules/versions.bzl", "version2string")
 
 def _map_resource(d):
     return d.result.path + "," + d.identifier
@@ -174,7 +174,7 @@ def emit_assembly_common(
     # select runner and action_args
     if kind != "net":
         runner = dotnet.runner.files_to_run
-        runner_tools = depset(transitive=[dotnet.runner.default_runfiles.files, dotnet.mcs.default_runfiles.files])
+        runner_tools = depset(transitive = [dotnet.runner.default_runfiles.files, dotnet.mcs.default_runfiles.files])
         action_args = [dotnet.mcs.files_to_run.executable.path, "/noconfig", "@" + paramfile.path]
     else:
         runner = dotnet.mcs.files_to_run

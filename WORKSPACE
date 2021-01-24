@@ -1,5 +1,17 @@
 workspace(name = "io_bazel_rules_dotnet")
 
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
+git_repository(
+    name = "io_bazel_stardoc",
+    branch = "master",
+    remote = "https://github.com/bazelbuild/stardoc.git",
+)
+
+load("@io_bazel_stardoc//:setup.bzl", "stardoc_repositories")
+
+stardoc_repositories()
+
 load("@io_bazel_rules_dotnet//dotnet:deps.bzl", "dotnet_repositories")
 
 dotnet_repositories()
@@ -39,8 +51,6 @@ http_archive(
         "https://mirror.bazel.build/github.com/bazelbuild/bazel-toolchains/releases/download/3.2.0/bazel-toolchains-3.2.0.tar.gz",
     ],
 )
-
-load("@bazel_toolchains//rules:rbe_repo.bzl", "rbe_autoconfig")
 
 # Creates a default toolchain config for RBE.
 # Use this as is if you are using the rbe_ubuntu16_04 container,

@@ -1,17 +1,17 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:common.bzl",
+    "//dotnet/private:common.bzl",
     "as_iterable",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
+    "//dotnet/private:context.bzl",
     "dotnet_context",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "//dotnet/private:providers.bzl",
     "DotnetLibrary",
 )
-load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "parse_version")
+load("//dotnet/private:rules/common.bzl", "collect_transitive_info")
+load("//dotnet/private:rules/versions.bzl", "parse_version")
 
 def _stdlib_impl(ctx):
     dotnet = dotnet_context(ctx)
@@ -121,9 +121,8 @@ core_stdlib_internal = rule(
         "ref": attr.label(allow_files = True),
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "data": attr.label_list(allow_files = True),
-        "stdlib_path": attr.label(allow_files = True, mandatory=True),
+        "stdlib_path": attr.label(allow_files = True, mandatory = True),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
     executable = False,
 )
-

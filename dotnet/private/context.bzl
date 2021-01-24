@@ -1,5 +1,5 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "//dotnet/private:providers.bzl",
     "DotnetLibrary",
     "DotnetResource",
 )
@@ -139,4 +139,3 @@ core_context_data = rule(
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
 )
-

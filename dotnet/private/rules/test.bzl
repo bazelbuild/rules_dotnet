@@ -1,22 +1,22 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
+    "//dotnet/private:context.bzl",
     "dotnet_context",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "//dotnet/private:providers.bzl",
     "DotnetLibrary",
     "DotnetResourceList",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/runfiles.bzl",
+    "//dotnet/private:rules/runfiles.bzl",
     "CopyRunfiles",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/data_with_dirs.bzl",
+    "//dotnet/private:rules/data_with_dirs.bzl",
     "CopyDataWithDirs",
 )
-load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "parse_version")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
+load("//dotnet/private:rules/versions.bzl", "parse_version")
+load("//dotnet/private:rules/common.bzl", "collect_transitive_info")
 
 def _unit_test(ctx):
     dotnet = dotnet_context(ctx)
@@ -94,7 +94,6 @@ def _unit_test(ctx):
         ),
     ]
 
-
 core_xunit_test = rule(
     _unit_test,
     attrs = {
@@ -157,4 +156,3 @@ core_nunit3_test = rule(
     executable = True,
     test = True,
 )
-

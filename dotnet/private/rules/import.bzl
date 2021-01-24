@@ -1,18 +1,18 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:common.bzl",
+    "//dotnet/private:common.bzl",
     "as_iterable",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
+    "//dotnet/private:context.bzl",
     "new_library",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "//dotnet/private:providers.bzl",
     "DotnetLibrary",
 )
-load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "parse_version")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/runfiles.bzl", "CopyRunfiles")
+load("//dotnet/private:rules/common.bzl", "collect_transitive_info")
+load("//dotnet/private:rules/versions.bzl", "parse_version")
+load("//dotnet/private:rules/runfiles.bzl", "CopyRunfiles")
 
 def _import_library_impl(ctx):
     """net_import_library_impl emits actions for importing an external dll (for example provided by nuget)."""
@@ -157,4 +157,3 @@ core_import_binary_internal = rule(
     },
     executable = True,
 )
-

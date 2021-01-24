@@ -1,19 +1,19 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
+    "//dotnet/private:context.bzl",
     "dotnet_context",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "//dotnet/private:providers.bzl",
     "DotnetLibrary",
     "DotnetResourceList",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/runfiles.bzl",
+    "//dotnet/private:rules/runfiles.bzl",
     "CopyRunfiles",
 )
-load("@io_bazel_rules_dotnet//dotnet/platform:list.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NETSTANDARD")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "parse_version")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
+load("//dotnet/platform:list.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NETSTANDARD")
+load("//dotnet/private:rules/versions.bzl", "parse_version")
+load("//dotnet/private:rules/common.bzl", "collect_transitive_info")
 
 def _binary_impl(ctx):
     """_binary_impl emits actions for compiling executable assembly."""
@@ -97,4 +97,3 @@ core_binary = rule(
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
     executable = True,
 )
-

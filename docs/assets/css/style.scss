@@ -1,0 +1,10 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+.main-content { 
+    @include large {
+      max-width: none;
+    }
+}  

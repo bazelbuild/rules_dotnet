@@ -1,13 +1,13 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:core_toolchain.bzl",
+    "//dotnet/private:core_toolchain.bzl",
     "core_toolchain",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:sdk_core.bzl",
+    "//dotnet/private:sdk_core.bzl",
     "core_download_sdk",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/platform:list.bzl",
+    "//dotnet/platform:list.bzl",
     "DOTNETARCH",
     "DOTNETIMPL",
     "DOTNETOS",
@@ -149,7 +149,7 @@ _toolchains = _generate_toolchains()
 _label_prefix = "@io_bazel_rules_dotnet//dotnet/toolchain:"
 
 def dotnet_register_toolchains():
-    """See /dotnet/toolchains.rst#dostnet-register-toolchains for full documentation."""
+    """dotnet_register_toolchains"""
 
     # Use the final dictionaries to register all the toolchains
     for toolchain in _toolchains:
@@ -167,6 +167,14 @@ def declare_toolchains():
         )
 
 def core_register_sdk(core_version = CORE_DEFAULT_VERSION, name = "core_sdk"):
+    """Registers .NET Core.
+  
+    It downloads the sdk for given version. Uses [core_download_sdk](api.md#core_download_sdk).
+  
+    Args:
+      core_version: The exact version of the framework. The supported frameworks are listed in [list.bzl](../dotnet/platform/list.bzl).
+      name: The name under which the SDK will be registered.  
+    """
     if core_version not in CORE_SDK_REPOSITORIES:
         fail("Unknown core version {}".format(core_version))
 

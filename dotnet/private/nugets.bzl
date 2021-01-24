@@ -1,9 +1,11 @@
-load("@io_bazel_rules_dotnet//dotnet/private:deps/nuget.bzl", "dotnet_repositories_nuget")
-load("@io_bazel_rules_dotnet//dotnet/private:deps/nuget2.bzl", "dotnet_repositories_nuget2")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/nuget.bzl", "dotnet_nuget_new")
+load("//dotnet/private:deps/nuget.bzl", "dotnet_repositories_nuget")
+load("//dotnet/private:deps/nuget2.bzl", "dotnet_repositories_nuget2")
+load("//dotnet/private:rules/nuget.bzl", "dotnet_nuget_new")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 def dotnet_repositories_nugets():
+    """Loads nugets used by dotnet_rules itself."""
+
     dotnet_repositories_nuget()
     dotnet_repositories_nuget2()
 

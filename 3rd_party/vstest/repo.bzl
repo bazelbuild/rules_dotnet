@@ -1,5 +1,5 @@
 # Source version v16.5.0
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_binary", "core_library", "core_resx")
+load("//dotnet:defs.bzl", "core_binary", "core_library", "core_resx")
 
 core_library(
     name = "Microsoft.TestPlatform.PlatformAbstractions.dll",

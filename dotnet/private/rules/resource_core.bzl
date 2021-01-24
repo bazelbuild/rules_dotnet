@@ -1,9 +1,9 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
+    "//dotnet/private:context.bzl",
     "dotnet_context",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "//dotnet/private:providers.bzl",
     "DotnetResourceList",
 )
 load("@rules_dotnet_skylib//lib:paths.bzl", "paths")
@@ -84,4 +84,3 @@ core_resource_multi = rule(
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
     executable = False,
 )
-

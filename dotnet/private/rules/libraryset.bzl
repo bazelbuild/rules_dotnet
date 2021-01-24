@@ -1,13 +1,9 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
-    "dotnet_context",
-)
-load(
-    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "//dotnet/private:providers.bzl",
     "DotnetLibrary",
 )
-load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
-load("@io_bazel_rules_dotnet//dotnet/private:common.bzl", "as_iterable")
+load("//dotnet/private:rules/common.bzl", "collect_transitive_info")
+load("//dotnet/private:common.bzl", "as_iterable")
 
 def _libraryset_impl(ctx):
     """_libraryset_impl implements the set of libraries."""
@@ -51,4 +47,3 @@ core_libraryset = rule(
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
     executable = False,
 )
-
