@@ -28,4 +28,3 @@ Incompatible changes:
 
 
 This release contains contributions from Jimmy Reichley, Helgevold Consulting, and tomaszstrejczek.
-

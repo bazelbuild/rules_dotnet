@@ -41,9 +41,10 @@ def _libraryset_impl(ctx):
 core_libraryset = rule(
     _libraryset_impl,
     attrs = {
-        "deps": attr.label_list(providers = [DotnetLibrary]),
-        "data": attr.label_list(allow_files = True),
+        "deps": attr.label_list(providers = [DotnetLibrary], doc = "The list of dependencies."),
+        "data": attr.label_list(allow_files = True, doc = "The list of additional files to include in the list of runfiles for compiled assembly."),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
     executable = False,
+    doc = "Groups libraries into sets which may be used as dependency.",
 )

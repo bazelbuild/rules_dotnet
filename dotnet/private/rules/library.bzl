@@ -48,20 +48,44 @@ def _library_impl(ctx):
 core_library = rule(
     _library_impl,
     attrs = {
-        "deps": attr.label_list(providers = [DotnetLibrary]),
-        "version": attr.string(),
-        "resources": attr.label_list(providers = [DotnetResourceList]),
-        "srcs": attr.label_list(allow_files = [".cs"]),
-        "out": attr.string(),
-        "defines": attr.string_list(),
-        "unsafe": attr.bool(default = False),
-        "data": attr.label_list(allow_files = True),
-        "keyfile": attr.label(allow_files = True),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
-        "target_framework": attr.string(values = DOTNET_CORE_FRAMEWORKS.keys() + DOTNET_NETSTANDARD.keys() + [""], default = ""),
-        "nowarn": attr.string_list(),
-        "langversion": attr.string(default = "latest"),
+        "deps": attr.label_list(providers = [DotnetLibrary], doc = "The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibrary](api.md#DotnetLibrary) provider."),
+        "version": attr.string(doc = "Version to be set for the assembly. The version is set by compiling in [AssemblyVersion](https://docs.microsoft.com/en-us/troubleshoot/visualstudio/general/assembly-version-assembly-file-version) attribute."),
+        "resources": attr.label_list(providers = [DotnetResourceList], doc = "The list of resources to compile with. Usually provided via reference to [dotnet_resx](api.md#dotnet_resx) or the rules compatible with [DotnetResource](api.md#DotnetResource) provider."),
+        "srcs": attr.label_list(allow_files = [".cs"], doc = "The list of .cs source files that are compiled to create the assembly."),
+        "out": attr.string(doc = "An alternative name of the output file."),
+        "defines": attr.string_list(doc = "The list of defines passed via /define compiler option."),
+        "unsafe": attr.bool(default = False, doc = "If true passes /unsafe flag to the compiler."),
+        "data": attr.label_list(allow_files = True, doc = "The list of additional files to include in the list of runfiles for the assembly."),
+        "keyfile": attr.label(allow_files = True, doc = "The key to sign the assembly with."),
+        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data"), doc = "The reference to label created with [core_context_data rule](api.md#core_context_data). It points the SDK to be used for compiling given target."),
+        "target_framework": attr.string(values = DOTNET_CORE_FRAMEWORKS.keys() + DOTNET_NETSTANDARD.keys() + [""], default = "", doc = "Target framework."),
+        "nowarn": attr.string_list(doc = "The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion."),
+        "langversion": attr.string(default = "latest", doc = "Version of the language to use. See [this page](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version)."),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
     executable = False,
+    doc = """This builds a dotnet assembly from a set of source files.
+
+    Providers
+    ^^^^^^^^^
+
+    * [DotnetLibrary](api.md#DotnetLibrary)
+    * [DotnetResource](api.md#DotnetResource)
+
+    Example:
+    ^^^^^^^^
+    ```python
+    [core_library(
+        name = "{}_TransitiveClass-core.dll".format(framework),
+        srcs = [
+            "TransitiveClass.cs",
+        ],
+        dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+        visibility = ["//visibility:public"],
+        deps = [
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:libraryset".format(framework),
+        ],
+    ) for framework in DOTNET_CORE_FRAMEWORKS]
+    ```
+    """,
 )
