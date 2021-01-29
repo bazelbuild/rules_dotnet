@@ -72,6 +72,8 @@ load(
 )
 load("//dotnet/private:actions/assembly_core.bzl", _emit_assembly_core = "emit_assembly_core")
 load("//dotnet/private:actions/resx_core.bzl", _emit_resx_core = "emit_resx_core")
+load("//dotnet/private:sdk_core.bzl", _core_download_sdk = "core_download_sdk")
+load("//dotnet/private:repositories.bzl", _dotnet_repositories = "dotnet_repositories")
 
 dotnet_context = _dotnet_context
 DotnetContext = _DotnetContext
@@ -105,3 +107,5 @@ emit_assembly_core = _emit_assembly_core
 emit_resx_core = _emit_resx_core
 new_library = _new_library
 new_resource = _new_resource
+core_download_sdk = _core_download_sdk
+dotnet_repositories = _dotnet_repositories

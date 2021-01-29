@@ -97,8 +97,8 @@ def _unit_test(ctx):
 core_xunit_test = rule(
     _unit_test,
     attrs = {
-        "deps": attr.label_list(providers = [DotnetLibrary], doc = "The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibrary](api.md#DotnetLibrary) provider."),
-        "resources": attr.label_list(providers = [DotnetResourceList], doc = "The list of resources to compile with. Usually provided via reference to [dotnet_resx](api.md#dotnet_resx) or the rules compatible with [DotnetResource](api.md#DotnetResource) provider."),
+        "deps": attr.label_list(providers = [DotnetLibrary], doc = "The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibrary](api.md#dotnetlibrary) provider."),
+        "resources": attr.label_list(providers = [DotnetResourceList], doc = "The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResource](api.md#dotnetresource) provider."),
         "srcs": attr.label_list(allow_files = [".cs"], doc = "The list of .cs source files that are compiled to create the assembly."),
         "out": attr.string(doc = "An alternative name of the output file."),
         "defines": attr.string_list(doc = "The list of defines passed via /define compiler option."),
@@ -136,8 +136,8 @@ core_xunit_test = rule(
 core_nunit3_test = rule(
     _unit_test,
     attrs = {
-        "deps": attr.label_list(providers = [DotnetLibrary], doc = "The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibrary](api.md#DotnetLibrary) provider."),
-        "resources": attr.label_list(providers = [DotnetResourceList], doc = "The list of resources to compile with. Usually provided via reference to [dotnet_resx](api.md#dotnet_resx) or the rules compatible with [DotnetResource](api.md#DotnetResource) provider."),
+        "deps": attr.label_list(providers = [DotnetLibrary], doc = "The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibrary](api.md#dotnetlibrary) provider."),
+        "resources": attr.label_list(providers = [DotnetResourceList], doc = "The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResource](api.md#dotnetresource) provider."),
         "srcs": attr.label_list(allow_files = [".cs"], doc = "The list of .cs source files that are compiled to create the assembly."),
         "out": attr.string(doc = "An alternative name of the output file."),
         "defines": attr.string_list(doc = "The list of defines passed via /define compiler option."),

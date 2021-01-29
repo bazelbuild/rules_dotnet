@@ -21,7 +21,7 @@ def _core_download_sdk_impl(ctx):
 core_download_sdk = repository_rule(
     _core_download_sdk_impl,
     attrs = {
-        "sdks": attr.string_list_dict(doc = "Map of URLs. See CORE_SDK_REPOSITORIES in [toolchains.bzl](../private/toolchain/toolchains.bzl) for the expected shape of the parameter."),
+        "sdks": attr.string_list_dict(doc = "Map of URLs. See CORE_SDK_REPOSITORIES in dotnet/private/toolchain/toolchains.bzl for the expected shape of the parameter."),
         "version": attr.string(doc = "Version to use. It must be present in sdks parameter."),
         "strip_prefix": attr.string(default = "", doc = "If present then provided prefix is stripped when extracting SDK."),
     },

@@ -16,8 +16,8 @@ This builds an executable from a set of source files.
     Providers
     ^^^^^^^^^
 
-    * [DotnetLibrary](api.md#DotnetLibrary)
-    * [DotnetResource](api.md#DotnetResource)
+    * [DotnetLibrary](api.md#dotnetlibrary)
+    * [DotnetResource](api.md#dotnetresource)
 
     Example:
     ^^^^^^^^
@@ -43,13 +43,13 @@ This builds an executable from a set of source files.
 | <a id="core_binary-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
 | <a id="core_binary-data"></a>data |  The list of additional files to include in the list of runfiles for the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_binary-defines"></a>defines |  The list of defines passed via /define compiler option.   | List of strings | optional | [] |
-| <a id="core_binary-deps"></a>deps |  The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibrary](api.md#DotnetLibrary) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="core_binary-deps"></a>deps |  The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibrary](api.md#dotnetlibrary) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_binary-dotnet_context_data"></a>dotnet_context_data |  The reference to label created with [core_context_data rule](api.md#core_context_data). It points the SDK to be used for compiling given target.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @io_bazel_rules_dotnet//:core_context_data |
 | <a id="core_binary-keyfile"></a>keyfile |  The key to sign the assembly with.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
 | <a id="core_binary-langversion"></a>langversion |  Version of the language to use. See [this page](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version).   | String | optional | "latest" |
 | <a id="core_binary-nowarn"></a>nowarn |  The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion.   | List of strings | optional | [] |
 | <a id="core_binary-out"></a>out |  An alternative name of the output file.   | String | optional | "" |
-| <a id="core_binary-resources"></a>resources |  The list of resources to compile with. Usually provided via reference to [dotnet_resx](api.md#dotnet_resx) or the rules compatible with [DotnetResource](api.md#DotnetResource) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="core_binary-resources"></a>resources |  The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResource](api.md#dotnetresource) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_binary-srcs"></a>srcs |  The list of .cs source files that are compiled to create the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_binary-target_framework"></a>target_framework |  Target framework.   | String | optional | "" |
 | <a id="core_binary-unsafe"></a>unsafe |  If true passes /unsafe flag to the compiler.   | Boolean | optional | False |
@@ -87,6 +87,29 @@ core_context_data(<a href="#core_context_data-name">name</a>, <a href="#core_con
 | <a id="core_context_data-tools"></a>tools |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
 
 
+<a id="#core_download_sdk"></a>
+
+## core_download_sdk
+
+<pre>
+core_download_sdk(<a href="#core_download_sdk-name">name</a>, <a href="#core_download_sdk-repo_mapping">repo_mapping</a>, <a href="#core_download_sdk-sdks">sdks</a>, <a href="#core_download_sdk-strip_prefix">strip_prefix</a>, <a href="#core_download_sdk-version">version</a>)
+</pre>
+
+This downloads .NET Core SDK for given version. It usually is not used directly. Use [core_register_sdk](api.md#core_register_sdk) instead.
+
+
+**ATTRIBUTES**
+
+
+| Name  | Description | Type | Mandatory | Default |
+| :------------- | :------------- | :------------- | :------------- | :------------- |
+| <a id="core_download_sdk-name"></a>name |  A unique name for this repository.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
+| <a id="core_download_sdk-repo_mapping"></a>repo_mapping |  A dictionary from local repository name to global repository name. This allows controls over workspace dependency resolution for dependencies of this repository.&lt;p&gt;For example, an entry <code>"@foo": "@bar"</code> declares that, for any time this repository depends on <code>@foo</code> (such as a dependency on <code>@foo//some:target</code>, it should actually resolve that dependency within globally-declared <code>@bar</code> (<code>@bar//some:target</code>).   | <a href="https://bazel.build/docs/skylark/lib/dict.html">Dictionary: String -> String</a> | required |  |
+| <a id="core_download_sdk-sdks"></a>sdks |  Map of URLs. See CORE_SDK_REPOSITORIES in dotnet/private/toolchain/toolchains.bzl for the expected shape of the parameter.   | <a href="https://bazel.build/docs/skylark/lib/dict.html">Dictionary: String -> List of strings</a> | optional | {} |
+| <a id="core_download_sdk-strip_prefix"></a>strip_prefix |  If present then provided prefix is stripped when extracting SDK.   | String | optional | "" |
+| <a id="core_download_sdk-version"></a>version |  Version to use. It must be present in sdks parameter.   | String | optional | "" |
+
+
 <a id="#core_import_binary"></a>
 
 ## core_import_binary
@@ -95,7 +118,10 @@ core_context_data(<a href="#core_context_data-name">name</a>, <a href="#core_con
 core_import_binary(<a href="#core_import_binary-name">name</a>, <a href="#core_import_binary-data">data</a>, <a href="#core_import_binary-deps">deps</a>, <a href="#core_import_binary-ref">ref</a>, <a href="#core_import_binary-src">src</a>, <a href="#core_import_binary-version">version</a>)
 </pre>
 
-
+This imports an external assembly and transforms it into .NET Core binary. 
+    
+    #TODO: it is identical to [core_import_library](api.md#core_import_library). Maybe [core_import_binary_internal](api.md#core_import_binary_internal) should be used instead?
+    
 
 
 **ATTRIBUTES**
@@ -104,11 +130,11 @@ core_import_binary(<a href="#core_import_binary-name">name</a>, <a href="#core_i
 | Name  | Description | Type | Mandatory | Default |
 | :------------- | :------------- | :------------- | :------------- | :------------- |
 | <a id="core_import_binary-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
-| <a id="core_import_binary-data"></a>data |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_import_binary-deps"></a>deps |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_import_binary-ref"></a>ref |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
-| <a id="core_import_binary-src"></a>src |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | required |  |
-| <a id="core_import_binary-version"></a>version |  -   | String | required |  |
+| <a id="core_import_binary-data"></a>data |  Additional files to copy with the target assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="core_import_binary-deps"></a>deps |  The direct dependencies of this dll. These may be [core_library](api.md#core_library) rules or compatible rules with the [DotnetLibrary](api.md#dotnetlibrary) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="core_import_binary-ref"></a>ref |  [Reference assembly](https://docs.microsoft.com/en-us/dotnet/standard/assembly/reference-assemblies) for given library.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
+| <a id="core_import_binary-src"></a>src |  The file to be transformed into [DotnetLibrary](api.md#dotnetlibrary) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | required |  |
+| <a id="core_import_binary-version"></a>version |  Version of the imported assembly.   | String | required |  |
 
 
 <a id="#core_import_binary_internal"></a>
@@ -119,7 +145,7 @@ core_import_binary(<a href="#core_import_binary-name">name</a>, <a href="#core_i
 core_import_binary_internal(<a href="#core_import_binary_internal-name">name</a>, <a href="#core_import_binary_internal-data">data</a>, <a href="#core_import_binary_internal-deps">deps</a>, <a href="#core_import_binary_internal-ref">ref</a>, <a href="#core_import_binary_internal-runner">runner</a>, <a href="#core_import_binary_internal-runtime">runtime</a>, <a href="#core_import_binary_internal-src">src</a>, <a href="#core_import_binary_internal-version">version</a>)
 </pre>
 
-
+The rules imports binary and implements all necessary wraping to allow for executing provided assembly.
 
 
 **ATTRIBUTES**
@@ -128,13 +154,13 @@ core_import_binary_internal(<a href="#core_import_binary_internal-name">name</a>
 | Name  | Description | Type | Mandatory | Default |
 | :------------- | :------------- | :------------- | :------------- | :------------- |
 | <a id="core_import_binary_internal-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
-| <a id="core_import_binary_internal-data"></a>data |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_import_binary_internal-deps"></a>deps |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_import_binary_internal-ref"></a>ref |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
+| <a id="core_import_binary_internal-data"></a>data |  Additional files to copy with the target assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="core_import_binary_internal-deps"></a>deps |  The direct dependencies of this dll. These may be [core_library](api.md#core_library) rules or compatible rules with the [DotnetLibrary](api.md#dotnetlibrary) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="core_import_binary_internal-ref"></a>ref |  [Reference assembly](https://docs.microsoft.com/en-us/dotnet/standard/assembly/reference-assemblies) for given library.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
 | <a id="core_import_binary_internal-runner"></a>runner |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @core_sdk//:runner |
 | <a id="core_import_binary_internal-runtime"></a>runtime |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @io_bazel_rules_dotnet//dotnet/stdlib.core:runtime |
-| <a id="core_import_binary_internal-src"></a>src |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | required |  |
-| <a id="core_import_binary_internal-version"></a>version |  -   | String | required |  |
+| <a id="core_import_binary_internal-src"></a>src |  The file to be transformed into [DotnetLibrary](api.md#dotnetlibrary) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | required |  |
+| <a id="core_import_binary_internal-version"></a>version |  Version of the imported assembly.   | String | required |  |
 
 
 <a id="#core_import_library"></a>
@@ -145,7 +171,7 @@ core_import_binary_internal(<a href="#core_import_binary_internal-name">name</a>
 core_import_library(<a href="#core_import_library-name">name</a>, <a href="#core_import_library-data">data</a>, <a href="#core_import_library-deps">deps</a>, <a href="#core_import_library-ref">ref</a>, <a href="#core_import_library-src">src</a>, <a href="#core_import_library-version">version</a>)
 </pre>
 
-
+This imports an external dll and transforms it into [DotnetLibrary](api.md#dotnetlibrary) so it can be referenced as dependency by other rules.
 
 
 **ATTRIBUTES**
@@ -154,11 +180,11 @@ core_import_library(<a href="#core_import_library-name">name</a>, <a href="#core
 | Name  | Description | Type | Mandatory | Default |
 | :------------- | :------------- | :------------- | :------------- | :------------- |
 | <a id="core_import_library-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
-| <a id="core_import_library-data"></a>data |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_import_library-deps"></a>deps |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_import_library-ref"></a>ref |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
-| <a id="core_import_library-src"></a>src |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | required |  |
-| <a id="core_import_library-version"></a>version |  -   | String | required |  |
+| <a id="core_import_library-data"></a>data |  Additional files to copy with the target assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="core_import_library-deps"></a>deps |  The direct dependencies of this dll. These may be [core_library](api.md#core_library) rules or compatible rules with the [DotnetLibrary](api.md#dotnetlibrary) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="core_import_library-ref"></a>ref |  [Reference assembly](https://docs.microsoft.com/en-us/dotnet/standard/assembly/reference-assemblies) for given library.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
+| <a id="core_import_library-src"></a>src |  The file to be transformed into [DotnetLibrary](api.md#dotnetlibrary) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | required |  |
+| <a id="core_import_library-version"></a>version |  Version of the imported assembly.   | String | required |  |
 
 
 <a id="#core_library"></a>
@@ -175,8 +201,8 @@ This builds a dotnet assembly from a set of source files.
     Providers
     ^^^^^^^^^
 
-    * [DotnetLibrary](api.md#DotnetLibrary)
-    * [DotnetResource](api.md#DotnetResource)
+    * [DotnetLibrary](api.md#dotnetlibrary)
+    * [DotnetResource](api.md#dotnetresource)
 
     Example:
     ^^^^^^^^
@@ -204,13 +230,13 @@ This builds a dotnet assembly from a set of source files.
 | <a id="core_library-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
 | <a id="core_library-data"></a>data |  The list of additional files to include in the list of runfiles for the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_library-defines"></a>defines |  The list of defines passed via /define compiler option.   | List of strings | optional | [] |
-| <a id="core_library-deps"></a>deps |  The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibrary](api.md#DotnetLibrary) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="core_library-deps"></a>deps |  The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibrary](api.md#dotnetlibrary) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_library-dotnet_context_data"></a>dotnet_context_data |  The reference to label created with [core_context_data rule](api.md#core_context_data). It points the SDK to be used for compiling given target.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @io_bazel_rules_dotnet//:core_context_data |
 | <a id="core_library-keyfile"></a>keyfile |  The key to sign the assembly with.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
 | <a id="core_library-langversion"></a>langversion |  Version of the language to use. See [this page](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version).   | String | optional | "latest" |
 | <a id="core_library-nowarn"></a>nowarn |  The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion.   | List of strings | optional | [] |
 | <a id="core_library-out"></a>out |  An alternative name of the output file.   | String | optional | "" |
-| <a id="core_library-resources"></a>resources |  The list of resources to compile with. Usually provided via reference to [dotnet_resx](api.md#dotnet_resx) or the rules compatible with [DotnetResource](api.md#DotnetResource) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="core_library-resources"></a>resources |  The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResource](api.md#dotnetresource) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_library-srcs"></a>srcs |  The list of .cs source files that are compiled to create the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_library-target_framework"></a>target_framework |  Target framework.   | String | optional | "" |
 | <a id="core_library-unsafe"></a>unsafe |  If true passes /unsafe flag to the compiler.   | Boolean | optional | False |
@@ -225,7 +251,7 @@ This builds a dotnet assembly from a set of source files.
 core_libraryset(<a href="#core_libraryset-name">name</a>, <a href="#core_libraryset-data">data</a>, <a href="#core_libraryset-deps">deps</a>)
 </pre>
 
-
+Groups libraries into sets which may be used as dependency.
 
 
 **ATTRIBUTES**
@@ -234,8 +260,8 @@ core_libraryset(<a href="#core_libraryset-name">name</a>, <a href="#core_library
 | Name  | Description | Type | Mandatory | Default |
 | :------------- | :------------- | :------------- | :------------- | :------------- |
 | <a id="core_libraryset-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
-| <a id="core_libraryset-data"></a>data |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_libraryset-deps"></a>deps |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="core_libraryset-data"></a>data |  The list of additional files to include in the list of runfiles for compiled assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="core_libraryset-deps"></a>deps |  The list of dependencies.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 
 
 <a id="#core_nunit3_test"></a>
@@ -269,13 +295,13 @@ This builds a set of tests that can be run with ``bazel test``.
 | <a id="core_nunit3_test-data"></a>data |  The list of additional files to include in the list of runfiles for the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_nunit3_test-data_with_dirs"></a>data_with_dirs |  Dictionary of {label:folder}. Files specified by &lt;label&gt; will be put in subdirectory &lt;folder&gt;.   | <a href="https://bazel.build/docs/skylark/lib/dict.html">Dictionary: Label -> String</a> | optional | {"@vstest//:Microsoft.TestPlatform.TestHostRuntimeProvider.dll": "Extensions", "@NUnit3TestAdapter//:extension": ".", "@JunitXml.TestLogger//:extension": "."} |
 | <a id="core_nunit3_test-defines"></a>defines |  The list of defines passed via /define compiler option.   | List of strings | optional | [] |
-| <a id="core_nunit3_test-deps"></a>deps |  The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibrary](api.md#DotnetLibrary) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="core_nunit3_test-deps"></a>deps |  The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibrary](api.md#dotnetlibrary) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_nunit3_test-dotnet_context_data"></a>dotnet_context_data |  The reference to label created with [core_context_data rule](api.md#core_context_data). It points the SDK to be used for compiling given target.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @io_bazel_rules_dotnet//:core_context_data |
 | <a id="core_nunit3_test-keyfile"></a>keyfile |  The key to sign the assembly with.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
 | <a id="core_nunit3_test-langversion"></a>langversion |  Version of the language to use. See [this page](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version).   | String | optional | "latest" |
 | <a id="core_nunit3_test-nowarn"></a>nowarn |  The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion.   | List of strings | optional | [] |
 | <a id="core_nunit3_test-out"></a>out |  An alternative name of the output file.   | String | optional | "" |
-| <a id="core_nunit3_test-resources"></a>resources |  The list of resources to compile with. Usually provided via reference to [dotnet_resx](api.md#dotnet_resx) or the rules compatible with [DotnetResource](api.md#DotnetResource) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="core_nunit3_test-resources"></a>resources |  The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResource](api.md#dotnetresource) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_nunit3_test-srcs"></a>srcs |  The list of .cs source files that are compiled to create the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_nunit3_test-testlauncher"></a>testlauncher |  Test launcher to use.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @xunit.runner.console//:netcoreapp2.1_core_tool |
 | <a id="core_nunit3_test-unsafe"></a>unsafe |  If true passes /unsafe flag to the compiler.   | Boolean | optional | False |
@@ -290,7 +316,7 @@ This builds a set of tests that can be run with ``bazel test``.
 core_resource(<a href="#core_resource-name">name</a>, <a href="#core_resource-dotnet_context_data">dotnet_context_data</a>, <a href="#core_resource-identifier">identifier</a>, <a href="#core_resource-src">src</a>)
 </pre>
 
-
+This wraps a resource so it can be embeded into an assembly.
 
 
 **ATTRIBUTES**
@@ -299,9 +325,9 @@ core_resource(<a href="#core_resource-name">name</a>, <a href="#core_resource-do
 | Name  | Description | Type | Mandatory | Default |
 | :------------- | :------------- | :------------- | :------------- | :------------- |
 | <a id="core_resource-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
-| <a id="core_resource-dotnet_context_data"></a>dotnet_context_data |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @io_bazel_rules_dotnet//:core_context_data |
-| <a id="core_resource-identifier"></a>identifier |  -   | String | optional | "" |
-| <a id="core_resource-src"></a>src |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | required |  |
+| <a id="core_resource-dotnet_context_data"></a>dotnet_context_data |  The reference to label created with [core_context_data rule](api.md#core_context_data). It points the SDK to be used for compiling given target.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @io_bazel_rules_dotnet//:core_context_data |
+| <a id="core_resource-identifier"></a>identifier |  The logical name for the resource; the name is used to load the resource. The default is the basename of the file name (no subfolder).   | String | optional | "" |
+| <a id="core_resource-src"></a>src |  The source to be embeded.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | required |  |
 
 
 <a id="#core_resource_multi"></a>
@@ -312,7 +338,7 @@ core_resource(<a href="#core_resource-name">name</a>, <a href="#core_resource-do
 core_resource_multi(<a href="#core_resource_multi-name">name</a>, <a href="#core_resource_multi-dotnet_context_data">dotnet_context_data</a>, <a href="#core_resource_multi-fixedIdentifierBase">fixedIdentifierBase</a>, <a href="#core_resource_multi-identifierBase">identifierBase</a>, <a href="#core_resource_multi-srcs">srcs</a>)
 </pre>
 
-
+This wraps multiple resource files so they can be embeded into an assembly.
 
 
 **ATTRIBUTES**
@@ -322,9 +348,9 @@ core_resource_multi(<a href="#core_resource_multi-name">name</a>, <a href="#core
 | :------------- | :------------- | :------------- | :------------- | :------------- |
 | <a id="core_resource_multi-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
 | <a id="core_resource_multi-dotnet_context_data"></a>dotnet_context_data |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @io_bazel_rules_dotnet//:core_context_data |
-| <a id="core_resource_multi-fixedIdentifierBase"></a>fixedIdentifierBase |  -   | String | optional | "" |
-| <a id="core_resource_multi-identifierBase"></a>identifierBase |  -   | String | optional | "" |
-| <a id="core_resource_multi-srcs"></a>srcs |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | required |  |
+| <a id="core_resource_multi-fixedIdentifierBase"></a>fixedIdentifierBase |  The logical name for given resource is constructred from fixedIdentiferBase + "." + filename. The resulting name that is used to load the resource. Either identifierBase of fixedIdentifierBase must be specified.   | String | optional | "" |
+| <a id="core_resource_multi-identifierBase"></a>identifierBase |  The logical name for given resource is constructred from identiferBase + "." + directory.repalce('/','.') + "." + filename. The resulting name is used to load the resource. Either identifierBase of fixedIdentifierBase must be specified.   | String | optional | "" |
+| <a id="core_resource_multi-srcs"></a>srcs |  The source files to be embeded.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | required |  |
 
 
 <a id="#core_resx"></a>
@@ -335,7 +361,7 @@ core_resource_multi(<a href="#core_resource_multi-name">name</a>, <a href="#core
 core_resx(<a href="#core_resx-name">name</a>, <a href="#core_resx-dotnet_context_data">dotnet_context_data</a>, <a href="#core_resx-identifier">identifier</a>, <a href="#core_resx-out">out</a>, <a href="#core_resx-simpleresgen">simpleresgen</a>, <a href="#core_resx-src">src</a>)
 </pre>
 
-
+This builds a dotnet .resources file from a single .resx file. Uses a custom tool to convert text .resx file to .resources files because no standard tool is provided.
 
 
 **ATTRIBUTES**
@@ -344,11 +370,11 @@ core_resx(<a href="#core_resx-name">name</a>, <a href="#core_resx-dotnet_context
 | Name  | Description | Type | Mandatory | Default |
 | :------------- | :------------- | :------------- | :------------- | :------------- |
 | <a id="core_resx-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
-| <a id="core_resx-dotnet_context_data"></a>dotnet_context_data |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @io_bazel_rules_dotnet//:core_context_data |
-| <a id="core_resx-identifier"></a>identifier |  -   | String | optional | "" |
-| <a id="core_resx-out"></a>out |  -   | String | optional | "" |
-| <a id="core_resx-simpleresgen"></a>simpleresgen |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @io_bazel_rules_dotnet//tools/simpleresgen:simpleresgen.exe |
-| <a id="core_resx-src"></a>src |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | required |  |
+| <a id="core_resx-dotnet_context_data"></a>dotnet_context_data |  The reference to label created with [core_context_data rule](api.md#core_context_data). It points the SDK to be used for compiling given target.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @io_bazel_rules_dotnet//:core_context_data |
+| <a id="core_resx-identifier"></a>identifier |  The logical name for the resource; the name that is used to load the resource. The default is the basename of the file name (no subfolder).   | String | optional | "" |
+| <a id="core_resx-out"></a>out |  An alternative name of the output file   | String | optional | "" |
+| <a id="core_resx-simpleresgen"></a>simpleresgen |  An alternative tool for generating resources file.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @io_bazel_rules_dotnet//tools/simpleresgen:simpleresgen.exe |
+| <a id="core_resx-src"></a>src |  The .resx source file that is transformed into .resources file.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | required |  |
 
 
 <a id="#core_stdlib"></a>
@@ -359,7 +385,7 @@ core_resx(<a href="#core_resx-name">name</a>, <a href="#core_resx-dotnet_context
 core_stdlib(<a href="#core_stdlib-name">name</a>, <a href="#core_stdlib-data">data</a>, <a href="#core_stdlib-deps">deps</a>, <a href="#core_stdlib-dll">dll</a>, <a href="#core_stdlib-dotnet_context_data">dotnet_context_data</a>, <a href="#core_stdlib-ref">ref</a>, <a href="#core_stdlib-stdlib_path">stdlib_path</a>, <a href="#core_stdlib-version">version</a>)
 </pre>
 
-
+It imports a framework dll and transforms it into [DotnetLibrary](api.md#dotnetlibrary) so it can be referenced as dependency by other rules.
 
 
 **ATTRIBUTES**
@@ -368,13 +394,13 @@ core_stdlib(<a href="#core_stdlib-name">name</a>, <a href="#core_stdlib-data">da
 | Name  | Description | Type | Mandatory | Default |
 | :------------- | :------------- | :------------- | :------------- | :------------- |
 | <a id="core_stdlib-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
-| <a id="core_stdlib-data"></a>data |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_stdlib-deps"></a>deps |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="core_stdlib-data"></a>data |  Additional files to copy with the target assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="core_stdlib-deps"></a>deps |  The direct dependencies of this dll. These may be [core_library](api.md#core_library) rules or compatible rules with the [DotnetLibrary](api.md#dotnetlibrary) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_stdlib-dll"></a>dll |  -   | String | optional | "" |
 | <a id="core_stdlib-dotnet_context_data"></a>dotnet_context_data |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @io_bazel_rules_dotnet//:core_context_data |
-| <a id="core_stdlib-ref"></a>ref |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
-| <a id="core_stdlib-stdlib_path"></a>stdlib_path |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
-| <a id="core_stdlib-version"></a>version |  -   | String | required |  |
+| <a id="core_stdlib-ref"></a>ref |  [Reference assembly](https://docs.microsoft.com/en-us/dotnet/standard/assembly/reference-assemblies) for given library.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
+| <a id="core_stdlib-stdlib_path"></a>stdlib_path |  The stdlib_path to be used instead of looking for one in sdk by name speeds up the rule execution because the proper file needs not to be searched for within sdk.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
+| <a id="core_stdlib-version"></a>version |  Version of the assembly.   | String | required |  |
 
 
 <a id="#core_stdlib_internal"></a>
@@ -385,7 +411,7 @@ core_stdlib(<a href="#core_stdlib-name">name</a>, <a href="#core_stdlib-data">da
 core_stdlib_internal(<a href="#core_stdlib_internal-name">name</a>, <a href="#core_stdlib_internal-data">data</a>, <a href="#core_stdlib_internal-deps">deps</a>, <a href="#core_stdlib_internal-dll">dll</a>, <a href="#core_stdlib_internal-ref">ref</a>, <a href="#core_stdlib_internal-stdlib_path">stdlib_path</a>, <a href="#core_stdlib_internal-version">version</a>)
 </pre>
 
-
+Internal. Do not use. It imports a framework dll and transforms it into [DotnetLibrary](api.md#dotnetlibrary) so it can be referenced as dependency by other rules. Used by //dotnet/stdlib... packages. It doesn't use dotnet_context_data. 
 
 
 **ATTRIBUTES**
@@ -433,13 +459,13 @@ This builds a set of tests that can be run with ``bazel test``.
 | <a id="core_xunit_test-data"></a>data |  The list of additional files to include in the list of runfiles for the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_xunit_test-data_with_dirs"></a>data_with_dirs |  Dictionary of {label:folder}. Files specified by &lt;label&gt; will be put in subdirectory &lt;folder&gt;.   | <a href="https://bazel.build/docs/skylark/lib/dict.html">Dictionary: Label -> String</a> | optional | {} |
 | <a id="core_xunit_test-defines"></a>defines |  The list of defines passed via /define compiler option.   | List of strings | optional | [] |
-| <a id="core_xunit_test-deps"></a>deps |  The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibrary](api.md#DotnetLibrary) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="core_xunit_test-deps"></a>deps |  The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibrary](api.md#dotnetlibrary) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_xunit_test-dotnet_context_data"></a>dotnet_context_data |  The reference to label created with [core_context_data rule](api.md#core_context_data). It points the SDK to be used for compiling given target.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @io_bazel_rules_dotnet//:core_context_data |
 | <a id="core_xunit_test-keyfile"></a>keyfile |  The key to sign the assembly with.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
 | <a id="core_xunit_test-langversion"></a>langversion |  Version of the language to use. See [this page](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version).   | String | optional | "latest" |
 | <a id="core_xunit_test-nowarn"></a>nowarn |  The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion.   | List of strings | optional | [] |
 | <a id="core_xunit_test-out"></a>out |  An alternative name of the output file.   | String | optional | "" |
-| <a id="core_xunit_test-resources"></a>resources |  The list of resources to compile with. Usually provided via reference to [dotnet_resx](api.md#dotnet_resx) or the rules compatible with [DotnetResource](api.md#DotnetResource) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="core_xunit_test-resources"></a>resources |  The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResource](api.md#dotnetresource) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_xunit_test-srcs"></a>srcs |  The list of .cs source files that are compiled to create the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_xunit_test-testlauncher"></a>testlauncher |  Test launcher to use.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @xunit.runner.console//:netcoreapp2.1_core_tool |
 | <a id="core_xunit_test-unsafe"></a>unsafe |  If true passes /unsafe flag to the compiler.   | Boolean | optional | False |
@@ -612,11 +638,11 @@ Enriches standard context with additional fields used by rules.
 | <a id="DotnetContext-resgen"></a>resgen |  None. Not used.    |
 | <a id="DotnetContext-tlbimp"></a>tlbimp |  None. Not used.    |
 | <a id="DotnetContext-declare_file"></a>declare_file |  Helper function for declaring new file. This is the equivalent of ctx.actions.declare_file.    |
-| <a id="DotnetContext-new_library"></a>new_library |  Function for creating new [DotnetLibrary](api.md#DotnetLibrary). See [new_library](api.md#new_library) for signature declaration.    |
-| <a id="DotnetContext-new_resource"></a>new_resource |  Function for creating new [DotnetResource](api.md#DotnetResource). See [new_resource](api.md#new_resource) for signature declaration.    |
+| <a id="DotnetContext-new_library"></a>new_library |  Function for creating new [DotnetLibrary](api.md#dotnetlibrary). See [new_library](api.md#new_library) for signature declaration.    |
+| <a id="DotnetContext-new_resource"></a>new_resource |  Function for creating new [DotnetResource](api.md#dotnetresource). See [new_resource](api.md#new_resource) for signature declaration.    |
 | <a id="DotnetContext-workspace_name"></a>workspace_name |  Workspace name.    |
 | <a id="DotnetContext-libVersion"></a>libVersion |  Should not be used.    |
-| <a id="DotnetContext-framework"></a>framework |  Framework version as specified in [list.bzl](../platform/list.bzl).    |
+| <a id="DotnetContext-framework"></a>framework |  Framework version as specified in dotnet/platform/list.bzl.    |
 | <a id="DotnetContext-lib"></a>lib |  Lib folder as declared in context_data.    |
 | <a id="DotnetContext-shared"></a>shared |  Shared folder as declared in context_data.    |
 | <a id="DotnetContext-debug"></a>debug |  True if debug compilation is requested.    |
@@ -631,21 +657,21 @@ Enriches standard context with additional fields used by rules.
 DotnetLibrary(<a href="#DotnetLibrary-label">label</a>, <a href="#DotnetLibrary-name">name</a>, <a href="#DotnetLibrary-version">version</a>, <a href="#DotnetLibrary-ref">ref</a>, <a href="#DotnetLibrary-deps">deps</a>, <a href="#DotnetLibrary-result">result</a>, <a href="#DotnetLibrary-pdb">pdb</a>, <a href="#DotnetLibrary-runfiles">runfiles</a>, <a href="#DotnetLibrary-transitive">transitive</a>)
 </pre>
 
-A represenatation of the dotnet assembly (regardless of framework used). See dotnet/providers.rst#DotnetLibrary for full documentation
+DotnetLibrary is a provider that exposes a compiled assembly along with it's full transitive dependencies.
 
 **FIELDS**
 
 
 | Name  | Description |
 | :------------- | :------------- |
-| <a id="DotnetLibrary-label"></a>label |  Label of the rule used to create this DotnetLibrary    |
-| <a id="DotnetLibrary-name"></a>name |  Name of the assembly (label.name if not provided)    |
-| <a id="DotnetLibrary-version"></a>version |  Version number of the library. Tuple with 5 elements    |
-| <a id="DotnetLibrary-ref"></a>ref |  Reference assembly for this DotnetLibrary. Must be set to ctx.attr.ref or result if not provided    |
-| <a id="DotnetLibrary-deps"></a>deps |  The direct dependencies of this library    |
-| <a id="DotnetLibrary-result"></a>result |  The assembly file    |
-| <a id="DotnetLibrary-pdb"></a>pdb |  The pdb file (with compilation mode dbg)    |
-| <a id="DotnetLibrary-runfiles"></a>runfiles |  The depset of direct runfiles (File)    |
+| <a id="DotnetLibrary-label"></a>label |  Label of the rule used to create this DotnetLibrary.    |
+| <a id="DotnetLibrary-name"></a>name |  Name of the assembly (label.name if not provided).    |
+| <a id="DotnetLibrary-version"></a>version |  Version number of the library. Tuple with 5 elements.    |
+| <a id="DotnetLibrary-ref"></a>ref |  Reference assembly for this DotnetLibrary. Must be set to ctx.attr.ref or result if not provided. See [reference assembly](https://docs.microsoft.com/en-us/dotnet/standard/assembly/reference-assemblies).    |
+| <a id="DotnetLibrary-deps"></a>deps |  The direct dependencies of this library.    |
+| <a id="DotnetLibrary-result"></a>result |  The assembly file.    |
+| <a id="DotnetLibrary-pdb"></a>pdb |  The pdb file (with compilation mode dbg).    |
+| <a id="DotnetLibrary-runfiles"></a>runfiles |  The depset of direct runfiles (File).    |
 | <a id="DotnetLibrary-transitive"></a>transitive |  The full set of transitive dependencies. This does not include this assembly. List of DotnetLibrary    |
 
 
@@ -654,13 +680,18 @@ A represenatation of the dotnet assembly (regardless of framework used). See dot
 ## DotnetResource
 
 <pre>
-DotnetResource()
+DotnetResource(<a href="#DotnetResource-result">result</a>, <a href="#DotnetResource-identifier">identifier</a>)
 </pre>
 
-
+Represents a resource file.
 
 **FIELDS**
 
+
+| Name  | Description |
+| :------------- | :------------- |
+| <a id="DotnetResource-result"></a>result |  The file to be embeded into assembly.    |
+| <a id="DotnetResource-identifier"></a>identifier |  Identifier used when loading the resource.    |
 
 
 <a id="#DotnetResourceList"></a>
@@ -668,13 +699,17 @@ DotnetResource()
 ## DotnetResourceList
 
 <pre>
-DotnetResourceList()
+DotnetResourceList(<a href="#DotnetResourceList-result">result</a>)
 </pre>
 
-
+Represents resource files. 
 
 **FIELDS**
 
+
+| Name  | Description |
+| :------------- | :------------- |
+| <a id="DotnetResourceList-result"></a>result |  Array of [DotnetResource](api.md#dotnetresource).    |
 
 
 <a id="#core_register_sdk"></a>
@@ -695,7 +730,7 @@ It downloads the sdk for given version. Uses [core_download_sdk](api.md#core_dow
 
 | Name  | Description | Default Value |
 | :------------- | :------------- | :------------- |
-| <a id="core_register_sdk-core_version"></a>core_version |  The exact version of the framework. The supported frameworks are listed in [list.bzl](../dotnet/platform/list.bzl).   |  <code>"v3.1.100"</code> |
+| <a id="core_register_sdk-core_version"></a>core_version |  The exact version of the framework. The supported frameworks are listed in dotnet/platform/list.bzl.   |  <code>"v3.1.100"</code> |
 | <a id="core_register_sdk-name"></a>name |  The name under which the SDK will be registered.   |  <code>"core_sdk"</code> |
 
 
@@ -707,7 +742,7 @@ It downloads the sdk for given version. Uses [core_download_sdk](api.md#core_dow
 dotnet_context(<a href="#dotnet_context-ctx">ctx</a>)
 </pre>
 
-Converts rule's context to [DotnetContext](api.md#DotnetContext)
+Converts rule's context to [DotnetContext](api.md#dotnetcontext)
 
 It uses the attrbutes and the toolchains.
 
@@ -752,7 +787,21 @@ def _my_rule_impl(ctx):
 dotnet_register_toolchains()
 </pre>
 
-dotnet_register_toolchains
+The macro registers all toolchains.
+
+
+
+<a id="#dotnet_repositories"></a>
+
+## dotnet_repositories
+
+<pre>
+dotnet_repositories()
+</pre>
+
+Fetches remote repositories required before loading other rules_dotnet files. 
+
+It fetches basic dependencies. For example: bazel_skylib is loaded.
 
 
 
@@ -777,19 +826,19 @@ emit_assembly_core(<a href="#emit_assembly_core-dotnet">dotnet</a>, <a href="#em
                    <a href="#emit_assembly_core-keyfile">keyfile</a>, <a href="#emit_assembly_core-subdir">subdir</a>, <a href="#emit_assembly_core-target_framework">target_framework</a>, <a href="#emit_assembly_core-nowarn">nowarn</a>, <a href="#emit_assembly_core-langversion">langversion</a>, <a href="#emit_assembly_core-version">version</a>)
 </pre>
 
- Emits actions and creates [DotnetLibrary](api.md#DotnetLibrary) for assembly compilation.
+ Emits actions and creates [DotnetLibrary](api.md#dotnetlibrary) for assembly compilation.
 
 **PARAMETERS**
 
 
 | Name  | Description | Default Value |
 | :------------- | :------------- | :------------- |
-| <a id="emit_assembly_core-dotnet"></a>dotnet |  [DotnetContext](api.md#DotnetContext)   |  none |
+| <a id="emit_assembly_core-dotnet"></a>dotnet |  [DotnetContext](api.md#dotnetcontext)   |  none |
 | <a id="emit_assembly_core-name"></a>name |  name of the assembly   |  none |
 | <a id="emit_assembly_core-srcs"></a>srcs |  source files (as passed from rules: list of lables/targets)   |  none |
-| <a id="emit_assembly_core-deps"></a>deps |  list of [DotnetLibrary](api.md#DotnetLibrary). Dependencies as passed from rules.   |  <code>None</code> |
+| <a id="emit_assembly_core-deps"></a>deps |  list of [DotnetLibrary](api.md#dotnetlibrary). Dependencies as passed from rules.   |  <code>None</code> |
 | <a id="emit_assembly_core-out"></a>out |  output file name if provided. Otherwise name is used.   |  <code>None</code> |
-| <a id="emit_assembly_core-resources"></a>resources |  list of [DotnetResourceList](api.md#DotnetResourceList) providers.   |  <code>None</code> |
+| <a id="emit_assembly_core-resources"></a>resources |  list of [DotnetResourceList](api.md#dotnetresourcelist) providers.   |  <code>None</code> |
 | <a id="emit_assembly_core-executable"></a>executable |  bool. True for executable assembly, False otherwise.   |  <code>True</code> |
 | <a id="emit_assembly_core-defines"></a>defines |  list of string. Defines to pass to a compiler.   |  <code>None</code> |
 | <a id="emit_assembly_core-unsafe"></a>unsafe |  /unsafe flag (False - default - /unsafe-, otherwise /unsafe+).   |  <code>False</code> |
@@ -812,7 +861,7 @@ emit_resx_core(<a href="#emit_resx_core-dotnet">dotnet</a>, <a href="#emit_resx_
 
 The function adds an action that compiles a single .resx file into .resources file.
 
-Returns [DotnetResource](api.md#DotnetResource).
+Returns [DotnetResource](api.md#dotnetresource).
 
 
 **PARAMETERS**
@@ -820,7 +869,7 @@ Returns [DotnetResource](api.md#DotnetResource).
 
 | Name  | Description | Default Value |
 | :------------- | :------------- | :------------- |
-| <a id="emit_resx_core-dotnet"></a>dotnet |  [DotnetContext](api.md#DotnetContext).   |  none |
+| <a id="emit_resx_core-dotnet"></a>dotnet |  [DotnetContext](api.md#dotnetcontext).   |  none |
 | <a id="emit_resx_core-name"></a>name |  name of the file to generate.   |  <code>""</code> |
 | <a id="emit_resx_core-src"></a>src |  The .resx source file that is transformed into .resources file. Only <code>.resx</code> files are permitted.   |  <code>None</code> |
 | <a id="emit_resx_core-identifier"></a>identifier |  The logical name for the resource; the name that is used to load the resource. The default is the basename of the file name (no subfolder).   |  <code>None</code> |
@@ -836,18 +885,18 @@ Returns [DotnetResource](api.md#DotnetResource).
 new_library(<a href="#new_library-dotnet">dotnet</a>, <a href="#new_library-name">name</a>, <a href="#new_library-deps">deps</a>, <a href="#new_library-transitive">transitive</a>, <a href="#new_library-result">result</a>, <a href="#new_library-pdb">pdb</a>, <a href="#new_library-runfiles">runfiles</a>, <a href="#new_library-version">version</a>, <a href="#new_library-ref">ref</a>)
 </pre>
 
-This creates a new [DotnetLibrary](api.md#DotnetLibrary).
+This creates a new [DotnetLibrary](api.md#dotnetlibrary).
 
 **PARAMETERS**
 
 
 | Name  | Description | Default Value |
 | :------------- | :------------- | :------------- |
-| <a id="new_library-dotnet"></a>dotnet |  [DotnetContext](api.md#DotnetContext).   |  none |
+| <a id="new_library-dotnet"></a>dotnet |  [DotnetContext](api.md#dotnetcontext).   |  none |
 | <a id="new_library-name"></a>name |  name of the file to generate.   |  <code>None</code> |
 | <a id="new_library-deps"></a>deps |  The direct dependencies of this library.   |  <code>None</code> |
 | <a id="new_library-transitive"></a>transitive |  The full set of transitive dependencies. This includes <code></code>deps<code></code> for this  library and all <code></code>deps<code></code> members transitively reachable through <code></code>deps<code></code>.   |  <code>None</code> |
-| <a id="new_library-result"></a>result |  The result to include in [DotnetLibrary](api.md#DotnetLibrary) (used when importing external assemblies).   |  <code>None</code> |
+| <a id="new_library-result"></a>result |  The result to include in [DotnetLibrary](api.md#dotnetlibrary) (used when importing external assemblies).   |  <code>None</code> |
 | <a id="new_library-pdb"></a>pdb |  If .pdb file for given library should be generated.   |  <code>None</code> |
 | <a id="new_library-runfiles"></a>runfiles |  Runfiles for DotnetLibrary   |  <code>None</code> |
 | <a id="new_library-version"></a>version |  version to use for the library   |  <code>None</code> |
@@ -862,14 +911,14 @@ This creates a new [DotnetLibrary](api.md#DotnetLibrary).
 new_resource(<a href="#new_resource-dotnet">dotnet</a>, <a href="#new_resource-name">name</a>, <a href="#new_resource-result">result</a>, <a href="#new_resource-identifier">identifier</a>, <a href="#new_resource-kwargs">kwargs</a>)
 </pre>
 
-This creates a new [DotnetLibrary](api.md#DotnetLibrary).
+This creates a new [DotnetLibrary](api.md#dotnetlibrary).
 
 **PARAMETERS**
 
 
 | Name  | Description | Default Value |
 | :------------- | :------------- | :------------- |
-| <a id="new_resource-dotnet"></a>dotnet |  [DotnetContext](api.md#DotnetContext).   |  none |
+| <a id="new_resource-dotnet"></a>dotnet |  [DotnetContext](api.md#dotnetcontext).   |  none |
 | <a id="new_resource-name"></a>name |  name of the file to generate.   |  none |
 | <a id="new_resource-result"></a>result |  The .resources file.   |  none |
 | <a id="new_resource-identifier"></a>identifier |  Identifier passed to -resource flag of mcs compiler. If empty the basename of the result.   |  <code>None</code> |

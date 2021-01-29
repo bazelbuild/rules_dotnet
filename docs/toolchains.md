@@ -1,18 +1,15 @@
-Dotnet toolchains
-=================
+# Dotnet toolchains
 
 The design and implementation is heavily based on 
 [rules_go toolchains](https://github.com/bazelbuild/rules_go/blob/master/go/toolchains.rst).
 
 
-Design
-------
+## Design
 
-The Dotnet toolchain consists of three main layers, [the sdk](#the_sdk) and [the toolchain](#the_toolchain)
-and [the context](#the_context).
+The Dotnet toolchain consists of three main layers, [the sdk](#the-sdk) and [the toolchain](#the-toolchain)
+and [the context](api.md#dotnetcontext).
 
-The SDK
-~~~~~~~
+### The SDK
 
 At the bottom there are frameworks (.NET Core). More than one version of the
 framework may be used at the same time.
@@ -25,14 +22,12 @@ responsible for downloading SDK, and adding just enough of a build file to expos
 contents to Bazel.
 
 
-The toolchain
-~~~~~~~~~~~~~
+### The toolchain
 
 This a wrapper over the sdk that provides enough extras to match, target and work on a specific
-platforms. It should be considered an opaque type, you only ever use it through [the context](#the_context).
+platforms. It should be considered an opaque type, you only ever use it through [the context](api.md#dotnetcontext).
 
-Declaration
-^^^^^^^^^^^
+#### Declaration
 
 Toolchains are declared using the dotnet_toolchain macro.
 
@@ -49,8 +44,7 @@ it's default name, the following toolchain labels (along with many others) will 
   
 The toolchains are not usable until you register them.
 
-Registration
-^^^^^^^^^^^^
+#### Registration
 
 Normally you would just call [dotnet_register_toolchains](api.md#dotnet_register_toolchains) from your WORKSPACE 
 to register all the pre-declared toolchains, and allow normal selection logic to pick the right one.

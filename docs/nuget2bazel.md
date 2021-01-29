@@ -31,7 +31,7 @@ with proper directives.
 
 However, typically it is more convenient to modify .bzl file to declare
 dependencies in a separate function called in WORKSPACE. See for example
-[nuget.bzl](../dotnet/private/deps/nuget.bzl).
+dotnet/private/deps/nuget.bzl.
 
 To use custom nuget packages source two additional flags have to be
 provided:

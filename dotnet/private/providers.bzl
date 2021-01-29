@@ -24,6 +24,6 @@ DotnetResource = provider(
 DotnetResourceList = provider(
     doc = "Represents resource files. ",
     fields = {
-        "result": "Array of [DotnetResource](api.md#DotnetResource).",
+        "result": "Array of [DotnetResource](api.md#dotnetresource).",
     },
 )

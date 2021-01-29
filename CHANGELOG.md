@@ -26,5 +26,9 @@ Incompatible changes:
     Bazel because they cannot be used without previous installation. 
   - nuget_package rule is dropped. nuget_package_new should be used instead.
 
+Important changes:
+
+  - Converted documentation to markdown and [stardoc](https://github.com/bazelbuild/stardoc).   
+
 
 This release contains contributions from Jimmy Reichley, Helgevold Consulting, and tomaszstrejczek.

@@ -1,7 +1,0 @@
-﻿{
-  "externals": {},
-  "dependencies": {
-    "Castle.Core": "3.3.3",
-    "Moq": "4.5.9"
-  }
-}

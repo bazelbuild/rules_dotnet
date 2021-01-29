@@ -104,14 +104,14 @@ core_stdlib = rule(
         "dll": attr.string(),
         "version": attr.string(mandatory = True, doc = "Version of the assembly."),
         "ref": attr.label(allow_files = True, mandatory = False, doc = "[Reference assembly](https://docs.microsoft.com/en-us/dotnet/standard/assembly/reference-assemblies) for given library."),
-        "deps": attr.label_list(providers = [DotnetLibrary], doc = "The direct dependencies of this dll. These may be [dotnet_library](api.md#dotnet_library) rules or compatible rules with the [DotnetLibrary](api.md#DotnetLibrary) provider."),
+        "deps": attr.label_list(providers = [DotnetLibrary], doc = "The direct dependencies of this dll. These may be [core_library](api.md#core_library) rules or compatible rules with the [DotnetLibrary](api.md#dotnetlibrary) provider."),
         "data": attr.label_list(allow_files = True, doc = "Additional files to copy with the target assembly."),
         "stdlib_path": attr.label(allow_files = True, doc = "The stdlib_path to be used instead of looking for one in sdk by name speeds up the rule execution because the proper file needs not to be searched for within sdk."),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
     executable = False,
-    doc = "It imports a framework dll and transforms it into [DotnetLibrary](api.md#DotnetLibrary) so it can be referenced as dependency by other rules.",
+    doc = "It imports a framework dll and transforms it into [DotnetLibrary](api.md#dotnetlibrary) so it can be referenced as dependency by other rules.",
 )
 
 core_stdlib_internal = rule(
@@ -126,5 +126,5 @@ core_stdlib_internal = rule(
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
     executable = False,
-    doc = "Internal. Do not use. It imports a framework dll and transforms it into [DotnetLibrary](api.md#DotnetLibrary) so it can be referenced as dependency by other rules. Used by //dotnet/stdlib... packages. It doesn't use dotnet_context_data. ",
+    doc = "Internal. Do not use. It imports a framework dll and transforms it into [DotnetLibrary](api.md#dotnetlibrary) so it can be referenced as dependency by other rules. Used by //dotnet/stdlib... packages. It doesn't use dotnet_context_data. ",
 )

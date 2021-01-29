@@ -48,9 +48,9 @@ def _library_impl(ctx):
 core_library = rule(
     _library_impl,
     attrs = {
-        "deps": attr.label_list(providers = [DotnetLibrary], doc = "The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibrary](api.md#DotnetLibrary) provider."),
+        "deps": attr.label_list(providers = [DotnetLibrary], doc = "The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibrary](api.md#dotnetlibrary) provider."),
         "version": attr.string(doc = "Version to be set for the assembly. The version is set by compiling in [AssemblyVersion](https://docs.microsoft.com/en-us/troubleshoot/visualstudio/general/assembly-version-assembly-file-version) attribute."),
-        "resources": attr.label_list(providers = [DotnetResourceList], doc = "The list of resources to compile with. Usually provided via reference to [dotnet_resx](api.md#dotnet_resx) or the rules compatible with [DotnetResource](api.md#DotnetResource) provider."),
+        "resources": attr.label_list(providers = [DotnetResourceList], doc = "The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResource](api.md#dotnetresource) provider."),
         "srcs": attr.label_list(allow_files = [".cs"], doc = "The list of .cs source files that are compiled to create the assembly."),
         "out": attr.string(doc = "An alternative name of the output file."),
         "defines": attr.string_list(doc = "The list of defines passed via /define compiler option."),
@@ -69,8 +69,8 @@ core_library = rule(
     Providers
     ^^^^^^^^^
 
-    * [DotnetLibrary](api.md#DotnetLibrary)
-    * [DotnetResource](api.md#DotnetResource)
+    * [DotnetLibrary](api.md#dotnetlibrary)
+    * [DotnetResource](api.md#dotnetresource)
 
     Example:
     ^^^^^^^^

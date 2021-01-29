@@ -34,11 +34,11 @@ DotnetContext = provider(
         "resgen": "None. Not used.",
         "tlbimp": "None. Not used.",
         "declare_file": "Helper function for declaring new file. This is the equivalent of ctx.actions.declare_file.",
-        "new_library": "Function for creating new [DotnetLibrary](api.md#DotnetLibrary). See [new_library](api.md#new_library) for signature declaration.",
-        "new_resource": "Function for creating new [DotnetResource](api.md#DotnetResource). See [new_resource](api.md#new_resource) for signature declaration.",
+        "new_library": "Function for creating new [DotnetLibrary](api.md#dotnetlibrary). See [new_library](api.md#new_library) for signature declaration.",
+        "new_resource": "Function for creating new [DotnetResource](api.md#dotnetresource). See [new_resource](api.md#new_resource) for signature declaration.",
         "workspace_name": "Workspace name.",
         "libVersion": "Should not be used.",
-        "framework": "Framework version as specified in [list.bzl](../platform/list.bzl).",
+        "framework": "Framework version as specified in dotnet/platform/list.bzl.",
         "lib": "Lib folder as declared in context_data.",
         "shared": "Shared folder as declared in context_data.",
         "debug": "True if debug compilation is requested.",
@@ -62,14 +62,14 @@ def new_library(
         runfiles = None,
         version = None,
         ref = None):
-    """This creates a new [DotnetLibrary](api.md#DotnetLibrary).
+    """This creates a new [DotnetLibrary](api.md#dotnetlibrary).
 
     Args:
-        dotnet: [DotnetContext](api.md#DotnetContext).
+        dotnet: [DotnetContext](api.md#dotnetcontext).
         name: name of the file to generate.
         deps: The direct dependencies of this library.
         transitive: The full set of transitive dependencies. This includes ``deps`` for this  library and all ``deps`` members transitively reachable through ``deps``.
-        result: The result to include in [DotnetLibrary](api.md#DotnetLibrary) (used when importing external assemblies).
+        result: The result to include in [DotnetLibrary](api.md#dotnetlibrary) (used when importing external assemblies).
         pdb: If .pdb file for given library should be generated.
         runfiles: Runfiles for DotnetLibrary
         version: version to use for the library
@@ -88,10 +88,10 @@ def new_library(
     )
 
 def new_resource(dotnet, name, result, identifier = None, **kwargs):
-    """This creates a new [DotnetLibrary](api.md#DotnetLibrary).
+    """This creates a new [DotnetLibrary](api.md#dotnetlibrary).
 
     Args:
-        dotnet: [DotnetContext](api.md#DotnetContext).
+        dotnet: [DotnetContext](api.md#dotnetcontext).
         name: name of the file to generate.
         result: The .resources file.
         identifier: Identifier passed to -resource flag of mcs compiler. If empty the basename of the result.
@@ -106,7 +106,7 @@ def new_resource(dotnet, name, result, identifier = None, **kwargs):
     )
 
 def dotnet_context(ctx):
-    """Converts rule's context to [DotnetContext](api.md#DotnetContext)
+    """Converts rule's context to [DotnetContext](api.md#dotnetcontext)
 
     It uses the attrbutes and the toolchains.
 
@@ -138,7 +138,7 @@ def dotnet_context(ctx):
         ctx: The Bazel ctx object for the current rule.
 
     Returns:
-        DotnetContext: [DotnetContext](api.md#DotnetContext) provider for ctx rule.
+        DotnetContext: [DotnetContext](api.md#dotnetcontext) provider for ctx rule.
     """
     attr = ctx.attr
 
