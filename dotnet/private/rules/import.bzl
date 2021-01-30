@@ -10,9 +10,9 @@ load(
     "//dotnet/private:providers.bzl",
     "DotnetLibraryInfo",
 )
-load("//dotnet/private:rules/common.bzl", "collect_transitive_info")
-load("//dotnet/private:rules/versions.bzl", "parse_version")
-load("//dotnet/private:rules/runfiles.bzl", "CopyRunfiles")
+load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
+load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "parse_version")
+load("@io_bazel_rules_dotnet//dotnet/private:rules/runfiles.bzl", "CopyRunfiles")
 
 def _import_library_impl(ctx):
     name = ctx.label.name

@@ -70,10 +70,10 @@ load(
     "//dotnet/private:nugets.bzl",
     _dotnet_repositories_nugets = "dotnet_repositories_nugets",
 )
-load("//dotnet/private:actions/assembly_core.bzl", _emit_assembly_core = "emit_assembly_core")
-load("//dotnet/private:actions/resx_core.bzl", _emit_resx_core = "emit_resx_core")
-load("//dotnet/private:sdk_core.bzl", _core_download_sdk = "core_download_sdk")
-load("//dotnet/private:repositories.bzl", _dotnet_repositories = "dotnet_repositories")
+load("@io_bazel_rules_dotnet//dotnet/private:actions/assembly_core.bzl", _emit_assembly_core = "emit_assembly_core")
+load("@io_bazel_rules_dotnet//dotnet/private:actions/resx_core.bzl", _emit_resx_core = "emit_resx_core")
+load("@io_bazel_rules_dotnet//dotnet/private:sdk_core.bzl", _core_download_sdk = "core_download_sdk")
+load("@io_bazel_rules_dotnet//dotnet/private:repositories.bzl", _dotnet_repositories = "dotnet_repositories")
 
 dotnet_context = _dotnet_context
 DotnetContextInfo = _DotnetContextInfo

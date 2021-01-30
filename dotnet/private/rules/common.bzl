@@ -1,5 +1,5 @@
-load("//dotnet/private:providers.bzl", "DotnetLibraryInfo")
-load("//dotnet/private:rules/versions.bzl", "compare_versions")
+load("@io_bazel_rules_dotnet//dotnet/private:providers.bzl", "DotnetLibraryInfo")
+load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "compare_versions")
 
 def collect_transitive_info(deps):
     """Collects transitive information.
@@ -18,7 +18,6 @@ def collect_transitive_info(deps):
     found = None
 
     for dep in deps:
-        print(dep)
         assembly = dep[DotnetLibraryInfo]
 
         # Empty result is set for librarysets

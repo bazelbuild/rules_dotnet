@@ -1,4 +1,4 @@
-load("//dotnet/private:rules/nuget.bzl", "nuget_package")
+load("@io_bazel_rules_dotnet//dotnet/private:rules/nuget.bzl", "nuget_package")
 
 def project_dotnet_repositories_nuget():
     source = ["https://www.nuget.org/api/v2/package", "https://dotnet.myget.org/F/dotnet-corefxlab/api/v2/package"]

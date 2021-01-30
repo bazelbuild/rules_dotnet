@@ -1,5 +1,5 @@
-load("//dotnet/private:common.bzl", "env_execute")
-load("//dotnet:defs.bzl", "dotnet_context")
+load("@io_bazel_rules_dotnet//dotnet/private:common.bzl", "env_execute")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_context")
 
 # _bazelrc is the bazel.rc file that sets the default options for tests
 _bazelrc = """
@@ -18,7 +18,7 @@ build:fetch --fetch=True
 
 # _env_build_template is the template for the bazel test environment repository build file
 _env_build_template = """
-load("//tests:bazel_tests.bzl", "bazel_test_settings")
+load("@io_bazel_rules_dotnet//tests:bazel_tests.bzl", "bazel_test_settings")
 bazel_test_settings(
   name = "settings",
   bazel = "{bazel}",

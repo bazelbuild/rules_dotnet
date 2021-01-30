@@ -6,8 +6,8 @@ load(
     "//dotnet/private:providers.bzl",
     "DotnetResourceListInfo",
 )
-load("//dotnet/private:rules/common.bzl", "collect_transitive_info")
-load("//dotnet/private:rules/versions.bzl", "version2string")
+load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
+load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "version2string")
 
 def _map_resource(d):
     return d.result.path + "," + d.identifier

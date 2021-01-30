@@ -3,8 +3,8 @@ Toolchain rules used by dotnet.
 """
 
 load("@rules_dotnet_skylib//lib:paths.bzl", "paths")
-load("//dotnet/private:actions/assembly_core.bzl", "emit_assembly_core")
-load("//dotnet/private:actions/resx_core.bzl", "emit_resx_core")
+load("@io_bazel_rules_dotnet//dotnet/private:actions/assembly_core.bzl", "emit_assembly_core")
+load("@io_bazel_rules_dotnet//dotnet/private:actions/resx_core.bzl", "emit_resx_core")
 
 def _get_dotnet_runner(context_data, ext):
     return context_data._runner
