@@ -25,6 +25,7 @@ Incompatible changes:
   - support for Mono and .NET Framework is dropped. They do not mix well with 
     Bazel because they cannot be used without previous installation. 
   - nuget_package rule is dropped. nuget_package_new should be used instead.
+  - rename providers to follow recommended patter *Info.
 
 Important changes:
 

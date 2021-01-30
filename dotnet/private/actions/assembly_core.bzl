@@ -17,15 +17,15 @@ def emit_assembly_core(
         nowarn = None,
         langversion = "latest",
         version = (0, 0, 0, 0, "")):
-    """ Emits actions and creates [DotnetLibrary](api.md#dotnetlibrary) for assembly compilation.
+    """ Emits actions and creates [DotnetLibraryInfo](api.md#dotnetlibraryinfo) for assembly compilation.
 
     Args:
-        dotnet: [DotnetContext](api.md#dotnetcontext)
+        dotnet: [DotnetContextInfo](api.md#dotnetcontextinfo)
         name: name of the assembly
         srcs: source files (as passed from rules: list of lables/targets)
-        deps: list of [DotnetLibrary](api.md#dotnetlibrary). Dependencies as passed from rules.
+        deps: list of [DotnetLibraryInfo](api.md#dotnetlibraryinfo). Dependencies as passed from rules.
         out: output file name if provided. Otherwise name is used.
-        resources: list of [DotnetResourceList](api.md#dotnetresourcelist) providers.
+        resources: list of [DotnetResourceListInfo](api.md#dotnetresourceinfolist) providers.
         executable: bool. True for executable assembly, False otherwise.
         defines: list of string. Defines to pass to a compiler.
         unsafe: /unsafe flag (False - default - /unsafe-, otherwise /unsafe+).

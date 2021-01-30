@@ -8,7 +8,7 @@ load(
 )
 load(
     "//dotnet/private:providers.bzl",
-    "DotnetLibrary",
+    "DotnetLibraryInfo",
 )
 load("//dotnet/private:rules/common.bzl", "collect_transitive_info")
 load("//dotnet/private:rules/versions.bzl", "parse_version")
@@ -32,7 +32,7 @@ def _import_library_impl(ctx):
 
     runfiles = depset(direct = direct_runfiles)
 
-    library = DotnetLibrary(
+    library = DotnetLibraryInfo(
         name = name,
         deps = deps,
         transitive = transitive,
@@ -43,15 +43,7 @@ def _import_library_impl(ctx):
     )
 
     return [
-        DotnetLibrary(
-            name = name,
-            deps = deps,
-            transitive = transitive,
-            runfiles = runfiles,
-            result = result,
-            version = parse_version(ctx.attr.version),
-            ref = ctx.attr.ref.files.to_list()[0] if ctx.attr.ref != None else result,
-        ),
+        library,
         DefaultInfo(
             files = depset([library.result]),
             runfiles = ctx.runfiles(files = library.runfiles.to_list(), transitive_files = depset(transitive = [t.runfiles for t in library.transitive])),
@@ -125,21 +117,22 @@ def _import_binary_internal_impl(ctx):
 core_import_library = rule(
     _import_library_impl,
     attrs = {
-        "deps": attr.label_list(providers = [DotnetLibrary], doc = "The direct dependencies of this dll. These may be [core_library](api.md#core_library) rules or compatible rules with the [DotnetLibrary](api.md#dotnetlibrary) provider."),
-        "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True, doc = "The file to be transformed into [DotnetLibrary](api.md#dotnetlibrary) provider."),
+        "deps": attr.label_list(providers = [DotnetLibraryInfo], doc = "The direct dependencies of this dll. These may be [core_library](api.md#core_library) rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider."),
+        "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True, doc = "The file to be transformed into [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider."),
         "data": attr.label_list(allow_files = True, doc = "Additional files to copy with the target assembly. "),
         "version": attr.string(mandatory = True, doc = "Version of the imported assembly."),
         "ref": attr.label(allow_files = True, mandatory = False, doc = "[Reference assembly](https://docs.microsoft.com/en-us/dotnet/standard/assembly/reference-assemblies) for given library."),
     },
+    provides = [DotnetLibraryInfo],
     executable = False,
-    doc = "This imports an external dll and transforms it into [DotnetLibrary](api.md#dotnetlibrary) so it can be referenced as dependency by other rules.",
+    doc = "This imports an external dll and transforms it into [DotnetLibraryInfo](api.md#dotnetlibraryinfo) so it can be referenced as dependency by other rules.",
 )
 
 core_import_binary = rule(
     _import_library_impl,
     attrs = {
-        "deps": attr.label_list(providers = [DotnetLibrary], doc = "The direct dependencies of this dll. These may be [core_library](api.md#core_library) rules or compatible rules with the [DotnetLibrary](api.md#dotnetlibrary) provider."),
-        "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True, doc = "The file to be transformed into [DotnetLibrary](api.md#dotnetlibrary) provider."),
+        "deps": attr.label_list(providers = [DotnetLibraryInfo], doc = "The direct dependencies of this dll. These may be [core_library](api.md#core_library) rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider."),
+        "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True, doc = "The file to be transformed into [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider."),
         "data": attr.label_list(allow_files = True, doc = "Additional files to copy with the target assembly."),
         "version": attr.string(mandatory = True, doc = "Version of the imported assembly."),
         "ref": attr.label(allow_files = True, mandatory = False, doc = "[Reference assembly](https://docs.microsoft.com/en-us/dotnet/standard/assembly/reference-assemblies) for given library."),
@@ -154,15 +147,15 @@ core_import_binary = rule(
 core_import_binary_internal = rule(
     _import_binary_internal_impl,
     attrs = {
-        "deps": attr.label_list(providers = [DotnetLibrary], doc = "The direct dependencies of this dll. These may be [core_library](api.md#core_library) rules or compatible rules with the [DotnetLibrary](api.md#dotnetlibrary) provider."),
-        "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True, doc = "The file to be transformed into [DotnetLibrary](api.md#dotnetlibrary) provider."),
+        "deps": attr.label_list(providers = [DotnetLibraryInfo], doc = "The direct dependencies of this dll. These may be [core_library](api.md#core_library) rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider."),
+        "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True, doc = "The file to be transformed into [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider."),
         "data": attr.label_list(allow_files = True, doc = "Additional files to copy with the target assembly."),
         "version": attr.string(mandatory = True, doc = "Version of the imported assembly."),
         "ref": attr.label(allow_files = True, mandatory = False, doc = "[Reference assembly](https://docs.microsoft.com/en-us/dotnet/standard/assembly/reference-assemblies) for given library."),
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_core:launcher_core.exe")),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
-        "runtime": attr.label(providers = [DotnetLibrary], default = "@io_bazel_rules_dotnet//dotnet/stdlib.core:runtime"),
+        "runtime": attr.label(providers = [DotnetLibraryInfo], default = "@io_bazel_rules_dotnet//dotnet/stdlib.core:runtime"),
         "runner": attr.label(default = "@core_sdk//:runner"),
     },
     executable = True,

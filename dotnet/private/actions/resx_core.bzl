@@ -18,10 +18,10 @@ def emit_resx_core(
         customresgen = None):
     """The function adds an action that compiles a single .resx file into .resources file.
 
-    Returns [DotnetResource](api.md#dotnetresource).
+    Returns [DotnetResourceInfo](api.md#dotnetresourceinfo).
 
     Args:
-        dotnet: [DotnetContext](api.md#dotnetcontext).
+        dotnet: [DotnetContextInfo](api.md#dotnetcontextinfo).
         name: name of the file to generate.
         src: The .resx source file that is transformed into .resources file. Only `.resx` files are permitted.
         identifier: The logical name for the resource; the name that is used to load the resource. The default is the basename of the file name (no subfolder).
@@ -29,7 +29,7 @@ def emit_resx_core(
         customresgen: custom resgen program to use.
 
     Returns:
-        DotnetResource: [DotnetResource](api.md#dotnetresource).
+        DotnetResourceInfo: [DotnetResourceInfo](api.md#dotnetresourceinfo).
     """
     if name == "" and out == None:
         fail("either name or out must be set")

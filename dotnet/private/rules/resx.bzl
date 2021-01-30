@@ -4,7 +4,7 @@ load(
 )
 load(
     "//dotnet/private:providers.bzl",
-    "DotnetResourceList",
+    "DotnetResourceListInfo",
 )
 load("@rules_dotnet_skylib//lib:paths.bzl", "paths")
 
@@ -18,7 +18,7 @@ def _resx_impl(ctx):
         result = dotnet.declare_file(dotnet, path = "empty.resources")
         dotnet.actions.write(output = result, content = ".net not supported on this platform")
         empty = dotnet.new_resource(dotnet = dotnet, name = name, result = result)
-        return [empty, DotnetResourceList(result = [empty])]
+        return [empty, DotnetResourceListInfo(result = [empty])]
 
     resource = dotnet.resx(
         dotnet,
@@ -30,7 +30,7 @@ def _resx_impl(ctx):
     )
     return [
         resource,
-        DotnetResourceList(result = [resource]),
+        DotnetResourceListInfo(result = [resource]),
         DefaultInfo(
             files = depset([resource.result]),
         ),
@@ -66,7 +66,7 @@ def _resx_multi_impl(ctx):
             result.append(resource)
 
     return [
-        DotnetResourceList(result = result),
+        DotnetResourceListInfo(result = result),
         DefaultInfo(
             files = depset([d.result for d in result]),
         ),

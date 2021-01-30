@@ -1,6 +1,6 @@
 load(
     "//dotnet/private:providers.bzl",
-    "DotnetLibrary",
+    "DotnetLibraryInfo",
 )
 load(
     "//dotnet/platform:list.bzl",
@@ -184,7 +184,7 @@ def _nuget_package_impl(ctx):
 
     if ctx.attr.core_tool != "":
         content += _get_importlib_withframework("core_import_binary", "core_libraryset", "core_tool", DOTNET_CORE_NAMES, ctx.attr.core_tool, None, ctx.attr.core_deps, ctx.attr.core_files, ctx.attr.version)
-        content += "alias(name=\"core_too\", actual=\":netcoreapp3.1_core_tool\")\n"
+        content += "alias(name=\"core_tool\", actual=\":netcoreapp3.1_core_tool\")\n"
 
     package = ctx.attr.package
     output_dir = ctx.path("")
@@ -217,7 +217,7 @@ _nuget_package_attrs = {
     "mono_tool": attr.string(default = ""),
     "core_deps": attr.string_list_dict(doc = "The list of the dependencies of the package (core)."),
     "net_deps": attr.string_list_dict(),
-    "mono_deps": attr.label_list(providers = [DotnetLibrary]),
+    "mono_deps": attr.label_list(providers = [DotnetLibraryInfo]),
     "core_files": attr.string_list_dict(doc = "The list of additional files within the package to be used as runfiles (necessary to run)."),
     "net_files": attr.string_list_dict(),
     "mono_files": attr.string_list(),

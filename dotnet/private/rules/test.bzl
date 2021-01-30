@@ -4,8 +4,8 @@ load(
 )
 load(
     "//dotnet/private:providers.bzl",
-    "DotnetLibrary",
-    "DotnetResourceList",
+    "DotnetLibraryInfo",
+    "DotnetResourceListInfo",
 )
 load(
     "//dotnet/private:rules/runfiles.bzl",
@@ -75,8 +75,8 @@ def _unit_test(ctx):
         transitive_runfiles.append(ctx.attr._xslt.files)
 
     transitive_runfiles += [t.runfiles for t in run_transitive]
-    transitive_runfiles.append(ctx.attr.testlauncher[DotnetLibrary].runfiles)
-    transitive_runfiles += [t.runfiles for t in ctx.attr.testlauncher[DotnetLibrary].transitive]
+    transitive_runfiles.append(ctx.attr.testlauncher[DotnetLibraryInfo].runfiles)
+    transitive_runfiles += [t.runfiles for t in ctx.attr.testlauncher[DotnetLibraryInfo].transitive]
     transitive_runfiles.append(executable.runfiles)
 
     runfiles = ctx.runfiles(files = direct_runfiles, transitive_files = depset(transitive = transitive_runfiles))
@@ -97,15 +97,15 @@ def _unit_test(ctx):
 core_xunit_test = rule(
     _unit_test,
     attrs = {
-        "deps": attr.label_list(providers = [DotnetLibrary], doc = "The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibrary](api.md#dotnetlibrary) provider."),
-        "resources": attr.label_list(providers = [DotnetResourceList], doc = "The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResource](api.md#dotnetresource) provider."),
+        "deps": attr.label_list(providers = [DotnetLibraryInfo], doc = "The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider."),
+        "resources": attr.label_list(providers = [DotnetResourceListInfo], doc = "The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResourceInfo](api.md#dotnetresourceinfo) provider."),
         "srcs": attr.label_list(allow_files = [".cs"], doc = "The list of .cs source files that are compiled to create the assembly."),
         "out": attr.string(doc = "An alternative name of the output file."),
         "defines": attr.string_list(doc = "The list of defines passed via /define compiler option."),
         "unsafe": attr.bool(default = False, doc = "If true passes /unsafe flag to the compiler."),
         "data": attr.label_list(allow_files = True, doc = "The list of additional files to include in the list of runfiles for the assembly."),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data"), doc = "The reference to label created with [core_context_data rule](api.md#core_context_data). It points the SDK to be used for compiling given target."),
-        "testlauncher": attr.label(default = "@xunit.runner.console//:netcoreapp2.1_core_tool", providers = [DotnetLibrary], doc = "Test launcher to use."),
+        "testlauncher": attr.label(default = "@xunit.runner.console//:netcoreapp2.1_core_tool", providers = [DotnetLibraryInfo], doc = "Test launcher to use."),
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_core_xunit:launcher_core_xunit.exe"), doc = "Test launcher to use."),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
@@ -136,15 +136,15 @@ core_xunit_test = rule(
 core_nunit3_test = rule(
     _unit_test,
     attrs = {
-        "deps": attr.label_list(providers = [DotnetLibrary], doc = "The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibrary](api.md#dotnetlibrary) provider."),
-        "resources": attr.label_list(providers = [DotnetResourceList], doc = "The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResource](api.md#dotnetresource) provider."),
+        "deps": attr.label_list(providers = [DotnetLibraryInfo], doc = "The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider."),
+        "resources": attr.label_list(providers = [DotnetResourceListInfo], doc = "The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResourceInfo](api.md#dotnetresourceinfo) provider."),
         "srcs": attr.label_list(allow_files = [".cs"], doc = "The list of .cs source files that are compiled to create the assembly."),
         "out": attr.string(doc = "An alternative name of the output file."),
         "defines": attr.string_list(doc = "The list of defines passed via /define compiler option."),
         "unsafe": attr.bool(default = False, doc = "If true passes /unsafe flag to the compiler."),
         "data": attr.label_list(allow_files = True, doc = "The list of additional files to include in the list of runfiles for the assembly."),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data"), doc = "The reference to label created with [core_context_data rule](api.md#core_context_data). It points the SDK to be used for compiling given target."),
-        "testlauncher": attr.label(default = "@xunit.runner.console//:netcoreapp2.1_core_tool", providers = [DotnetLibrary], doc = "Test launcher to use."),
+        "testlauncher": attr.label(default = "@xunit.runner.console//:netcoreapp2.1_core_tool", providers = [DotnetLibraryInfo], doc = "Test launcher to use."),
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_core_nunit3:launcher_core_nunit3.exe")),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),

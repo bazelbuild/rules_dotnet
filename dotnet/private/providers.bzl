@@ -1,19 +1,19 @@
-DotnetLibrary = provider(
-    doc = "DotnetLibrary is a provider that exposes a compiled assembly along with it's full transitive dependencies.",
+DotnetLibraryInfo = provider(
+    doc = "DotnetLibraryInfo is a provider that exposes a compiled assembly along with it's full transitive dependencies.",
     fields = {
-        "label": "Label of the rule used to create this DotnetLibrary.",
+        "label": "Label of the rule used to create this DotnetLibraryInfo.",
         "name": "Name of the assembly (label.name if not provided).",
         "version": "Version number of the library. Tuple with 5 elements.",
-        "ref": "Reference assembly for this DotnetLibrary. Must be set to ctx.attr.ref or result if not provided. See [reference assembly](https://docs.microsoft.com/en-us/dotnet/standard/assembly/reference-assemblies).",
+        "ref": "Reference assembly for this DotnetLibraryInfo. Must be set to ctx.attr.ref or result if not provided. See [reference assembly](https://docs.microsoft.com/en-us/dotnet/standard/assembly/reference-assemblies).",
         "deps": "The direct dependencies of this library.",
         "result": "The assembly file.",
         "pdb": "The pdb file (with compilation mode dbg).",
         "runfiles": "The depset of direct runfiles (File).",
-        "transitive": "The full set of transitive dependencies. This does not include this assembly. List of DotnetLibrary",
+        "transitive": "The full set of transitive dependencies. This does not include this assembly. List of DotnetLibraryInfo",
     },
 )
 
-DotnetResource = provider(
+DotnetResourceInfo = provider(
     doc = "Represents a resource file.",
     fields = {
         "result": "The file to be embeded into assembly. ",
@@ -21,9 +21,9 @@ DotnetResource = provider(
     },
 )
 
-DotnetResourceList = provider(
+DotnetResourceListInfo = provider(
     doc = "Represents resource files. ",
     fields = {
-        "result": "Array of [DotnetResource](api.md#dotnetresource).",
+        "result": "Array of [DotnetResourceInfo](api.md#dotnetresourceinfo).",
     },
 )

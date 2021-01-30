@@ -1,6 +1,6 @@
 load(
     "//dotnet/private:providers.bzl",
-    "DotnetLibrary",
+    "DotnetLibraryInfo",
 )
 load("//dotnet/private:rules/common.bzl", "collect_transitive_info")
 load("//dotnet/private:common.bzl", "as_iterable")
@@ -19,7 +19,7 @@ def _libraryset_impl(ctx):
 
     runfiles = depset(direct = direct_runfiles)
 
-    library = DotnetLibrary(
+    library = DotnetLibraryInfo(
         name = name,
         label = ctx.label,
         deps = ctx.attr.deps,
@@ -41,7 +41,7 @@ def _libraryset_impl(ctx):
 core_libraryset = rule(
     _libraryset_impl,
     attrs = {
-        "deps": attr.label_list(providers = [DotnetLibrary], doc = "The list of dependencies."),
+        "deps": attr.label_list(providers = [DotnetLibraryInfo], doc = "The list of dependencies."),
         "data": attr.label_list(allow_files = True, doc = "The list of additional files to include in the list of runfiles for compiled assembly."),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],

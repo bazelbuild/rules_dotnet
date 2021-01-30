@@ -1,21 +1,21 @@
 load(
     "//dotnet/private:providers.bzl",
-    "DotnetLibrary",
-    "DotnetResource",
+    "DotnetLibraryInfo",
+    "DotnetResourceInfo",
 )
 
-DotnetContext = provider(
+DotnetContextInfo = provider(
     doc = """Enriches standard context with additional fields used by rules.
 
-    DotnetContext is never returned by a rule, instead you build one using 
+    DotnetContextInfo is never returned by a rule, instead you build one using 
     [dotnet_context(ctx)](api.md#dotnet_context) in the top of any custom skylark rule that wants 
     to interact with the dotnet rules.
     It provides all the information needed to create dotnet actions, and create or interact with the 
     other dotnet providers.
 
-    When you get a DotnetContext from a context it exposes a number of fields and methods.
+    When you get a DotnetContextInfo from a context it exposes a number of fields and methods.
 
-    All methods take the DotnetContext as the only positional argument, all other arguments even if
+    All methods take the DotnetContextInfo as the only positional argument, all other arguments even if
     mandatory must be specified by name, to allow us to re-order and deprecate individual parameters
     over time.
 
@@ -34,8 +34,8 @@ DotnetContext = provider(
         "resgen": "None. Not used.",
         "tlbimp": "None. Not used.",
         "declare_file": "Helper function for declaring new file. This is the equivalent of ctx.actions.declare_file.",
-        "new_library": "Function for creating new [DotnetLibrary](api.md#dotnetlibrary). See [new_library](api.md#new_library) for signature declaration.",
-        "new_resource": "Function for creating new [DotnetResource](api.md#dotnetresource). See [new_resource](api.md#new_resource) for signature declaration.",
+        "new_library": "Function for creating new [DotnetLibraryInfo](api.md#dotnetlibraryinfo). See [new_library](api.md#new_library) for signature declaration.",
+        "new_resource": "Function for creating new [DotnetResourceInfo](api.md#dotnetresourceinfo). See [new_resource](api.md#new_resource) for signature declaration.",
         "workspace_name": "Workspace name.",
         "libVersion": "Should not be used.",
         "framework": "Framework version as specified in dotnet/platform/list.bzl.",
@@ -62,20 +62,20 @@ def new_library(
         runfiles = None,
         version = None,
         ref = None):
-    """This creates a new [DotnetLibrary](api.md#dotnetlibrary).
+    """This creates a new [DotnetLibraryInfo](api.md#dotnetlibraryinfo).
 
     Args:
-        dotnet: [DotnetContext](api.md#dotnetcontext).
+        dotnet: [DotnetContextInfo](api.md#dotnetcontextinfo).
         name: name of the file to generate.
         deps: The direct dependencies of this library.
         transitive: The full set of transitive dependencies. This includes ``deps`` for this  library and all ``deps`` members transitively reachable through ``deps``.
-        result: The result to include in [DotnetLibrary](api.md#dotnetlibrary) (used when importing external assemblies).
+        result: The result to include in [DotnetLibraryInfo](api.md#dotnetlibraryinfo) (used when importing external assemblies).
         pdb: If .pdb file for given library should be generated.
-        runfiles: Runfiles for DotnetLibrary
+        runfiles: Runfiles for DotnetLibraryInfo
         version: version to use for the library
         ref: reference assembly for the library
     """
-    return DotnetLibrary(
+    return DotnetLibraryInfo(
         name = dotnet.label.name if not name else name,
         label = dotnet.label,
         deps = deps,
@@ -88,16 +88,16 @@ def new_library(
     )
 
 def new_resource(dotnet, name, result, identifier = None, **kwargs):
-    """This creates a new [DotnetLibrary](api.md#dotnetlibrary).
+    """This creates a new [DotnetLibraryInfo](api.md#dotnetlibraryinfo).
 
     Args:
-        dotnet: [DotnetContext](api.md#dotnetcontext).
+        dotnet: [DotnetContextInfo](api.md#dotnetcontextinfo).
         name: name of the file to generate.
         result: The .resources file.
         identifier: Identifier passed to -resource flag of mcs compiler. If empty the basename of the result.
         **kwargs: Additional arguments to set in the result.
     """
-    return DotnetResource(
+    return DotnetResourceInfo(
         name = name,
         label = dotnet.label,
         result = result,
@@ -106,7 +106,7 @@ def new_resource(dotnet, name, result, identifier = None, **kwargs):
     )
 
 def dotnet_context(ctx):
-    """Converts rule's context to [DotnetContext](api.md#dotnetcontext)
+    """Converts rule's context to [DotnetContextInfo](api.md#dotnetcontextinfo)
 
     It uses the attrbutes and the toolchains.
 
@@ -138,7 +138,7 @@ def dotnet_context(ctx):
         ctx: The Bazel ctx object for the current rule.
 
     Returns:
-        DotnetContext: [DotnetContext](api.md#dotnetcontext) provider for ctx rule.
+        DotnetContextInfo: [DotnetContextInfo](api.md#dotnetcontextinfo) provider for ctx rule.
     """
     attr = ctx.attr
 
@@ -163,7 +163,7 @@ def dotnet_context(ctx):
         resgen = toolchain.get_dotnet_resgen(context_data)
         tlbimp = toolchain.get_dotnet_tlbimp(context_data)
 
-    return DotnetContext(
+    return DotnetContextInfo(
         label = ctx.label,
         toolchain = toolchain,
         actions = ctx.actions,
@@ -225,7 +225,7 @@ core_context_data = rule(
         "host": attr.label(
             allow_files = True,
         ),
-        "runtime": attr.label(providers = [DotnetLibrary], default = "@io_bazel_rules_dotnet//dotnet/stdlib.core:runtime"),
+        "runtime": attr.label(providers = [DotnetLibraryInfo], default = "@io_bazel_rules_dotnet//dotnet/stdlib.core:runtime"),
         "libVersion": attr.string(
             default = "",
         ),

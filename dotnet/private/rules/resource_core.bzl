@@ -4,7 +4,7 @@ load(
 )
 load(
     "//dotnet/private:providers.bzl",
-    "DotnetResourceList",
+    "DotnetResourceListInfo",
 )
 load("@rules_dotnet_skylib//lib:paths.bzl", "paths")
 
@@ -22,7 +22,7 @@ def _resource_impl(ctx):
 
     return [
         resource,
-        DotnetResourceList(result = [resource]),
+        DotnetResourceListInfo(result = [resource]),
         DefaultInfo(
             files = depset([resource.result]),
         ),
@@ -54,7 +54,7 @@ def _resource_multi_impl(ctx):
             result.append(resource)
 
     return [
-        DotnetResourceList(result = result),
+        DotnetResourceListInfo(result = result),
         DefaultInfo(
             files = depset([d.result for d in result]),
         ),

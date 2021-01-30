@@ -4,7 +4,7 @@ load(
 )
 load(
     "//dotnet/private:providers.bzl",
-    "DotnetResourceList",
+    "DotnetResourceListInfo",
 )
 load("//dotnet/private:rules/common.bzl", "collect_transitive_info")
 load("//dotnet/private:rules/versions.bzl", "version2string")
@@ -36,12 +36,12 @@ def emit_assembly_common(
 
     Args:
       kind: String "core", "net" "mono"
-      dotnet: DotnetContext provider
+      dotnet: DotnetContextInfo provider
       name: name of the assembly
       srcs: source files (as passed from rules: list of lables/targets)
-      deps: list of DotnetLibrary. Dependencies as passed from rules)
+      deps: list of DotnetLibraryInfo. Dependencies as passed from rules)
       out: output file name if provided. Otherwise name is used
-      resources: list of DotnetResourceList provider
+      resources: list of DotnetResourceListInfo provider
       executable: bool. True for executable assembly, False otherwise
       defines: list of string. Defines to pass to a compiler
       unsafe: /unsafe flag (False - default - /unsafe-, otherwise /unsafe+)
@@ -122,9 +122,9 @@ def emit_assembly_common(
 
     # Resources
     for r in resources:
-        if r[DotnetResourceList].result and len(r[DotnetResourceList].result) > 0:
-            args.add_all(r[DotnetResourceList].result, format_each = "/resource:%s", map_each = _map_resource)
-            res_l = [t.result for t in r[DotnetResourceList].result]
+        if r[DotnetResourceListInfo].result and len(r[DotnetResourceListInfo].result) > 0:
+            args.add_all(r[DotnetResourceListInfo].result, format_each = "/resource:%s", map_each = _map_resource)
+            res_l = [t.result for t in r[DotnetResourceListInfo].result]
             direct_inputs += res_l
 
     # Source files

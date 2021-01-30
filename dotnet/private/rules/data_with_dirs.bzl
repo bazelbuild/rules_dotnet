@@ -2,7 +2,7 @@ def CopyDataWithDirs(dotnet, data_with_dirs, copy, subdir):
     """ Handles data targets provided with directories. Returns runfiles.
 
     Args:
-      dotnet: DotnetContext provider
+      dotnet: DotnetContextInfo provider
       data_with_dirs: dict(Taret, string)
       copy: program to use for copying files
       subdir: subdirectory to use when placing provider data files

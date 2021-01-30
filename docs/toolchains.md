@@ -7,7 +7,7 @@ The design and implementation is heavily based on
 ## Design
 
 The Dotnet toolchain consists of three main layers, [the sdk](#the-sdk) and [the toolchain](#the-toolchain)
-and [the context](api.md#dotnetcontext).
+and [the context](api.md#dotnetcontextinfo).
 
 ### The SDK
 
@@ -25,7 +25,7 @@ contents to Bazel.
 ### The toolchain
 
 This a wrapper over the sdk that provides enough extras to match, target and work on a specific
-platforms. It should be considered an opaque type, you only ever use it through [the context](api.md#dotnetcontext).
+platforms. It should be considered an opaque type, you only ever use it through [the context](api.md#dotnetcontextinfo).
 
 #### Declaration
 

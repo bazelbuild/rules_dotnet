@@ -1,6 +1,6 @@
 load(
     "//dotnet/private:context.bzl",
-    _DotnetContext = "DotnetContext",
+    _DotnetContextInfo = "DotnetContextInfo",
     _core_context_data = "core_context_data",
     _dotnet_context = "dotnet_context",
     _new_library = "new_library",
@@ -8,9 +8,9 @@ load(
 )
 load(
     "//dotnet/private:providers.bzl",
-    _DotnetLibrary = "DotnetLibrary",
-    _DotnetResource = "DotnetResource",
-    _DotnetResourceList = "DotnetResourceList",
+    _DotnetLibraryInfo = "DotnetLibraryInfo",
+    _DotnetResourceInfo = "DotnetResourceInfo",
+    _DotnetResourceListInfo = "DotnetResourceListInfo",
 )
 load(
     "//dotnet/toolchain:toolchains.bzl",
@@ -76,7 +76,7 @@ load("//dotnet/private:sdk_core.bzl", _core_download_sdk = "core_download_sdk")
 load("//dotnet/private:repositories.bzl", _dotnet_repositories = "dotnet_repositories")
 
 dotnet_context = _dotnet_context
-DotnetContext = _DotnetContext
+DotnetContextInfo = _DotnetContextInfo
 dotnet_register_toolchains = _dotnet_register_toolchains
 core_register_sdk = _core_register_sdk
 core_binary = _core_binary
@@ -100,9 +100,9 @@ DEFAULT_DOTNET_CORE_FRAMEWORK = _DEFAULT_DOTNET_CORE_FRAMEWORK
 DOTNET_NETSTANDARD = _DOTNET_NETSTANDARD
 core_context_data = _core_context_data
 dotnet_repositories_nugets = _dotnet_repositories_nugets
-DotnetLibrary = _DotnetLibrary
-DotnetResource = _DotnetResource
-DotnetResourceList = _DotnetResourceList
+DotnetLibraryInfo = _DotnetLibraryInfo
+DotnetResourceInfo = _DotnetResourceInfo
+DotnetResourceListInfo = _DotnetResourceListInfo
 emit_assembly_core = _emit_assembly_core
 emit_resx_core = _emit_resx_core
 new_library = _new_library
