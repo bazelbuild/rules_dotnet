@@ -170,7 +170,7 @@ def _get_importlib_withframework(func, func2, name, frameworks, lib, ref, deps, 
 
 _TEMPLATE2 = """
 package(default_visibility = [ "//visibility:public" ])
-load("//dotnet:defs.bzl", "core_import_library", "core_import_binary", "core_libraryset")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_import_library", "core_import_binary", "core_libraryset")
 """
 
 def _nuget_package_impl(ctx):
