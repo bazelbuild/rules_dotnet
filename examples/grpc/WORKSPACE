@@ -1,6 +1,6 @@
 local_repository(
     name = "io_bazel_rules_dotnet",
-    path = "../../..",
+    path = "../..",
 )
 
 load("@io_bazel_rules_dotnet//dotnet:deps.bzl", "dotnet_repositories")
@@ -13,7 +13,6 @@ load(
     "dotnet_nuget_new",
     "dotnet_register_toolchains",
     "dotnet_repositories_nugets",
-    "net_register_sdk",
     "nuget_package",
 )
 
@@ -21,10 +20,6 @@ dotnet_register_toolchains()
 
 dotnet_repositories_nugets()
 
-# For .NET Framework:
-net_register_sdk()
-
-# (only useful for nuget2bazel)
 core_register_sdk()
 
 dotnet_nuget_new(

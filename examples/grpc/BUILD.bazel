@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "net_library", "net_xunit_test")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_library", "core_xunit_test")
 load("@rules_proto_grpc//csharp:defs.bzl", "csharp_grpc_compile")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
@@ -15,19 +15,19 @@ csharp_grpc_compile(
     deps = [":service_proto"],
 )
 
-net_library(
+core_library(
     name = "service_proto.dll",
     srcs = [":service_proto_gen_cs"],
     deps = [
-        "@google.protobuf//:net",
-        "@grpc.core.api//:net",
-        "@grpc.core//:net",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.io.dll",
-        "@system.interactive.async//:net",
+        "@google.protobuf//:core",
+        "@grpc.core.api//:core",
+        "@grpc.core//:core",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.io.dll",
+        "@system.interactive.async//:core",
     ],
 )
 
-net_xunit_test(
+core_xunit_test(
     name = "some_server_test.dll",
     size = "medium",
     srcs = [
@@ -49,11 +49,11 @@ net_xunit_test(
     }),
     deps = [
         ":service_proto.dll",
-        "@grpc.core//:net",
-        "@grpc.healthcheck//:net",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.runtime.dll",
-        "@xunit.assert//:net",
-        "@xunit.extensibility.core//:net",
-        "@xunit.extensibility.execution//:net",
+        "@grpc.core//:core",
+        "@grpc.healthcheck//:core",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.dll",
+        "@xunit.assert//:core",
+        "@xunit.extensibility.core//:core",
+        "@xunit.extensibility.execution//:core",
     ],
 )

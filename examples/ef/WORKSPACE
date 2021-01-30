@@ -2,7 +2,7 @@ workspace(name = "ef")
 
 local_repository(
     name = "io_bazel_rules_dotnet",
-    path = "../../..",
+    path = "../..",
 )
 
 load("@io_bazel_rules_dotnet//dotnet:deps.bzl", "dotnet_repositories")
