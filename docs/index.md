@@ -74,8 +74,10 @@ Advanced usage
 
 * See [toolchains](toolchains.md) for advanced toolchain usage.
 
-* See [handling multiple versions](multiversion.md).
+* [Handling multiple versions](multiversion.md).
 
-* See [setting up CI agenet](ci.md).
+* [Setting up CI agenet](ci.md).
 
-* See [native dependencies in nuget](nuget_native_deps.md).
+* [Native dependencies in nuget](nuget_native_deps.md).
+
+* [Building documentation](docs.md)

@@ -5,11 +5,9 @@ C# Rules for Bazel_
 Build status
 ------------
 
-  +-----------------+---------------+-----------------+
   | Azure pipelines | Travis CI     | Appveyor        |
-  +=================+===============+=================+
+  | --------------- | ------------- | --------------- |
   | [![](https://dev.azure.com/tomaszstrejczek/rules_dotnet/_apis/build/status/tomaszstrejczek.rules_dotnet?branchName=drop_mono_net)](https://dev.azure.com/tomaszstrejczek/rules_dotnet/_build)    | [![](https://api.travis-ci.org/bazelbuild/rules_dotnet.svg?branch=drop_mono_net)](https://travis-ci.org/bazelbuild/rules_dotnet) | [![](https://ci.appveyor.com/api/projects/status/obpncs8e7wab1yty/branch/drop_mono_net)](https://ci.appveyor.com/project/tomek1909/rules-dotnet/branch/drop_mono_net) |
-  +-----------------+---------------+-----------------+
 
 
 Documentation
@@ -27,7 +25,7 @@ This is a minimal viable set of C# bindings for building C# code with
 Caveats
 -------
 
-These rules are not compatible with sandboxing_. Particularly, running dotnet rules 
+These rules are not compatible with [sandboxing](https://bazel.build/designs/2016/06/02/sandboxing.html). Particularly, running dotnet rules 
 on Linux or OSX requires passing --spawn_strategy=standalone.
 
 [Bazel](https://bazel.build/) creates long paths. Therefore it is recommended to increase the length limit 
@@ -67,8 +65,7 @@ Setup
     core_register_sdk()
   ```
 
-  The [dotnet_repositories](api.md#dotnet_repositories) rule fetches external dependencies which have to be defined before loading
-  any other file of rules_dotnet. [dotnet_repositories_nugets](api.md#dotnet_repositories_nugets) loads nuget packages 
+  The [dotnet_repositories](api.md#dotnet_repositories) rule fetches external dependencies which have to be defined before loading any other file of rules_dotnet. [dotnet_repositories_nugets](api.md#dotnet_repositories_nugets) loads nuget packages 
   required by test rules.
 
   The [dotnet_register_toolchains](api.md#dotnet_register_toolchains) configures toolchains.
@@ -76,9 +73,8 @@ Setup
   The [core_register_sdk](api.md#core_register_sdk) "glues" toolchains with 
   appropriate SDKs.
 
-* Add a file named ``BUILD.bazel`` in the root directory of your
-  project. In general, you need one of these files in every directory
-  with dotnet code.
+* Add a file named ``BUILD.bazel`` in the root directory of your project. In general, you need one of these files in every directory with dotnet code.
+
   At the top of the file used rules should be imported:
 
   ```python
