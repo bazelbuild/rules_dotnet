@@ -22,11 +22,11 @@ Release 0.0.6 (2020-12-24)
 
 Incompatible changes:
 
-  - support for Mono and .NET Framework is dropped. They and .NET Core diverged significantly.
-    Maintianing common version of rules for all the platforms turned out to be too cumberstone.
-    If you need rule for Mono or .NET Framework I suggest creating separate set of rules.
+  - Support for Mono and .NET Framework is dropped. They and .NET Core diverged significantly.
+    Maintaining common version of rules for all the platforms turned out to be too cumbersome.
+    If you need rules for Mono or .NET Framework, I suggest creating separate set of rules.
   - nuget_package rule is dropped. nuget_package_new should be used instead.
-  - rename providers to follow recommended patter *Info.
+  - Rename providers to follow recommended patter *Info.
 
 Important changes:
 
