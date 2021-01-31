@@ -5,16 +5,7 @@
 # These can be used in select expressions to choose platform-specifc
 # sources and dependencies.
 
-load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-
 package(default_visibility = ["//visibility:public"])
-
-bzl_library(
-    name = "bzl_library",
-    srcs = [
-        "list.bzl",
-    ],
-)
 
 filegroup(
     name = "all_rules",

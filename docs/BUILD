@@ -7,7 +7,4 @@ stardoc(
     input = "docs.bzl",
     rule_template = "rule.vm",
     tags = ["manual"],
-    deps = [
-        "//dotnet/toolchain:bzl_library",
-    ],
 )
