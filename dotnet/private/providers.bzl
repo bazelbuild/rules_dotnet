@@ -16,6 +16,8 @@ DotnetLibraryInfo = provider(
 DotnetResourceInfo = provider(
     doc = "Represents a resource file.",
     fields = {
+        "label": "Label of the rule used to create this provider.",
+        "name": "Name of the resource.",
         "result": "The file to be embeded into assembly. ",
         "identifier": "Identifier used when loading the resource. ",
     },

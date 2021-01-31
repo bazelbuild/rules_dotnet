@@ -29,15 +29,12 @@ script:
     bazel version
 
   - |
-    export PATH=$PATH:/Library/Frameworks/Mono.framework/Versions/6.8.0/bin/
     bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build --spawn_strategy=standalone //...
 
   - |
-    export PATH=$PATH:/Library/Frameworks/Mono.framework/Versions/6.8.0/bin/
     bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run --spawn_strategy=standalone //tests/examples/example_binary:v2.1.200_hello-core.exe
 
   - |
-    export PATH=$PATH:/Library/Frameworks/Mono.framework/Versions/6.8.0/bin/
     bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m test --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
 
   - |    

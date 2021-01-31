@@ -1,5 +1,3 @@
-workspace(name = "ef")
-
 local_repository(
     name = "io_bazel_rules_dotnet",
     path = "../..",
