@@ -47,9 +47,6 @@ jobs:
     - script: |
         bazel version
       displayName: 'Show bazel version'
-    - script: |    
-        bazel $(bazel_startup) query "deps(@dotnet_sdk//:csc)"
-      displayName: 'Query'
 
     - script: |    
         bazel $(bazel_startup) build -s --spawn_strategy=standalone //... 
