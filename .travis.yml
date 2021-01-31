@@ -3,10 +3,6 @@ sudo: required
 # Not technically required but suppresses 'Ruby' in Job status message.
 language: java
 
-os:
-  - linux
-  - osx
-
 jobs:
   include:
     - os: linux
