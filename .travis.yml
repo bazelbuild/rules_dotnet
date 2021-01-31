@@ -1,5 +1,4 @@
 # trusty beta image has jdk8, gcc4.8.4
-dist: bionic
 sudo: required
 # Not technically required but suppresses 'Ruby' in Job status message.
 language: java
@@ -7,6 +6,14 @@ language: java
 os:
   - linux
   - osx
+
+jobs:
+  include:
+    - os: linux
+      dist: bionic
+    - os: osx
+      osx_image: xcode12.2
+
 
 before_install:
   - |
