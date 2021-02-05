@@ -1,13 +1,13 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/platform:list.bzl",
+    "@rules_mono//dotnet/platform:list.bzl",
     "DOTNET_NET_FRAMEWORKS",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
+    "@rules_mono//dotnet/private:context.bzl",
     "dotnet_context",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "@rules_mono//dotnet/private:providers.bzl",
     "DotnetLibrary",
 )
 
@@ -74,11 +74,11 @@ net_com_library = rule(
         "platform": attr.string(),
         "namespace": attr.string(),
         "out": attr.string(),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:net_context_data")),
         "_tlbimp_wrapper": attr.label_keyed_string_dict(
-            default = {Label("@io_bazel_rules_dotnet//dotnet/tools/tlbimp_wrapper:tlbimp_wrapper_{}.exe".format(framework)): framework for framework in DOTNET_NET_FRAMEWORKS},
+            default = {Label("@rules_mono//dotnet/tools/tlbimp_wrapper:tlbimp_wrapper_{}.exe".format(framework)): framework for framework in DOTNET_NET_FRAMEWORKS},
         ),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_net"],
     executable = False,
 )

@@ -1,6 +1,6 @@
-load("@io_bazel_rules_dotnet//dotnet/private:deps/nuget.bzl", "dotnet_repositories_nuget")
-load("@io_bazel_rules_dotnet//dotnet/private:deps/nuget2.bzl", "dotnet_repositories_nuget2")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/nuget.bzl", "dotnet_nuget_new")
+load("@rules_mono//dotnet/private:deps/nuget.bzl", "dotnet_repositories_nuget")
+load("@rules_mono//dotnet/private:deps/nuget2.bzl", "dotnet_repositories_nuget2")
+load("@rules_mono//dotnet/private:rules/nuget.bzl", "dotnet_nuget_new")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 def dotnet_repositories_nugets():
@@ -153,9 +153,9 @@ def dotnet_repositories_nugets():
 
     http_archive(
         name = "vstest",
-        build_file = "@io_bazel_rules_dotnet//3rd_party/vstest:repo.bzl",
+        build_file = "@rules_mono//3rd_party/vstest:repo.bzl",
         sha256 = "9a3e1cec6a841a82001b443878ea5dff5ac54247bcb5ad86136c365b308a91ac",
         strip_prefix = "vstest-16.5.0",
         urls = ["https://github.com/microsoft/vstest/archive/v16.5.0.tar.gz"],
-        patches = ["@io_bazel_rules_dotnet//3rd_party/vstest:000.patch"],
+        patches = ["@rules_mono//3rd_party/vstest:000.patch"],
     )

@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet/private:actions/assembly_common.bzl", "emit_assembly_common")
+load("@rules_mono//dotnet/private:actions/assembly_common.bzl", "emit_assembly_common")
 
 def emit_assembly_core(
         dotnet,

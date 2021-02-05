@@ -1,5 +1,5 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "@rules_mono//dotnet/private:providers.bzl",
     "DotnetLibrary",
     "DotnetResource",
 )
@@ -137,12 +137,12 @@ dotnet_context_data = rule(
             default = "",
         ),
         "_toolchain_type": attr.string(
-            default = "@io_bazel_rules_dotnet//dotnet:toolchain_type_mono",
+            default = "@rules_mono//dotnet:toolchain_type_mono",
         ),
         "runner": attr.label(executable = True, cfg = "host", default = "@dotnet_sdk//:runner"),
         "csc": attr.label(executable = True, cfg = "host", default = "@dotnet_sdk//:csc"),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_mono"],
 )
 
 core_context_data = rule(
@@ -166,7 +166,7 @@ core_context_data = rule(
         "host": attr.label(
             allow_files = True,
         ),
-        "runtime": attr.label(providers = [DotnetLibrary], default = "@io_bazel_rules_dotnet//dotnet/stdlib.core:runtime"),
+        "runtime": attr.label(providers = [DotnetLibrary], default = "@rules_mono//dotnet/stdlib.core:runtime"),
         "libVersion": attr.string(
             default = "",
         ),
@@ -174,13 +174,13 @@ core_context_data = rule(
             default = "",
         ),
         "_toolchain_type": attr.string(
-            default = "@io_bazel_rules_dotnet//dotnet:toolchain_type_core",
+            default = "@rules_mono//dotnet:toolchain_type_core",
         ),
         "runner": attr.label(executable = True, cfg = "host", default = "@core_sdk//:runner"),
         #"csc": attr.label(executable = True, cfg = "host", default = "@core_sdk//:csc"),
-        "csc": attr.label(executable = True, cfg = "host", default = "@io_bazel_rules_dotnet//dotnet/stdlib.core:csc.dll"),
+        "csc": attr.label(executable = True, cfg = "host", default = "@rules_mono//dotnet/stdlib.core:csc.dll"),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_core"],
 )
 
 net_context_data = rule(
@@ -218,10 +218,10 @@ net_context_data = rule(
             default = "",
         ),
         "_toolchain_type": attr.string(
-            default = "@io_bazel_rules_dotnet//dotnet:toolchain_type_net",
+            default = "@rules_mono//dotnet:toolchain_type_net",
         ),
         "runner": attr.label(default = None),
         "csc": attr.label(executable = True, cfg = "host", default = "@net_sdk//:csc"),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_net"],
 )

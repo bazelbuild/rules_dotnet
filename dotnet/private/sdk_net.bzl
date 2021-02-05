@@ -73,6 +73,6 @@ def _sdk_build_file(ctx):
     ctx.file("ROOT")
     ctx.template(
         "BUILD.bazel",
-        Label("@io_bazel_rules_dotnet//dotnet/private:BUILD.net.bazel"),
+        Label("@rules_mono//dotnet/private:BUILD.net.bazel"),
         executable = False,
     )

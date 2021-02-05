@@ -31,8 +31,8 @@ namespace nuget2bazel.rules
         private async Task GenerateBazelFile(string outpath, List<RefInfo> libs)
         {
             await using var f = new StreamWriter(outpath);
-            await f.WriteLineAsync("load(\"@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl\", \"core_stdlib_internal\")");
-            await f.WriteLineAsync("load(\"@io_bazel_rules_dotnet//dotnet/private:rules/libraryset.bzl\", \"core_libraryset\")");
+            await f.WriteLineAsync("load(\"@rules_mono//dotnet/private:rules/stdlib.bzl\", \"core_stdlib_internal\")");
+            await f.WriteLineAsync("load(\"@rules_mono//dotnet/private:rules/libraryset.bzl\", \"core_libraryset\")");
             await f.WriteLineAsync();
             await f.WriteLineAsync("def define_stdlib(context_data):");
 

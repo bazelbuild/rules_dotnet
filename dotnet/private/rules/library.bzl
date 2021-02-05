@@ -1,11 +1,11 @@
-load("@io_bazel_rules_dotnet//dotnet/private:context.bzl", "dotnet_context")
+load("@rules_mono//dotnet/private:context.bzl", "dotnet_context")
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "@rules_mono//dotnet/private:providers.bzl",
     "DotnetLibrary",
     "DotnetResourceList",
 )
-load("@io_bazel_rules_dotnet//dotnet/platform:list.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NETSTANDARD", "DOTNET_NET_FRAMEWORKS")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "parse_version")
+load("@rules_mono//dotnet/platform:list.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NETSTANDARD", "DOTNET_NET_FRAMEWORKS")
+load("@rules_mono//dotnet/private:rules/versions.bzl", "parse_version")
 
 def _library_impl(ctx):
     """_library_impl emits actions for compiling dotnet executable assembly."""
@@ -57,12 +57,12 @@ dotnet_library = rule(
         "unsafe": attr.bool(default = False),
         "data": attr.label_list(allow_files = True),
         "keyfile": attr.label(allow_files = True),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:dotnet_context_data")),
         "target_framework": attr.string(values = DOTNET_NET_FRAMEWORKS.keys() + DOTNET_NETSTANDARD.keys() + [""], default = ""),
         "nowarn": attr.string_list(),
         "langversion": attr.string(default = "latest"),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_mono"],
     executable = False,
 )
 
@@ -78,12 +78,12 @@ core_library = rule(
         "unsafe": attr.bool(default = False),
         "data": attr.label_list(allow_files = True),
         "keyfile": attr.label(allow_files = True),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:core_context_data")),
         "target_framework": attr.string(values = DOTNET_CORE_FRAMEWORKS.keys() + DOTNET_NETSTANDARD.keys() + [""], default = ""),
         "nowarn": attr.string_list(),
         "langversion": attr.string(default = "latest"),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_core"],
     executable = False,
 )
 
@@ -99,11 +99,11 @@ net_library = rule(
         "unsafe": attr.bool(default = False),
         "data": attr.label_list(allow_files = True),
         "keyfile": attr.label(allow_files = True),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:net_context_data")),
         "target_framework": attr.string(values = DOTNET_NET_FRAMEWORKS.keys() + DOTNET_NETSTANDARD.keys() + [""], default = ""),
         "nowarn": attr.string_list(),
         "langversion": attr.string(default = "latest"),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_net"],
     executable = False,
 )

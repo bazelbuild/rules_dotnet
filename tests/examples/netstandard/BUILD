@@ -1,11 +1,11 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_NETSTANDARD", "core_library", "core_xunit_test", "net_library")
+load("@rules_mono//dotnet:defs.bzl", "DOTNET_NETSTANDARD", "core_library", "core_xunit_test", "net_library")
 
 [core_library(
     name = "{}_lib.dll".format(framework),
     srcs = ["Lib.cs"],
     target_framework = framework,
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:NETStandard.Library",
+        "@rules_mono//dotnet/stdlib.core:NETStandard.Library",
     ],
 ) for framework in DOTNET_NETSTANDARD.keys()]
 
@@ -14,7 +14,7 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_NETSTANDARD", "core_libr
     srcs = ["Lib.cs"],
     target_framework = framework,
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net:netstandard.dll",
+        "@rules_mono//dotnet/stdlib.net:netstandard.dll",
     ],
 ) for framework in DOTNET_NETSTANDARD.keys()]
 
@@ -25,7 +25,7 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_NETSTANDARD", "core_libr
     ],
     deps = [
         "{}_lib.dll".format(framework),
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:NETStandard.Library",
+        "@rules_mono//dotnet/stdlib.core:NETStandard.Library",
         "@xunit.assert//:netcoreapp2.0_core",
         "@xunit.extensibility.core//:netcoreapp2.0_core",
         "@xunit.extensibility.execution//:netcoreapp2.0_core",
@@ -39,7 +39,7 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_NETSTANDARD", "core_libr
 #     ],
 #     deps = [
 #         "{}_net_lib.dll".format(framework),
-#         "@io_bazel_rules_dotnet//dotnet/stdlib.core:NETStandard.Library",
+#         "@rules_mono//dotnet/stdlib.core:NETStandard.Library",
 #         "@xunit.assert//:netcoreapp2.0_core",
 #         "@xunit.extensibility.core//:netcoreapp2.0_core",
 #         "@xunit.extensibility.execution//:netcoreapp2.0_core",

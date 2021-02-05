@@ -14,7 +14,7 @@ def _net_gac_impl(ctx, gac, prefix = None):
             ctx.symlink(gac_path, arch)
 
     build_file_content = r'''package(default_visibility = [ "//visibility:public" ])
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "net_import_library")
+load("@rules_mono//dotnet:defs.bzl", "net_import_library")
 
 [net_import_library(
     name = gac_assembly_arch,

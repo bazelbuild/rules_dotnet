@@ -1,5 +1,5 @@
 # Source version v16.5.0
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_binary", "core_library", "core_resx")
+load("@rules_mono//dotnet:defs.bzl", "core_binary", "core_library", "core_resx")
 
 core_library(
     name = "Microsoft.TestPlatform.PlatformAbstractions.dll",
@@ -12,10 +12,10 @@ core_library(
         "TRACE",
         "NETSTANDARD2_0",
     ],
-    keyfile = "@io_bazel_rules_dotnet//3rd_party/vstest:vstest.snk",
+    keyfile = "@rules_mono//3rd_party/vstest:vstest.snk",
     visibility = ["//visibility:public"],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
+        "@rules_mono//dotnet/stdlib.core:libraryset",
     ],
 )
 
@@ -32,14 +32,14 @@ core_library(
         "NETSTANDARD2_0",
         "TRACE",
     ],
-    keyfile = "@io_bazel_rules_dotnet//3rd_party/vstest:vstest.snk",
+    keyfile = "@rules_mono//3rd_party/vstest:vstest.snk",
     resources = [
         ":coreutilities_resource",
     ],
     visibility = ["//visibility:public"],
     deps = [
         ":Microsoft.TestPlatform.PlatformAbstractions.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
+        "@rules_mono//dotnet/stdlib.core:libraryset",
     ],
 )
 
@@ -60,12 +60,12 @@ core_library(
     srcs = glob(
         ["src/Microsoft.TestPlatform.ObjectModel/**/*.cs"],
         exclude = ["**/Friends.cs"],
-    ) + ["@io_bazel_rules_dotnet//3rd_party/vstest:ObjectModel_Friends.cs"],
+    ) + ["@rules_mono//3rd_party/vstest:ObjectModel_Friends.cs"],
     defines = [
         "TRACE",
         "NETSTANDARD2_0",
     ],
-    keyfile = "@io_bazel_rules_dotnet//3rd_party/vstest:vstest.snk",
+    keyfile = "@rules_mono//3rd_party/vstest:vstest.snk",
     resources = [
         ":objectmodel_resource1",
         ":objectmodel_resource2",
@@ -75,7 +75,7 @@ core_library(
         ":Microsoft.TestPlatform.CoreUtilities.dll",
         ":Microsoft.TestPlatform.PlatformAbstractions.dll",
         "@nuget.frameworks//:netcoreapp3.1_core",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
+        "@rules_mono//dotnet/stdlib.core:libraryset",
     ],
 )
 
@@ -92,7 +92,7 @@ core_library(
         "TRACE",
         "NETSTANDARD2_0",
     ],
-    keyfile = "@io_bazel_rules_dotnet//3rd_party/vstest:vstest.snk",
+    keyfile = "@rules_mono//3rd_party/vstest:vstest.snk",
     resources = [
         ":utilities_resource",
     ],
@@ -114,12 +114,12 @@ core_library(
     srcs = glob(
         ["src/Microsoft.TestPlatform.Common/**/*.cs"],
         exclude = ["**/Friends.cs"],
-    ) + ["@io_bazel_rules_dotnet//3rd_party/vstest:Common_Friends.cs"],
+    ) + ["@rules_mono//3rd_party/vstest:Common_Friends.cs"],
     defines = [
         "TRACE",
         "NETSTANDARD2_0",
     ],
-    keyfile = "@io_bazel_rules_dotnet//3rd_party/vstest:vstest.snk",
+    keyfile = "@rules_mono//3rd_party/vstest:vstest.snk",
     resources = [
         ":common_resource",
     ],
@@ -142,12 +142,12 @@ core_library(
     srcs = glob(
         ["src/Microsoft.TestPlatform.CommunicationUtilities/**/*.cs"],
         exclude = ["**/Friends.cs"],
-    ) + ["@io_bazel_rules_dotnet//3rd_party/vstest:CommunicationUtilities_Friends.cs"],
+    ) + ["@rules_mono//3rd_party/vstest:CommunicationUtilities_Friends.cs"],
     defines = [
         "TRACE",
         "NETSTANDARD2_0",
     ],
-    keyfile = "@io_bazel_rules_dotnet//3rd_party/vstest:vstest.snk",
+    keyfile = "@rules_mono//3rd_party/vstest:vstest.snk",
     resources = [
         ":communicationutilities_resource",
     ],
@@ -173,7 +173,7 @@ core_library(
         "TRACE",
         "NETSTANDARD2_0",
     ],
-    keyfile = "@io_bazel_rules_dotnet//3rd_party/vstest:vstest.snk",
+    keyfile = "@rules_mono//3rd_party/vstest:vstest.snk",
     resources = [
         ":crossplatengine_resource",
     ],
@@ -199,7 +199,7 @@ core_library(
         "TRACE",
         "NETSTANDARD2_0",
     ],
-    keyfile = "@io_bazel_rules_dotnet//3rd_party/vstest:vstest.snk",
+    keyfile = "@rules_mono//3rd_party/vstest:vstest.snk",
     resources = [
         ":client_resource",
     ],
@@ -222,7 +222,7 @@ core_binary(
         "TRACE",
         "NETSTANDARD2_0",
     ],
-    keyfile = "@io_bazel_rules_dotnet//3rd_party/vstest:vstest.snk",
+    keyfile = "@rules_mono//3rd_party/vstest:vstest.snk",
     resources = [
         ":console_resource",
     ],
@@ -251,7 +251,7 @@ core_binary(
 # #     defines = [
 # #         "TRACE",
 # #     ],
-# #     keyfile = "@io_bazel_rules_dotnet//3rd_party/vstest:vstest.snk",
+# #     keyfile = "@rules_mono//3rd_party/vstest:vstest.snk",
 # #     resources = [
 # #         ":trxlogger_resource",
 # #     ],
@@ -274,7 +274,7 @@ core_binary(
 # #         "//moq4:Moq",
 # #     ],
 # #     testlauncher = ":vstest.console",
-# #     keyfile = "@io_bazel_rules_dotnet//3rd_party/vstest:vstest.snk",
+# #     keyfile = "@rules_mono//3rd_party/vstest:vstest.snk",
 # # )
 
 core_resx(
@@ -290,7 +290,7 @@ core_library(
         "TRACE",
         "NETSTANDARD2_0",
     ],
-    keyfile = "@io_bazel_rules_dotnet//3rd_party/vstest:vstest.snk",
+    keyfile = "@rules_mono//3rd_party/vstest:vstest.snk",
     resources = [
         ":testhostprovider_resource",
     ],
@@ -298,7 +298,7 @@ core_library(
     deps = [
         ":Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
         "@newtonsoft.json//:netcoreapp3.1_core",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
+        "@rules_mono//dotnet/stdlib.core:libraryset",
         "@microsoft.extensions.dependencymodel//:netcoreapp3.1_core",
     ],
 )
@@ -317,7 +317,7 @@ core_binary(
         "TRACE",
         "NETSTANDARD2_0",
     ],
-    keyfile = "@io_bazel_rules_dotnet//3rd_party/vstest:vstest.snk",
+    keyfile = "@rules_mono//3rd_party/vstest:vstest.snk",
     visibility = ["//visibility:public"],
     deps = [
         ":Microsoft.TestPlatform.CommunicationUtilities.dll",

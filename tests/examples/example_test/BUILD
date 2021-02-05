@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_NET_FRAMEWORKS", "core_nunit3_test", "dotnet_nunit_test", "net_nunit3_test", "net_nunit_test")
+load("@rules_mono//dotnet:defs.bzl", "DOTNET_NET_FRAMEWORKS", "core_nunit3_test", "dotnet_nunit_test", "net_nunit3_test", "net_nunit_test")
 
 dotnet_nunit_test(
     name = "example_test.dll",
@@ -8,7 +8,7 @@ dotnet_nunit_test(
     ],
     deps = [
         "//tests/examples/example_lib:MyClass.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib:system.dll",
+        "@rules_mono//dotnet/stdlib:system.dll",
         "@nunitv2//:netstandard1.0_net",
     ],
 )
@@ -19,7 +19,7 @@ dotnet_nunit_test(
     srcs = [
         "MyTest.cs",
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
+    dotnet_context_data = "@rules_mono//:net_context_data_{}".format(framework),
     deps = [
         "//tests/examples/example_lib:MyClass-net_{}.dll".format(framework),
         "@nunitv2//:net472_net",
@@ -32,9 +32,9 @@ dotnet_nunit_test(
     srcs = [
         "MyTest.cs",
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
+    dotnet_context_data = "@rules_mono//:net_context_data_{}".format(framework),
     deps = [
-        #"@io_bazel_rules_dotnet//dotnet/stdlib.net/{}:system.runtime.dll".format(framework),
+        #"@rules_mono//dotnet/stdlib.net/{}:system.runtime.dll".format(framework),
         "//tests/examples/example_lib:MyClass-net_{}.dll".format(framework),
         "@nunit//:net472_net",
     ],

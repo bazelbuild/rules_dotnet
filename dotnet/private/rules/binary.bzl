@@ -1,19 +1,19 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
+    "@rules_mono//dotnet/private:context.bzl",
     "dotnet_context",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "@rules_mono//dotnet/private:providers.bzl",
     "DotnetLibrary",
     "DotnetResourceList",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/runfiles.bzl",
+    "@rules_mono//dotnet/private:rules/runfiles.bzl",
     "CopyRunfiles",
 )
-load("@io_bazel_rules_dotnet//dotnet/platform:list.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NETSTANDARD", "DOTNET_NET_FRAMEWORKS")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "parse_version")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
+load("@rules_mono//dotnet/platform:list.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NETSTANDARD", "DOTNET_NET_FRAMEWORKS")
+load("@rules_mono//dotnet/private:rules/versions.bzl", "parse_version")
+load("@rules_mono//dotnet/private:rules/common.bzl", "collect_transitive_info")
 
 def _binary_impl(ctx):
     """_binary_impl emits actions for compiling executable assembly."""
@@ -86,7 +86,7 @@ dotnet_binary = rule(
         "unsafe": attr.bool(default = False),
         "data": attr.label_list(allow_files = True),
         "keyfile": attr.label(allow_files = True),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:dotnet_context_data")),
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_mono:launcher_mono.exe")),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
@@ -94,7 +94,7 @@ dotnet_binary = rule(
         "nowarn": attr.string_list(),
         "langversion": attr.string(default = "latest"),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_mono"],
     executable = True,
 )
 
@@ -110,7 +110,7 @@ core_binary = rule(
         "unsafe": attr.bool(default = False),
         "data": attr.label_list(allow_files = True),
         "keyfile": attr.label(allow_files = True),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:core_context_data")),
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_core:launcher_core.exe")),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
@@ -118,7 +118,7 @@ core_binary = rule(
         "nowarn": attr.string_list(),
         "langversion": attr.string(default = "latest"),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_core"],
     executable = True,
 )
 
@@ -134,7 +134,7 @@ net_binary = rule(
         "unsafe": attr.bool(default = False),
         "data": attr.label_list(allow_files = True),
         "keyfile": attr.label(allow_files = True),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:net_context_data")),
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_net:launcher_net.exe")),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
@@ -142,6 +142,6 @@ net_binary = rule(
         "nowarn": attr.string_list(),
         "langversion": attr.string(default = "latest"),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_net"],
     executable = True,
 )

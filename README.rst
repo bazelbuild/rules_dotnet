@@ -114,16 +114,16 @@ Setup
     # A newer version should be fine
     load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
     git_repository(
-        name = "io_bazel_rules_dotnet",
+        name = "rules_mono",
         remote = "https://github.com/bazelbuild/rules_dotnet",
         branch = "master",
     )
 
-    load("@io_bazel_rules_dotnet//dotnet:deps.bzl", "dotnet_repositories")
+    load("@rules_mono//dotnet:deps.bzl", "dotnet_repositories")
 
     dotnet_repositories()
 
-    load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_register_sdk", "net_register_sdk", "mono_register_sdk",
+    load("@rules_mono//dotnet:defs.bzl", "core_register_sdk", "net_register_sdk", "mono_register_sdk",
         "dotnet_register_toolchains", "dotnet_repositories_nugets", "nuget_package")
 
     dotnet_register_toolchains()
@@ -150,7 +150,7 @@ Setup
 
   .. code:: python
 
-    load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_library", "dotnet_binary")
+    load("@rules_mono//dotnet:defs.bzl", "dotnet_library", "dotnet_binary")
 
 * If you intend to use CoreCLR make sure to install libunwind-devel if it is not present on your system
   (applies to Linux).
@@ -295,7 +295,7 @@ Examples
             sha256="fa3e0cfbb2caa9946d2ce3d8174031a06320aad2c9e69a60f7739b9ddf19f172",
             build_file_content = """
         package(default_visibility = [ "//visibility:public" ])
-        load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_import_library")
+        load("@rules_mono//dotnet:defs.bzl", "dotnet_import_library")
 
         dotnet_import_library(
             name = "npgsqllib",

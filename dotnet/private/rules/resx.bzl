@@ -1,9 +1,9 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
+    "@rules_mono//dotnet/private:context.bzl",
     "dotnet_context",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "@rules_mono//dotnet/private:providers.bzl",
     "DotnetResourceList",
 )
 load("@rules_dotnet_skylib//lib:paths.bzl", "paths")
@@ -79,10 +79,10 @@ net_resx = rule(
         "src": attr.label(allow_files = [".resx"], mandatory = True),
         "identifier": attr.string(),
         "out": attr.string(),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:net_context_data")),
         "simpleresgen": attr.label(),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_net"],
     executable = False,
 )
 dotnet_resx = rule(
@@ -92,10 +92,10 @@ dotnet_resx = rule(
         "src": attr.label(allow_files = [".resx"], mandatory = True),
         "identifier": attr.string(),
         "out": attr.string(),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:dotnet_context_data")),
         "simpleresgen": attr.label(),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_mono"],
     executable = False,
 )
 
@@ -106,10 +106,10 @@ core_resx = rule(
         "src": attr.label(allow_files = [".resx"], mandatory = True),
         "identifier": attr.string(),
         "out": attr.string(),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
-        "simpleresgen": attr.label(default = Label("@io_bazel_rules_dotnet//tools/simpleresgen:simpleresgen.exe")),
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:core_context_data")),
+        "simpleresgen": attr.label(default = Label("@rules_mono//tools/simpleresgen:simpleresgen.exe")),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_core"],
     executable = False,
 )
 
@@ -120,9 +120,9 @@ net_resx_multi = rule(
         "srcs": attr.label_list(allow_files = True, mandatory = True),
         "identifierBase": attr.string(),
         "fixedIdentifierBase": attr.string(),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:net_context_data")),
         "simpleresgen": attr.label(),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_net"],
     executable = False,
 )

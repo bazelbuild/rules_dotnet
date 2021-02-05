@@ -12,7 +12,7 @@ def _vs2017_ref_net_impl(ctx):
             ctx.symlink(vs_ref_path, prefix)
 
     build_file_content = r'''package(default_visibility = [ "//visibility:public" ])
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "net_import_library")
+load("@rules_mono//dotnet:defs.bzl", "net_import_library")
 [net_import_library(
     name = vs_ref_assembly[:-len(".dll")],
     src =  vs_ref_assembly

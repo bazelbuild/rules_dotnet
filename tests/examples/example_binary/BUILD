@@ -1,5 +1,5 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet:defs.bzl",
+    "@rules_mono//dotnet:defs.bzl",
     "DOTNET_CORE_FRAMEWORKS",
     "DOTNET_NET_FRAMEWORKS",
     "core_binary",
@@ -25,10 +25,10 @@ dotnet_binary(
     srcs = [
         "Program.cs",
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+    dotnet_context_data = "@rules_mono//:core_context_data_{}".format(framework),
     deps = [
         "//tests/examples/example_lib:{}_MyClass-core.dll".format(framework),
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:libraryset".format(framework),
+        "@rules_mono//dotnet/stdlib.core/{}:libraryset".format(framework),
         "@newtonsoft.json//:netcoreapp2.1_core",
     ],
 ) for framework in DOTNET_CORE_FRAMEWORKS]
@@ -38,7 +38,7 @@ dotnet_binary(
     srcs = [
         "Program.cs",
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
+    dotnet_context_data = "@rules_mono//:net_context_data_{}".format(framework),
     deps = [
         "//tests/examples/example_lib:MyClass-net_{}.dll".format(framework),
         "@newtonsoft.json//:{}_net".format(framework),
@@ -48,7 +48,7 @@ dotnet_binary(
 [net_com_library(
     name = "{}_com-ref-shell32.dll".format(framework),
     out = "{}_shell32.dll".format(framework),
-    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
+    dotnet_context_data = "@rules_mono//:net_context_data_{}".format(framework),
     guid = "50A7E9B0-70EF-11D1-B75A-00A0C90564FE",
     lcid = 0,
     major_version = 1,

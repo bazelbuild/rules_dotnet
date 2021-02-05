@@ -1,13 +1,13 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:common.bzl",
+    "@rules_mono//dotnet/private:common.bzl",
     "as_iterable",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "@rules_mono//dotnet/private:providers.bzl",
     "DotnetResourceList",
 )
-load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "version2string")
+load("@rules_mono//dotnet/private:rules/common.bzl", "collect_transitive_info")
+load("@rules_mono//dotnet/private:rules/versions.bzl", "version2string")
 
 def _map_resource(d):
     return d.result.path + "," + d.identifier

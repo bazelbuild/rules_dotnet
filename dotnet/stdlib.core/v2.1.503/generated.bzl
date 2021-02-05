@@ -1,5 +1,5 @@
-load("@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl", "core_stdlib_internal")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/libraryset.bzl", "core_libraryset")
+load("@rules_mono//dotnet/private:rules/stdlib.bzl", "core_stdlib_internal")
+load("@rules_mono//dotnet/private:rules/libraryset.bzl", "core_libraryset")
 
 def define_stdlib(context_data):
     core_libraryset(

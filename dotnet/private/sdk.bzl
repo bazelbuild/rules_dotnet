@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet/private:common.bzl", "bat_extension", "executable_extension")
+load("@rules_mono//dotnet/private:common.bzl", "bat_extension", "executable_extension")
 load("@rules_dotnet_skylib//lib:paths.bzl", "paths")
 
 # Mono for linux, windows and macos layouts fies differentely
@@ -82,7 +82,7 @@ def _sdk_build_file(ctx):
     ctx.file("ROOT")
     ctx.template(
         "BUILD.bazel",
-        Label("@io_bazel_rules_dotnet//dotnet/private:BUILD.sdk.bazel"),
+        Label("@rules_mono//dotnet/private:BUILD.sdk.bazel"),
         executable = False,
     )
 

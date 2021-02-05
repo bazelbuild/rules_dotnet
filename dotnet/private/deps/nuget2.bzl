@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet/private:rules/nuget.bzl", "nuget_package")
+load("@rules_mono//dotnet/private:rules/nuget.bzl", "nuget_package")
 
 def dotnet_repositories_nuget2():
     nunitv2 = "nunitv2"

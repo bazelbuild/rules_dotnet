@@ -1,17 +1,17 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:common.bzl",
+    "@rules_mono//dotnet/private:common.bzl",
     "as_iterable",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
+    "@rules_mono//dotnet/private:context.bzl",
     "dotnet_context",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "@rules_mono//dotnet/private:providers.bzl",
     "DotnetLibrary",
 )
-load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "parse_version")
+load("@rules_mono//dotnet/private:rules/common.bzl", "collect_transitive_info")
+load("@rules_mono//dotnet/private:rules/versions.bzl", "parse_version")
 
 def _stdlib_impl(ctx):
     dotnet = dotnet_context(ctx)
@@ -107,9 +107,9 @@ dotnet_stdlib = rule(
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "data": attr.label_list(allow_files = True),
         "stdlib_path": attr.label(allow_files = True),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:dotnet_context_data")),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_mono"],
     executable = False,
 )
 
@@ -122,9 +122,9 @@ core_stdlib = rule(
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "data": attr.label_list(allow_files = True),
         "stdlib_path": attr.label(allow_files = True),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:core_context_data")),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_core"],
     executable = False,
 )
 
@@ -138,7 +138,7 @@ core_stdlib_internal = rule(
         "data": attr.label_list(allow_files = True),
         "stdlib_path": attr.label(allow_files = True, mandatory=True),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_core"],
     executable = False,
 )
 
@@ -151,8 +151,8 @@ net_stdlib = rule(
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "data": attr.label_list(allow_files = True),
         "stdlib_path": attr.label(allow_files = True),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:net_context_data")),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_net"],
     executable = False,
 )

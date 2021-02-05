@@ -1,10 +1,10 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "@rules_mono//dotnet/private:providers.bzl",
     "DotnetLibrary",
 )
 load("@rules_dotnet_skylib//lib:dicts.bzl", "dicts")
 load(
-    "@io_bazel_rules_dotnet//dotnet/platform:list.bzl",
+    "@rules_mono//dotnet/platform:list.bzl",
     "DOTNET_CORE_NAMES",
     "DOTNET_NET_NAMES",
 )
@@ -47,7 +47,7 @@ def _dotnet_nuget_impl(
     else:
         ctx.template(
             build_file_name,
-            Label("@io_bazel_rules_dotnet//dotnet/private:BUILD.nuget.bazel"),
+            Label("@rules_mono//dotnet/private:BUILD.nuget.bazel"),
             executable = False,
         )
 
@@ -170,7 +170,7 @@ def _get_importlib_withframework(func, func2, name, frameworks, lib, ref, deps, 
 
 _TEMPLATE2 = """
 package(default_visibility = [ "//visibility:public" ])
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_import_library", "core_import_library", "net_import_library", "core_import_binary", "net_import_binary", "core_libraryset", "net_libraryset", "dotnet_libraryset")
+load("@rules_mono//dotnet:defs.bzl", "dotnet_import_library", "core_import_library", "net_import_library", "core_import_binary", "net_import_binary", "core_libraryset", "net_libraryset", "dotnet_libraryset")
 """
 
 def _nuget_package_impl(ctx):

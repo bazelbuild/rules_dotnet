@@ -1,5 +1,5 @@
-load("@io_bazel_rules_dotnet//dotnet/private:context.bzl", "core_context_data", "dotnet_context_data", "net_context_data")
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DEFAULT_DOTNET_CORE_FRAMEWORK", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NET_FRAMEWORKS")
+load("@rules_mono//dotnet/private:context.bzl", "core_context_data", "dotnet_context_data", "net_context_data")
+load("@rules_mono//dotnet:defs.bzl", "DEFAULT_DOTNET_CORE_FRAMEWORK", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NET_FRAMEWORKS")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -41,11 +41,11 @@ exports_files(["AUTHORS"])
 [
     core_context_data(
         name = "core_context_data_" + framework,
-        csc = "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:csc.dll".format(framework),
+        csc = "@rules_mono//dotnet/stdlib.core/{}:csc.dll".format(framework),
         framework = framework,
         libVersion = DOTNET_CORE_FRAMEWORKS[framework][1],
         runner = "@core_sdk_{}//:runner".format(framework),
-        runtime = "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:runtime".format(framework),
+        runtime = "@rules_mono//dotnet/stdlib.core/{}:runtime".format(framework),
         visibility = ["//visibility:public"],
     )
     for framework in DOTNET_CORE_FRAMEWORKS

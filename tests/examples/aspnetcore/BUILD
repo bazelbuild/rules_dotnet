@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_binary")
+load("@rules_mono//dotnet:defs.bzl", "core_binary")
 
 core_binary(
     name = "aspnetcore.exe",
@@ -7,7 +7,7 @@ core_binary(
         "Controllers/*.cs",
     ]),
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:Microsoft.AspNetCore.App",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
+        "@rules_mono//dotnet/stdlib.core:Microsoft.AspNetCore.App",
+        "@rules_mono//dotnet/stdlib.core:libraryset",
     ],
 )

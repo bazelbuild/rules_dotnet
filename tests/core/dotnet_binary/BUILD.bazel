@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_binary", "dotnet_nunit_test")
+load("@rules_mono//dotnet:defs.bzl", "dotnet_binary", "dotnet_nunit_test")
 
 dotnet_binary(
     name = "custom_bin.exe",
@@ -6,7 +6,7 @@ dotnet_binary(
         "main.cs",
     ],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib:system.dll",
+        "@rules_mono//dotnet/stdlib:system.dll",
     ],
 )
 
@@ -20,7 +20,7 @@ dotnet_nunit_test(
         ":custom_bin.exe",
     ],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib:system.dll",
+        "@rules_mono//dotnet/stdlib:system.dll",
         "@nunitv2//:netstandard1.0_net",
     ],
 )

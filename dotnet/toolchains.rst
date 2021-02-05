@@ -55,7 +55,7 @@ it's default name, the following toolchain labels (along with many others) will 
 
   .. code:: python
 
-    @io_bazel_rules_dotnet//dotnet/toolchain:net_linux_amd64
+    @rules_mono//dotnet/toolchain:net_linux_amd64
   
 The toolchains are not usable until you register them.
 
@@ -88,15 +88,15 @@ First, you have to declare that you want to consume the toolchain on the rule de
 
 .. code:: python
 
-  load("@io_bazel_rules_dotnet//dotnet:def.bzl", "dotnet_context")
+  load("@rules_mono//dotnet:def.bzl", "dotnet_context")
 
   my_rule = rule(
       _my_rule_impl,
       attrs = {
           ...
-         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data"))
+         "dotnet_context_data": attr.label(default = Label("@rules_mono//:dotnet_context_data"))
      },
-     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
+     toolchains = ["@rules_mono//dotnet:toolchain_type_mono"],
  )
 
 And then in the rule body, you need to get the toolchain itself and use it's action generators.
@@ -223,25 +223,25 @@ the dotnet context data as an attribute.
       _my_rule_impl,
       attrs = {
           ...
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data"))
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:dotnet_context_data"))
       },
-      toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
+      toolchains = ["@rules_mono//dotnet:toolchain_type_mono"],
   )
   my_rule_core = rule(
       _my_rule_impl,
       attrs = {
           ...
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data"))
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:core_context_data"))
       },
-      toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
+      toolchains = ["@rules_mono//dotnet:toolchain_type_core"],
   )
   my_rule_net = rule(
       _my_rule_impl,
       attrs = {
           ...
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data"))
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:net_context_data"))
       },
-      toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
+      toolchains = ["@rules_mono//dotnet:toolchain_type_net"],
   )
 
 

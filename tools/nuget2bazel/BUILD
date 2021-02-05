@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_binary")
+load("@rules_mono//dotnet:defs.bzl", "core_binary")
 
 core_binary(
     name = "nuget2bazel.exe",
@@ -9,7 +9,7 @@ core_binary(
     visibility = ["//visibility:public"],
     deps = [
         "@commandlineparser//:core",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
+        "@rules_mono//dotnet/stdlib.core:libraryset",
         "@newtonsoft.json//:core",
         "@nuget.common//:core",
         "@nuget.configuration//:core",

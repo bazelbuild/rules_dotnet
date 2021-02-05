@@ -1,5 +1,5 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet:defs.bzl",
+    "@rules_mono//dotnet:defs.bzl",
     "DOTNET_NET_FRAMEWORKS",
     "net_binary",
 )
@@ -9,9 +9,9 @@ load(
     srcs = [
         "Program.cs",
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
+    dotnet_context_data = "@rules_mono//:net_context_data_{}".format(framework),
     visibility = ["//visibility:public"],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.net/{}:system.dll".format(framework),
+        "@rules_mono//dotnet/stdlib.net/{}:system.dll".format(framework),
     ],
 ) for framework in DOTNET_NET_FRAMEWORKS]

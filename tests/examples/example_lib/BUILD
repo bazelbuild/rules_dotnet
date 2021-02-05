@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NET_FRAMEWORKS", "core_library", "dotnet_library", "net_library")
+load("@rules_mono//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NET_FRAMEWORKS", "core_library", "dotnet_library", "net_library")
 
 dotnet_library(
     name = "MyClass.dll",
@@ -18,11 +18,11 @@ dotnet_library(
     srcs = [
         "MyClass.cs",
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+    dotnet_context_data = "@rules_mono//:core_context_data_{}".format(framework),
     visibility = ["//visibility:public"],
     deps = [
         "//tests/examples/example_transitive_lib:{}_TransitiveClass-core.dll".format(framework),
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:libraryset".format(framework),
+        "@rules_mono//dotnet/stdlib.core/{}:libraryset".format(framework),
     ],
 ) for framework in DOTNET_CORE_FRAMEWORKS]
 
@@ -31,7 +31,7 @@ dotnet_library(
     srcs = [
         "MyClass.cs",
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
+    dotnet_context_data = "@rules_mono//:net_context_data_{}".format(framework),
     visibility = ["//visibility:public"],
     deps = [
         "//tests/examples/example_transitive_lib:TransitiveClass-net_{}.dll".format(framework),
@@ -47,7 +47,7 @@ core_library(
     visibility = ["//visibility:public"],
     deps = [
         "//tests/examples/example_transitive_lib:TransitiveClass-core-netstandard.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:NETStandard.Library",
+        "@rules_mono//dotnet/stdlib.core:NETStandard.Library",
     ],
 )
 
@@ -60,6 +60,6 @@ core_library(
     visibility = ["//visibility:public"],
     deps = [
         "//tests/examples/example_transitive_lib:TransitiveClass-core-v2.1.200-netstandard.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core/v2.1.200:netstandard.dll",
+        "@rules_mono//dotnet/stdlib.core/v2.1.200:netstandard.dll",
     ],
 )

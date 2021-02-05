@@ -1,13 +1,13 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
+    "@rules_mono//dotnet/private:context.bzl",
     "dotnet_context",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "@rules_mono//dotnet/private:providers.bzl",
     "DotnetLibrary",
 )
-load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
-load("@io_bazel_rules_dotnet//dotnet/private:common.bzl", "as_iterable")
+load("@rules_mono//dotnet/private:rules/common.bzl", "collect_transitive_info")
+load("@rules_mono//dotnet/private:common.bzl", "as_iterable")
 
 def _libraryset_impl(ctx):
     """_libraryset_impl implements the set of libraries."""
@@ -48,7 +48,7 @@ dotnet_libraryset = rule(
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "data": attr.label_list(allow_files = True),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_mono"],
     executable = False,
 )
 
@@ -58,7 +58,7 @@ core_libraryset = rule(
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "data": attr.label_list(allow_files = True),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_core"],
     executable = False,
 )
 
@@ -68,6 +68,6 @@ net_libraryset = rule(
         "deps": attr.label_list(providers = [DotnetLibrary]),
         "data": attr.label_list(allow_files = True),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_net"],
     executable = False,
 )

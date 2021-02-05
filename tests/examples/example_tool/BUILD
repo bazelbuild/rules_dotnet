@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NET_FRAMEWORKS", "core_binary", "dotnet_binary", "net_binary")
+load("@rules_mono//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NET_FRAMEWORKS", "core_binary", "dotnet_binary", "net_binary")
 
 dotnet_binary(
     name = "hello_tool.exe",
@@ -7,7 +7,7 @@ dotnet_binary(
     ],
     deps = [
         "//tests/examples/example_lib:MyClass.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib:system.dll",
+        "@rules_mono//dotnet/stdlib:system.dll",
     ],
 )
 
@@ -16,10 +16,10 @@ dotnet_binary(
     srcs = [
         "MyTool.cs",
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+    dotnet_context_data = "@rules_mono//:core_context_data_{}".format(framework),
     deps = [
         "//tests/examples/example_lib:{}_MyClass-core.dll".format(framework),
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:libraryset".format(framework),
+        "@rules_mono//dotnet/stdlib.core/{}:libraryset".format(framework),
     ],
 ) for framework in DOTNET_CORE_FRAMEWORKS]
 
@@ -28,7 +28,7 @@ dotnet_binary(
     srcs = [
         "MyTool.cs",
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
+    dotnet_context_data = "@rules_mono//:net_context_data_{}".format(framework),
     deps = [
         "//tests/examples/example_lib:MyClass-net_{}.dll".format(framework),
     ],
@@ -62,9 +62,9 @@ core_binary(
     srcs = [
         "MyTool.cs",
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_v2.1.200",
+    dotnet_context_data = "@rules_mono//:core_context_data_v2.1.200",
     deps = [
         "//tests/examples/example_lib:MyClass-core-v2.1.200-netstandard.dll",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core/v2.1.200:libraryset",
+        "@rules_mono//dotnet/stdlib.core/v2.1.200:libraryset",
     ],
 )

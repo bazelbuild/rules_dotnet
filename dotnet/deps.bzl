@@ -1,5 +1,5 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:repositories.bzl",
+    "@rules_mono//dotnet/private:repositories.bzl",
     _dotnet_repositories = "dotnet_repositories",
 )
 

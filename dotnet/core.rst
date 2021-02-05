@@ -116,10 +116,10 @@ Example
     srcs = [
         "TransitiveClass.cs",
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+    dotnet_context_data = "@rules_mono//:core_context_data_{}".format(framework),
     visibility = ["//visibility:public"],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:libraryset".format(framework),
+        "@rules_mono//dotnet/stdlib.core/{}:libraryset".format(framework),
     ],
   ) for framework in DOTNET_CORE_FRAMEWORKS]
 

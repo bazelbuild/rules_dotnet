@@ -92,7 +92,7 @@ namespace testlib
             var dir = Directory.GetParent(Directory.GetCurrentDirectory());
             while (dir != null)
             {
-                var prospect = Path.Combine(dir.FullName, "external/io_bazel_rules_dotnet");
+                var prospect = Path.Combine(dir.FullName, "external/rules_mono");
                 if (Directory.Exists(prospect))
                 {
                     var workspace = Path.Combine(prospect, "WORKSPACE");

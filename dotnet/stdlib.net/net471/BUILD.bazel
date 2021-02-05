@@ -4,4 +4,4 @@ package(default_visibility = ["//visibility:public"])
 
 framework = "net471"
 
-define_stdlib("@io_bazel_rules_dotnet//:net_context_data_{}".format(framework))
+define_stdlib("@rules_mono//:net_context_data_{}".format(framework))

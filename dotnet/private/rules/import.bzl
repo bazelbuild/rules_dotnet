@@ -1,18 +1,18 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:common.bzl",
+    "@rules_mono//dotnet/private:common.bzl",
     "as_iterable",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
+    "@rules_mono//dotnet/private:context.bzl",
     "new_library",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "@rules_mono//dotnet/private:providers.bzl",
     "DotnetLibrary",
 )
-load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "parse_version")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/runfiles.bzl", "CopyRunfiles")
+load("@rules_mono//dotnet/private:rules/common.bzl", "collect_transitive_info")
+load("@rules_mono//dotnet/private:rules/versions.bzl", "parse_version")
+load("@rules_mono//dotnet/private:rules/runfiles.bzl", "CopyRunfiles")
 
 def _import_library_impl(ctx):
     """net_import_library_impl emits actions for importing an external dll (for example provided by nuget)."""
@@ -176,7 +176,7 @@ core_import_binary_internal = rule(
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_core:launcher_core.exe")),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
-        "runtime": attr.label(providers = [DotnetLibrary], default = "@io_bazel_rules_dotnet//dotnet/stdlib.core:runtime"),
+        "runtime": attr.label(providers = [DotnetLibrary], default = "@rules_mono//dotnet/stdlib.core:runtime"),
         "runner": attr.label(default = "@core_sdk//:runner"),
     },
     executable = True,

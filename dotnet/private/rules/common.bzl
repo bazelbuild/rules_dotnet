@@ -1,5 +1,5 @@
-load("@io_bazel_rules_dotnet//dotnet/private:providers.bzl", "DotnetLibrary")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "compare_versions")
+load("@rules_mono//dotnet/private:providers.bzl", "DotnetLibrary")
+load("@rules_mono//dotnet/private:rules/versions.bzl", "compare_versions")
 
 def collect_transitive_info(deps):
     """Collects transitive information.

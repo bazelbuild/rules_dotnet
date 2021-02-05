@@ -64,7 +64,7 @@ def net_empty_toolchain(name, arch, os, constraints, **kwargs):
     )
     native.toolchain(
         name = name,
-        toolchain_type = "@io_bazel_rules_dotnet//dotnet:toolchain_type_net",
+        toolchain_type = "@rules_mono//dotnet:toolchain_type_net",
         exec_compatible_with = constraints,
         toolchain = ":" + impl_name,
     )

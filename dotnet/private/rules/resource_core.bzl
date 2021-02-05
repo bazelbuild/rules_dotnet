@@ -1,9 +1,9 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
+    "@rules_mono//dotnet/private:context.bzl",
     "dotnet_context",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "@rules_mono//dotnet/private:providers.bzl",
     "DotnetResourceList",
 )
 load("@rules_dotnet_skylib//lib:paths.bzl", "paths")
@@ -66,9 +66,9 @@ core_resource = rule(
         # source files for this target.
         "src": attr.label(allow_single_file = True, mandatory = True),
         "identifier": attr.string(),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:core_context_data")),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_core"],
     executable = False,
 )
 
@@ -79,9 +79,9 @@ core_resource_multi = rule(
         "srcs": attr.label_list(allow_files = True, mandatory = True),
         "identifierBase": attr.string(),
         "fixedIdentifierBase": attr.string(),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:core_context_data")),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_core"],
     executable = False,
 )
 
@@ -91,9 +91,9 @@ net_resource = rule(
         # source files for this target.
         "src": attr.label(allow_single_file = True, mandatory = True),
         "identifier": attr.string(),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:net_context_data")),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_net"],
     executable = False,
 )
 
@@ -104,8 +104,8 @@ net_resource_multi = rule(
         "srcs": attr.label_list(allow_files = True, mandatory = True),
         "identifierBase": attr.string(),
         "fixedIdentifierBase": attr.string(),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:net_context_data")),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_net"],
     executable = False,
 )

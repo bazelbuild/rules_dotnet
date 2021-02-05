@@ -1,62 +1,62 @@
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
+    "@rules_mono//dotnet/private:context.bzl",
     _core_context_data = "core_context_data",
     _dotnet_context = "dotnet_context",
     _dotnet_context_data = "dotnet_context_data",
     _net_context_data = "net_context_data",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/toolchain:toolchains.bzl",
+    "@rules_mono//dotnet/toolchain:toolchains.bzl",
     _core_register_sdk = "core_register_sdk",
     _dotnet_register_toolchains = "dotnet_register_toolchains",
     _mono_register_sdk = "mono_register_sdk",
     _net_register_sdk = "net_register_sdk",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:dotnet_toolchain.bzl",
+    "@rules_mono//dotnet/private:dotnet_toolchain.bzl",
     _dotnet_toolchain = "dotnet_toolchain",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/binary.bzl",
+    "@rules_mono//dotnet/private:rules/binary.bzl",
     _core_binary = "core_binary",
     _dotnet_binary = "dotnet_binary",
     _net_binary = "net_binary",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/library.bzl",
+    "@rules_mono//dotnet/private:rules/library.bzl",
     _core_library = "core_library",
     _dotnet_library = "dotnet_library",
     _net_library = "net_library",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/libraryset.bzl",
+    "@rules_mono//dotnet/private:rules/libraryset.bzl",
     _core_libraryset = "core_libraryset",
     _dotnet_libraryset = "dotnet_libraryset",
     _net_libraryset = "net_libraryset",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/resx.bzl",
+    "@rules_mono//dotnet/private:rules/resx.bzl",
     _core_resx = "core_resx",
     _dotnet_resx = "dotnet_resx",
     _net_resx = "net_resx",
     _net_resx_multi = "net_resx_multi",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/resource_core.bzl",
+    "@rules_mono//dotnet/private:rules/resource_core.bzl",
     _core_resource = "core_resource",
     _core_resource_multi = "core_resource_multi",
     _net_resource = "net_resource",
     _net_resource_multi = "net_resource_multi",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl",
+    "@rules_mono//dotnet/private:rules/stdlib.bzl",
     _core_stdlib = "core_stdlib",
     _core_stdlib_internal = "core_stdlib_internal",
     _dotnet_stdlib = "dotnet_stdlib",
     _net_stdlib = "net_stdlib",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/test.bzl",
+    "@rules_mono//dotnet/private:rules/test.bzl",
     _core_nunit3_test = "core_nunit3_test",
     _core_xunit_test = "core_xunit_test",
     _dotnet_nunit_test = "dotnet_nunit_test",
@@ -66,13 +66,13 @@ load(
     _net_xunit_test = "net_xunit_test",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/nuget.bzl",
+    "@rules_mono//dotnet/private:rules/nuget.bzl",
     _dotnet_nuget = "dotnet_nuget",
     _dotnet_nuget_new = "dotnet_nuget_new",
     _nuget_package = "nuget_package",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/import.bzl",
+    "@rules_mono//dotnet/private:rules/import.bzl",
     _core_import_binary = "core_import_binary",
     _core_import_binary_internal = "core_import_binary_internal",
     _core_import_library = "core_import_library",
@@ -82,20 +82,20 @@ load(
     _net_import_library = "net_import_library",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/com_ref.bzl",
+    "@rules_mono//dotnet/private:rules/com_ref.bzl",
     _net_com_library = "net_com_library",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/gac_net.bzl",
+    "@rules_mono//dotnet/private:rules/gac_net.bzl",
     _net_gac2 = "net_gac2",
     _net_gac4 = "net_gac4",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:rules/vs_ref_net.bzl",
+    "@rules_mono//dotnet/private:rules/vs_ref_net.bzl",
     _vs2017_ref_net = "vs2017_ref_net",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/platform:list.bzl",
+    "@rules_mono//dotnet/platform:list.bzl",
     _DEFAULT_DOTNET_CORE_FRAMEWORK = "DEFAULT_DOTNET_CORE_FRAMEWORK",
     _DOTNET_CORE_FRAMEWORKS = "DOTNET_CORE_FRAMEWORKS",
     _DOTNET_CORE_NAMES = "DOTNET_CORE_NAMES",
@@ -104,7 +104,7 @@ load(
     _DOTNET_NET_NAMES = "DOTNET_NET_NAMES",
 )
 load(
-    "@io_bazel_rules_dotnet//dotnet/private:nugets.bzl",
+    "@rules_mono//dotnet/private:nugets.bzl",
     _dotnet_repositories_nugets = "dotnet_repositories_nugets",
 )
 

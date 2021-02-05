@@ -16,9 +16,9 @@ Toolchain rules used by dotnet.
 """
 
 load("@rules_dotnet_skylib//lib:paths.bzl", "paths")
-load("@io_bazel_rules_dotnet//dotnet/private:actions/assembly_net.bzl", "emit_assembly_net")
-load("@io_bazel_rules_dotnet//dotnet/private:actions/resx_net.bzl", "emit_resx_net")
-load("@io_bazel_rules_dotnet//dotnet/private:actions/com_ref_net.bzl", "emit_com_ref_net")
+load("@rules_mono//dotnet/private:actions/assembly_net.bzl", "emit_assembly_net")
+load("@rules_mono//dotnet/private:actions/resx_net.bzl", "emit_resx_net")
+load("@rules_mono//dotnet/private:actions/com_ref_net.bzl", "emit_com_ref_net")
 
 def _get_dotnet_runner(context_data, ext):
     return None
@@ -104,7 +104,7 @@ def net_toolchain(name, arch, os, constraints, **kwargs):
     )
     native.toolchain(
         name = name,
-        toolchain_type = "@io_bazel_rules_dotnet//dotnet:toolchain_type_net",
+        toolchain_type = "@rules_mono//dotnet:toolchain_type_net",
         exec_compatible_with = constraints,
         toolchain = ":" + impl_name,
     )

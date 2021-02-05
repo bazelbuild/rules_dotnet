@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl", "dotnet_stdlib")
+load("@rules_mono//dotnet/private:rules/stdlib.bzl", "dotnet_stdlib")
 
 def define_stdlib(context_data):
     dotnet_stdlib(

@@ -1,5 +1,5 @@
-load("@io_bazel_rules_dotnet//dotnet/private:common.bzl", "env_execute")
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "dotnet_context")
+load("@rules_mono//dotnet/private:common.bzl", "env_execute")
+load("@rules_mono//dotnet:defs.bzl", "dotnet_context")
 
 # _bazelrc is the bazel.rc file that sets the default options for tests
 _bazelrc = """
@@ -18,7 +18,7 @@ build:fetch --fetch=True
 
 # _env_build_template is the template for the bazel test environment repository build file
 _env_build_template = """
-load("@io_bazel_rules_dotnet//tests:bazel_tests.bzl", "bazel_test_settings")
+load("@rules_mono//tests:bazel_tests.bzl", "bazel_test_settings")
 bazel_test_settings(
   name = "settings",
   bazel = "{bazel}",
@@ -261,15 +261,15 @@ _bazel_test_script = rule(
         ),
         "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
         "_settings": attr.label(default = Label("@bazel_test//:settings")),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
+        "dotnet_context_data": attr.label(default = Label("@rules_mono//:dotnet_context_data")),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
+    toolchains = ["@rules_mono//dotnet:toolchain_type_mono"],
 )
 
 def bazel_test(name, command = None, args = None, targets = None, dotnet_version = None, tags = [], externals = [], workspace = "", build = "", check = "", config = None, workspace_in = None, build_in = None, srcs = None):
     script_name = name + "_script"
     externals = externals + [
-        "@io_bazel_rules_dotnet//:AUTHORS",
+        "@rules_mono//:AUTHORS",
     ]
     #if dotnet_version == None or dotnet_version == CURRENT_VERSION:
     #    externals.append("@go_sdk//:packages.txt")
@@ -298,7 +298,7 @@ def bazel_test(name, command = None, args = None, targets = None, dotnet_version
         tags = ["local", "bazel", "exclusive"] + tags,
         data = [
             "@bazel_test//:bazelrc",
-            "@io_bazel_rules_dotnet//tests:rules_dotnet_deps",
+            "@rules_mono//tests:rules_dotnet_deps",
         ] + ([workspace_in] if workspace_in else []) + ([build_in] if build_in else []),
     )
 
@@ -342,7 +342,7 @@ md5_sum = rule(
         "srcs": attr.label_list(allow_files = True),
         "_md5sum": attr.label(
             executable = True,
-            default = "@io_bazel_rules_dotnet//dotnet/tools/md5sum",
+            default = "@rules_mono//dotnet/tools/md5sum",
             cfg = "host",
         ),
     },
