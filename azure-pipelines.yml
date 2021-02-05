@@ -23,6 +23,13 @@ jobs:
 
 
   steps:
+    - task: UseDotNet@2
+      inputs:
+        packageType: sdk
+        version: 3.1.201
+      displayName: 'Install dotnet on Window'
+      condition: and(succeeded(), eq(variables['systemName'], 'windows'))
+
     - script: |
         echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
         curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
@@ -36,21 +43,40 @@ jobs:
         brew list bazel && brew remove bazel
         brew list bazel || brew install bazel 
         brew install coreutils
+        brew cask install mono-mdk
       displayName: 'Install dependencies osx'
       condition: and(succeeded(), eq(variables['systemName'], 'mac'))
        
     - script: |
-        choco install bazel
+        choco install bazel mono
       displayName: 'Install dependencies'
       condition: and(succeeded(), eq(variables['systemName'], 'windows'))
 
     - script: |
         bazel version
       displayName: 'Show bazel version'
+    - script: |
+        dotnet --info
+      displayName: 'Show dotnet version'
+    - script: |
+        mono --version
+      displayName: 'Show mono version'
+      condition: and(succeeded(), ne(variables['systemName'], 'windows'))
+    - script: |
+        "c:\program files\mono\bin\mono.exe" --version
+      displayName: 'Show mono version'
+      condition: and(succeeded(), eq(variables['systemName'], 'windows'))
+
+    - script: |    
+        bazel $(bazel_startup) query "deps(@dotnet_sdk//:csc)"
+      displayName: 'Query'
 
     - script: |    
         bazel $(bazel_startup) build -s --spawn_strategy=standalone //... 
       displayName: 'Build all'
+    - script: |
+        bazel $(bazel_startup) run -s --spawn_strategy=standalone //tests/examples/example_binary:hello.exe
+      displayName: 'Run sample hello'
     - script: |
         bazel $(bazel_startup) run -s  --spawn_strategy=standalone //tests/examples/example_binary:v2.1.200_hello-core.exe
       displayName: 'Run sample core hello'
@@ -92,19 +118,20 @@ jobs:
     - script: |
         pwd
         bazel $(bazel_startup) test --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
-      workingDirectory: $(Build.SourcesDirectory)/examples/grpc
+      workingDirectory: $(Build.SourcesDirectory)/docs/examples/mono
+      displayName: 'Run mono standalone test'
+
+    - script: |
+        pwd
+        bazel $(bazel_startup) test --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
+      workingDirectory: $(Build.SourcesDirectory)/docs/examples/grpc
       displayName: 'Run grpc standalone test'
 
     - script: |
         pwd
         bazel $(bazel_startup) test --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
-      workingDirectory: $(Build.SourcesDirectory)/examples/ef
+      workingDirectory: $(Build.SourcesDirectory)/docs/examples/ef
       displayName: 'Run ef standalone test'
 
-    # - script: |
-    #     pwd
-    #     bazel $(bazel_startup) test --test_summary=detailed --spawn_strategy=standalone --test_output=all //docs:my-docs 
-    #   displayName: 'Test api.md generation'
-    #   condition: and(succeeded(), eq(variables['systemName'], 'linux'))
     
     

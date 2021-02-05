@@ -1,8 +1,3 @@
-exports_files(
-    ["defs.bzl"],
-    visibility = ["//visibility:public"],
-)
-
 filegroup(
     name = "all_rules",
     srcs = glob([

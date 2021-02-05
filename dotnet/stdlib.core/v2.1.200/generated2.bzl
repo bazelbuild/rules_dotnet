@@ -16,7 +16,7 @@ def define_runtime(context_data):
             ":system.security.principal.windows.dll",
             ":system.collections.dll",
             ":system.buffers.dll",
-        ],
+        ]
     )
     core_stdlib_internal(
         name = "sos.netcore.dll",
@@ -33,7 +33,7 @@ def define_runtime(context_data):
             ":system.diagnostics.debug.dll",
             ":system.runtime.extensions.dll",
             ":system.io.filesystem.dll",
-        ],
+        ]
     )
     core_stdlib_internal(
         name = "system.io.filesystem.accesscontrol.dll",
@@ -48,7 +48,7 @@ def define_runtime(context_data):
             ":system.security.accesscontrol.dll",
             ":system.security.principal.windows.dll",
             ":system.collections.nongeneric.dll",
-        ],
+        ]
     )
     core_stdlib_internal(
         name = "system.private.corelib.dll",
@@ -56,7 +56,7 @@ def define_runtime(context_data):
         ref = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Private.CoreLib.dll",
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Private.CoreLib.dll",
         deps = [
-        ],
+        ]
     )
     core_stdlib_internal(
         name = "system.private.datacontractserialization.dll",
@@ -84,7 +84,7 @@ def define_runtime(context_data):
             ":system.text.regularexpressions.dll",
             ":system.xml.xdocument.dll",
             ":system.collections.specialized.dll",
-        ],
+        ]
     )
     core_stdlib_internal(
         name = "system.private.uri.dll",
@@ -93,7 +93,7 @@ def define_runtime(context_data):
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Private.Uri.dll",
         deps = [
             ":system.private.corelib.dll",
-        ],
+        ]
     )
     core_stdlib_internal(
         name = "system.private.xml.dll",
@@ -126,7 +126,7 @@ def define_runtime(context_data):
             ":system.linq.dll",
             ":system.io.filesystem.dll",
             ":system.console.dll",
-        ],
+        ]
     )
     core_stdlib_internal(
         name = "system.private.xml.linq.dll",
@@ -144,7 +144,7 @@ def define_runtime(context_data):
             ":system.threading.dll",
             ":system.threading.tasks.dll",
             ":system.linq.dll",
-        ],
+        ]
     )
     core_stdlib_internal(
         name = "system.security.accesscontrol.dll",
@@ -161,7 +161,7 @@ def define_runtime(context_data):
             ":system.threading.dll",
             ":system.threading.thread.dll",
             ":system.collections.nongeneric.dll",
-        ],
+        ]
     )
     core_stdlib_internal(
         name = "system.security.cryptography.cng.dll",
@@ -176,7 +176,7 @@ def define_runtime(context_data):
             ":system.security.cryptography.encoding.dll",
             ":system.security.cryptography.primitives.dll",
             ":system.security.cryptography.algorithms.dll",
-        ],
+        ]
     )
     core_stdlib_internal(
         name = "system.security.cryptography.openssl.dll",
@@ -185,7 +185,7 @@ def define_runtime(context_data):
         stdlib_path = "@core_sdk_v2.1.200//:core/shared/Microsoft.NETCore.App/2.0.7/System.Security.Cryptography.OpenSsl.dll",
         deps = [
             ":netstandard.dll",
-        ],
+        ]
     )
     core_stdlib_internal(
         name = "system.security.principal.windows.dll",
@@ -203,7 +203,7 @@ def define_runtime(context_data):
             ":system.threading.dll",
             ":system.diagnostics.debug.dll",
             ":microsoft.win32.primitives.dll",
-        ],
+        ]
     )
 
     core_libraryset(

@@ -1,19 +1,56 @@
 load(
-    "//dotnet/private:core_toolchain.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:dotnet_toolchain.bzl",
+    "dotnet_toolchain",
+)
+load(
+    "@io_bazel_rules_dotnet//dotnet/private:core_toolchain.bzl",
     "core_toolchain",
 )
 load(
-    "//dotnet/private:sdk_core.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:net_toolchain.bzl",
+    "net_toolchain",
+)
+load(
+    "@io_bazel_rules_dotnet//dotnet/private:net_empty_toolchain.bzl",
+    "net_empty_toolchain",
+)
+load(
+    "@io_bazel_rules_dotnet//dotnet/private:sdk.bzl",
+    "dotnet_host_sdk",
+)
+load(
+    "@io_bazel_rules_dotnet//dotnet/private:sdk_core.bzl",
     "core_download_sdk",
 )
 load(
-    "//dotnet/platform:list.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:sdk_net.bzl",
+    "net_download_sdk",
+)
+load(
+    "@io_bazel_rules_dotnet//dotnet/platform:list.bzl",
     "DOTNETARCH",
-    "DOTNETIMPL",
     "DOTNETOS",
+    "DOTNETIMPL",
+    "DOTNET_NET_FRAMEWORKS",
+    "DOTNET_CORE_FRAMEWORKS",
+    "DEFAULT_DOTNET_CORE_FRAMEWORK",
+    "DEFAULT_DOTNET_NET_FRAMEWORK",
 )
 
+DEFAULT_VERSION = "4.2.3"
 CORE_DEFAULT_VERSION = "v3.1.100"
+NET_ROSLYN_DEFAULT_VERSION = "2.10.0"
+NET_DEFAULT_VERSION = "net48"
+NET_DEFAULT_TOOLS_VERSION = "net48"
+
+SDK_REPOSITORIES = {
+    "4.2.3": {
+        "mono_darwin_amd64": (
+            "http://bazel-mirror.storage.googleapis.com/download.mono-project.com/archive/4.2.3/macos-10-x86/MonoFramework-MDK-4.2.3.4.macos10.xamarin.x86.tar.gz",
+            "a7afb92d4a81f17664a040c8f36147e57a46bb3c33314b73ec737ad73608e08b",
+        ),
+    },
+}
 
 CORE_SDK_REPOSITORIES = {
     "v2.1.200": {
@@ -125,9 +162,54 @@ CORE_SDK_REPOSITORIES = {
     },
 }
 
+NET_ROSLYN_REPOSITORIES = {
+    "2.6.0": {
+        "net_windows_amd64": (
+            "https://www.nuget.org/api/v2/package/Microsoft.Net.Compilers/2.6.0/",
+            "4ec0a588dc7b538e3f05fb9637931941320defef8e8fde1a79392de9c2a5a276",
+        ),
+    },
+    "2.6.1": {
+        "net_windows_amd64": (
+            "https://www.nuget.org/api/v2/package/Microsoft.Net.Compilers/2.6.1/",
+            "2e38aa455b5a1acce260a8ea30696804e6fa66aa366a04118f0cb4c8d7d08cf9",
+        ),
+    },
+    "2.7.0": {
+        "net_windows_amd64": (
+            "https://www.nuget.org/api/v2/package/Microsoft.Net.Compilers/2.7.0/",
+            "e6ab3b41c4a30f3c98d4fd318a780d4051c4f35b2bb575b1ea11f621275f1597",
+        ),
+    },
+    "2.8.0": {
+        "net_windows_amd64": (
+            "https://www.nuget.org/api/v2/package/Microsoft.Net.Compilers/2.8.0/",
+            "ec357a48b5ce3a2890c744967f4057a6c2c953fdd407bd57c003c9d300fe015f",
+        ),
+    },
+    "2.8.2": {
+        "net_windows_amd64": (
+            "https://www.nuget.org/api/v2/package/Microsoft.Net.Compilers/2.8.2/",
+            "96684975e6934859e3a9f42536d2ffeb63f8e5761eb38838d0604d4cc31e0b47",
+        ),
+    },
+    "2.9.0": {
+        "net_windows_amd64": (
+            "https://www.nuget.org/api/v2/package/Microsoft.Net.Compilers/2.9.0/",
+            "63a6828a1a4ada4b813f48784b1797b4b270a8c0559fcafc64666efb3de84bfd",
+        ),
+    },
+    "2.10.0": {
+        "net_windows_amd64": (
+            "https://www.nuget.org/api/v2/package/Microsoft.Net.Compilers/2.10.0/",
+            "854d162cbe3c90100922c970ba593631f2d106f7b757a99425d50dc5cdafbdc0",
+        ),
+    },
+}
+
 def _generate_toolchains():
     # Use all the above information to generate all the possible toolchains we might support
-    toolchains = []
+    toolchains = []   
     for arch in DOTNETARCH:
         for os in DOTNETOS:
             for impl in DOTNETIMPL:
@@ -144,37 +226,66 @@ def _generate_toolchains():
                 ))
     return toolchains
 
+
 _toolchains = _generate_toolchains()
 
 _label_prefix = "@io_bazel_rules_dotnet//dotnet/toolchain:"
 
-def dotnet_register_toolchains():
-    """The macro registers all toolchains."""
+def dotnet_register_toolchains(dotnet_version = DEFAULT_VERSION, core_version = CORE_DEFAULT_VERSION, net_version = NET_DEFAULT_VERSION, net_roslyn_version = NET_ROSLYN_DEFAULT_VERSION):
+    """See /dotnet/toolchains.rst#dostnet-register-toolchains for full documentation."""
 
     # Use the final dictionaries to register all the toolchains
     for toolchain in _toolchains:
         name = _label_prefix + toolchain["name"]
         native.register_toolchains(name)
+    
 
 def declare_toolchains():
     # Use the final dictionaries to create all the toolchains
     for toolchain in _toolchains:
-        core_toolchain(
-            name = toolchain["name"],
-            arch = toolchain["arch"],
-            os = toolchain["os"],
-            constraints = toolchain["constraints"],
-        )
+        if toolchain["impl"] == "mono":
+            dotnet_toolchain(
+                name = toolchain["name"],
+                arch = toolchain["arch"],
+                os = toolchain["os"],
+                constraints = toolchain["constraints"],
+            )
+        elif toolchain["impl"] == "core":
+            core_toolchain(
+                name = toolchain["name"],
+                arch = toolchain["arch"],
+                os = toolchain["os"],
+                constraints = toolchain["constraints"],
+            )
+        elif toolchain["impl"] == "net":
+            if toolchain["os"] == "windows" and toolchain["arch"]=="amd64":
+                net_toolchain(
+                    name = toolchain["name"],
+                    arch = toolchain["arch"],
+                    os = toolchain["os"],
+                    constraints = toolchain["constraints"],
+                )
+            else:
+                # Hardcoded empty rules for .NET on Linux and ocx
+                net_empty_toolchain(
+                    name = toolchain["name"],
+                    arch = toolchain["arch"],
+                    os = toolchain["os"],
+                    constraints = toolchain["constraints"],
+                )
+
+def net_register_sdk(net_version = NET_DEFAULT_VERSION, net_roslyn_version = NET_ROSLYN_DEFAULT_VERSION, tools_version = NET_DEFAULT_TOOLS_VERSION, name = "net_sdk"):
+    if net_roslyn_version not in NET_ROSLYN_REPOSITORIES:
+        fail("Unknown .net Roslyn version {}".format(net_roslyn_version))
+
+    net_download_sdk(
+        name = name if name else "net_sdk_" + net_version,
+        version = DOTNET_NET_FRAMEWORKS[net_version][3],
+        toolsVersion = DOTNET_NET_FRAMEWORKS[tools_version][3],
+        sdks = NET_ROSLYN_REPOSITORIES[net_roslyn_version],
+    )
 
 def core_register_sdk(core_version = CORE_DEFAULT_VERSION, name = "core_sdk"):
-    """Registers .NET Core.
-
-    It downloads the sdk for given version. Uses [core_download_sdk](api.md#core_download_sdk).
-
-    Args:
-      core_version: The exact version of the framework. The supported frameworks are listed in dotnet/platform/list.bzl.
-      name: The name under which the SDK will be registered.
-    """
     if core_version not in CORE_SDK_REPOSITORIES:
         fail("Unknown core version {}".format(core_version))
 
@@ -182,4 +293,10 @@ def core_register_sdk(core_version = CORE_DEFAULT_VERSION, name = "core_sdk"):
         name = name if name else "core_sdk_{}".format(core_version),
         version = core_version[1:],
         sdks = CORE_SDK_REPOSITORIES[core_version],
+    )
+
+def mono_register_sdk():
+    """See /dotnet/toolchains.rst#dostnet-register-toolchains for full documentation."""
+    dotnet_host_sdk(
+        name = "dotnet_sdk",
     )

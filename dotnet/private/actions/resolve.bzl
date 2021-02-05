@@ -1,6 +1,6 @@
 load(
-    "//dotnet/private:providers.bzl",
-    "DotnetLibraryInfo",
+    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "DotnetLibrary",
 )
 
 def _compareVersions(v1, v2):
@@ -11,7 +11,7 @@ def _compareVersions(v1, v2):
         return False
     return v1 < v2
 
-# Expects List of tuples (File|DotnetLibraryInfo, version).
+# Expects List of tuples (File|DotnetLibrary, version).
 # Recalculates transitive dependencies.
 def _ResolveVersions(targets):
     matched = {}
@@ -19,7 +19,7 @@ def _ResolveVersions(targets):
 
     for d, v in targets:
         if type(d) == "Target":
-            key = d[DotnetLibraryInfo].result.basename
+            key = d[DotnetLibrary].result.basename
         else:
             key = d.basename
         found = matched_versions.get(key)
@@ -32,7 +32,7 @@ def _ResolveVersions(targets):
 
     return matched.values()
 
-# Tries to decipher arguments to the list of File or DotnetLibraryInfo
+# Tries to decipher arguments to the list of File or DotnetLibrary
 # We need to do tricky calls because Starlark doesn't support recursion
 def ResolveVersions(*argv):
     toprocess_transitive = []
@@ -56,7 +56,7 @@ def _ResolveRunfilesLevel1(arg):
         return result
 
     if (type(arg) == "Target"):
-        result += _ResolveRunfilesLevel2(arg[DotnetLibraryInfo].runfiles.to_list(), arg[DotnetLibraryInfo].version)
+        result += _ResolveRunfilesLevel2(arg[DotnetLibrary].runfiles.to_list(), arg[DotnetLibrary].version)
         return result
 
     if (type(arg) == "struct"):
@@ -64,7 +64,7 @@ def _ResolveRunfilesLevel1(arg):
         return result
 
     if (type(arg) == "File"):
-        result.append((arg, None))
+        result += [(arg, None)]
         return result
 
     fail("Unknown argument %s" % arg)
@@ -77,7 +77,7 @@ def _ResolveRunfilesLevel2(arg, version):
         return result
 
     if (type(arg) == "Target"):
-        result += _ResolveRunfilesLevel3(arg[DotnetLibraryInfo].runfiles.to_list(), arg[DotnetLibraryInfo].version)
+        result += _ResolveRunfilesLevel3(arg[DotnetLibrary].runfiles.to_list(), arg[DotnetLibrary].version)
         return result
 
     if (type(arg) == "struct"):
@@ -85,7 +85,7 @@ def _ResolveRunfilesLevel2(arg, version):
         return result
 
     if (type(arg) == "File"):
-        result.append((arg, version))
+        result += [(arg, version)]
         return result
 
     fail("Unknown argument %s" % arg)
@@ -98,7 +98,7 @@ def _ResolveRunfilesLevel3(arg, version):
         return result
 
     if (type(arg) == "Target"):
-        result += _ResolveRunfilesLevel4(arg[DotnetLibraryInfo].runfiles.to_list(), arg[DotnetLibraryInfo].version)
+        result += _ResolveRunfilesLevel4(arg[DotnetLibrary].runfiles.to_list(), arg[DotnetLibrary].version)
         return result
 
     if (type(arg) == "struct"):
@@ -106,7 +106,7 @@ def _ResolveRunfilesLevel3(arg, version):
         return result
 
     if (type(arg) == "File"):
-        result.append((arg, version))
+        result += [(arg, version)]
         return result
 
     fail("Unknown argument %s" % arg)
@@ -117,7 +117,7 @@ def _ResolveRunfilesLevel4(arg, version):
         fail("Recursion to deep on %s" % arg)
 
     if (type(arg) == "File"):
-        result.append((arg, version))
+        result += [(arg, version)]
         return result
 
     fail("Unknown argument %s" % arg)
@@ -130,8 +130,8 @@ def _ResolveTransitiveLevel1(arg):
         return result
 
     if (type(arg) == "Target"):
-        result.append((arg, arg[DotnetLibraryInfo].version))
-        result += _ResolveTransitiveLevel2(arg[DotnetLibraryInfo].transitive.to_list(), arg[DotnetLibraryInfo].version)
+        result += [(arg, arg[DotnetLibrary].version)]
+        result += _ResolveTransitiveLevel2(arg[DotnetLibrary].transitive.to_list(), arg[DotnetLibrary].version)
         return result
 
     if (type(arg) == "struct"):
@@ -148,8 +148,8 @@ def _ResolveTransitiveLevel2(arg, version):
         return result
 
     if (type(arg) == "Target"):
-        result.append((arg, arg[DotnetLibraryInfo].version))
-        result += _ResolveTransitiveLevel3(arg[DotnetLibraryInfo].transitive.to_list(), arg[DotnetLibraryInfo].version)
+        result += [(arg, arg[DotnetLibrary].version)]
+        result += _ResolveTransitiveLevel3(arg[DotnetLibrary].transitive.to_list(), arg[DotnetLibrary].version)
         return result
 
     fail("Unknown argument %s" % arg)
@@ -162,7 +162,7 @@ def _ResolveTransitiveLevel3(arg, version):
         return result
 
     if (type(arg) == "Target"):
-        result.append((arg, arg[DotnetLibraryInfo].version))
+        result += [(arg, arg[DotnetLibrary].version)]
         return result
 
     fail("Unknown argument %s" % arg)
@@ -175,7 +175,7 @@ def _ResolveTransitiveLevel4(arg, version):
         return result
 
     if (type(arg) == "Target"):
-        result.append((arg, arg[DotnetLibraryInfo].version))
+        result += [(arg, arg[DotnetLibrary].version)]
         return result
 
     fail("Unknown argument %s" % arg)
@@ -188,7 +188,7 @@ def _ResolveTransitiveLevel5(arg, version):
         return result
 
     if (type(arg) == "Target"):
-        result.append((arg, arg[DotnetLibraryInfo].version))
+        result += [(arg, arg[DotnetLibrary].version)]
         return result
 
     fail("Unknown argument %s" % arg)
@@ -201,7 +201,7 @@ def _ResolveTransitiveLevel6(arg, version):
         return result
 
     if (type(arg) == "Target"):
-        result.append((arg, arg[DotnetLibraryInfo].version))
+        result += [(arg, arg[DotnetLibrary].version)]
         return result
 
     fail("Unknown argument %s" % arg)
@@ -214,7 +214,7 @@ def _ResolveTransitiveLevel7(arg, version):
         return result
 
     if (type(arg) == "Target"):
-        result.append((arg, arg[DotnetLibraryInfo].version))
+        result += [(arg, arg[DotnetLibrary].version)]
         return result
 
     fail("Unknown argument %s" % arg)
@@ -227,7 +227,7 @@ def _ResolveTransitiveLevel8(arg, version):
         return result
 
     if (type(arg) == "Target"):
-        result.append((arg, arg[DotnetLibraryInfo].version))
+        result += [(arg, arg[DotnetLibrary].version)]
         return result
 
     fail("Unknown argument %s" % arg)
@@ -240,7 +240,7 @@ def _ResolveTransitiveLevel9(arg, version):
         return result
 
     if (type(arg) == "Target"):
-        result.append((arg, arg[DotnetLibraryInfo].version))
+        result += [(arg, arg[DotnetLibrary].version)]
         return result
 
     fail("Unknown argument %s" % arg)
@@ -253,9 +253,9 @@ def _ResolveTransitiveLevel10(arg, version):
         fail("Recursion to deep on %s" % arg)
 
     if (type(arg) == "Target"):
-        if (len(arg[DotnetLibraryInfo].transitive.to_list()) > 0):
-            fail("Recursion to deep on %s" % arg[DotnetLibraryInfo])
-        result.append((arg, arg[DotnetLibraryInfo].version))
+        if (len(arg[DotnetLibrary].transitive.to_list()) > 0):
+            fail("Recursion to deep on %s" % arg[DotnetLibrary])
+        result += [(arg, arg[DotnetLibrary].version)]
 
         return result
 

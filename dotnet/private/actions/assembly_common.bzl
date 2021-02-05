@@ -1,10 +1,10 @@
 load(
-    "//dotnet/private:common.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:common.bzl",
     "as_iterable",
 )
 load(
-    "//dotnet/private:providers.bzl",
-    "DotnetResourceListInfo",
+    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "DotnetResourceList",
 )
 load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
 load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "version2string")
@@ -36,12 +36,12 @@ def emit_assembly_common(
 
     Args:
       kind: String "core", "net" "mono"
-      dotnet: DotnetContextInfo provider
+      dotnet: DotnetContext provider
       name: name of the assembly
       srcs: source files (as passed from rules: list of lables/targets)
-      deps: list of DotnetLibraryInfo. Dependencies as passed from rules)
+      deps: list of DotnetLibrary. Dependencies as passed from rules)
       out: output file name if provided. Otherwise name is used
-      resources: list of DotnetResourceListInfo provider
+      resources: list of DotnetResourceList provider
       executable: bool. True for executable assembly, False otherwise
       defines: list of string. Defines to pass to a compiler
       unsafe: /unsafe flag (False - default - /unsafe-, otherwise /unsafe+)
@@ -122,9 +122,9 @@ def emit_assembly_common(
 
     # Resources
     for r in resources:
-        if r[DotnetResourceListInfo].result and len(r[DotnetResourceListInfo].result) > 0:
-            args.add_all(r[DotnetResourceListInfo].result, format_each = "/resource:%s", map_each = _map_resource)
-            res_l = [t.result for t in r[DotnetResourceListInfo].result]
+        if r[DotnetResourceList].result and len(r[DotnetResourceList].result) > 0:
+            args.add_all(r[DotnetResourceList].result, format_each = "/resource:%s", map_each = _map_resource)
+            res_l = [t.result for t in r[DotnetResourceList].result]
             direct_inputs += res_l
 
     # Source files
@@ -174,7 +174,7 @@ def emit_assembly_common(
     # select runner and action_args
     if kind != "net":
         runner = dotnet.runner.files_to_run
-        runner_tools = depset(transitive = [dotnet.runner.default_runfiles.files, dotnet.mcs.default_runfiles.files])
+        runner_tools = depset(transitive=[dotnet.runner.default_runfiles.files, dotnet.mcs.default_runfiles.files])
         action_args = [dotnet.mcs.files_to_run.executable.path, "/noconfig", "@" + paramfile.path]
     else:
         runner = dotnet.mcs.files_to_run

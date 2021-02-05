@@ -1,10 +1,10 @@
 load(
-    "//dotnet/private:context.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
     "dotnet_context",
 )
 load(
-    "//dotnet/private:providers.bzl",
-    "DotnetResourceListInfo",
+    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "DotnetResourceList",
 )
 load("@rules_dotnet_skylib//lib:paths.bzl", "paths")
 
@@ -18,7 +18,7 @@ def _resx_impl(ctx):
         result = dotnet.declare_file(dotnet, path = "empty.resources")
         dotnet.actions.write(output = result, content = ".net not supported on this platform")
         empty = dotnet.new_resource(dotnet = dotnet, name = name, result = result)
-        return [empty, DotnetResourceListInfo(result = [empty])]
+        return [empty, DotnetResourceList(result = [empty])]
 
     resource = dotnet.resx(
         dotnet,
@@ -30,7 +30,7 @@ def _resx_impl(ctx):
     )
     return [
         resource,
-        DotnetResourceListInfo(result = [resource]),
+        DotnetResourceList(result = [resource]),
         DefaultInfo(
             files = depset([resource.result]),
         ),
@@ -66,38 +66,63 @@ def _resx_multi_impl(ctx):
             result.append(resource)
 
     return [
-        DotnetResourceListInfo(result = result),
+        DotnetResourceList(result = result),
         DefaultInfo(
             files = depset([d.result for d in result]),
         ),
     ]
 
+net_resx = rule(
+    _resx_impl,
+    attrs = {
+        # source files for this target.
+        "src": attr.label(allow_files = [".resx"], mandatory = True),
+        "identifier": attr.string(),
+        "out": attr.string(),
+        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
+        "simpleresgen": attr.label(),
+    },
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
+    executable = False,
+)
+dotnet_resx = rule(
+    _resx_impl,
+    attrs = {
+        # source files for this target.
+        "src": attr.label(allow_files = [".resx"], mandatory = True),
+        "identifier": attr.string(),
+        "out": attr.string(),
+        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
+        "simpleresgen": attr.label(),
+    },
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_mono"],
+    executable = False,
+)
+
 core_resx = rule(
     _resx_impl,
     attrs = {
         # source files for this target.
-        "src": attr.label(allow_files = [".resx"], mandatory = True, doc = "The .resx source file that is transformed into .resources file."),
-        "identifier": attr.string(doc = "The logical name for the resource; the name that is used to load the resource. The default is the basename of the file name (no subfolder)."),
-        "out": attr.string(doc = "An alternative name of the output file"),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data"), doc = "The reference to label created with [core_context_data rule](api.md#core_context_data). It points the SDK to be used for compiling given target."),
-        "simpleresgen": attr.label(default = Label("@io_bazel_rules_dotnet//tools/simpleresgen:simpleresgen.exe"), doc = "An alternative tool for generating resources file."),
+        "src": attr.label(allow_files = [".resx"], mandatory = True),
+        "identifier": attr.string(),
+        "out": attr.string(),
+        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
+        "simpleresgen": attr.label(default = Label("@io_bazel_rules_dotnet//tools/simpleresgen:simpleresgen.exe")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
     executable = False,
-    doc = "This builds a dotnet .resources file from a single .resx file. Uses a custom tool to convert text .resx file to .resources files because no standard tool is provided.",
 )
 
-core_resx_multi = rule(
+net_resx_multi = rule(
     _resx_multi_impl,
     attrs = {
         # source files for this target.
-        "srcs": attr.label_list(allow_files = True, mandatory = True, doc = "The source files to be built."),
-        "identifierBase": attr.string(doc = "The logical name for given resource is constructred from identiferBase + \".\" + directory.repalce('/','.') + \".\" + basename + \".resources\". The resulting name should be used to load the resource. Either identifierBase of fixedIdentifierBase must be specified."),
-        "fixedIdentifierBase": attr.string(doc = "The logical name for given resource is constructred from fixedIdentiferBase + \".\" + basename + \".resources\". The resulting name should be used to load the resource."),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data"), doc = "The reference to label created with [core_context_data rule](api.md#core_context_data). It points the SDK to be used for compiling given target. Either identifierBase of fixedIdentifierBase must be specified."),
-        "simpleresgen": attr.label(default = Label("@io_bazel_rules_dotnet//tools/simpleresgen:simpleresgen.exe"), doc = "An alternative tool for generating resources file."),
+        "srcs": attr.label_list(allow_files = True, mandatory = True),
+        "identifierBase": attr.string(),
+        "fixedIdentifierBase": attr.string(),
+        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:net_context_data")),
+        "simpleresgen": attr.label(),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_net"],
     executable = False,
-    doc = "This builds a dotnet .resources files from multiple .resx file (one for each).",
 )

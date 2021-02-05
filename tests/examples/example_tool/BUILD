@@ -1,4 +1,15 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "core_binary")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NET_FRAMEWORKS", "core_binary", "dotnet_binary", "net_binary")
+
+dotnet_binary(
+    name = "hello_tool.exe",
+    srcs = [
+        "MyTool.cs",
+    ],
+    deps = [
+        "//tests/examples/example_lib:MyClass.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib:system.dll",
+    ],
+)
 
 [core_binary(
     name = "{}_hello_tool_core.exe".format(framework),
@@ -12,25 +23,48 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "core_
     ],
 ) for framework in DOTNET_CORE_FRAMEWORKS]
 
-[genrule(
-    name = "{}_hello_single_output".format(framework),
-    outs = [
-        "{}_hello_world.txt".format(framework),
+[net_binary(
+    name = "hello_tool_net_{}.exe".format(framework),
+    srcs = [
+        "MyTool.cs",
     ],
-    cmd = "$(location :{}_hello_tool_core.exe) $@".format(framework),
-    tools = [
-        ":{}_hello_tool_core.exe".format(framework),
+    dotnet_context_data = "@io_bazel_rules_dotnet//:net_context_data_{}".format(framework),
+    deps = [
+        "//tests/examples/example_lib:MyClass-net_{}.dll".format(framework),
     ],
-) for framework in DOTNET_CORE_FRAMEWORKS]
+) for framework in DOTNET_NET_FRAMEWORKS]
 
-[genrule(
-    name = "{}_hello_multiple_outputs".format(framework),
+genrule(
+    name = "hello_single_output",
     outs = [
-        "{}_hello_world_1.txt".format(framework),
-        "{}_hello_world_2.txt".format(framework),
+        "hello_world.txt",
     ],
-    cmd = "$(location :{}_hello_tool_core.exe) $(OUTS)".format(framework),
+    cmd = "$(location :hello_tool.exe) $@",
     tools = [
-        ":{}_hello_tool_core.exe".format(framework),
+        ":hello_tool.exe",
     ],
-) for framework in DOTNET_CORE_FRAMEWORKS]
+)
+
+genrule(
+    name = "hello_multiple_outputs",
+    outs = [
+        "hello_world_1.txt",
+        "hello_world_2.txt",
+    ],
+    cmd = "$(location :hello_tool.exe) $(OUTS)",
+    tools = [
+        ":hello_tool.exe",
+    ],
+)
+
+core_binary(
+    name = "hello_tool_core-v2.1.200.exe",
+    srcs = [
+        "MyTool.cs",
+    ],
+    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_v2.1.200",
+    deps = [
+        "//tests/examples/example_lib:MyClass-core-v2.1.200-netstandard.dll",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.core/v2.1.200:libraryset",
+    ],
+)

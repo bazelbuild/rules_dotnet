@@ -21,11 +21,11 @@ def _core_download_sdk_impl(ctx):
 core_download_sdk = repository_rule(
     _core_download_sdk_impl,
     attrs = {
-        "sdks": attr.string_list_dict(doc = "Map of URLs. See CORE_SDK_REPOSITORIES in dotnet/private/toolchain/toolchains.bzl for the expected shape of the parameter."),
-        "version": attr.string(doc = "Version to use. It must be present in sdks parameter."),
-        "strip_prefix": attr.string(default = "", doc = "If present then provided prefix is stripped when extracting SDK."),
+        "sdks": attr.string_list_dict(),
+        "urls": attr.string_list(),
+        "version": attr.string(),
+        "strip_prefix": attr.string(default = ""),
     },
-    doc = "This downloads .NET Core SDK for given version. It usually is not used directly. Use [core_register_sdk](api.md#core_register_sdk) instead.",
 )
 
 """See /dotnet/toolchains.rst#dotnet-sdk for full documentation."""

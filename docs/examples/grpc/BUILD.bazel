@@ -1,0 +1,59 @@
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "net_library", "net_xunit_test")
+load("@rules_proto_grpc//csharp:defs.bzl", "csharp_grpc_compile")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "service_proto",
+    srcs = ["helloworld.proto"],
+    visibility = ["//visibility:public"],
+    deps = ["@com_google_protobuf//:any_proto"],
+)
+
+csharp_grpc_compile(
+    name = "service_proto_gen_cs",
+    visibility = ["//visibility:public"],
+    deps = [":service_proto"],
+)
+
+net_library(
+    name = "service_proto.dll",
+    srcs = [":service_proto_gen_cs"],
+    deps = [
+        "@google.protobuf//:net",
+        "@grpc.core.api//:net",
+        "@grpc.core//:net",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.io.dll",
+        "@system.interactive.async//:net",
+    ],
+)
+
+net_xunit_test(
+    name = "some_server_test.dll",
+    size = "medium",
+    srcs = [
+        "SomeServerTest.cs",
+    ],
+    data = select({
+        "@bazel_tools//src/conditions:windows": [
+            "@grpc.core.runtime//:runtimes/win/native/grpc_csharp_ext.x64.dll",
+            "@grpc.core.runtime//:runtimes/win/native/grpc_csharp_ext.x86.dll",
+        ],
+        "@bazel_tools//src/conditions:darwin": [
+            "@grpc.core.runtime//:runtimes/osx/native/libgrpc_csharp_ext.x64.dylib",
+            "@grpc.core.runtime//:runtimes/osx/native/libgrpc_csharp_ext.x86.dylib",
+        ],
+        "//conditions:default": [
+            "@grpc.core.runtime//:runtimes/linux/native/libgrpc_csharp_ext.x64.so",
+            "@grpc.core.runtime//:runtimes/linux/native/libgrpc_csharp_ext.x86.so",
+        ],
+    }),
+    deps = [
+        ":service_proto.dll",
+        "@grpc.core//:net",
+        "@grpc.healthcheck//:net",
+        "@io_bazel_rules_dotnet//dotnet/stdlib.net:system.runtime.dll",
+        "@xunit.assert//:net",
+        "@xunit.extensibility.core//:net",
+        "@xunit.extensibility.execution//:net",
+    ],
+)

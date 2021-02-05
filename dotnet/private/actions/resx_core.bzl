@@ -1,3 +1,12 @@
+load(
+    "@io_bazel_rules_dotnet//dotnet/private:common.bzl",
+    "as_iterable",
+)
+load(
+    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
+    "DotnetLibrary",
+)
+
 def _make_runner_arglist(dotnet, source, output, resgen):
     args = dotnet.actions.args()
 
@@ -16,21 +25,6 @@ def emit_resx_core(
         identifier = None,
         out = None,
         customresgen = None):
-    """The function adds an action that compiles a single .resx file into .resources file.
-
-    Returns [DotnetResourceInfo](api.md#dotnetresourceinfo).
-
-    Args:
-        dotnet: [DotnetContextInfo](api.md#dotnetcontextinfo).
-        name: name of the file to generate.
-        src: The .resx source file that is transformed into .resources file. Only `.resx` files are permitted.
-        identifier: The logical name for the resource; the name that is used to load the resource. The default is the basename of the file name (no subfolder).
-        out: An alternative name of the output file (if name should not be used).
-        customresgen: custom resgen program to use.
-
-    Returns:
-        DotnetResourceInfo: [DotnetResourceInfo](api.md#dotnetresourceinfo).
-    """
     if name == "" and out == None:
         fail("either name or out must be set")
 
