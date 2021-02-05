@@ -7,7 +7,7 @@ Build status
 
   | Azure pipelines | Travis CI     | Appveyor        |
   | --------------- | ------------- | --------------- |
-  | [![](https://dev.azure.com/tomaszstrejczek/rules_dotnet/_apis/build/status/tomaszstrejczek.rules_dotnet?branchName=master)](https://dev.azure.com/tomaszstrejczek/rules_dotnet/_build)    | [![](https://api.travis-ci.org/bazelbuild/rules_dotnet.svg?branch=master)](https://travis-ci.org/bazelbuild/rules_dotnet) | [![](https://ci.appveyor.com/api/projects/status/obpncs8e7wab1yty/branch/master)](https://ci.appveyor.com/project/tomek1909/rules-dotnet/branch/master) |
+  | [![](https://dev.azure.com/tomaszstrejczek/rules_dotnet/_apis/build/status/tomaszstrejczek.rules_dotnet?branchName=drop_mono_net)](https://dev.azure.com/tomaszstrejczek/rules_dotnet/_build)    | [![](https://api.travis-ci.org/bazelbuild/rules_dotnet.svg?branch=drop_mono_net)](https://travis-ci.org/bazelbuild/rules_dotnet) | [![](https://ci.appveyor.com/api/projects/status/obpncs8e7wab1yty/branch/drop_mono_net)](https://ci.appveyor.com/project/tomek1909/rules-dotnet/branch/drop_mono_net) |
 
 
 Documentation
