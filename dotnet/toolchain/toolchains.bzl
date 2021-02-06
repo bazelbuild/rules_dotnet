@@ -127,19 +127,25 @@ CORE_SDK_REPOSITORIES = {
 def _generate_toolchains():
     # Use all the above information to generate all the possible toolchains we might support
     toolchains = []
-    for os, arch in DOTNET_OS_ARCH:
-        for sdk in DOTNET_CORE_FRAMEWORKS:
-            constraints = [BAZEL_DOTNETARCH_CONSTRAINTS[arch], BAZEL_DOTNETOS_CONSTRAINTS[os], DOTNETSDK_CONSTRAINTS[sdk]]
+    for os_exec, arch_exec in DOTNET_OS_ARCH:
+        for os, arch in DOTNET_OS_ARCH:
+            for sdk in DOTNET_CORE_FRAMEWORKS:
+                constraints_target = [BAZEL_DOTNETARCH_CONSTRAINTS[arch], BAZEL_DOTNETOS_CONSTRAINTS[os], DOTNETSDK_CONSTRAINTS[sdk]]
+                constraints_exec = [BAZEL_DOTNETARCH_CONSTRAINTS[arch_exec], BAZEL_DOTNETOS_CONSTRAINTS[os_exec]]
 
-            host = os + "_" + arch + "_" + sdk
-            toolchain_name = host + "_toolchain"
-            toolchains.append(dict(
-                name = toolchain_name,
-                os = os,
-                arch = arch,
-                sdk = sdk,
-                constraints = constraints,
-            ))
+                host = os + "_" + arch + "_" + sdk + "_" + os_exec + "_" + arch_exec
+                toolchain_name = host + "_toolchain"
+                toolchains.append(dict(
+                    name = toolchain_name,
+                    os = os,
+                    arch = arch,
+                    sdk_version = sdk,
+                    runtime_version = DOTNET_CORE_FRAMEWORKS.get(sdk)[3],
+                    os_exec = os_exec,
+                    arch_exec = arch_exec,
+                    constraints_target = constraints_target,
+                    constraints_exec = constraints_exec,
+                ))
     return toolchains
 
 _toolchains = _generate_toolchains()
@@ -164,8 +170,12 @@ def declare_toolchains():
             name = toolchain["name"],
             arch = toolchain["arch"],
             os = toolchain["os"],
-            sdk = toolchain["sdk"],
-            constraints = toolchain["constraints"],
+            sdk_version = toolchain["sdk_version"],
+            runtime_version = toolchain["runtime_version"],
+            arch_exec = toolchain["arch_exec"],
+            os_exec = toolchain["os_exec"],
+            constraints_target = toolchain["constraints_target"],
+            constraints_exec = toolchain["constraints_exec"],
         )
 
 def declare_constraints():

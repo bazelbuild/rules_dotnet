@@ -124,7 +124,6 @@ core_stdlib_internal = rule(
         "data": attr.label_list(allow_files = True),
         "stdlib_path": attr.label(allow_files = True, mandatory = True),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
     executable = False,
     doc = "Internal. Do not use. It imports a framework dll and transforms it into [DotnetLibraryInfo](api.md#dotnetlibraryinfo) so it can be referenced as dependency by other rules. Used by //dotnet/stdlib... packages. It doesn't use dotnet_context_data. ",
 )

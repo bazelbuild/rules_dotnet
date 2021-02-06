@@ -6,50 +6,22 @@ Toolchain rules used by dotnet.
 load("@io_bazel_rules_dotnet//dotnet/private:actions/assembly_core.bzl", "emit_assembly_core")
 load("@io_bazel_rules_dotnet//dotnet/private:actions/resx_core.bzl", "emit_resx_core")
 
-def _get_dotnet_runner(context_data, ext):
-    return context_data._runner
-
-def _get_dotnet_mcs(context_data):
-    return context_data._csc
-
-def _get_dotnet_resgen(context_data):
-    return None
-
-def _get_dotnet_tlbimp(context_data):
-    return None
-
-def _get_dotnet_stdlib(context_data):
-    return None
-
-# def _get_dotnet_stdlib_byname(shared, lib, libVersion, name, attr_ref = None):
-#     lname = name.lower()
-#     for f in shared.files.to_list():
-#         basename = paths.basename(f.path)
-#         if basename.lower() != lname:
-#             continue
-#         return f
-
-#     for f in lib.files.to_list():
-#         basename = paths.basename(f.path)
-#         if basename.lower() != lname:
-#             continue
-#         return f
-#     if attr_ref:
-#         return attr_ref.files.to_list()[0]
-#     else:
-#         fail("Could not find %s in core_sdk (shared, lib)" % name)
-
 def _core_toolchain_impl(ctx):
     return [platform_common.ToolchainInfo(
         name = ctx.label.name,
-        dotnetimpl = ctx.attr.dotnetimpl,
-        dotnetos = ctx.attr.dotnetos,
-        dotnetarch = ctx.attr.dotnetarch,
-        get_dotnet_runner = _get_dotnet_runner,
-        get_dotnet_mcs = _get_dotnet_mcs,
-        get_dotnet_resgen = _get_dotnet_resgen,
-        get_dotnet_tlbimp = _get_dotnet_tlbimp,
-        get_dotnet_stdlib = _get_dotnet_stdlib,
+        os = ctx.attr.os,
+        arch = ctx.attr.arch,
+        os_exec = ctx.attr.os_exec,
+        arch_exec = ctx.attr.arch_exec,
+        sdk_version = ctx.attr.sdk_version,
+        runtime_version = ctx.attr.runtime_version,
+        sdk_exec_csc = ctx.attr.sdk_exec_csc,
+        sdk_exec_runner = ctx.attr.sdk_exec_runner,
+        sdk_target_host = ctx.attr.sdk_target_host,
+        # get_dotnet_runner = _get_dotnet_runner,
+        # get_dotnet_mcs = _get_dotnet_mcs,
+        # get_dotnet_resgen = _get_dotnet_resgen,
+        # get_dotnet_stdlib = _get_dotnet_stdlib,
         actions = struct(
             assembly = emit_assembly_core,
             resx = emit_resx_core,
@@ -66,25 +38,33 @@ _core_toolchain = rule(
     _core_toolchain_impl,
     attrs = {
         # Minimum requirements to specify a toolchain
-        "dotnetimpl": attr.string(mandatory = True),
-        "dotnetos": attr.string(mandatory = True),
-        "dotnetarch": attr.string(mandatory = True),
-        "sdk": attr.string(mandatory = True),
-        "dotnet_context_data": attr.label(mandatory = True),
+        "os": attr.string(mandatory = True),
+        "arch": attr.string(mandatory = True),
+        "os_exec": attr.string(mandatory = True),
+        "arch_exec": attr.string(mandatory = True),
+        "sdk_version": attr.string(mandatory = True),
+        "runtime_version": attr.string(mandatory = True),
+        "sdk_exec_csc": attr.label(mandatory = True),
+        "sdk_exec_runner": attr.label(mandatory = True),
+        "sdk_target_host": attr.label(mandatory = True),
     },
 )
 
-def core_toolchain(name, arch, os, sdk, constraints):
+def core_toolchain(name, os, arch, os_exec, arch_exec, sdk_version, runtime_version, constraints_target, constraints_exec):
     """See dotnet/toolchains.rst#core-toolchain for full documentation."""
 
     impl_name = name + "-impl"
     _core_toolchain(
         name = impl_name,
-        dotnetimpl = "core",
-        dotnetos = os,
-        dotnetarch = arch,
-        sdk = sdk,
-        dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_" + sdk,
+        os = os,
+        arch = arch,
+        os_exec = os_exec,
+        arch_exec = arch_exec,
+        sdk_version = sdk_version,
+        runtime_version = runtime_version,
+        sdk_exec_csc = "@core_sdk_{}_{}_{}//:csc".format(os_exec, arch_exec, sdk_version),
+        sdk_exec_runner = "@core_sdk_{}_{}_{}//:runner".format(os_exec, arch_exec, sdk_version),
+        sdk_target_host = "@core_sdk_{}_{}_{}//:host".format(os, arch, sdk_version),
         tags = ["manual"],
         visibility = ["//visibility:public"],
     )
@@ -92,7 +72,7 @@ def core_toolchain(name, arch, os, sdk, constraints):
     native.toolchain(
         name = name,
         toolchain_type = "@io_bazel_rules_dotnet//dotnet:toolchain_type_core",
-        exec_compatible_with = constraints[:2],
-        target_compatible_with = constraints,
+        exec_compatible_with = constraints_exec,
+        target_compatible_with = constraints_target,
         toolchain = ":" + impl_name,
     )

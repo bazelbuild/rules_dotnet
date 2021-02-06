@@ -12,12 +12,7 @@ def _library_impl(ctx):
     dotnet = dotnet_context(ctx)
     name = ctx.label.name
 
-    # Handle case of empty toolchain on linux and darwin
-    if dotnet.assembly == None:
-        library = dotnet.new_library(dotnet = dotnet)
-        return [library]
-
-    library = dotnet.assembly(
+    library = dotnet.toolchain.actions.assembly(
         dotnet,
         name = name,
         srcs = ctx.attr.srcs,
@@ -57,7 +52,6 @@ core_library = rule(
         "unsafe": attr.bool(default = False, doc = "If true passes /unsafe flag to the compiler."),
         "data": attr.label_list(allow_files = True, doc = "The list of additional files to include in the list of runfiles for the assembly."),
         "keyfile": attr.label(allow_files = True, doc = "The key to sign the assembly with."),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data"), doc = "The reference to label created with [core_context_data rule](api.md#core_context_data). It points the SDK to be used for compiling given target."),
         "target_framework": attr.string(values = DOTNET_CORE_FRAMEWORKS.keys() + DOTNET_NETSTANDARD.keys() + [""], default = "", doc = "Target framework."),
         "nowarn": attr.string_list(doc = "The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion."),
         "langversion": attr.string(default = "latest", doc = "Version of the language to use. See [this page](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version)."),

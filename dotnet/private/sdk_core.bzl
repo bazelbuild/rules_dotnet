@@ -35,6 +35,6 @@ def _sdk_build_file(ctx):
     ctx.template(
         "BUILD.bazel",
         Label("@io_bazel_rules_dotnet//dotnet/private:BUILD.core.bazel"),
-        substitutions = [{"sdkVersion": ctx.attr.sdkVersion, "runtimeVersion": ctx.attr.runtimeVersion}],
+        substitutions = {"{sdkVersion}": ctx.attr.sdkVersion, "{runtimeVersion}": ctx.attr.runtimeVersion},
         executable = False,
     )

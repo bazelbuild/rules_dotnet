@@ -30,9 +30,6 @@ DotnetContextInfo = provider(
         "exe_extension": "The suffix to use for all executables in this build mode. Mostly used when generating the output filenames of binary rules.",
         "runner": "An executable to be used by SDK to launch .NET Core programs (dotnet(.exe)).",
         "mcs": "C# compiler.",
-        "stdlib": "None. Not used.",
-        "resgen": "None. Not used.",
-        "tlbimp": "None. Not used.",
         "declare_file": "Helper function for declaring new file. This is the equivalent of ctx.actions.declare_file.",
         "new_library": "Function for creating new [DotnetLibraryInfo](api.md#dotnetlibraryinfo). See [new_library](api.md#new_library) for signature declaration.",
         "new_resource": "Function for creating new [DotnetResourceInfo](api.md#dotnetresourceinfo). See [new_resource](api.md#new_resource) for signature declaration.",
@@ -142,48 +139,17 @@ def dotnet_context(ctx):
     """
     attr = ctx.attr
 
-    context_data = attr.dotnet_context_data
-    toolchain = ctx.toolchains[context_data._toolchain_type]
+    toolchain = ctx.toolchains["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"]
 
     ext = ""
-    if toolchain.dotnetos == "windows":
+    if toolchain.os == "windows":
         ext = ".exe"
-
-    # Handle empty toolchain for .NET on linux and osx
-    if toolchain.get_dotnet_runner == None:
-        runner = None
-        mcs = None
-        stdlib = None
-        resgen = None
-        tlbimp = None
-    else:
-        runner = toolchain.get_dotnet_runner(context_data, ext)
-        mcs = toolchain.get_dotnet_mcs(context_data)
-        stdlib = toolchain.get_dotnet_stdlib(context_data)
-        resgen = toolchain.get_dotnet_resgen(context_data)
-        tlbimp = toolchain.get_dotnet_tlbimp(context_data)
 
     return DotnetContextInfo(
         label = ctx.label,
         toolchain = toolchain,
         actions = ctx.actions,
-        assembly = toolchain.actions.assembly,
-        resx = toolchain.actions.resx,
-        stdlib_byname = toolchain.actions.stdlib_byname,
         exe_extension = ext,
-        runner = runner,
-        mcs = mcs,
-        stdlib = stdlib,
-        resgen = resgen,
-        tlbimp = tlbimp,
-        declare_file = _declare_file,
-        new_library = new_library,
-        new_resource = new_resource,
-        workspace_name = ctx.workspace_name,
-        libVersion = context_data._libVersion,
-        framework = context_data._framework,
-        lib = context_data._lib,
-        shared = context_data._shared,
         debug = ctx.var["COMPILATION_MODE"] == "dbg",
         _ctx = ctx,
     )

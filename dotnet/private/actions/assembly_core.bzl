@@ -4,6 +4,7 @@ load(
 )
 load(
     "//dotnet/private:providers.bzl",
+    "DotnetLibraryInfo",
     "DotnetResourceListInfo",
 )
 load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
@@ -34,7 +35,6 @@ def emit_assembly_core(
     The function is used by all frameworks.
 
     Args:
-      kind: String "core", "net" "mono"
       dotnet: DotnetContextInfo provider
       name: name of the assembly
       srcs: source files (as passed from rules: list of lables/targets)
@@ -50,19 +50,22 @@ def emit_assembly_core(
       target_framework: target framework to define via System.Runtime.Versioning.TargetFramework
       nowarn: list of warnings to ignore
       langversion: version of the language to use (see https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version)
+      version: version of the file to be compiled
+
+    Returns:
+      [DotnetLibraryInfo](api.md#DotnetLibraryInfo) for the compiled assembly
     """
 
     if name == "" and out == None:
         fail("either name or out must be set")
 
     if not out:
-        result = dotnet.declare_file(dotnet, path = subdir + name)
+        result = dotnet.actions.declare_file(subdir + name)
     else:
-        result = dotnet.declare_file(dotnet, path = subdir + out)
+        result = dotnet.actions.declare_file(subdir + out)
 
     if dotnet.debug:
-        pdbext = ".pdb"
-        pdb = dotnet.declare_file(dotnet, path = result.basename + pdbext, sibling = result)
+        pdb = dotnet.actions.declare_file(result.basename + ".pdb", sibling = result)
     else:
         pdb = None
 
@@ -131,17 +134,17 @@ def emit_assembly_core(
 
     # Generate the source file for target framework
     if target_framework != "":
-        f = dotnet._ctx.actions.declare_file(result.basename + "._tf_.cs", sibling = result)
+        f = dotnet.actions.declare_file(result.basename + "._tf_.cs", sibling = result)
         content = """
         [assembly:System.Runtime.Versioning.TargetFramework("{}")]
         """.format(target_framework)
-        dotnet._ctx.actions.write(f, content)
+        dotnet.actions.write(f, content)
         args.add(f)
         direct_inputs.append(f)
 
     # Generate the source file for assembly version
     if version != (0, 0, 0, 0, ""):
-        f = dotnet._ctx.actions.declare_file(result.basename + "._tv_.cs", sibling = result)
+        f = dotnet.actions.declare_file(result.basename + "._tv_.cs", sibling = result)
         content = """
         [assembly:System.Reflection.AssemblyVersion("{}")]
         """.format(version2string(version))
@@ -163,15 +166,17 @@ def emit_assembly_core(
 
     # Prepare and execute action
     paramfilepath = name + ".param"
-    paramfile = dotnet.declare_file(dotnet, path = paramfilepath)
+    paramfile = dotnet.actions.declare_file(paramfilepath)
     dotnet.actions.write(output = paramfile, content = args)
 
     direct_inputs.append(paramfile)
 
     # select runner and action_args
-    runner = dotnet.runner.files_to_run
-    runner_tools = depset(transitive = [dotnet.runner.default_runfiles.files, dotnet.mcs.default_runfiles.files])
-    action_args = [dotnet.mcs.files_to_run.executable.path, "/noconfig", "@" + paramfile.path]
+    runner_target = dotnet.toolchain.sdk_exec_runner
+    csc_target = dotnet.toolchain.sdk_exec_csc
+    runner = runner_target.files_to_run
+    runner_tools = depset(transitive = [runner_target.default_runfiles.files, csc_target.default_runfiles.files])
+    action_args = [csc_target.files_to_run.executable.path, "/noconfig", "@" + paramfile.path]
 
     inputs = depset(direct = direct_inputs, transitive = [depset(direct = refs)])
     dotnet.actions.run(
@@ -197,8 +202,7 @@ def emit_assembly_core(
     runfiles = depset(direct = direct_runfiles)
 
     # Final result
-    new_library = dotnet.new_library(
-        dotnet = dotnet,
+    new_library = DotnetLibraryInfo(
         name = name,
         deps = deps,
         transitive = transitive,
