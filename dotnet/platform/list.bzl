@@ -1,21 +1,17 @@
-DOTNETIMPL = [
-    "core",
-]
-
-DOTNETOS = {
+BAZEL_DOTNETOS_CONSTRAINTS = {
     "darwin": "@bazel_tools//platforms:osx",
     "linux": "@bazel_tools//platforms:linux",
     "windows": "@bazel_tools//platforms:windows",
 }
 
-DOTNETARCH = {
+BAZEL_DOTNETARCH_CONSTRAINTS = {
     "amd64": "@bazel_tools//platforms:x86_64",
 }
 
-DOTNETIMPL_OS_ARCH = (
-    ("core", "darwin", "amd64"),
-    ("core", "linux", "amd64"),
-    ("core", "windows", "amd64"),
+DOTNET_OS_ARCH = (
+    ("darwin", "amd64"),
+    ("linux", "amd64"),
+    ("windows", "amd64"),
 )
 
 DOTNET_NETSTANDARD = {
@@ -35,16 +31,50 @@ DOTNET_NETSTANDARD = {
 # 0. Version string - as required by TargetFrameworkAttribute and use for the download
 # 1. Preporocesor directive
 # 2. TFM
-# 3. Runtime folder version
+# 3. Runtime version
 DOTNET_CORE_FRAMEWORKS = {
-    "v2.1.200": (".NETCore,Version=v2.1", "NETCOREAPP2_1", "netcoreapp2.1", "2.0.7"),
-    "v2.1.502": (".NETCore,Version=v2.1", "NETCOREAPP2_1", "netcoreapp2.1", "2.1.6"),
-    "v2.1.503": (".NETCore,Version=v2.1", "NETCOREAPP2_1", "netcoreapp2.1", "2.1.7"),
-    "v2.2.101": (".NETCore,Version=v2.2", "NETCOREAPP2_2", "netcoreapp2.2", "2.2.0"),
-    "v2.2.402": (".NETCore,Version=v2.2", "NETCOREAPP2_2", "netcoreapp2.2", "2.2.7"),
-    "v3.0.100": (".NETCore,Version=v3.0", "NETCOREAPP3_0", "netcoreapp3.0", "3.0.0"),
-    "v3.1.100": (".NETCore,Version=v3.1", "NETCOREAPP3_1", "netcoreapp3.1", "3.1.0"),
+    "2.1.200": (".NETCore,Version=v2.1", "NETCOREAPP2_1", "netcoreapp2.1", "2.0.7"),
+    "2.1.502": (".NETCore,Version=v2.1", "NETCOREAPP2_1", "netcoreapp2.1", "2.1.6"),
+    "2.1.503": (".NETCore,Version=v2.1", "NETCOREAPP2_1", "netcoreapp2.1", "2.1.7"),
+    "2.2.101": (".NETCore,Version=v2.2", "NETCOREAPP2_2", "netcoreapp2.2", "2.2.0"),
+    "2.2.402": (".NETCore,Version=v2.2", "NETCOREAPP2_2", "netcoreapp2.2", "2.2.7"),
+    "3.0.100": (".NETCore,Version=v3.0", "NETCOREAPP3_0", "netcoreapp3.0", "3.0.0"),
+    "3.1.100": (".NETCore,Version=v3.1", "NETCOREAPP3_1", "netcoreapp3.1", "3.1.0"),
 }
 DOTNET_CORE_NAMES = ["netcoreapp2.0", "netcoreapp2.1", "netcoreapp2.2", "netcoreapp3.0", "netcoreapp3.1"] + DOTNET_NETSTANDARD.keys()
 
 DEFAULT_DOTNET_CORE_FRAMEWORK = "v3.1.100"
+
+def _generate_constraints(names, bazel_constraints):
+    return {
+        name: bazel_constraints.get(name, "@io_bazel_rules_dotnet//dotnet/toolchain:" + name)
+        for name in names
+    }
+
+DOTNETOS_CONSTRAINTS = _generate_constraints([p[0] for p in DOTNET_OS_ARCH], BAZEL_DOTNETOS_CONSTRAINTS)
+DOTNETARCH_CONSTRAINTS = _generate_constraints([p[1] for p in DOTNET_OS_ARCH], BAZEL_DOTNETARCH_CONSTRAINTS)
+DOTNETSDK_CONSTRAINTS = _generate_constraints([p for p in DOTNET_CORE_FRAMEWORKS], BAZEL_DOTNETARCH_CONSTRAINTS)
+
+def _generate_platforms():
+    platforms = []
+
+    for os, arch in DOTNET_OS_ARCH:
+        for sdk in DOTNET_CORE_FRAMEWORKS:
+            constraints = [
+                DOTNETOS_CONSTRAINTS[os],
+                DOTNETARCH_CONSTRAINTS[arch],
+                DOTNETSDK_CONSTRAINTS[sdk],
+            ]
+
+            platform = struct(
+                name = os + "_" + arch + "_" + sdk,
+                os = os,
+                arch = arch,
+                sdk = sdk,
+                constraints = constraints,
+            )
+            platforms.append(platform)
+
+    return platforms
+
+PLATFORMS = _generate_platforms()

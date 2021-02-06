@@ -2,7 +2,7 @@
 Toolchain rules used by dotnet.
 """
 
-load("@rules_dotnet_skylib//lib:paths.bzl", "paths")
+# load("@rules_dotnet_skylib//lib:paths.bzl", "paths")
 load("@io_bazel_rules_dotnet//dotnet/private:actions/assembly_core.bzl", "emit_assembly_core")
 load("@io_bazel_rules_dotnet//dotnet/private:actions/resx_core.bzl", "emit_resx_core")
 
@@ -21,23 +21,23 @@ def _get_dotnet_tlbimp(context_data):
 def _get_dotnet_stdlib(context_data):
     return None
 
-def _get_dotnet_stdlib_byname(shared, lib, libVersion, name, attr_ref = None):
-    lname = name.lower()
-    for f in shared.files.to_list():
-        basename = paths.basename(f.path)
-        if basename.lower() != lname:
-            continue
-        return f
+# def _get_dotnet_stdlib_byname(shared, lib, libVersion, name, attr_ref = None):
+#     lname = name.lower()
+#     for f in shared.files.to_list():
+#         basename = paths.basename(f.path)
+#         if basename.lower() != lname:
+#             continue
+#         return f
 
-    for f in lib.files.to_list():
-        basename = paths.basename(f.path)
-        if basename.lower() != lname:
-            continue
-        return f
-    if attr_ref:
-        return attr_ref.files.to_list()[0]
-    else:
-        fail("Could not find %s in core_sdk (shared, lib)" % name)
+#     for f in lib.files.to_list():
+#         basename = paths.basename(f.path)
+#         if basename.lower() != lname:
+#             continue
+#         return f
+#     if attr_ref:
+#         return attr_ref.files.to_list()[0]
+#     else:
+#         fail("Could not find %s in core_sdk (shared, lib)" % name)
 
 def _core_toolchain_impl(ctx):
     return [platform_common.ToolchainInfo(
@@ -54,7 +54,8 @@ def _core_toolchain_impl(ctx):
             assembly = emit_assembly_core,
             resx = emit_resx_core,
             com_ref = None,
-            stdlib_byname = _get_dotnet_stdlib_byname,
+            #stdlib_byname = _get_dotnet_stdlib_byname,
+            stdlib_byname = None,
         ),
         flags = struct(
             compile = (),
@@ -68,10 +69,12 @@ _core_toolchain = rule(
         "dotnetimpl": attr.string(mandatory = True),
         "dotnetos": attr.string(mandatory = True),
         "dotnetarch": attr.string(mandatory = True),
+        "sdk": attr.string(mandatory = True),
+        "dotnet_context_data": attr.label(mandatory = True),
     },
 )
 
-def core_toolchain(name, arch, os, constraints, **kwargs):
+def core_toolchain(name, arch, os, sdk, constraints):
     """See dotnet/toolchains.rst#core-toolchain for full documentation."""
 
     impl_name = name + "-impl"
@@ -80,14 +83,16 @@ def core_toolchain(name, arch, os, constraints, **kwargs):
         dotnetimpl = "core",
         dotnetos = os,
         dotnetarch = arch,
+        sdk = sdk,
+        dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_" + sdk,
         tags = ["manual"],
         visibility = ["//visibility:public"],
-        **kwargs
     )
 
     native.toolchain(
         name = name,
         toolchain_type = "@io_bazel_rules_dotnet//dotnet:toolchain_type_core",
-        exec_compatible_with = constraints,
+        exec_compatible_with = constraints[:2],
+        target_compatible_with = constraints,
         toolchain = ":" + impl_name,
     )

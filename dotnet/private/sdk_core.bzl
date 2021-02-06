@@ -1,31 +1,23 @@
 def _core_download_sdk_impl(ctx):
-    if ctx.os.name == "linux":
-        host = "core_linux_amd64"
-    elif ctx.os.name == "mac os x":
-        host = "core_darwin_amd64"
-    elif ctx.os.name.startswith("windows"):
-        host = "core_windows_amd64"
-    else:
-        fail("Unsupported operating system: " + ctx.os.name)
+    host = ctx.attr.os + "_" + ctx.attr.arch
     sdks = ctx.attr.sdks
     if host not in sdks:
         fail("Unsupported host {}".format(host))
     filename, sha256 = ctx.attr.sdks[host]
     _sdk_build_file(ctx)
     _remote_sdk(ctx, [filename], ctx.attr.strip_prefix, sha256)
-    ctx.symlink("core/sdk/" + ctx.attr.version + "/Roslyn/bincore", "mcs_bin")
-    ctx.symlink("core/.", "mono_bin")
-    ctx.symlink("core/sdk/" + ctx.attr.version, "lib")
-    ctx.symlink("core/host/", "host")
 
 core_download_sdk = repository_rule(
     _core_download_sdk_impl,
     attrs = {
-        "sdks": attr.string_list_dict(doc = "Map of URLs. See CORE_SDK_REPOSITORIES in dotnet/private/toolchain/toolchains.bzl for the expected shape of the parameter."),
-        "version": attr.string(doc = "Version to use. It must be present in sdks parameter."),
+        "sdks": attr.string_list_dict(mandatory = True, doc = "Map of URLs. See CORE_SDK_REPOSITORIES in dotnet/private/toolchain/toolchains.bzl for the expected shape of the parameter."),
+        "os": attr.string(mandatory = True, doc = "Operating system for the SDK."),
+        "arch": attr.string(mandatory = True, doc = "Architecture for the SDK."),
+        "sdkVersion": attr.string(mandatory = True, doc = "SDK version to use."),
+        "runtimeVersion": attr.string(mandatory = True, doc = "Runtime version to use. It's bound to sdkVersion."),
         "strip_prefix": attr.string(default = "", doc = "If present then provided prefix is stripped when extracting SDK."),
     },
-    doc = "This downloads .NET Core SDK for given version. It usually is not used directly. Use [core_register_sdk](api.md#core_register_sdk) instead.",
+    doc = "This downloads .NET Core SDK for given version. It usually is not used directly. Use [dotnet_repositories](api.md#dotnet_repositories) instead.",
 )
 
 """See /dotnet/toolchains.rst#dotnet-sdk for full documentation."""
@@ -43,5 +35,6 @@ def _sdk_build_file(ctx):
     ctx.template(
         "BUILD.bazel",
         Label("@io_bazel_rules_dotnet//dotnet/private:BUILD.core.bazel"),
+        substitutions = [{"sdkVersion": ctx.attr.sdkVersion, "runtimeVersion": ctx.attr.runtimeVersion}],
         executable = False,
     )

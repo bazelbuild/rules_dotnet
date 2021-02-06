@@ -197,11 +197,11 @@ def _dotnet_context_data(ctx):
         _shared = ctx.attr.shared,
         _host = ctx.attr.host,
         _libVersion = ctx.attr.libVersion,
-        _toolchain_type = ctx.attr._toolchain_type,
+        #_toolchain_type = ctx.attr._toolchain_type,
         _framework = ctx.attr.framework,
-        _runner = ctx.attr.runner,
-        _csc = ctx.attr.csc,
-        _runtime = ctx.attr.runtime,
+        #_runner = ctx.attr.runner,
+        #_csc = ctx.attr.csc,
+        #_runtime = ctx.attr.runtime,
     )
 
 core_context_data = rule(
@@ -225,19 +225,19 @@ core_context_data = rule(
         "host": attr.label(
             allow_files = True,
         ),
-        "runtime": attr.label(providers = [DotnetLibraryInfo], default = "@io_bazel_rules_dotnet//dotnet/stdlib.core:runtime"),
+        #"runtime": attr.label(providers = [DotnetLibraryInfo], default = "@io_bazel_rules_dotnet//dotnet/stdlib.core:runtime"),
         "libVersion": attr.string(
             default = "",
         ),
         "framework": attr.string(
             default = "",
         ),
-        "_toolchain_type": attr.string(
-            default = "@io_bazel_rules_dotnet//dotnet:toolchain_type_core",
-        ),
+        # "_toolchain_type": attr.string(
+        #     default = "@io_bazel_rules_dotnet//dotnet:toolchain_type_core",
+        # ),
         "runner": attr.label(executable = True, cfg = "host", default = "@core_sdk//:runner"),
         #"csc": attr.label(executable = True, cfg = "host", default = "@core_sdk//:csc"),
-        "csc": attr.label(executable = True, cfg = "host", default = "@io_bazel_rules_dotnet//dotnet/stdlib.core:csc.dll"),
+        #"csc": attr.label(executable = True, cfg = "host", default = "@io_bazel_rules_dotnet//dotnet/stdlib.core:csc.dll"),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
+    #toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
 )

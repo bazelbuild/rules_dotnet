@@ -1,35 +1,34 @@
 package(default_visibility = ["//visibility:public"])
 
 filegroup(
-    name = "mcs_bin",
+    name = "roslyn",
     srcs = glob([
-        "mcs_bin/*",
+        "core/sdk/{sdkVersion}/Roslyn/bincore/**/*",
     ]),
 )
 
 filegroup(
-    name = "mono_bin",
+    name = "sdk_lib",
     srcs = glob([
-        "mono_bin/*",
+        "core/sdk/{sdkVersion}/**/*",
     ]),
 )
-
-filegroup(
-    name = "lib",
-    srcs = glob([
-        "lib/**/*",
-    ]),
-)
-
 
 filegroup(
     name = "host",
     srcs = glob([
-        "host/**/*",
+        "core/host/fxr/{runtimeVersion}/*",
     ]),
 )
 
-exports_files(glob(["core/**/*.dll"]))
+filegroup(
+    name = "host",
+    srcs = glob([
+        "core/host/fxr/{runtimeVersion}/*",
+    ]),
+)
+
+#exports_files(glob(["core/**/*.dll"]))
 
 filegroup(
     name = "runner",
@@ -40,18 +39,18 @@ filegroup(
     data = glob(["core/host/**/*"]),
 )
 
-filegroup(
-    name = "csc_deps",
-    srcs = glob(["core/**/bincore/*.dll"], exclude=["core/**/bincore/csc.dll"]),
-)
+#filegroup(
+#    name = "csc_deps",
+#    srcs = glob(["core/**/bincore/*.dll"], exclude=["core/**/bincore/csc.dll"]),
+#)
 
 
-filegroup(
-    name = "shared",
-    srcs = glob([
-        "core/shared/**/*",
-    ]),
-)
+#filegroup(
+#    name = "shared",
+#    srcs = glob([
+#        "core/shared/**/*",
+#    ]),
+#)
 
-exports_files(glob(["core/shared/**/*"]))
-exports_files(glob(["core/**/bincore/csc.dll"]))
+#exports_files(glob(["core/shared/**/*"]))
+#exports_files(glob(["core/**/bincore/csc.dll"]))

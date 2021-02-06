@@ -18,8 +18,6 @@ dotnet_repositories()
 
 load(
     "@io_bazel_rules_dotnet//dotnet:defs.bzl",
-    "DOTNET_CORE_FRAMEWORKS",
-    "core_register_sdk",
     "dotnet_register_toolchains",
     "dotnet_repositories_nugets",
 )
@@ -27,14 +25,6 @@ load(
 dotnet_register_toolchains()
 
 dotnet_repositories_nugets()
-
-[core_register_sdk(
-    framework,
-    name = "core_sdk_{}".format(framework),
-) for framework in DOTNET_CORE_FRAMEWORKS]
-
-# Default core_sdk
-core_register_sdk()
 
 load("@io_bazel_rules_dotnet//tests:bazel_tests.bzl", "test_environment")
 

@@ -25,6 +25,8 @@ short (like X:\\ or c:\\TEMP).
 [Bazel](https://bazel.build/) and dotnet_rules rely on symbolic linking. On Windows it, typically, requires 
 elevated permissions. However, newer versions of Windows have a [workaround](https://blogs.windows.com/buildingapps/2016/12/02/symlinks-windows-10/#IJuxPHWEkSSRqC7w.97>).
 
+Please see [here](https://docs.bazel.build/versions/master/windows.html) for more details.
+
 Setup
 -----
 

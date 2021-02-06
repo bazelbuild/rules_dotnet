@@ -5,7 +5,6 @@ load(
 )
 load(
     "//dotnet/toolchain:toolchains.bzl",
-    _core_register_sdk = "core_register_sdk",
     _dotnet_register_toolchains = "dotnet_register_toolchains",
 )
 load(
@@ -64,7 +63,6 @@ load(
 
 dotnet_context = _dotnet_context
 dotnet_register_toolchains = _dotnet_register_toolchains
-core_register_sdk = _core_register_sdk
 core_binary = _core_binary
 core_library = _core_library
 core_libraryset = _core_libraryset
