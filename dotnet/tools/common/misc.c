@@ -2,6 +2,5 @@
 
 int IsVerbose()
 {
-    return 1;
+    return 0;
 }
-

@@ -17,8 +17,8 @@ core_xunit_test(
     resources = [":core.resx"],
     deps = [
         "@core_sdk_stdlib//:libraryset",
-        "@xunit.assert//:netcoreapp2.0_core",
-        "@xunit.extensibility.core//:netcoreapp2.0_core",
-        "@xunit.extensibility.execution//:netcoreapp2.0_core",
+        "@xunit.assert//:lib",
+        "@xunit.extensibility.core//:lib",
+        "@xunit.extensibility.execution//:lib",
     ],
 )

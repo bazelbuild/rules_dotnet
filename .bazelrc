@@ -1,6 +1,3 @@
-startup --windows_enable_symlinks
-build --enable_runfiles
-
 # Docker Sandbox Mode
 build:docker-sandbox --host_javabase=@rbe_default//java:jdk
 build:docker-sandbox --javabase=@rbe_default//java:jdk

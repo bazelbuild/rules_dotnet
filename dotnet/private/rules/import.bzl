@@ -109,6 +109,7 @@ core_import_binary = rule(
         "_launcher": attr.label(default = Label("@io_bazel_rules_dotnet//dotnet/tools/launcher_core:launcher_core.exe")),
         "_copy": attr.label(default = Label("@io_bazel_rules_dotnet//dotnet/tools/copy")),
         "_symlink": attr.label(default = Label("@io_bazel_rules_dotnet//dotnet/tools/symlink")),
+        "data_with_dirs": attr.label_keyed_string_dict(allow_files = True, doc = "Dictionary of {label:folder}. Files specified by <label> will be put in subdirectory <folder>."),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
     executable = True,

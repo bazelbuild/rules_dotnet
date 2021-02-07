@@ -1,42 +1,14 @@
-load(
-    "//dotnet/private:context.bzl",
-    "dotnet_context",
-)
-load(
-    "//dotnet/private:providers.bzl",
-    "DotnetLibraryInfo",
-    "DotnetResourceListInfo",
-)
-load(
-    "//dotnet/private:rules/runfiles.bzl",
-    "CopyRunfiles",
-)
-load(
-    "//dotnet/private:rules/data_with_dirs.bzl",
-    "CopyDataWithDirs",
-)
+load("//dotnet/private:context.bzl", "dotnet_context")
+load("//dotnet/private:providers.bzl", "DotnetLibraryInfo", "DotnetResourceListInfo")
 load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "parse_version")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
+load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "wrap_binary")
 
 def _unit_test(ctx):
     dotnet = dotnet_context(ctx)
     name = ctx.label.name
     subdir = name + "/"
 
-    if dotnet.assembly == None:
-        empty = dotnet.declare_file(dotnet, path = "empty.exe")
-        ctx.actions.run(
-            outputs = [empty],
-            inputs = ctx.attr._empty.files.to_list(),
-            executable = ctx.attr._copy.files.to_list()[0],
-            arguments = [empty.path, ctx.attr._empty.files.to_list()[0].path],
-            mnemonic = "CopyEmpty",
-        )
-
-        library = dotnet.new_library(dotnet = dotnet)
-        return [library, DefaultInfo(executable = empty)]
-
-    executable = dotnet.assembly(
+    executable = dotnet.toolchain.actions.assembly(
         dotnet,
         name = name,
         srcs = ctx.attr.srcs,
@@ -54,45 +26,7 @@ def _unit_test(ctx):
         version = (0, 0, 0, 0, "") if ctx.attr.version == "" else parse_version(ctx.attr.version),
     )
 
-    launcher = dotnet.declare_file(dotnet, path = subdir + executable.result.basename + "_0.exe")
-    ctx.actions.run(
-        outputs = [launcher],
-        inputs = ctx.attr._launcher.files.to_list(),
-        executable = ctx.attr._copy.files.to_list()[0],
-        arguments = [launcher.path, ctx.attr._launcher.files.to_list()[0].path],
-        mnemonic = "CopyLauncher",
-    )
-
-    direct_runfiles = [launcher]
-    transitive_runfiles = []
-
-    # Calculate final runtiles including runtime-required files
-    run_transitive = collect_transitive_info(ctx.attr.deps + ([ctx.attr.dotnet_context_data._runtime] if ctx.attr.dotnet_context_data._runtime != None else []))
-    if dotnet.runner != None:
-        direct_runfiles += dotnet.runner.files.to_list()
-
-    if ctx.attr._xslt:
-        transitive_runfiles.append(ctx.attr._xslt.files)
-
-    transitive_runfiles += [t.runfiles for t in run_transitive]
-    transitive_runfiles.append(ctx.attr.testlauncher[DotnetLibraryInfo].runfiles)
-    transitive_runfiles += [t.runfiles for t in ctx.attr.testlauncher[DotnetLibraryInfo].transitive]
-    transitive_runfiles.append(executable.runfiles)
-
-    runfiles = ctx.runfiles(files = direct_runfiles, transitive_files = depset(transitive = transitive_runfiles))
-    runfiles = CopyRunfiles(dotnet._ctx, runfiles, ctx.attr._copy, ctx.attr._symlink, executable, subdir)
-
-    if ctx.attr.data_with_dirs:
-        runfiles = runfiles.merge(CopyDataWithDirs(dotnet, ctx.attr.data_with_dirs, ctx.attr._copy, subdir))
-
-    return [
-        executable,
-        DefaultInfo(
-            files = depset([executable.result, launcher]),
-            runfiles = runfiles,
-            executable = launcher,
-        ),
-    ]
+    return wrap_binary(executable, dotnet, ctx.attr.testlauncher[DotnetLibraryInfo].runfiles)
 
 core_xunit_test = rule(
     _unit_test,
@@ -104,14 +38,12 @@ core_xunit_test = rule(
         "defines": attr.string_list(doc = "The list of defines passed via /define compiler option."),
         "unsafe": attr.bool(default = False, doc = "If true passes /unsafe flag to the compiler."),
         "data": attr.label_list(allow_files = True, doc = "The list of additional files to include in the list of runfiles for the assembly."),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data"), doc = "The reference to label created with [core_context_data rule](api.md#core_context_data). It points the SDK to be used for compiling given target."),
-        "testlauncher": attr.label(default = "@xunit.runner.console//:netcoreapp2.1_core_tool", providers = [DotnetLibraryInfo], doc = "Test launcher to use."),
-        "_launcher": attr.label(default = Label("//dotnet/tools/launcher_core_xunit:launcher_core_xunit.exe"), doc = "Test launcher to use."),
-        "_copy": attr.label(default = Label("//dotnet/tools/copy")),
-        "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
+        "testlauncher": attr.label(default = "@xunit.runner.console//:tool", providers = [DotnetLibraryInfo], doc = "Test launcher to use."),
+        "_launcher": attr.label(default = Label("@io_bazel_rules_dotnet//dotnet/tools/launcher_core_xunit:launcher_core_xunit.exe"), doc = "Test launcher to use."),
+        "_copy": attr.label(default = Label("@io_bazel_rules_dotnet//dotnet/tools/copy")),
+        "_symlink": attr.label(default = Label("@io_bazel_rules_dotnet//dotnet/tools/symlink")),
         "_xslt": attr.label(default = Label("@io_bazel_rules_dotnet//tools/converttests:n3.xslt"), allow_files = True),
         "keyfile": attr.label(allow_files = True, doc = "The key to sign the assembly with."),
-        "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
         "nowarn": attr.string_list(doc = "The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion."),
         "langversion": attr.string(default = "latest", doc = "Version of the language to use. See [this page](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version)."),
         "data_with_dirs": attr.label_keyed_string_dict(allow_files = True, doc = "Dictionary of {label:folder}. Files specified by <label> will be put in subdirectory <folder>."),
