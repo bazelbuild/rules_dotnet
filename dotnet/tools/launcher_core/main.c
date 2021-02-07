@@ -86,7 +86,6 @@ int main(int argc, char *argv[], char *envp[])
 	const char *manifestDir;
 	const char *manifestPath;
 	char *p;
-	int i;
 
 	if (IsVerbose())
 	{

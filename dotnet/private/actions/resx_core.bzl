@@ -1,3 +1,8 @@
+load(
+    "//dotnet/private:providers.bzl",
+    "DotnetResourceInfo",
+)
+
 def _make_runner_arglist(dotnet, source, output, resgen):
     args = dotnet.actions.args()
 
@@ -35,9 +40,9 @@ def emit_resx_core(
         fail("either name or out must be set")
 
     if not out:
-        result = dotnet.declare_file(dotnet, path = name + ".resources")
+        result = dotnet.actions.declare_file(name + ".resources")
     else:
-        result = dotnet.declare_file(dotnet, path = out)
+        result = dotnet.actions.declare_file(out)
 
     args = _make_runner_arglist(dotnet, src, result, customresgen.files_to_run.executable.path)
 
@@ -60,8 +65,7 @@ def emit_resx_core(
         ),
     )
 
-    return dotnet.new_resource(
-        dotnet = dotnet,
+    return DotnetResourceInfo(
         name = name,
         result = result,
         identifier = identifier,
