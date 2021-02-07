@@ -1,3 +1,5 @@
+#define PATH_BUFFER_SIZE (8*1024)
+
 struct Entry
 {
 	const char *Key;
@@ -8,10 +10,11 @@ struct Entry
 extern struct Entry *g_Entries;
 
 void ReadManifest(const char *manifestDir);
-void ReadManifestPath(const char *manifestPath);
+const char *GetPathFromManifestEntries(const char* curPath, const char *prefix);
+const char *GetDotnetFromEntries();
+void ReadManifestFromPath(const char *manifestPath);
 void LinkFiles(const char *manifestDir);
 void LinkFilesTree(const char *manifestDir);
-const char *GetManifestDir();
 const char *GetManifestPath();
 void LinkHostFxr(const char *manifestDir);
 int IsVerbose();

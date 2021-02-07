@@ -11,30 +11,22 @@ core_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "@core_sdk_windows_amd64_3.0.100//:libraryset",
+        "@core_sdk_stdlib//:libraryset",
     ],
 )
 
-# core_library(
-#     name = "TransitiveClass-core-netstandard.dll",
-#     srcs = [
-#         "TransitiveClass.cs",
-#     ],
-#     target_framework = "netstandard2.0",
-#     visibility = ["//visibility:public"],
-#     deps = [
-#         "@io_bazel_rules_dotnet//dotnet/stdlib.core:NETStandard.Library",
-#     ],
-# )
-
-# core_library(
-#     name = "TransitiveClass-core-v2.1.200-netstandard.dll",
-#     srcs = [
-#         "TransitiveClass.cs",
-#     ],
-#     target_framework = "netstandard2.0",
-#     visibility = ["//visibility:public"],
-#     deps = [
-#         "@io_bazel_rules_dotnet//dotnet/stdlib.core/v2.1.200:netstandard.dll",
-#     ],
-# )
+core_library(
+    name = "TransitiveClass-netstandard.dll",
+    srcs = [
+        "TransitiveClass.cs",
+    ],
+    tags = ["manual"],
+    target_compatible_with = [
+        "@io_bazel_rules_dotnet//dotnet/toolchain:3.0.100",
+    ],
+    target_framework = "netstandard2.0",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@core_sdk_stdlib//:NETStandard.Library",
+    ],
+)

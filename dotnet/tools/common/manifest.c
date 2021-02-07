@@ -24,7 +24,7 @@
 extern const char *Exe;
 struct Entry *g_Entries = NULL;
 
-void ReadManifestPath(const char *manifestPath)
+void ReadManifestFromPath(const char *manifestPath)
 {
     char buffer[64 * 1024];
     FILE *f;
@@ -73,8 +73,92 @@ void ReadManifest(const char *manifestDir)
     strcpy(buffer, manifestDir);
     strcat(buffer, "/MANIFEST");
 
-    ReadManifestPath(buffer);
+    ReadManifestFromPath(buffer);
 }
+
+const char *GetDotnetFromEntries()
+{
+    const struct Entry *entry;
+    const char *p;
+    for(entry = g_Entries; entry != NULL; entry = entry->Next)
+    {
+        p = strrchr(entry->Key, '/');
+        if (p == NULL)
+            continue;
+        if ( (strcmp(p, "/dotnet")==0) ||  (strcmp(p, "/dotnet.exe")==0))
+            return entry->Path;
+    }
+    printf("dotnet not found in manifest entries\n");
+    exit(-1);
+}
+
+const char *GetPathFromManifestEntries(const char *curPath, const char *prefix)
+{
+    const struct Entry *entry;
+    int entriesCount = 0;
+    char **dirs;
+    int dirsCount = 0;
+    int i;
+    int bufferSize = 0;
+    char * result;
+    int prefixLen = strlen(prefix);
+    int curPathLen = curPath!=NULL?strlen(curPath):0;
+
+    /* Count entries && allocate array for unique directories*/
+    for(entry = g_Entries; entry != NULL; entry = entry->Next)
+        ++entriesCount;
+    dirs = (char**) malloc(entriesCount * sizeof(char*));
+
+    /* Extract unique directories */
+    for(entry = g_Entries; entry != NULL; entry = entry->Next)
+    {
+        char *dir = strdup(entry->Path);
+        char *p = strrchr(dir, '/');
+        if (p==NULL)
+        {
+            free(dir);
+            dir = strdup(".");
+        }
+        else
+            *p = '\0';
+
+        /* Check if directory is already present */  
+        for(i = 0; i < dirsCount; ++i)
+            if (strcmp(dirs[i], dir)==0)
+                break;
+        if (i >= dirsCount)
+            dirs[dirsCount++] = dir;
+    }
+
+
+    /* Allocate buffer for PATH variable */
+    for(i = 0; i < dirsCount; ++i)
+        bufferSize += strlen(dirs[i]);
+    bufferSize += curPathLen + 5 + dirsCount*(2+prefixLen) + 1;
+    result = (char*) malloc(bufferSize);
+    strncpy(result, "PATH=", bufferSize);
+
+    /* Copy dirs to PATH and free memory */
+    for(i = 0; i < dirsCount; ++i)
+    {
+        strncat(result, prefix, bufferSize - strlen(result));
+        strncat(result, dirs[i], bufferSize - strlen(result));
+        #ifdef _MSC_VER
+        strncat(result, ";", bufferSize - strlen(result));
+        #else
+        strncat(result, ":", bufferSize - strlen(result));
+        #endif
+        free(dirs[i]);
+    }    
+    free(dirs);
+
+    /* Add current PATH to the end */
+    if (curPath!=NULL)
+        strncat(result, curPath, bufferSize - strlen(result));
+
+    return result;
+}
+
 
 #ifdef _MSC_VER
 void CreateLinkIfNeeded(const char *target, const char *toCreate)
@@ -330,28 +414,28 @@ void LinkFilesTree(const char *manifestDir)
 
 const char *GetManifestPath()
 {
-    static char buffer[64 * 1024];
+    static char buffer[PATH_BUFFER_SIZE];
 
-    sprintf(buffer, "%s.runfiles/MANIFEST", Exe);
+    snprintf(buffer, sizeof(buffer), "%s.runfiles_manifest", Exe);
     if (IsVerbose())
         printf("1. Checking MANIFEST %s\n", buffer);
     if (access(buffer, F_OK) != -1)
         return buffer;
 
-    sprintf(buffer, "%s.runfiles_manifest", Exe);
+    snprintf(buffer, sizeof(buffer), "%s.runfiles/MANIFEST", Exe);
     if (IsVerbose())
         printf("2. Checking MANIFEST %s\n", buffer);
     if (access(buffer, F_OK) != -1)
         return buffer;
 
-    sprintf(buffer, "%s/MANIFEST", getenv("RUNFILES_DIR"));
+    snprintf(buffer, sizeof(buffer), "%s/MANIFEST", getenv("RUNFILES_DIR"));
     if (IsVerbose())
         printf("3. Checking MANIFEST %s\n", buffer);
     if (access(buffer, F_OK) != -1)
         return buffer;
 
     getcwd(buffer, sizeof(buffer));
-    strcat(buffer, "/MANIFEST");
+    strncat(buffer, "/MANIFEST", sizeof(buffer)-strlen(buffer));
     if (IsVerbose())
         printf("4. Checking MANIFEST %s\n", buffer);
     if (access(buffer, F_OK) != -1)
@@ -361,85 +445,6 @@ const char *GetManifestPath()
     exit(-1);
 }
 
-/* I didn't find an easy way to locate MANIFEST file. 
-   Until now, I have identified the following cases:
-   1. Current directory (run on Windows).
-   2. Parrent directory (run on Linux and osx).
-   3. <currentdir>/<launcher>.runfiles (when used as a tool and launcher is this program)
-   This function tries to locate the MANIFEST file and returns
-   an absolute path to directory with it.
-*/
-const char *GetManifestDir()
-{
-    static char buffer[64 * 1024];
-    char *p;
-
-    strcpy(buffer, Exe);
-    if (IsVerbose())
-        printf("1. Checking MANIFEST in %s\n", buffer);
-    if (access(buffer, F_OK) != -1)
-    {
-        p = strrchr(buffer, '/');
-        *(p + 1) = '\0';
-
-        return buffer;
-    }
-
-    p = getcwd(buffer, sizeof(buffer));
-    if (IsVerbose())
-        printf("2. Checking MANIFEST in %s\n", buffer);
-    if (access("MANIFEST", F_OK) != -1)
-        return buffer;
-
-    strcat(buffer, "/../MANIFEST");
-    if (IsVerbose())
-        printf("3. Checking MANIFEST in %s\n", buffer);
-    if (access(buffer, F_OK) != -1)
-    {
-        p = strrchr(buffer, '/');
-        *(p + 1) = '\0';
-
-        return buffer;
-    }
-
-    p = getcwd(buffer, sizeof(buffer));
-    strcat(buffer, "/");
-    strcat(buffer, Exe);
-    /* We have to convert Exe name to this launcher name (by removing _exe suffix and possibly .exe 
-	   on non-Windows platforms) */
-    p = strrchr(buffer, '_');
-#ifdef _MSC_VER
-    strcpy(p, p + 4);
-#else
-    strcpy(p, p + 8);
-#endif
-
-    strcat(buffer, ".runfiles/MANIFEST");
-    if (IsVerbose())
-        printf("4. Checking MANIFEST in %s\n", buffer);
-    if (access(buffer, F_OK) != -1)
-    {
-        p = strrchr(buffer, '/');
-        *(p + 1) = '\0';
-        return buffer;
-    }
-
-    p = getcwd(buffer, sizeof(buffer));
-    strcat(buffer, "/");
-    strcat(buffer, Exe);
-    strcat(buffer, ".runfiles/MANIFEST");
-    if (IsVerbose())
-        printf("5. Checking MANIFEST in %s\n", buffer);
-    if (access(buffer, F_OK) != -1)
-    {
-        p = strrchr(buffer, '/');
-        *(p + 1) = '\0';
-        return buffer;
-    }
-
-    printf("Couldn't find MANIFEST file\n");
-    exit(-1);
-}
 
 void LinkHostFxr(const char *manifestDir)
 {

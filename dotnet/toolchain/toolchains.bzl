@@ -193,6 +193,10 @@ def declare_constraints():
         )
 
     for p in PLATFORMS:
+        native.config_setting(
+            name = p.name + "_config",
+            constraint_values = p.constraints,
+        )
         native.platform(
             name = p.name,
             constraint_values = p.constraints,

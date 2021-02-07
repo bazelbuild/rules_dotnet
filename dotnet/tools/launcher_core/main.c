@@ -20,9 +20,8 @@
 
 const char *Exe = NULL;
 
-static void Execute(int argc, char *argv[], const char *manifestDir)
+static void Execute(int argc, char *argv[], const char *manifestDir, const char *envp[])
 {
-	char dotnet[64 * 1024] = {0};
 	char torun[64 * 1024] = {0};
 	char *p = NULL;
 	char **newargv = NULL;
@@ -55,8 +54,7 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 		exit(-1);
 	}
 
-	sprintf(dotnet, "%s/dotnet", manifestDir);
-	newargv[0] = dotnet;
+	newargv[0] = GetDotnetFromEntries();
 	newargv[1] = torun;
 	for (i = 1; i < argc; ++i)
 	{
@@ -66,14 +64,19 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 
 	if (IsVerbose())
 	{
+		for(i = 0; envp[i]!=NULL; ++i)
+			printf("envp[%d] = %s\n", i, envp[i]);
 		for (i = 0; i < argc + 2; ++i)
-		{
 			printf("argv[%d] = %s (access: %d)\n", i, newargv[i], newargv[i]!=NULL?access(newargv[i], F_OK):0);
-		}
 	}
 
 #ifdef _MSC_VER
-	exit(_spawnvp(_P_WAIT, newargv[0], newargv));
+	/*i = _spawnvp(_P_WAIT, newargv[0], newargv);*/
+	printf("Spawning\n");
+	i = _spawnvpe(_P_OVERLAY, newargv[0], newargv, envp);
+	if (IsVerbose())
+		printf("Return code from _spawnvp: %d, errno: %d\n", i, errno);
+	exit(i);
 #else
 	_execvp(newargv[0], newargv);
 #endif
@@ -81,11 +84,44 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 	printf("Call failed with errno %d\n", errno);
 }
 
+static char **GetNewEnvp(char *envp[], const char *newPath)
+{
+	int count = 0;
+	int i;
+	char **result;
+	int found = 0;
+
+	for(i = 0; envp[i]!=NULL; ++i)
+		++count;
+
+	result = (char**) malloc((count+2) * sizeof(char*)); /* need space for new PATH and additional NULL */
+	memcpy(result, envp, (count+1)*sizeof(char*));
+
+	for(i = 0; i < count; ++i)
+		if (strnicmp(result[i], "PATH=", 5)==0)
+		{
+			found = 1;
+			result[i] = (char*) newPath;
+			break;
+		}
+
+	if (!found)
+		result[count++] = (char*) newPath;
+	result[count] = NULL;
+
+
+	return result;
+}
+
 int main(int argc, char *argv[], char *envp[])
 {
 	const char *manifestDir;
 	const char *manifestPath;
 	char *p;
+	const char *path;
+	const char *curPath;
+	int i;
+	char **newEnvp;
 
 	if (IsVerbose())
 	{
@@ -103,7 +139,7 @@ int main(int argc, char *argv[], char *envp[])
 		}
 	}
 
-	manifestPath = strdup(Exe);
+	manifestPath = GetManifestPath();
 	manifestDir = strdup(manifestPath);
 	p = strrchr(manifestDir, '/');
 	if (p == NULL)
@@ -113,13 +149,18 @@ int main(int argc, char *argv[], char *envp[])
 	}
 	p[1] = '\0';
 
-	// LinkFiles(manifestDir);
-	// LinkFilesTree(manifestDir);
-	// LinkHostFxr(manifestDir);
+	ReadManifestFromPath(manifestPath);
+
+	/* Calculate new PATH */
+	curPath = getenv("PATH");
+	path = GetPathFromManifestEntries(curPath, "");
+
+	/* Build new envp */
+	newEnvp = GetNewEnvp(envp, path);
 
 	// Execute should never return - it should transform this process into
 	// dotnet, which will handle exiting at some point/
-	Execute(argc, argv, manifestDir);
+	Execute(argc, argv, manifestDir, newEnvp);
 
 	return -1;
 }

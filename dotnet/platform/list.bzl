@@ -32,14 +32,15 @@ DOTNET_NETSTANDARD = {
 # 1. Preporocesor directive
 # 2. TFM
 # 3. Runtime version
+# 4. If NETStandard.Library present in the SDK
 DOTNET_CORE_FRAMEWORKS = {
-    "2.1.200": (".NETCore,Version=v2.1", "NETCOREAPP2_1", "netcoreapp2.1", "2.0.7"),
-    "2.1.502": (".NETCore,Version=v2.1", "NETCOREAPP2_1", "netcoreapp2.1", "2.1.6"),
-    "2.1.503": (".NETCore,Version=v2.1", "NETCOREAPP2_1", "netcoreapp2.1", "2.1.7"),
-    "2.2.101": (".NETCore,Version=v2.2", "NETCOREAPP2_2", "netcoreapp2.2", "2.2.0"),
-    "2.2.402": (".NETCore,Version=v2.2", "NETCOREAPP2_2", "netcoreapp2.2", "2.2.7"),
-    "3.0.100": (".NETCore,Version=v3.0", "NETCOREAPP3_0", "netcoreapp3.0", "3.0.0"),
-    "3.1.100": (".NETCore,Version=v3.1", "NETCOREAPP3_1", "netcoreapp3.1", "3.1.0"),
+    "2.1.200": (".NETCore,Version=v2.1", "NETCOREAPP2_1", "netcoreapp2.1", "2.0.7", False),
+    "2.1.502": (".NETCore,Version=v2.1", "NETCOREAPP2_1", "netcoreapp2.1", "2.1.6", False),
+    "2.1.503": (".NETCore,Version=v2.1", "NETCOREAPP2_1", "netcoreapp2.1", "2.1.7", False),
+    "2.2.101": (".NETCore,Version=v2.2", "NETCOREAPP2_2", "netcoreapp2.2", "2.2.0", False),
+    "2.2.402": (".NETCore,Version=v2.2", "NETCOREAPP2_2", "netcoreapp2.2", "2.2.7", False),
+    "3.0.100": (".NETCore,Version=v3.0", "NETCOREAPP3_0", "netcoreapp3.0", "3.0.0", True),
+    "3.1.100": (".NETCore,Version=v3.1", "NETCOREAPP3_1", "netcoreapp3.1", "3.1.0", True),
 }
 DOTNET_CORE_NAMES = ["netcoreapp2.0", "netcoreapp2.1", "netcoreapp2.2", "netcoreapp3.0", "netcoreapp3.1"] + DOTNET_NETSTANDARD.keys()
 

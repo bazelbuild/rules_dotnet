@@ -9,7 +9,6 @@ namespace example_binary
         {
             var mc = new MyClass();
             Console.WriteLine(mc.Message);
-            Console.WriteLine($"Mono Runtime: {Type.GetType ("Mono.Runtime")}");
         }
     }
 }

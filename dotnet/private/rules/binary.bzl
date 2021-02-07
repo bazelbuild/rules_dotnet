@@ -22,7 +22,7 @@ def _binary_impl(ctx):
     name = ctx.label.name
     subdir = name + "/"
 
-    executable = dotnet.assembly(
+    executable = dotnet.toolchain.actions.assembly(
         dotnet,
         name = name,
         srcs = ctx.attr.srcs,
@@ -41,7 +41,7 @@ def _binary_impl(ctx):
         version = (0, 0, 0, 0, "") if ctx.attr.version == "" else parse_version(ctx.attr.version),
     )
 
-    launcher = dotnet.declare_file(dotnet, path = subdir + executable.result.basename + "_0.exe")
+    launcher = dotnet.actions.declare_file(subdir + executable.result.basename + "_0.exe")
     ctx.actions.run(
         outputs = [launcher],
         inputs = ctx.attr._launcher.files.to_list(),
@@ -51,10 +51,9 @@ def _binary_impl(ctx):
     )
 
     # Calculate final runfiles including runtime-required files
-    run_transitive = collect_transitive_info(ctx.attr.deps + ([ctx.attr.dotnet_context_data._runtime] if ctx.attr.dotnet_context_data._runtime != None else []))
+    run_transitive = collect_transitive_info(ctx.attr.deps)
     direct_runfiles = []
-    if dotnet.runner != None:
-        direct_runfiles += dotnet.runner.files.to_list()
+    direct_runfiles += dotnet.toolchain.sdk_target_runner.files.to_list()
 
     #runfiles = ctx.runfiles(files = runner + ctx.attr.native_dep.files.to_list(), transitive_files = depset(transitive = [t.runfiles for t in executable.transitive]))
     runfiles = ctx.runfiles(files = direct_runfiles, transitive_files = depset(transitive = [t.runfiles for t in run_transitive] + [executable.runfiles]))
@@ -81,7 +80,6 @@ core_binary = rule(
         "unsafe": attr.bool(default = False, doc = "If true passes /unsafe flag to the compiler."),
         "data": attr.label_list(allow_files = True, doc = "The list of additional files to include in the list of runfiles for the assembly."),
         "keyfile": attr.label(allow_files = True, doc = "The key to sign the assembly with."),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data"), doc = "The reference to label created with [core_context_data rule](api.md#core_context_data). It points the SDK to be used for compiling given target."),
         "_launcher": attr.label(default = Label("//dotnet/tools/launcher_core:launcher_core.exe")),
         "_copy": attr.label(default = Label("//dotnet/tools/copy")),
         "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
