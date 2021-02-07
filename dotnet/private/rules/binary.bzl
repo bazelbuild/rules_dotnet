@@ -1,20 +1,8 @@
-load(
-    "//dotnet/private:context.bzl",
-    "dotnet_context",
-)
-load(
-    "//dotnet/private:providers.bzl",
-    "DotnetLibraryInfo",
-    "DotnetResourceListInfo",
-)
-
-load(
-    "//dotnet/private:rules/runfiles.bzl",
-    "CopyRunfiles",
-)
+load("//dotnet/private:context.bzl", "dotnet_context")
+load("//dotnet/private:providers.bzl", "DotnetLibraryInfo", "DotnetResourceListInfo")
 load("@io_bazel_rules_dotnet//dotnet/platform:list.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NETSTANDARD")
 load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "parse_version")
-load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
+load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "wrap_binary")
 
 def _binary_impl(ctx):
     """_binary_impl emits actions for compiling executable assembly."""
@@ -41,32 +29,7 @@ def _binary_impl(ctx):
         version = (0, 0, 0, 0, "") if ctx.attr.version == "" else parse_version(ctx.attr.version),
     )
 
-    launcher = dotnet.actions.declare_file(subdir + executable.result.basename + "_0.exe")
-    ctx.actions.run(
-        outputs = [launcher],
-        inputs = ctx.attr._launcher.files.to_list(),
-        executable = ctx.attr._copy.files.to_list()[0],
-        arguments = [launcher.path, ctx.attr._launcher.files.to_list()[0].path],
-        mnemonic = "CopyLauncher",
-    )
-
-    # Calculate final runfiles including runtime-required files
-    run_transitive = collect_transitive_info(ctx.attr.deps + [dotnet.toolchain.sdk_runtime])
-    direct_runfiles = []
-    direct_runfiles += dotnet.toolchain.sdk_target_runner.files.to_list()
-
-    #runfiles = ctx.runfiles(files = runner + ctx.attr.native_dep.files.to_list(), transitive_files = depset(transitive = [t.runfiles for t in executable.transitive]))
-    runfiles = ctx.runfiles(files = direct_runfiles, transitive_files = depset(transitive = [t.runfiles for t in run_transitive] + [executable.runfiles]))
-    runfiles = CopyRunfiles(dotnet._ctx, runfiles, ctx.attr._copy, ctx.attr._symlink, executable, subdir)
-
-    return [
-        executable,
-        DefaultInfo(
-            files = depset([executable.result, launcher]),
-            runfiles = runfiles,
-            executable = launcher,
-        ),
-    ]
+    return wrap_binary(executable, dotnet)
 
 core_binary = rule(
     _binary_impl,
@@ -80,9 +43,9 @@ core_binary = rule(
         "unsafe": attr.bool(default = False, doc = "If true passes /unsafe flag to the compiler."),
         "data": attr.label_list(allow_files = True, doc = "The list of additional files to include in the list of runfiles for the assembly."),
         "keyfile": attr.label(allow_files = True, doc = "The key to sign the assembly with."),
-        "_launcher": attr.label(default = Label("//dotnet/tools/launcher_core:launcher_core.exe")),
-        "_copy": attr.label(default = Label("//dotnet/tools/copy")),
-        "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
+        "_launcher": attr.label(default = Label("@io_bazel_rules_dotnet//dotnet/tools/launcher_core:launcher_core.exe")),
+        "_copy": attr.label(default = Label("@io_bazel_rules_dotnet//dotnet/tools/copy")),
+        "_symlink": attr.label(default = Label("@io_bazel_rules_dotnet//dotnet/tools/symlink")),
         "target_framework": attr.string(values = DOTNET_CORE_FRAMEWORKS.keys() + DOTNET_NETSTANDARD.keys() + [""], default = "", doc = "Target framework."),
         "nowarn": attr.string_list(doc = "The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion."),
         "langversion": attr.string(default = "latest", doc = "Version of the language to use. See [this page](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version)."),

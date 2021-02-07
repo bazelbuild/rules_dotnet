@@ -187,6 +187,10 @@ def declare_constraints():
     )
 
     for p in DOTNET_CORE_FRAMEWORKS:
+        native.config_setting(
+            name = p + "_config",
+            constraint_values = [p],
+        )
         native.constraint_value(
             name = p,
             constraint_setting = "@io_bazel_rules_dotnet//dotnet/toolchain:sdk",

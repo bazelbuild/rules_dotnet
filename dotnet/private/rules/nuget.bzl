@@ -4,6 +4,7 @@ load(
 )
 load(
     "//dotnet/platform:list.bzl",
+    "DOTNET_CORE_FRAMEWORKS",
     "DOTNET_CORE_NAMES",
 )
 
@@ -180,11 +181,26 @@ def _nuget_package_impl(ctx):
 
     #if ctx.attr.core_lib != "":
     content += _get_importlib_withframework("core_import_library", "core_libraryset", "core", DOTNET_CORE_NAMES, ctx.attr.core_lib, ctx.attr.core_ref, ctx.attr.core_deps, ctx.attr.core_files, ctx.attr.version)
-    content += "alias(name=\"core\", actual=\":netcoreapp3.1_core\")\n"
 
     if ctx.attr.core_tool != "":
         content += _get_importlib_withframework("core_import_binary", "core_libraryset", "core_tool", DOTNET_CORE_NAMES, ctx.attr.core_tool, None, ctx.attr.core_deps, ctx.attr.core_files, ctx.attr.version)
-        content += "alias(name=\"core_tool\", actual=\":netcoreapp3.1_core_tool\")\n"
+
+    # Generate library alias selecting proper configuration depending on platform
+    content += """alias(name = "lib",actual = select({"""
+    for sdk in DOTNET_CORE_FRAMEWORKS:
+        key = "@io_bazel_rules_dotnet//dotnet/toolchain:" + sdk + "_config"
+        val = DOTNET_CORE_FRAMEWORKS.get(sdk)[2] + "_core"
+        content = content + """"{}": "{}",""".format(key, val)
+    content += """}, no_match_error = "framework not known"), visibility=["//visibility:public"])\n"""
+
+    # Generate tool alias selecting proper configuration depending on platform
+    if ctx.attr.core_tool != "":
+        content += """alias(name = "tool",actual = select({"""
+        for sdk in DOTNET_CORE_FRAMEWORKS:
+            key = "@io_bazel_rules_dotnet//dotnet/toolchain:" + sdk + "_config"
+            val = DOTNET_CORE_FRAMEWORKS.get(sdk)[2] + "_core_tool"
+            content = content + """"{}": "{}",""".format(key, val)
+        content += """}, no_match_error = "framework not known"), visibility=["//visibility:public"])\n"""
 
     package = ctx.attr.package
     output_dir = ctx.path("")

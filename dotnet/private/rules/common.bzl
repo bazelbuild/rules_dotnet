@@ -1,5 +1,6 @@
 load("@io_bazel_rules_dotnet//dotnet/private:providers.bzl", "DotnetLibraryInfo")
 load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "compare_versions")
+load("@io_bazel_rules_dotnet//dotnet/private:rules/runfiles.bzl", "CopyRunfiles")
 
 def collect_transitive_info(deps):
     """Collects transitive information.
@@ -43,3 +44,44 @@ def collect_transitive_info(deps):
                         lookup[tbasename] = t
 
     return lookup.values()
+
+def wrap_binary(executable, dotnet):
+    """Wraps provided executable with appropriate runfiles and providers.
+
+    Args:
+      executable: [DotnetLibraryInfo](api.md#DotnetLibraryInfo) to provide launcher for.
+      dotnet: [DotnetContextInfo(api.md#DotnetContextInfo)] for current rule.
+
+    Returns:
+      list of providers to be returned by the binary rule.
+    """
+
+    name = dotnet._ctx.label.name
+    subdir = name + "/"
+
+    launcher = dotnet.actions.declare_file(subdir + executable.result.basename + "_0.exe")
+    dotnet._ctx.actions.run(
+        outputs = [launcher],
+        inputs = dotnet._ctx.attr._launcher.files.to_list(),
+        executable = dotnet._ctx.attr._copy.files.to_list()[0],
+        arguments = [launcher.path, dotnet._ctx.attr._launcher.files.to_list()[0].path],
+        mnemonic = "CopyLauncher",
+    )
+
+    # Calculate final runfiles including runtime-required files
+    run_transitive = collect_transitive_info(dotnet._ctx.attr.deps + [dotnet.toolchain.sdk_runtime])
+    direct_runfiles = []
+    direct_runfiles += dotnet.toolchain.sdk_target_runner.files.to_list()
+
+    #runfiles = ctx.runfiles(files = runner + ctx.attr.native_dep.files.to_list(), transitive_files = depset(transitive = [t.runfiles for t in executable.transitive]))
+    runfiles = dotnet._ctx.runfiles(files = direct_runfiles, transitive_files = depset(transitive = [t.runfiles for t in run_transitive] + [executable.runfiles]))
+    runfiles = CopyRunfiles(dotnet._ctx, runfiles, dotnet._ctx.attr._copy, dotnet._ctx.attr._symlink, executable, subdir)
+
+    return [
+        executable,
+        DefaultInfo(
+            files = depset([executable.result, launcher]),
+            runfiles = runfiles,
+            executable = launcher,
+        ),
+    ]
