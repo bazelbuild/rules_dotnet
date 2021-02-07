@@ -8,10 +8,10 @@ load(
     "DotnetResourceListInfo",
 )
 
-# load(
-#     "//dotnet/private:rules/runfiles.bzl",
-#     "CopyRunfiles",
-# )
+load(
+    "//dotnet/private:rules/runfiles.bzl",
+    "CopyRunfiles",
+)
 load("@io_bazel_rules_dotnet//dotnet/platform:list.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NETSTANDARD")
 load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "parse_version")
 load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
@@ -51,13 +51,13 @@ def _binary_impl(ctx):
     )
 
     # Calculate final runfiles including runtime-required files
-    run_transitive = collect_transitive_info(ctx.attr.deps)
+    run_transitive = collect_transitive_info(ctx.attr.deps + [dotnet.toolchain.sdk_runtime])
     direct_runfiles = []
     direct_runfiles += dotnet.toolchain.sdk_target_runner.files.to_list()
 
     #runfiles = ctx.runfiles(files = runner + ctx.attr.native_dep.files.to_list(), transitive_files = depset(transitive = [t.runfiles for t in executable.transitive]))
     runfiles = ctx.runfiles(files = direct_runfiles, transitive_files = depset(transitive = [t.runfiles for t in run_transitive] + [executable.runfiles]))
-    #runfiles = CopyRunfiles(dotnet._ctx, runfiles, ctx.attr._copy, ctx.attr._symlink, executable, subdir)
+    runfiles = CopyRunfiles(dotnet._ctx, runfiles, ctx.attr._copy, ctx.attr._symlink, executable, subdir)
 
     return [
         executable,

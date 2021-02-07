@@ -19,6 +19,7 @@ def _core_toolchain_impl(ctx):
         sdk_exec_runner = ctx.attr.sdk_exec_runner,
         sdk_target_host = ctx.attr.sdk_target_host,
         sdk_target_runner = ctx.attr.sdk_target_runner,
+        sdk_runtime = ctx.attr.sdk_runtime,
         # get_dotnet_runner = _get_dotnet_runner,
         # get_dotnet_mcs = _get_dotnet_mcs,
         # get_dotnet_resgen = _get_dotnet_resgen,
@@ -49,6 +50,7 @@ _core_toolchain = rule(
         "sdk_exec_runner": attr.label(mandatory = True),
         "sdk_target_host": attr.label(mandatory = True),
         "sdk_target_runner": attr.label(mandatory = True),
+        "sdk_runtime": attr.label(mandatory = True),
     },
 )
 
@@ -68,6 +70,7 @@ def core_toolchain(name, os, arch, os_exec, arch_exec, sdk_version, runtime_vers
         sdk_exec_runner = "@core_sdk_{}_{}_{}//:runner".format(os_exec, arch_exec, sdk_version),
         sdk_target_host = "@core_sdk_{}_{}_{}//:host".format(os, arch, sdk_version),
         sdk_target_runner = "@core_sdk_{}_{}_{}//:runner".format(os, arch, sdk_version),
+        sdk_runtime = "@core_sdk_{}_{}_{}//:runtime".format(os_exec, arch_exec, sdk_version),
         tags = ["manual"],
         visibility = ["//visibility:public"],
     )

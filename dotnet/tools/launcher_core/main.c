@@ -20,7 +20,7 @@
 
 const char *Exe = NULL;
 
-static void Execute(int argc, char *argv[], const char *manifestDir, const char *envp[])
+static void Execute(int argc, char *argv[], const char *manifestDir)
 {
 	char torun[64 * 1024] = {0};
 	char *p = NULL;
@@ -54,7 +54,7 @@ static void Execute(int argc, char *argv[], const char *manifestDir, const char 
 		exit(-1);
 	}
 
-	newargv[0] = GetDotnetFromEntries();
+	newargv[0] = (char*) GetDotnetFromEntries();
 	newargv[1] = torun;
 	for (i = 1; i < argc; ++i)
 	{
@@ -64,16 +64,13 @@ static void Execute(int argc, char *argv[], const char *manifestDir, const char 
 
 	if (IsVerbose())
 	{
-		for(i = 0; envp[i]!=NULL; ++i)
-			printf("envp[%d] = %s\n", i, envp[i]);
 		for (i = 0; i < argc + 2; ++i)
 			printf("argv[%d] = %s (access: %d)\n", i, newargv[i], newargv[i]!=NULL?access(newargv[i], F_OK):0);
 	}
 
 #ifdef _MSC_VER
 	/*i = _spawnvp(_P_WAIT, newargv[0], newargv);*/
-	printf("Spawning\n");
-	i = _spawnvpe(_P_OVERLAY, newargv[0], newargv, envp);
+	i = _spawnvp(_P_WAIT, newargv[0], newargv);
 	if (IsVerbose())
 		printf("Return code from _spawnvp: %d, errno: %d\n", i, errno);
 	exit(i);
@@ -84,44 +81,12 @@ static void Execute(int argc, char *argv[], const char *manifestDir, const char 
 	printf("Call failed with errno %d\n", errno);
 }
 
-static char **GetNewEnvp(char *envp[], const char *newPath)
-{
-	int count = 0;
-	int i;
-	char **result;
-	int found = 0;
-
-	for(i = 0; envp[i]!=NULL; ++i)
-		++count;
-
-	result = (char**) malloc((count+2) * sizeof(char*)); /* need space for new PATH and additional NULL */
-	memcpy(result, envp, (count+1)*sizeof(char*));
-
-	for(i = 0; i < count; ++i)
-		if (strnicmp(result[i], "PATH=", 5)==0)
-		{
-			found = 1;
-			result[i] = (char*) newPath;
-			break;
-		}
-
-	if (!found)
-		result[count++] = (char*) newPath;
-	result[count] = NULL;
-
-
-	return result;
-}
-
 int main(int argc, char *argv[], char *envp[])
 {
 	const char *manifestDir;
 	const char *manifestPath;
 	char *p;
-	const char *path;
-	const char *curPath;
 	int i;
-	char **newEnvp;
 
 	if (IsVerbose())
 	{
@@ -151,16 +116,9 @@ int main(int argc, char *argv[], char *envp[])
 
 	ReadManifestFromPath(manifestPath);
 
-	/* Calculate new PATH */
-	curPath = getenv("PATH");
-	path = GetPathFromManifestEntries(curPath, "");
-
-	/* Build new envp */
-	newEnvp = GetNewEnvp(envp, path);
-
 	// Execute should never return - it should transform this process into
 	// dotnet, which will handle exiting at some point/
-	Execute(argc, argv, manifestDir, newEnvp);
+	Execute(argc, argv, manifestDir);
 
 	return -1;
 }

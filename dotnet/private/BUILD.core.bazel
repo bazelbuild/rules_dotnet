@@ -51,3 +51,6 @@ filegroup(
 
 load("@io_bazel_rules_dotnet//dotnet/private:stdlib/{sdkVersion}.bzl", "define_stdlib")
 define_stdlib()
+
+load("@io_bazel_rules_dotnet//dotnet/private:stdlib/{sdkVersion}-runtime.bzl", "define_runtime")
+define_runtime()
