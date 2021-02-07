@@ -22,6 +22,7 @@ const char *Exe = NULL;
 
 static void Execute(int argc, char *argv[], const char *manifestDir)
 {
+	char dotnet[64 * 1024] = {0};
 	char torun[64 * 1024] = {0};
 	char *p = NULL;
 	char **newargv = NULL;
@@ -54,7 +55,8 @@ static void Execute(int argc, char *argv[], const char *manifestDir)
 		exit(-1);
 	}
 
-	newargv[0] = (char*) GetDotnetFromEntries();
+	sprintf(dotnet, "%s/dotnet", manifestDir);
+	newargv[0] = dotnet;
 	newargv[1] = torun;
 	for (i = 1; i < argc; ++i)
 	{
@@ -103,7 +105,7 @@ int main(int argc, char *argv[], char *envp[])
 		}
 	}
 
-	manifestPath = GetManifestPath();
+	manifestPath = strdup(Exe);
 	manifestDir = strdup(manifestPath);
 	p = strrchr(manifestDir, '/');
 	if (p == NULL)
@@ -112,8 +114,6 @@ int main(int argc, char *argv[], char *envp[])
 		return -1;
 	}
 	p[1] = '\0';
-
-	ReadManifestFromPath(manifestPath);
 
 	// Execute should never return - it should transform this process into
 	// dotnet, which will handle exiting at some point/
