@@ -65,12 +65,12 @@ Setup
     core_register_sdk()
   ```
 
-  The [dotnet_repositories](api.md#dotnet_repositories) rule fetches external dependencies which have to be defined before loading any other file of rules_dotnet. [dotnet_repositories_nugets](api.md#dotnet_repositories_nugets) loads nuget packages 
+  The [dotnet_repositories](docs/api.md#dotnet_repositories) rule fetches external dependencies which have to be defined before loading any other file of rules_dotnet. [dotnet_repositories_nugets](docs/api.md#dotnet_repositories_nugets) loads nuget packages 
   required by test rules.
 
-  The [dotnet_register_toolchains](api.md#dotnet_register_toolchains) configures toolchains.
+  The [dotnet_register_toolchains](docs/api.md#dotnet_register_toolchains) configures toolchains.
 
-  The [core_register_sdk](api.md#core_register_sdk) "glues" toolchains with 
+  The [core_register_sdk](docs/api.md#core_register_sdk) "glues" toolchains with 
   appropriate SDKs.
 
 * Add a file named ``BUILD.bazel`` in the root directory of your project. In general, you need one of these files in every directory with dotnet code.
