@@ -47,24 +47,21 @@ def _maybe(repo_rule, name, **kwargs):
 def _core_stdlib_impl(ctx):
     ctx.file("ROOT")
 
-    values = ""
-    values2 = ""  # NETStandard.Library
-    for os, arch in DOTNET_OS_ARCH:
-        for sdk in DOTNET_CORE_FRAMEWORKS:
-            name = "{}_{}_{}".format(os, arch, sdk)
-            key = "@io_bazel_rules_dotnet//dotnet/toolchain:" + name + "_config"
-            val = "@core_sdk_" + name + "//:libraryset"
-            values = values + """"{}": "{}",""".format(key, val)
-            if DOTNET_CORE_FRAMEWORKS.get(sdk)[4]:
-                val2 = "@core_sdk_" + name + "//:NETStandard.Library"
-                values2 = values2 + """"{}": "{}",""".format(key, val2)
+    body = ""
+    for target in ["libraryset", "NETStandard.Library", "Microsoft.AspNetCore.App", "Microsoft.NETCore.App", "Microsoft.WindowsDesktop.App"]:
+        values = ""
+        for os, arch in DOTNET_OS_ARCH:
+            for sdk in DOTNET_CORE_FRAMEWORKS:
+                name = "{}_{}_{}".format(os, arch, sdk)
+                key = "@io_bazel_rules_dotnet//dotnet/toolchain:" + name + "_config"
+                val = "@core_sdk_" + name + "//:" + target
+                values = values + """"{}": "{}",""".format(key, val)
 
-    body = """alias(name = "libraryset",actual = select({""" + values + """}, no_match_error = "platform not known"), visibility=["//visibility:public"])"""
-    body2 = """alias(name = "NETStandard.Library",actual = select({""" + values2 + """}, no_match_error = "platform not known"), visibility=["//visibility:public"])"""
+        body = body + """alias(name = "{}",actual = select({{""".format(target) + values + """}, no_match_error = "platform not known"), visibility=["//visibility:public"])\n"""
 
     ctx.file(
         "BUILD.bazel",
-        body + "\n" + body2,
+        body,
         executable = False,
     )
 

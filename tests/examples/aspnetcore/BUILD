@@ -7,7 +7,7 @@ core_binary(
         "Controllers/*.cs",
     ]),
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:Microsoft.AspNetCore.App",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
+        "@core_sdk_stdlib//:Microsoft.AspNetCore.App",
+        "@core_sdk_stdlib//:libraryset",
     ],
 )
