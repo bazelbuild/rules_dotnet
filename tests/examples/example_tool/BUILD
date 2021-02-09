@@ -17,6 +17,7 @@ genrule(
         "hello_world.txt",
     ],
     cmd = "$(location :hello_tool.exe) $@",
+    local = 1,  #TODO: Should be fixed
     tools = [
         ":hello_tool.exe",
     ],
@@ -29,6 +30,7 @@ genrule(
         "hello_world_2.txt",
     ],
     cmd = "$(location :hello_tool.exe) $(OUTS)",
+    local = 1,  #TODO: Should be fixed
     tools = [
         ":hello_tool.exe",
     ],
