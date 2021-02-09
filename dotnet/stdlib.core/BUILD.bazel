@@ -14,13 +14,3 @@ package(default_visibility = ["//visibility:public"])
 #     data = ["@core_sdk//:csc_deps"],
 #     version = "3.4.0.0",
 # )
-
-alias(
-    name = "libraryset",
-    actual = select(
-        {
-            "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.0.100_config": "@core_sdk_windows_amd64_3.0.100//:libraryset",
-        },
-        no_match_error = "platform not known",
-    ),
-)
