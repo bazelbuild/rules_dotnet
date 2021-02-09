@@ -23,7 +23,7 @@ install:
   
 build_script:
   - ver
-  - bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build --spawn_strategy=standalone //...
+  - bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build $PLATFORM //...
 
 test_script:
   - bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run $PLATFORM //tests/examples/example_binary:hello.exe
