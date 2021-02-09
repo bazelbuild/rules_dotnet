@@ -3,9 +3,14 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_NETSTANDARD", "core_libr
 [core_library(
     name = "{}_lib.dll".format(framework),
     srcs = ["Lib.cs"],
+    target_compatible_with = select({
+        "@io_bazel_rules_dotnet//dotnet/toolchain:3.0.100": [],
+        "@io_bazel_rules_dotnet//dotnet/toolchain:3.1.100": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
     target_framework = framework,
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:NETStandard.Library",
+        "@core_sdk_stdlib//:NETStandard.Library",
     ],
 ) for framework in DOTNET_NETSTANDARD.keys()]
 
@@ -14,11 +19,15 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_NETSTANDARD", "core_libr
     srcs = [
         "XUnitTest.cs",
     ],
+    target_compatible_with = select({
+        "@io_bazel_rules_dotnet//dotnet/toolchain:3.0.100": [],
+        "@io_bazel_rules_dotnet//dotnet/toolchain:3.1.100": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
     deps = [
         "{}_lib.dll".format(framework),
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:NETStandard.Library",
-        "@xunit.assert//:netcoreapp2.0_core",
-        "@xunit.extensibility.core//:netcoreapp2.0_core",
-        "@xunit.extensibility.execution//:netcoreapp2.0_core",
+        "@xunit.assert//:lib",
+        "@xunit.extensibility.core//:lib",
+        "@xunit.extensibility.execution//:lib",
     ],
 ) for framework in DOTNET_NETSTANDARD.keys()]

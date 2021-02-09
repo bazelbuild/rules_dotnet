@@ -25,6 +25,17 @@ def dotnet_repositories():
         sha256 = "97e70364e9249702246c0e9444bccdc4b847bed1eb03c5a3ece4f83dfe6abc44",
     )
 
+    _maybe(
+        http_archive,
+        name = "platforms",
+        strip_prefix = "platforms-0.0.3",
+        # 0.0.1, latest as of 2020-12-01
+        urls = [
+            "https://github.com/bazelbuild/platforms/archive/0.0.3.zip",
+        ],
+        sha256 = "be834dc9b61c0aa3f42517966b54c0b599356c30c6ea08028597b7f0986e7060",
+    )
+
     _core_sdks()
     _core_stdlib(name = "core_sdk_stdlib")
 
