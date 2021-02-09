@@ -2,7 +2,7 @@
   "profiles": {
     "nuget2bazel": {
       "commandName": "Project",
-      "commandLineArgs": "add -p c:/temp/1 -b nuget2.bzl -c nuget2.json -i -u -n https://dotnet.myget.org/F/dotnet-corefxlab/api/v3/index.json System.Buffers.Primitives 0.1.2-e200127-1"
+      "commandLineArgs": "add -p c:/temp/1 -b nuget.bzl -c nuget.json -i xunit 2.4.1"
     }
   }
 }

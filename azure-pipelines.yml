@@ -4,7 +4,7 @@ jobs:
     matrix:
       linux_amd64_2.1.200:
         poolName: 'Azure Pipelines'
-        vmImage: 'ubuntu-latest'       
+        vmImage: 'ubuntu-16.04'       
         systemName: 'linux'
         bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
         platform: 'linux_amd64_2.1.200'
@@ -23,7 +23,7 @@ jobs:
 
       linux_amd64_2.1.502:
         poolName: 'Azure Pipelines'
-        vmImage: 'ubuntu-latest'       
+        vmImage: 'ubuntu-16.04'       
         systemName: 'linux'
         bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
         platform: 'linux_amd64_2.1.502'
@@ -42,7 +42,7 @@ jobs:
 
       linux_amd64_2.1.503:
         poolName: 'Azure Pipelines'
-        vmImage: 'ubuntu-latest'       
+        vmImage: 'ubuntu-16.04'       
         systemName: 'linux'
         bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
         platform: 'linux_amd64_2.1.503'
@@ -61,7 +61,7 @@ jobs:
 
       linux_amd64_2.2.101:
         poolName: 'Azure Pipelines'
-        vmImage: 'ubuntu-latest'       
+        vmImage: 'ubuntu-16.04'       
         systemName: 'linux'
         bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
         platform: 'linux_amd64_2.2.101'
