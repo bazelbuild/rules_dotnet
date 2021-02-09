@@ -6,6 +6,11 @@ bzl_library(
     srcs = ["//dotnet/private:all_rules"],
 )
 
+bzl_library(
+    name = "our_skylib",
+    srcs = ["@rules_dotnet_skylib//:distribution"],
+)
+
 stardoc(
     name = "my-docs",
     out = "api.md",
@@ -13,4 +18,8 @@ stardoc(
     input = "docs.bzl",
     rule_template = "rule.vm",
     tags = ["manual"],
+    deps = [
+        ":bzl_library",
+        ":our_skylib",
+    ],
 )

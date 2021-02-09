@@ -17,10 +17,6 @@ framework may be used at the same time.
 The frameworks are bound to ``@core_sdk_<version>``.
 They can be referred to directly if needed, but in general you should always access it through the toolchain.
 
-The [core_register_sdk](api.md#core_register_sdk) function is
-responsible for downloading SDK, and adding just enough of a build file to expose the 
-contents to Bazel.
-
 
 ### The toolchain
 
@@ -39,7 +35,7 @@ it's default name, the following toolchain labels (along with many others) will 
 
   ```python
 
-    @io_bazel_rules_dotnet//dotnet/toolchain:core_linux_amd64
+    @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_2.2.402
   ```
   
 The toolchains are not usable until you register them.
@@ -53,9 +49,3 @@ It is fine to add more toolchains to the available set if you like. Because the 
 toolchain matching mechanism prefers the first declared match, you can also override individual
 toolchains by declaring and registering toolchains with the same constraints *before* calling
 [dotnet_register_toolchains](api.md#dotnet_register_toolchains).
-
-If you wish to have more control over the toolchains you can instead just make direct
-calls to [dotnet_register_toolchains](api.md#dotnet_register_toolchains) with only the toolchains you 
-wish to install. You can see an
-example of this in [limiting the available toolchains](https://docs.bazel.build/versions/master/toolchains.html#toolchain-resolution>).
-
