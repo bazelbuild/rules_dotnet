@@ -7,8 +7,8 @@ core_xunit_test(
     nowarn = ["CS1701"],
     deps = [
         "@io_bazel_rules_dotnet//tools/nuget2bazel:nuget2bazel.exe",
-        "@xunit.assert//:netcoreapp2.0_core",
-        "@xunit.extensibility.core//:netcoreapp2.0_core",
-        "@xunit.extensibility.execution//:netcoreapp2.0_core",
+        "@xunit.assert//:lib",
+        "@xunit.extensibility.core//:lib",
+        "@xunit.extensibility.execution//:lib",
     ],
 )
