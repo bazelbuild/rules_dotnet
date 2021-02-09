@@ -7,16 +7,19 @@ jobs:
         vmImage: 'ubuntu-latest'       
         systemName: 'linux'
         bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
+        platform: 'linux_amd64_3.0.100'
       windows:
         poolName: 'Azure Pipelines'
         vmImage: 'windows-2019'
         systemName: 'windows'
         bazel_startup: '--output_user_root=c:\tmp --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
+        platform: 'windows_amd64_3.0.100'
       mac:
         poolName: 'Azure Pipelines'
         vmImage: 'macOS-10.15'
         systemName: 'mac'
         bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
+        platform: 'darwin_amd64_3.0.100'
   pool:
     name: $(poolName)
     vmImage: $(vmImage)
@@ -49,13 +52,13 @@ jobs:
       displayName: 'Show bazel version'
 
     - script: |    
-        bazel $(bazel_startup) build -s --spawn_strategy=standalone //... 
+        bazel $(bazel_startup) build --host_platform //dotnet/toolchain:$(platform) --platforms //dotnet/toolchain:$(platform) -s //... 
       displayName: 'Build all'
     - script: |
-        bazel $(bazel_startup) run -s  --spawn_strategy=standalone //tests/examples/example_binary:v2.1.200_hello-core.exe
+        bazel $(bazel_startup) run --host_platform //dotnet/toolchain:$(platform) --platforms //dotnet/toolchain:$(platform) -s  //tests/examples/example_binary:hello.exe
       displayName: 'Run sample core hello'
     - script: |
-        bazel $(bazel_startup) test -s --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
+        bazel $(bazel_startup) test --host_platform //dotnet/toolchain:$(platform) --platforms //dotnet/toolchain:$(platform) -s --test_summary=detailed --test_output=all //... 
       continueOnError: true
       displayName: 'Run tests'
     - powershell: |
@@ -89,17 +92,17 @@ jobs:
         #buildConfiguration: # Optional
         publishRunAttachments: true # Optional
 
-    - script: |
-        pwd
-        bazel $(bazel_startup) test --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
-      workingDirectory: $(Build.SourcesDirectory)/examples/grpc
-      displayName: 'Run grpc standalone test'
+    # - script: |
+    #     pwd
+    #     bazel $(bazel_startup) test --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
+    #   workingDirectory: $(Build.SourcesDirectory)/examples/grpc
+    #   displayName: 'Run grpc standalone test'
 
-    - script: |
-        pwd
-        bazel $(bazel_startup) test --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
-      workingDirectory: $(Build.SourcesDirectory)/examples/ef
-      displayName: 'Run ef standalone test'
+    # - script: |
+    #     pwd
+    #     bazel $(bazel_startup) test --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
+    #   workingDirectory: $(Build.SourcesDirectory)/examples/ef
+    #   displayName: 'Run ef standalone test'
 
     # - script: |
     #     pwd

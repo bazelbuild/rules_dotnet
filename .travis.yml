@@ -7,8 +7,10 @@ jobs:
   include:
     - os: linux
       dist: bionic
+      env: PLATFORM="--host_platform //dotnet/toolchain:linux_amd64_3.0.100 --platforms //dotnet/toolchain:linux_amd64_3.0.100"
     - os: osx
       osx_image: xcode12.2
+      env: PLATFORM="--host_platform //dotnet/toolchain:darwin_amd64_3.0.100 --platforms //dotnet/toolchain:darwin_amd64_3.0.100"
 
 
 before_install:
@@ -31,19 +33,19 @@ script:
     bazel version
 
   - |
-    bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build --spawn_strategy=standalone //...
+    bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m build $PLATFORM //...
 
   - |
-    bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run --spawn_strategy=standalone //tests/examples/example_binary:v2.1.200_hello-core.exe
+    bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m run $PLATFORM //tests/examples/example_binary:hello.exe
 
   - |
-    bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m test --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
+    bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m test $PLATFORM --test_summary=detailed --test_output=all //... 
 
-  - |    
-    cd examples/grpc && bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m test --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
+  # - |    
+  #   cd examples/grpc && bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m test --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
 
-  - |    
-    cd ../ef && bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m test --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
+  # - |    
+  #   cd ../ef && bazel --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m test --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
 
 notifications:
   email: false

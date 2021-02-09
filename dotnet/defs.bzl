@@ -1,6 +1,5 @@
 load(
     "//dotnet/private:context.bzl",
-    _core_context_data = "core_context_data",
     _dotnet_context = "dotnet_context",
 )
 load(
@@ -46,7 +45,6 @@ load(
 load(
     "//dotnet/private:rules/import.bzl",
     _core_import_binary = "core_import_binary",
-    _core_import_binary_internal = "core_import_binary_internal",
     _core_import_library = "core_import_library",
 )
 load(
@@ -76,11 +74,9 @@ core_nunit3_test = _core_nunit3_test
 dotnet_nuget_new = _dotnet_nuget_new
 nuget_package = _nuget_package
 core_import_binary = _core_import_binary
-core_import_binary_internal = _core_import_binary_internal
 core_import_library = _core_import_library
 DOTNET_CORE_FRAMEWORKS = _DOTNET_CORE_FRAMEWORKS
 DOTNET_CORE_NAMES = _DOTNET_CORE_NAMES
 DEFAULT_DOTNET_CORE_FRAMEWORK = _DEFAULT_DOTNET_CORE_FRAMEWORK
 DOTNET_NETSTANDARD = _DOTNET_NETSTANDARD
-core_context_data = _core_context_data
 dotnet_repositories_nugets = _dotnet_repositories_nugets

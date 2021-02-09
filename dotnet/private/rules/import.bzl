@@ -113,26 +113,5 @@ core_import_binary = rule(
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
     executable = True,
-    doc = """This imports an external assembly and transforms it into .NET Core binary. 
-    
-    #TODO: it is identical to [core_import_library](api.md#core_import_library). Maybe [core_import_binary_internal](api.md#core_import_binary_internal) should be used instead?
-    """,
-)
-
-core_import_binary_internal = rule(
-    _import_binary_internal_impl,
-    attrs = {
-        "deps": attr.label_list(providers = [DotnetLibraryInfo], doc = "The direct dependencies of this dll. These may be [core_library](api.md#core_library) rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider."),
-        "src": attr.label(allow_files = [".dll", ".exe"], mandatory = True, doc = "The file to be transformed into [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider."),
-        "data": attr.label_list(allow_files = True, doc = "Additional files to copy with the target assembly."),
-        "version": attr.string(mandatory = True, doc = "Version of the imported assembly."),
-        "ref": attr.label(allow_files = True, mandatory = False, doc = "[Reference assembly](https://docs.microsoft.com/en-us/dotnet/standard/assembly/reference-assemblies) for given library."),
-        "_launcher": attr.label(default = Label("//dotnet/tools/launcher_core:launcher_core.exe")),
-        "_copy": attr.label(default = Label("//dotnet/tools/copy")),
-        "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
-        "runtime": attr.label(providers = [DotnetLibraryInfo], default = "@io_bazel_rules_dotnet//dotnet/stdlib.core:runtime"),
-        "runner": attr.label(default = "@core_sdk//:runner"),
-    },
-    executable = True,
-    doc = "The rules imports binary and implements all necessary wraping to allow for executing provided assembly.",
+    doc = "This imports an external assembly and transforms it into .NET Core binary. ",
 )
