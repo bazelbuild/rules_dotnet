@@ -1,6 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DEFAULT_DOTNET_CORE_FRAMEWORK", "core_binary", "core_xunit_test")
-
-framework = DEFAULT_DOTNET_CORE_FRAMEWORK
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_binary", "core_xunit_test")
 
 core_binary(
     name = "custom_bin.exe",
@@ -8,7 +6,7 @@ core_binary(
         "main.cs",
     ],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
+        "@core_sdk_stdlib//:libraryset",
     ],
 )
 
@@ -22,9 +20,9 @@ core_xunit_test(
         ":custom_bin.exe",
     ],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
-        "@xunit.assert//:netcoreapp2.1_core",
-        "@xunit.extensibility.core//:netcoreapp2.1_core",
-        "@xunit.extensibility.execution//:netcoreapp2.1_core",
+        "@core_sdk_stdlib//:libraryset",
+        "@xunit.assert//:lib",
+        "@xunit.extensibility.core//:lib",
+        "@xunit.extensibility.execution//:lib",
     ],
 )

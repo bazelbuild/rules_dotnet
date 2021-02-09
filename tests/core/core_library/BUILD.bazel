@@ -7,7 +7,7 @@ core_library(
     ],
     out = "alt_bin.dll",
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
+        "@core_sdk_stdlib//:libraryset",
     ],
 )
 
@@ -22,9 +22,9 @@ core_xunit_test(
     ],
     version = "1.0",
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
-        "@xunit.assert//:core",
-        "@xunit.extensibility.core//:core",
-        "@xunit.extensibility.execution//:core",
+        "@core_sdk_stdlib//:libraryset",
+        "@xunit.assert//:lib",
+        "@xunit.extensibility.core//:lib",
+        "@xunit.extensibility.execution//:lib",
     ],
 )

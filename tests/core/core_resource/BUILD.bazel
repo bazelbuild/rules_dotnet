@@ -22,9 +22,9 @@ core_xunit_test(
         ":data_multi",
     ],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
-        "@xunit.assert//:core",
-        "@xunit.extensibility.core//:core",
-        "@xunit.extensibility.execution//:core",
+        "@core_sdk_stdlib//:libraryset",
+        "@xunit.assert//:lib",
+        "@xunit.extensibility.core//:lib",
+        "@xunit.extensibility.execution//:lib",
     ],
 )

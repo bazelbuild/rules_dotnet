@@ -17,10 +17,10 @@ core_xunit_test(
     ],
     deps = [
         ":level1",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
-        "@xunit.assert//:netcoreapp2.0_core",
-        "@xunit.extensibility.core//:netcoreapp2.0_core",
-        "@xunit.extensibility.execution//:netcoreapp2.0_core",
+        "@core_sdk_stdlib//:libraryset",
+        "@xunit.assert//:lib",
+        "@xunit.extensibility.core//:lib",
+        "@xunit.extensibility.execution//:lib",
     ],
 )
 
@@ -31,9 +31,9 @@ core_xunit_test(
     ],
     deps = [
         ":level2",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
-        "@xunit.assert//:netcoreapp2.0_core",
-        "@xunit.extensibility.core//:netcoreapp2.0_core",
-        "@xunit.extensibility.execution//:netcoreapp2.0_core",
+        "@core_sdk_stdlib//:libraryset",
+        "@xunit.assert//:lib",
+        "@xunit.extensibility.core//:lib",
+        "@xunit.extensibility.execution//:lib",
     ],
 )

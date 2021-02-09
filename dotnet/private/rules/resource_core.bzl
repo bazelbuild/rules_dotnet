@@ -4,6 +4,7 @@ load(
 )
 load(
     "//dotnet/private:providers.bzl",
+    "DotnetResourceInfo",
     "DotnetResourceListInfo",
 )
 load("@rules_dotnet_skylib//lib:paths.bzl", "paths")
@@ -13,8 +14,7 @@ def _resource_impl(ctx):
     dotnet = dotnet_context(ctx)
     name = ctx.label.name
 
-    resource = dotnet.new_resource(
-        dotnet = dotnet,
+    resource = DotnetResourceInfo(
         name = name,
         result = ctx.attr.src.files.to_list()[0],
         identifier = ctx.attr.identifier,
@@ -45,8 +45,7 @@ def _resource_multi_impl(ctx):
             else:
                 identifier = ctx.attr.fixedIdentifierBase + "." + paths.basename(k.path)
 
-            resource = dotnet.new_resource(
-                dotnet = dotnet,
+            resource = DotnetResourceInfo(
                 name = identifier,
                 result = k,
                 identifier = identifier,
@@ -66,7 +65,6 @@ core_resource = rule(
         # source files for this target.
         "src": attr.label(allow_single_file = True, mandatory = True, doc = "The source to be embeded."),
         "identifier": attr.string(doc = "The logical name for the resource; the name is used to load the resource. The default is the basename of the file name (no subfolder)."),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data"), doc = "The reference to label created with [core_context_data rule](api.md#core_context_data). It points the SDK to be used for compiling given target."),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
     executable = False,
@@ -80,7 +78,6 @@ core_resource_multi = rule(
         "srcs": attr.label_list(allow_files = True, mandatory = True, doc = "The source files to be embeded. "),
         "identifierBase": attr.string(doc = "The logical name for given resource is constructred from identiferBase + \".\" + directory.repalce('/','.') + \".\" + filename. The resulting name is used to load the resource. Either identifierBase of fixedIdentifierBase must be specified."),
         "fixedIdentifierBase": attr.string(doc = "The logical name for given resource is constructred from fixedIdentiferBase + \".\" + filename. The resulting name that is used to load the resource. Either identifierBase of fixedIdentifierBase must be specified. "),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
     },
     toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
     executable = False,
