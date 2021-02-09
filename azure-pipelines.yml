@@ -2,24 +2,139 @@ jobs:
 - job: BuildAndTest  
   strategy:
     matrix:
-      linux:
+      linux_amd64_2.1.200:
+        poolName: 'Azure Pipelines'
+        vmImage: 'ubuntu-latest'       
+        systemName: 'linux'
+        bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
+        platform: 'linux_amd64_2.1.200'
+      windows_amd64_2.1.200:
+        poolName: 'Azure Pipelines'
+        vmImage: 'windows-2019'
+        systemName: 'windows'
+        bazel_startup: '--output_user_root=c:\tmp --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
+        platform: 'windows_amd64_2.1.200'
+      darwin_amd64_2.1.200:
+        poolName: 'Azure Pipelines'
+        vmImage: 'macOS-10.15'
+        systemName: 'mac'
+        bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
+        platform: 'darwin_amd64_2.1.200'
+
+      linux_amd64_2.1.502:
+        poolName: 'Azure Pipelines'
+        vmImage: 'ubuntu-latest'       
+        systemName: 'linux'
+        bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
+        platform: 'linux_amd64_2.1.502'
+      windows_amd64_2.1.502:
+        poolName: 'Azure Pipelines'
+        vmImage: 'windows-2019'
+        systemName: 'windows'
+        bazel_startup: '--output_user_root=c:\tmp --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
+        platform: 'windows_amd64_2.1.502'
+      darwin_amd64_2.1.502:
+        poolName: 'Azure Pipelines'
+        vmImage: 'macOS-10.15'
+        systemName: 'mac'
+        bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
+        platform: 'darwin_amd64_2.1.502'
+
+      linux_amd64_2.1.503:
+        poolName: 'Azure Pipelines'
+        vmImage: 'ubuntu-latest'       
+        systemName: 'linux'
+        bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
+        platform: 'linux_amd64_2.1.503'
+      windows_amd64_2.1.503:
+        poolName: 'Azure Pipelines'
+        vmImage: 'windows-2019'
+        systemName: 'windows'
+        bazel_startup: '--output_user_root=c:\tmp --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
+        platform: 'windows_amd64_2.1.503'
+      darwin_amd64_2.1.503:
+        poolName: 'Azure Pipelines'
+        vmImage: 'macOS-10.15'
+        systemName: 'mac'
+        bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
+        platform: 'darwin_amd64_2.1.503'
+
+      linux_amd64_2.2.101:
+        poolName: 'Azure Pipelines'
+        vmImage: 'ubuntu-latest'       
+        systemName: 'linux'
+        bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
+        platform: 'linux_amd64_2.2.101'
+      windows_amd64_2.2.101:
+        poolName: 'Azure Pipelines'
+        vmImage: 'windows-2019'
+        systemName: 'windows'
+        bazel_startup: '--output_user_root=c:\tmp --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
+        platform: 'windows_amd64_2.2.101'
+      darwin_amd64_2.2.101:
+        poolName: 'Azure Pipelines'
+        vmImage: 'macOS-10.15'
+        systemName: 'mac'
+        bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
+        platform: 'darwin_amd64_2.2.101'
+
+      linux_amd64_2.2.402:
+        poolName: 'Azure Pipelines'
+        vmImage: 'ubuntu-latest'       
+        systemName: 'linux'
+        bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
+        platform: 'linux_amd64_2.2.402'
+      windows_amd64_2.2.402:
+        poolName: 'Azure Pipelines'
+        vmImage: 'windows-2019'
+        systemName: 'windows'
+        bazel_startup: '--output_user_root=c:\tmp --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
+        platform: 'windows_amd64_2.2.402'
+      darwin_amd64_2.2.402:
+        poolName: 'Azure Pipelines'
+        vmImage: 'macOS-10.15'
+        systemName: 'mac'
+        bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
+        platform: 'darwin_amd64_2.2.402'
+
+      linux_amd64_3.0.100:
         poolName: 'Azure Pipelines'
         vmImage: 'ubuntu-latest'       
         systemName: 'linux'
         bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
         platform: 'linux_amd64_3.0.100'
-      windows:
+      windows_amd64_3.0.100:
         poolName: 'Azure Pipelines'
         vmImage: 'windows-2019'
         systemName: 'windows'
         bazel_startup: '--output_user_root=c:\tmp --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
         platform: 'windows_amd64_3.0.100'
-      mac:
+      darwin_amd64_3.0.100:
         poolName: 'Azure Pipelines'
         vmImage: 'macOS-10.15'
         systemName: 'mac'
         bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
         platform: 'darwin_amd64_3.0.100'
+
+      linux_amd64_3.1.100:
+        poolName: 'Azure Pipelines'
+        vmImage: 'ubuntu-latest'       
+        systemName: 'linux'
+        bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
+        platform: 'linux_amd64_3.1.100'
+      windows_amd64_3.1.100:
+        poolName: 'Azure Pipelines'
+        vmImage: 'windows-2019'
+        systemName: 'windows'
+        bazel_startup: '--output_user_root=c:\tmp --host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
+        platform: 'windows_amd64_3.0.100'
+      darwin_amd64_3.1.100:
+        poolName: 'Azure Pipelines'
+        vmImage: 'macOS-10.15'
+        systemName: 'mac'
+        bazel_startup: '--host_jvm_args=-Xmx500m --host_jvm_args=-Xms500m'
+        platform: 'darwin_amd64_3.1.100'
+
   pool:
     name: $(poolName)
     vmImage: $(vmImage)
