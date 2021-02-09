@@ -25,8 +25,7 @@ def _unit_test(ctx):
         langversion = ctx.attr.langversion,
         version = (0, 0, 0, 0, "") if ctx.attr.version == "" else parse_version(ctx.attr.version),
     )
-
-    return wrap_binary(executable, dotnet, ctx.attr.testlauncher[DotnetLibraryInfo].runfiles)
+    return wrap_binary(executable, dotnet, ctx.attr.testlauncher[DotnetLibraryInfo])
 
 core_xunit_test = rule(
     _unit_test,
@@ -75,14 +74,13 @@ core_nunit3_test = rule(
         "defines": attr.string_list(doc = "The list of defines passed via /define compiler option."),
         "unsafe": attr.bool(default = False, doc = "If true passes /unsafe flag to the compiler."),
         "data": attr.label_list(allow_files = True, doc = "The list of additional files to include in the list of runfiles for the assembly."),
-        "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data"), doc = "The reference to label created with [core_context_data rule](api.md#core_context_data). It points the SDK to be used for compiling given target."),
         "testlauncher": attr.label(default = "@vstest//:vstest.console.exe", providers = [DotnetLibraryInfo], doc = "Test launcher to use."),
-        "_launcher": attr.label(default = Label("//dotnet/tools/launcher_core_nunit3:launcher_core_nunit3.exe")),
-        "_copy": attr.label(default = Label("//dotnet/tools/copy")),
-        "_symlink": attr.label(default = Label("//dotnet/tools/symlink")),
+        "_launcher": attr.label(default = Label("@io_bazel_rules_dotnet//dotnet/tools/launcher_core_nunit3:launcher_core_nunit3.exe")),
+        "_copy": attr.label(default = Label("@io_bazel_rules_dotnet//dotnet/tools/copy")),
+        "_symlink": attr.label(default = Label("@io_bazel_rules_dotnet//dotnet/tools/symlink")),
         "_xslt": attr.label(allow_files = True),
         "keyfile": attr.label(allow_files = True, doc = "The key to sign the assembly with."),
-        "_empty": attr.label(default = Label("//dotnet/tools/empty:empty.exe")),
+        "_empty": attr.label(default = Label("@io_bazel_rules_dotnet//dotnet/tools/empty:empty.exe")),
         "nowarn": attr.string_list(doc = "The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion."),
         "langversion": attr.string(default = "latest", doc = "Version of the language to use. See [this page](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version)."),
         "data_with_dirs": attr.label_keyed_string_dict(

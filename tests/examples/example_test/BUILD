@@ -7,8 +7,8 @@ core_nunit3_test(
         "MyTest.cs",
     ],
     deps = [
-        "//tests/examples/example_lib:v3.1.100_MyClass-core.dll",
-        "@nunit//:netcoreapp3.1_core",
+        "//tests/examples/example_lib:MyClass.dll",
+        "@nunit//:lib",
     ],
 )
 
@@ -19,7 +19,7 @@ core_nunit3_test(
         "MyTest.cs",
     ],
     deps = [
-        "//tests/examples/example_lib:MyClass-core-netstandard.dll",
-        "@nunit//:netcoreapp3.1_core",
+        "//tests/examples/example_lib:MyClass-netstandard.dll",
+        "@nunit//:lib",
     ],
 )

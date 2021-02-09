@@ -60,7 +60,7 @@ def CopyDataWithDirs(dotnet, data_with_dirs, copy, subdir):
                 continue
             copied[targetpath] = True
 
-            newfile = dotnet.declare_file(dotnet, path = targetpath)
+            newfile = dotnet.actions.declare_file(targetpath)
             dotnet.actions.run(
                 outputs = [newfile],
                 inputs = [f] + copy.files.to_list(),

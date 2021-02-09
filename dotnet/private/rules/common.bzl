@@ -71,12 +71,12 @@ def wrap_binary(executable, dotnet, extra = None):
     )
 
     # Calculate final runfiles including runtime-required files
-    run_transitive = collect_transitive_info(dotnet._ctx.attr.deps + [dotnet.toolchain.sdk_runtime])
+    run_transitive = collect_transitive_info(dotnet._ctx.attr.deps + [dotnet.toolchain.sdk_runtime] + (extra.deps if extra != None else []))
 
     direct_runfiles = []
     direct_runfiles += dotnet.toolchain.sdk_target_runner.files.to_list()
     if extra != None:
-        direct_runfiles += extra.to_list()
+        direct_runfiles += extra.runfiles.to_list()
 
     #runfiles = ctx.runfiles(files = runner + ctx.attr.native_dep.files.to_list(), transitive_files = depset(transitive = [t.runfiles for t in executable.transitive]))
     runfiles = dotnet._ctx.runfiles(files = direct_runfiles, transitive_files = depset(transitive = [t.runfiles for t in run_transitive] + [executable.runfiles]))
