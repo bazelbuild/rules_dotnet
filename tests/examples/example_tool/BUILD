@@ -1,36 +1,35 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_CORE_FRAMEWORKS", "core_binary")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_binary")
 
-[core_binary(
-    name = "{}_hello_tool_core.exe".format(framework),
+core_binary(
+    name = "hello_tool.exe",
     srcs = [
         "MyTool.cs",
     ],
-    dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
     deps = [
-        "//tests/examples/example_lib:{}_MyClass-core.dll".format(framework),
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:libraryset".format(framework),
+        "//tests/examples/example_lib:MyClass.dll",
+        "@core_sdk_stdlib//:libraryset",
     ],
-) for framework in DOTNET_CORE_FRAMEWORKS]
+)
 
-[genrule(
-    name = "{}_hello_single_output".format(framework),
+genrule(
+    name = "hello_single_output",
     outs = [
-        "{}_hello_world.txt".format(framework),
+        "hello_world.txt",
     ],
-    cmd = "$(location :{}_hello_tool_core.exe) $@".format(framework),
+    cmd = "$(location :hello_tool.exe) $@",
     tools = [
-        ":{}_hello_tool_core.exe".format(framework),
+        ":hello_tool.exe",
     ],
-) for framework in DOTNET_CORE_FRAMEWORKS]
+)
 
-[genrule(
-    name = "{}_hello_multiple_outputs".format(framework),
+genrule(
+    name = "hello_multiple_outputs",
     outs = [
-        "{}_hello_world_1.txt".format(framework),
-        "{}_hello_world_2.txt".format(framework),
+        "hello_world_1.txt",
+        "hello_world_2.txt",
     ],
-    cmd = "$(location :{}_hello_tool_core.exe) $(OUTS)".format(framework),
+    cmd = "$(location :hello_tool.exe) $(OUTS)",
     tools = [
-        ":{}_hello_tool_core.exe".format(framework),
+        ":hello_tool.exe",
     ],
-) for framework in DOTNET_CORE_FRAMEWORKS]
+)
