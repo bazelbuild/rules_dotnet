@@ -7,6 +7,21 @@ def define_stdlib():
         deps = [
         ],
     )
+    core_libraryset(
+        name = "Microsoft.AspNetCore.App",
+        deps = [
+        ],
+    )
+    core_libraryset(
+        name = "Microsoft.NETCore.App",
+        deps = [
+        ],
+    )
+    core_libraryset(
+        name = "Microsoft.WindowsDesktop.App",
+        deps = [
+        ],
+    )
 
     core_libraryset(
         name = "libraryset",

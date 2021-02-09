@@ -3,6 +3,26 @@ load("@io_bazel_rules_dotnet//dotnet/private:rules/libraryset.bzl", "core_librar
 
 def define_stdlib():
     core_libraryset(
+        name = "NETStandard.Library",
+        deps = [
+        ],
+    )
+    core_libraryset(
+        name = "Microsoft.AspNetCore.App",
+        deps = [
+        ],
+    )
+    core_libraryset(
+        name = "Microsoft.NETCore.App",
+        deps = [
+        ],
+    )
+    core_libraryset(
+        name = "Microsoft.WindowsDesktop.App",
+        deps = [
+        ],
+    )
+    core_libraryset(
         name = "libraryset",
         deps = [
             ":microsoft.csharp.dll",
