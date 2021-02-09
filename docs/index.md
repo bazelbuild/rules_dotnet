@@ -31,9 +31,11 @@ Setup
   and [toolchains](https://docs.bazel.build/versions/master/toolchains.html)
 
 * When building any project the platform has to be specified. For example:
+
   ```bash
       bazel build --host_platform //dotnet/toolchain:linux_amd64_2.2.402 --platforms //dotnet/toolchain:linux_amd64_2.2.402 //...
   ```
+
 * The platform specification has the form of //dotnet/toolchain:<os>_<arch>_<sdkversion>. 
   The available values are listed in dotnet/platform/list.bzl in variables DOTNET_OS_ARCH and DOTNET_CORE_FRAMEWORKS.
   Typically the --host_platform and --platforms values are set in [.bazelrc file](https://docs.bazel.build/versions/master/guide.html).
