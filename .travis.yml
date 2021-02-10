@@ -7,16 +7,16 @@ jobs:
   include:
     - os: linux
       dist: bionic
-      env: PLATFORM="--host_platform //dotnet/toolchain:linux_amd64_3.1.100 --platforms //dotnet/toolchain:linux_amd64_3.1.100"
+      env: PLATFORM="--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100 --platforms @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
     - os: osx
       osx_image: xcode12.2
-      env: PLATFORM="--host_platform //dotnet/toolchain:darwin_amd64_3.1.100 --platforms //dotnet/toolchain:darwin_amd64_3.1.100"
+      env: PLATFORM="--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100 --platforms @io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100"
     - os: linux
       dist: bionic
-      env: PLATFORM="--host_platform //dotnet/toolchain:linux_amd64_3.0.100 --platforms //dotnet/toolchain:linux_amd64_3.0.100"
+      env: PLATFORM="--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.0.100 --platforms @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.0.100"
     - os: osx
       osx_image: xcode12.2
-      env: PLATFORM="--host_platform //dotnet/toolchain:darwin_amd64_3.0.100 --platforms //dotnet/toolchain:darwin_amd64_3.0.100"
+      env: PLATFORM="--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.0.100 --platforms @io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.0.100"
 
 
 before_install:

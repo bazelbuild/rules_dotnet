@@ -209,13 +209,13 @@ jobs:
 
     - script: |
         pwd
-        bazel $(bazel_startup) test --test_summary=detailed --host_platform //dotnet/toolchain:$(platform) --platforms //dotnet/toolchain:$(platform) --test_output=all //... 
+        bazel $(bazel_startup) test --test_summary=detailed --host_platform @io_bazel_rules_dotnet//dotnet/toolchain:$(platform) --platforms @io_bazel_rules_dotnet//dotnet/toolchain:$(platform) --test_output=all //... 
       workingDirectory: $(Build.SourcesDirectory)/examples/grpc
       displayName: 'Run grpc standalone test'
 
     - script: |
         pwd
-        bazel $(bazel_startup) test --test_summary=detailed --host_platform //dotnet/toolchain:$(platform) --platforms //dotnet/toolchain:$(platform) --test_output=all //... 
+        bazel $(bazel_startup) test --test_summary=detailed --host_platform @io_bazel_rules_dotnet//dotnet/toolchain:$(platform) --platforms @io_bazel_rules_dotnet//dotnet/toolchain:$(platform) --test_output=all //... 
       workingDirectory: $(Build.SourcesDirectory)/examples/ef
       displayName: 'Run ef standalone test'
 

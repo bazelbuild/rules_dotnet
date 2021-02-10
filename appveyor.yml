@@ -12,7 +12,7 @@ image: Visual Studio 2019
 
 environment:
   matrix:
-    - PLATFORM: --host_platform //dotnet/toolchain:windows_amd64_3.0.100 --platforms //dotnet/toolchain:windows_amd64_3.0.100
+    - PLATFORM: --host_platform @io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.0.100 --platforms @io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.0.100
 
 # scripts that are called at very beginning, before repo cloning
 init:
