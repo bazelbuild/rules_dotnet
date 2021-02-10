@@ -1,61 +1,61 @@
 load(
-    "//dotnet/private:context.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
     _dotnet_context = "dotnet_context",
 )
 load(
-    "//dotnet/toolchain:toolchains.bzl",
+    "@io_bazel_rules_dotnet//dotnet/toolchain:toolchains.bzl",
     _dotnet_register_toolchains = "dotnet_register_toolchains",
 )
 load(
-    "//dotnet/private:rules/binary.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:rules/binary.bzl",
     _core_binary = "core_binary",
 )
 load(
-    "//dotnet/private:rules/library.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:rules/library.bzl",
     _core_library = "core_library",
 )
 load(
-    "//dotnet/private:rules/libraryset.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:rules/libraryset.bzl",
     _core_libraryset = "core_libraryset",
 )
 load(
-    "//dotnet/private:rules/resx.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:rules/resx.bzl",
     _core_resx = "core_resx",
 )
 load(
-    "//dotnet/private:rules/resource_core.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:rules/resource_core.bzl",
     _core_resource = "core_resource",
     _core_resource_multi = "core_resource_multi",
 )
 load(
-    "//dotnet/private:rules/stdlib.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl",
     _core_stdlib = "core_stdlib",
     _core_stdlib_internal = "core_stdlib_internal",
 )
 load(
-    "//dotnet/private:rules/test.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:rules/test.bzl",
     _core_nunit3_test = "core_nunit3_test",
     _core_xunit_test = "core_xunit_test",
 )
 load(
-    "//dotnet/private:rules/nuget.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:rules/nuget.bzl",
     _dotnet_nuget_new = "dotnet_nuget_new",
     _nuget_package = "nuget_package",
 )
 load(
-    "//dotnet/private:rules/import.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:rules/import.bzl",
     _core_import_binary = "core_import_binary",
     _core_import_library = "core_import_library",
 )
 load(
-    "//dotnet/platform:list.bzl",
+    "@io_bazel_rules_dotnet//dotnet/platform:list.bzl",
     _DEFAULT_DOTNET_CORE_FRAMEWORK = "DEFAULT_DOTNET_CORE_FRAMEWORK",
     _DOTNET_CORE_FRAMEWORKS = "DOTNET_CORE_FRAMEWORKS",
     _DOTNET_CORE_NAMES = "DOTNET_CORE_NAMES",
     _DOTNET_NETSTANDARD = "DOTNET_NETSTANDARD",
 )
 load(
-    "//dotnet/private:nugets.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:nugets.bzl",
     _dotnet_repositories_nugets = "dotnet_repositories_nugets",
 )
 

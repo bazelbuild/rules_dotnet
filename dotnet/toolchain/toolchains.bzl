@@ -1,9 +1,6 @@
+load("@io_bazel_rules_dotnet//dotnet/private:core_toolchain.bzl", "core_toolchain")
 load(
-    "//dotnet/private:core_toolchain.bzl",
-    "core_toolchain",
-)
-load(
-    "//dotnet/platform:list.bzl",
+    "@io_bazel_rules_dotnet//dotnet/platform:list.bzl",
     "BAZEL_DOTNETARCH_CONSTRAINTS",
     "BAZEL_DOTNETOS_CONSTRAINTS",
     "DOTNETSDK_CONSTRAINTS",

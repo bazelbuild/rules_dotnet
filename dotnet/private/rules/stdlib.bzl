@@ -1,15 +1,6 @@
-load(
-    "//dotnet/private:common.bzl",
-    "as_iterable",
-)
-load(
-    "//dotnet/private:context.bzl",
-    "dotnet_context",
-)
-load(
-    "//dotnet/private:providers.bzl",
-    "DotnetLibraryInfo",
-)
+load("@io_bazel_rules_dotnet//dotnet/private:common.bzl", "as_iterable")
+load("@io_bazel_rules_dotnet//dotnet/private:context.bzl", "dotnet_context")
+load("@io_bazel_rules_dotnet//dotnet/private:providers.bzl", "DotnetLibraryInfo")
 load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")
 load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "parse_version")
 

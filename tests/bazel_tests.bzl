@@ -259,7 +259,7 @@ _bazel_test_script = rule(
             allow_single_file = True,
             default = "@bazel_test//:bazelrc",
         ),
-        "_manifest_prep": attr.label(default = Label("//dotnet/tools/manifest_prep")),
+        "_manifest_prep": attr.label(default = Label("@io_bazel_rules_dotnet//dotnet/tools/manifest_prep")),
         "_settings": attr.label(default = Label("@bazel_test//:settings")),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:dotnet_context_data")),
     },

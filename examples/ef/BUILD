@@ -7,11 +7,11 @@ core_xunit_test(
     srcs = glob(["**/*.cs"]),
     nowarn = ["CS1701"],
     deps = [
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:Microsoft.AspNetCore.App",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
-        "@microsoft.entityframeworkcore//:core",
-        "@xunit.assert//:core",
-        "@xunit.extensibility.core//:core",
-        "@xunit.extensibility.execution//:core",
+        "@core_sdk_stdlib//:Microsoft.AspNetCore.App",
+        "@core_sdk_stdlib//:libraryset",
+        "@microsoft.entityframeworkcore//:lib",
+        "@xunit.assert//:lib",
+        "@xunit.extensibility.core//:lib",
+        "@xunit.extensibility.execution//:lib",
     ],
 )

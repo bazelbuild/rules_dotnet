@@ -1,9 +1,9 @@
 load(
-    "//dotnet/private:common.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:common.bzl",
     "as_iterable",
 )
 load(
-    "//dotnet/private:providers.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
     "DotnetLibraryInfo",
     "DotnetResourceListInfo",
 )

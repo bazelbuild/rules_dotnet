@@ -1,5 +1,5 @@
-load("//dotnet/private:context.bzl", "dotnet_context")
-load("//dotnet/private:providers.bzl", "DotnetLibraryInfo", "DotnetResourceListInfo")
+load("@io_bazel_rules_dotnet//dotnet/private:context.bzl", "dotnet_context")
+load("@io_bazel_rules_dotnet//dotnet/private:providers.bzl", "DotnetLibraryInfo", "DotnetResourceListInfo")
 load("@io_bazel_rules_dotnet//dotnet/platform:list.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NETSTANDARD")
 load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "parse_version")
 load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "wrap_binary")

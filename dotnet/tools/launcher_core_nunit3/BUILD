@@ -7,5 +7,5 @@ cc_binary(
     srcs = glob([
         "*.c",
     ]),
-    deps = ["//dotnet/tools/common"],
+    deps = ["@io_bazel_rules_dotnet//dotnet/tools/common"],
 )

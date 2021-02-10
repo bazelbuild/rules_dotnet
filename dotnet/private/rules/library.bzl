@@ -1,6 +1,6 @@
 load("@io_bazel_rules_dotnet//dotnet/private:context.bzl", "dotnet_context")
 load(
-    "//dotnet/private:providers.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
     "DotnetLibraryInfo",
     "DotnetResourceListInfo",
 )

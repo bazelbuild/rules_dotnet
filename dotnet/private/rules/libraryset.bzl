@@ -1,5 +1,5 @@
 load(
-    "//dotnet/private:providers.bzl",
+    "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
     "DotnetLibraryInfo",
 )
 load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transitive_info")

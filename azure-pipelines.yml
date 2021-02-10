@@ -207,22 +207,22 @@ jobs:
         #buildConfiguration: # Optional
         publishRunAttachments: true # Optional
 
-    # - script: |
-    #     pwd
-    #     bazel $(bazel_startup) test --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
-    #   workingDirectory: $(Build.SourcesDirectory)/examples/grpc
-    #   displayName: 'Run grpc standalone test'
+    - script: |
+        pwd
+        bazel $(bazel_startup) test --test_summary=detailed --host_platform //dotnet/toolchain:$(platform) --platforms //dotnet/toolchain:$(platform) --test_output=all //... 
+      workingDirectory: $(Build.SourcesDirectory)/examples/grpc
+      displayName: 'Run grpc standalone test'
 
-    # - script: |
-    #     pwd
-    #     bazel $(bazel_startup) test --test_summary=detailed --spawn_strategy=standalone --test_output=all //... 
-    #   workingDirectory: $(Build.SourcesDirectory)/examples/ef
-    #   displayName: 'Run ef standalone test'
+    - script: |
+        pwd
+        bazel $(bazel_startup) test --test_summary=detailed --host_platform //dotnet/toolchain:$(platform) --platforms //dotnet/toolchain:$(platform) --test_output=all //... 
+      workingDirectory: $(Build.SourcesDirectory)/examples/ef
+      displayName: 'Run ef standalone test'
 
-    # - script: |
-    #     pwd
-    #     bazel $(bazel_startup) test --test_summary=detailed --spawn_strategy=standalone --test_output=all //docs:my-docs 
-    #   displayName: 'Test api.md generation'
-    #   condition: and(succeeded(), eq(variables['systemName'], 'linux'))
+    - script: |
+        pwd
+        bazel $(bazel_startup) test --test_summary=detailed --host_platform //dotnet/toolchain:$(platform) --platforms //dotnet/toolchain:$(platform) --test_output=all //docs:my-docs 
+      displayName: 'Test api.md generation'
+      condition: and(succeeded(), eq(variables['systemName'], 'linux'))
     
     

@@ -9,18 +9,14 @@ dotnet_repositories()
 
 load(
     "@io_bazel_rules_dotnet//dotnet:defs.bzl",
-    "core_register_sdk",
     "dotnet_nuget_new",
     "dotnet_register_toolchains",
     "dotnet_repositories_nugets",
-    "nuget_package",
 )
 
 dotnet_register_toolchains()
 
 dotnet_repositories_nugets()
-
-core_register_sdk()
 
 dotnet_nuget_new(
     name = "grpc.core.runtime",
@@ -68,4 +64,5 @@ rules_proto_toolchains()
 
 # load NUGET deps
 load("//:gen/nuget.bzl", "project_dotnet_repositories_nuget")
+
 project_dotnet_repositories_nuget()

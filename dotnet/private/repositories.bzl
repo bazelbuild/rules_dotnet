@@ -1,12 +1,12 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@io_bazel_rules_dotnet//dotnet/private:sdk_core.bzl", "core_download_sdk")
 load(
-    "//dotnet/platform:list.bzl",
+    "@io_bazel_rules_dotnet//dotnet/platform:list.bzl",
     "DOTNET_CORE_FRAMEWORKS",
     "DOTNET_OS_ARCH",
 )
 load(
-    "//dotnet/toolchain:toolchains.bzl",
+    "@io_bazel_rules_dotnet//dotnet/toolchain:toolchains.bzl",
     "CORE_SDK_REPOSITORIES",
 )
 

@@ -19,10 +19,10 @@ core_library(
     name = "service_proto.dll",
     srcs = [":service_proto_gen_cs"],
     deps = [
-        "@google.protobuf//:core",
-        "@grpc.core.api//:core",
-        "@grpc.core//:core",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
+        "@core_sdk_stdlib//:libraryset",
+        "@google.protobuf//:lib",
+        "@grpc.core.api//:lib",
+        "@grpc.core//:lib",
     ],
 )
 
@@ -48,11 +48,10 @@ core_xunit_test(
     }),
     deps = [
         ":service_proto.dll",
-        "@grpc.core//:core",
-        "@grpc.healthcheck//:core",
-        "@io_bazel_rules_dotnet//dotnet/stdlib.core:system.runtime.dll",
-        "@xunit.assert//:core",
-        "@xunit.extensibility.core//:core",
-        "@xunit.extensibility.execution//:core",
+        "@grpc.core//:lib",
+        "@grpc.healthcheck//:lib",
+        "@xunit.assert//:lib",
+        "@xunit.extensibility.core//:lib",
+        "@xunit.extensibility.execution//:lib",
     ],
 )
