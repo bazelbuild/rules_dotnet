@@ -1,61 +1,5 @@
 <!-- Generated with Stardoc: http://skydoc.bazel.build -->
 
-<a id="#core_binary"></a>
-
-## core_binary
-
-<pre>
-core_binary(<a href="#core_binary-name">name</a>, <a href="#core_binary-data">data</a>, <a href="#core_binary-data_with_dirs">data_with_dirs</a>, <a href="#core_binary-defines">defines</a>, <a href="#core_binary-deps">deps</a>, <a href="#core_binary-keyfile">keyfile</a>, <a href="#core_binary-langversion">langversion</a>, <a href="#core_binary-nowarn">nowarn</a>, <a href="#core_binary-out">out</a>, <a href="#core_binary-resources">resources</a>,
-            <a href="#core_binary-srcs">srcs</a>, <a href="#core_binary-target_framework">target_framework</a>, <a href="#core_binary-unsafe">unsafe</a>, <a href="#core_binary-version">version</a>)
-</pre>
-
-This builds an executable from a set of source files.
-    
-    You can run the binary with ``bazel run``, or you can build it with ``bazel build`` and run it directly.
-
-    Providers
-    ^^^^^^^^^
-
-    * [DotnetLibraryInfo](api.md#dotnetlibraryinfo)
-    * [DotnetResourceInfo](api.md#dotnetresourceinfo)
-
-    Example:
-    ^^^^^^^^
-    ```python
-    core_binary(
-        name = "Program.exe",
-        srcs = [
-            "Program.cs",
-        ],
-        deps = [
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
-        ],
-    )
-    ```
-    
-
-
-**ATTRIBUTES**
-
-
-| Name  | Description | Type | Mandatory | Default |
-| :------------- | :------------- | :------------- | :------------- | :------------- |
-| <a id="core_binary-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
-| <a id="core_binary-data"></a>data |  The list of additional files to include in the list of runfiles for the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_binary-data_with_dirs"></a>data_with_dirs |  Dictionary of {label:folder}. Files specified by &lt;label&gt; will be put in subdirectory &lt;folder&gt;.   | <a href="https://bazel.build/docs/skylark/lib/dict.html">Dictionary: Label -> String</a> | optional | {} |
-| <a id="core_binary-defines"></a>defines |  The list of defines passed via /define compiler option.   | List of strings | optional | [] |
-| <a id="core_binary-deps"></a>deps |  The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_binary-keyfile"></a>keyfile |  The key to sign the assembly with.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
-| <a id="core_binary-langversion"></a>langversion |  Version of the language to use. See [this page](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version).   | String | optional | "latest" |
-| <a id="core_binary-nowarn"></a>nowarn |  The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion.   | List of strings | optional | [] |
-| <a id="core_binary-out"></a>out |  An alternative name of the output file.   | String | optional | "" |
-| <a id="core_binary-resources"></a>resources |  The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResourceInfo](api.md#dotnetresourceinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_binary-srcs"></a>srcs |  The list of .cs source files that are compiled to create the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_binary-target_framework"></a>target_framework |  Target framework.   | String | optional | "" |
-| <a id="core_binary-unsafe"></a>unsafe |  If true passes /unsafe flag to the compiler.   | Boolean | optional | False |
-| <a id="core_binary-version"></a>version |  Version to be set for the assembly. The version is set by compiling in [AssemblyVersion](https://docs.microsoft.com/en-us/troubleshoot/visualstudio/general/assembly-version-assembly-file-version) attribute.   | String | optional | "" |
-
-
 <a id="#core_download_sdk"></a>
 
 ## core_download_sdk
@@ -101,7 +45,7 @@ This imports an external assembly and transforms it into .NET Core binary.
 | <a id="core_import_binary-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
 | <a id="core_import_binary-data"></a>data |  Additional files to copy with the target assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_import_binary-data_with_dirs"></a>data_with_dirs |  Dictionary of {label:folder}. Files specified by &lt;label&gt; will be put in subdirectory &lt;folder&gt;.   | <a href="https://bazel.build/docs/skylark/lib/dict.html">Dictionary: Label -> String</a> | optional | {} |
-| <a id="core_import_binary-deps"></a>deps |  The direct dependencies of this dll. These may be [core_library](api.md#core_library) rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="core_import_binary-deps"></a>deps |  The direct dependencies of this dll. These may be rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_import_binary-ref"></a>ref |  [Reference assembly](https://docs.microsoft.com/en-us/dotnet/standard/assembly/reference-assemblies) for given library.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
 | <a id="core_import_binary-src"></a>src |  The file to be transformed into [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | required |  |
 | <a id="core_import_binary-version"></a>version |  Version of the imported assembly.   | String | required |  |
@@ -125,65 +69,10 @@ This imports an external dll and transforms it into [DotnetLibraryInfo](api.md#d
 | :------------- | :------------- | :------------- | :------------- | :------------- |
 | <a id="core_import_library-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
 | <a id="core_import_library-data"></a>data |  Additional files to copy with the target assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_import_library-deps"></a>deps |  The direct dependencies of this dll. These may be [core_library](api.md#core_library) rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="core_import_library-deps"></a>deps |  The direct dependencies of this dll. These may be compatible with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_import_library-ref"></a>ref |  [Reference assembly](https://docs.microsoft.com/en-us/dotnet/standard/assembly/reference-assemblies) for given library.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
 | <a id="core_import_library-src"></a>src |  The file to be transformed into [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | required |  |
 | <a id="core_import_library-version"></a>version |  Version of the imported assembly.   | String | required |  |
-
-
-<a id="#core_library"></a>
-
-## core_library
-
-<pre>
-core_library(<a href="#core_library-name">name</a>, <a href="#core_library-data">data</a>, <a href="#core_library-defines">defines</a>, <a href="#core_library-deps">deps</a>, <a href="#core_library-keyfile">keyfile</a>, <a href="#core_library-langversion">langversion</a>, <a href="#core_library-nowarn">nowarn</a>, <a href="#core_library-out">out</a>, <a href="#core_library-resources">resources</a>, <a href="#core_library-srcs">srcs</a>,
-             <a href="#core_library-target_framework">target_framework</a>, <a href="#core_library-unsafe">unsafe</a>, <a href="#core_library-version">version</a>)
-</pre>
-
-This builds a dotnet assembly from a set of source files.
-
-    Providers
-    ^^^^^^^^^
-
-    * [DotnetLibraryInfo](api.md#dotnetlibraryinfo)
-    * [DotnetResourceInfo](api.md#dotnetresourceinfo)
-
-    Example:
-    ^^^^^^^^
-    ```python
-    [core_library(
-        name = "{}_TransitiveClass-core.dll".format(framework),
-        srcs = [
-            "TransitiveClass.cs",
-        ],
-        dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
-        visibility = ["//visibility:public"],
-        deps = [
-            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:libraryset".format(framework),
-        ],
-    ) for framework in DOTNET_CORE_FRAMEWORKS]
-    ```
-    
-
-
-**ATTRIBUTES**
-
-
-| Name  | Description | Type | Mandatory | Default |
-| :------------- | :------------- | :------------- | :------------- | :------------- |
-| <a id="core_library-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
-| <a id="core_library-data"></a>data |  The list of additional files to include in the list of runfiles for the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_library-defines"></a>defines |  The list of defines passed via /define compiler option.   | List of strings | optional | [] |
-| <a id="core_library-deps"></a>deps |  The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_library-keyfile"></a>keyfile |  The key to sign the assembly with.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
-| <a id="core_library-langversion"></a>langversion |  Version of the language to use. See [this page](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version).   | String | optional | "latest" |
-| <a id="core_library-nowarn"></a>nowarn |  The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion.   | List of strings | optional | [] |
-| <a id="core_library-out"></a>out |  An alternative name of the output file.   | String | optional | "" |
-| <a id="core_library-resources"></a>resources |  The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResourceInfo](api.md#dotnetresourceinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_library-srcs"></a>srcs |  The list of .cs source files that are compiled to create the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_library-target_framework"></a>target_framework |  Target framework.   | String | optional | "" |
-| <a id="core_library-unsafe"></a>unsafe |  If true passes /unsafe flag to the compiler.   | Boolean | optional | False |
-| <a id="core_library-version"></a>version |  Version to be set for the assembly. The version is set by compiling in [AssemblyVersion](https://docs.microsoft.com/en-us/troubleshoot/visualstudio/general/assembly-version-assembly-file-version) attribute.   | String | optional | "" |
 
 
 <a id="#core_libraryset"></a>
@@ -205,49 +94,6 @@ Groups libraries into sets which may be used as dependency.
 | <a id="core_libraryset-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
 | <a id="core_libraryset-data"></a>data |  The list of additional files to include in the list of runfiles for compiled assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_libraryset-deps"></a>deps |  The list of dependencies.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-
-
-<a id="#core_nunit3_test"></a>
-
-## core_nunit3_test
-
-<pre>
-core_nunit3_test(<a href="#core_nunit3_test-name">name</a>, <a href="#core_nunit3_test-data">data</a>, <a href="#core_nunit3_test-data_with_dirs">data_with_dirs</a>, <a href="#core_nunit3_test-defines">defines</a>, <a href="#core_nunit3_test-deps">deps</a>, <a href="#core_nunit3_test-keyfile">keyfile</a>, <a href="#core_nunit3_test-langversion">langversion</a>, <a href="#core_nunit3_test-nowarn">nowarn</a>, <a href="#core_nunit3_test-out">out</a>,
-                 <a href="#core_nunit3_test-resources">resources</a>, <a href="#core_nunit3_test-srcs">srcs</a>, <a href="#core_nunit3_test-testlauncher">testlauncher</a>, <a href="#core_nunit3_test-unsafe">unsafe</a>, <a href="#core_nunit3_test-version">version</a>)
-</pre>
-
-This builds a set of tests that can be run with ``bazel test``.
-
-    To run all tests in the workspace, and print output on failure, run
-    ```bash
-    bazel test --test_output=errors //...
-    ```
-
-    You can run specific tests by passing the `--test_filter=pattern <test_filter_>` argument to Bazel.
-    You can pass arguments to tests by passing `--test_arg=arg <test_arg_>`_ arguments to Bazel.
-
-    
-
-
-**ATTRIBUTES**
-
-
-| Name  | Description | Type | Mandatory | Default |
-| :------------- | :------------- | :------------- | :------------- | :------------- |
-| <a id="core_nunit3_test-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
-| <a id="core_nunit3_test-data"></a>data |  The list of additional files to include in the list of runfiles for the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_nunit3_test-data_with_dirs"></a>data_with_dirs |  Dictionary of {label:folder}. Files specified by &lt;label&gt; will be put in subdirectory &lt;folder&gt;.   | <a href="https://bazel.build/docs/skylark/lib/dict.html">Dictionary: Label -> String</a> | optional | {"@vstest//:Microsoft.TestPlatform.TestHostRuntimeProvider.dll": "Extensions", "@NUnit3TestAdapter//:extension": ".", "@JunitXml.TestLogger//:extension": "."} |
-| <a id="core_nunit3_test-defines"></a>defines |  The list of defines passed via /define compiler option.   | List of strings | optional | [] |
-| <a id="core_nunit3_test-deps"></a>deps |  The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_nunit3_test-keyfile"></a>keyfile |  The key to sign the assembly with.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
-| <a id="core_nunit3_test-langversion"></a>langversion |  Version of the language to use. See [this page](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version).   | String | optional | "latest" |
-| <a id="core_nunit3_test-nowarn"></a>nowarn |  The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion.   | List of strings | optional | [] |
-| <a id="core_nunit3_test-out"></a>out |  An alternative name of the output file.   | String | optional | "" |
-| <a id="core_nunit3_test-resources"></a>resources |  The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResourceInfo](api.md#dotnetresourceinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_nunit3_test-srcs"></a>srcs |  The list of .cs source files that are compiled to create the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_nunit3_test-testlauncher"></a>testlauncher |  Test launcher to use.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @vstest//:vstest.console.exe |
-| <a id="core_nunit3_test-unsafe"></a>unsafe |  If true passes /unsafe flag to the compiler.   | Boolean | optional | False |
-| <a id="core_nunit3_test-version"></a>version |  Version to be set for the assembly. The version is set by compiling in [AssemblyVersion](https://docs.microsoft.com/en-us/troubleshoot/visualstudio/general/assembly-version-assembly-file-version) attribute.   | String | optional | "" |
 
 
 <a id="#core_resource"></a>
@@ -334,7 +180,7 @@ It imports a framework dll and transforms it into [DotnetLibraryInfo](api.md#dot
 | :------------- | :------------- | :------------- | :------------- | :------------- |
 | <a id="core_stdlib-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
 | <a id="core_stdlib-data"></a>data |  Additional files to copy with the target assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_stdlib-deps"></a>deps |  The direct dependencies of this dll. These may be [core_library](api.md#core_library) rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="core_stdlib-deps"></a>deps |  The direct dependencies of this dll. These may be rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
 | <a id="core_stdlib-dll"></a>dll |  -   | String | optional | "" |
 | <a id="core_stdlib-dotnet_context_data"></a>dotnet_context_data |  -   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @io_bazel_rules_dotnet//:core_context_data |
 | <a id="core_stdlib-ref"></a>ref |  [Reference assembly](https://docs.microsoft.com/en-us/dotnet/standard/assembly/reference-assemblies) for given library.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
@@ -367,13 +213,124 @@ Internal. Do not use. It imports a framework dll and transforms it into [DotnetL
 | <a id="core_stdlib_internal-version"></a>version |  -   | String | required |  |
 
 
-<a id="#core_xunit_test"></a>
+<a id="#csharp_binary"></a>
 
-## core_xunit_test
+## csharp_binary
 
 <pre>
-core_xunit_test(<a href="#core_xunit_test-name">name</a>, <a href="#core_xunit_test-data">data</a>, <a href="#core_xunit_test-data_with_dirs">data_with_dirs</a>, <a href="#core_xunit_test-defines">defines</a>, <a href="#core_xunit_test-deps">deps</a>, <a href="#core_xunit_test-keyfile">keyfile</a>, <a href="#core_xunit_test-langversion">langversion</a>, <a href="#core_xunit_test-nowarn">nowarn</a>, <a href="#core_xunit_test-out">out</a>,
-                <a href="#core_xunit_test-resources">resources</a>, <a href="#core_xunit_test-srcs">srcs</a>, <a href="#core_xunit_test-testlauncher">testlauncher</a>, <a href="#core_xunit_test-unsafe">unsafe</a>, <a href="#core_xunit_test-version">version</a>)
+csharp_binary(<a href="#csharp_binary-name">name</a>, <a href="#csharp_binary-data">data</a>, <a href="#csharp_binary-data_with_dirs">data_with_dirs</a>, <a href="#csharp_binary-defines">defines</a>, <a href="#csharp_binary-deps">deps</a>, <a href="#csharp_binary-keyfile">keyfile</a>, <a href="#csharp_binary-langversion">langversion</a>, <a href="#csharp_binary-nowarn">nowarn</a>, <a href="#csharp_binary-out">out</a>,
+              <a href="#csharp_binary-resources">resources</a>, <a href="#csharp_binary-srcs">srcs</a>, <a href="#csharp_binary-target_framework">target_framework</a>, <a href="#csharp_binary-unsafe">unsafe</a>, <a href="#csharp_binary-version">version</a>)
+</pre>
+
+This builds an executable from a set of source files.
+    
+    You can run the binary with ``bazel run``, or you can build it with ``bazel build`` and run it directly.
+
+    Providers
+    ^^^^^^^^^
+
+    * [DotnetLibraryInfo](api.md#dotnetlibraryinfo)
+    * [DotnetResourceInfo](api.md#dotnetresourceinfo)
+
+    Example:
+    ^^^^^^^^
+    ```python
+    csharp_binary(
+        name = "Program.exe",
+        srcs = [
+            "Program.cs",
+        ],
+        deps = [
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
+        ],
+    )
+    ```
+    
+
+
+**ATTRIBUTES**
+
+
+| Name  | Description | Type | Mandatory | Default |
+| :------------- | :------------- | :------------- | :------------- | :------------- |
+| <a id="csharp_binary-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
+| <a id="csharp_binary-data"></a>data |  The list of additional files to include in the list of runfiles for the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="csharp_binary-data_with_dirs"></a>data_with_dirs |  Dictionary of {label:folder}. Files specified by &lt;label&gt; will be put in subdirectory &lt;folder&gt;.   | <a href="https://bazel.build/docs/skylark/lib/dict.html">Dictionary: Label -> String</a> | optional | {} |
+| <a id="csharp_binary-defines"></a>defines |  The list of defines passed via /define compiler option.   | List of strings | optional | [] |
+| <a id="csharp_binary-deps"></a>deps |  The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="csharp_binary-keyfile"></a>keyfile |  The key to sign the assembly with.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
+| <a id="csharp_binary-langversion"></a>langversion |  Version of the language to use. See [this page](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version).   | String | optional | "latest" |
+| <a id="csharp_binary-nowarn"></a>nowarn |  The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion.   | List of strings | optional | [] |
+| <a id="csharp_binary-out"></a>out |  An alternative name of the output file.   | String | optional | "" |
+| <a id="csharp_binary-resources"></a>resources |  The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResourceInfo](api.md#dotnetresourceinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="csharp_binary-srcs"></a>srcs |  The list of .cs source files that are compiled to create the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="csharp_binary-target_framework"></a>target_framework |  Target framework.   | String | optional | "" |
+| <a id="csharp_binary-unsafe"></a>unsafe |  If true passes /unsafe flag to the compiler.   | Boolean | optional | False |
+| <a id="csharp_binary-version"></a>version |  Version to be set for the assembly. The version is set by compiling in [AssemblyVersion](https://docs.microsoft.com/en-us/troubleshoot/visualstudio/general/assembly-version-assembly-file-version) attribute.   | String | optional | "" |
+
+
+<a id="#csharp_library"></a>
+
+## csharp_library
+
+<pre>
+csharp_library(<a href="#csharp_library-name">name</a>, <a href="#csharp_library-data">data</a>, <a href="#csharp_library-defines">defines</a>, <a href="#csharp_library-deps">deps</a>, <a href="#csharp_library-keyfile">keyfile</a>, <a href="#csharp_library-langversion">langversion</a>, <a href="#csharp_library-nowarn">nowarn</a>, <a href="#csharp_library-out">out</a>, <a href="#csharp_library-resources">resources</a>, <a href="#csharp_library-srcs">srcs</a>,
+               <a href="#csharp_library-target_framework">target_framework</a>, <a href="#csharp_library-unsafe">unsafe</a>, <a href="#csharp_library-version">version</a>)
+</pre>
+
+This builds a dotnet assembly from a set of source files.
+
+    Providers
+    ^^^^^^^^^
+
+    * [DotnetLibraryInfo](api.md#dotnetlibraryinfo)
+    * [DotnetResourceInfo](api.md#dotnetresourceinfo)
+
+    Example:
+    ^^^^^^^^
+    ```python
+    [csharp_library(
+        name = "{}_TransitiveClass-core.dll".format(framework),
+        srcs = [
+            "TransitiveClass.cs",
+        ],
+        dotnet_context_data = "@io_bazel_rules_dotnet//:core_context_data_{}".format(framework),
+        visibility = ["//visibility:public"],
+        deps = [
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:libraryset".format(framework),
+        ],
+    ) for framework in DOTNET_CORE_FRAMEWORKS]
+    ```
+    
+
+
+**ATTRIBUTES**
+
+
+| Name  | Description | Type | Mandatory | Default |
+| :------------- | :------------- | :------------- | :------------- | :------------- |
+| <a id="csharp_library-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
+| <a id="csharp_library-data"></a>data |  The list of additional files to include in the list of runfiles for the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="csharp_library-defines"></a>defines |  The list of defines passed via /define compiler option.   | List of strings | optional | [] |
+| <a id="csharp_library-deps"></a>deps |  The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="csharp_library-keyfile"></a>keyfile |  The key to sign the assembly with.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
+| <a id="csharp_library-langversion"></a>langversion |  Version of the language to use. See [this page](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version).   | String | optional | "latest" |
+| <a id="csharp_library-nowarn"></a>nowarn |  The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion.   | List of strings | optional | [] |
+| <a id="csharp_library-out"></a>out |  An alternative name of the output file.   | String | optional | "" |
+| <a id="csharp_library-resources"></a>resources |  The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResourceInfo](api.md#dotnetresourceinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="csharp_library-srcs"></a>srcs |  The list of .cs source files that are compiled to create the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="csharp_library-target_framework"></a>target_framework |  Target framework.   | String | optional | "" |
+| <a id="csharp_library-unsafe"></a>unsafe |  If true passes /unsafe flag to the compiler.   | Boolean | optional | False |
+| <a id="csharp_library-version"></a>version |  Version to be set for the assembly. The version is set by compiling in [AssemblyVersion](https://docs.microsoft.com/en-us/troubleshoot/visualstudio/general/assembly-version-assembly-file-version) attribute.   | String | optional | "" |
+
+
+<a id="#csharp_nunit3_test"></a>
+
+## csharp_nunit3_test
+
+<pre>
+csharp_nunit3_test(<a href="#csharp_nunit3_test-name">name</a>, <a href="#csharp_nunit3_test-data">data</a>, <a href="#csharp_nunit3_test-data_with_dirs">data_with_dirs</a>, <a href="#csharp_nunit3_test-defines">defines</a>, <a href="#csharp_nunit3_test-deps">deps</a>, <a href="#csharp_nunit3_test-keyfile">keyfile</a>, <a href="#csharp_nunit3_test-langversion">langversion</a>, <a href="#csharp_nunit3_test-nowarn">nowarn</a>, <a href="#csharp_nunit3_test-out">out</a>,
+                   <a href="#csharp_nunit3_test-resources">resources</a>, <a href="#csharp_nunit3_test-srcs">srcs</a>, <a href="#csharp_nunit3_test-testlauncher">testlauncher</a>, <a href="#csharp_nunit3_test-unsafe">unsafe</a>, <a href="#csharp_nunit3_test-version">version</a>)
 </pre>
 
 This builds a set of tests that can be run with ``bazel test``.
@@ -394,20 +351,63 @@ This builds a set of tests that can be run with ``bazel test``.
 
 | Name  | Description | Type | Mandatory | Default |
 | :------------- | :------------- | :------------- | :------------- | :------------- |
-| <a id="core_xunit_test-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
-| <a id="core_xunit_test-data"></a>data |  The list of additional files to include in the list of runfiles for the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_xunit_test-data_with_dirs"></a>data_with_dirs |  Dictionary of {label:folder}. Files specified by &lt;label&gt; will be put in subdirectory &lt;folder&gt;.   | <a href="https://bazel.build/docs/skylark/lib/dict.html">Dictionary: Label -> String</a> | optional | {} |
-| <a id="core_xunit_test-defines"></a>defines |  The list of defines passed via /define compiler option.   | List of strings | optional | [] |
-| <a id="core_xunit_test-deps"></a>deps |  The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_xunit_test-keyfile"></a>keyfile |  The key to sign the assembly with.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
-| <a id="core_xunit_test-langversion"></a>langversion |  Version of the language to use. See [this page](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version).   | String | optional | "latest" |
-| <a id="core_xunit_test-nowarn"></a>nowarn |  The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion.   | List of strings | optional | [] |
-| <a id="core_xunit_test-out"></a>out |  An alternative name of the output file.   | String | optional | "" |
-| <a id="core_xunit_test-resources"></a>resources |  The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResourceInfo](api.md#dotnetresourceinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_xunit_test-srcs"></a>srcs |  The list of .cs source files that are compiled to create the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
-| <a id="core_xunit_test-testlauncher"></a>testlauncher |  Test launcher to use.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @xunit.runner.console//:tool |
-| <a id="core_xunit_test-unsafe"></a>unsafe |  If true passes /unsafe flag to the compiler.   | Boolean | optional | False |
-| <a id="core_xunit_test-version"></a>version |  Version to be set for the assembly. The version is set by compiling in [AssemblyVersion](https://docs.microsoft.com/en-us/troubleshoot/visualstudio/general/assembly-version-assembly-file-version) attribute.   | String | optional | "" |
+| <a id="csharp_nunit3_test-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
+| <a id="csharp_nunit3_test-data"></a>data |  The list of additional files to include in the list of runfiles for the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="csharp_nunit3_test-data_with_dirs"></a>data_with_dirs |  Dictionary of {label:folder}. Files specified by &lt;label&gt; will be put in subdirectory &lt;folder&gt;.   | <a href="https://bazel.build/docs/skylark/lib/dict.html">Dictionary: Label -> String</a> | optional | {"@vstest//:Microsoft.TestPlatform.TestHostRuntimeProvider.dll": "Extensions", "@NUnit3TestAdapter//:extension": ".", "@JunitXml.TestLogger//:extension": "."} |
+| <a id="csharp_nunit3_test-defines"></a>defines |  The list of defines passed via /define compiler option.   | List of strings | optional | [] |
+| <a id="csharp_nunit3_test-deps"></a>deps |  The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="csharp_nunit3_test-keyfile"></a>keyfile |  The key to sign the assembly with.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
+| <a id="csharp_nunit3_test-langversion"></a>langversion |  Version of the language to use. See [this page](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version).   | String | optional | "latest" |
+| <a id="csharp_nunit3_test-nowarn"></a>nowarn |  The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion.   | List of strings | optional | [] |
+| <a id="csharp_nunit3_test-out"></a>out |  An alternative name of the output file.   | String | optional | "" |
+| <a id="csharp_nunit3_test-resources"></a>resources |  The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResourceInfo](api.md#dotnetresourceinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="csharp_nunit3_test-srcs"></a>srcs |  The list of .cs source files that are compiled to create the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="csharp_nunit3_test-testlauncher"></a>testlauncher |  Test launcher to use.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @vstest//:vstest.console.exe |
+| <a id="csharp_nunit3_test-unsafe"></a>unsafe |  If true passes /unsafe flag to the compiler.   | Boolean | optional | False |
+| <a id="csharp_nunit3_test-version"></a>version |  Version to be set for the assembly. The version is set by compiling in [AssemblyVersion](https://docs.microsoft.com/en-us/troubleshoot/visualstudio/general/assembly-version-assembly-file-version) attribute.   | String | optional | "" |
+
+
+<a id="#csharp_xunit_test"></a>
+
+## csharp_xunit_test
+
+<pre>
+csharp_xunit_test(<a href="#csharp_xunit_test-name">name</a>, <a href="#csharp_xunit_test-data">data</a>, <a href="#csharp_xunit_test-data_with_dirs">data_with_dirs</a>, <a href="#csharp_xunit_test-defines">defines</a>, <a href="#csharp_xunit_test-deps">deps</a>, <a href="#csharp_xunit_test-keyfile">keyfile</a>, <a href="#csharp_xunit_test-langversion">langversion</a>, <a href="#csharp_xunit_test-nowarn">nowarn</a>, <a href="#csharp_xunit_test-out">out</a>,
+                  <a href="#csharp_xunit_test-resources">resources</a>, <a href="#csharp_xunit_test-srcs">srcs</a>, <a href="#csharp_xunit_test-testlauncher">testlauncher</a>, <a href="#csharp_xunit_test-unsafe">unsafe</a>, <a href="#csharp_xunit_test-version">version</a>)
+</pre>
+
+This builds a set of tests that can be run with ``bazel test``.
+
+    To run all tests in the workspace, and print output on failure, run
+    ```bash
+    bazel test --test_output=errors //...
+    ```
+
+    You can run specific tests by passing the `--test_filter=pattern <test_filter_>` argument to Bazel.
+    You can pass arguments to tests by passing `--test_arg=arg <test_arg_>`_ arguments to Bazel.
+
+    
+
+
+**ATTRIBUTES**
+
+
+| Name  | Description | Type | Mandatory | Default |
+| :------------- | :------------- | :------------- | :------------- | :------------- |
+| <a id="csharp_xunit_test-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
+| <a id="csharp_xunit_test-data"></a>data |  The list of additional files to include in the list of runfiles for the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="csharp_xunit_test-data_with_dirs"></a>data_with_dirs |  Dictionary of {label:folder}. Files specified by &lt;label&gt; will be put in subdirectory &lt;folder&gt;.   | <a href="https://bazel.build/docs/skylark/lib/dict.html">Dictionary: Label -> String</a> | optional | {} |
+| <a id="csharp_xunit_test-defines"></a>defines |  The list of defines passed via /define compiler option.   | List of strings | optional | [] |
+| <a id="csharp_xunit_test-deps"></a>deps |  The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="csharp_xunit_test-keyfile"></a>keyfile |  The key to sign the assembly with.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
+| <a id="csharp_xunit_test-langversion"></a>langversion |  Version of the language to use. See [this page](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version).   | String | optional | "latest" |
+| <a id="csharp_xunit_test-nowarn"></a>nowarn |  The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion.   | List of strings | optional | [] |
+| <a id="csharp_xunit_test-out"></a>out |  An alternative name of the output file.   | String | optional | "" |
+| <a id="csharp_xunit_test-resources"></a>resources |  The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResourceInfo](api.md#dotnetresourceinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="csharp_xunit_test-srcs"></a>srcs |  The list of .cs source files that are compiled to create the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="csharp_xunit_test-testlauncher"></a>testlauncher |  Test launcher to use.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @xunit.runner.console//:tool |
+| <a id="csharp_xunit_test-unsafe"></a>unsafe |  If true passes /unsafe flag to the compiler.   | Boolean | optional | False |
+| <a id="csharp_xunit_test-version"></a>version |  Version to be set for the assembly. The version is set by compiling in [AssemblyVersion](https://docs.microsoft.com/en-us/troubleshoot/visualstudio/general/assembly-version-assembly-file-version) attribute.   | String | optional | "" |
 
 
 <a id="#dotnet_nuget_new"></a>
@@ -457,6 +457,198 @@ Repository rule to download and extract nuget package. Usually [nuget_package](#
 | <a id="dotnet_nuget_new-sha256"></a>sha256 |  Sha256 digest of the downloaded package.   | String | optional | "" |
 | <a id="dotnet_nuget_new-source"></a>source |  Nuget repository to download the nuget package from. The final url is in the format shape \{source\}/\{package\}/\{version\}.   | String | optional | "https://www.nuget.org/api/v2/package" |
 | <a id="dotnet_nuget_new-version"></a>version |  The version of the nuget package.   | String | required |  |
+
+
+<a id="#fsharp_binary"></a>
+
+## fsharp_binary
+
+<pre>
+fsharp_binary(<a href="#fsharp_binary-name">name</a>, <a href="#fsharp_binary-data">data</a>, <a href="#fsharp_binary-data_with_dirs">data_with_dirs</a>, <a href="#fsharp_binary-defines">defines</a>, <a href="#fsharp_binary-deps">deps</a>, <a href="#fsharp_binary-keyfile">keyfile</a>, <a href="#fsharp_binary-langversion">langversion</a>, <a href="#fsharp_binary-nowarn">nowarn</a>, <a href="#fsharp_binary-out">out</a>,
+              <a href="#fsharp_binary-resources">resources</a>, <a href="#fsharp_binary-srcs">srcs</a>, <a href="#fsharp_binary-target_framework">target_framework</a>, <a href="#fsharp_binary-version">version</a>)
+</pre>
+
+This builds an executable from a set of source files.
+    
+    You can run the binary with ``bazel run``, or you can build it with ``bazel build`` and run it directly.
+
+    Providers
+    ^^^^^^^^^
+
+    * [DotnetLibraryInfo](api.md#dotnetlibraryinfo)
+    * [DotnetResourceInfo](api.md#dotnetresourceinfo)
+
+    Example:
+    ^^^^^^^^
+    ```python
+    fsharp_binary(
+        name = "Program.exe",
+        srcs = [
+            "Program.fs",
+        ],
+        deps = [
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core:libraryset",
+        ],
+    )
+    ```
+    
+
+
+**ATTRIBUTES**
+
+
+| Name  | Description | Type | Mandatory | Default |
+| :------------- | :------------- | :------------- | :------------- | :------------- |
+| <a id="fsharp_binary-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
+| <a id="fsharp_binary-data"></a>data |  The list of additional files to include in the list of runfiles for the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="fsharp_binary-data_with_dirs"></a>data_with_dirs |  Dictionary of {label:folder}. Files specified by &lt;label&gt; will be put in subdirectory &lt;folder&gt;.   | <a href="https://bazel.build/docs/skylark/lib/dict.html">Dictionary: Label -> String</a> | optional | {} |
+| <a id="fsharp_binary-defines"></a>defines |  The list of defines passed via /define compiler option.   | List of strings | optional | [] |
+| <a id="fsharp_binary-deps"></a>deps |  The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="fsharp_binary-keyfile"></a>keyfile |  The key to sign the assembly with.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
+| <a id="fsharp_binary-langversion"></a>langversion |  Version of the language to use. See [this page](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version).   | String | optional | "latest" |
+| <a id="fsharp_binary-nowarn"></a>nowarn |  The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion.   | List of strings | optional | [] |
+| <a id="fsharp_binary-out"></a>out |  An alternative name of the output file.   | String | optional | "" |
+| <a id="fsharp_binary-resources"></a>resources |  The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResourceInfo](api.md#dotnetresourceinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="fsharp_binary-srcs"></a>srcs |  The list of .fs source files that are compiled to create the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="fsharp_binary-target_framework"></a>target_framework |  Target framework.   | String | optional | "" |
+| <a id="fsharp_binary-version"></a>version |  Version to be set for the assembly. The version is set by compiling in [AssemblyVersion](https://docs.microsoft.com/en-us/troubleshoot/visualstudio/general/assembly-version-assembly-file-version) attribute.   | String | optional | "" |
+
+
+<a id="#fsharp_library"></a>
+
+## fsharp_library
+
+<pre>
+fsharp_library(<a href="#fsharp_library-name">name</a>, <a href="#fsharp_library-data">data</a>, <a href="#fsharp_library-defines">defines</a>, <a href="#fsharp_library-deps">deps</a>, <a href="#fsharp_library-keyfile">keyfile</a>, <a href="#fsharp_library-langversion">langversion</a>, <a href="#fsharp_library-nowarn">nowarn</a>, <a href="#fsharp_library-out">out</a>, <a href="#fsharp_library-resources">resources</a>, <a href="#fsharp_library-srcs">srcs</a>,
+               <a href="#fsharp_library-target_framework">target_framework</a>, <a href="#fsharp_library-version">version</a>)
+</pre>
+
+This builds a dotnet assembly from a set of source files.
+
+    Providers
+    ^^^^^^^^^
+
+    * [DotnetLibraryInfo](api.md#dotnetlibraryinfo)
+    * [DotnetResourceInfo](api.md#dotnetresourceinfo)
+
+    Example:
+    ^^^^^^^^
+    ```python
+    [fsharp_library(
+        name = "{}_TransitiveClass-core.dll".format(framework),
+        srcs = [
+            "TransitiveClass.fs",
+        ],
+        visibility = ["//visibility:public"],
+        deps = [
+            "@io_bazel_rules_dotnet//dotnet/stdlib.core/{}:libraryset".format(framework),
+        ],
+    ) for framework in DOTNET_CORE_FRAMEWORKS]
+    ```
+    
+
+
+**ATTRIBUTES**
+
+
+| Name  | Description | Type | Mandatory | Default |
+| :------------- | :------------- | :------------- | :------------- | :------------- |
+| <a id="fsharp_library-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
+| <a id="fsharp_library-data"></a>data |  The list of additional files to include in the list of runfiles for the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="fsharp_library-defines"></a>defines |  The list of defines passed via /define compiler option.   | List of strings | optional | [] |
+| <a id="fsharp_library-deps"></a>deps |  The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="fsharp_library-keyfile"></a>keyfile |  The key to sign the assembly with.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
+| <a id="fsharp_library-langversion"></a>langversion |  Version of the language to use.   | String | optional | "latest" |
+| <a id="fsharp_library-nowarn"></a>nowarn |  The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion.   | List of strings | optional | [] |
+| <a id="fsharp_library-out"></a>out |  An alternative name of the output file.   | String | optional | "" |
+| <a id="fsharp_library-resources"></a>resources |  The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResourceInfo](api.md#dotnetresourceinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="fsharp_library-srcs"></a>srcs |  The list of .fs source files that are compiled to create the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="fsharp_library-target_framework"></a>target_framework |  Target framework.   | String | optional | "" |
+| <a id="fsharp_library-version"></a>version |  Version to be set for the assembly. The version is set by compiling in [AssemblyVersion](https://docs.microsoft.com/en-us/troubleshoot/visualstudio/general/assembly-version-assembly-file-version) attribute.   | String | optional | "" |
+
+
+<a id="#fsharp_nunit3_test"></a>
+
+## fsharp_nunit3_test
+
+<pre>
+fsharp_nunit3_test(<a href="#fsharp_nunit3_test-name">name</a>, <a href="#fsharp_nunit3_test-data">data</a>, <a href="#fsharp_nunit3_test-data_with_dirs">data_with_dirs</a>, <a href="#fsharp_nunit3_test-defines">defines</a>, <a href="#fsharp_nunit3_test-deps">deps</a>, <a href="#fsharp_nunit3_test-keyfile">keyfile</a>, <a href="#fsharp_nunit3_test-langversion">langversion</a>, <a href="#fsharp_nunit3_test-nowarn">nowarn</a>, <a href="#fsharp_nunit3_test-out">out</a>,
+                   <a href="#fsharp_nunit3_test-resources">resources</a>, <a href="#fsharp_nunit3_test-srcs">srcs</a>, <a href="#fsharp_nunit3_test-testlauncher">testlauncher</a>, <a href="#fsharp_nunit3_test-version">version</a>)
+</pre>
+
+This builds a set of tests that can be run with ``bazel test``.
+
+    To run all tests in the workspace, and print output on failure, run
+    ```bash
+    bazel test --test_output=errors //...
+    ```
+
+    You can run specific tests by passing the `--test_filter=pattern <test_filter_>` argument to Bazel.
+    You can pass arguments to tests by passing `--test_arg=arg <test_arg_>`_ arguments to Bazel.
+
+    
+
+
+**ATTRIBUTES**
+
+
+| Name  | Description | Type | Mandatory | Default |
+| :------------- | :------------- | :------------- | :------------- | :------------- |
+| <a id="fsharp_nunit3_test-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
+| <a id="fsharp_nunit3_test-data"></a>data |  The list of additional files to include in the list of runfiles for the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="fsharp_nunit3_test-data_with_dirs"></a>data_with_dirs |  Dictionary of {label:folder}. Files specified by &lt;label&gt; will be put in subdirectory &lt;folder&gt;.   | <a href="https://bazel.build/docs/skylark/lib/dict.html">Dictionary: Label -> String</a> | optional | {"@vstest//:Microsoft.TestPlatform.TestHostRuntimeProvider.dll": "Extensions", "@NUnit3TestAdapter//:extension": ".", "@JunitXml.TestLogger//:extension": "."} |
+| <a id="fsharp_nunit3_test-defines"></a>defines |  The list of defines passed via /define compiler option.   | List of strings | optional | [] |
+| <a id="fsharp_nunit3_test-deps"></a>deps |  The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="fsharp_nunit3_test-keyfile"></a>keyfile |  The key to sign the assembly with.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
+| <a id="fsharp_nunit3_test-langversion"></a>langversion |  Version of the language to use. See [this page](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version).   | String | optional | "latest" |
+| <a id="fsharp_nunit3_test-nowarn"></a>nowarn |  The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion.   | List of strings | optional | [] |
+| <a id="fsharp_nunit3_test-out"></a>out |  An alternative name of the output file.   | String | optional | "" |
+| <a id="fsharp_nunit3_test-resources"></a>resources |  The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResourceInfo](api.md#dotnetresourceinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="fsharp_nunit3_test-srcs"></a>srcs |  The list of .fs source files that are compiled to create the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="fsharp_nunit3_test-testlauncher"></a>testlauncher |  Test launcher to use.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @vstest//:vstest.console.exe |
+| <a id="fsharp_nunit3_test-version"></a>version |  Version to be set for the assembly. The version is set by compiling in [AssemblyVersion](https://docs.microsoft.com/en-us/troubleshoot/visualstudio/general/assembly-version-assembly-file-version) attribute.   | String | optional | "" |
+
+
+<a id="#fsharp_xunit_test"></a>
+
+## fsharp_xunit_test
+
+<pre>
+fsharp_xunit_test(<a href="#fsharp_xunit_test-name">name</a>, <a href="#fsharp_xunit_test-data">data</a>, <a href="#fsharp_xunit_test-data_with_dirs">data_with_dirs</a>, <a href="#fsharp_xunit_test-defines">defines</a>, <a href="#fsharp_xunit_test-deps">deps</a>, <a href="#fsharp_xunit_test-keyfile">keyfile</a>, <a href="#fsharp_xunit_test-langversion">langversion</a>, <a href="#fsharp_xunit_test-nowarn">nowarn</a>, <a href="#fsharp_xunit_test-out">out</a>,
+                  <a href="#fsharp_xunit_test-resources">resources</a>, <a href="#fsharp_xunit_test-srcs">srcs</a>, <a href="#fsharp_xunit_test-testlauncher">testlauncher</a>, <a href="#fsharp_xunit_test-version">version</a>)
+</pre>
+
+This builds a set of tests that can be run with ``bazel test``.
+
+    To run all tests in the workspace, and print output on failure, run
+    ```bash
+    bazel test --test_output=errors //...
+    ```
+
+    You can run specific tests by passing the `--test_filter=pattern <test_filter_>` argument to Bazel.
+    You can pass arguments to tests by passing `--test_arg=arg <test_arg_>`_ arguments to Bazel.
+
+    
+
+
+**ATTRIBUTES**
+
+
+| Name  | Description | Type | Mandatory | Default |
+| :------------- | :------------- | :------------- | :------------- | :------------- |
+| <a id="fsharp_xunit_test-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
+| <a id="fsharp_xunit_test-data"></a>data |  The list of additional files to include in the list of runfiles for the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="fsharp_xunit_test-data_with_dirs"></a>data_with_dirs |  Dictionary of {label:folder}. Files specified by &lt;label&gt; will be put in subdirectory &lt;folder&gt;.   | <a href="https://bazel.build/docs/skylark/lib/dict.html">Dictionary: Label -> String</a> | optional | {} |
+| <a id="fsharp_xunit_test-defines"></a>defines |  The list of defines passed via /define compiler option.   | List of strings | optional | [] |
+| <a id="fsharp_xunit_test-deps"></a>deps |  The direct dependencies of this library. These may be dotnet_library rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="fsharp_xunit_test-keyfile"></a>keyfile |  The key to sign the assembly with.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | None |
+| <a id="fsharp_xunit_test-langversion"></a>langversion |  Version of the language to use. See [this page](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version).   | String | optional | "latest" |
+| <a id="fsharp_xunit_test-nowarn"></a>nowarn |  The list of warnings to be ignored. The warnings are passed to -nowarn compiler opion.   | List of strings | optional | [] |
+| <a id="fsharp_xunit_test-out"></a>out |  An alternative name of the output file.   | String | optional | "" |
+| <a id="fsharp_xunit_test-resources"></a>resources |  The list of resources to compile with. Usually provided via reference to [core_resx](api.md#core_resx) or the rules compatible with [DotnetResourceInfo](api.md#dotnetresourceinfo) provider.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="fsharp_xunit_test-srcs"></a>srcs |  The list of .fs source files that are compiled to create the assembly.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a id="fsharp_xunit_test-testlauncher"></a>testlauncher |  Test launcher to use.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | optional | @xunit.runner.console//:tool |
+| <a id="fsharp_xunit_test-version"></a>version |  Version to be set for the assembly. The version is set by compiling in [AssemblyVersion](https://docs.microsoft.com/en-us/troubleshoot/visualstudio/general/assembly-version-assembly-file-version) attribute.   | String | optional | "" |
 
 
 <a id="#nuget_package"></a>
@@ -650,7 +842,7 @@ Represents resource files.
 ## dotnet_context
 
 <pre>
-dotnet_context(<a href="#dotnet_context-ctx">ctx</a>)
+dotnet_context(<a href="#dotnet_context-ctx">ctx</a>, <a href="#dotnet_context-lang">lang</a>)
 </pre>
 
 Converts rule's context to [DotnetContextInfo](api.md#dotnetcontextinfo)
@@ -670,7 +862,7 @@ my_rule_core = rule(
       ...
     "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data"))
   },
-  toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
+  toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_csharp_core"],
 )
 ```
 
@@ -688,6 +880,7 @@ def _my_rule_impl(ctx):
 | Name  | Description | Default Value |
 | :------------- | :------------- | :------------- |
 | <a id="dotnet_context-ctx"></a>ctx |  The Bazel ctx object for the current rule.   |  none |
+| <a id="dotnet_context-lang"></a>lang |  The proramming languge for the current rule.   |  none |
 
 
 <a id="#dotnet_register_toolchains"></a>
@@ -728,13 +921,13 @@ Loads nugets used by dotnet_rules itself.
 
 
 
-<a id="#emit_assembly_core"></a>
+<a id="#emit_assembly_core_csharp"></a>
 
-## emit_assembly_core
+## emit_assembly_core_csharp
 
 <pre>
-emit_assembly_core(<a href="#emit_assembly_core-dotnet">dotnet</a>, <a href="#emit_assembly_core-name">name</a>, <a href="#emit_assembly_core-srcs">srcs</a>, <a href="#emit_assembly_core-deps">deps</a>, <a href="#emit_assembly_core-out">out</a>, <a href="#emit_assembly_core-resources">resources</a>, <a href="#emit_assembly_core-executable">executable</a>, <a href="#emit_assembly_core-defines">defines</a>, <a href="#emit_assembly_core-unsafe">unsafe</a>, <a href="#emit_assembly_core-data">data</a>,
-                   <a href="#emit_assembly_core-keyfile">keyfile</a>, <a href="#emit_assembly_core-subdir">subdir</a>, <a href="#emit_assembly_core-target_framework">target_framework</a>, <a href="#emit_assembly_core-nowarn">nowarn</a>, <a href="#emit_assembly_core-langversion">langversion</a>, <a href="#emit_assembly_core-version">version</a>)
+emit_assembly_core_csharp(<a href="#emit_assembly_core_csharp-dotnet">dotnet</a>, <a href="#emit_assembly_core_csharp-name">name</a>, <a href="#emit_assembly_core_csharp-srcs">srcs</a>, <a href="#emit_assembly_core_csharp-deps">deps</a>, <a href="#emit_assembly_core_csharp-out">out</a>, <a href="#emit_assembly_core_csharp-resources">resources</a>, <a href="#emit_assembly_core_csharp-executable">executable</a>, <a href="#emit_assembly_core_csharp-defines">defines</a>, <a href="#emit_assembly_core_csharp-unsafe">unsafe</a>,
+                          <a href="#emit_assembly_core_csharp-data">data</a>, <a href="#emit_assembly_core_csharp-keyfile">keyfile</a>, <a href="#emit_assembly_core_csharp-subdir">subdir</a>, <a href="#emit_assembly_core_csharp-target_framework">target_framework</a>, <a href="#emit_assembly_core_csharp-nowarn">nowarn</a>, <a href="#emit_assembly_core_csharp-langversion">langversion</a>, <a href="#emit_assembly_core_csharp-version">version</a>)
 </pre>
 
 See dotnet/toolchains.rst#binary for full documentation. Emits actions for assembly build.
@@ -747,22 +940,58 @@ The function is used by all frameworks.
 
 | Name  | Description | Default Value |
 | :------------- | :------------- | :------------- |
-| <a id="emit_assembly_core-dotnet"></a>dotnet |  DotnetContextInfo provider   |  none |
-| <a id="emit_assembly_core-name"></a>name |  name of the assembly   |  none |
-| <a id="emit_assembly_core-srcs"></a>srcs |  source files (as passed from rules: list of lables/targets)   |  none |
-| <a id="emit_assembly_core-deps"></a>deps |  list of DotnetLibraryInfo. Dependencies as passed from rules)   |  <code>None</code> |
-| <a id="emit_assembly_core-out"></a>out |  output file name if provided. Otherwise name is used   |  <code>None</code> |
-| <a id="emit_assembly_core-resources"></a>resources |  list of DotnetResourceListInfo provider   |  <code>None</code> |
-| <a id="emit_assembly_core-executable"></a>executable |  bool. True for executable assembly, False otherwise   |  <code>True</code> |
-| <a id="emit_assembly_core-defines"></a>defines |  list of string. Defines to pass to a compiler   |  <code>None</code> |
-| <a id="emit_assembly_core-unsafe"></a>unsafe |  /unsafe flag (False - default - /unsafe-, otherwise /unsafe+)   |  <code>False</code> |
-| <a id="emit_assembly_core-data"></a>data |  list of targets (as passed from rules). Additional depdendencies of the target   |  <code>None</code> |
-| <a id="emit_assembly_core-keyfile"></a>keyfile |  File to be used for signing if provided   |  <code>None</code> |
-| <a id="emit_assembly_core-subdir"></a>subdir |  specific subdirectory to be used for target location. Default ./   |  <code>"./"</code> |
-| <a id="emit_assembly_core-target_framework"></a>target_framework |  target framework to define via System.Runtime.Versioning.TargetFramework   |  <code>""</code> |
-| <a id="emit_assembly_core-nowarn"></a>nowarn |  list of warnings to ignore   |  <code>None</code> |
-| <a id="emit_assembly_core-langversion"></a>langversion |  version of the language to use (see https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version)   |  <code>"latest"</code> |
-| <a id="emit_assembly_core-version"></a>version |  version of the file to be compiled   |  <code>(0, 0, 0, 0, "")</code> |
+| <a id="emit_assembly_core_csharp-dotnet"></a>dotnet |  DotnetContextInfo provider   |  none |
+| <a id="emit_assembly_core_csharp-name"></a>name |  name of the assembly   |  none |
+| <a id="emit_assembly_core_csharp-srcs"></a>srcs |  source files (as passed from rules: list of lables/targets)   |  none |
+| <a id="emit_assembly_core_csharp-deps"></a>deps |  list of DotnetLibraryInfo. Dependencies as passed from rules)   |  <code>None</code> |
+| <a id="emit_assembly_core_csharp-out"></a>out |  output file name if provided. Otherwise name is used   |  <code>None</code> |
+| <a id="emit_assembly_core_csharp-resources"></a>resources |  list of DotnetResourceListInfo provider   |  <code>None</code> |
+| <a id="emit_assembly_core_csharp-executable"></a>executable |  bool. True for executable assembly, False otherwise   |  <code>True</code> |
+| <a id="emit_assembly_core_csharp-defines"></a>defines |  list of string. Defines to pass to a compiler   |  <code>None</code> |
+| <a id="emit_assembly_core_csharp-unsafe"></a>unsafe |  /unsafe flag (False - default - /unsafe-, otherwise /unsafe+)   |  <code>False</code> |
+| <a id="emit_assembly_core_csharp-data"></a>data |  list of targets (as passed from rules). Additional depdendencies of the target   |  <code>None</code> |
+| <a id="emit_assembly_core_csharp-keyfile"></a>keyfile |  File to be used for signing if provided   |  <code>None</code> |
+| <a id="emit_assembly_core_csharp-subdir"></a>subdir |  specific subdirectory to be used for target location. Default ./   |  <code>"./"</code> |
+| <a id="emit_assembly_core_csharp-target_framework"></a>target_framework |  target framework to define via System.Runtime.Versioning.TargetFramework   |  <code>""</code> |
+| <a id="emit_assembly_core_csharp-nowarn"></a>nowarn |  list of warnings to ignore   |  <code>None</code> |
+| <a id="emit_assembly_core_csharp-langversion"></a>langversion |  version of the language to use (see https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version)   |  <code>"latest"</code> |
+| <a id="emit_assembly_core_csharp-version"></a>version |  version of the file to be compiled   |  <code>(0, 0, 0, 0, "")</code> |
+
+
+<a id="#emit_assembly_core_fsharp"></a>
+
+## emit_assembly_core_fsharp
+
+<pre>
+emit_assembly_core_fsharp(<a href="#emit_assembly_core_fsharp-dotnet">dotnet</a>, <a href="#emit_assembly_core_fsharp-name">name</a>, <a href="#emit_assembly_core_fsharp-srcs">srcs</a>, <a href="#emit_assembly_core_fsharp-deps">deps</a>, <a href="#emit_assembly_core_fsharp-out">out</a>, <a href="#emit_assembly_core_fsharp-resources">resources</a>, <a href="#emit_assembly_core_fsharp-executable">executable</a>, <a href="#emit_assembly_core_fsharp-defines">defines</a>, <a href="#emit_assembly_core_fsharp-data">data</a>,
+                          <a href="#emit_assembly_core_fsharp-keyfile">keyfile</a>, <a href="#emit_assembly_core_fsharp-subdir">subdir</a>, <a href="#emit_assembly_core_fsharp-target_framework">target_framework</a>, <a href="#emit_assembly_core_fsharp-nowarn">nowarn</a>, <a href="#emit_assembly_core_fsharp-langversion">langversion</a>, <a href="#emit_assembly_core_fsharp-version">version</a>)
+</pre>
+
+See dotnet/toolchains.rst#binary for full documentation. Emits actions for assembly build.
+
+The function is used by all frameworks.
+
+
+**PARAMETERS**
+
+
+| Name  | Description | Default Value |
+| :------------- | :------------- | :------------- |
+| <a id="emit_assembly_core_fsharp-dotnet"></a>dotnet |  DotnetContextInfo provider   |  none |
+| <a id="emit_assembly_core_fsharp-name"></a>name |  name of the assembly   |  none |
+| <a id="emit_assembly_core_fsharp-srcs"></a>srcs |  source files (as passed from rules: list of lables/targets)   |  none |
+| <a id="emit_assembly_core_fsharp-deps"></a>deps |  list of DotnetLibraryInfo. Dependencies as passed from rules)   |  <code>None</code> |
+| <a id="emit_assembly_core_fsharp-out"></a>out |  output file name if provided. Otherwise name is used   |  <code>None</code> |
+| <a id="emit_assembly_core_fsharp-resources"></a>resources |  list of DotnetResourceListInfo provider   |  <code>None</code> |
+| <a id="emit_assembly_core_fsharp-executable"></a>executable |  bool. True for executable assembly, False otherwise   |  <code>True</code> |
+| <a id="emit_assembly_core_fsharp-defines"></a>defines |  list of string. Defines to pass to a compiler   |  <code>None</code> |
+| <a id="emit_assembly_core_fsharp-data"></a>data |  list of targets (as passed from rules). Additional depdendencies of the target   |  <code>None</code> |
+| <a id="emit_assembly_core_fsharp-keyfile"></a>keyfile |  File to be used for signing if provided   |  <code>None</code> |
+| <a id="emit_assembly_core_fsharp-subdir"></a>subdir |  specific subdirectory to be used for target location. Default ./   |  <code>"./"</code> |
+| <a id="emit_assembly_core_fsharp-target_framework"></a>target_framework |  target framework to define via System.Runtime.Versioning.TargetFramework   |  <code>""</code> |
+| <a id="emit_assembly_core_fsharp-nowarn"></a>nowarn |  list of warnings to ignore   |  <code>None</code> |
+| <a id="emit_assembly_core_fsharp-langversion"></a>langversion |  version of the language to use (see https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version)   |  <code>"latest"</code> |
+| <a id="emit_assembly_core_fsharp-version"></a>version |  version of the file to be compiled   |  <code>(0, 0, 0, 0, "")</code> |
 
 
 <a id="#emit_resx_core"></a>
@@ -789,53 +1018,5 @@ Returns [DotnetResourceInfo](api.md#dotnetresourceinfo).
 | <a id="emit_resx_core-identifier"></a>identifier |  The logical name for the resource; the name that is used to load the resource. The default is the basename of the file name (no subfolder).   |  <code>None</code> |
 | <a id="emit_resx_core-out"></a>out |  An alternative name of the output file (if name should not be used).   |  <code>None</code> |
 | <a id="emit_resx_core-customresgen"></a>customresgen |  custom resgen program to use.   |  <code>None</code> |
-
-
-<a id="#new_library"></a>
-
-## new_library
-
-<pre>
-new_library(<a href="#new_library-dotnet">dotnet</a>, <a href="#new_library-name">name</a>, <a href="#new_library-deps">deps</a>, <a href="#new_library-transitive">transitive</a>, <a href="#new_library-result">result</a>, <a href="#new_library-pdb">pdb</a>, <a href="#new_library-runfiles">runfiles</a>, <a href="#new_library-version">version</a>, <a href="#new_library-ref">ref</a>)
-</pre>
-
-This creates a new [DotnetLibraryInfo](api.md#dotnetlibraryinfo).
-
-**PARAMETERS**
-
-
-| Name  | Description | Default Value |
-| :------------- | :------------- | :------------- |
-| <a id="new_library-dotnet"></a>dotnet |  [DotnetContextInfo](api.md#dotnetcontextinfo).   |  none |
-| <a id="new_library-name"></a>name |  name of the file to generate.   |  <code>None</code> |
-| <a id="new_library-deps"></a>deps |  The direct dependencies of this library.   |  <code>None</code> |
-| <a id="new_library-transitive"></a>transitive |  The full set of transitive dependencies. This includes <code></code>deps<code></code> for this  library and all <code></code>deps<code></code> members transitively reachable through <code></code>deps<code></code>.   |  <code>None</code> |
-| <a id="new_library-result"></a>result |  The result to include in [DotnetLibraryInfo](api.md#dotnetlibraryinfo) (used when importing external assemblies).   |  <code>None</code> |
-| <a id="new_library-pdb"></a>pdb |  If .pdb file for given library should be generated.   |  <code>None</code> |
-| <a id="new_library-runfiles"></a>runfiles |  Runfiles for DotnetLibraryInfo   |  <code>None</code> |
-| <a id="new_library-version"></a>version |  version to use for the library   |  <code>None</code> |
-| <a id="new_library-ref"></a>ref |  reference assembly for the library   |  <code>None</code> |
-
-
-<a id="#new_resource"></a>
-
-## new_resource
-
-<pre>
-new_resource(<a href="#new_resource-dotnet">dotnet</a>, <a href="#new_resource-name">name</a>, <a href="#new_resource-result">result</a>, <a href="#new_resource-identifier">identifier</a>, <a href="#new_resource-kwargs">kwargs</a>)
-</pre>
-
-This creates a new [DotnetLibraryInfo](api.md#dotnetlibraryinfo).
-
-**PARAMETERS**
-
-
-| Name  | Description | Default Value |
-| :------------- | :------------- | :------------- |
-| <a id="new_resource-dotnet"></a>dotnet |  [DotnetContextInfo](api.md#dotnetcontextinfo).   |  none |
-| <a id="new_resource-name"></a>name |  name of the file to generate.   |  none |
-| <a id="new_resource-result"></a>result |  The .resources file.   |  none |
-| <a id="new_resource-identifier"></a>identifier |  Identifier passed to -resource flag of mcs compiler. If empty the basename of the result.   |  <code>None</code> |
-| <a id="new_resource-kwargs"></a>kwargs |  Additional arguments to set in the result.   |  none |
 
 
