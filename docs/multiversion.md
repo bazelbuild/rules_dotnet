@@ -16,7 +16,7 @@ For example:
 
     ```python
 
-    core_library(
+    csharp_library(
         name = "foo_bar",
         srcs = [
             "foo.cs",
@@ -32,7 +32,7 @@ For example:
 
     ```python
 
-    core_library(
+    csharp_library(
         name = "foo_bar",
         srcs = [
             "foo.cs",

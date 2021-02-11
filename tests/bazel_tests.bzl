@@ -143,7 +143,7 @@ def test_environment():
 CURRENT_VERSION = "current"
 
 def _bazel_test_script_impl(ctx):
-    dotnet = dotnet_context(ctx)
+    dotnet = dotnet_context(ctx, "csharp")
     script_file = dotnet.declare_file(dotnet, ext = ".bash")
 
     if not ctx.attr.targets:

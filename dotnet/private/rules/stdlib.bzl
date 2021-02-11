@@ -5,7 +5,7 @@ load("@io_bazel_rules_dotnet//dotnet/private:rules/common.bzl", "collect_transit
 load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "parse_version")
 
 def _stdlib_impl(ctx):
-    dotnet = dotnet_context(ctx)
+    dotnet = dotnet_context(ctx, "csharp")
     if ctx.attr.dll == "":
         name = ctx.label.name
     else:
@@ -95,12 +95,12 @@ core_stdlib = rule(
         "dll": attr.string(),
         "version": attr.string(mandatory = True, doc = "Version of the assembly."),
         "ref": attr.label(allow_files = True, mandatory = False, doc = "[Reference assembly](https://docs.microsoft.com/en-us/dotnet/standard/assembly/reference-assemblies) for given library."),
-        "deps": attr.label_list(providers = [DotnetLibraryInfo], doc = "The direct dependencies of this dll. These may be [core_library](api.md#core_library) rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider."),
+        "deps": attr.label_list(providers = [DotnetLibraryInfo], doc = "The direct dependencies of this dll. These may be rules or compatible rules with the [DotnetLibraryInfo](api.md#dotnetlibraryinfo) provider."),
         "data": attr.label_list(allow_files = True, doc = "Additional files to copy with the target assembly."),
         "stdlib_path": attr.label(allow_files = True, doc = "The stdlib_path to be used instead of looking for one in sdk by name speeds up the rule execution because the proper file needs not to be searched for within sdk."),
         "dotnet_context_data": attr.label(default = Label("@io_bazel_rules_dotnet//:core_context_data")),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_csharp_core"],
     executable = False,
     doc = "It imports a framework dll and transforms it into [DotnetLibraryInfo](api.md#dotnetlibraryinfo) so it can be referenced as dependency by other rules.",
 )

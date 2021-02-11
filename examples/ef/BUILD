@@ -1,8 +1,8 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_xunit_test")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "csharp_xunit_test")
 
 package(default_visibility = ["//visibility:public"])
 
-core_xunit_test(
+csharp_xunit_test(
     name = "dotnet_ef.dll",
     srcs = glob(["**/*.cs"]),
     nowarn = ["CS1701"],

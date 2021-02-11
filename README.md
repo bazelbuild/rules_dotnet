@@ -85,7 +85,7 @@ Setup
 
   ```python
 
-    load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_library", "core_binary")
+    load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "csharp_library", "csharp_binary")
   ```
 
 * See [nuget2bazel](docs/nuget2bazel.md) for using nuget dependencies.

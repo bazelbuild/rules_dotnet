@@ -1,0 +1,28 @@
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "csharp_binary", "csharp_xunit_test")
+
+csharp_binary(
+    name = "custom_bin.exe",
+    srcs = [
+        "main.cs",
+    ],
+    deps = [
+        "@core_sdk_stdlib//:libraryset",
+    ],
+)
+
+csharp_xunit_test(
+    name = "custom_bin_test.dll",
+    size = "medium",
+    srcs = [
+        "main_test.cs",
+    ],
+    data = [
+        ":custom_bin.exe",
+    ],
+    deps = [
+        "@core_sdk_stdlib//:libraryset",
+        "@xunit.assert//:lib",
+        "@xunit.extensibility.core//:lib",
+        "@xunit.extensibility.execution//:lib",
+    ],
+)

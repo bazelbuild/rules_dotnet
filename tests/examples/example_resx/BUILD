@@ -1,7 +1,7 @@
 load(
     "@io_bazel_rules_dotnet//dotnet:defs.bzl",
     "core_resx",
-    "core_xunit_test",
+    "csharp_xunit_test",
 )
 
 core_resx(
@@ -10,7 +10,7 @@ core_resx(
     identifier = "example_resx.Resources.resources",
 )
 
-core_xunit_test(
+csharp_xunit_test(
     name = "example_resx.dll",
     size = "medium",
     srcs = glob(["*.cs"]),

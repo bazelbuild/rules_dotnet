@@ -72,7 +72,7 @@ Setup
   At the top of the file used rules should be imported:
 
   ```python
-    load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_library", "core_binary")
+    load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "csharp_library", "csharp_binary")
   ```
 
 * Depending on .NET Core version used it may be necessary to install libunwind-devel on Linux systems.

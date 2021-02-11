@@ -1,6 +1,6 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_xunit_test")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "csharp_xunit_test")
 
-core_xunit_test(
+csharp_xunit_test(
     name = "nuget2bazel-test.dll",
     size = "medium",
     srcs = glob(["*.cs"]),

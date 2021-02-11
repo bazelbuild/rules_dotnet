@@ -11,7 +11,7 @@ load("@rules_dotnet_skylib//lib:paths.bzl", "paths")
 
 def _resource_impl(ctx):
     """core_resource_impl emits actions for embeding file as resource."""
-    dotnet = dotnet_context(ctx)
+    dotnet = dotnet_context(ctx, "csharp")
     name = ctx.label.name
 
     resource = DotnetResourceInfo(
@@ -29,7 +29,7 @@ def _resource_impl(ctx):
     ]
 
 def _resource_multi_impl(ctx):
-    dotnet = dotnet_context(ctx)
+    dotnet = dotnet_context(ctx, "csharp")
     name = ctx.label.name
 
     if ctx.attr.identifierBase != "" and ctx.attr.fixedIdentifierBase != "":
@@ -66,7 +66,7 @@ core_resource = rule(
         "src": attr.label(allow_single_file = True, mandatory = True, doc = "The source to be embeded."),
         "identifier": attr.string(doc = "The logical name for the resource; the name is used to load the resource. The default is the basename of the file name (no subfolder)."),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_csharp_core"],
     executable = False,
     doc = "This wraps a resource so it can be embeded into an assembly.",
 )
@@ -79,7 +79,7 @@ core_resource_multi = rule(
         "identifierBase": attr.string(doc = "The logical name for given resource is constructred from identiferBase + \".\" + directory.repalce('/','.') + \".\" + filename. The resulting name is used to load the resource. Either identifierBase of fixedIdentifierBase must be specified."),
         "fixedIdentifierBase": attr.string(doc = "The logical name for given resource is constructred from fixedIdentiferBase + \".\" + filename. The resulting name that is used to load the resource. Either identifierBase of fixedIdentifierBase must be specified. "),
     },
-    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_core"],
+    toolchains = ["@io_bazel_rules_dotnet//dotnet:toolchain_type_csharp_core"],
     executable = False,
     doc = "This wraps multiple resource files so they can be embeded into an assembly.",
 )

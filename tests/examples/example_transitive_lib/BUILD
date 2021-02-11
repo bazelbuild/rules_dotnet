@@ -1,6 +1,6 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_library")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "csharp_library")
 
-core_library(
+csharp_library(
     name = "TransitiveClass.dll",
     srcs = [
         "TransitiveClass.cs",
@@ -15,7 +15,7 @@ core_library(
     ],
 )
 
-core_library(
+csharp_library(
     name = "TransitiveClass-netstandard.dll",
     srcs = [
         "TransitiveClass.cs",

@@ -1,6 +1,6 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_binary")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "csharp_binary")
 
-core_binary(
+csharp_binary(
     name = "aspnetcore.exe",
     srcs = glob([
         "*.cs",

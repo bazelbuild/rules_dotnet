@@ -1,6 +1,6 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_NETSTANDARD", "core_library", "core_xunit_test")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_NETSTANDARD", "csharp_library", "csharp_xunit_test")
 
-[core_library(
+[csharp_library(
     name = "{}_lib.dll".format(framework),
     srcs = ["Lib.cs"],
     target_compatible_with = select({
@@ -14,7 +14,7 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_NETSTANDARD", "core_libr
     ],
 ) for framework in DOTNET_NETSTANDARD.keys()]
 
-[core_xunit_test(
+[csharp_xunit_test(
     name = "{}_core_core.dll".format(framework),
     srcs = [
         "XUnitTest.cs",

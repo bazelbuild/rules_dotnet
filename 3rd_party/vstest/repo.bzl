@@ -1,7 +1,7 @@
 # Source version v16.5.0
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_binary", "core_library", "core_resx")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "csharp_binary", "csharp_library", "core_resx")
 
-core_library(
+csharp_library(
     name = "Microsoft.TestPlatform.PlatformAbstractions.dll",
     srcs = glob(["src/Microsoft.TestPlatform.PlatformAbstractions/Interfaces/**/*.cs"]) + glob([
         "src/Microsoft.TestPlatform.PlatformAbstractions/netcore/**/*.cs",
@@ -25,7 +25,7 @@ core_resx(
     identifier = "Microsoft.VisualStudio.TestPlatform.CoreUtilities.Resources.Resources.resources",
 )
 
-core_library(
+csharp_library(
     name = "Microsoft.TestPlatform.CoreUtilities.dll",
     srcs = glob(["src/Microsoft.TestPlatform.CoreUtilities/**/*.cs"]),
     defines = [
@@ -55,7 +55,7 @@ core_resx(
     identifier = "Microsoft.VisualStudio.TestPlatform.ObjectModel.Resources.CommonResources.resx",
 )
 
-core_library(
+csharp_library(
     name = "Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
     srcs = glob(
         ["src/Microsoft.TestPlatform.ObjectModel/**/*.cs"],
@@ -85,7 +85,7 @@ core_resx(
     identifier = "Microsoft.VisualStudio.TestPlatform.Utilities.Resources.Resources.resources",
 )
 
-core_library(
+csharp_library(
     name = "Microsoft.TestPlatform.Utilities.dll",
     srcs = glob(["src/Microsoft.TestPlatform.Utilities/**/*.cs"]),
     defines = [
@@ -109,7 +109,7 @@ core_resx(
     identifier = "Microsoft.VisualStudio.TestPlatform.Common.Resources.Resources.resources",
 )
 
-core_library(
+csharp_library(
     name = "Microsoft.VisualStudio.TestPlatform.Common.dll",
     srcs = glob(
         ["src/Microsoft.TestPlatform.Common/**/*.cs"],
@@ -137,7 +137,7 @@ core_resx(
     identifier = "Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Resources.Resources.resources",
 )
 
-core_library(
+csharp_library(
     name = "Microsoft.TestPlatform.CommunicationUtilities.dll",
     srcs = glob(
         ["src/Microsoft.TestPlatform.CommunicationUtilities/**/*.cs"],
@@ -166,7 +166,7 @@ core_resx(
     identifier = "Microsoft.VisualStudio.TestPlatform.CrossPlatEngine.Resources.Resources.resources",
 )
 
-core_library(
+csharp_library(
     name = "Microsoft.TestPlatform.CrossPlatEngine.dll",
     srcs = glob(["src/Microsoft.TestPlatform.CrossPlatEngine/**/*.cs"]),
     defines = [
@@ -192,7 +192,7 @@ core_resx(
     identifier = "Microsoft.VisualStudio.TestPlatform.Client.Resources.Resources.resources",
 )
 
-core_library(
+csharp_library(
     name = "Microsoft.VisualStudio.TestPlatform.Client.dll",
     srcs = glob(["src/Microsoft.TestPlatform.Client/**/*.cs"]),
     defines = [
@@ -215,7 +215,7 @@ core_resx(
     identifier = "vstest.console.Resources.Resources.resources",
 )
 
-core_binary(
+csharp_binary(
     name = "vstest.console.exe",
     srcs = glob(["src/vstest.console/**/*.cs"]),
     defines = [
@@ -245,7 +245,7 @@ core_binary(
 #     identifier = "Microsoft.VisualStudio.TestPlatform.Extensions.TrxLogger.Resources.TrxResource.resources",
 # )
 
-# # core_library(
+# # csharp_library(
 # #     name = "Microsoft.TestPlatform.Extensions.TrxLogger.dll",
 # #     srcs = glob(["src/Microsoft.TestPlatform.Extensions.TrxLogger/**/*.cs"]),
 # #     defines = [
@@ -283,7 +283,7 @@ core_resx(
     identifier = "Microsoft.TestPlatform.TestHostProvider.Resources.Resources.resources",
 )
 
-core_library(
+csharp_library(
     name = "Microsoft.TestPlatform.TestHostRuntimeProvider.dll",
     srcs = glob(["src/Microsoft.TestPlatform.TestHostProvider/**/*.cs"]),
     defines = [
@@ -303,7 +303,7 @@ core_library(
     ],
 )
 
-core_binary(
+csharp_binary(
     name = "testhost.dll",
     srcs = [
         ":src/testhost.x86/AppDomainEngineInvoker.cs",

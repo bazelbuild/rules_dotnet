@@ -1,6 +1,6 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_library")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "csharp_library")
 
-core_library(
+csharp_library(
     name = "MyClass.dll",
     srcs = [
         "MyClass.cs",
@@ -11,7 +11,7 @@ core_library(
     ],
 )
 
-core_library(
+csharp_library(
     name = "MyClass-netstandard.dll",
     srcs = [
         "MyClass.cs",
