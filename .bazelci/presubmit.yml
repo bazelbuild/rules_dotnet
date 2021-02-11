@@ -2,12 +2,12 @@
 tasks:
   ubuntu1804:
     build_flags:
-      - "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
+      #- "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
       - "--platforms @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
     build_targets:
       - "//..."
     test_flags:
-      - "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
+      #- "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
       - "--platforms @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
     test_targets:
       - "//..."
@@ -18,12 +18,12 @@ tasks:
     #   - "//tests/examples/example_binary:hello.exe"
   macos:
     build_flags:
-      - "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100"
+      #- "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100"
       - "--platforms @io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100"
     build_targets:
       - "//..."
     test_flags:
-      - "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100"
+      #- "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100"
       - "--platforms @io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100"
     test_targets:
       - "//..."
@@ -34,12 +34,12 @@ tasks:
     #   - "//tests/examples/example_binary:hello.exe"
   windows:
     build_flags:
-      - "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.100"
+      #- "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.100"
       - "--platforms @io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.100"
     build_targets:
       - "//..."
     test_flags:
-      - "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.100"
+      #- "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.100"
       - "--platforms @io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.100"
     test_targets:
       - "//..."
