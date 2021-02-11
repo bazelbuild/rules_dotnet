@@ -1,26 +1,52 @@
 ---
-platforms:
-  ubuntu1804:
-    build_targets:
-      - "//..."
-    test_targets:
-      - "//..."
-    run_targets:
-      - "//tests/examples/example_binary:hello"
-      - "//tests/examples/example_binary:hello-core"
-  macos:
-    build_targets:
-      - "//..."
-    test_targets:
-      - "//..."
-    run_targets:
-      - "//tests/examples/example_binary:hello"
-      - "//tests/examples/example_binary:hello-core"
-  windows:
-    build_targets:
-      - "//..."
-    test_targets:
-      - "//..."
-    run_targets:
-      - "//tests/examples/example_binary:hello"
-      - "//tests/examples/example_binary:hello-core"
+tasks:
+  v3.1.100:
+    platforms:
+      ubuntu1804:
+        build_flags:
+          - "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
+          - "--platforms @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
+        build_targets:
+          - "//..."
+        test_flags:
+          - "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
+          - "--platforms @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
+        test_targets:
+          - "//..."
+        run_flags:
+          - "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
+          - "--platforms @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
+        run_targets:
+          - "//tests/examples/example_binary:hello.exe"
+      macos:
+        build_flags:
+          - "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100"
+          - "--platforms @io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100"
+        build_targets:
+          - "//..."
+        test_flags:
+          - "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100"
+          - "--platforms @io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100"
+        test_targets:
+          - "//..."
+        run_flags:
+          - "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100"
+          - "--platforms @io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100"
+        run_targets:
+          - "//tests/examples/example_binary:hello.exe"
+      windows:
+        build_flags:
+          - "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.100"
+          - "--platforms @io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.100"
+        build_targets:
+          - "//..."
+        test_flags:
+          - "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.100"
+          - "--platforms @io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.100"
+        test_targets:
+          - "//..."
+        run_flags:
+          - "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.100"
+          - "--platforms @io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.100"
+        run_targets:
+          - "//tests/examples/example_binary:hello.exe"
