@@ -63,3 +63,4 @@ tasks:
     #   - "--platforms @io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.100"
     # run_targets:
     #   - "//tests/examples/example_binary:hello.exe"
+
