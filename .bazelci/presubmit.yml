@@ -406,3 +406,25 @@ tasks:
       - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
     test_targets:
       - "//..."
+  ef_windows_amd64_3.1.100:
+    platform: windows
+    name: ef_windows_amd64_3.1.100
+    working_directory: examples/ef
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.100"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.100"
+    test_targets:
+      - "//..."
+  ef_darwin_amd64_3.1.100:
+    platform: macos
+    name: ef_darwin_amd64_3.1.100
+    working_directory: examples/ef
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100"
+    test_targets:
+      - "//..."

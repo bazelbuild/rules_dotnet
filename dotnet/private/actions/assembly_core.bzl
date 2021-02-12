@@ -32,9 +32,9 @@ def emit_assembly_core_csharp(
         nowarn = None,
         langversion = "latest",
         version = (0, 0, 0, 0, "")):
-    """See dotnet/toolchains.rst#binary for full documentation. Emits actions for assembly build.
+    """Emits actions for assembly build.
 
-    The function is used by all frameworks.
+    The function is used to build C# assemblies..
 
     Args:
       dotnet: DotnetContextInfo provider
@@ -233,9 +233,9 @@ def emit_assembly_core_fsharp(
         nowarn = None,
         langversion = "latest",
         version = (0, 0, 0, 0, "")):
-    """See dotnet/toolchains.rst#binary for full documentation. Emits actions for assembly build.
+    """Emits actions for assembly build.
 
-    The function is used by all frameworks.
+    The function is used got build F# assemblies.
 
     Args:
       dotnet: DotnetContextInfo provider
