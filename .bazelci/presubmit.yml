@@ -1,7 +1,8 @@
 ---
 buildifier: latest
 tasks:
-  ubuntu1804:
+  linux_amd64_3.1.100:
+    platform: ubuntu1804
     build_flags:
       - "--host_platform"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
@@ -21,7 +22,8 @@ tasks:
     #   - "--platforms @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
     # run_targets:
     #   - "//tests/examples/example_binary:hello.exe"
-  macos:
+  darwin_amd64_3.1.100:
+    platform: macos
     build_flags:
       - "--toolchain_resolution_debug"
       - "--host_platform"
@@ -42,7 +44,8 @@ tasks:
     #   - "--platforms @io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100"
     # run_targets:
     #   - "//tests/examples/example_binary:hello.exe"
-  windows:
+  windows_amd64_3.1.100:
+    platform: windows
     build_flags:
       - "--toolchain_resolution_debug"
       - "--host_platform"
