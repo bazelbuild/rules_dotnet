@@ -17,11 +17,12 @@ tasks:
       - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
     test_targets:
       - "//..."
-    # run_flags:
-    #   - "--host_platform @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
-    #   - "--platforms @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
-    # run_targets:
-    #   - "//tests/examples/example_binary:hello.exe"
+    run_targets:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
+      - "//tests/examples/example_binary:hello.exe"
   darwin_amd64_3.1.100:
     platform: macos
     build_flags:
