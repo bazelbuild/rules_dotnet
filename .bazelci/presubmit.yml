@@ -25,16 +25,16 @@ tasks:
     build_flags:
       - "--toolchain_resolution_debug"
       - "--host_platform"
-      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100"
       - "--platforms"
-      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100"
     build_targets:
       - "//..."
     test_flags:
       - "--host_platform"
-      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100"
       - "--platforms"
-      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100"
     test_targets:
       - "//..."
     # run_flags:
@@ -46,16 +46,16 @@ tasks:
     build_flags:
       - "--toolchain_resolution_debug"
       - "--host_platform"
-      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.100"
       - "--platforms"
-      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.100"
     build_targets:
       - "//..."
     test_flags:
       - "--host_platform"
-      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.100"
       - "--platforms"
-      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.100"
     test_targets:
       - "//..."
     # run_flags:
