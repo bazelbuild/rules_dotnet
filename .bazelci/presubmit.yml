@@ -1,6 +1,226 @@
 ---
 buildifier: latest
 tasks:
+  linux_amd64_2.1.200:
+    platform: ubuntu1804
+    name: linux_amd64_2.1.200
+    build_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_2.1.200"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_2.1.200"
+    build_targets:
+      - "//..."
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_2.1.200"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_2.1.200"
+    test_targets:
+      - "//..."
+  darwin_amd64_2.1.200:
+    platform: macos
+    name: darwin_amd64_2.1.200
+    build_flags:
+      - "--toolchain_resolution_debug"
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_2.1.200"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_2.1.200"
+    build_targets:
+      - "//..."
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_2.1.200"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_2.1.200"
+    test_targets:
+      - "//..."
+  windows_amd64_2.1.200:
+    platform: windows
+    name: windows_amd64_2.1.200
+    build_flags:
+      - "--toolchain_resolution_debug"
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_2.1.200"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_2.1.200"
+    build_targets:
+      - "//..."
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_2.1.200"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_2.1.200"
+    test_targets:
+      - "//..."
+
+
+  linux_amd64_2.1.502:
+    platform: ubuntu1804
+    name: linux_amd64_2.1.502
+    build_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_2.1.502"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_2.1.502"
+    build_targets:
+      - "//..."
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_2.1.502"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_2.1.502"
+    test_targets:
+      - "//..."
+  darwin_amd64_2.1.502:
+    platform: macos
+    name: darwin_amd64_2.1.502
+    build_flags:
+      - "--toolchain_resolution_debug"
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_2.1.502"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_2.1.502"
+    build_targets:
+      - "//..."
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_2.1.502"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_2.1.502"
+    test_targets:
+      - "//..."
+  windows_amd64_2.1.502:
+    platform: windows
+    name: windows_amd64_2.1.502
+    build_flags:
+      - "--toolchain_resolution_debug"
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_2.1.502"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_2.1.502"
+    build_targets:
+      - "//..."
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_2.1.502"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_2.1.502"
+    test_targets:
+      - "//..."
+
+
+  linux_amd64_2.1.503:
+    platform: ubuntu1804
+    name: linux_amd64_2.1.503
+    build_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_2.1.503"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_2.1.503"
+    build_targets:
+      - "//..."
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_2.1.503"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_2.1.503"
+    test_targets:
+      - "//..."
+  darwin_amd64_2.1.503:
+    platform: macos
+    name: darwin_amd64_2.1.503
+    build_flags:
+      - "--toolchain_resolution_debug"
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_2.1.503"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_2.1.503"
+    build_targets:
+      - "//..."
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_2.1.503"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_2.1.503"
+    test_targets:
+      - "//..."
+  windows_amd64_2.1.503:
+    platform: windows
+    name: windows_amd64_2.1.503
+    build_flags:
+      - "--toolchain_resolution_debug"
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_2.1.503"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_2.1.503"
+    build_targets:
+      - "//..."
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_2.1.503"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_2.1.503"
+    test_targets:
+      - "//..."
+
+
+  linux_amd64_2.2.101:
+    platform: ubuntu1804
+    name: linux_amd64_2.2.101
+    build_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_2.2.101"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_2.2.101"
+    build_targets:
+      - "//..."
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_2.2.101"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_2.2.101"
+    test_targets:
+      - "//..."
+  darwin_amd64_2.2.101:
+    platform: macos
+    name: darwin_amd64_2.2.101
+    build_flags:
+      - "--toolchain_resolution_debug"
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_2.2.101"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_2.2.101"
+    build_targets:
+      - "//..."
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_2.2.101"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_2.2.101"
+    test_targets:
+      - "//..."
+  windows_amd64_2.2.101:
+    platform: windows
+    name: windows_amd64_2.2.101
+    build_flags:
+      - "--toolchain_resolution_debug"
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_2.2.101"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_2.2.101"
+    build_targets:
+      - "//..."
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_2.2.101"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_2.2.101"
+    test_targets:
+      - "//..."
+
+
   linux_amd64_2.2.402:
     platform: ubuntu1804
     name: linux_amd64_2.2.402
@@ -58,6 +278,7 @@ tasks:
 
   linux_amd64_3.0.100:
     platform: ubuntu1804
+    name: linux_amd64_3.0.100
     build_flags:
       - "--host_platform"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.0.100"
@@ -74,6 +295,7 @@ tasks:
       - "//..."
   darwin_amd64_3.0.100:
     platform: macos
+    name: darwin_amd64_3.0.100
     build_flags:
       - "--toolchain_resolution_debug"
       - "--host_platform"
@@ -91,6 +313,7 @@ tasks:
       - "//..."
   windows_amd64_3.0.100:
     platform: windows
+    name: windows_amd64_3.0.100
     build_flags:
       - "--toolchain_resolution_debug"
       - "--host_platform"
@@ -107,10 +330,9 @@ tasks:
     test_targets:
       - "//..."
 
-
-
   linux_amd64_3.1.100:
     platform: ubuntu1804
+    name: linux_amd64_3.1.100
     build_flags:
       - "--host_platform"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
@@ -127,6 +349,7 @@ tasks:
       - "//..."
   darwin_amd64_3.1.100:
     platform: macos
+    name: darwin_amd64_3.1.100
     build_flags:
       - "--toolchain_resolution_debug"
       - "--host_platform"
@@ -144,6 +367,7 @@ tasks:
       - "//..."
   windows_amd64_3.1.100:
     platform: windows
+    name: windows_amd64_3.1.100
     build_flags:
       - "--toolchain_resolution_debug"
       - "--host_platform"
