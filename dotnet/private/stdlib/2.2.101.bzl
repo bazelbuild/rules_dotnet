@@ -1,7 +1,11 @@
+"Define stdlibs"
+
 load("@io_bazel_rules_dotnet//dotnet/private:rules/stdlib.bzl", "core_stdlib_internal")
 load("@io_bazel_rules_dotnet//dotnet/private:rules/libraryset.bzl", "core_libraryset")
 
 def define_stdlib():
+    "Declares stdlibs"
+
     core_libraryset(
         name = "NETStandard.Library",
         deps = [

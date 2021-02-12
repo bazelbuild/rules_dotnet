@@ -1,3 +1,5 @@
+"Repository-level functions"
+
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@io_bazel_rules_dotnet//dotnet/private:sdk_core.bzl", "core_download_sdk")
 load(
@@ -12,7 +14,7 @@ load(
 
 def dotnet_repositories():
     """Fetches remote repositories required before loading other rules_dotnet files. 
-    
+
     It fetches basic dependencies. For example: bazel_skylib is loaded.
     """
     _maybe(

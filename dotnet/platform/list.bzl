@@ -1,3 +1,5 @@
+"Rules constants"
+
 BAZEL_DOTNETOS_CONSTRAINTS = {
     "darwin": "@bazel_tools//platforms:osx",
     "linux": "@bazel_tools//platforms:linux",

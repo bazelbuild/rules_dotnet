@@ -1,3 +1,5 @@
+"F# binary rules"
+
 load("//dotnet/private:context.bzl", "dotnet_context")
 load("//dotnet/private:providers.bzl", "DotnetLibraryInfo", "DotnetResourceListInfo")
 load("@io_bazel_rules_dotnet//dotnet/platform:list.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_NETSTANDARD")

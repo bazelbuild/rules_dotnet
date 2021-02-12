@@ -1,3 +1,5 @@
+"Helper functions for handling transitive info"
+
 load("@io_bazel_rules_dotnet//dotnet/private:providers.bzl", "DotnetLibraryInfo")
 load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "compare_versions")
 load("@io_bazel_rules_dotnet//dotnet/private:rules/runfiles.bzl", "CopyDataWithDirs", "CopyRunfiles")

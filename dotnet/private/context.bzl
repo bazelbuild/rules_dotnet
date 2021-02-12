@@ -1,3 +1,5 @@
+"DotnetContext declarations"
+
 load(
     "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
     "DotnetLibraryInfo",
@@ -143,7 +145,6 @@ def dotnet_context(ctx, lang):
         toolchain = ctx.toolchains["@io_bazel_rules_dotnet//dotnet:toolchain_type_fsharp_core"]
     else:
         fail("Only C# and F# are supported")
-
 
     ext = ""
     if toolchain.os == "windows":

@@ -1,12 +1,20 @@
+"Parsing version string and its tests"
+
+# buildifier: disable=confusing-name
 def parse_version(version):
     """Convert version to a tuple.
-    
-       Tuple will have a form (num1, num2, num3, num4, suffix). 
-       For example:
-          - 1.1 => (1, 1, 0, 0, "")
-          - 2.3.4.5 => (2, 3, 4, 5, "")
-          - 1.0.1-open => (1, 0, 1, 0, "open")
-          - 1.0.1-beta.12 => (1, 0, 1, 12, "beta")
+
+    Args:
+        version: String to parse
+
+    Returns:
+       Tuple will have a form (num1, num2, num3, num4, suffix).
+        For example
+                - 1.1 => (1, 1, 0, 0, "")
+                - 2.3.4.5 => (2, 3, 4, 5, "")
+                - 1.0.1-open => (1, 0, 1, 0, "open")
+                - 1.0.1-beta.12 => (1, 0, 1, 12, "beta")
+
     """
 
     lversion = version.split(".")
@@ -40,7 +48,10 @@ def parse_version(version):
     else:
         fail("Unreachable")
 
+# buildifier: disable=print
 def test_parse_version():
+    "Tests parse_version"
+
     a = parse_version("1.1")
     if a != (1, 1, 0, 0, ""):
         print("Unexpected result:", a)
@@ -62,7 +73,14 @@ def test_parse_version():
         fail("test 4 failed")
 
 def version2string(tversion):
-    """ Converts version tuple to string """
+    """ Converts version tuple to string
+
+    Args:
+        tversion: verstion tuple
+
+    Returns:
+        string representation of the version tuple
+    """
     s = ""
     if tversion[3] != 0:
         s = "{}.{}.{}.{}".format(tversion[0], tversion[1], tversion[2], tversion[3])
@@ -76,7 +94,10 @@ def version2string(tversion):
 
     return s
 
+# buildifier: disable=print
 def test_version2string():
+    "Tests version2string"
+
     a = "1.1"
     b = parse_version(a)
     c = version2string(b)
@@ -120,6 +141,17 @@ def test_version2string():
         fail("test 1 failed")
 
 def compare_versions(tversion1, tversion2):
+    """Compares two version tuples
+
+    Args:
+        tversion1: tuple to compare
+        tversion2: tuple to compare
+
+    Returns:
+        0: euual
+        1: tversion1>tversion2
+        -1: tversion1<tversion2
+    """
     for i in range(4):
         if tversion1[i] > tversion2[i]:
             return 1
@@ -145,7 +177,10 @@ def compare_versions(tversion1, tversion2):
 
     return 0
 
+# buildifier: disable=print
 def test_compare_versions():
+    "Test function for comparing versions"
+
     z = [["1.1", "1.1", 0], ["1.1", "1.2", -1], ["1.2", "1.1", 1], ["1.1.1", "1.1", 1], ["1.1", "1.1.1", -1], ["1.1.2.4", "1.1.2.3-beta", 1], ["1.1.2.3", "1.1.2.3-beta", 1]]
     for k in z:
         c = parse_version(k[0])

@@ -26,10 +26,6 @@ dotnet_register_toolchains()
 
 dotnet_repositories_nugets()
 
-load("@io_bazel_rules_dotnet//tests:bazel_tests.bzl", "test_environment")
-
-test_environment()
-
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(

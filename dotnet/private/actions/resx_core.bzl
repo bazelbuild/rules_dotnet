@@ -1,3 +1,5 @@
+"Actions for compiling resx files"
+
 load(
     "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
     "DotnetResourceInfo",

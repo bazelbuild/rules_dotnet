@@ -1,3 +1,5 @@
+"F# test rules"
+
 load("//dotnet/private:context.bzl", "dotnet_context")
 load("//dotnet/private:providers.bzl", "DotnetLibraryInfo", "DotnetResourceListInfo")
 load("@io_bazel_rules_dotnet//dotnet/private:rules/versions.bzl", "parse_version")

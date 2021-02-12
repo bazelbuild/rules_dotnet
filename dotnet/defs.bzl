@@ -1,3 +1,5 @@
+"Public declarations"
+
 load(
     "@io_bazel_rules_dotnet//dotnet/private:context.bzl",
     _dotnet_context = "dotnet_context",

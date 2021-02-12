@@ -1,3 +1,5 @@
+"nuget rules"
+
 load("@io_bazel_rules_dotnet//dotnet/private:providers.bzl", "DotnetLibraryInfo")
 load("@io_bazel_rules_dotnet//dotnet/platform:list.bzl", "DOTNET_CORE_FRAMEWORKS", "DOTNET_CORE_NAMES")
 

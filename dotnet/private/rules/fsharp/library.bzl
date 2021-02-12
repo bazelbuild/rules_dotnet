@@ -1,3 +1,5 @@
+"F# library rules"
+
 load("@io_bazel_rules_dotnet//dotnet/private:context.bzl", "dotnet_context")
 load(
     "//dotnet/private:providers.bzl",

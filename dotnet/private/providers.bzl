@@ -1,3 +1,5 @@
+"Key poviders"
+
 DotnetLibraryInfo = provider(
     doc = "DotnetLibraryInfo is a provider that exposes a compiled assembly along with it's full transitive dependencies.",
     fields = {

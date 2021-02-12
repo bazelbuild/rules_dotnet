@@ -23,7 +23,6 @@ fsharp_xunit_test(
         "@core_sdk_stdlib//:libraryset",
         "@xunit.assert//:lib",
         "@xunit.extensibility.core//:lib",
-
         "@xunit.extensibility.execution//:lib",
     ],
 )

@@ -1,3 +1,5 @@
+"core_download_sdk rule"
+
 def _core_download_sdk_impl(ctx):
     host = ctx.attr.os + "_" + ctx.attr.arch
     sdks = ctx.attr.sdks
@@ -19,8 +21,6 @@ core_download_sdk = repository_rule(
     },
     doc = "This downloads .NET Core SDK for given version. It usually is not used directly. Use [dotnet_repositories](api.md#dotnet_repositories) instead.",
 )
-
-"""See /dotnet/toolchains.rst#dotnet-sdk for full documentation."""
 
 def _remote_sdk(ctx, urls, strip_prefix, sha256):
     ctx.download_and_extract(

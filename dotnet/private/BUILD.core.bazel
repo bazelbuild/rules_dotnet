@@ -1,3 +1,6 @@
+load("@io_bazel_rules_dotnet//dotnet/private:stdlib/{sdkVersion}.bzl", "define_stdlib")
+load("@io_bazel_rules_dotnet//dotnet/private:stdlib/{sdkVersion}-runtime.bzl", "define_runtime")
+
 package(default_visibility = ["//visibility:public"])
 
 filegroup(
@@ -51,7 +54,6 @@ filegroup(
 #    srcs = glob(["core/**/bincore/*.dll"], exclude=["core/**/bincore/csc.dll"]),
 #)
 
-
 filegroup(
     name = "shared",
     srcs = glob([
@@ -62,8 +64,6 @@ filegroup(
 #exports_files(glob(["core/shared/**/*"]))
 #exports_files(glob(["core/**/bincore/csc.dll"]))
 
-load("@io_bazel_rules_dotnet//dotnet/private:stdlib/{sdkVersion}.bzl", "define_stdlib")
 define_stdlib()
 
-load("@io_bazel_rules_dotnet//dotnet/private:stdlib/{sdkVersion}-runtime.bzl", "define_runtime")
 define_runtime()

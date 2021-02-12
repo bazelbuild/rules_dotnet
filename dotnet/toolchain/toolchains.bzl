@@ -1,3 +1,5 @@
+"Declares toolchains"
+
 load("@io_bazel_rules_dotnet//dotnet/private:core_toolchain.bzl", "core_toolchain")
 load(
     "@io_bazel_rules_dotnet//dotnet/platform:list.bzl",
@@ -151,7 +153,7 @@ _toolchains = _generate_toolchains()
 
 _label_prefix = "@io_bazel_rules_dotnet//dotnet/toolchain:"
 
-def dotnet_register_toolchains():
+def dotnet_register_toolchains(name = None):
     """The macro registers all toolchains."""
 
     # Use the final dictionaries to register all the toolchains
@@ -178,7 +180,8 @@ def declare_toolchains():
             constraints_exec = toolchain["constraints_exec"],
         )
 
-def declare_constraints():
+# buildifier: disable=function-docstring-args
+def declare_constraints(name = None):
     """Generates constraint_values and platform targets for valid platforms.
     """
 

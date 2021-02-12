@@ -2,7 +2,6 @@
 Toolchain rules used by dotnet.
 """
 
-# load("@rules_dotnet_skylib//lib:paths.bzl", "paths")
 load("@io_bazel_rules_dotnet//dotnet/private:actions/assembly_core.bzl", "emit_assembly_core_csharp", "emit_assembly_core_fsharp")
 load("@io_bazel_rules_dotnet//dotnet/private:actions/resx_core.bzl", "emit_resx_core")
 
@@ -100,7 +99,20 @@ _fsharp_toolchain = rule(
 )
 
 def core_toolchain(name, lang, os, arch, os_exec, arch_exec, sdk_version, runtime_version, constraints_target, constraints_exec):
-    """See dotnet/toolchains.rst#core-toolchain for full documentation."""
+    """Declare toolchain.
+
+    Args:
+        name: name of the toolchain
+        lang: "csharp" or "fsharp"
+        os: os
+        arch: architecture
+        os_exec: os for host_platform
+        arch_exec: architecture for host_platform
+        sdk_version: sdk to use
+        runtime_version: runtime version for givent sdk
+        constraints_target: as required by toolchain declaration
+        constraints_exec: as required by toolchain declaration
+    """
 
     if lang == "csharp":
         csharp_impl_name = name + "-impl-csharp"

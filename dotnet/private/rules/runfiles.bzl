@@ -1,4 +1,19 @@
+"Helper functions for runfiles"
+
 def CopyRunfiles(ctx, runfiles, copy, symlink, executable, subdir):
+    """Copies all runfile to the same directory and returns new runfiles 
+
+    Args:
+       ctx: [DotnetContext](api.md#DotnetContext)
+       runfiles: depset(File) to copy to target directory of executable
+       copy: target for utility copy tool
+       symlink: target for utility symlink tool
+       executable: [DotnetLibrary](api.md#DotnetLibrary) which directory is used as a base dir for the runfiles
+       subdir: additional subdirectory to copy files to
+
+    Returns:
+       [runfiles](https://docs.bazel.build/versions/master/skylark/lib/runfiles.html)
+    """
     copied = {}
     created = []
     nocopy_dir = executable.result.dirname

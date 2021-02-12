@@ -1,3 +1,5 @@
+"Helper functions for resolving dependency versions"
+
 load(
     "@io_bazel_rules_dotnet//dotnet/private:providers.bzl",
     "DotnetLibraryInfo",
@@ -32,9 +34,19 @@ def _ResolveVersions(targets):
 
     return matched.values()
 
-# Tries to decipher arguments to the list of File or DotnetLibraryInfo
-# We need to do tricky calls because Starlark doesn't support recursion
 def ResolveVersions(*argv):
+    """ Tries to decipher arguments to the list of File or DotnetLibraryInfo.
+
+    We need to do tricky calls because Starlark doesn't support recursion
+
+    Args:
+        *argv: arguments to reolve
+
+    Returns:
+        transitive: transitive dependencies
+        transitive_runfiles: runfiles for those dependencies (depset)
+    """
+
     toprocess_transitive = []
     toprocess_runfiles = []
     for arg in argv:

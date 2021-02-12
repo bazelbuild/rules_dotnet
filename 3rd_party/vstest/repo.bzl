@@ -1,5 +1,6 @@
-# Source version v16.5.0
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "csharp_binary", "csharp_library", "core_resx")
+" vstest build from source. Source version v16.5.0"
+
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_resx", "csharp_binary", "csharp_library")
 
 csharp_library(
     name = "Microsoft.TestPlatform.PlatformAbstractions.dll",
