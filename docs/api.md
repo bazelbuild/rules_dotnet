@@ -888,11 +888,17 @@ def _my_rule_impl(ctx):
 ## dotnet_register_toolchains
 
 <pre>
-dotnet_register_toolchains()
+dotnet_register_toolchains(<a href="#dotnet_register_toolchains-name">name</a>)
 </pre>
 
 The macro registers all toolchains.
 
+**PARAMETERS**
+
+
+| Name  | Description | Default Value |
+| :------------- | :------------- | :------------- |
+| <a id="dotnet_register_toolchains-name"></a>name |  <p align="center"> - </p>   |  <code>None</code> |
 
 
 <a id="#dotnet_repositories"></a>
