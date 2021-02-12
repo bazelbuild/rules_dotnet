@@ -1,4 +1,5 @@
 ---
+buildifier: latest
 tasks:
   ubuntu1804:
     build_flags:
@@ -22,6 +23,7 @@ tasks:
     #   - "//tests/examples/example_binary:hello.exe"
   macos:
     build_flags:
+      - "--toolchain_resolution_debug"
       - "--host_platform"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
       - "--platforms"
@@ -42,6 +44,7 @@ tasks:
     #   - "//tests/examples/example_binary:hello.exe"
   windows:
     build_flags:
+      - "--toolchain_resolution_debug"
       - "--host_platform"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.100"
       - "--platforms"
