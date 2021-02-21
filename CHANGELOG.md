@@ -34,3 +34,17 @@ Important changes:
 
 
 This release contains contributions from Jimmy Reichley, Helgevold Consulting, and tomaszstrejczek.
+
+Release 0.0.7 (2021-02-21)
+--------------------------
+
+Incompatible changes:
+
+  - Switching to using platforms & toolchains. 
+
+Important changes:
+
+  - F# support added.
+  - Sandboxing supported.
+
+This release contains contributions from Daniel P. Purkhús, samhowes, and tomaszstrejczek.
