@@ -10,6 +10,7 @@ namespace nuget2bazel
         public ProjectBazelConfig(string root)
         {
             RootPath = root;
+            
             Nuget2BazelConfigName = "nuget2config.json";
             BazelFileName = "WORKSPACE";
             Indent = false;
@@ -18,6 +19,8 @@ namespace nuget2bazel
         }
         public ProjectBazelConfig(BaseVerb verb)
         {
+            ProjectFiles = verb.ProjectFiles;
+
             RootPath = verb.RootPath;
             if (RootPath == null)
                 RootPath = Directory.GetCurrentDirectory();
@@ -35,5 +38,6 @@ namespace nuget2bazel
         public string NugetSource { get; set; }
         public bool NugetSourceCustom { get; set; }
         public bool Indent { get; set; }
+        public string ProjectFiles { get; set; }
     }
 }

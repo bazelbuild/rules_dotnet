@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading;
@@ -23,6 +24,16 @@ namespace nuget2bazel
         {
             var project = new ProjectBazelManipulator(prjConfig, mainFile, skipSha256, variable);
 
+            if(prjConfig.ProjectFiles != null)
+            {
+                var projectFileParser = new ProjectFileParser(prjConfig);
+                var packages = projectFileParser.GetNugetPackages();
+                
+                var nugetTasks = packages.Select(p => DoWithProject(prjConfig.NugetSource, p.Name, p.Version, project, lowest)).ToArray();
+                
+                return Task.WhenAll(nugetTasks);
+            }
+            
             return DoWithProject(prjConfig.NugetSource, package, version, project, lowest);
         }
         public async Task DoWithProject(string nugetSource, string package, string version, ProjectBazelManipulator project, bool lowest)

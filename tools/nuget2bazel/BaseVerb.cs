@@ -33,5 +33,10 @@ namespace nuget2bazel
             Default = false,
             HelpText = "Should nuget_package reference source variable")]
         public bool NugetSourceCustom { get; set; }
+
+        [Option('f', "Visual Studio project files",
+            Default = null,
+            HelpText = "project files")]
+        public string ProjectFiles { get; set; }
     }
 }

@@ -8,12 +8,12 @@ namespace nuget2bazel
     public class AddOrUpdateVerb : BaseVerb
     {
         [Value(index: 0,
-            Required = true,
+            Required = false,
             HelpText = "Package id. ")]
         public string Package { get; set; }
 
         [Value(index: 1,
-            Required = true,
+            Required = false,
             HelpText = "Package version")]
         public string Version { get; set; }
 
