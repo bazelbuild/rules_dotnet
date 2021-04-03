@@ -7,10 +7,10 @@ load("@io_bazel_rules_dotnet//dotnet/private:rules/libraryset.bzl", "core_librar
 def define_runtime():
     "Declares stdlibs"
 
-    native.alias(name="system.security.accesscontrol.dll", actual=":p1_system.security.accesscontrol.dll")
-    native.alias(name="system.security.principal.windows.dll", actual=":p1_system.security.principal.windows.dll")
-    native.alias(name="microsoft.win32.registry.dll", actual=":p1_microsoft.win32.registry.dll")
-    native.alias(name="system.security.cryptography.cng.dll", actual=":p1_system.security.cryptography.cng.dll")
+    native.alias(name = "system.security.accesscontrol.dll", actual = ":p1_system.security.accesscontrol.dll")
+    native.alias(name = "system.security.principal.windows.dll", actual = ":p1_system.security.principal.windows.dll")
+    native.alias(name = "microsoft.win32.registry.dll", actual = ":p1_microsoft.win32.registry.dll")
+    native.alias(name = "system.security.cryptography.cng.dll", actual = ":p1_system.security.cryptography.cng.dll")
     core_stdlib_internal(
         name = "system.security.cryptography.openssl.dll",
         version = "4.1.3.0",
@@ -23,7 +23,7 @@ def define_runtime():
             ":system.resources.resourcemanager.dll",
             ":system.security.cryptography.algorithms.dll",
             ":system.security.cryptography.primitives.dll",
-        ]
+        ],
     )
     core_stdlib_internal(
         name = "system.runtime.windowsruntime.ui.xaml.dll",
@@ -35,7 +35,7 @@ def define_runtime():
             ":system.runtime.windowsruntime.dll",
             ":system.resources.resourcemanager.dll",
             ":system.runtime.extensions.dll",
-        ]
+        ],
     )
     core_stdlib_internal(
         name = "system.runtime.windowsruntime.dll",
@@ -46,7 +46,7 @@ def define_runtime():
             ":system.private.corelib.dll",
             ":system.objectmodel.dll",
             ":system.runtime.extensions.dll",
-        ]
+        ],
     )
     core_stdlib_internal(
         name = "system.private.xml.linq.dll",
@@ -67,7 +67,7 @@ def define_runtime():
             ":system.linq.dll",
             ":system.threading.thread.dll",
             ":system.memory.dll",
-        ]
+        ],
     )
     core_stdlib_internal(
         name = "system.private.xml.dll",
@@ -103,7 +103,7 @@ def define_runtime():
             ":system.memory.dll",
             ":system.threading.thread.dll",
             ":system.io.filesystem.dll",
-        ]
+        ],
     )
     core_stdlib_internal(
         name = "system.private.uri.dll",
@@ -112,7 +112,7 @@ def define_runtime():
         stdlib_path = ":core/shared/Microsoft.NETCore.App/3.1.13/System.Private.Uri.dll",
         deps = [
             ":system.private.corelib.dll",
-        ]
+        ],
     )
     core_stdlib_internal(
         name = "system.private.datacontractserialization.dll",
@@ -140,7 +140,7 @@ def define_runtime():
             ":system.text.regularexpressions.dll",
             ":system.xml.xdocument.dll",
             ":system.collections.specialized.dll",
-        ]
+        ],
     )
     core_stdlib_internal(
         name = "system.private.corelib.dll",
@@ -148,7 +148,7 @@ def define_runtime():
         ref = ":core/shared/Microsoft.NETCore.App/3.1.13/System.Private.CoreLib.dll",
         stdlib_path = ":core/shared/Microsoft.NETCore.App/3.1.13/System.Private.CoreLib.dll",
         deps = [
-        ]
+        ],
     )
     core_stdlib_internal(
         name = "system.io.pipes.accesscontrol.dll",
@@ -158,7 +158,7 @@ def define_runtime():
         deps = [
             ":system.runtime.dll",
             ":system.io.pipes.dll",
-        ]
+        ],
     )
     core_stdlib_internal(
         name = "system.io.filesystem.accesscontrol.dll",
@@ -178,7 +178,7 @@ def define_runtime():
             ":system.memory.dll",
             ":system.collections.nongeneric.dll",
             ":system.threading.tasks.dll",
-        ]
+        ],
     )
 
     core_libraryset(

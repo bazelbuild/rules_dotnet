@@ -143,7 +143,7 @@ CORE_SDK_REPOSITORIES = {
             # SHA512 Checsum provided
             # "3ff849ee3f9f7f282bdb05df3680be2949604f8a805e53595953f27c02bcb17ae8ab16c2856a29573a5f22fc6e0fc448461e36c031088f33b51d677784e1ffd0",
         ),
-    }
+    },
 }
 
 def _generate_toolchains():
