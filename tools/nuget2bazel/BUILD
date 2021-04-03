@@ -20,7 +20,7 @@ csharp_binary(
         "@nuget.common//:lib",
         "@nuget.configuration//:lib",
         "@nuget.frameworks//:lib",
-        "@nuget.packagemanagement.netstandard//:lib",
+        "@nuget.packagemanagement//:lib",
         "@nuget.packaging.core//:lib",
         "@nuget.packaging//:lib",
         "@nuget.projectmodel//:lib",

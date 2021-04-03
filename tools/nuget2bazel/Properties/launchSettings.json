@@ -2,7 +2,7 @@
   "profiles": {
     "nuget2bazel": {
       "commandName": "Project",
-      "commandLineArgs": "add -p c:/temp/1 -b nuget.bzl -c nuget.json -i xunit 2.4.1"
+      "commandLineArgs": "add -p c:/temp/1 -b nuget.bzl -c nuget.json -i Newtonsoft.Json 13.0.1"
     }
   }
 }

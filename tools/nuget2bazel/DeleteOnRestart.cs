@@ -27,6 +27,11 @@ namespace nuget2bazel
             throw new NotImplementedException();
         }
 
+        public Task DeleteMarkedPackageDirectoriesAsync(INuGetProjectContext projectContext)
+        {
+            throw new NotImplementedException();
+        }
+
         public void DeleteMarkedPackageDirectories(INuGetProjectContext projectContext)
         {
             throw new NotImplementedException();
