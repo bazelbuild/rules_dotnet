@@ -242,7 +242,7 @@ def emit_assembly_core_fsharp(
       dotnet: DotnetContextInfo provider
       name: name of the assembly
       srcs: source files (as passed from rules: list of lables/targets)
-      design_time_resources: Resources that are made available at design time. Primarily used by Type Providers. 
+      design_time_resources: Resources that are made available at design time. Primarily used by Type Providers.
       deps: list of DotnetLibraryInfo. Dependencies as passed from rules)
       out: output file name if provided. Otherwise name is used
       resources: list of DotnetResourceListInfo provider

@@ -757,7 +757,7 @@ Enriches standard context with additional fields used by rules.
 | <a id="DotnetContextInfo-label"></a>label |  Rule's label.    |
 | <a id="DotnetContextInfo-toolchain"></a>toolchain |  Toolchain selected for the rule.    |
 | <a id="DotnetContextInfo-actions"></a>actions |  Copy of ctx.actions (legacy).    |
-| <a id="DotnetContextInfo-assembly"></a>assembly |  Toolchain's assembly function. See [emit_assembly_core](api.md#emit_assembly_core) for the function signature.    |
+| <a id="DotnetContextInfo-assembly"></a>assembly |  Toolchain's assembly function. See [emit_assembly_core_csharp](api.md#emit_assembly_core_csharp) and [emit_assembly_core_fsharp](api.md#emit_assembly_core_fsharp) for the function signature.    |
 | <a id="DotnetContextInfo-resx"></a>resx |  Toolchain's resx function. See [emit_resx_core](api.md#emit_resx_core) for the function signature.    |
 | <a id="DotnetContextInfo-stdlib_byname"></a>stdlib_byname |  Helper function for locating stdlib by name.    |
 | <a id="DotnetContextInfo-exe_extension"></a>exe_extension |  The suffix to use for all executables in this build mode. Mostly used when generating the output filenames of binary rules.    |
@@ -936,9 +936,9 @@ emit_assembly_core_csharp(<a href="#emit_assembly_core_csharp-dotnet">dotnet</a>
                           <a href="#emit_assembly_core_csharp-data">data</a>, <a href="#emit_assembly_core_csharp-keyfile">keyfile</a>, <a href="#emit_assembly_core_csharp-subdir">subdir</a>, <a href="#emit_assembly_core_csharp-target_framework">target_framework</a>, <a href="#emit_assembly_core_csharp-nowarn">nowarn</a>, <a href="#emit_assembly_core_csharp-langversion">langversion</a>, <a href="#emit_assembly_core_csharp-version">version</a>)
 </pre>
 
-See dotnet/toolchains.rst#binary for full documentation. Emits actions for assembly build.
+Emits actions for assembly build.
 
-The function is used by all frameworks.
+The function is used to build C# assemblies..
 
 
 **PARAMETERS**
@@ -973,9 +973,9 @@ emit_assembly_core_fsharp(<a href="#emit_assembly_core_fsharp-dotnet">dotnet</a>
                           <a href="#emit_assembly_core_fsharp-keyfile">keyfile</a>, <a href="#emit_assembly_core_fsharp-subdir">subdir</a>, <a href="#emit_assembly_core_fsharp-target_framework">target_framework</a>, <a href="#emit_assembly_core_fsharp-nowarn">nowarn</a>, <a href="#emit_assembly_core_fsharp-langversion">langversion</a>, <a href="#emit_assembly_core_fsharp-version">version</a>)
 </pre>
 
-See dotnet/toolchains.rst#binary for full documentation. Emits actions for assembly build.
+Emits actions for assembly build.
 
-The function is used by all frameworks.
+The function is used got build F# assemblies.
 
 
 **PARAMETERS**
