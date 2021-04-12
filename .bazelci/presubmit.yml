@@ -33,7 +33,6 @@ tasks:
     platform: macos
     name: darwin_amd64_2.1.200
     build_flags:
-      - "--toolchain_resolution_debug"
       - "--host_platform"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_2.1.200"
       - "--platforms"
@@ -51,7 +50,6 @@ tasks:
     platform: windows
     name: windows_amd64_2.1.200
     build_flags:
-      - "--toolchain_resolution_debug"
       - "--host_platform"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_2.1.200"
       - "--platforms"
@@ -88,7 +86,6 @@ tasks:
     platform: macos
     name: darwin_amd64_2.1.502
     build_flags:
-      - "--toolchain_resolution_debug"
       - "--host_platform"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_2.1.502"
       - "--platforms"
@@ -106,7 +103,6 @@ tasks:
     platform: windows
     name: windows_amd64_2.1.502
     build_flags:
-      - "--toolchain_resolution_debug"
       - "--host_platform"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_2.1.502"
       - "--platforms"
@@ -143,7 +139,6 @@ tasks:
     platform: macos
     name: darwin_amd64_2.1.503
     build_flags:
-      - "--toolchain_resolution_debug"
       - "--host_platform"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_2.1.503"
       - "--platforms"
@@ -161,7 +156,6 @@ tasks:
     platform: windows
     name: windows_amd64_2.1.503
     build_flags:
-      - "--toolchain_resolution_debug"
       - "--host_platform"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_2.1.503"
       - "--platforms"
@@ -198,7 +192,6 @@ tasks:
     platform: macos
     name: darwin_amd64_2.2.101
     build_flags:
-      - "--toolchain_resolution_debug"
       - "--host_platform"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_2.2.101"
       - "--platforms"
@@ -216,7 +209,6 @@ tasks:
     platform: windows
     name: windows_amd64_2.2.101
     build_flags:
-      - "--toolchain_resolution_debug"
       - "--host_platform"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_2.2.101"
       - "--platforms"
@@ -253,7 +245,6 @@ tasks:
     platform: macos
     name: darwin_amd64_2.2.402
     build_flags:
-      - "--toolchain_resolution_debug"
       - "--host_platform"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_2.2.402"
       - "--platforms"
@@ -271,7 +262,6 @@ tasks:
     platform: windows
     name: windows_amd64_2.2.402
     build_flags:
-      - "--toolchain_resolution_debug"
       - "--host_platform"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_2.2.402"
       - "--platforms"
@@ -308,7 +298,6 @@ tasks:
     platform: macos
     name: darwin_amd64_3.0.100
     build_flags:
-      - "--toolchain_resolution_debug"
       - "--host_platform"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.0.100"
       - "--platforms"
@@ -326,7 +315,6 @@ tasks:
     platform: windows
     name: windows_amd64_3.0.100
     build_flags:
-      - "--toolchain_resolution_debug"
       - "--host_platform"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.0.100"
       - "--platforms"
@@ -362,7 +350,6 @@ tasks:
     platform: macos
     name: darwin_amd64_3.1.100
     build_flags:
-      - "--toolchain_resolution_debug"
       - "--host_platform"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.100"
       - "--platforms"
@@ -380,7 +367,6 @@ tasks:
     platform: windows
     name: windows_amd64_3.1.100
     build_flags:
-      - "--toolchain_resolution_debug"
       - "--host_platform"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.100"
       - "--platforms"
@@ -484,7 +470,6 @@ tasks:
     platform: macos
     name: darwin_amd64_3.1.407
     build_flags:
-      - "--toolchain_resolution_debug"
       - "--host_platform"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.407"
       - "--platforms"
@@ -502,7 +487,6 @@ tasks:
     platform: windows
     name: windows_amd64_3.1.407
     build_flags:
-      - "--toolchain_resolution_debug"
       - "--host_platform"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.407"
       - "--platforms"
