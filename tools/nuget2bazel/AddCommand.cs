@@ -57,7 +57,7 @@ namespace nuget2bazel
                 PackagesFolderNuGetProject = project
             };
 
-            const bool allowPrereleaseVersions = true;
+            const bool allowPrereleaseVersions = false;
             const bool allowUnlisted = false;
             var resolutionContext = new ResolutionContext(
                 lowest ? DependencyBehavior.Lowest : DependencyBehavior.HighestMinor, allowPrereleaseVersions, allowUnlisted, VersionConstraints.None);
