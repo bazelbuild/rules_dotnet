@@ -56,22 +56,25 @@ Setup
 
   ```python
 
-    # A newer version should be fine
-    load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
-    git_repository(
-        name = "io_bazel_rules_dotnet",
-        remote = "https://github.com/bazelbuild/rules_dotnet",
-        branch = "master",
-    )
+  # A newer version should be fine
+  load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+  git_repository(
+      name = "io_bazel_rules_dotnet",
+      remote = "https://github.com/bazelbuild/rules_dotnet",
+      branch = "master",
+  )
 
-    load("@io_bazel_rules_dotnet//dotnet:deps.bzl", "dotnet_repositories")
+  load("@io_bazel_rules_dotnet//dotnet:deps.bzl", "dotnet_repositories")
+  dotnet_repositories()
 
-    dotnet_repositories()
+  load(
+      "@io_bazel_rules_dotnet//dotnet:defs.bzl",
+      "dotnet_register_toolchains",
+      "dotnet_repositories_nugets",
+  )
 
-    load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_register_sdk", "dotnet_register_toolchains", "dotnet_repositories_nugets")
-
-    dotnet_register_toolchains()
-    dotnet_repositories_nugets()
+  dotnet_register_toolchains()
+  dotnet_repositories_nugets()
   ```
 
   The [dotnet_repositories](docs/api.md#dotnet_repositories) rule fetches external dependencies which have to be defined before loading any other file of rules_dotnet. [dotnet_repositories_nugets](docs/api.md#dotnet_repositories_nugets) loads nuget packages 
