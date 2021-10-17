@@ -48,26 +48,27 @@ RUN curl -o /tmp/dive.deb -fsSL https://github.com/wagoodman/dive/releases/downl
 #########################################################
 USER gitpod
 RUN mkdir $HOME/bin
+ENV PATH=$PATH:$HOME/bin
 
 #########################################
 ### Bazel and Bazel releated binaries ###
 #########################################
 # Install bazelisk and make it available on PATH as it as bazel
-RUN curl -o bazelisk-linux-arm64 https://github.com/bazelbuild/bazelisk/releases/download/v1.10.1/bazelisk-linux-arm64 \
-  && mv ./bazelisk-linux-arm64 $HOME/bin/bazel \
+RUN curl -o bazelisk-linux-amd64 -fsSL https://github.com/bazelbuild/bazelisk/releases/download/v1.10.1/bazelisk-linux-amd64 \
+  && mv ./bazelisk-linux-amd64 $HOME/bin/bazel \
   && chmod +x $HOME/bin/bazel
 
 # Install bazel-watcher
-RUN curl -o ibazel_linux_amd64 https://github.com/bazelbuild/bazel-watcher/releases/download/v0.15.10/ibazel_linux_amd64 \
+RUN curl -o ibazel_linux_amd64 -fsSL https://github.com/bazelbuild/bazel-watcher/releases/download/v0.15.10/ibazel_linux_amd64 \
   && mv ./ibazel_linux_amd64 $HOME/bin/ibazel \
   && chmod +x $HOME/bin/ibazel
 
 # Install buildifier
-RUN curl -o buildifier-linux-arm64 https://github.com/bazelbuild/buildtools/releases/download/4.2.2/buildifier-linux-arm64 \
-  && mv ./buildifier-linux-arm64 $HOME/bin/buildifier \
+RUN curl -o buildifier-linux-amd64 -fsSL https://github.com/bazelbuild/buildtools/releases/download/4.2.2/buildifier-linux-amd64 \
+  && mv ./buildifier-linux-amd64 $HOME/bin/buildifier \
   && chmod +x $HOME/bin/buildifier
 
 # Install buildozer
-RUN curl -o buildozer-linux-arm64 https://github.com/bazelbuild/buildtools/releases/download/4.2.2/buildozer-linux-arm64 \
-  && mv ./buildozer-linux-arm64 $HOME/bin/buildozer \
+RUN curl -o buildozer-linux-amd64 -fsSL https://github.com/bazelbuild/buildtools/releases/download/4.2.2/buildozer-linux-amd64 \
+  && mv ./buildozer-linux-amd64 $HOME/bin/buildozer \
   && chmod +x $HOME/bin/buildozer
