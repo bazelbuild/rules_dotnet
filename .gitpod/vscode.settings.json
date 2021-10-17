@@ -1,0 +1,72 @@
+{
+    ////////////
+    // General
+    ////////////
+    "extensions.ignoreRecommendations": true,
+    "extensions.autoUpdate": false,
+    // Files excluded from watches for performance reasons
+    "files.watcherExclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/.idea": true,
+        "**/.metals": true,
+        "**/.mypy_cache": true,
+        "**/.pants.d": true,
+        "**/.pids": true,
+        "**/bazel-out": true,
+        "**/bazel-testlogs": true,
+        "**/bazel-rules_dotnet": true,
+        "**/bazel-bin": true,
+        "**/dist": true,
+        "**/.cache": true,
+        "**/node_modules": true,
+        "**/bin": true,
+        "**/obj": true,
+    },
+    // Files excluded for performance reasons
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/.idea": true,
+        "**/.metals": true,
+        "**/.mypy_cache": true,
+        "**/.pants.d": true,
+        "**/.pids": true,
+        "**/bazel-out": true,
+        "**/bazel-testlogs": true,
+        "**/bazel-rules_dotnet": true,
+        "**/bazel-bin": true,
+        "**/dist": true,
+        "**/.cache": true,
+        "**/node_modules": true,
+        "**/bin": true,
+        "**/obj": true,
+    },
+    //////////
+    // Bazel
+    //////////
+    "bazel.buildifierFixOnFormat": true,
+    "bazel.enableCodeLens": true,
+    //////////
+    // F#
+    //////////
+    "FSharp.enableMSBuildProjectGraph": false,
+    "FSharp.externalAutocomplete": true,
+    "FSharp.excludeProjectDirectories": [
+        ".git",
+        ".fable",
+        "node_modules",
+        "bazel-out",
+        "bazel-rules_dotnet",
+        "bazel-testlogs",
+        "bazel-bin",
+        ".idea",
+    ],
+    "FSharp.workspaceModePeekDeepLevel": 15,
+}
