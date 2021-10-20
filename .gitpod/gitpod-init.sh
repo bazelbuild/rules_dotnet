@@ -1,10 +1,11 @@
 #! /usr/bin/env bash
 
-if [[ -f ".bazelrc.user" ]]; then
-    rm .bazelrc.user
-fi
-
+# This script only updates the settings if it's run in a Gitpod workspace.
 if [[ -n "${GITPOD_WORKSPACE_URL}" ]]; then
+    if [[ -f ".bazelrc.user" ]]; then
+        rm .bazelrc.user
+    fi
+
     cp -R /home/gitpod/dotnet /tmp/dotnet
     cat <<EOT >> .bazelrc.user
 build --disk_cache=/workspace/bazel-disk-cache
