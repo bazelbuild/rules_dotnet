@@ -22,7 +22,7 @@ For example:
             "foo.cs",
             "bar.cs",
         ],
-        target_compatible_with = ["@io_bazel_rules_dotnet//dotnet/toolchain:3.0.100],
+        target_compatible_with = ["@io_bazel_rules_dotnet//dotnet/toolchain:3.1.100"],
     )
     ```
 
@@ -39,8 +39,8 @@ For example:
             "bar.cs",
         ],
       target_compatible_with = select({
-          "@io_bazel_rules_dotnet//dotnet/toolchain:3.0.100": [],
           "@io_bazel_rules_dotnet//dotnet/toolchain:3.1.100": [],
+          "@io_bazel_rules_dotnet//dotnet/toolchain:5.0.201": [],
           "//conditions:default": ["@platforms//:incompatible"],
       }),
     )

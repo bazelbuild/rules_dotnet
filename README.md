@@ -1,13 +1,13 @@
-C# Rules for Bazel_
+.Net Rules for Bazel
 ===================
 [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/bazelbuild/rules_dotnet)
 
 Build status
 ------------
 
-  | Azure pipelines | Travis CI     | Appveyor        |
-  | --------------- | ------------- | --------------- |
-  | [![](https://dev.azure.com/tomaszstrejczek/rules_dotnet/_apis/build/status/tomaszstrejczek.rules_dotnet?branchName=master)](https://dev.azure.com/tomaszstrejczek/rules_dotnet/_build)    | [![](https://api.travis-ci.org/bazelbuild/rules_dotnet.svg?branch=master)](https://travis-ci.org/bazelbuild/rules_dotnet) | [![](https://ci.appveyor.com/api/projects/status/obpncs8e7wab1yty/branch/master)](https://ci.appveyor.com/project/tomek1909/rules-dotnet/branch/master) |
+  | Bazel CI |
+  | --------------- |
+  | [![Build status](https://badge.buildkite.com/76523cc666caab9ca91c2a08d9ac8f84af28cb25a92f387293.svg?branch=master)](https://buildkite.com/bazel/rules-dotnet-edge?branch=master)|
 
 
 Documentation
@@ -19,7 +19,7 @@ The full documentation is [here](https://tomaszstrejczek.github.io/rules_dotnet/
 Overview
 --------
 
-This is a minimal viable set of C# bindings for building C# code with
+This is a minimal viable set of C#/F# bindings for building C#/F# code with
 [Core](https://en.wikipedia.org/wiki/.NET_Core)
 
 Caveats

@@ -4,7 +4,6 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_NETSTANDARD", "csharp_li
     name = "{}_lib.dll".format(framework),
     srcs = ["Lib.cs"],
     target_compatible_with = select({
-        "@io_bazel_rules_dotnet//dotnet/toolchain:3.0.100": [],
         "@io_bazel_rules_dotnet//dotnet/toolchain:3.1.100": [],
         "@io_bazel_rules_dotnet//dotnet/toolchain:3.1.407": [],
         "//conditions:default": ["@platforms//:incompatible"],
@@ -21,7 +20,6 @@ load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "DOTNET_NETSTANDARD", "csharp_li
         "XUnitTest.cs",
     ],
     target_compatible_with = select({
-        "@io_bazel_rules_dotnet//dotnet/toolchain:3.0.100": [],
         "@io_bazel_rules_dotnet//dotnet/toolchain:3.1.100": [],
         "@io_bazel_rules_dotnet//dotnet/toolchain:3.1.407": [],
         "//conditions:default": ["@platforms//:incompatible"],
