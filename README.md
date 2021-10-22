@@ -7,7 +7,7 @@ Build status
 
   | Bazel CI |
   | --------------- |
-  | [![Build status](https://badge.buildkite.com/76523cc666caab9ca91c2a08d9ac8f84af28cb25a92f387293.svg?branch=master)](https://buildkite.com/bazel/rules-dotnet-edge?branch=master)|
+  | [![Build status](https://badge.buildkite.com/703775290818dcb2af754f503ed54dc11bb124fce2a6bf1606.svg?branch=master)](https://buildkite.com/bazel/rules-dotnet-edge)|
 
 
 Documentation
