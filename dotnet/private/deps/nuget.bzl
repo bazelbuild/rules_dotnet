@@ -1579,8 +1579,8 @@ def dotnet_repositories_nuget():
     nuget_package(
         name = "nuget.frameworks",
         package = "nuget.frameworks",
-        version = "5.9.0",
-        sha256 = "91011f1498904d5c349ea1d63b4b1714d56ae8b4ad850c56d90ed2b72b583325",
+        version = "5.11.0",
+        sha256 = "9fe87172b7feb1733cd13bfd607f71e3e8704ec95589d16ae2d8c134f0336273",
         core_lib = {
             "netcoreapp2.0": "lib/netstandard2.0/NuGet.Frameworks.dll",
             "netcoreapp2.1": "lib/netstandard2.0/NuGet.Frameworks.dll",
@@ -1619,8 +1619,8 @@ def dotnet_repositories_nuget():
     nuget_package(
         name = "nuget.common",
         package = "nuget.common",
-        version = "5.9.0",
-        sha256 = "8917c99e4d39d1037269297caa68f103eea73fc7ee23783210896bfd329a13c8",
+        version = "5.11.0",
+        sha256 = "2337807f00c9a604dc78e6725c70f3954b4ca2798a3a17da6e92d5929936aeaa",
         core_lib = {
             "netcoreapp2.0": "lib/netstandard2.0/NuGet.Common.dll",
             "netcoreapp2.1": "lib/netstandard2.0/NuGet.Common.dll",
@@ -1679,8 +1679,8 @@ def dotnet_repositories_nuget():
     nuget_package(
         name = "nuget.configuration",
         package = "nuget.configuration",
-        version = "5.9.0",
-        sha256 = "a9e7acf8752ee5c9cb7c670c1c4e48a371b3e130fac6a3b02df8c18da993989b",
+        version = "5.11.0",
+        sha256 = "7494b9120336e80ab69dc37117ba7b88b32075834a837fedf932f97e605e37e9",
         core_lib = {
             "netcoreapp2.0": "lib/netstandard2.0/NuGet.Configuration.dll",
             "netcoreapp2.1": "lib/netstandard2.0/NuGet.Configuration.dll",
@@ -1739,8 +1739,8 @@ def dotnet_repositories_nuget():
     nuget_package(
         name = "nuget.versioning",
         package = "nuget.versioning",
-        version = "5.9.0",
-        sha256 = "95fcd7b2a5553c843c58a85162a59ca685d64c70338209f71885a6d16d427ee5",
+        version = "5.11.0",
+        sha256 = "7817e7f752abed5bfe8ecf24bcaae76a2d96dd937b758fbbbbd8af1c6c282310",
         core_lib = {
             "netcoreapp2.0": "lib/netstandard2.0/NuGet.Versioning.dll",
             "netcoreapp2.1": "lib/netstandard2.0/NuGet.Versioning.dll",
@@ -1779,8 +1779,8 @@ def dotnet_repositories_nuget():
     nuget_package(
         name = "nuget.librarymodel",
         package = "nuget.librarymodel",
-        version = "5.9.0",
-        sha256 = "de41e8a675d3e3a96cb0019c05d0bc59240186d620824acfbcb981465ba9ded4",
+        version = "5.11.0",
+        sha256 = "7e058575642261f1e03e6c9d1b030018175adfd4b7f623775e04806608ed6ca2",
         core_lib = {
             "netcoreapp2.0": "lib/netstandard2.0/NuGet.LibraryModel.dll",
             "netcoreapp2.1": "lib/netstandard2.0/NuGet.LibraryModel.dll",
@@ -1845,8 +1845,8 @@ def dotnet_repositories_nuget():
     nuget_package(
         name = "nuget.packaging",
         package = "nuget.packaging",
-        version = "5.9.0",
-        sha256 = "fd92e804a62247a12c5ccdfa40398f408529e46e96755505248b823d04b21a54",
+        version = "5.11.0",
+        sha256 = "bb871093b8b367e50b87d88ee699ddaa0fbc70bee0d8c6cc5e67788ba0b6af67",
         core_lib = {
             "netcoreapp2.0": "lib/netstandard2.0/NuGet.Packaging.dll",
             "netcoreapp2.1": "lib/netstandard2.0/NuGet.Packaging.dll",
@@ -1917,8 +1917,8 @@ def dotnet_repositories_nuget():
     nuget_package(
         name = "nuget.protocol",
         package = "nuget.protocol",
-        version = "5.9.0",
-        sha256 = "96b0cd4562e61f93481f106f4148a329dcb6f4a946f5c06bbb0bcbdb7b786edb",
+        version = "5.11.0",
+        sha256 = "ab5d4f72a36d7d329abdfaf548fb66253131deac07ad75be32b0b0e98dda3710",
         core_lib = {
             "netcoreapp2.0": "lib/netstandard2.0/NuGet.Protocol.dll",
             "netcoreapp2.1": "lib/netstandard2.0/NuGet.Protocol.dll",
@@ -1977,8 +1977,8 @@ def dotnet_repositories_nuget():
     nuget_package(
         name = "nuget.credentials",
         package = "nuget.credentials",
-        version = "5.9.0",
-        sha256 = "90100597c829227c2ab900b1b09f16381e75f95bac88179be7ec2a0dd2979cbe",
+        version = "5.11.0",
+        sha256 = "d20e076dc8d235dcb19bea16b2500a914f0ea8038121ced49b1ef46170e1c60b",
         core_lib = {
             "netcoreapp2.0": "lib/netstandard2.0/NuGet.Credentials.dll",
             "netcoreapp2.1": "lib/netstandard2.0/NuGet.Credentials.dll",
@@ -2031,8 +2031,8 @@ def dotnet_repositories_nuget():
     nuget_package(
         name = "nuget.dependencyresolver.core",
         package = "nuget.dependencyresolver.core",
-        version = "5.9.0",
-        sha256 = "dfa61e27ef91dbad5eb635cd48d82d50f1fd79a9fdd415e1e8716383e86639b8",
+        version = "5.11.0",
+        sha256 = "d9c663c6edd7f3712935eaefa6ad2fd8a03000efb79210e43f2b748ab6eb947a",
         core_lib = {
             "netcoreapp2.0": "lib/netstandard2.0/NuGet.DependencyResolver.Core.dll",
             "netcoreapp2.1": "lib/netstandard2.0/NuGet.DependencyResolver.Core.dll",
@@ -2097,8 +2097,8 @@ def dotnet_repositories_nuget():
     nuget_package(
         name = "nuget.projectmodel",
         package = "nuget.projectmodel",
-        version = "5.9.0",
-        sha256 = "a3f3c9b2df66fcfccd3e02fb5b05987391acb360b3a5783a1758aff23b740d1b",
+        version = "5.11.0",
+        sha256 = "05dc2ccbde8aa54e380ebe8954a3ce84e9a265867fb8c290d148369ca6620dc4",
         core_lib = {
             "netcoreapp2.0": "lib/netstandard2.0/NuGet.ProjectModel.dll",
             "netcoreapp2.1": "lib/netstandard2.0/NuGet.ProjectModel.dll",
@@ -2157,8 +2157,8 @@ def dotnet_repositories_nuget():
     nuget_package(
         name = "nuget.commands",
         package = "nuget.commands",
-        version = "5.9.0",
-        sha256 = "9309a638d6a59129ef1489f9f7573c6b9aa01bd4f42faef69be3330703ffaed4",
+        version = "5.11.0",
+        sha256 = "f1595f02bdc5b02c339b2225b13591ffa49eda701f2a26a107c4a7058fb3f84d",
         core_lib = {
             "netcoreapp2.0": "lib/netstandard2.0/NuGet.Commands.dll",
             "netcoreapp2.1": "lib/netstandard2.0/NuGet.Commands.dll",
@@ -2223,8 +2223,8 @@ def dotnet_repositories_nuget():
     nuget_package(
         name = "nuget.resolver",
         package = "nuget.resolver",
-        version = "5.9.0",
-        sha256 = "cf05f848b1ef29e0217df2d7609b11f7b1d85f1d7f74e282912cb7c9a32a0cd9",
+        version = "5.11.0",
+        sha256 = "4009f27a0a4057cd6466ecdbb6bffbcfc192a519e69189d3c46ec1956ca3083d",
         core_lib = {
             "netcoreapp2.0": "lib/netstandard2.0/NuGet.Resolver.dll",
             "netcoreapp2.1": "lib/netstandard2.0/NuGet.Resolver.dll",
@@ -2283,8 +2283,8 @@ def dotnet_repositories_nuget():
     nuget_package(
         name = "nuget.packagemanagement",
         package = "nuget.packagemanagement",
-        version = "5.9.0",
-        sha256 = "c0e6877d72992e158669e0d51b527cccd055d239fad422e54cd5dbab984e5ade",
+        version = "5.11.0",
+        sha256 = "7cf5f6f40f3220c2b32f7eb9c12bed492626a2b702055a04de0013b387ce8fcd",
         core_lib = {
             "netcoreapp2.0": "lib/netstandard2.0/NuGet.PackageManagement.dll",
             "netcoreapp2.1": "lib/netstandard2.0/NuGet.PackageManagement.dll",
@@ -2355,8 +2355,8 @@ def dotnet_repositories_nuget():
     nuget_package(
         name = "nuget.packaging.core",
         package = "nuget.packaging.core",
-        version = "5.9.0",
-        sha256 = "06cee96d7fea529f220cb63ad42da51eed8d8fb8c6e16a98252b005129ae2495",
+        version = "5.11.0",
+        sha256 = "1cbd091bb0ad1fecfeee38ed33c120d193a22bdbaa9e9d68fbde71b9f4bf0612",
         core_lib = {
             "netcoreapp2.0": "lib/netstandard2.0/NuGet.Packaging.Core.dll",
             "netcoreapp2.1": "lib/netstandard2.0/NuGet.Packaging.Core.dll",
