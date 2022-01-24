@@ -7,7 +7,7 @@ Build status
 
   | Bazel CI |
   | --------------- |
-  | [![Build status](https://badge.buildkite.com/76523cc666caab9ca91c2a08d9ac8f84af28cb25a92f387293.svg?branch=master)](https://buildkite.com/bazel/rules-dotnet-edge?branch=master)|
+  | [![Build status](https://badge.buildkite.com/703775290818dcb2af754f503ed54dc11bb124fce2a6bf1606.svg?branch=master)](https://buildkite.com/bazel/rules-dotnet-edge)|
 
 
 Documentation
@@ -45,7 +45,7 @@ Setup
 * When building any project the platform has to be specified. For example:
 
   ```bash
-      bazel build --host_platform //dotnet/toolchain:linux_amd64_2.2.402 --platforms //dotnet/toolchain:linux_amd64_2.2.402 //...
+      bazel build --host_platform --host_platform=@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_5.0.201 --platforms=@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_5.0.201 //...
   ```
 
 * The platform specification has the form of //dotnet/toolchain:<os>_<arch>_<sdkversion>. 
@@ -56,22 +56,25 @@ Setup
 
   ```python
 
-    # A newer version should be fine
-    load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
-    git_repository(
-        name = "io_bazel_rules_dotnet",
-        remote = "https://github.com/bazelbuild/rules_dotnet",
-        branch = "master",
-    )
+  # A newer version should be fine
+  load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+  git_repository(
+      name = "io_bazel_rules_dotnet",
+      remote = "https://github.com/bazelbuild/rules_dotnet",
+      branch = "master",
+  )
 
-    load("@io_bazel_rules_dotnet//dotnet:deps.bzl", "dotnet_repositories")
+  load("@io_bazel_rules_dotnet//dotnet:deps.bzl", "dotnet_repositories")
+  dotnet_repositories()
 
-    dotnet_repositories()
+  load(
+      "@io_bazel_rules_dotnet//dotnet:defs.bzl",
+      "dotnet_register_toolchains",
+      "dotnet_repositories_nugets",
+  )
 
-    load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_register_sdk", "dotnet_register_toolchains", "dotnet_repositories_nugets")
-
-    dotnet_register_toolchains()
-    dotnet_repositories_nugets()
+  dotnet_register_toolchains()
+  dotnet_repositories_nugets()
   ```
 
   The [dotnet_repositories](docs/api.md#dotnet_repositories) rule fetches external dependencies which have to be defined before loading any other file of rules_dotnet. [dotnet_repositories_nugets](docs/api.md#dotnet_repositories_nugets) loads nuget packages 

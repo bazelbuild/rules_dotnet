@@ -252,6 +252,74 @@ tasks:
     test_targets:
       - "//..."
 
+  grpc_linux_amd64_3.1.407:
+    platform: ubuntu1804
+    name: grpc_linux_amd64_3.1.407
+    working_directory: examples/grpc
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.407"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_3.1.407"
+    test_targets:
+      - "//..."
+  grpc_windows_amd64_3.1.407:
+    platform: windows
+    name: grpc_windows_amd64_3.1.407
+    working_directory: examples/grpc
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.407"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_3.1.407"
+    test_targets:
+      - "//..."
+  grpc_darwin_amd64_3.1.407:
+    platform: macos
+    name: grpc_darwin_amd64_3.1.407
+    working_directory: examples/grpc
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.407"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_3.1.407"
+    test_targets:
+      - "//..."
+
+  grpc_linux_amd64_5.0.201:
+    platform: ubuntu1804
+    name: grpc_linux_amd64_5.0.201
+    working_directory: examples/grpc
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_5.0.201"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_5.0.201"
+    test_targets:
+      - "//..."
+  grpc_windows_amd64_5.0.201:
+    platform: windows
+    name: grpc_windows_amd64_5.0.201
+    working_directory: examples/grpc
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_5.0.201"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_5.0.201"
+    test_targets:
+      - "//..."
+  grpc_darwin_amd64_5.0.201:
+    platform: macos
+    name: grpc_darwin_amd64_5.0.201
+    working_directory: examples/grpc
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_5.0.201"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_5.0.201"
+    test_targets:
+      - "//..."
+
   type_providers_linux_amd64_3.1.407:
     platform: ubuntu1804
     name: type_providers_linux_amd64_3.1.407

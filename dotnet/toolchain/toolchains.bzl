@@ -83,6 +83,29 @@ CORE_SDK_REPOSITORIES = {
             # "28d1e55e9002e63a354f4b5994e83114229701fe84fee41d083f1de33af751a288cab0605da7d3b0d0c3bbc10979ca0a3dbe13722d29313031e7732ad7f8e6d1",
         ),
     },
+    "5.0.404": {
+        # https://dotnet.microsoft.com/download/dotnet-core/thank-you/sdk-5.0.404-windows-x64-binaries
+        "windows_amd64": (
+            "https://download.visualstudio.microsoft.com/download/pr/fd6872c1-331b-47f7-b44c-061093651652/5e04c7e7b8860f42660b317f3f52eeec/dotnet-sdk-5.0.404-win-x64.zip",
+            "e8c98d54e3299c93a9339d73f6e6322dbc9f95895ffe56bc0261c1031a27ebea",
+            # SHA512 Checsum provided
+            # "a6d254a46e93a41bf41df34c941503cfc5f61af20ffc0abc571bbaf238fd66f0fcc879e7181e1e1af788e96912b31012e817bf1202e55b8f27c17352f3f5528d"
+        ),
+        # https://dotnet.microsoft.com/download/dotnet-core/thank-you/sdk-5.0.404-linux-x64-binaries
+        "linux_amd64": (
+            "https://download.visualstudio.microsoft.com/download/pr/2c1eb8c8-ac05-4dc7-9bef-307b3e450e9d/75e85b3d1662f60afd69572fd5df6884/dotnet-sdk-5.0.404-linux-x64.tar.gz",
+            "fd1df1d71244c4adcee62bcb00c11f1d0aa177adb03686331b60147fd0a8a4ca",
+            # SHA512 Checsum provided
+            # "6f9b83b2b661ce3b033a04d4c50ff3a435efa288de1a48f58be1150e64c5dd9d6bd2a4bf40f697dcd7d64ffaac24f14cc4a874e738544c5d0e8113c474fd2ee0"
+        ),
+        # https://dotnet.microsoft.com/download/dotnet-core/thank-you/sdk-5.0.404-macos-x64-binaries
+        "darwin_amd64": (
+            "https://download.visualstudio.microsoft.com/download/pr/90588609-df30-4cb7-b4aa-a2e71ec42c9a/9bc894713f459ebe73493552fd231807/dotnet-sdk-5.0.404-osx-x64.tar.gz",
+            "56c2b1515ec22cd7ed41f868859cba0043af0f82506f90f9e9ad226ed6b15d4e",
+            # SHA512 Checsum provided
+            # "fa1c4686e491f6ba2b37c5497453a4955bafceb28e097c3d95175a78d6381201972e8231e315de0126480cb8917b784784125316ffbfe1470a62238211bb255b"
+        ),
+    },
 }
 
 def _generate_toolchains():
