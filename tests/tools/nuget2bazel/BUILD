@@ -5,12 +5,6 @@ csharp_xunit_test(
     size = "medium",
     srcs = glob(["*.cs"]),
     nowarn = ["CS1701"],
-    deps = [
-        "@io_bazel_rules_dotnet//tools/nuget2bazel:nuget2bazel.exe",
-        "@xunit.assert//:lib",
-        "@xunit.extensibility.core//:lib",
-        "@xunit.extensibility.execution//:lib",
-    ],
     target_compatible_with = select({
         "@io_bazel_rules_dotnet//dotnet/toolchain:3.1.100": [],
         "@io_bazel_rules_dotnet//dotnet/toolchain:3.1.407": [],
@@ -20,4 +14,10 @@ csharp_xunit_test(
         # "@io_bazel_rules_dotnet//dotnet/toolchain:5.0.404": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
+    deps = [
+        "@io_bazel_rules_dotnet//tools/nuget2bazel:nuget2bazel.exe",
+        "@xunit.assert//:lib",
+        "@xunit.extensibility.core//:lib",
+        "@xunit.extensibility.execution//:lib",
+    ],
 )
