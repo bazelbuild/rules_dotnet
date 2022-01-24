@@ -11,4 +11,13 @@ csharp_xunit_test(
         "@xunit.extensibility.core//:lib",
         "@xunit.extensibility.execution//:lib",
     ],
+    target_compatible_with = select({
+        "@io_bazel_rules_dotnet//dotnet/toolchain:3.1.100": [],
+        "@io_bazel_rules_dotnet//dotnet/toolchain:3.1.407": [],
+        # There is an issue with nuget2Bazel on .Net > 3.1
+        # The plan is to replace nuget2bazel with a more robust tool so the test is disabled for now
+        # "@io_bazel_rules_dotnet//dotnet/toolchain:5.0.201": [],
+        # "@io_bazel_rules_dotnet//dotnet/toolchain:5.0.404": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
 )
