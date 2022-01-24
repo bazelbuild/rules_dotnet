@@ -184,6 +184,110 @@ tasks:
     test_targets:
       - "//..."
 
+  linux_amd64_5.0.101:
+    platform: ubuntu1804
+    name: linux_amd64_5.0.101
+    build_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_5.0.101"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_5.0.101"
+    build_targets:
+      - "//..."
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_5.0.101"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_5.0.101"
+    test_targets:
+      - "//..."
+  darwin_amd64_5.0.101:
+    platform: macos
+    name: darwin_amd64_5.0.101
+    build_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_5.0.101"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_5.0.101"
+    build_targets:
+      - "//..."
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_5.0.101"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_5.0.101"
+    test_targets:
+      - "//..."
+  windows_amd64_5.0.101:
+    platform: windows
+    name: windows_amd64_5.0.101
+    build_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_5.0.101"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_5.0.101"
+    build_targets:
+      - "//..."
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_5.0.101"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_5.0.101"
+    test_targets:
+      - "//..."
+
+  linux_amd64_5.0.404:
+    platform: ubuntu1804
+    name: linux_amd64_5.0.404
+    build_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_5.0.404"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_5.0.404"
+    build_targets:
+      - "//..."
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_5.0.404"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_5.0.404"
+    test_targets:
+      - "//..."
+  darwin_amd64_5.0.404:
+    platform: macos
+    name: darwin_amd64_5.0.404
+    build_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_5.0.404"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_5.0.404"
+    build_targets:
+      - "//..."
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_5.0.404"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_5.0.404"
+    test_targets:
+      - "//..."
+  windows_amd64_5.0.404:
+    platform: windows
+    name: windows_amd64_5.0.404
+    build_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_5.0.404"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_5.0.404"
+    build_targets:
+      - "//..."
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_5.0.404"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_5.0.404"
+    test_targets:
+      - "//..."
+
   ef_linux_amd64_3.1.407:
     platform: ubuntu1804
     name: ef_linux_amd64_3.1.407
@@ -252,6 +356,40 @@ tasks:
     test_targets:
       - "//..."
 
+  ef_linux_amd64_5.0.404:
+    platform: ubuntu1804
+    name: ef_linux_amd64_5.0.404
+    working_directory: examples/ef
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_5.0.404"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_5.0.404"
+    test_targets:
+      - "//..."
+  ef_windows_amd64_5.0.404:
+    platform: windows
+    name: ef_windows_amd64_5.0.404
+    working_directory: examples/ef
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_5.0.404"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_5.0.404"
+    test_targets:
+      - "//..."
+  ef_darwin_amd64_5.0.404:
+    platform: macos
+    name: ef_darwin_amd64_5.0.404
+    working_directory: examples/ef
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_5.0.404"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_5.0.404"
+    test_targets:
+      - "//..."
+
   type_providers_linux_amd64_3.1.407:
     platform: ubuntu1804
     name: type_providers_linux_amd64_3.1.407
@@ -317,5 +455,39 @@ tasks:
       - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_5.0.201"
       - "--platforms"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_5.0.201"
+    test_targets:
+      - "//..."
+
+  type_providers_linux_amd64_5.0.404:
+    platform: ubuntu1804
+    name: type_providers_linux_amd64_5.0.404
+    working_directory: examples/type_providers
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_5.0.404"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_5.0.404"
+    test_targets:
+      - "//..."
+  type_providers_windows_amd64_5.0.404:
+    platform: windows
+    name: type_providers_windows_amd64_5.0.404
+    working_directory: examples/type_providers
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_5.0.404"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:windows_amd64_5.0.404"
+    test_targets:
+      - "//..."
+  type_providers_darwin_amd64_5.0.404:
+    platform: macos
+    name: type_providers_darwin_amd64_5.0.404
+    working_directory: examples/type_providers
+    test_flags:
+      - "--host_platform"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_5.0.404"
+      - "--platforms"
+      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_5.0.404"
     test_targets:
       - "//..."
