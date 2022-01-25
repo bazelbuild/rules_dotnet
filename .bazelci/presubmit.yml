@@ -150,23 +150,6 @@ tasks:
       - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_6.0.101"
     test_targets:
       - "//..."
-  darwin_arm64_6.0.101:
-    platform: macos_arm64
-    name: darwin_arm64_6.0.101
-    build_flags:
-      - "--host_platform"
-      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_arm64_6.0.101"
-      - "--platforms"
-      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_arm64_6.0.101"
-    build_targets:
-      - "//..."
-    test_flags:
-      - "--host_platform"
-      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_arm64_6.0.101"
-      - "--platforms"
-      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_arm64_6.0.101"
-    test_targets:
-      - "//..."
   windows_amd64_6.0.101:
     platform: windows
     name: windows_amd64_6.0.101
@@ -286,17 +269,6 @@ tasks:
       - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_6.0.101"
     test_targets:
       - "//..."
-  ef_darwin_arm64_6.0.101:
-    platform: macos_arm64
-    name: ef_darwin_arm64_6.0.101
-    working_directory: examples/ef
-    test_flags:
-      - "--host_platform"
-      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_arm64_6.0.101"
-      - "--platforms"
-      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_arm64_6.0.101"
-    test_targets:
-      - "//..."
 
   grpc_linux_amd64_3.1.407:
     platform: ubuntu1804
@@ -399,17 +371,6 @@ tasks:
       - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_6.0.101"
     test_targets:
       - "//..."
-  grpc_darwin_arm64_6.0.101:
-    platform: macos_arm64
-    name: grpc_darwin_arm64_6.0.101
-    working_directory: examples/grpc
-    test_flags:
-      - "--host_platform"
-      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_arm64_6.0.101"
-      - "--platforms"
-      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_arm64_6.0.101"
-    test_targets:
-      - "//..."
 
   type_providers_linux_amd64_3.1.407:
     platform: ubuntu1804
@@ -510,16 +471,5 @@ tasks:
       - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_6.0.101"
       - "--platforms"
       - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_amd64_6.0.101"
-    test_targets:
-      - "//..."
-  type_providers_darwin_arm64_6.0.101:
-    platform: macos_arm64
-    name: type_providers_darwin_arm64_6.0.101
-    working_directory: examples/type_providers
-    test_flags:
-      - "--host_platform"
-      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_arm64_6.0.101"
-      - "--platforms"
-      - "@io_bazel_rules_dotnet//dotnet/toolchain:darwin_arm64_6.0.101"
     test_targets:
       - "//..."
