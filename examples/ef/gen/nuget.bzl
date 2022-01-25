@@ -18,6 +18,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "lib/netcoreapp2.1/Microsoft.Bcl.HashCode.dll",
             "netcoreapp3.1": "lib/netcoreapp2.1/Microsoft.Bcl.HashCode.dll",
             "net5.0": "lib/netcoreapp2.1/Microsoft.Bcl.HashCode.dll",
+            "net6.0": "lib/netcoreapp2.1/Microsoft.Bcl.HashCode.dll",
         },
         core_ref = {
             "netcoreapp2.0": "ref/netstandard2.0/Microsoft.Bcl.HashCode.dll",
@@ -26,6 +27,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "ref/netcoreapp2.1/Microsoft.Bcl.HashCode.dll",
             "netcoreapp3.1": "ref/netcoreapp2.1/Microsoft.Bcl.HashCode.dll",
             "net5.0": "ref/netcoreapp2.1/Microsoft.Bcl.HashCode.dll",
+            "net6.0": "ref/netcoreapp2.1/Microsoft.Bcl.HashCode.dll",
         },
         core_files = {
             "netcoreapp2.0": [
@@ -52,6 +54,10 @@ def project_dotnet_repositories_nuget():
                 "lib/netcoreapp2.1/Microsoft.Bcl.HashCode.dll",
                 "lib/netcoreapp2.1/Microsoft.Bcl.HashCode.xml",
             ],
+            "net6.0": [
+                "lib/netcoreapp2.1/Microsoft.Bcl.HashCode.dll",
+                "lib/netcoreapp2.1/Microsoft.Bcl.HashCode.xml",
+            ],
         },
     )
     nuget_package(
@@ -66,6 +72,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Abstractions.dll",
             "netcoreapp3.1": "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Abstractions.dll",
             "net5.0": "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Abstractions.dll",
+            "net6.0": "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Abstractions.dll",
         },
         core_files = {
             "netcoreapp2.0": [
@@ -89,6 +96,10 @@ def project_dotnet_repositories_nuget():
                 "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Abstractions.xml",
             ],
             "net5.0": [
+                "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Abstractions.dll",
+                "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Abstractions.xml",
+            ],
+            "net6.0": [
                 "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Abstractions.dll",
                 "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Abstractions.xml",
             ],
@@ -112,6 +123,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
             "netcoreapp3.1": "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
             "net5.0": "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+            "net6.0": "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
         },
         core_files = {
             "netcoreapp2.0": [
@@ -135,6 +147,10 @@ def project_dotnet_repositories_nuget():
                 "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
             ],
             "net5.0": [
+                "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+                "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+            ],
+            "net6.0": [
                 "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
                 "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
             ],
@@ -152,6 +168,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll",
             "netcoreapp3.1": "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll",
             "net5.0": "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll",
+            "net6.0": "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll",
         },
         core_files = {
             "netcoreapp2.0": [
@@ -175,6 +192,10 @@ def project_dotnet_repositories_nuget():
                 "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.xml",
             ],
             "net5.0": [
+                "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll",
+                "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.xml",
+            ],
+            "net6.0": [
                 "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll",
                 "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.xml",
             ],
@@ -192,6 +213,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "lib/netstandard2.0/Microsoft.Extensions.Primitives.dll",
             "netcoreapp3.1": "lib/netcoreapp3.1/Microsoft.Extensions.Primitives.dll",
             "net5.0": "lib/netcoreapp3.1/Microsoft.Extensions.Primitives.dll",
+            "net6.0": "lib/netcoreapp3.1/Microsoft.Extensions.Primitives.dll",
         },
         core_files = {
             "netcoreapp2.0": [
@@ -215,6 +237,10 @@ def project_dotnet_repositories_nuget():
                 "lib/netcoreapp3.1/Microsoft.Extensions.Primitives.xml",
             ],
             "net5.0": [
+                "lib/netcoreapp3.1/Microsoft.Extensions.Primitives.dll",
+                "lib/netcoreapp3.1/Microsoft.Extensions.Primitives.xml",
+            ],
+            "net6.0": [
                 "lib/netcoreapp3.1/Microsoft.Extensions.Primitives.dll",
                 "lib/netcoreapp3.1/Microsoft.Extensions.Primitives.xml",
             ],
@@ -232,6 +258,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "lib/netstandard2.0/Microsoft.Extensions.Caching.Abstractions.dll",
             "netcoreapp3.1": "lib/netcoreapp3.1/Microsoft.Extensions.Caching.Abstractions.dll",
             "net5.0": "lib/netcoreapp3.1/Microsoft.Extensions.Caching.Abstractions.dll",
+            "net6.0": "lib/netcoreapp3.1/Microsoft.Extensions.Caching.Abstractions.dll",
         },
         core_deps = {
             "netcoreapp2.0": [
@@ -251,6 +278,9 @@ def project_dotnet_repositories_nuget():
             ],
             "net5.0": [
                 "@microsoft.extensions.primitives//:net5.0_core",
+            ],
+            "net6.0": [
+                "@microsoft.extensions.primitives//:net6.0_core",
             ],
         },
         core_files = {
@@ -275,6 +305,10 @@ def project_dotnet_repositories_nuget():
                 "lib/netcoreapp3.1/Microsoft.Extensions.Caching.Abstractions.xml",
             ],
             "net5.0": [
+                "lib/netcoreapp3.1/Microsoft.Extensions.Caching.Abstractions.dll",
+                "lib/netcoreapp3.1/Microsoft.Extensions.Caching.Abstractions.xml",
+            ],
+            "net6.0": [
                 "lib/netcoreapp3.1/Microsoft.Extensions.Caching.Abstractions.dll",
                 "lib/netcoreapp3.1/Microsoft.Extensions.Caching.Abstractions.xml",
             ],
@@ -292,6 +326,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "lib/netstandard2.0/Microsoft.Extensions.Configuration.Abstractions.dll",
             "netcoreapp3.1": "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Abstractions.dll",
             "net5.0": "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Abstractions.dll",
+            "net6.0": "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Abstractions.dll",
         },
         core_deps = {
             "netcoreapp2.0": [
@@ -311,6 +346,9 @@ def project_dotnet_repositories_nuget():
             ],
             "net5.0": [
                 "@microsoft.extensions.primitives//:net5.0_core",
+            ],
+            "net6.0": [
+                "@microsoft.extensions.primitives//:net6.0_core",
             ],
         },
         core_files = {
@@ -338,6 +376,10 @@ def project_dotnet_repositories_nuget():
                 "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Abstractions.dll",
                 "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Abstractions.xml",
             ],
+            "net6.0": [
+                "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Abstractions.dll",
+                "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Abstractions.xml",
+            ],
         },
     )
     nuget_package(
@@ -352,6 +394,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "lib/netstandard2.0/Microsoft.Extensions.Configuration.dll",
             "netcoreapp3.1": "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.dll",
             "net5.0": "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.dll",
+            "net6.0": "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.dll",
         },
         core_deps = {
             "netcoreapp2.0": [
@@ -372,6 +415,9 @@ def project_dotnet_repositories_nuget():
             "net5.0": [
                 "@microsoft.extensions.configuration.abstractions//:net5.0_core",
             ],
+            "net6.0": [
+                "@microsoft.extensions.configuration.abstractions//:net6.0_core",
+            ],
         },
         core_files = {
             "netcoreapp2.0": [
@@ -398,6 +444,10 @@ def project_dotnet_repositories_nuget():
                 "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.dll",
                 "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.xml",
             ],
+            "net6.0": [
+                "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.dll",
+                "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.xml",
+            ],
         },
     )
     nuget_package(
@@ -412,6 +462,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "lib/netstandard2.0/Microsoft.Extensions.Configuration.Binder.dll",
             "netcoreapp3.1": "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Binder.dll",
             "net5.0": "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Binder.dll",
+            "net6.0": "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Binder.dll",
         },
         core_deps = {
             "netcoreapp2.0": [
@@ -432,6 +483,9 @@ def project_dotnet_repositories_nuget():
             "net5.0": [
                 "@microsoft.extensions.configuration//:net5.0_core",
             ],
+            "net6.0": [
+                "@microsoft.extensions.configuration//:net6.0_core",
+            ],
         },
         core_files = {
             "netcoreapp2.0": [
@@ -458,6 +512,10 @@ def project_dotnet_repositories_nuget():
                 "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Binder.dll",
                 "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Binder.xml",
             ],
+            "net6.0": [
+                "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Binder.dll",
+                "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Binder.xml",
+            ],
         },
     )
     nuget_package(
@@ -472,6 +530,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "lib/netstandard2.0/Microsoft.Extensions.Options.dll",
             "netcoreapp3.1": "lib/netcoreapp3.1/Microsoft.Extensions.Options.dll",
             "net5.0": "lib/netcoreapp3.1/Microsoft.Extensions.Options.dll",
+            "net6.0": "lib/netcoreapp3.1/Microsoft.Extensions.Options.dll",
         },
         core_deps = {
             "netcoreapp2.0": [
@@ -498,6 +557,10 @@ def project_dotnet_repositories_nuget():
                 "@microsoft.extensions.dependencyinjection.abstractions//:net5.0_core",
                 "@microsoft.extensions.primitives//:net5.0_core",
             ],
+            "net6.0": [
+                "@microsoft.extensions.dependencyinjection.abstractions//:net6.0_core",
+                "@microsoft.extensions.primitives//:net6.0_core",
+            ],
         },
         core_files = {
             "netcoreapp2.0": [
@@ -524,6 +587,10 @@ def project_dotnet_repositories_nuget():
                 "lib/netcoreapp3.1/Microsoft.Extensions.Options.dll",
                 "lib/netcoreapp3.1/Microsoft.Extensions.Options.xml",
             ],
+            "net6.0": [
+                "lib/netcoreapp3.1/Microsoft.Extensions.Options.dll",
+                "lib/netcoreapp3.1/Microsoft.Extensions.Options.xml",
+            ],
         },
     )
     nuget_package(
@@ -538,6 +605,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "lib/netstandard2.0/Microsoft.Extensions.Caching.Memory.dll",
             "netcoreapp3.1": "lib/netcoreapp3.1/Microsoft.Extensions.Caching.Memory.dll",
             "net5.0": "lib/netcoreapp3.1/Microsoft.Extensions.Caching.Memory.dll",
+            "net6.0": "lib/netcoreapp3.1/Microsoft.Extensions.Caching.Memory.dll",
         },
         core_deps = {
             "netcoreapp2.0": [
@@ -576,6 +644,12 @@ def project_dotnet_repositories_nuget():
                 "@microsoft.extensions.logging.abstractions//:net5.0_core",
                 "@microsoft.extensions.options//:net5.0_core",
             ],
+            "net6.0": [
+                "@microsoft.extensions.caching.abstractions//:net6.0_core",
+                "@microsoft.extensions.dependencyinjection.abstractions//:net6.0_core",
+                "@microsoft.extensions.logging.abstractions//:net6.0_core",
+                "@microsoft.extensions.options//:net6.0_core",
+            ],
         },
         core_files = {
             "netcoreapp2.0": [
@@ -599,6 +673,10 @@ def project_dotnet_repositories_nuget():
                 "lib/netcoreapp3.1/Microsoft.Extensions.Caching.Memory.xml",
             ],
             "net5.0": [
+                "lib/netcoreapp3.1/Microsoft.Extensions.Caching.Memory.dll",
+                "lib/netcoreapp3.1/Microsoft.Extensions.Caching.Memory.xml",
+            ],
+            "net6.0": [
                 "lib/netcoreapp3.1/Microsoft.Extensions.Caching.Memory.dll",
                 "lib/netcoreapp3.1/Microsoft.Extensions.Caching.Memory.xml",
             ],
@@ -622,6 +700,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "lib/netstandard2.1/System.ComponentModel.Annotations.dll",
             "netcoreapp3.1": "lib/netstandard2.1/System.ComponentModel.Annotations.dll",
             "net5.0": "lib/netstandard2.1/System.ComponentModel.Annotations.dll",
+            "net6.0": "lib/netstandard2.1/System.ComponentModel.Annotations.dll",
         },
         core_ref = {
             "netcoreapp2.0": "ref/netstandard2.0/System.ComponentModel.Annotations.dll",
@@ -630,6 +709,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "ref/netstandard2.1/System.ComponentModel.Annotations.dll",
             "netcoreapp3.1": "ref/netstandard2.1/System.ComponentModel.Annotations.dll",
             "net5.0": "ref/netstandard2.1/System.ComponentModel.Annotations.dll",
+            "net6.0": "ref/netstandard2.1/System.ComponentModel.Annotations.dll",
         },
         core_files = {
             "netcoreapp2.0": [
@@ -650,6 +730,10 @@ def project_dotnet_repositories_nuget():
                 "lib/netstandard2.1/System.ComponentModel.Annotations.xml",
             ],
             "net5.0": [
+                "lib/netstandard2.1/System.ComponentModel.Annotations.dll",
+                "lib/netstandard2.1/System.ComponentModel.Annotations.xml",
+            ],
+            "net6.0": [
                 "lib/netstandard2.1/System.ComponentModel.Annotations.dll",
                 "lib/netstandard2.1/System.ComponentModel.Annotations.xml",
             ],
@@ -673,6 +757,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll",
             "netcoreapp3.1": "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll",
             "net5.0": "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll",
+            "net6.0": "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll",
         },
         core_ref = {
             "netcoreapp2.0": "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
@@ -681,6 +766,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
             "netcoreapp3.1": "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
             "net5.0": "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
+            "net6.0": "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
         },
         core_files = {
             "netcoreapp2.0": [
@@ -704,6 +790,10 @@ def project_dotnet_repositories_nuget():
                 "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.xml",
             ],
             "net5.0": [
+                "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll",
+                "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.xml",
+            ],
+            "net6.0": [
                 "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll",
                 "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.xml",
             ],
@@ -741,6 +831,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "lib/netstandard2.0/System.Collections.Immutable.dll",
             "netcoreapp3.1": "lib/netstandard2.0/System.Collections.Immutable.dll",
             "net5.0": "lib/netstandard2.0/System.Collections.Immutable.dll",
+            "net6.0": "lib/netstandard2.0/System.Collections.Immutable.dll",
         },
         core_deps = {
             "netcoreapp2.0": [
@@ -769,6 +860,10 @@ def project_dotnet_repositories_nuget():
                 "lib/netstandard2.0/System.Collections.Immutable.xml",
             ],
             "net5.0": [
+                "lib/netstandard2.0/System.Collections.Immutable.dll",
+                "lib/netstandard2.0/System.Collections.Immutable.xml",
+            ],
+            "net6.0": [
                 "lib/netstandard2.0/System.Collections.Immutable.dll",
                 "lib/netstandard2.0/System.Collections.Immutable.xml",
             ],
@@ -786,6 +881,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
             "netcoreapp3.1": "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
             "net5.0": "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+            "net6.0": "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
         },
         core_deps = {
             "netcoreapp2.0": [
@@ -814,6 +910,10 @@ def project_dotnet_repositories_nuget():
                 "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.xml",
             ],
             "net5.0": [
+                "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
+                "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.xml",
+            ],
+            "net6.0": [
                 "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll",
                 "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.xml",
             ],
@@ -851,6 +951,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll",
             "netcoreapp3.1": "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll",
             "net5.0": "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll",
+            "net6.0": "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll",
         },
         core_ref = {
             "netcoreapp2.0": "ref/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
@@ -859,6 +960,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "ref/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll",
             "netcoreapp3.1": "ref/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll",
             "net5.0": "ref/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll",
+            "net6.0": "ref/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll",
         },
         core_deps = {
             "netcoreapp2.0": [
@@ -890,6 +992,10 @@ def project_dotnet_repositories_nuget():
                 "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll",
                 "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.xml",
             ],
+            "net6.0": [
+                "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll",
+                "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.xml",
+            ],
         },
     )
     nuget_package(
@@ -904,6 +1010,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.dll",
             "netcoreapp3.1": "lib/netcoreapp3.1/Microsoft.Extensions.DependencyInjection.dll",
             "net5.0": "lib/netcoreapp3.1/Microsoft.Extensions.DependencyInjection.dll",
+            "net6.0": "lib/netcoreapp3.1/Microsoft.Extensions.DependencyInjection.dll",
         },
         core_deps = {
             "netcoreapp2.0": [
@@ -926,6 +1033,9 @@ def project_dotnet_repositories_nuget():
             ],
             "net5.0": [
                 "@microsoft.extensions.dependencyinjection.abstractions//:net5.0_core",
+            ],
+            "net6.0": [
+                "@microsoft.extensions.dependencyinjection.abstractions//:net6.0_core",
             ],
         },
         core_files = {
@@ -953,6 +1063,10 @@ def project_dotnet_repositories_nuget():
                 "lib/netcoreapp3.1/Microsoft.Extensions.DependencyInjection.dll",
                 "lib/netcoreapp3.1/Microsoft.Extensions.DependencyInjection.xml",
             ],
+            "net6.0": [
+                "lib/netcoreapp3.1/Microsoft.Extensions.DependencyInjection.dll",
+                "lib/netcoreapp3.1/Microsoft.Extensions.DependencyInjection.xml",
+            ],
         },
     )
     nuget_package(
@@ -967,6 +1081,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "lib/netstandard2.0/Microsoft.Extensions.Logging.dll",
             "netcoreapp3.1": "lib/netcoreapp3.1/Microsoft.Extensions.Logging.dll",
             "net5.0": "lib/netcoreapp3.1/Microsoft.Extensions.Logging.dll",
+            "net6.0": "lib/netcoreapp3.1/Microsoft.Extensions.Logging.dll",
         },
         core_deps = {
             "netcoreapp2.0": [
@@ -1005,6 +1120,12 @@ def project_dotnet_repositories_nuget():
                 "@microsoft.extensions.logging.abstractions//:net5.0_core",
                 "@microsoft.extensions.options//:net5.0_core",
             ],
+            "net6.0": [
+                "@microsoft.extensions.configuration.binder//:net6.0_core",
+                "@microsoft.extensions.dependencyinjection//:net6.0_core",
+                "@microsoft.extensions.logging.abstractions//:net6.0_core",
+                "@microsoft.extensions.options//:net6.0_core",
+            ],
         },
         core_files = {
             "netcoreapp2.0": [
@@ -1031,6 +1152,10 @@ def project_dotnet_repositories_nuget():
                 "lib/netcoreapp3.1/Microsoft.Extensions.Logging.dll",
                 "lib/netcoreapp3.1/Microsoft.Extensions.Logging.xml",
             ],
+            "net6.0": [
+                "lib/netcoreapp3.1/Microsoft.Extensions.Logging.dll",
+                "lib/netcoreapp3.1/Microsoft.Extensions.Logging.xml",
+            ],
         },
     )
     nuget_package(
@@ -1045,6 +1170,7 @@ def project_dotnet_repositories_nuget():
             "netcoreapp3.0": "lib/netstandard2.0/Microsoft.EntityFrameworkCore.dll",
             "netcoreapp3.1": "lib/netstandard2.0/Microsoft.EntityFrameworkCore.dll",
             "net5.0": "lib/netstandard2.0/Microsoft.EntityFrameworkCore.dll",
+            "net6.0": "lib/netstandard2.0/Microsoft.EntityFrameworkCore.dll",
         },
         core_deps = {
             "netcoreapp2.0": [
@@ -1119,6 +1245,18 @@ def project_dotnet_repositories_nuget():
                 "@system.componentmodel.annotations//:net5.0_core",
                 "@system.diagnostics.diagnosticsource//:net5.0_core",
             ],
+            "net6.0": [
+                "@microsoft.entityframeworkcore.abstractions//:net6.0_core",
+                "@microsoft.entityframeworkcore.analyzers//:net6.0_core",
+                "@microsoft.bcl.asyncinterfaces//:net6.0_core",
+                "@microsoft.bcl.hashcode//:net6.0_core",
+                "@microsoft.extensions.caching.memory//:net6.0_core",
+                "@microsoft.extensions.dependencyinjection//:net6.0_core",
+                "@microsoft.extensions.logging//:net6.0_core",
+                "@system.collections.immutable//:net6.0_core",
+                "@system.componentmodel.annotations//:net6.0_core",
+                "@system.diagnostics.diagnosticsource//:net6.0_core",
+            ],
         },
         core_files = {
             "netcoreapp2.0": [
@@ -1142,6 +1280,10 @@ def project_dotnet_repositories_nuget():
                 "lib/netstandard2.0/Microsoft.EntityFrameworkCore.xml",
             ],
             "net5.0": [
+                "lib/netstandard2.0/Microsoft.EntityFrameworkCore.dll",
+                "lib/netstandard2.0/Microsoft.EntityFrameworkCore.xml",
+            ],
+            "net6.0": [
                 "lib/netstandard2.0/Microsoft.EntityFrameworkCore.dll",
                 "lib/netstandard2.0/Microsoft.EntityFrameworkCore.xml",
             ],
