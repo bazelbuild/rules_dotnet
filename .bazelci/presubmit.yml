@@ -151,7 +151,7 @@ tasks:
     test_targets:
       - "//..."
   darwin_arm64_6.0.101:
-    platform: macos
+    platform: macos_arm64
     name: darwin_arm64_6.0.101
     build_flags:
       - "--host_platform"
@@ -287,7 +287,7 @@ tasks:
     test_targets:
       - "//..."
   ef_darwin_arm64_6.0.101:
-    platform: macos
+    platform: macos_arm64
     name: ef_darwin_arm64_6.0.101
     working_directory: examples/ef
     test_flags:
@@ -400,7 +400,7 @@ tasks:
     test_targets:
       - "//..."
   grpc_darwin_arm64_6.0.101:
-    platform: macos
+    platform: macos_arm64
     name: grpc_darwin_arm64_6.0.101
     working_directory: examples/grpc
     test_flags:
@@ -513,7 +513,7 @@ tasks:
     test_targets:
       - "//..."
   type_providers_darwin_arm64_6.0.101:
-    platform: macos
+    platform: macos_arm64
     name: type_providers_darwin_arm64_6.0.101
     working_directory: examples/type_providers
     test_flags:
