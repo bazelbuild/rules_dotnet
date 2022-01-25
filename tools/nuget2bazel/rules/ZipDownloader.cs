@@ -12,7 +12,7 @@ namespace nuget2bazel.rules
 {
     public static class ZipDownloader
     {
-        public static async Task<string> DownloadIfNedeed(string configDir, string url)
+        public static async Task<string> DownloadIfNeeded(string configDir, string url)
         {
             var fname = Path.GetFileName(url);
             var dir = Path.Combine(configDir, Path.GetFileNameWithoutExtension(fname));

@@ -1,17 +1,21 @@
 "Rules constants"
 
+load("//dotnet/private:valid_platform.bzl", "valid_platform")
+
 BAZEL_DOTNETOS_CONSTRAINTS = {
-    "darwin": "@bazel_tools//platforms:osx",
-    "linux": "@bazel_tools//platforms:linux",
-    "windows": "@bazel_tools//platforms:windows",
+    "darwin": "@platforms//os:osx",
+    "linux": "@platforms//os:linux",
+    "windows": "@platforms//os:windows",
 }
 
 BAZEL_DOTNETARCH_CONSTRAINTS = {
-    "amd64": "@bazel_tools//platforms:x86_64",
+    "amd64": "@platforms//cpu:x86_64",
+    "arm64": "@platforms//cpu:arm64",
 }
 
 DOTNET_OS_ARCH = (
     ("darwin", "amd64"),
+    ("darwin", "arm64"),
     ("linux", "amd64"),
     ("windows", "amd64"),
 )
@@ -40,10 +44,20 @@ DOTNET_CORE_FRAMEWORKS = {
     "3.1.407": (".NETCore,Version=v3.1", "NETCOREAPP3_1", "netcoreapp3.1", "3.1.13", True),
     "5.0.201": (".NETCore,Version=v5.0", "NETCOREAPP5_0", "net5.0", "5.0.4", True),
     "5.0.404": (".NETCore,Version=v5.0", "NETCOREAPP5_0", "net5.0", "5.0.13", True),
+    "6.0.101": (".NETCore,Version=v6.0", "NETCOREAPP6_0", "net6.0", "6.0.1", True),
 }
-DOTNET_CORE_NAMES = ["netcoreapp2.0", "netcoreapp2.1", "netcoreapp2.2", "netcoreapp3.0", "netcoreapp3.1", "net5.0"] + DOTNET_NETSTANDARD.keys()
 
-DEFAULT_DOTNET_CORE_FRAMEWORK = "v5.0.404"
+DOTNET_CORE_NAMES = [
+    "netcoreapp2.0",
+    "netcoreapp2.1",
+    "netcoreapp2.2",
+    "netcoreapp3.0",
+    "netcoreapp3.1",
+    "net5.0",
+    "net6.0",
+] + DOTNET_NETSTANDARD.keys()
+
+DEFAULT_DOTNET_CORE_FRAMEWORK = "v6.0.101"
 
 def _generate_constraints(names, bazel_constraints):
     return {
@@ -60,6 +74,9 @@ def _generate_platforms():
 
     for os, arch in DOTNET_OS_ARCH:
         for sdk in DOTNET_CORE_FRAMEWORKS:
+            if not valid_platform(os, arch, sdk):
+                continue
+
             constraints = [
                 DOTNETOS_CONSTRAINTS[os],
                 DOTNETARCH_CONSTRAINTS[arch],

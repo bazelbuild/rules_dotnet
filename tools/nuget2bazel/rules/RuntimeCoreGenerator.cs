@@ -31,9 +31,9 @@ namespace nuget2bazel.rules
 
         private async Task Handle(StreamWriter f, Sdk sdk)
         {
-            var sdkDirWin = await ZipDownloader.DownloadIfNedeed(_configDir, sdk.WindowsUrl);
-            var sdkDirLinux = await ZipDownloader.DownloadIfNedeed(_configDir, sdk.LinuxUrl);
-            var sdkDirOsx = await ZipDownloader.DownloadIfNedeed(_configDir, sdk.DarwinUrl);
+            var sdkDirWin = await ZipDownloader.DownloadIfNeeded(_configDir, sdk.WindowsUrl);
+            var sdkDirLinux = await ZipDownloader.DownloadIfNeeded(_configDir, sdk.LinuxUrl);
+            var sdkDirOsx = await ZipDownloader.DownloadIfNeeded(_configDir, sdk.DarwinUrl);
 
             await f.WriteLineAsync("\"\"");
             await f.WriteLineAsync();
@@ -44,7 +44,7 @@ namespace nuget2bazel.rules
             await f.WriteLineAsync("def define_runtime():");
             await f.WriteLineAsync("    \"Declares runtime\"");
 
-            if (sdk.Packs != null)
+            if (sdk.Packs != null && !sdk.Version.StartsWith("6"))
             {
                 await f.WriteLineAsync("    native.alias(name = \"system.security.accesscontrol.dll\", actual = \":p1_system.security.accesscontrol.dll\")");
                 await f.WriteLineAsync("    native.alias(name = \"system.security.principal.windows.dll\", actual = \":p1_system.security.principal.windows.dll\")");

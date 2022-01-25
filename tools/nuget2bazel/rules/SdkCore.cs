@@ -11,15 +11,15 @@ namespace nuget2bazel.rules
     public class SdkCorePre3 : Sdk
     {
         public SdkCorePre3(string internalVersionFolder, string version, string windowsUrl, string linuxUrl,
-            string darwinUrl, string[] packs = null) : base(internalVersionFolder, version, windowsUrl, linuxUrl,
-            darwinUrl, packs)
+            string darwinUrl, string darwinArmUrl, string[] packs = null) : base(internalVersionFolder, version, windowsUrl, linuxUrl,
+            darwinUrl, darwinArmUrl, packs)
         {
         }
 
         public override async Task<List<RefInfo>> GetRefInfos(string configDir)
         {
             var package = await PackageDownloader.DownloadPackageIfNedeed(configDir, "Microsoft.NETCore.App", InternalVersionFolder);
-            var sdkDir = await ZipDownloader.DownloadIfNedeed(configDir, GetDownloadUrl());
+            var sdkDir = await ZipDownloader.DownloadIfNeeded(configDir, GetDownloadUrl());
 
             var brokenDependencies = new string[] { "netstandard" };
 
@@ -76,8 +76,8 @@ namespace nuget2bazel.rules
     public class SdkCorePost3 : Sdk
     {
         public SdkCorePost3(string internalVersionFolder, string version, string windowsUrl, string linuxUrl,
-            string darwinUrl, string[] packs = null, bool defaultSdk = false) : base(internalVersionFolder, version, windowsUrl, linuxUrl,
-            darwinUrl, packs, defaultSdk)
+            string darwinUrl, string darwinArmUrl = null, string[] packs = null, bool defaultSdk = false) : base(internalVersionFolder, version, windowsUrl, linuxUrl,
+            darwinUrl, darwinArmUrl, packs, defaultSdk)
         {
         }
 
@@ -92,7 +92,7 @@ namespace nuget2bazel.rules
 
         protected async Task<List<RefInfo>> GetRefInfosImpl(string configDir, string pack)
         {
-            var sdk = await ZipDownloader.DownloadIfNedeed(configDir, GetDownloadUrl());
+            var sdk = await ZipDownloader.DownloadIfNeeded(configDir, GetDownloadUrl());
 
             var brokenDependencies = new[] { "system.printing", "presentationframework" };
 

@@ -2,6 +2,7 @@
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@io_bazel_rules_dotnet//dotnet/private:sdk_core.bzl", "core_download_sdk")
+load("//dotnet/private:valid_platform.bzl", "valid_platform")
 load(
     "@io_bazel_rules_dotnet//dotnet/platform:list.bzl",
     "DOTNET_CORE_FRAMEWORKS",
@@ -30,12 +31,11 @@ def dotnet_repositories():
     _maybe(
         http_archive,
         name = "platforms",
-        strip_prefix = "platforms-0.0.3",
-        # 0.0.1, latest as of 2020-12-01
         urls = [
-            "https://github.com/bazelbuild/platforms/archive/0.0.3.zip",
+            "https://mirror.bazel.build/github.com/bazelbuild/platforms/releases/download/0.0.4/platforms-0.0.4.tar.gz",
+            "https://github.com/bazelbuild/platforms/releases/download/0.0.4/platforms-0.0.4.tar.gz",
         ],
-        sha256 = "be834dc9b61c0aa3f42517966b54c0b599356c30c6ea08028597b7f0986e7060",
+        sha256 = "079945598e4b6cc075846f7fd6a9d0857c33a7afc0de868c2ccb96405225135d",
     )
 
     _core_sdks()
@@ -65,6 +65,9 @@ def _core_stdlib_impl(ctx):
         values = ""
         for os, arch in DOTNET_OS_ARCH:
             for sdk in DOTNET_CORE_FRAMEWORKS:
+                if not valid_platform(os, arch, sdk):
+                    continue
+
                 name = "{}_{}_{}".format(os, arch, sdk)
                 key = "@io_bazel_rules_dotnet//dotnet/toolchain:" + name + "_config"
                 val = "@core_sdk_" + name + "//:" + target

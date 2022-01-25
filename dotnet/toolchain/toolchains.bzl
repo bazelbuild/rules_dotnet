@@ -1,6 +1,7 @@
 "Declares toolchains"
 
 load("@io_bazel_rules_dotnet//dotnet/private:core_toolchain.bzl", "core_toolchain")
+load("//dotnet/private:valid_platform.bzl", "valid_platform")
 load(
     "@io_bazel_rules_dotnet//dotnet/platform:list.bzl",
     "BAZEL_DOTNETARCH_CONSTRAINTS",
@@ -106,6 +107,36 @@ CORE_SDK_REPOSITORIES = {
             # "fa1c4686e491f6ba2b37c5497453a4955bafceb28e097c3d95175a78d6381201972e8231e315de0126480cb8917b784784125316ffbfe1470a62238211bb255b"
         ),
     },
+    "6.0.101": {
+        # https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-6.0.101-windows-x64-binaries
+        "windows_amd64": (
+            "https://download.visualstudio.microsoft.com/download/pr/8e55ce37-9740-41b7-a758-f731043060da/4b8bfd4aad9d322bf501ca9e473e35c5/dotnet-sdk-6.0.101-win-x64.zip",
+            "2954575322680f5ab31998a9412af0a2a66b73c2cf5a5d8007221a96fbcf2e8d",
+            # SHA512 Checsum provided
+            # "ca21345400bcaceadad6327345f5364e858059cfcbc1759f05d7df7701fec26f1ead297b6928afa01e46db6f84e50770c673146a10b9ff71e4c7f7bc76fbf709"
+        ),
+        # https://dotnet.microsoft.com/download/dotnet-core/thank-you/sdk-5.0.404-linux-x64-binaries
+        "linux_amd64": (
+            "https://download.visualstudio.microsoft.com/download/pr/ede8a287-3d61-4988-a356-32ff9129079e/bdb47b6b510ed0c4f0b132f7f4ad9d5a/dotnet-sdk-6.0.101-linux-x64.tar.gz",
+            "95a1b5360b234e926f12327d68c4a0d7b7206134dca1b570a66dc7a8a4aed705",
+            # SHA512 Checsum provided
+            # "6f9b83b2b661ce3b033a04d4c50ff3a435efa288de1a48f58be1150e64c5dd9d6bd2a4bf40f697dcd7d64ffaac24f14cc4a874e738544c5d0e8113c474fd2ee0"
+        ),
+        # https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-6.0.101-macos-arm64-binaries
+        "darwin_arm64": (
+            "https://download.visualstudio.microsoft.com/download/pr/c1351f4c-d2e7-4066-a153-b6130f677bcc/161b0c331a5da2e080c7ad3a5ae2b185/dotnet-sdk-6.0.101-osx-arm64.tar.gz",
+            "db13183a7c5c1ff1d8423c76ce3737447d7d51f0ee37b4ee533250603499f537",
+            # SHA512 Checsum provided
+            # "af76f778e5195c38a4b6b72f999dc934869cd7f00bbb7654313000fbbd90c8ac13b362058fc45e08501319e25d5081a46d08d923ec53496d891444cf51640cf5"
+        ),
+        # https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-6.0.101-macos-x64-binaries
+        "darwin_amd64": (
+            "https://download.visualstudio.microsoft.com/download/pr/4a39aac8-74b7-4366-81cd-4fcce0bd8354/02a581437c26bd88f5afc6ccc81d9637/dotnet-sdk-6.0.101-osx-x64.tar.gz",
+            "283dc6e8a88bdcb93f26abb06dd73492aefe55caa27b84d112138b22ab2cf588",
+            # SHA512 Checsum provided
+            # "36fde8f0cc339a01134b87158ab922de27bb3005446d764c3efd26ccb67f8c5acc16102a4ecef85a402f46bf4dfc9bdc28063806bb2b4a4faf0def13277a9268"
+        ),
+    },
 }
 
 def _generate_toolchains():
@@ -115,6 +146,10 @@ def _generate_toolchains():
         for os_exec, arch_exec in DOTNET_OS_ARCH:
             for os, arch in DOTNET_OS_ARCH:
                 for sdk in DOTNET_CORE_FRAMEWORKS:
+                    if (not valid_platform(os_exec, arch_exec, sdk) or
+                        not valid_platform(os, arch, sdk)):
+                        continue
+
                     constraints_target = [BAZEL_DOTNETARCH_CONSTRAINTS[arch], BAZEL_DOTNETOS_CONSTRAINTS[os], DOTNETSDK_CONSTRAINTS[sdk]]
                     constraints_exec = [BAZEL_DOTNETARCH_CONSTRAINTS[arch_exec], BAZEL_DOTNETOS_CONSTRAINTS[os_exec]]
 

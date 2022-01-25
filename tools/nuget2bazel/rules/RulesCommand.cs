@@ -26,6 +26,7 @@ namespace nuget2bazel.rules
         public async Task Do(string path)
         {
             var configDir = Path.Combine(Path.GetTempPath(), "nuget2bazel");
+            Directory.CreateDirectory(configDir);
 
             var runtimeCoreGenerator = new RuntimeCoreGenerator(configDir, path);
             await runtimeCoreGenerator.Do();
