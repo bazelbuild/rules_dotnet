@@ -31,7 +31,7 @@ namespace nuget2bazel
             };
             var coreFrameworkTFMs = new string[]
             {
-                "netcoreapp2.0", "netcoreapp2.1", "netcoreapp2.2", "netcoreapp3.0", "netcoreapp3.1", "net5.0"
+                "netcoreapp2.0", "netcoreapp2.1", "netcoreapp2.2", "netcoreapp3.0", "netcoreapp3.1", "net5.0", "net6.0"
             };
             PackageIdentity = identity;
             Sha256 = sha256;
