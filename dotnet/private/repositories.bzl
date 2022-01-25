@@ -44,6 +44,9 @@ def dotnet_repositories():
 def _core_sdks():
     for os, arch in DOTNET_OS_ARCH:
         for sdk in DOTNET_CORE_FRAMEWORKS:
+            if not valid_platform(os, arch, sdk):
+                continue
+
             core_download_sdk(
                 name = "core_sdk_{}_{}_{}".format(os, arch, sdk),
                 os = os,

@@ -33,7 +33,7 @@ Setup
 * When building any project the platform has to be specified. For example:
 
   ```bash
-      bazel build --host_platform //dotnet/toolchain:linux_amd64_2.2.402 --platforms //dotnet/toolchain:linux_amd64_2.2.402 //...
+      bazel build --host_platform //dotnet/toolchain:linux_amd64_6.0.101 --platforms //dotnet/toolchain:linux_amd64_6.0.101 //...
   ```
 
 * The platform specification has the form of //dotnet/toolchain:<os>_<arch>_<sdkversion>. 

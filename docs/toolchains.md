@@ -35,7 +35,7 @@ it's default name, the following toolchain labels (along with many others) will 
 
   ```python
 
-    @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_2.2.402
+    @io_bazel_rules_dotnet//dotnet/toolchain:linux_amd64_6.0.101
   ```
   
 The toolchains are not usable until you register them.
