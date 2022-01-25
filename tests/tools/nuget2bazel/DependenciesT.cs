@@ -22,7 +22,7 @@ namespace nuget2bazel_test
             Assert.Null(analyzers.MonoLib);
 
             Assert.Empty(analyzers.Core_Deps);
-            Assert.Equal(6, analyzers.Core_Files.Count);
+            Assert.Equal(7, analyzers.Core_Files.Count);
 
             Assert.Empty(analyzers.Net_Deps);
             Assert.Equal(19, analyzers.Net_Files.Count);

@@ -17,7 +17,7 @@ namespace nuget2bazel_test
 
             Assert.Single(project.Entries);
             var entry = project.Entries.First();
-            Assert.Equal(6, entry.CoreLib.Count);
+            Assert.Equal(7, entry.CoreLib.Count);
             Assert.Equal("lib/netstandard1.0/Remotion.Linq.dll", entry.CoreLib["netcoreapp2.0"]);
         }
     }

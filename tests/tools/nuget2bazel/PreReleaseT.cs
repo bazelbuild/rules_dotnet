@@ -16,7 +16,7 @@ namespace nuget2bazel_test
             await addCmd.DoWithProject("https://api.nuget.org/v3/index.json", "System.Security.Permissions", "4.6.0-preview8.19405.3", project, false);
 
             var entry = project.Entries.Last();
-            Assert.Equal(6, entry.CoreLib.Count);
+            Assert.Equal(7, entry.CoreLib.Count);
             Assert.Equal("lib/netstandard2.0/System.Security.Permissions.dll", entry.CoreLib["netcoreapp2.0"]);
         }
     }
