@@ -3071,6 +3071,63 @@ def dotnet_repositories_nuget():
         },
     )
     nuget_package(
+        name = "system.security.cryptography.pkcs",
+        package = "system.security.cryptography.pkcs",
+        version = "5.0.1",
+        sha256 = "25cdaa556650ce38f3e7c0342d95bb00e816f3624fb8e71de4d61c8abb51c541",
+        core_lib = {
+            "netcoreapp2.0": "lib/netstandard2.0/System.Security.Cryptography.Pkcs.dll",
+            "netcoreapp2.1": "lib/netcoreapp2.1/System.Security.Cryptography.Pkcs.dll",
+            "netcoreapp2.2": "lib/netcoreapp2.1/System.Security.Cryptography.Pkcs.dll",
+            "netcoreapp3.0": "lib/netcoreapp3.0/System.Security.Cryptography.Pkcs.dll",
+            "netcoreapp3.1": "lib/netcoreapp3.0/System.Security.Cryptography.Pkcs.dll",
+            "net5.0": "lib/netcoreapp3.0/System.Security.Cryptography.Pkcs.dll",
+            "net6.0": "lib/netcoreapp3.0/System.Security.Cryptography.Pkcs.dll",
+        },
+        core_ref = {
+            "netcoreapp2.0": "ref/netstandard2.0/System.Security.Cryptography.Pkcs.dll",
+            "netcoreapp2.1": "ref/netcoreapp2.1/System.Security.Cryptography.Pkcs.dll",
+            "netcoreapp2.2": "ref/netcoreapp2.1/System.Security.Cryptography.Pkcs.dll",
+            "netcoreapp3.0": "ref/netcoreapp3.0/System.Security.Cryptography.Pkcs.dll",
+            "netcoreapp3.1": "ref/netcoreapp3.0/System.Security.Cryptography.Pkcs.dll",
+            "net5.0": "ref/netcoreapp3.0/System.Security.Cryptography.Pkcs.dll",
+            "net6.0": "ref/netcoreapp3.0/System.Security.Cryptography.Pkcs.dll",
+        },
+        core_deps = {
+            "netcoreapp2.0": [
+                "@system.memory//:netcoreapp2.0_core",
+            ],
+        },
+        core_files = {
+            "netcoreapp2.0": [
+                "lib/netstandard2.0/System.Security.Cryptography.Pkcs.dll",
+                "lib/netstandard2.0/System.Security.Cryptography.Pkcs.xml",
+            ],
+            "netcoreapp2.1": [
+                "lib/netcoreapp2.1/System.Security.Cryptography.Pkcs.dll",
+            ],
+            "netcoreapp2.2": [
+                "lib/netcoreapp2.1/System.Security.Cryptography.Pkcs.dll",
+            ],
+            "netcoreapp3.0": [
+                "lib/netcoreapp3.0/System.Security.Cryptography.Pkcs.dll",
+                "lib/netcoreapp3.0/System.Security.Cryptography.Pkcs.xml",
+            ],
+            "netcoreapp3.1": [
+                "lib/netcoreapp3.0/System.Security.Cryptography.Pkcs.dll",
+                "lib/netcoreapp3.0/System.Security.Cryptography.Pkcs.xml",
+            ],
+            "net5.0": [
+                "lib/netcoreapp3.0/System.Security.Cryptography.Pkcs.dll",
+                "lib/netcoreapp3.0/System.Security.Cryptography.Pkcs.xml",
+            ],
+            "net6.0": [
+                "lib/netcoreapp3.0/System.Security.Cryptography.Pkcs.dll",
+                "lib/netcoreapp3.0/System.Security.Cryptography.Pkcs.xml",
+            ],
+        },
+    )
+    nuget_package(
         name = "sharpziplib",
         package = "sharpziplib",
         version = "1.2.0",

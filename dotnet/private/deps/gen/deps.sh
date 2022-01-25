@@ -25,6 +25,7 @@ ${TOOL} add -p "${OUTPUT_DIR}" -b nuget.bzl -c nuget.json -i -l NuGet.PackageMan
 ${TOOL} add -p "${OUTPUT_DIR}" -b nuget.bzl -c nuget.json -i -l NuGet.Packaging.Core 5.11.0
 ${TOOL} add -p "${OUTPUT_DIR}" -b nuget.bzl -c nuget.json -i -l CommandLineParser 2.6.0
 ${TOOL} add -p "${OUTPUT_DIR}" -b nuget.bzl -c nuget.json -i -l System.Reflection.MetadataLoadContext 4.7.1
+${TOOL} add -p "${OUTPUT_DIR}" -b nuget.bzl -c nuget.json -i -l System.Security.Cryptography.Pkcs 5.0.1
 ${TOOL} add -p "${OUTPUT_DIR}" -b nuget.bzl -c nuget.json -i -l SharpZipLib 1.2.0
 
 # clean up nuget2bazel packages directory
