@@ -22,11 +22,11 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 # GRPC
 http_archive(
     name = "rules_proto_grpc",
+    patch_args = ["-p1"],
+    patches = ["//:0001-rules-proto-grpc.patch"],
     sha256 = "a8052127cc65613be61234d46bf0891ee79d676df24f9e2f5f31669fac076fa1",
     strip_prefix = "rules_proto_grpc-b437366f4708848005a00e3f9fb8e13623fe66dc",
     urls = ["https://github.com/rules-proto-grpc/rules_proto_grpc/archive/b437366f4708848005a00e3f9fb8e13623fe66dc.tar.gz"],
-    patches = ["//:0001-rules-proto-grpc.patch"],
-    patch_args = ["-p1"],
 )
 
 load("@rules_proto_grpc//:repositories.bzl", "rules_proto_grpc_repos", "rules_proto_grpc_toolchains")
