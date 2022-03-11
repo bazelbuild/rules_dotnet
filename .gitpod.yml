@@ -9,9 +9,9 @@ tasks:
 
 vscode:
   extensions:
-    - BazelBuild.vscode-bazel@0.4.1
-    - Ionide.Ionide-fsharp@5.7.3
-    - muhammad-sammy.csharp@1.23.16
+    - BazelBuild.vscode-bazel@0.5.0
+    - Ionide.Ionide-fsharp@5.11.1
+    - muhammad-sammy.csharp@1.24.0
 
 github:
   prebuilds:
