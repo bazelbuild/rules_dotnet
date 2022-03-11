@@ -257,6 +257,7 @@ def _ResolveTransitiveLevel9(arg, version):
 
     fail("Unknown argument %s" % arg)
 
+# buildifier: disable=unused-variable
 def _ResolveTransitiveLevel10(arg, version):
     result = []
     if (type(arg)) == "list":

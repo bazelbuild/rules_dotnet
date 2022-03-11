@@ -173,6 +173,7 @@ _toolchains = _generate_toolchains()
 
 _label_prefix = "@io_bazel_rules_dotnet//dotnet/toolchain:"
 
+# buildifier: disable=unused-variable
 def dotnet_register_toolchains(name = None):
     """The macro registers all toolchains."""
 
@@ -201,6 +202,7 @@ def declare_toolchains():
         )
 
 # buildifier: disable=function-docstring-args
+# buildifier: disable=unused-variable
 def declare_constraints(name = None):
     """Generates constraint_values and platform targets for valid platforms.
     """

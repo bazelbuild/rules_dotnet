@@ -33,7 +33,6 @@ def _resx_impl(ctx):
 
 def _resx_multi_impl(ctx):
     dotnet = dotnet_context(ctx, "csharp")
-    name = ctx.label.name
 
     if ctx.attr.identifierBase != "" and ctx.attr.fixedIdentifierBase != "":
         fail("Both identifierBase and fixedIdentifierBase cannot be specified")

@@ -42,12 +42,6 @@ DotnetContextInfo = provider(
     },
 )
 
-def _declare_file(dotnet, path = None, ext = None, sibling = None):
-    result = path if path else dotnet._ctx.label.name
-    if ext:
-        result += ext
-    return dotnet.actions.declare_file(result, sibling = sibling)
-
 def new_library(
         dotnet,
         name = None,
@@ -137,8 +131,6 @@ def dotnet_context(ctx, lang):
     Returns:
         DotnetContextInfo: [DotnetContextInfo](api.md#dotnetcontextinfo) provider for ctx rule.
     """
-    attr = ctx.attr
-
     if lang == "csharp":
         toolchain = ctx.toolchains["@io_bazel_rules_dotnet//dotnet:toolchain_type_csharp_core"]
     elif lang == "fsharp":

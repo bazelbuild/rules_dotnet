@@ -35,8 +35,6 @@ def _library_impl(ctx):
         version = (0, 0, 0, 0, "") if ctx.attr.version == "" else parse_version(ctx.attr.version),
     )
 
-    runfiles = ctx.runfiles(files = [], transitive_files = library.runfiles)
-
     return [
         library,
         DefaultInfo(

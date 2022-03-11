@@ -5,7 +5,7 @@ load(
     "DotnetResourceInfo",
 )
 
-def _make_runner_arglist(dotnet, source, output, resgen):
+def _make_runner_arglist(dotnet, source, output):
     args = dotnet.actions.args()
 
     if type(source) == "Target":

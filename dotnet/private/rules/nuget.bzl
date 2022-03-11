@@ -9,7 +9,6 @@ def _dotnet_nuget_impl(
         build_file_content = None):
     """dotnet_nuget_impl emits actions for exposing nunit assmebly."""
 
-    package = ctx.attr.package
     output_dir = ctx.path("")
     url = ctx.attr.source + "/" + ctx.attr.package + "/" + ctx.attr.version
     ctx.download_and_extract(url, output_dir, ctx.attr.sha256, type = "zip")
@@ -123,24 +122,6 @@ _FUNC2 = """
 
 """
 
-def _get_importlib(func, func2, name, lib, ref, deps, files, version):
-    depsstr = ""
-    for d in deps:
-        depsstr += "    \"{}\",\n".format(d)
-    datastr = ""
-    for f in files:
-        datastr += "    \"{}\",\n".format(f)
-
-    if lib != "":
-        if ref != "" and ref != None:
-            result = _FUNC_WITH_REF.format(func, name, lib, ref, depsstr, datastr, version)
-        else:
-            result = _FUNC.format(func, name, lib, depsstr, datastr, version)
-    else:
-        result = _FUNC2.format(func2, name, depsstr, datastr)
-
-    return result
-
 def _get_importlib_withframework(func, func2, name, frameworks, lib, ref, deps, files, version):
     result = ""
     for framework in frameworks:
@@ -197,7 +178,6 @@ def _nuget_package_impl(ctx):
             content = content + """"{}": "{}",""".format(key, val)
         content += """}, no_match_error = "framework not known"), visibility=["//visibility:public"])\n"""
 
-    package = ctx.attr.package
     output_dir = ctx.path("")
     urls = [s + "/" + ctx.attr.package + "/" + ctx.attr.version for s in ctx.attr.source]
     ctx.download_and_extract(urls, output_dir, ctx.attr.sha256, type = "zip")
