@@ -222,6 +222,7 @@ def emit_assembly_core_csharp(
 
     return new_library
 
+# buildifier: disable=unused-variable
 def emit_assembly_core_fsharp(
         dotnet,
         name,
@@ -237,6 +238,7 @@ def emit_assembly_core_fsharp(
         subdir = "./",
         target_framework = "",
         nowarn = None,
+        langversion = "latest",
         version = (0, 0, 0, 0, "")):
     """Emits actions for assembly build.
 
@@ -257,6 +259,7 @@ def emit_assembly_core_fsharp(
       subdir: specific subdirectory to be used for target location. Default ./
       target_framework: target framework to define via System.Runtime.Versioning.TargetFramework
       nowarn: list of warnings to ignore
+      langversion: version of the language to use (see https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version)
       version: version of the file to be compiled
 
     Returns:
