@@ -64,11 +64,11 @@ RUN curl -o ibazel_linux_amd64 -fsSL https://github.com/bazelbuild/bazel-watcher
   && chmod +x $HOME/bin/ibazel
 
 # Install buildifier
-RUN curl -o buildifier-linux-amd64 -fsSL https://github.com/bazelbuild/buildtools/releases/download/4.2.2/buildifier-linux-amd64 \
+RUN curl -o buildifier-linux-amd64 -fsSL https://github.com/bazelbuild/buildtools/releases/download/5.0.1/buildifier-linux-amd64 \
   && mv ./buildifier-linux-amd64 $HOME/bin/buildifier \
   && chmod +x $HOME/bin/buildifier
 
 # Install buildozer
-RUN curl -o buildozer-linux-amd64 -fsSL https://github.com/bazelbuild/buildtools/releases/download/4.2.2/buildozer-linux-amd64 \
+RUN curl -o buildozer-linux-amd64 -fsSL https://github.com/bazelbuild/buildtools/releases/download/5.0.1/buildozer-linux-amd64 \
   && mv ./buildozer-linux-amd64 $HOME/bin/buildozer \
   && chmod +x $HOME/bin/buildozer
