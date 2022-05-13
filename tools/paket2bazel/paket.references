@@ -1,0 +1,9 @@
+group paket2bazel
+    FSharp.Core
+    Argu
+    Paket.Core
+    NuGet.PackageManagement
+    FSharpx.Extras
+    FSharpx.Collections
+    FSharp.SystemTextJson
+    System.Text.Json

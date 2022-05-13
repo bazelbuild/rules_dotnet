@@ -5,10 +5,6 @@ tasks:
   - name: Bazel
     before: "./.gitpod/gitpod-init.sh"
     init: |
-      # Until this issue is fixed: https://github.com/gitpod-io/gitpod/issues/8901
-      mkdir -p $DOTNET_ROOT && curl -fsSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel $DOTNET_VERSION --install-dir $DOTNET_ROOT
-      dotnet tool install --tool-path /workspace/dotnet-tools --version 4.7.3 fantomas-tool || true
-      dotnet tool install --tool-path /workspace/dotnet-tools paket || true
       bazel build //...
 
 vscode:
