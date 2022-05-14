@@ -28,6 +28,9 @@ dotnet_repositories()
 
 dotnet_register_toolchains()
 
+load("//tools/paket2bazel/deps:paket.bzl", paket2bazel_deps = "paket")
+paket2bazel_deps()
+
 # stardoc begin
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
@@ -43,5 +46,3 @@ load("@io_bazel_stardoc//:setup.bzl", "stardoc_repositories")
 stardoc_repositories()
 # stardoc end
 
-load("//tools/paket2bazel/nuget:paket.bzl", "paket")
-paket()
