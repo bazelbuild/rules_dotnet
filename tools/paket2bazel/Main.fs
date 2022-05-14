@@ -34,7 +34,7 @@ let getConfig (results: ParseResults<CliArguments>) =
         Path.GetFullPath(results.GetResult Config)
         |> File.ReadAllText
 
-    JsonSerializer.Deserialize<Dictionary<string, Override option>>(json, options)
+    JsonSerializer.Deserialize<Config>(json, options)
 
 [<EntryPoint>]
 let main argv =

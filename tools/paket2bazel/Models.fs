@@ -1,6 +1,9 @@
 module Paket2Bazel.Models
+open System.Collections.Generic
 
 type Override = { buildFile: string }
+
+type Config = { packageOverrides: Dictionary<string, Override option> option }
 
 type Package =
     { name: string

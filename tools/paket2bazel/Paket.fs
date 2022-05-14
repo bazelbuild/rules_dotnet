@@ -9,7 +9,7 @@ open System
 
 let getDependencies
     dependenciesFile
-    (config: Dictionary<string, Override option>)
+    (config: Config)
     (cache: Dictionary<string, Package>)
     =
     let maybeDeps = Dependencies.TryLocate(dependenciesFile)
@@ -25,9 +25,9 @@ let getDependencies
                 let found, value =
                     cache.TryGetValue(sprintf "%s-%s" group name)
 
-                let buildFileOverride =
-                    config.GetValueOrDefault(name, None)
-                    |> Option.map (fun i -> i.buildFile)
+                let overrides = 
+                    config.packageOverrides
+                    |> Option.bind (fun i -> i.GetValueOrDefault(name, None))
 
                 match found with
                 | true -> value
@@ -36,7 +36,7 @@ let getDependencies
                         { name = name
                           group = group
                           version = NuGetVersion.Parse(version).ToFullString()
-                          buildFileOverride = buildFileOverride }
+                          buildFileOverride = overrides |> Option.map (fun o -> o.buildFile) }
 
                     cache.Add((sprintf "%s-%s" group name), package)
                     |> ignore
