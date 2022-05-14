@@ -72,6 +72,7 @@ let main argv =
 
     let bazelFile = generateBazelFile processedPackages
 
+    File.WriteAllText($"{outputFolder}/BUILD.bazel", "")
     File.WriteAllText($"{outputFolder}/paket.bzl", bazelFile)
 
     0 // return an integer exit

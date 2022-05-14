@@ -232,7 +232,7 @@ let processInstalledPackages (dependencies: Package list) paketDir : ProcessedPa
         (fun d ->
             let packageReader =
                 new PackageFolderReader(
-                    if d.group = "main" then
+                    if d.group.ToLower() = "main" then
                         $"{paketDir}/packages/{d.name}"
                     else
                         $"{paketDir}/packages/{d.group}/{d.name}"
@@ -241,7 +241,7 @@ let processInstalledPackages (dependencies: Package list) paketDir : ProcessedPa
             maybe {
                 let sha256 =
                     getSha256
-                        (if d.group = "main" then
+                        (if d.group.ToLower() = "main" then
                              $"{paketDir}/packages"
                          else
                              $"{paketDir}/packages/{d.group}")

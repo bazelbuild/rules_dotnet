@@ -7,6 +7,7 @@ load("//dotnet/private:rules/create_net_workspace.bzl", "create_net_workspace")
 load("//dotnet/private:macros/nuget.bzl", "nuget_package")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
+load("//tools/paket2bazel/deps:paket.bzl", "paket")
 
 # This macro does a bunch of random targets and doesn't have a unique name.
 # This is an idiomatic pattern for rule initialization.
@@ -184,3 +185,7 @@ def _net_workspace():
         sha256 = "46ea2fcbd10a817685b85af7ce0c397d12944bdc81209e272de1e05efd33c78a",
         build_file = "@rules_dotnet//dotnet/private:frameworks/netstandard21.BUILD",
     )
+
+# buildifier: disable=unnamed-macro
+def paket2bazel_repositories():
+    paket()

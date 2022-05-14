@@ -16,4 +16,5 @@ package.json
 .bazelrc.user
 .fake
 tools/paket2bazel/packages
+examples/paket/packages
 paket-files

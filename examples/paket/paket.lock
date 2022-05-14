@@ -1,0 +1,42 @@
+RESTRICTION: == net6.0
+NUGET
+  remote: https://api.nuget.org/v3/index.json
+    Argu (6.1.1)
+      FSharp.Core (>= 4.3.2)
+      System.Configuration.ConfigurationManager (>= 4.4)
+    FSharp.Core (6.0.4)
+    Microsoft.Win32.SystemEvents (6.0.1)
+    System.Configuration.ConfigurationManager (6.0)
+      System.Security.Cryptography.ProtectedData (>= 6.0)
+      System.Security.Permissions (>= 6.0)
+    System.Drawing.Common (6.0)
+      Microsoft.Win32.SystemEvents (>= 6.0)
+    System.Security.AccessControl (6.0)
+    System.Security.Cryptography.ProtectedData (6.0)
+    System.Security.Permissions (6.0)
+      System.Security.AccessControl (>= 6.0)
+      System.Windows.Extensions (>= 6.0)
+    System.Windows.Extensions (6.0)
+      System.Drawing.Common (>= 6.0)
+
+GROUP othergroup
+RESTRICTION: == net6.0
+NUGET
+  remote: https://api.nuget.org/v3/index.json
+    Argu (6.1.1)
+      FSharp.Core (>= 4.3.2)
+      System.Configuration.ConfigurationManager (>= 4.4)
+    FSharp.Core (6.0.4)
+    Microsoft.Win32.SystemEvents (6.0.1)
+    System.Configuration.ConfigurationManager (6.0)
+      System.Security.Cryptography.ProtectedData (>= 6.0)
+      System.Security.Permissions (>= 6.0)
+    System.Drawing.Common (6.0)
+      Microsoft.Win32.SystemEvents (>= 6.0)
+    System.Security.AccessControl (6.0)
+    System.Security.Cryptography.ProtectedData (6.0)
+    System.Security.Permissions (6.0)
+      System.Security.AccessControl (>= 6.0)
+      System.Windows.Extensions (>= 6.0)
+    System.Windows.Extensions (6.0)
+      System.Drawing.Common (>= 6.0)

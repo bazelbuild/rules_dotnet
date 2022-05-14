@@ -22,14 +22,14 @@ load(
     "//dotnet:repositories.bzl",
     "dotnet_register_toolchains",
     "dotnet_repositories",
+    "paket2bazel_repositories"
 )
 
 dotnet_repositories()
 
 dotnet_register_toolchains()
 
-load("//tools/paket2bazel/deps:paket.bzl", paket2bazel_deps = "paket")
-paket2bazel_deps()
+paket2bazel_repositories()
 
 # stardoc begin
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")

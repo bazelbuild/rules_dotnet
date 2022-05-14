@@ -9,7 +9,14 @@ to deterministically generate Bazel targets for NuGet packages.
 First you need to set up your paket.dependencies and paket.lock file. See the [Paket docs](https://fsprojects.github.io/Paket/) on how to get started with Paket.
 Note that the `storage: none` feature of Paket is not supported currently because `paket2bazel` needs to read the contents of the `packages` folder that Paket generates.
 
-First you needs to run paket2bazel to generate the `paket.bzl` file which will be
+Next you will have to add the following to your `WORKSPACE` file:
+```python
+load("@rules_dotnet//dotnet:repositories.bzl", "paket2bazel_repositories")
+
+paket2bazel_repositories()
+```
+
+Then you needs to run `paket2bazel` to generate the `paket.bzl` file which will be
 loaded in your `WORKSPACE` file.
 
 ```sh
@@ -33,6 +40,8 @@ If you are using groups in your `paket.dependencies` file:
 ```
 @groupname.package.name//:lib
 ```
+
+Full examples can be seen in the `examples/paket` directory in this repository.
 
 ## Config file
 `paket2bazel` supports a config file that allows overriding the generated BUILD file

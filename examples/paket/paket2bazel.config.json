@@ -1,0 +1,7 @@
+{
+    "packageOverrides": {
+        "FSharp.Data": {
+            "buildFile": "@workspace_name//3rdparty/nuget/custom_build_files:fsharp.data.BUILD"
+        }
+    }
+}
