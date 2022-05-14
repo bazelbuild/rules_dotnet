@@ -189,7 +189,7 @@ let getFiles (packageReader: PackageFolderReader) =
     |> List.map (fun i -> (i.Key, i.Value))
     |> Map.ofList
 
-let getDependenciesPerFramework (group: string) (packageReader: PackageFolderReader) =
+let getDependenciesPerFramework (allDeps: string list) (group: string) (packageReader: PackageFolderReader) =
     let frameworkReducer = FrameworkReducer()
 
     let deps = packageReader.GetPackageDependencies()
@@ -202,9 +202,13 @@ let getDependenciesPerFramework (group: string) (packageReader: PackageFolderRea
 
             let frameworkdeps =
                 deps
+                // Only use deps that Paket has resolved
+                // Paket does not resolve framework built in dependencies
                 |> Seq.filter (fun i -> i.TargetFramework = nearest)
                 |> Seq.collect (fun group -> group.Packages)
-                |> Seq.map (fun i -> $"@{group.ToLower()}.{i.Id.ToLower()}//:lib")
+                |> Seq.filter (fun i -> List.contains i.Id allDeps)
+                |> Seq.map (fun i ->
+                    $"@{group.ToLower()}.{i.Id.ToLower()}//:lib") 
                 |> Seq.toList
 
             (targetFramework.GetShortFolderName(), frameworkdeps)) |> Map.ofList
@@ -250,7 +254,7 @@ let processInstalledPackages (dependencies: Package list) paketDir : ProcessedPa
                 let fileItems = getFiles packageReader
 
                 let deps =
-                    getDependenciesPerFramework d.group packageReader
+                    getDependenciesPerFramework (dependencies |> List.map (fun d -> d.name)) d.group packageReader
 
                 let targetedPackages =
                     tfms
@@ -342,61 +346,11 @@ let generateTarget (package: ProcessedPackage) =
     for tfm in tfms do
         let attrName =tfm.GetShortFolderName().Replace(".", "_") 
         sb.Append($"    {attrName} = \":{tfm.GetShortFolderName()}\",\n") |> ignore
+    sb.Append($"    visibility = [\"//visibility:public\"],\n") |> ignore
+    
     sb.Append($")\n") |> ignore
     
     sb.Append($"\"\"\"\n") |> ignore
-
-    // sb.Append($"{i}    }},\n") |> ignore
-
-    // if (package.refItems
-    //     |> List.fold (fun s (x, y) -> s + y.Length) 0) > 0 then
-    //     sb.Append($"{i}    core_ref = {{\n") |> ignore
-
-    //     for (key, value) in package.refItems do
-    //         sb.Append($"{i}        \"{key}\": \"{value}\",\n")
-    //         |> ignore
-
-    //     sb.Append($"{i}    }},\n") |> ignore
-
-    // if (package.toolItems
-    //     |> List.fold (fun s (x, y) -> s + y.Length) 0) > 0 then
-    //     sb.Append($"{i}    core_tool = {{\n") |> ignore
-
-    //     for (key, value) in package.toolItems do
-    //         sb.Append($"{i}        \"{key}\": \"{value}\",\n")
-    //         |> ignore
-
-    //     sb.Append($"{i}    }},\n") |> ignore
-
-    // if (package.deps
-    //     |> List.fold (fun s (x, y) -> s + y.Length) 0) > 0 then
-    //     sb.Append($"{i}    core_deps = {{\n") |> ignore
-
-    //     for (key, value) in package.deps do
-    //         if value.Length > 0 then
-    //             sb.Append($"{i}        \"{key}\": [\n") |> ignore
-
-    //             for v in value do
-    //                 sb.Append($"{i}            \"{v}\",\n") |> ignore
-
-    //             sb.Append($"{i}        ],\n") |> ignore
-
-    //     sb.Append($"{i}    }},\n") |> ignore
-
-    // if (package.fileItems
-    //     |> List.fold (fun s (x, y) -> s + y.Length) 0) > 0 then
-    //     sb.Append($"{i}    core_files = {{\n") |> ignore
-
-    //     for (key, value) in package.fileItems do
-    //         if value.Length > 0 then
-    //             sb.Append($"{i}        \"{key}\": [\n") |> ignore
-
-    //             for v in value do
-    //                 sb.Append($"{i}            \"{v}\",\n") |> ignore
-
-    //             sb.Append($"{i}        ],\n") |> ignore
-
-    //     sb.Append($"{i}    }},\n") |> ignore
 
     sb.Append($"{i})\n") |> ignore
     sb.ToString()

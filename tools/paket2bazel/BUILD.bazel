@@ -10,13 +10,13 @@ fsharp_binary(
         "Main.fs",
     ],
     deps = [
-        "@core_sdk_stdlib//:libraryset",
-        "@main.argu//:lib",
-        "@main.fsharp.systemtextjson//:lib",
-        "@main.fsharpx.collections//:lib",
-        "@main.fsharpx.extras//:lib",
-        "@main.nuget.packagemanagement//:lib",
-        "@main.paket.core//:lib",
-        "@main.system.text.json//:lib",
+        "@paket2bazel.argu//:lib",
+        "@paket2bazel.fsharp.systemtextjson//:lib",
+        "@paket2bazel.fsharpx.collections//:lib",
+        "@paket2bazel.fsharpx.extras//:lib",
+        "@paket2bazel.nuget.packagemanagement//:lib",
+        "@paket2bazel.paket.core//:lib",
+        "@paket2bazel.system.text.json//:lib",
     ],
+    target_frameworks = ["net6.0"]
 )

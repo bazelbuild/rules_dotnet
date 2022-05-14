@@ -422,6 +422,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -900,6 +901,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -1308,6 +1310,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -1881,6 +1884,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -2289,6 +2293,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -2709,6 +2714,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -3141,6 +3147,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -3595,6 +3602,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -3683,7 +3691,6 @@ import_library(
     dll = "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
     refdll = "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
     deps = [
-        "@paket2bazel.system.threading.tasks.extensions//:lib",
     ],
     data = [
         "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
@@ -3696,7 +3703,6 @@ import_library(
     dll = "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
     refdll = "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
     deps = [
-        "@paket2bazel.system.threading.tasks.extensions//:lib",
     ],
     data = [
         "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
@@ -3709,7 +3715,6 @@ import_library(
     dll = "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
     refdll = "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
     deps = [
-        "@paket2bazel.system.threading.tasks.extensions//:lib",
     ],
     data = [
         "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
@@ -3722,7 +3727,6 @@ import_library(
     dll = "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
     refdll = "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
     deps = [
-        "@paket2bazel.system.threading.tasks.extensions//:lib",
     ],
     data = [
         "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
@@ -3735,7 +3739,6 @@ import_library(
     dll = "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
     refdll = "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
     deps = [
-        "@paket2bazel.system.threading.tasks.extensions//:lib",
     ],
     data = [
         "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
@@ -3748,7 +3751,6 @@ import_library(
     dll = "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
     refdll = "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
     deps = [
-        "@paket2bazel.system.threading.tasks.extensions//:lib",
     ],
     data = [
         "lib/net461/Microsoft.Bcl.AsyncInterfaces.dll",
@@ -3825,7 +3827,6 @@ import_library(
     dll = "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
     refdll = "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
     deps = [
-        "@paket2bazel.system.threading.tasks.extensions//:lib",
     ],
     data = [
         "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
@@ -3866,7 +3867,6 @@ import_library(
     dll = "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
     refdll = "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
     deps = [
-        "@paket2bazel.system.threading.tasks.extensions//:lib",
     ],
     data = [
         "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
@@ -3879,7 +3879,6 @@ import_library(
     dll = "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
     refdll = "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
     deps = [
-        "@paket2bazel.system.threading.tasks.extensions//:lib",
     ],
     data = [
         "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
@@ -3892,7 +3891,6 @@ import_library(
     dll = "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
     refdll = "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
     deps = [
-        "@paket2bazel.system.threading.tasks.extensions//:lib",
     ],
     data = [
         "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
@@ -3983,6 +3981,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -4126,7 +4125,6 @@ import_library(
     target_framework = "netstandard1.0",
     deps = [
         "@paket2bazel.netstandard.library//:lib",
-        "@paket2bazel.system.dynamic.runtime//:lib",
     ],
     data = [
     ],
@@ -4136,7 +4134,6 @@ import_library(
     target_framework = "netstandard1.1",
     deps = [
         "@paket2bazel.netstandard.library//:lib",
-        "@paket2bazel.system.dynamic.runtime//:lib",
     ],
     data = [
     ],
@@ -4146,7 +4143,6 @@ import_library(
     target_framework = "netstandard1.2",
     deps = [
         "@paket2bazel.netstandard.library//:lib",
-        "@paket2bazel.system.dynamic.runtime//:lib",
     ],
     data = [
     ],
@@ -4158,8 +4154,6 @@ import_library(
     refdll = "lib/netstandard1.3/Microsoft.CSharp.dll",
     deps = [
         "@paket2bazel.netstandard.library//:lib",
-        "@paket2bazel.system.dynamic.runtime//:lib",
-        "@paket2bazel.system.reflection.typeextensions//:lib",
     ],
     data = [
         "lib/netstandard1.3/Microsoft.CSharp.dll",
@@ -4172,8 +4166,6 @@ import_library(
     refdll = "lib/netstandard1.3/Microsoft.CSharp.dll",
     deps = [
         "@paket2bazel.netstandard.library//:lib",
-        "@paket2bazel.system.dynamic.runtime//:lib",
-        "@paket2bazel.system.reflection.typeextensions//:lib",
     ],
     data = [
         "lib/netstandard1.3/Microsoft.CSharp.dll",
@@ -4186,8 +4178,6 @@ import_library(
     refdll = "lib/netstandard1.3/Microsoft.CSharp.dll",
     deps = [
         "@paket2bazel.netstandard.library//:lib",
-        "@paket2bazel.system.dynamic.runtime//:lib",
-        "@paket2bazel.system.reflection.typeextensions//:lib",
     ],
     data = [
         "lib/netstandard1.3/Microsoft.CSharp.dll",
@@ -4200,8 +4190,6 @@ import_library(
     refdll = "lib/netstandard1.3/Microsoft.CSharp.dll",
     deps = [
         "@paket2bazel.netstandard.library//:lib",
-        "@paket2bazel.system.dynamic.runtime//:lib",
-        "@paket2bazel.system.reflection.typeextensions//:lib",
     ],
     data = [
         "lib/netstandard1.3/Microsoft.CSharp.dll",
@@ -4238,8 +4226,6 @@ import_library(
     refdll = "lib/netstandard1.3/Microsoft.CSharp.dll",
     deps = [
         "@paket2bazel.netstandard.library//:lib",
-        "@paket2bazel.system.dynamic.runtime//:lib",
-        "@paket2bazel.system.reflection.typeextensions//:lib",
     ],
     data = [
         "lib/netstandard1.3/Microsoft.CSharp.dll",
@@ -4252,8 +4238,6 @@ import_library(
     refdll = "lib/netstandard1.3/Microsoft.CSharp.dll",
     deps = [
         "@paket2bazel.netstandard.library//:lib",
-        "@paket2bazel.system.dynamic.runtime//:lib",
-        "@paket2bazel.system.reflection.typeextensions//:lib",
     ],
     data = [
         "lib/netstandard1.3/Microsoft.CSharp.dll",
@@ -4351,6 +4335,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -4669,6 +4654,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -4987,6 +4973,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -5389,6 +5376,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -5767,6 +5755,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -6232,6 +6221,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -6287,7 +6277,6 @@ import_library(
     target_framework = "net45",
     deps = [
         "@paket2bazel.microsoft.netcore.platforms//:lib",
-        "@paket2bazel.system.runtime.interopservices.runtimeinformation//:lib",
     ],
     data = [
     ],
@@ -6297,7 +6286,6 @@ import_library(
     target_framework = "net451",
     deps = [
         "@paket2bazel.microsoft.netcore.platforms//:lib",
-        "@paket2bazel.system.runtime.interopservices.runtimeinformation//:lib",
     ],
     data = [
     ],
@@ -6307,7 +6295,6 @@ import_library(
     target_framework = "net452",
     deps = [
         "@paket2bazel.microsoft.netcore.platforms//:lib",
-        "@paket2bazel.system.runtime.interopservices.runtimeinformation//:lib",
     ],
     data = [
     ],
@@ -6317,22 +6304,14 @@ import_library(
     target_framework = "net46",
     deps = [
         "@paket2bazel.microsoft.netcore.platforms//:lib",
-        "@paket2bazel.microsoft.win32.primitives//:lib",
-        "@paket2bazel.system.appcontext//:lib",
-        "@paket2bazel.system.console//:lib",
         "@paket2bazel.system.globalization.calendars//:lib",
-        "@paket2bazel.system.io.compression//:lib",
-        "@paket2bazel.system.io.compression.zipfile//:lib",
         "@paket2bazel.system.io.filesystem//:lib",
         "@paket2bazel.system.io.filesystem.primitives//:lib",
         "@paket2bazel.system.net.http//:lib",
-        "@paket2bazel.system.net.sockets//:lib",
-        "@paket2bazel.system.runtime.interopservices.runtimeinformation//:lib",
         "@paket2bazel.system.security.cryptography.algorithms//:lib",
         "@paket2bazel.system.security.cryptography.encoding//:lib",
         "@paket2bazel.system.security.cryptography.primitives//:lib",
         "@paket2bazel.system.security.cryptography.x509certificates//:lib",
-        "@paket2bazel.system.xml.readerwriter//:lib",
     ],
     data = [
     ],
@@ -6406,26 +6385,18 @@ import_library(
         "@paket2bazel.microsoft.netcore.platforms//:lib",
         "@paket2bazel.system.collections//:lib",
         "@paket2bazel.system.diagnostics.debug//:lib",
-        "@paket2bazel.system.diagnostics.tools//:lib",
         "@paket2bazel.system.globalization//:lib",
         "@paket2bazel.system.io//:lib",
         "@paket2bazel.system.linq//:lib",
-        "@paket2bazel.system.linq.expressions//:lib",
         "@paket2bazel.system.net.primitives//:lib",
-        "@paket2bazel.system.objectmodel//:lib",
         "@paket2bazel.system.reflection//:lib",
-        "@paket2bazel.system.reflection.extensions//:lib",
         "@paket2bazel.system.reflection.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
         "@paket2bazel.system.runtime.extensions//:lib",
         "@paket2bazel.system.text.encoding//:lib",
-        "@paket2bazel.system.text.encoding.extensions//:lib",
-        "@paket2bazel.system.text.regularexpressions//:lib",
         "@paket2bazel.system.threading//:lib",
         "@paket2bazel.system.threading.tasks//:lib",
-        "@paket2bazel.system.xml.readerwriter//:lib",
-        "@paket2bazel.system.xml.xdocument//:lib",
     ],
     data = [
     ],
@@ -6438,32 +6409,22 @@ import_library(
         "@paket2bazel.system.collections//:lib",
         "@paket2bazel.system.collections.concurrent//:lib",
         "@paket2bazel.system.diagnostics.debug//:lib",
-        "@paket2bazel.system.diagnostics.tools//:lib",
         "@paket2bazel.system.diagnostics.tracing//:lib",
         "@paket2bazel.system.globalization//:lib",
         "@paket2bazel.system.io//:lib",
-        "@paket2bazel.system.io.compression//:lib",
         "@paket2bazel.system.linq//:lib",
-        "@paket2bazel.system.linq.expressions//:lib",
         "@paket2bazel.system.net.http//:lib",
         "@paket2bazel.system.net.primitives//:lib",
-        "@paket2bazel.system.objectmodel//:lib",
         "@paket2bazel.system.reflection//:lib",
-        "@paket2bazel.system.reflection.extensions//:lib",
         "@paket2bazel.system.reflection.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
         "@paket2bazel.system.runtime.extensions//:lib",
         "@paket2bazel.system.runtime.interopservices//:lib",
-        "@paket2bazel.system.runtime.interopservices.runtimeinformation//:lib",
         "@paket2bazel.system.runtime.numerics//:lib",
         "@paket2bazel.system.text.encoding//:lib",
-        "@paket2bazel.system.text.encoding.extensions//:lib",
-        "@paket2bazel.system.text.regularexpressions//:lib",
         "@paket2bazel.system.threading//:lib",
         "@paket2bazel.system.threading.tasks//:lib",
-        "@paket2bazel.system.xml.readerwriter//:lib",
-        "@paket2bazel.system.xml.xdocument//:lib",
     ],
     data = [
     ],
@@ -6476,33 +6437,22 @@ import_library(
         "@paket2bazel.system.collections//:lib",
         "@paket2bazel.system.collections.concurrent//:lib",
         "@paket2bazel.system.diagnostics.debug//:lib",
-        "@paket2bazel.system.diagnostics.tools//:lib",
         "@paket2bazel.system.diagnostics.tracing//:lib",
         "@paket2bazel.system.globalization//:lib",
         "@paket2bazel.system.io//:lib",
-        "@paket2bazel.system.io.compression//:lib",
         "@paket2bazel.system.linq//:lib",
-        "@paket2bazel.system.linq.expressions//:lib",
         "@paket2bazel.system.net.http//:lib",
         "@paket2bazel.system.net.primitives//:lib",
-        "@paket2bazel.system.objectmodel//:lib",
         "@paket2bazel.system.reflection//:lib",
-        "@paket2bazel.system.reflection.extensions//:lib",
         "@paket2bazel.system.reflection.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
         "@paket2bazel.system.runtime.extensions//:lib",
         "@paket2bazel.system.runtime.interopservices//:lib",
-        "@paket2bazel.system.runtime.interopservices.runtimeinformation//:lib",
         "@paket2bazel.system.runtime.numerics//:lib",
         "@paket2bazel.system.text.encoding//:lib",
-        "@paket2bazel.system.text.encoding.extensions//:lib",
-        "@paket2bazel.system.text.regularexpressions//:lib",
         "@paket2bazel.system.threading//:lib",
         "@paket2bazel.system.threading.tasks//:lib",
-        "@paket2bazel.system.threading.timer//:lib",
-        "@paket2bazel.system.xml.readerwriter//:lib",
-        "@paket2bazel.system.xml.xdocument//:lib",
     ],
     data = [
     ],
@@ -6512,49 +6462,33 @@ import_library(
     target_framework = "netstandard1.3",
     deps = [
         "@paket2bazel.microsoft.netcore.platforms//:lib",
-        "@paket2bazel.microsoft.win32.primitives//:lib",
-        "@paket2bazel.system.appcontext//:lib",
         "@paket2bazel.system.collections//:lib",
         "@paket2bazel.system.collections.concurrent//:lib",
-        "@paket2bazel.system.console//:lib",
         "@paket2bazel.system.diagnostics.debug//:lib",
-        "@paket2bazel.system.diagnostics.tools//:lib",
         "@paket2bazel.system.diagnostics.tracing//:lib",
         "@paket2bazel.system.globalization//:lib",
         "@paket2bazel.system.globalization.calendars//:lib",
         "@paket2bazel.system.io//:lib",
-        "@paket2bazel.system.io.compression//:lib",
-        "@paket2bazel.system.io.compression.zipfile//:lib",
         "@paket2bazel.system.io.filesystem//:lib",
         "@paket2bazel.system.io.filesystem.primitives//:lib",
         "@paket2bazel.system.linq//:lib",
-        "@paket2bazel.system.linq.expressions//:lib",
         "@paket2bazel.system.net.http//:lib",
         "@paket2bazel.system.net.primitives//:lib",
-        "@paket2bazel.system.net.sockets//:lib",
-        "@paket2bazel.system.objectmodel//:lib",
         "@paket2bazel.system.reflection//:lib",
-        "@paket2bazel.system.reflection.extensions//:lib",
         "@paket2bazel.system.reflection.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
         "@paket2bazel.system.runtime.extensions//:lib",
         "@paket2bazel.system.runtime.handles//:lib",
         "@paket2bazel.system.runtime.interopservices//:lib",
-        "@paket2bazel.system.runtime.interopservices.runtimeinformation//:lib",
         "@paket2bazel.system.runtime.numerics//:lib",
         "@paket2bazel.system.security.cryptography.algorithms//:lib",
         "@paket2bazel.system.security.cryptography.encoding//:lib",
         "@paket2bazel.system.security.cryptography.primitives//:lib",
         "@paket2bazel.system.security.cryptography.x509certificates//:lib",
         "@paket2bazel.system.text.encoding//:lib",
-        "@paket2bazel.system.text.encoding.extensions//:lib",
-        "@paket2bazel.system.text.regularexpressions//:lib",
         "@paket2bazel.system.threading//:lib",
         "@paket2bazel.system.threading.tasks//:lib",
-        "@paket2bazel.system.threading.timer//:lib",
-        "@paket2bazel.system.xml.readerwriter//:lib",
-        "@paket2bazel.system.xml.xdocument//:lib",
     ],
     data = [
     ],
@@ -6564,49 +6498,33 @@ import_library(
     target_framework = "netstandard1.4",
     deps = [
         "@paket2bazel.microsoft.netcore.platforms//:lib",
-        "@paket2bazel.microsoft.win32.primitives//:lib",
-        "@paket2bazel.system.appcontext//:lib",
         "@paket2bazel.system.collections//:lib",
         "@paket2bazel.system.collections.concurrent//:lib",
-        "@paket2bazel.system.console//:lib",
         "@paket2bazel.system.diagnostics.debug//:lib",
-        "@paket2bazel.system.diagnostics.tools//:lib",
         "@paket2bazel.system.diagnostics.tracing//:lib",
         "@paket2bazel.system.globalization//:lib",
         "@paket2bazel.system.globalization.calendars//:lib",
         "@paket2bazel.system.io//:lib",
-        "@paket2bazel.system.io.compression//:lib",
-        "@paket2bazel.system.io.compression.zipfile//:lib",
         "@paket2bazel.system.io.filesystem//:lib",
         "@paket2bazel.system.io.filesystem.primitives//:lib",
         "@paket2bazel.system.linq//:lib",
-        "@paket2bazel.system.linq.expressions//:lib",
         "@paket2bazel.system.net.http//:lib",
         "@paket2bazel.system.net.primitives//:lib",
-        "@paket2bazel.system.net.sockets//:lib",
-        "@paket2bazel.system.objectmodel//:lib",
         "@paket2bazel.system.reflection//:lib",
-        "@paket2bazel.system.reflection.extensions//:lib",
         "@paket2bazel.system.reflection.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
         "@paket2bazel.system.runtime.extensions//:lib",
         "@paket2bazel.system.runtime.handles//:lib",
         "@paket2bazel.system.runtime.interopservices//:lib",
-        "@paket2bazel.system.runtime.interopservices.runtimeinformation//:lib",
         "@paket2bazel.system.runtime.numerics//:lib",
         "@paket2bazel.system.security.cryptography.algorithms//:lib",
         "@paket2bazel.system.security.cryptography.encoding//:lib",
         "@paket2bazel.system.security.cryptography.primitives//:lib",
         "@paket2bazel.system.security.cryptography.x509certificates//:lib",
         "@paket2bazel.system.text.encoding//:lib",
-        "@paket2bazel.system.text.encoding.extensions//:lib",
-        "@paket2bazel.system.text.regularexpressions//:lib",
         "@paket2bazel.system.threading//:lib",
         "@paket2bazel.system.threading.tasks//:lib",
-        "@paket2bazel.system.threading.timer//:lib",
-        "@paket2bazel.system.xml.readerwriter//:lib",
-        "@paket2bazel.system.xml.xdocument//:lib",
     ],
     data = [
     ],
@@ -6616,49 +6534,33 @@ import_library(
     target_framework = "netstandard1.5",
     deps = [
         "@paket2bazel.microsoft.netcore.platforms//:lib",
-        "@paket2bazel.microsoft.win32.primitives//:lib",
-        "@paket2bazel.system.appcontext//:lib",
         "@paket2bazel.system.collections//:lib",
         "@paket2bazel.system.collections.concurrent//:lib",
-        "@paket2bazel.system.console//:lib",
         "@paket2bazel.system.diagnostics.debug//:lib",
-        "@paket2bazel.system.diagnostics.tools//:lib",
         "@paket2bazel.system.diagnostics.tracing//:lib",
         "@paket2bazel.system.globalization//:lib",
         "@paket2bazel.system.globalization.calendars//:lib",
         "@paket2bazel.system.io//:lib",
-        "@paket2bazel.system.io.compression//:lib",
-        "@paket2bazel.system.io.compression.zipfile//:lib",
         "@paket2bazel.system.io.filesystem//:lib",
         "@paket2bazel.system.io.filesystem.primitives//:lib",
         "@paket2bazel.system.linq//:lib",
-        "@paket2bazel.system.linq.expressions//:lib",
         "@paket2bazel.system.net.http//:lib",
         "@paket2bazel.system.net.primitives//:lib",
-        "@paket2bazel.system.net.sockets//:lib",
-        "@paket2bazel.system.objectmodel//:lib",
         "@paket2bazel.system.reflection//:lib",
-        "@paket2bazel.system.reflection.extensions//:lib",
         "@paket2bazel.system.reflection.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
         "@paket2bazel.system.runtime.extensions//:lib",
         "@paket2bazel.system.runtime.handles//:lib",
         "@paket2bazel.system.runtime.interopservices//:lib",
-        "@paket2bazel.system.runtime.interopservices.runtimeinformation//:lib",
         "@paket2bazel.system.runtime.numerics//:lib",
         "@paket2bazel.system.security.cryptography.algorithms//:lib",
         "@paket2bazel.system.security.cryptography.encoding//:lib",
         "@paket2bazel.system.security.cryptography.primitives//:lib",
         "@paket2bazel.system.security.cryptography.x509certificates//:lib",
         "@paket2bazel.system.text.encoding//:lib",
-        "@paket2bazel.system.text.encoding.extensions//:lib",
-        "@paket2bazel.system.text.regularexpressions//:lib",
         "@paket2bazel.system.threading//:lib",
         "@paket2bazel.system.threading.tasks//:lib",
-        "@paket2bazel.system.threading.timer//:lib",
-        "@paket2bazel.system.xml.readerwriter//:lib",
-        "@paket2bazel.system.xml.xdocument//:lib",
     ],
     data = [
     ],
@@ -6668,49 +6570,33 @@ import_library(
     target_framework = "netstandard1.6",
     deps = [
         "@paket2bazel.microsoft.netcore.platforms//:lib",
-        "@paket2bazel.microsoft.win32.primitives//:lib",
-        "@paket2bazel.system.appcontext//:lib",
         "@paket2bazel.system.collections//:lib",
         "@paket2bazel.system.collections.concurrent//:lib",
-        "@paket2bazel.system.console//:lib",
         "@paket2bazel.system.diagnostics.debug//:lib",
-        "@paket2bazel.system.diagnostics.tools//:lib",
         "@paket2bazel.system.diagnostics.tracing//:lib",
         "@paket2bazel.system.globalization//:lib",
         "@paket2bazel.system.globalization.calendars//:lib",
         "@paket2bazel.system.io//:lib",
-        "@paket2bazel.system.io.compression//:lib",
-        "@paket2bazel.system.io.compression.zipfile//:lib",
         "@paket2bazel.system.io.filesystem//:lib",
         "@paket2bazel.system.io.filesystem.primitives//:lib",
         "@paket2bazel.system.linq//:lib",
-        "@paket2bazel.system.linq.expressions//:lib",
         "@paket2bazel.system.net.http//:lib",
         "@paket2bazel.system.net.primitives//:lib",
-        "@paket2bazel.system.net.sockets//:lib",
-        "@paket2bazel.system.objectmodel//:lib",
         "@paket2bazel.system.reflection//:lib",
-        "@paket2bazel.system.reflection.extensions//:lib",
         "@paket2bazel.system.reflection.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
         "@paket2bazel.system.runtime.extensions//:lib",
         "@paket2bazel.system.runtime.handles//:lib",
         "@paket2bazel.system.runtime.interopservices//:lib",
-        "@paket2bazel.system.runtime.interopservices.runtimeinformation//:lib",
         "@paket2bazel.system.runtime.numerics//:lib",
         "@paket2bazel.system.security.cryptography.algorithms//:lib",
         "@paket2bazel.system.security.cryptography.encoding//:lib",
         "@paket2bazel.system.security.cryptography.primitives//:lib",
         "@paket2bazel.system.security.cryptography.x509certificates//:lib",
         "@paket2bazel.system.text.encoding//:lib",
-        "@paket2bazel.system.text.encoding.extensions//:lib",
-        "@paket2bazel.system.text.regularexpressions//:lib",
         "@paket2bazel.system.threading//:lib",
         "@paket2bazel.system.threading.tasks//:lib",
-        "@paket2bazel.system.threading.timer//:lib",
-        "@paket2bazel.system.xml.readerwriter//:lib",
-        "@paket2bazel.system.xml.xdocument//:lib",
     ],
     data = [
     ],
@@ -6738,49 +6624,33 @@ import_library(
     target_framework = "netcoreapp1.0",
     deps = [
         "@paket2bazel.microsoft.netcore.platforms//:lib",
-        "@paket2bazel.microsoft.win32.primitives//:lib",
-        "@paket2bazel.system.appcontext//:lib",
         "@paket2bazel.system.collections//:lib",
         "@paket2bazel.system.collections.concurrent//:lib",
-        "@paket2bazel.system.console//:lib",
         "@paket2bazel.system.diagnostics.debug//:lib",
-        "@paket2bazel.system.diagnostics.tools//:lib",
         "@paket2bazel.system.diagnostics.tracing//:lib",
         "@paket2bazel.system.globalization//:lib",
         "@paket2bazel.system.globalization.calendars//:lib",
         "@paket2bazel.system.io//:lib",
-        "@paket2bazel.system.io.compression//:lib",
-        "@paket2bazel.system.io.compression.zipfile//:lib",
         "@paket2bazel.system.io.filesystem//:lib",
         "@paket2bazel.system.io.filesystem.primitives//:lib",
         "@paket2bazel.system.linq//:lib",
-        "@paket2bazel.system.linq.expressions//:lib",
         "@paket2bazel.system.net.http//:lib",
         "@paket2bazel.system.net.primitives//:lib",
-        "@paket2bazel.system.net.sockets//:lib",
-        "@paket2bazel.system.objectmodel//:lib",
         "@paket2bazel.system.reflection//:lib",
-        "@paket2bazel.system.reflection.extensions//:lib",
         "@paket2bazel.system.reflection.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
         "@paket2bazel.system.runtime.extensions//:lib",
         "@paket2bazel.system.runtime.handles//:lib",
         "@paket2bazel.system.runtime.interopservices//:lib",
-        "@paket2bazel.system.runtime.interopservices.runtimeinformation//:lib",
         "@paket2bazel.system.runtime.numerics//:lib",
         "@paket2bazel.system.security.cryptography.algorithms//:lib",
         "@paket2bazel.system.security.cryptography.encoding//:lib",
         "@paket2bazel.system.security.cryptography.primitives//:lib",
         "@paket2bazel.system.security.cryptography.x509certificates//:lib",
         "@paket2bazel.system.text.encoding//:lib",
-        "@paket2bazel.system.text.encoding.extensions//:lib",
-        "@paket2bazel.system.text.regularexpressions//:lib",
         "@paket2bazel.system.threading//:lib",
         "@paket2bazel.system.threading.tasks//:lib",
-        "@paket2bazel.system.threading.timer//:lib",
-        "@paket2bazel.system.xml.readerwriter//:lib",
-        "@paket2bazel.system.xml.xdocument//:lib",
     ],
     data = [
     ],
@@ -6790,49 +6660,33 @@ import_library(
     target_framework = "netcoreapp1.1",
     deps = [
         "@paket2bazel.microsoft.netcore.platforms//:lib",
-        "@paket2bazel.microsoft.win32.primitives//:lib",
-        "@paket2bazel.system.appcontext//:lib",
         "@paket2bazel.system.collections//:lib",
         "@paket2bazel.system.collections.concurrent//:lib",
-        "@paket2bazel.system.console//:lib",
         "@paket2bazel.system.diagnostics.debug//:lib",
-        "@paket2bazel.system.diagnostics.tools//:lib",
         "@paket2bazel.system.diagnostics.tracing//:lib",
         "@paket2bazel.system.globalization//:lib",
         "@paket2bazel.system.globalization.calendars//:lib",
         "@paket2bazel.system.io//:lib",
-        "@paket2bazel.system.io.compression//:lib",
-        "@paket2bazel.system.io.compression.zipfile//:lib",
         "@paket2bazel.system.io.filesystem//:lib",
         "@paket2bazel.system.io.filesystem.primitives//:lib",
         "@paket2bazel.system.linq//:lib",
-        "@paket2bazel.system.linq.expressions//:lib",
         "@paket2bazel.system.net.http//:lib",
         "@paket2bazel.system.net.primitives//:lib",
-        "@paket2bazel.system.net.sockets//:lib",
-        "@paket2bazel.system.objectmodel//:lib",
         "@paket2bazel.system.reflection//:lib",
-        "@paket2bazel.system.reflection.extensions//:lib",
         "@paket2bazel.system.reflection.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
         "@paket2bazel.system.runtime.extensions//:lib",
         "@paket2bazel.system.runtime.handles//:lib",
         "@paket2bazel.system.runtime.interopservices//:lib",
-        "@paket2bazel.system.runtime.interopservices.runtimeinformation//:lib",
         "@paket2bazel.system.runtime.numerics//:lib",
         "@paket2bazel.system.security.cryptography.algorithms//:lib",
         "@paket2bazel.system.security.cryptography.encoding//:lib",
         "@paket2bazel.system.security.cryptography.primitives//:lib",
         "@paket2bazel.system.security.cryptography.x509certificates//:lib",
         "@paket2bazel.system.text.encoding//:lib",
-        "@paket2bazel.system.text.encoding.extensions//:lib",
-        "@paket2bazel.system.text.regularexpressions//:lib",
         "@paket2bazel.system.threading//:lib",
         "@paket2bazel.system.threading.tasks//:lib",
-        "@paket2bazel.system.threading.timer//:lib",
-        "@paket2bazel.system.xml.readerwriter//:lib",
-        "@paket2bazel.system.xml.xdocument//:lib",
     ],
     data = [
     ],
@@ -6936,6 +6790,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -7138,8 +6993,6 @@ import_library(
     deps = [
         "@paket2bazel.microsoft.csharp//:lib",
         "@paket2bazel.netstandard.library//:lib",
-        "@paket2bazel.system.componentmodel.typeconverter//:lib",
-        "@paket2bazel.system.runtime.serialization.primitives//:lib",
     ],
     data = [
         "lib/netstandard1.0/Newtonsoft.Json.dll",
@@ -7154,8 +7007,6 @@ import_library(
     deps = [
         "@paket2bazel.microsoft.csharp//:lib",
         "@paket2bazel.netstandard.library//:lib",
-        "@paket2bazel.system.componentmodel.typeconverter//:lib",
-        "@paket2bazel.system.runtime.serialization.primitives//:lib",
     ],
     data = [
         "lib/netstandard1.0/Newtonsoft.Json.dll",
@@ -7170,8 +7021,6 @@ import_library(
     deps = [
         "@paket2bazel.microsoft.csharp//:lib",
         "@paket2bazel.netstandard.library//:lib",
-        "@paket2bazel.system.componentmodel.typeconverter//:lib",
-        "@paket2bazel.system.runtime.serialization.primitives//:lib",
     ],
     data = [
         "lib/netstandard1.0/Newtonsoft.Json.dll",
@@ -7186,10 +7035,6 @@ import_library(
     deps = [
         "@paket2bazel.microsoft.csharp//:lib",
         "@paket2bazel.netstandard.library//:lib",
-        "@paket2bazel.system.componentmodel.typeconverter//:lib",
-        "@paket2bazel.system.runtime.serialization.formatters//:lib",
-        "@paket2bazel.system.runtime.serialization.primitives//:lib",
-        "@paket2bazel.system.xml.xmldocument//:lib",
     ],
     data = [
         "lib/netstandard1.3/Newtonsoft.Json.dll",
@@ -7204,10 +7049,6 @@ import_library(
     deps = [
         "@paket2bazel.microsoft.csharp//:lib",
         "@paket2bazel.netstandard.library//:lib",
-        "@paket2bazel.system.componentmodel.typeconverter//:lib",
-        "@paket2bazel.system.runtime.serialization.formatters//:lib",
-        "@paket2bazel.system.runtime.serialization.primitives//:lib",
-        "@paket2bazel.system.xml.xmldocument//:lib",
     ],
     data = [
         "lib/netstandard1.3/Newtonsoft.Json.dll",
@@ -7222,10 +7063,6 @@ import_library(
     deps = [
         "@paket2bazel.microsoft.csharp//:lib",
         "@paket2bazel.netstandard.library//:lib",
-        "@paket2bazel.system.componentmodel.typeconverter//:lib",
-        "@paket2bazel.system.runtime.serialization.formatters//:lib",
-        "@paket2bazel.system.runtime.serialization.primitives//:lib",
-        "@paket2bazel.system.xml.xmldocument//:lib",
     ],
     data = [
         "lib/netstandard1.3/Newtonsoft.Json.dll",
@@ -7240,10 +7077,6 @@ import_library(
     deps = [
         "@paket2bazel.microsoft.csharp//:lib",
         "@paket2bazel.netstandard.library//:lib",
-        "@paket2bazel.system.componentmodel.typeconverter//:lib",
-        "@paket2bazel.system.runtime.serialization.formatters//:lib",
-        "@paket2bazel.system.runtime.serialization.primitives//:lib",
-        "@paket2bazel.system.xml.xmldocument//:lib",
     ],
     data = [
         "lib/netstandard1.3/Newtonsoft.Json.dll",
@@ -7282,10 +7115,6 @@ import_library(
     deps = [
         "@paket2bazel.microsoft.csharp//:lib",
         "@paket2bazel.netstandard.library//:lib",
-        "@paket2bazel.system.componentmodel.typeconverter//:lib",
-        "@paket2bazel.system.runtime.serialization.formatters//:lib",
-        "@paket2bazel.system.runtime.serialization.primitives//:lib",
-        "@paket2bazel.system.xml.xmldocument//:lib",
     ],
     data = [
         "lib/netstandard1.3/Newtonsoft.Json.dll",
@@ -7300,10 +7129,6 @@ import_library(
     deps = [
         "@paket2bazel.microsoft.csharp//:lib",
         "@paket2bazel.netstandard.library//:lib",
-        "@paket2bazel.system.componentmodel.typeconverter//:lib",
-        "@paket2bazel.system.runtime.serialization.formatters//:lib",
-        "@paket2bazel.system.runtime.serialization.primitives//:lib",
-        "@paket2bazel.system.xml.xmldocument//:lib",
     ],
     data = [
         "lib/netstandard1.3/Newtonsoft.Json.dll",
@@ -7430,6 +7255,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -7838,6 +7664,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -8251,6 +8078,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -8673,6 +8501,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -9051,6 +8880,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -9474,6 +9304,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -9876,6 +9707,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -10284,6 +10116,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -10735,6 +10568,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -11184,6 +11018,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -11577,6 +11412,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -11665,7 +11501,6 @@ import_library(
     dll = "lib/netstandard2.0/NuGet.Protocol.dll",
     refdll = "lib/netstandard2.0/NuGet.Protocol.dll",
     deps = [
-        "@paket2bazel.nuget.packaging//:lib",
     ],
     data = [
         "lib/netstandard2.0/NuGet.Protocol.dll",
@@ -11678,7 +11513,6 @@ import_library(
     dll = "lib/netstandard2.0/NuGet.Protocol.dll",
     refdll = "lib/netstandard2.0/NuGet.Protocol.dll",
     deps = [
-        "@paket2bazel.nuget.packaging//:lib",
     ],
     data = [
         "lib/netstandard2.0/NuGet.Protocol.dll",
@@ -11691,7 +11525,6 @@ import_library(
     dll = "lib/netstandard2.0/NuGet.Protocol.dll",
     refdll = "lib/netstandard2.0/NuGet.Protocol.dll",
     deps = [
-        "@paket2bazel.nuget.packaging//:lib",
     ],
     data = [
         "lib/netstandard2.0/NuGet.Protocol.dll",
@@ -11704,7 +11537,6 @@ import_library(
     dll = "lib/netstandard2.0/NuGet.Protocol.dll",
     refdll = "lib/netstandard2.0/NuGet.Protocol.dll",
     deps = [
-        "@paket2bazel.nuget.packaging//:lib",
     ],
     data = [
         "lib/netstandard2.0/NuGet.Protocol.dll",
@@ -11717,7 +11549,6 @@ import_library(
     dll = "lib/net472/NuGet.Protocol.dll",
     refdll = "lib/net472/NuGet.Protocol.dll",
     deps = [
-        "@paket2bazel.nuget.packaging//:lib",
     ],
     data = [
         "lib/net472/NuGet.Protocol.dll",
@@ -11730,7 +11561,6 @@ import_library(
     dll = "lib/net472/NuGet.Protocol.dll",
     refdll = "lib/net472/NuGet.Protocol.dll",
     deps = [
-        "@paket2bazel.nuget.packaging//:lib",
     ],
     data = [
         "lib/net472/NuGet.Protocol.dll",
@@ -11807,7 +11637,6 @@ import_library(
     dll = "lib/netstandard2.0/NuGet.Protocol.dll",
     refdll = "lib/netstandard2.0/NuGet.Protocol.dll",
     deps = [
-        "@paket2bazel.nuget.packaging//:lib",
     ],
     data = [
         "lib/netstandard2.0/NuGet.Protocol.dll",
@@ -11820,7 +11649,6 @@ import_library(
     dll = "lib/netstandard2.0/NuGet.Protocol.dll",
     refdll = "lib/netstandard2.0/NuGet.Protocol.dll",
     deps = [
-        "@paket2bazel.nuget.packaging//:lib",
     ],
     data = [
         "lib/netstandard2.0/NuGet.Protocol.dll",
@@ -11849,7 +11677,6 @@ import_library(
     dll = "lib/netstandard2.0/NuGet.Protocol.dll",
     refdll = "lib/netstandard2.0/NuGet.Protocol.dll",
     deps = [
-        "@paket2bazel.nuget.packaging//:lib",
     ],
     data = [
         "lib/netstandard2.0/NuGet.Protocol.dll",
@@ -11862,7 +11689,6 @@ import_library(
     dll = "lib/netstandard2.0/NuGet.Protocol.dll",
     refdll = "lib/netstandard2.0/NuGet.Protocol.dll",
     deps = [
-        "@paket2bazel.nuget.packaging//:lib",
     ],
     data = [
         "lib/netstandard2.0/NuGet.Protocol.dll",
@@ -11875,7 +11701,6 @@ import_library(
     dll = "lib/netstandard2.0/NuGet.Protocol.dll",
     refdll = "lib/netstandard2.0/NuGet.Protocol.dll",
     deps = [
-        "@paket2bazel.nuget.packaging//:lib",
     ],
     data = [
         "lib/netstandard2.0/NuGet.Protocol.dll",
@@ -11888,7 +11713,6 @@ import_library(
     dll = "lib/netstandard2.0/NuGet.Protocol.dll",
     refdll = "lib/netstandard2.0/NuGet.Protocol.dll",
     deps = [
-        "@paket2bazel.nuget.packaging//:lib",
     ],
     data = [
         "lib/netstandard2.0/NuGet.Protocol.dll",
@@ -11901,7 +11725,6 @@ import_library(
     dll = "lib/netstandard2.0/NuGet.Protocol.dll",
     refdll = "lib/netstandard2.0/NuGet.Protocol.dll",
     deps = [
-        "@paket2bazel.nuget.packaging//:lib",
     ],
     data = [
         "lib/netstandard2.0/NuGet.Protocol.dll",
@@ -11914,7 +11737,6 @@ import_library(
     dll = "lib/net5.0/NuGet.Protocol.dll",
     refdll = "lib/net5.0/NuGet.Protocol.dll",
     deps = [
-        "@paket2bazel.nuget.packaging//:lib",
     ],
     data = [
         "lib/net5.0/NuGet.Protocol.dll",
@@ -11927,7 +11749,6 @@ import_library(
     dll = "lib/net5.0/NuGet.Protocol.dll",
     refdll = "lib/net5.0/NuGet.Protocol.dll",
     deps = [
-        "@paket2bazel.nuget.packaging//:lib",
     ],
     data = [
         "lib/net5.0/NuGet.Protocol.dll",
@@ -11970,6 +11791,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -12363,6 +12185,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -12757,6 +12580,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -13249,6 +13073,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -13601,6 +13426,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -13953,6 +13779,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -14305,6 +14132,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -14657,6 +14485,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -15009,6 +14838,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -15361,6 +15191,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -15747,6 +15578,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -16133,6 +15965,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -16485,6 +16318,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -17313,6 +17147,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -17665,6 +17500,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -18017,6 +17853,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -18369,6 +18206,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -18721,6 +18559,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -19073,6 +18912,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -19425,6 +19265,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -19777,6 +19618,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -20129,6 +19971,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -20481,6 +20324,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -20833,6 +20677,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -21205,6 +21050,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -21722,6 +21568,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -22076,6 +21923,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -22478,6 +22326,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -22850,6 +22699,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -22939,7 +22789,6 @@ import_library(
     refdll = "lib/net461/System.Diagnostics.DiagnosticSource.dll",
     deps = [
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/net461/System.Diagnostics.DiagnosticSource.dll",
@@ -22953,7 +22802,6 @@ import_library(
     refdll = "lib/net461/System.Diagnostics.DiagnosticSource.dll",
     deps = [
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/net461/System.Diagnostics.DiagnosticSource.dll",
@@ -22967,7 +22815,6 @@ import_library(
     refdll = "lib/net461/System.Diagnostics.DiagnosticSource.dll",
     deps = [
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/net461/System.Diagnostics.DiagnosticSource.dll",
@@ -22981,7 +22828,6 @@ import_library(
     refdll = "lib/net461/System.Diagnostics.DiagnosticSource.dll",
     deps = [
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/net461/System.Diagnostics.DiagnosticSource.dll",
@@ -22995,7 +22841,6 @@ import_library(
     refdll = "lib/net461/System.Diagnostics.DiagnosticSource.dll",
     deps = [
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/net461/System.Diagnostics.DiagnosticSource.dll",
@@ -23009,7 +22854,6 @@ import_library(
     refdll = "lib/net461/System.Diagnostics.DiagnosticSource.dll",
     deps = [
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/net461/System.Diagnostics.DiagnosticSource.dll",
@@ -23087,7 +22931,6 @@ import_library(
     refdll = "lib/netstandard2.0/System.Diagnostics.DiagnosticSource.dll",
     deps = [
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Diagnostics.DiagnosticSource.dll",
@@ -23101,7 +22944,6 @@ import_library(
     refdll = "lib/netstandard2.0/System.Diagnostics.DiagnosticSource.dll",
     deps = [
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Diagnostics.DiagnosticSource.dll",
@@ -23131,7 +22973,6 @@ import_library(
     refdll = "lib/netstandard2.0/System.Diagnostics.DiagnosticSource.dll",
     deps = [
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Diagnostics.DiagnosticSource.dll",
@@ -23145,7 +22986,6 @@ import_library(
     refdll = "lib/netstandard2.0/System.Diagnostics.DiagnosticSource.dll",
     deps = [
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Diagnostics.DiagnosticSource.dll",
@@ -23159,7 +22999,6 @@ import_library(
     refdll = "lib/netstandard2.0/System.Diagnostics.DiagnosticSource.dll",
     deps = [
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Diagnostics.DiagnosticSource.dll",
@@ -23173,7 +23012,6 @@ import_library(
     refdll = "lib/netstandard2.0/System.Diagnostics.DiagnosticSource.dll",
     deps = [
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Diagnostics.DiagnosticSource.dll",
@@ -23187,7 +23025,6 @@ import_library(
     refdll = "lib/netstandard2.0/System.Diagnostics.DiagnosticSource.dll",
     deps = [
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Diagnostics.DiagnosticSource.dll",
@@ -23256,6 +23093,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -23640,6 +23478,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -24157,6 +23996,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -24245,9 +24085,6 @@ import_library(
     dll = "lib/net461/System.Formats.Asn1.dll",
     refdll = "lib/net461/System.Formats.Asn1.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
-        "@paket2bazel.system.valuetuple//:lib",
     ],
     data = [
         "lib/net461/System.Formats.Asn1.dll",
@@ -24260,9 +24097,6 @@ import_library(
     dll = "lib/net461/System.Formats.Asn1.dll",
     refdll = "lib/net461/System.Formats.Asn1.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
-        "@paket2bazel.system.valuetuple//:lib",
     ],
     data = [
         "lib/net461/System.Formats.Asn1.dll",
@@ -24275,9 +24109,6 @@ import_library(
     dll = "lib/net461/System.Formats.Asn1.dll",
     refdll = "lib/net461/System.Formats.Asn1.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
-        "@paket2bazel.system.valuetuple//:lib",
     ],
     data = [
         "lib/net461/System.Formats.Asn1.dll",
@@ -24290,9 +24121,6 @@ import_library(
     dll = "lib/net461/System.Formats.Asn1.dll",
     refdll = "lib/net461/System.Formats.Asn1.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
-        "@paket2bazel.system.valuetuple//:lib",
     ],
     data = [
         "lib/net461/System.Formats.Asn1.dll",
@@ -24305,9 +24133,6 @@ import_library(
     dll = "lib/net461/System.Formats.Asn1.dll",
     refdll = "lib/net461/System.Formats.Asn1.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
-        "@paket2bazel.system.valuetuple//:lib",
     ],
     data = [
         "lib/net461/System.Formats.Asn1.dll",
@@ -24320,9 +24145,6 @@ import_library(
     dll = "lib/net461/System.Formats.Asn1.dll",
     refdll = "lib/net461/System.Formats.Asn1.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
-        "@paket2bazel.system.valuetuple//:lib",
     ],
     data = [
         "lib/net461/System.Formats.Asn1.dll",
@@ -24399,8 +24221,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Formats.Asn1.dll",
     refdll = "lib/netstandard2.0/System.Formats.Asn1.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Formats.Asn1.dll",
@@ -24413,8 +24233,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Formats.Asn1.dll",
     refdll = "lib/netstandard2.0/System.Formats.Asn1.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Formats.Asn1.dll",
@@ -24443,8 +24261,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Formats.Asn1.dll",
     refdll = "lib/netstandard2.0/System.Formats.Asn1.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Formats.Asn1.dll",
@@ -24457,8 +24273,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Formats.Asn1.dll",
     refdll = "lib/netstandard2.0/System.Formats.Asn1.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Formats.Asn1.dll",
@@ -24471,8 +24285,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Formats.Asn1.dll",
     refdll = "lib/netstandard2.0/System.Formats.Asn1.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Formats.Asn1.dll",
@@ -24485,8 +24297,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Formats.Asn1.dll",
     refdll = "lib/netstandard2.0/System.Formats.Asn1.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Formats.Asn1.dll",
@@ -24499,8 +24309,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Formats.Asn1.dll",
     refdll = "lib/netstandard2.0/System.Formats.Asn1.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Formats.Asn1.dll",
@@ -24513,8 +24321,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Formats.Asn1.dll",
     refdll = "lib/netstandard2.0/System.Formats.Asn1.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Formats.Asn1.dll",
@@ -24569,6 +24375,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -24941,6 +24748,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -25340,6 +25148,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -25803,6 +25612,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -26226,6 +26036,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -26692,6 +26503,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -27091,6 +26903,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -27529,6 +27342,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -27753,14 +27567,12 @@ import_library(
     target_framework = "netstandard1.3",
     deps = [
         "@paket2bazel.microsoft.netcore.platforms//:lib",
-        "@paket2bazel.microsoft.win32.primitives//:lib",
         "@paket2bazel.system.collections//:lib",
         "@paket2bazel.system.diagnostics.debug//:lib",
         "@paket2bazel.system.diagnostics.diagnosticsource//:lib",
         "@paket2bazel.system.diagnostics.tracing//:lib",
         "@paket2bazel.system.globalization//:lib",
         "@paket2bazel.system.io//:lib",
-        "@paket2bazel.system.io.compression//:lib",
         "@paket2bazel.system.net.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
@@ -27782,14 +27594,12 @@ import_library(
     target_framework = "netstandard1.4",
     deps = [
         "@paket2bazel.microsoft.netcore.platforms//:lib",
-        "@paket2bazel.microsoft.win32.primitives//:lib",
         "@paket2bazel.system.collections//:lib",
         "@paket2bazel.system.diagnostics.debug//:lib",
         "@paket2bazel.system.diagnostics.diagnosticsource//:lib",
         "@paket2bazel.system.diagnostics.tracing//:lib",
         "@paket2bazel.system.globalization//:lib",
         "@paket2bazel.system.io//:lib",
-        "@paket2bazel.system.io.compression//:lib",
         "@paket2bazel.system.net.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
@@ -27811,14 +27621,12 @@ import_library(
     target_framework = "netstandard1.5",
     deps = [
         "@paket2bazel.microsoft.netcore.platforms//:lib",
-        "@paket2bazel.microsoft.win32.primitives//:lib",
         "@paket2bazel.system.collections//:lib",
         "@paket2bazel.system.diagnostics.debug//:lib",
         "@paket2bazel.system.diagnostics.diagnosticsource//:lib",
         "@paket2bazel.system.diagnostics.tracing//:lib",
         "@paket2bazel.system.globalization//:lib",
         "@paket2bazel.system.io//:lib",
-        "@paket2bazel.system.io.compression//:lib",
         "@paket2bazel.system.net.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
@@ -28291,6 +28099,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -28379,8 +28188,6 @@ import_library(
     dll = "lib/net461/System.Net.Http.WinHttpHandler.dll",
     refdll = "lib/net461/System.Net.Http.WinHttpHandler.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/net461/System.Net.Http.WinHttpHandler.dll",
@@ -28393,8 +28200,6 @@ import_library(
     dll = "lib/net461/System.Net.Http.WinHttpHandler.dll",
     refdll = "lib/net461/System.Net.Http.WinHttpHandler.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/net461/System.Net.Http.WinHttpHandler.dll",
@@ -28407,8 +28212,6 @@ import_library(
     dll = "lib/net461/System.Net.Http.WinHttpHandler.dll",
     refdll = "lib/net461/System.Net.Http.WinHttpHandler.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/net461/System.Net.Http.WinHttpHandler.dll",
@@ -28421,8 +28224,6 @@ import_library(
     dll = "lib/net461/System.Net.Http.WinHttpHandler.dll",
     refdll = "lib/net461/System.Net.Http.WinHttpHandler.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/net461/System.Net.Http.WinHttpHandler.dll",
@@ -28435,8 +28236,6 @@ import_library(
     dll = "lib/net461/System.Net.Http.WinHttpHandler.dll",
     refdll = "lib/net461/System.Net.Http.WinHttpHandler.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/net461/System.Net.Http.WinHttpHandler.dll",
@@ -28449,8 +28248,6 @@ import_library(
     dll = "lib/net461/System.Net.Http.WinHttpHandler.dll",
     refdll = "lib/net461/System.Net.Http.WinHttpHandler.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/net461/System.Net.Http.WinHttpHandler.dll",
@@ -28527,8 +28324,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll",
     refdll = "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll",
@@ -28569,8 +28364,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll",
     refdll = "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll",
@@ -28583,8 +28376,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll",
     refdll = "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll",
@@ -28597,8 +28388,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll",
     refdll = "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll",
     deps = [
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Net.Http.WinHttpHandler.dll",
@@ -28689,6 +28478,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -29076,6 +28866,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -29499,6 +29290,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -29676,7 +29468,6 @@ import_library(
     refdll = "lib/netstandard1.0/System.Reflection.Emit.Lightweight.dll",
     deps = [
         "@paket2bazel.system.reflection//:lib",
-        "@paket2bazel.system.reflection.emit.ilgeneration//:lib",
         "@paket2bazel.system.reflection.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
@@ -29695,7 +29486,6 @@ import_library(
     refdll = "lib/netstandard1.0/System.Reflection.Emit.Lightweight.dll",
     deps = [
         "@paket2bazel.system.reflection//:lib",
-        "@paket2bazel.system.reflection.emit.ilgeneration//:lib",
         "@paket2bazel.system.reflection.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
@@ -29714,7 +29504,6 @@ import_library(
     refdll = "lib/netstandard1.0/System.Reflection.Emit.Lightweight.dll",
     deps = [
         "@paket2bazel.system.reflection//:lib",
-        "@paket2bazel.system.reflection.emit.ilgeneration//:lib",
         "@paket2bazel.system.reflection.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
@@ -29733,7 +29522,6 @@ import_library(
     refdll = "lib/netstandard1.3/System.Reflection.Emit.Lightweight.dll",
     deps = [
         "@paket2bazel.system.reflection//:lib",
-        "@paket2bazel.system.reflection.emit.ilgeneration//:lib",
         "@paket2bazel.system.reflection.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
@@ -29751,7 +29539,6 @@ import_library(
     refdll = "lib/netstandard1.3/System.Reflection.Emit.Lightweight.dll",
     deps = [
         "@paket2bazel.system.reflection//:lib",
-        "@paket2bazel.system.reflection.emit.ilgeneration//:lib",
         "@paket2bazel.system.reflection.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
@@ -29769,7 +29556,6 @@ import_library(
     refdll = "lib/netstandard1.3/System.Reflection.Emit.Lightweight.dll",
     deps = [
         "@paket2bazel.system.reflection//:lib",
-        "@paket2bazel.system.reflection.emit.ilgeneration//:lib",
         "@paket2bazel.system.reflection.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
@@ -29787,7 +29573,6 @@ import_library(
     refdll = "lib/netstandard1.3/System.Reflection.Emit.Lightweight.dll",
     deps = [
         "@paket2bazel.system.reflection//:lib",
-        "@paket2bazel.system.reflection.emit.ilgeneration//:lib",
         "@paket2bazel.system.reflection.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
@@ -29804,7 +29589,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Reflection.Emit.Lightweight.dll",
     refdll = "lib/netstandard2.0/System.Reflection.Emit.Lightweight.dll",
     deps = [
-        "@paket2bazel.system.reflection.emit.ilgeneration//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Reflection.Emit.Lightweight.dll",
@@ -29830,7 +29614,6 @@ import_library(
     refdll = "lib/netstandard1.3/System.Reflection.Emit.Lightweight.dll",
     deps = [
         "@paket2bazel.system.reflection//:lib",
-        "@paket2bazel.system.reflection.emit.ilgeneration//:lib",
         "@paket2bazel.system.reflection.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
@@ -29848,7 +29631,6 @@ import_library(
     refdll = "lib/netstandard1.3/System.Reflection.Emit.Lightweight.dll",
     deps = [
         "@paket2bazel.system.reflection//:lib",
-        "@paket2bazel.system.reflection.emit.ilgeneration//:lib",
         "@paket2bazel.system.reflection.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
@@ -29965,6 +29747,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -30337,6 +30120,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -30745,6 +30529,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -31114,6 +30899,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -31492,6 +31278,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -31879,6 +31666,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -32242,6 +32030,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -32680,6 +32469,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -33105,6 +32895,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -33193,7 +32984,6 @@ import_library(
     dll = "lib/net461/System.Security.AccessControl.dll",
     refdll = "lib/net461/System.Security.AccessControl.dll",
     deps = [
-        "@paket2bazel.system.security.principal.windows//:lib",
     ],
     data = [
         "lib/net461/System.Security.AccessControl.dll",
@@ -33206,7 +32996,6 @@ import_library(
     dll = "lib/net461/System.Security.AccessControl.dll",
     refdll = "lib/net461/System.Security.AccessControl.dll",
     deps = [
-        "@paket2bazel.system.security.principal.windows//:lib",
     ],
     data = [
         "lib/net461/System.Security.AccessControl.dll",
@@ -33219,7 +33008,6 @@ import_library(
     dll = "lib/net461/System.Security.AccessControl.dll",
     refdll = "lib/net461/System.Security.AccessControl.dll",
     deps = [
-        "@paket2bazel.system.security.principal.windows//:lib",
     ],
     data = [
         "lib/net461/System.Security.AccessControl.dll",
@@ -33232,7 +33020,6 @@ import_library(
     dll = "lib/net461/System.Security.AccessControl.dll",
     refdll = "lib/net461/System.Security.AccessControl.dll",
     deps = [
-        "@paket2bazel.system.security.principal.windows//:lib",
     ],
     data = [
         "lib/net461/System.Security.AccessControl.dll",
@@ -33245,7 +33032,6 @@ import_library(
     dll = "lib/net461/System.Security.AccessControl.dll",
     refdll = "lib/net461/System.Security.AccessControl.dll",
     deps = [
-        "@paket2bazel.system.security.principal.windows//:lib",
     ],
     data = [
         "lib/net461/System.Security.AccessControl.dll",
@@ -33258,7 +33044,6 @@ import_library(
     dll = "lib/net461/System.Security.AccessControl.dll",
     refdll = "lib/net461/System.Security.AccessControl.dll",
     deps = [
-        "@paket2bazel.system.security.principal.windows//:lib",
     ],
     data = [
         "lib/net461/System.Security.AccessControl.dll",
@@ -33335,7 +33120,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Security.AccessControl.dll",
     refdll = "lib/netstandard2.0/System.Security.AccessControl.dll",
     deps = [
-        "@paket2bazel.system.security.principal.windows//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Security.AccessControl.dll",
@@ -33348,7 +33132,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Security.AccessControl.dll",
     refdll = "lib/netstandard2.0/System.Security.AccessControl.dll",
     deps = [
-        "@paket2bazel.system.security.principal.windows//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Security.AccessControl.dll",
@@ -33377,7 +33160,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Security.AccessControl.dll",
     refdll = "lib/netstandard2.0/System.Security.AccessControl.dll",
     deps = [
-        "@paket2bazel.system.security.principal.windows//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Security.AccessControl.dll",
@@ -33390,7 +33172,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Security.AccessControl.dll",
     refdll = "lib/netstandard2.0/System.Security.AccessControl.dll",
     deps = [
-        "@paket2bazel.system.security.principal.windows//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Security.AccessControl.dll",
@@ -33403,7 +33184,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Security.AccessControl.dll",
     refdll = "lib/netstandard2.0/System.Security.AccessControl.dll",
     deps = [
-        "@paket2bazel.system.security.principal.windows//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Security.AccessControl.dll",
@@ -33416,7 +33196,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Security.AccessControl.dll",
     refdll = "lib/netstandard2.0/System.Security.AccessControl.dll",
     deps = [
-        "@paket2bazel.system.security.principal.windows//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Security.AccessControl.dll",
@@ -33429,7 +33208,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Security.AccessControl.dll",
     refdll = "lib/netstandard2.0/System.Security.AccessControl.dll",
     deps = [
-        "@paket2bazel.system.security.principal.windows//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Security.AccessControl.dll",
@@ -33442,7 +33220,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Security.AccessControl.dll",
     refdll = "lib/netstandard2.0/System.Security.AccessControl.dll",
     deps = [
-        "@paket2bazel.system.security.principal.windows//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Security.AccessControl.dll",
@@ -33497,6 +33274,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -34100,6 +33878,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -34567,6 +34346,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -35149,6 +34929,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -35702,6 +35483,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -36304,6 +36086,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -36529,8 +36312,6 @@ import_library(
     refdll = "lib/netstandard2.0/System.Security.Cryptography.Pkcs.dll",
     deps = [
         "@paket2bazel.system.formats.asn1//:lib",
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
         "@paket2bazel.system.security.cryptography.cng//:lib",
     ],
     data = [
@@ -36575,8 +36356,6 @@ import_library(
     refdll = "lib/netstandard2.0/System.Security.Cryptography.Pkcs.dll",
     deps = [
         "@paket2bazel.system.formats.asn1//:lib",
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
         "@paket2bazel.system.security.cryptography.cng//:lib",
     ],
     data = [
@@ -36591,8 +36370,6 @@ import_library(
     refdll = "lib/netstandard2.0/System.Security.Cryptography.Pkcs.dll",
     deps = [
         "@paket2bazel.system.formats.asn1//:lib",
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
         "@paket2bazel.system.security.cryptography.cng//:lib",
     ],
     data = [
@@ -36607,8 +36384,6 @@ import_library(
     refdll = "lib/netstandard2.0/System.Security.Cryptography.Pkcs.dll",
     deps = [
         "@paket2bazel.system.formats.asn1//:lib",
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
         "@paket2bazel.system.security.cryptography.cng//:lib",
     ],
     data = [
@@ -36707,6 +36482,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -37196,6 +36972,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -37420,7 +37197,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
     refdll = "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
     deps = [
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
@@ -37433,7 +37209,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
     refdll = "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
     deps = [
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
@@ -37462,7 +37237,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
     refdll = "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
     deps = [
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
@@ -37475,7 +37249,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
     refdll = "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
     deps = [
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
@@ -37488,7 +37261,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
     refdll = "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
     deps = [
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
@@ -37501,7 +37273,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
     refdll = "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
     deps = [
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
@@ -37514,7 +37285,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
     refdll = "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
     deps = [
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
@@ -37527,7 +37297,6 @@ import_library(
     dll = "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
     refdll = "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
     deps = [
-        "@paket2bazel.system.memory//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
@@ -37582,6 +37351,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -38281,6 +38051,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -38677,6 +38448,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -39049,6 +38821,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -39138,13 +38911,7 @@ import_library(
     refdll = "lib/net461/System.Text.Json.dll",
     deps = [
         "@paket2bazel.microsoft.bcl.asyncinterfaces//:lib",
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
-        "@paket2bazel.system.numerics.vectors//:lib",
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.text.encodings.web//:lib",
-        "@paket2bazel.system.threading.tasks.extensions//:lib",
-        "@paket2bazel.system.valuetuple//:lib",
     ],
     data = [
         "lib/net461/System.Text.Json.dll",
@@ -39158,13 +38925,7 @@ import_library(
     refdll = "lib/net461/System.Text.Json.dll",
     deps = [
         "@paket2bazel.microsoft.bcl.asyncinterfaces//:lib",
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
-        "@paket2bazel.system.numerics.vectors//:lib",
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.text.encodings.web//:lib",
-        "@paket2bazel.system.threading.tasks.extensions//:lib",
-        "@paket2bazel.system.valuetuple//:lib",
     ],
     data = [
         "lib/net461/System.Text.Json.dll",
@@ -39178,13 +38939,7 @@ import_library(
     refdll = "lib/net461/System.Text.Json.dll",
     deps = [
         "@paket2bazel.microsoft.bcl.asyncinterfaces//:lib",
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
-        "@paket2bazel.system.numerics.vectors//:lib",
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.text.encodings.web//:lib",
-        "@paket2bazel.system.threading.tasks.extensions//:lib",
-        "@paket2bazel.system.valuetuple//:lib",
     ],
     data = [
         "lib/net461/System.Text.Json.dll",
@@ -39198,13 +38953,7 @@ import_library(
     refdll = "lib/net461/System.Text.Json.dll",
     deps = [
         "@paket2bazel.microsoft.bcl.asyncinterfaces//:lib",
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
-        "@paket2bazel.system.numerics.vectors//:lib",
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.text.encodings.web//:lib",
-        "@paket2bazel.system.threading.tasks.extensions//:lib",
-        "@paket2bazel.system.valuetuple//:lib",
     ],
     data = [
         "lib/net461/System.Text.Json.dll",
@@ -39218,13 +38967,7 @@ import_library(
     refdll = "lib/net461/System.Text.Json.dll",
     deps = [
         "@paket2bazel.microsoft.bcl.asyncinterfaces//:lib",
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
-        "@paket2bazel.system.numerics.vectors//:lib",
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.text.encodings.web//:lib",
-        "@paket2bazel.system.threading.tasks.extensions//:lib",
-        "@paket2bazel.system.valuetuple//:lib",
     ],
     data = [
         "lib/net461/System.Text.Json.dll",
@@ -39238,13 +38981,7 @@ import_library(
     refdll = "lib/net461/System.Text.Json.dll",
     deps = [
         "@paket2bazel.microsoft.bcl.asyncinterfaces//:lib",
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
-        "@paket2bazel.system.numerics.vectors//:lib",
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.text.encodings.web//:lib",
-        "@paket2bazel.system.threading.tasks.extensions//:lib",
-        "@paket2bazel.system.valuetuple//:lib",
     ],
     data = [
         "lib/net461/System.Text.Json.dll",
@@ -39322,12 +39059,7 @@ import_library(
     refdll = "lib/netstandard2.0/System.Text.Json.dll",
     deps = [
         "@paket2bazel.microsoft.bcl.asyncinterfaces//:lib",
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
-        "@paket2bazel.system.numerics.vectors//:lib",
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.text.encodings.web//:lib",
-        "@paket2bazel.system.threading.tasks.extensions//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Text.Json.dll",
@@ -39341,12 +39073,7 @@ import_library(
     refdll = "lib/netstandard2.0/System.Text.Json.dll",
     deps = [
         "@paket2bazel.microsoft.bcl.asyncinterfaces//:lib",
-        "@paket2bazel.system.buffers//:lib",
-        "@paket2bazel.system.memory//:lib",
-        "@paket2bazel.system.numerics.vectors//:lib",
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.text.encodings.web//:lib",
-        "@paket2bazel.system.threading.tasks.extensions//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Text.Json.dll",
@@ -39376,10 +39103,7 @@ import_library(
     refdll = "lib/netstandard2.0/System.Text.Json.dll",
     deps = [
         "@paket2bazel.microsoft.bcl.asyncinterfaces//:lib",
-        "@paket2bazel.system.memory//:lib",
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.text.encodings.web//:lib",
-        "@paket2bazel.system.threading.tasks.extensions//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Text.Json.dll",
@@ -39394,7 +39118,6 @@ import_library(
     deps = [
         "@paket2bazel.microsoft.bcl.asyncinterfaces//:lib",
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.text.encodings.web//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Text.Json.dll",
@@ -39409,7 +39132,6 @@ import_library(
     deps = [
         "@paket2bazel.microsoft.bcl.asyncinterfaces//:lib",
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.text.encodings.web//:lib",
     ],
     data = [
         "lib/netstandard2.0/System.Text.Json.dll",
@@ -39423,7 +39145,6 @@ import_library(
     refdll = "lib/netcoreapp3.0/System.Text.Json.dll",
     deps = [
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.text.encodings.web//:lib",
     ],
     data = [
         "lib/netcoreapp3.0/System.Text.Json.dll",
@@ -39437,7 +39158,6 @@ import_library(
     refdll = "lib/netcoreapp3.0/System.Text.Json.dll",
     deps = [
         "@paket2bazel.system.runtime.compilerservices.unsafe//:lib",
-        "@paket2bazel.system.text.encodings.web//:lib",
     ],
     data = [
         "lib/netcoreapp3.0/System.Text.Json.dll",
@@ -39504,6 +39224,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -39937,6 +39658,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -40309,6 +40031,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
@@ -40642,6 +40365,7 @@ import_multiframework_library(
     netcoreapp3_1 = ":netcoreapp3.1",
     net5_0 = ":net5.0",
     net6_0 = ":net6.0",
+    visibility = ["//visibility:public"],
 )
 """
     )
