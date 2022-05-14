@@ -6,6 +6,9 @@ Paket fits well with Bazel because it generates a `paket.lock` file that can be 
 to deterministically generate Bazel targets for NuGet packages.
 
 ## How to use
+First you need to set up your paket.dependencies and paket.lock file. See the [Paket docs](https://fsprojects.github.io/Paket/) on how to get started with Paket.
+Note that the `storage: none` feature of Paket is not supported currently because `paket2bazel` needs to read the contents of the `packages` folder that Paket generates.
+
 First you needs to run paket2bazel to generate the `paket.bzl` file which will be
 loaded in your `WORKSPACE` file.
 
@@ -49,5 +52,3 @@ The schema of the config file looks like this:
     }
 }
 ```
-
-
