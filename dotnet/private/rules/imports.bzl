@@ -25,6 +25,7 @@ def _import_library(ctx):
         files.append(ctx.file.refdll)
 
     files += ctx.files.native_dlls
+    files += ctx.data.native_dlls
 
     tfm = ctx.attr.target_framework
 
@@ -76,6 +77,10 @@ import_library = rule(
         "deps": attr.label_list(
             doc = "other DLLs that this DLL depends on.",
             providers = AnyTargetFrameworkInfo,
+        ),
+        "data": attr.label_list(
+            doc = "Other files that this DLL depends on at runtime",
+            allow_files = True
         ),
     },
     executable = False,

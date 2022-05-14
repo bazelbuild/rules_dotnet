@@ -8,6 +8,14 @@ type Package =
       version: string
       buildFileOverride: string option }
 
+type TargetedPackage =
+    { lib: string option
+      deps: string list
+      ref: string option
+      tool: string option 
+      pdb: string option
+      files: string list }
+
 type ProcessedPackage =
     { name: string
       package: string
@@ -15,8 +23,4 @@ type ProcessedPackage =
       version: string
       buildFileOverride: string option
       sha256: string
-      lib: (string * string) list
-      deps: (string * string list) list
-      refItems: (string * string) list
-      toolItems: (string * string) list
-      fileItems: (string * string list) list }
+      targets: Map<string, TargetedPackage> }

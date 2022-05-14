@@ -42,3 +42,6 @@ load("@io_bazel_stardoc//:setup.bzl", "stardoc_repositories")
 
 stardoc_repositories()
 # stardoc end
+
+load("//tools/paket2bazel/nuget:paket.bzl", "paket")
+paket()

@@ -1,4 +1,4 @@
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "fsharp_binary")
+load("@rules_dotnet//dotnet:defs.bzl", "fsharp_binary")
 
 fsharp_binary(
     name = "paket2bazel.exe",

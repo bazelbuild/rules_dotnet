@@ -19,7 +19,7 @@ let getDependencies
         // TODO: Make it fail if lockfile is not up to date
         deps.Install false
 
-        deps.GetInstalledPackages()
+        deps.GetInstalledPackages() 
         |> List.map
             (fun (group, name, version) ->
                 let found, value =

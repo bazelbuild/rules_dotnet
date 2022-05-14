@@ -12,20 +12,48 @@ open System.Security.Cryptography
 open System.Text
 open Paket2Bazel.Models
 
-let coreFrameworkTFMs =
-    [ "netcoreapp2.0"
+let tfms =
+    [ "net11"
+      "net20"
+      "net35"
+      "net40"
+      "net403"
+      "net45"
+      "net451"
+      "net452"
+      "net46"
+      "net461"
+      "net462"
+      "net47"
+      "net471"
+      "net472"
+      "net48"
+      "netstandard"
+      "netstandard1.0"
+      "netstandard1.1"
+      "netstandard1.2"
+      "netstandard1.3"
+      "netstandard1.4"
+      "netstandard1.5"
+      "netstandard1.6"
+      "netstandard2.0"
+      "netstandard2.1"
+      "netcoreapp1.0"
+      "netcoreapp1.1"
+      "netcoreapp2.0"
       "netcoreapp2.1"
       "netcoreapp2.2"
       "netcoreapp3.0"
       "netcoreapp3.1"
-      "net5.0" ]
+      "net5.0"
+      "net6.0" ]
     |> List.map NuGetFramework.Parse
 
 let getLibFile (packageName: string) (packageReader: PackageFolderReader) =
     let frameworkReducer = FrameworkReducer()
     let allLibItems = packageReader.GetLibItems()
 
-    coreFrameworkTFMs
+    tfms
     |> List.map
         (fun targetFramework ->
             let nearest =
@@ -53,12 +81,13 @@ let getLibFile (packageName: string) (packageReader: PackageFolderReader) =
                 | Some (head) -> Some((targetFramework.GetShortFolderName(), head))
                 | None -> None)
     |> List.choose id
+    |> Map.ofList
 
 let getRefItems (packageName: string) (packageReader: PackageFolderReader) =
     let frameworkReducer = FrameworkReducer()
     let allRefItems = packageReader.GetReferenceItems()
 
-    coreFrameworkTFMs
+    tfms
     |> List.map
         (fun targetFramework ->
             let nearest =
@@ -86,13 +115,14 @@ let getRefItems (packageName: string) (packageReader: PackageFolderReader) =
                 | Some (head) -> Some((targetFramework.GetShortFolderName(), head))
                 | None -> None)
     |> List.choose id
+    |> Map.ofList
 
 // TODO: Do something for tools
 let getToolItems (packageName: string) (packageReader: PackageFolderReader) =
     let frameworkReducer = FrameworkReducer()
     let toolItems = packageReader.GetToolItems()
 
-    coreFrameworkTFMs
+    tfms
     |> List.map
         (fun targetFramework ->
             let nearest =
@@ -115,13 +145,14 @@ let getToolItems (packageName: string) (packageReader: PackageFolderReader) =
                 | Some (head) -> Some((targetFramework.GetShortFolderName(), head))
                 | None -> None)
     |> List.choose id
+    |> Map.ofList
 
 let getItems folderName (packageReader: PackageFolderReader) =
     let frameworkReducer = FrameworkReducer()
 
     let fileItems = packageReader.GetItems(folderName)
 
-    coreFrameworkTFMs
+    tfms
     |> List.map
         (fun targetFramework ->
             let nearest =
@@ -156,13 +187,14 @@ let getFiles (packageReader: PackageFolderReader) =
 
     dict.ToFSharpList()
     |> List.map (fun i -> (i.Key, i.Value))
+    |> Map.ofList
 
 let getDependenciesPerFramework (group: string) (packageReader: PackageFolderReader) =
     let frameworkReducer = FrameworkReducer()
 
     let deps = packageReader.GetPackageDependencies()
 
-    coreFrameworkTFMs
+    tfms
     |> List.map
         (fun targetFramework ->
             let nearest =
@@ -175,7 +207,7 @@ let getDependenciesPerFramework (group: string) (packageReader: PackageFolderRea
                 |> Seq.map (fun i -> $"@{group.ToLower()}.{i.Id.ToLower()}//:lib")
                 |> Seq.toList
 
-            (targetFramework.GetShortFolderName(), frameworkdeps))
+            (targetFramework.GetShortFolderName(), frameworkdeps)) |> Map.ofList
 
 let getSha256 (packagesFolderPath: string) (packageName: string) (packageVersion: string) =
     use stream =
@@ -195,11 +227,22 @@ let processInstalledPackages (dependencies: Package list) paketDir : ProcessedPa
     |> List.map
         (fun d ->
             let packageReader =
-                new PackageFolderReader(if d.group = "main" then $"{paketDir}/packages/{d.name}" else $"{paketDir}/packages/{d.group}/{d.name}")
+                new PackageFolderReader(
+                    if d.group = "main" then
+                        $"{paketDir}/packages/{d.name}"
+                    else
+                        $"{paketDir}/packages/{d.group}/{d.name}"
+                )
 
             maybe {
                 let sha256 =
-                    getSha256 (if d.group = "main" then $"{paketDir}/packages" else $"{paketDir}/packages/{d.group}") d.name d.version
+                    getSha256
+                        (if d.group = "main" then
+                             $"{paketDir}/packages"
+                         else
+                             $"{paketDir}/packages/{d.group}")
+                        d.name
+                        d.version
 
                 let libFile = getLibFile d.name packageReader
                 let refItems = getRefItems d.name packageReader
@@ -209,6 +252,22 @@ let processInstalledPackages (dependencies: Package list) paketDir : ProcessedPa
                 let deps =
                     getDependenciesPerFramework d.group packageReader
 
+                let targetedPackages =
+                    tfms
+                    |> Seq.map
+                        (fun tfm ->
+                            let tfm = tfm.GetShortFolderName()
+                            let targetedPackage: TargetedPackage =
+                                { lib = Map.tryFind tfm libFile
+                                  deps = Map.findOrDefault tfm [] deps
+                                  ref = Map.tryFind tfm refItems
+                                  tool = Map.tryFind tfm toolItems
+                                  pdb = (Map.tryFind tfm fileItems) |>Option.bind (fun files -> List.tryFind (fun x -> x.EndsWith(".pdb")) files)
+                                  files = Map.findOrDefault tfm [] fileItems |> List.filter (fun x -> not (x.EndsWith(".pdb"))) }
+
+                            (tfm, targetedPackage))
+                    |> Map.ofSeq
+
                 return
                     { name = $"{d.group.ToLower()}.{d.name.ToLower()}"
                       package = d.name.ToLower()
@@ -216,11 +275,7 @@ let processInstalledPackages (dependencies: Package list) paketDir : ProcessedPa
                       version = d.version
                       buildFileOverride = d.buildFileOverride
                       sha256 = sha256
-                      lib = libFile
-                      deps = deps
-                      toolItems = toolItems
-                      refItems = refItems
-                      fileItems = fileItems }
+                      targets = targetedPackages }
             })
     |> List.choose id
 
@@ -241,64 +296,107 @@ let generateTarget (package: ProcessedPackage) =
     sb.Append($"{i}    sha256 = \"{package.sha256}\",\n")
     |> ignore
 
-    if package.lib.Length > 0 then
-        sb.Append($"{i}    core_lib = {{\n") |> ignore
+    sb.Append($"{i}    build_file_content = \"\"\"\n")
+    |> ignore
 
-        for (key, value) in package.lib do
-            sb.Append($"{i}        \"{key}\": \"{value}\",\n")
-            |> ignore
+    sb.Append(
+        $"load(\"@rules_dotnet//dotnet:defs.bzl\", \"import_library\", \"import_multiframework_library\")\n"
+    )
+    |> ignore
 
-        sb.Append($"{i}    }},\n") |> ignore
+    for tfm in tfms do
+        let tfm =tfm.GetShortFolderName()
+        let lib = package.targets |> Map.tryFind (tfm)
+        sb.Append($"import_library(\n") |> ignore
+        sb.Append($"    name = \"{tfm}\",\n") |> ignore
 
-    if (package.refItems
-        |> List.fold (fun s (x, y) -> s + y.Length) 0) > 0 then
-        sb.Append($"{i}    core_ref = {{\n") |> ignore
+        sb.Append($"    target_framework = \"{tfm}\",\n")
+        |> ignore
+        if lib.IsSome then
 
-        for (key, value) in package.refItems do
-            sb.Append($"{i}        \"{key}\": \"{value}\",\n")
-            |> ignore
+            if lib.Value.lib.IsSome then
+                sb.Append($"    dll = \"{lib.Value.lib.Value}\",\n")
+                |> ignore
 
-        sb.Append($"{i}    }},\n") |> ignore
+            if lib.Value.ref.IsSome then 
+                sb.Append($"    refdll = \"{lib.Value.ref.Value}\",\n")
+                |> ignore
 
-    if (package.toolItems
-        |> List.fold (fun s (x, y) -> s + y.Length) 0) > 0 then
-        sb.Append($"{i}    core_tool = {{\n") |> ignore
+            if lib.Value.pdb.IsSome then 
+                sb.Append($"    pdb = \"{lib.Value.pdb.Value}\",\n")
+                |> ignore
 
-        for (key, value) in package.toolItems do
-            sb.Append($"{i}        \"{key}\": \"{value}\",\n")
-            |> ignore
+            sb.Append($"    deps = [\n") |> ignore
+            for dep in lib.Value.deps do
+                sb.Append($"        \"{dep}\",\n") |> ignore
+            sb.Append($"    ],\n") |> ignore
 
-        sb.Append($"{i}    }},\n") |> ignore
+            sb.Append($"    data = [\n") |> ignore
+            for file in lib.Value.files do
+                sb.Append($"        \"{file}\",\n") |> ignore
+            sb.Append($"    ],\n") |> ignore
+            sb.Append($")\n") |> ignore
 
-    if (package.deps
-        |> List.fold (fun s (x, y) -> s + y.Length) 0) > 0 then
-        sb.Append($"{i}    core_deps = {{\n") |> ignore
+    sb.Append($"import_multiframework_library(\n") |> ignore
+    sb.Append($"    name = \"lib\",\n") |> ignore
+    for tfm in tfms do
+        let attrName =tfm.GetShortFolderName().Replace(".", "_") 
+        sb.Append($"    {attrName} = \":{tfm.GetShortFolderName()}\",\n") |> ignore
+    sb.Append($")\n") |> ignore
+    
+    sb.Append($"\"\"\"\n") |> ignore
 
-        for (key, value) in package.deps do
-            if value.Length > 0 then
-                sb.Append($"{i}        \"{key}\": [\n") |> ignore
+    // sb.Append($"{i}    }},\n") |> ignore
 
-                for v in value do
-                    sb.Append($"{i}            \"{v}\",\n") |> ignore
+    // if (package.refItems
+    //     |> List.fold (fun s (x, y) -> s + y.Length) 0) > 0 then
+    //     sb.Append($"{i}    core_ref = {{\n") |> ignore
 
-                sb.Append($"{i}        ],\n") |> ignore
+    //     for (key, value) in package.refItems do
+    //         sb.Append($"{i}        \"{key}\": \"{value}\",\n")
+    //         |> ignore
 
-        sb.Append($"{i}    }},\n") |> ignore
+    //     sb.Append($"{i}    }},\n") |> ignore
 
-    if (package.fileItems
-        |> List.fold (fun s (x, y) -> s + y.Length) 0) > 0 then
-        sb.Append($"{i}    core_files = {{\n") |> ignore
+    // if (package.toolItems
+    //     |> List.fold (fun s (x, y) -> s + y.Length) 0) > 0 then
+    //     sb.Append($"{i}    core_tool = {{\n") |> ignore
 
-        for (key, value) in package.fileItems do
-            if value.Length > 0 then
-                sb.Append($"{i}        \"{key}\": [\n") |> ignore
+    //     for (key, value) in package.toolItems do
+    //         sb.Append($"{i}        \"{key}\": \"{value}\",\n")
+    //         |> ignore
 
-                for v in value do
-                    sb.Append($"{i}            \"{v}\",\n") |> ignore
+    //     sb.Append($"{i}    }},\n") |> ignore
 
-                sb.Append($"{i}        ],\n") |> ignore
+    // if (package.deps
+    //     |> List.fold (fun s (x, y) -> s + y.Length) 0) > 0 then
+    //     sb.Append($"{i}    core_deps = {{\n") |> ignore
 
-        sb.Append($"{i}    }},\n") |> ignore
+    //     for (key, value) in package.deps do
+    //         if value.Length > 0 then
+    //             sb.Append($"{i}        \"{key}\": [\n") |> ignore
+
+    //             for v in value do
+    //                 sb.Append($"{i}            \"{v}\",\n") |> ignore
+
+    //             sb.Append($"{i}        ],\n") |> ignore
+
+    //     sb.Append($"{i}    }},\n") |> ignore
+
+    // if (package.fileItems
+    //     |> List.fold (fun s (x, y) -> s + y.Length) 0) > 0 then
+    //     sb.Append($"{i}    core_files = {{\n") |> ignore
+
+    //     for (key, value) in package.fileItems do
+    //         if value.Length > 0 then
+    //             sb.Append($"{i}        \"{key}\": [\n") |> ignore
+
+    //             for v in value do
+    //                 sb.Append($"{i}            \"{v}\",\n") |> ignore
+
+    //             sb.Append($"{i}        ],\n") |> ignore
+
+    //     sb.Append($"{i}    }},\n") |> ignore
 
     sb.Append($"{i})\n") |> ignore
     sb.ToString()
@@ -306,7 +404,7 @@ let generateTarget (package: ProcessedPackage) =
 let generateTargetWithOverride (buildFile: string) package =
     let i = "    "
     let sb = new StringBuilder()
-    sb.Append($"{i}dotnet_nuget_new(\n") |> ignore
+    sb.Append($"{i}nuget_package(\n") |> ignore
 
     sb.Append($"{i}    name = \"{package.name.ToLower()}\",\n")
     |> ignore
@@ -330,7 +428,7 @@ let generateTargetWithOverride (buildFile: string) package =
 let generateBazelFile (packages: ProcessedPackage list) =
     let sb = new StringBuilder()
 
-    sb.Append("load(\"@rules_dotnet//dotnet:defs.bzl\", \"dotnet_nuget_new\", \"nuget_package\")")
+    sb.Append("load(\"@rules_dotnet//dotnet:defs.bzl\", \"nuget_package\")")
     |> ignore
 
     sb.Append("\n") |> ignore
