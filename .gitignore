@@ -15,6 +15,5 @@ package.json
 .ionide
 .bazelrc.user
 .fake
-.paket
 tools/paket2bazel/packages
 paket-files
