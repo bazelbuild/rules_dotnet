@@ -1,6 +1,7 @@
 module PaketExample
 open Argu
 open System
+open FSharp.Data
 
 type CliArguments =
     | [<Mandatory>] Print_This of path: string
@@ -9,6 +10,9 @@ type CliArguments =
         member s.Usage =
             match s with
             | Print_This _ -> "String to print"
+
+type Numbers = JsonProvider<""" [1, 2, 3, 3.14] """> 
+
 
 [<EntryPoint>]
 let main argv =
@@ -27,4 +31,15 @@ let main argv =
     let stringToPrint = results.GetResult Print_This
 
     System.Console.WriteLine($"{stringToPrint}")
+
+    let data = WorldBankData.GetDataContext()
+
+    let gdp =
+        data
+            .Countries.``United Kingdom``
+            .Indicators.``Gross capital formation (% of GDP)``
+            |> Seq.maxBy fst
+
+    System.Console.WriteLine($"{gdp}")
+
     0

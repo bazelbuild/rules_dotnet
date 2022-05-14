@@ -40,7 +40,6 @@ public class BazelManifest
     {
         foreach(var option in _manifest_options.Where(o => !string.IsNullOrEmpty(o)))
         {
-            Console.WriteLine(option);
             var file = new FileInfo(option);
             if(file.Exists)
             {

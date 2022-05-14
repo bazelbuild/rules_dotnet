@@ -1,0 +1,1 @@
+exports_files(["FSharp.Data.BUILD"], visibility=["//visibility:public"])

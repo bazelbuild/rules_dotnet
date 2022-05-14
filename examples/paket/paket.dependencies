@@ -2,9 +2,12 @@ framework: net6.0
 source https://api.nuget.org/v3/index.json
 
 nuget Argu 6.1.1
+nuget FSharp.Data 4.2.8
 
 group othergroup
     framework: net6.0
     source https://api.nuget.org/v3/index.json
 
     nuget Argu 6.1.1
+    nuget FSharp.Data 4.2.8
+

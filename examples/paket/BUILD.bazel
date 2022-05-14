@@ -1,13 +1,28 @@
 load("@rules_dotnet//dotnet:defs.bzl", "fsharp_binary")
 
 fsharp_binary(
-    name = "paket2bazel.exe",
+    name = "paket_example.exe",
     srcs = [
         # Keep order
         "Main.fs",
     ],
     deps = [
         "@main.argu//:lib",
+        "@main.fsharp.data//:lib",
+    ],
+    target_frameworks = ["net6.0"]
+)
+
+# NOTE: Do not mix package groups. Mixing package groups can lead to unexpected results.
+fsharp_binary(
+    name = "paket_example_with_dependency_group.exe",
+    srcs = [
+        # Keep order
+        "Main.fs",
+    ],
+    deps = [
+        "@othergroup.argu//:lib",
+        "@othergroup.fsharp.data//:lib",
     ],
     target_frameworks = ["net6.0"]
 )

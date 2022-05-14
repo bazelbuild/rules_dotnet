@@ -430,7 +430,7 @@ import_multiframework_library(
         name = "main.fsharp.core",
         package = "fsharp.core",
         version = "6.0.4",
-        sha256 = "bb3de1443cda987da82862e66e0dc4835dc03859f16919c2116679487f98f045",
+        sha256 = "cd259093eb9dedc7d161c655837433b0e9e951c5e96c5ed48e7fd3d59378cd62",
         build_file_content = """
 load("@rules_dotnet//dotnet:defs.bzl", "import_library", "import_multiframework_library")
 import_library(
@@ -999,6 +999,13 @@ import_multiframework_library(
     visibility = ["//visibility:public"],
 )
 """
+    )
+    nuget_package(
+        name = "main.fsharp.data",
+        package = "fsharp.data",
+        version = "4.2.8",
+        sha256 = "e47bf7330a3c6e1d78bcb3adfcefd7a9820e6d215187fd5437a995685f08fbb3",
+        build_file = "@examples//paket/deps/custom_build_files:FSharp.Data.BUILD",
     )
     nuget_package(
         name = "main.microsoft.win32.systemevents",
@@ -4217,7 +4224,7 @@ import_multiframework_library(
         name = "othergroup.fsharp.core",
         package = "fsharp.core",
         version = "6.0.4",
-        sha256 = "bb3de1443cda987da82862e66e0dc4835dc03859f16919c2116679487f98f045",
+        sha256 = "cd259093eb9dedc7d161c655837433b0e9e951c5e96c5ed48e7fd3d59378cd62",
         build_file_content = """
 load("@rules_dotnet//dotnet:defs.bzl", "import_library", "import_multiframework_library")
 import_library(
@@ -4786,6 +4793,13 @@ import_multiframework_library(
     visibility = ["//visibility:public"],
 )
 """
+    )
+    nuget_package(
+        name = "othergroup.fsharp.data",
+        package = "fsharp.data",
+        version = "4.2.8",
+        sha256 = "e47bf7330a3c6e1d78bcb3adfcefd7a9820e6d215187fd5437a995685f08fbb3",
+        build_file = "@examples//paket/deps/custom_build_files:FSharp.Data.BUILD",
     )
     nuget_package(
         name = "othergroup.microsoft.win32.systemevents",
