@@ -6,11 +6,11 @@ fsharp_binary(
         # Keep order
         "Main.fs",
     ],
+    target_frameworks = ["net6.0"],
     deps = [
         "@main.argu//:lib",
         "@main.fsharp.data//:lib",
     ],
-    target_frameworks = ["net6.0"]
 )
 
 # NOTE: Do not mix package groups. Mixing package groups can lead to unexpected results.
@@ -20,9 +20,9 @@ fsharp_binary(
         # Keep order
         "Main.fs",
     ],
+    target_frameworks = ["net6.0"],
     deps = [
         "@othergroup.argu//:lib",
         "@othergroup.fsharp.data//:lib",
     ],
-    target_frameworks = ["net6.0"]
 )

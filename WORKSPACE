@@ -22,7 +22,7 @@ load(
     "//dotnet:repositories.bzl",
     "dotnet_register_toolchains",
     "dotnet_repositories",
-    "paket2bazel_repositories"
+    "paket2bazel_repositories",
 )
 
 dotnet_repositories()
@@ -45,4 +45,3 @@ load("@io_bazel_stardoc//:setup.bzl", "stardoc_repositories")
 
 stardoc_repositories()
 # stardoc end
-

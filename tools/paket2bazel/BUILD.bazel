@@ -9,6 +9,7 @@ fsharp_binary(
         "Gen.fs",
         "Main.fs",
     ],
+    target_frameworks = ["net6.0"],
     deps = [
         "@paket2bazel.argu//:lib",
         "@paket2bazel.fsharp.systemtextjson//:lib",
@@ -18,5 +19,4 @@ fsharp_binary(
         "@paket2bazel.paket.core//:lib",
         "@paket2bazel.system.text.json//:lib",
     ],
-    target_frameworks = ["net6.0"]
 )

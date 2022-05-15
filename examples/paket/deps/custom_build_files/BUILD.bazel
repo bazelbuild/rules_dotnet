@@ -1,1 +1,4 @@
-exports_files(["FSharp.Data.BUILD"], visibility=["//visibility:public"])
+exports_files(
+    ["FSharp.Data.BUILD"],
+    visibility = ["//visibility:public"],
+)

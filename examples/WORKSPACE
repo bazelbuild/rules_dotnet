@@ -31,7 +31,8 @@ dotnet_register_toolchains()
 
 paket2bazel_repositories()
 
-load("//paket/deps:paket.bzl", "paket") 
+load("//paket/deps:paket.bzl", "paket")
+
 paket()
 
 load(

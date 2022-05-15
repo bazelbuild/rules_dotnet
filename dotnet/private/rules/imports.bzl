@@ -77,7 +77,7 @@ import_library = rule(
         ),
         "data": attr.label_list(
             doc = "Other files that this DLL depends on at runtime",
-            allow_files = True
+            allow_files = True,
         ),
     },
     executable = False,
