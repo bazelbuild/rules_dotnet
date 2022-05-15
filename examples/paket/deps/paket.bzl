@@ -431,8 +431,8 @@ import_multiframework_library(
     nuget_package(
         name = "main.fsharp.core",
         package = "fsharp.core",
-        version = "6.0.4",
-        sha256 = "cd259093eb9dedc7d161c655837433b0e9e951c5e96c5ed48e7fd3d59378cd62",
+        version = "6.0.3",
+        sha256 = "a9701c0a654ccee9fb4691a3672364b7a700d3ee919542ae2595da1f81e34a64",
         build_file_content = """
 load("@rules_dotnet//dotnet:defs.bzl", "import_library", "import_multiframework_library")
 import_library(
@@ -4225,8 +4225,8 @@ import_multiframework_library(
     nuget_package(
         name = "othergroup.fsharp.core",
         package = "fsharp.core",
-        version = "6.0.4",
-        sha256 = "cd259093eb9dedc7d161c655837433b0e9e951c5e96c5ed48e7fd3d59378cd62",
+        version = "6.0.3",
+        sha256 = "a9701c0a654ccee9fb4691a3672364b7a700d3ee919542ae2595da1f81e34a64",
         build_file_content = """
 load("@rules_dotnet//dotnet:defs.bzl", "import_library", "import_multiframework_library")
 import_library(
