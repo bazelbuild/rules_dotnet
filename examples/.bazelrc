@@ -2,6 +2,7 @@ build --sandbox_tmpfs_path=/tmp
 test --sandbox_tmpfs_path=/tmp
 startup --windows_enable_symlinks
 build --enable_runfiles
+test --test_output=errors
 # Load any settings specific to the current user.
 # .bazelrc.user should appear in .gitignore so that settings are not shared with team members
 # This needs to be last statement in this
