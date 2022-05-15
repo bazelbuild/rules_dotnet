@@ -17,7 +17,7 @@ let getDependencies
     match maybeDeps with
     | Some (deps) ->
         // TODO: Make it fail if lockfile is not up to date
-        deps.Install false
+        deps.SimplePackagesRestore ()
 
         deps.GetInstalledPackages() 
         |> List.map
