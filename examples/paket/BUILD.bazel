@@ -6,6 +6,7 @@ fsharp_binary(
         # Keep order
         "Main.fs",
     ],
+    tags = ["requires-network"],
     target_frameworks = ["net6.0"],
     deps = [
         "@main.argu//:lib",
@@ -21,6 +22,7 @@ fsharp_binary(
         # Keep order
         "Main.fs",
     ],
+    tags = ["requires-network"],
     target_frameworks = ["net6.0"],
     deps = [
         "@othergroup.argu//:lib",
