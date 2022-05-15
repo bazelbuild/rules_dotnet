@@ -48,8 +48,8 @@ def dotnet_repositories():
     nuget_package(
         name = "FSharp.Core",
         package = "FSharp.Core",
-        version = "6.0.1",
-        sha256 = "121b20b779c22628e9695b8982e0b54cf54429290977a3d2734ec3d994127a62",
+        version = "6.0.4",
+        sha256 = "cd259093eb9dedc7d161c655837433b0e9e951c5e96c5ed48e7fd3d59378cd62",
     )
 
     # Required for building the Apphost shimming program
