@@ -9,8 +9,8 @@ fsharp_binary(
     target_frameworks = ["net6.0"],
     deps = [
         "@main.argu//:lib",
-        "@main.fsharp.data//:lib",
         "@main.fsharp.core//:lib",
+        "@main.fsharp.data//:lib",
     ],
 )
 
@@ -24,7 +24,7 @@ fsharp_binary(
     target_frameworks = ["net6.0"],
     deps = [
         "@othergroup.argu//:lib",
-        "@othergroup.fsharp.data//:lib",
         "@othergroup.fsharp.core//:lib",
+        "@othergroup.fsharp.data//:lib",
     ],
 )
