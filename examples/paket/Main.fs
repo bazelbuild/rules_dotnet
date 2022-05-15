@@ -32,14 +32,9 @@ let main argv =
 
     System.Console.WriteLine($"{stringToPrint}")
 
-    let data = WorldBankData.GetDataContext()
+    let nums = Numbers.Parse(""" [1.2, 45.1, 98.2, 5] """)
+    let total = nums |> Seq.sum
 
-    let gdp =
-        data
-            .Countries.``United Kingdom``
-            .Indicators.``Gross capital formation (% of GDP)``
-            |> Seq.maxBy fst
-
-    System.Console.WriteLine($"{gdp}")
+    System.Console.WriteLine($"{total}")
 
     0
