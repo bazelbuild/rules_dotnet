@@ -11,6 +11,7 @@ fsharp_binary(
         "@main.argu//:lib",
         "@main.fsharp.core//:lib",
         "@main.fsharp.data//:lib",
+        "@main.fsharp.core//:lib",
     ],
 )
 
@@ -26,5 +27,6 @@ fsharp_binary(
         "@othergroup.argu//:lib",
         "@othergroup.fsharp.core//:lib",
         "@othergroup.fsharp.data//:lib",
+        "@othergroup.fsharp.core//:lib",
     ],
 )
