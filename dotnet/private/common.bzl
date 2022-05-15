@@ -9,10 +9,7 @@ load(
 )
 
 def is_debug(ctx):
-    # TODO: there are three modes: fastbuild, opt and dbg. fastbuild is supposed
-    # to not output debug info (it's the default). We're treating fastbuild as
-    # equivalent to dbg right now but might want to support this in the future.
-    return ctx.var["COMPILATION_MODE"] != "opt"
+    return ctx.var["COMPILATION_MODE"] == "dbg"
 
 def use_highentropyva(tfm):
     return tfm not in ["net20", "net40"]
