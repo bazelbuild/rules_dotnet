@@ -116,7 +116,7 @@ let generateVersionsBzl (channels: Channel seq) =
                 for file in filterSdkFiles sdk do
                     sb.AppendLine(
                         (sprintf
-                            "        \"%s\": { \"hash\":  \"sha512-%s\", \"url\": \"%s\" },"
+                            "        \"%s\": {\"hash\": \"sha512-%s\", \"url\": \"%s\"},"
                             (convertRid file.Rid)
                             (base64Encode file.Hash)
                             file.Url)

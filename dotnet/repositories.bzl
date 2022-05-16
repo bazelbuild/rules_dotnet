@@ -159,7 +159,6 @@ def _net_workspace():
     # paket2bazel dependencies
     paket()
 
-
 ########
 # Remaining content of the file is only used to support toolchains.
 ########
@@ -262,13 +261,13 @@ dotnet_toolchain(
     fsharp_default_version = "{5}",
 )
 """.format(
-    repository_ctx.attr.dotnet_version,
-    repository_ctx.attr.dotnet_version,
-    TOOL_VERSIONS[repository_ctx.attr.dotnet_version]["runtimeVersion"],
-    TOOL_VERSIONS[repository_ctx.attr.dotnet_version]["runtimeTfm"],
-    TOOL_VERSIONS[repository_ctx.attr.dotnet_version]["csharpDefaultVersion"],
-    TOOL_VERSIONS[repository_ctx.attr.dotnet_version]["fsharpDefaultVersion"],
-)
+        repository_ctx.attr.dotnet_version,
+        repository_ctx.attr.dotnet_version,
+        TOOL_VERSIONS[repository_ctx.attr.dotnet_version]["runtimeVersion"],
+        TOOL_VERSIONS[repository_ctx.attr.dotnet_version]["runtimeTfm"],
+        TOOL_VERSIONS[repository_ctx.attr.dotnet_version]["csharpDefaultVersion"],
+        TOOL_VERSIONS[repository_ctx.attr.dotnet_version]["fsharpDefaultVersion"],
+    )
 
     # Base BUILD file for this repository
     repository_ctx.file("BUILD.bazel", build_content)

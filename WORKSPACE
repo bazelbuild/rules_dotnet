@@ -2,7 +2,6 @@ workspace(name = "rules_dotnet")
 
 # skylib begin
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
 load(":internal_deps.bzl", "rules_dotnet_internal_deps")
 
 # Fetch deps needed only locally for development
