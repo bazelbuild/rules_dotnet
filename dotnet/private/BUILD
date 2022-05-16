@@ -1,5 +1,3 @@
-load(":toolchains.bzl", "configure_toolchain")
-
 filegroup(
     name = "bzl_srcs",
     srcs = glob(["**/*.bzl"]),
@@ -15,11 +13,3 @@ exports_files([
     "launcher.sh.tpl",
     "launcher.bat.tpl",
 ])
-
-toolchain_type(name = "toolchain_type")
-
-configure_toolchain(os = "windows")
-
-configure_toolchain(os = "linux")
-
-configure_toolchain(os = "osx")

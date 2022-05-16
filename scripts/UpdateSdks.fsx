@@ -92,8 +92,7 @@ let convertRid rid =
     | _ -> failwith "Unsupported platform"
 
 let base64Encode (input: string) =
-    let plainTextBytes = System.Text.Encoding.UTF8.GetBytes(input)
-    System.Convert.ToBase64String(plainTextBytes)
+    System.Convert.ToBase64String(System.Convert.FromHexString(input))
 
 let generateVersionsBzl (channels: Channel seq) =
     let sb = StringBuilder()
@@ -110,9 +109,10 @@ let generateVersionsBzl (channels: Channel seq) =
                 sb.AppendLine((sprintf "    \"%s\": {" sdk.Version))
                 |> ignore
 
-                sb.AppendLine((sprintf "        \"runtimeVersion:\": \"%s\"," sdk.RuntimeVersion)) |>ignore
-                sb.AppendLine((sprintf "        \"csharpDefaultVersion:\": \"%s\"," sdk.CSharpVersion)) |>ignore
-                sb.AppendLine((sprintf "        \"fsharpDefaultVersion:\": \"%s\"," sdk.FSharpVersion)) |>ignore
+                sb.AppendLine((sprintf "        \"runtimeVersion\": \"%s\"," sdk.RuntimeVersion)) |>ignore
+                sb.AppendLine((sprintf "        \"runtimeTfm\": \"%s\"," $"net{channel.ChannelVersion}")) |>ignore
+                sb.AppendLine((sprintf "        \"csharpDefaultVersion\": \"%s\"," sdk.CSharpVersion)) |>ignore
+                sb.AppendLine((sprintf "        \"fsharpDefaultVersion\": \"%s\"," sdk.FSharpVersion)) |>ignore
                 for file in filterSdkFiles sdk do
                     sb.AppendLine(
                         (sprintf
@@ -132,3 +132,5 @@ let generateVersionsBzl (channels: Channel seq) =
 supportedChannels
 |> Seq.map downloadReleaseInfoForChannel
 |> generateVersionsBzl
+
+// sha512-Utcg6Qz7iJqS1gXWTm0OkLliCeG9fqsA2rHVZwF9elpP9K28Va/0z/zqSxv5K7jTUYWdANjrZQWe7F5EmIbJOA==

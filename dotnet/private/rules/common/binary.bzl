@@ -17,8 +17,8 @@ load(
 load("@bazel_skylib//lib:paths.bzl", "paths")
 
 def _create_shim_exe(ctx, dll):
-    runtime = ctx.toolchains["@rules_dotnet//dotnet/private:toolchain_type"].runtime
-    apphost = ctx.toolchains["@rules_dotnet//dotnet/private:toolchain_type"].apphost
+    runtime = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].runtime
+    apphost = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].apphost
     output = ctx.actions.declare_file(paths.replace_extension(dll.basename, ".exe"), sibling = dll)
 
     ctx.actions.run(
@@ -32,7 +32,7 @@ def _create_shim_exe(ctx, dll):
     return output
 
 def _create_launcher(ctx, runfiles, executable):
-    runtime = ctx.toolchains["@rules_dotnet//dotnet/private:toolchain_type"].runtime
+    runtime = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].runtime
     windows_constraint = ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]
 
     launcher = ctx.actions.declare_file(paths.replace_extension(executable.basename, ".bat" if ctx.target_platform_has_constraint(windows_constraint) else ".sh"), sibling = executable)
@@ -100,6 +100,7 @@ def build_binary(ctx, compile_action):
                 template = ctx.file.runtimeconfig_template,
                 name = ctx.attr.name,
                 tfm = tfm,
+                runtime_version = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].dotnetinfo.runtime_version,
             )
             depsjson = write_depsjson(
                 ctx.actions,
@@ -141,7 +142,7 @@ def build_binary(ctx, compile_action):
         runfiles = ctx.runfiles(
             files = direct_runfiles,
             transitive_files = result[0].transitive_runfiles,
-        ).merge(ctx.toolchains["@rules_dotnet//dotnet/private:toolchain_type"].runtime[DefaultInfo].default_runfiles),
+        ).merge(ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].runtime[DefaultInfo].default_runfiles),
         files = depset(files),
     ))
 

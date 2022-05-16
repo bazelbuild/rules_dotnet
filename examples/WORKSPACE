@@ -21,15 +21,12 @@ local_repository(
 load(
     "@rules_dotnet//dotnet:repositories.bzl",
     "dotnet_register_toolchains",
-    "dotnet_repositories",
-    "paket2bazel_repositories",
+    "rules_dotnet_dependencies",
 )
 
-dotnet_repositories()
+rules_dotnet_dependencies()
 
-dotnet_register_toolchains()
-
-paket2bazel_repositories()
+dotnet_register_toolchains("dotnet", "6.0.300")
 
 load("//paket/deps:paket.bzl", "paket")
 

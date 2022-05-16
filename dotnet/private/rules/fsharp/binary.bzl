@@ -27,7 +27,7 @@ def _compile_action(ctx, tfm, stdrefs, runtimeconfig, depsjson):
         target = "exe",
         target_name = ctx.attr.name,
         target_framework = tfm,
-        toolchain = ctx.toolchains["@rules_dotnet//dotnet/private:toolchain_type"],
+        toolchain = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"],
         runtimeconfig = runtimeconfig,
         depsjson = depsjson,
     )
@@ -55,6 +55,6 @@ fsharp_binary = rule(
     ),
     executable = True,
     toolchains = [
-        "@rules_dotnet//dotnet/private:toolchain_type",
+        "@rules_dotnet//dotnet:toolchain_type",
     ],
 )

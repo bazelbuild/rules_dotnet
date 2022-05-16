@@ -2,9 +2,7 @@
 Actions for generating various files.
 """
 
-load("//dotnet/private:sdk.bzl", "RUNTIME_FRAMEWORK_VERSION", "RUNTIME_TFM")
-
-def write_runtimeconfig(actions, template, name, tfm):
+def write_runtimeconfig(actions, template, name, tfm, runtime_version):
     """Create a *.runtimeconfig.json file.
 
     This file is necessary when running a .NET Core binary.
@@ -14,6 +12,7 @@ def write_runtimeconfig(actions, template, name, tfm):
       template: A template file.
       name: The name of the executable.
       tfm: The target framework moniker for the exe being built.
+      runtime_version: The runtime version of the current SDK
     """
 
     output = actions.declare_file("bazelout/%s/%s.runtimeconfig.json" % (tfm, name))
@@ -24,8 +23,8 @@ def write_runtimeconfig(actions, template, name, tfm):
         template = template,
         output = output,
         substitutions = {
-            "{RUNTIME_TFM}": RUNTIME_TFM,
-            "{RUNTIME_FRAMEWORK_VERSION}": RUNTIME_FRAMEWORK_VERSION,
+            "{RUNTIME_TFM}": tfm,
+            "{RUNTIME_FRAMEWORK_VERSION}": runtime_version,
         },
     )
 
@@ -50,7 +49,7 @@ def write_depsjson(actions, template, name, tfm):
         template = template,
         output = output,
         substitutions = {
-            "{RUNTIME_TFM}": RUNTIME_TFM.replace("net", ""),
+            "{RUNTIME_TFM}": tfm.replace("net", ""),
         },
     )
 

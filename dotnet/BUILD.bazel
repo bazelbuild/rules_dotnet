@@ -5,3 +5,8 @@ exports_files(
     ],
     visibility = ["//docs:__pkg__"],
 )
+
+toolchain_type(
+    name = "toolchain_type",
+    visibility = ["//visibility:public"],
+)

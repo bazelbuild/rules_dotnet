@@ -27,7 +27,7 @@ def _compile_action(ctx, tfm, stdrefs):
         target = "library",
         target_name = ctx.attr.name,
         target_framework = tfm,
-        toolchain = ctx.toolchains["@rules_dotnet//dotnet/private:toolchain_type"],
+        toolchain = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"],
     )
 
 def _library_impl(ctx):
@@ -38,5 +38,5 @@ csharp_library = rule(
     doc = "Compile a C# DLL",
     attrs = CSHARP_COMMON_ATTRS,
     executable = False,
-    toolchains = ["@rules_dotnet//dotnet/private:toolchain_type"],
+    toolchains = ["@rules_dotnet//dotnet:toolchain_type"],
 )
