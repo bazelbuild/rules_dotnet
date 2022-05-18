@@ -51,14 +51,6 @@ def rules_dotnet_dependencies():
         sha256 = "62b67516a08951a20b12b02e5d20b5045edbb687c3aabe9170286ec5bb9000a1",
     )
 
-    # TODO: This should probably be fetched from the SDK
-    nuget_package(
-        name = "FSharp.Core",
-        package = "FSharp.Core",
-        version = "6.0.4",
-        sha256 = "cd259093eb9dedc7d161c655837433b0e9e951c5e96c5ed48e7fd3d59378cd62",
-    )
-
     # Required for building the Apphost shimming program
     nuget_package(
         name = "Microsoft.NET.HostModel",
