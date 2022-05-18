@@ -55,6 +55,7 @@ def _create_launcher(ctx, runfiles, executable):
             substitutions = {
                 "TEMPLATED_dotnet_root": runtime.files_to_run.executable.dirname,
                 "TEMPLATED_executable": executable.short_path,
+                "TEMPLATED_workspace_name": ctx.workspace_name,
             },
             is_executable = True,
         )
