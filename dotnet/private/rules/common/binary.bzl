@@ -16,6 +16,12 @@ load(
 )
 load("@bazel_skylib//lib:paths.bzl", "paths")
 
+def _to_manifest_path(ctx, file):
+    if file.short_path.startswith("../"):
+        return "external/" + file.short_path[3:]
+    else:
+        return ctx.workspace_name + "/" + file.short_path
+
 def _create_shim_exe(ctx, dll):
     runtime = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].runtime
     apphost = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].apphost
@@ -49,13 +55,13 @@ def _create_launcher(ctx, runfiles, executable):
         )
         runfiles.append(ctx.file._bash_runfiles)
     else:
+        print(runtime)
         ctx.actions.expand_template(
             template = ctx.file._launcher_sh,
             output = launcher,
             substitutions = {
-                "TEMPLATED_dotnet_root": runtime.files_to_run.executable.dirname,
-                "TEMPLATED_executable": executable.short_path,
-                "TEMPLATED_workspace_name": ctx.workspace_name,
+                "TEMPLATED_dotnet": _to_manifest_path(ctx, runtime.files_to_run.executable),
+                "TEMPLATED_executable": _to_manifest_path(ctx, executable),
             },
             is_executable = True,
         )

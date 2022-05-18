@@ -22,10 +22,9 @@ source "$(grep -sm1 "^$f " "$0.runfiles_manifest" | cut -f2- -d' ')" 2>/dev/null
 source "$(grep -sm1 "^$f " "$0.exe.runfiles_manifest" | cut -f2- -d' ')" 2>/dev/null || \
 { echo>&2 "ERROR: cannot find $f"; exit 1; }; f=; set -e
 # --- end runfiles.bash initialization v2 ---
-
 export DOTNET_MULTILEVEL_LOOKUP="false"
 export DOTNET_NOLOGO="1"
 export DOTNET_CLI_TELEMETRY_OPTOUT="1"
-export DOTNET_ROOT="TEMPLATED_dotnet_root"
+export DOTNET_ROOT="$(dirname TEMPLATED_dotnet)"
 
-$(rlocation TEMPLATED_workspace_name/TEMPLATED_executable) "$@"
+$(rlocation TEMPLATED_executable) "$@"
