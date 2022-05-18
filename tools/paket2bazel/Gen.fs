@@ -12,44 +12,8 @@ open System.Security.Cryptography
 open System.Text
 open Paket2Bazel.Models
 
-let tfms =
-    [ "net11"
-      "net20"
-      "net35"
-      "net40"
-      "net403"
-      "net45"
-      "net451"
-      "net452"
-      "net46"
-      "net461"
-      "net462"
-      "net47"
-      "net471"
-      "net472"
-      "net48"
-      "netstandard"
-      "netstandard1.0"
-      "netstandard1.1"
-      "netstandard1.2"
-      "netstandard1.3"
-      "netstandard1.4"
-      "netstandard1.5"
-      "netstandard1.6"
-      "netstandard2.0"
-      "netstandard2.1"
-      "netcoreapp1.0"
-      "netcoreapp1.1"
-      "netcoreapp2.0"
-      "netcoreapp2.1"
-      "netcoreapp2.2"
-      "netcoreapp3.0"
-      "netcoreapp3.1"
-      "net5.0"
-      "net6.0" ]
-    |> List.map NuGetFramework.Parse
 
-let getLibFile (packageName: string) (packageReader: PackageFolderReader) =
+let getLibFile (tfms: NuGetFramework list) (packageName: string) (packageReader: PackageFolderReader) =
     let frameworkReducer = FrameworkReducer()
     let allLibItems = packageReader.GetLibItems()
 
@@ -83,7 +47,7 @@ let getLibFile (packageName: string) (packageReader: PackageFolderReader) =
     |> List.choose id
     |> Map.ofList
 
-let getRefItems (packageName: string) (packageReader: PackageFolderReader) =
+let getRefItems (tfms: NuGetFramework list) (packageName: string) (packageReader: PackageFolderReader) =
     let frameworkReducer = FrameworkReducer()
     let allRefItems = packageReader.GetReferenceItems()
 
@@ -118,7 +82,7 @@ let getRefItems (packageName: string) (packageReader: PackageFolderReader) =
     |> Map.ofList
 
 // TODO: Do something for tools
-let getToolItems (packageName: string) (packageReader: PackageFolderReader) =
+let getToolItems (tfms: NuGetFramework list) (packageName: string) (packageReader: PackageFolderReader) =
     let frameworkReducer = FrameworkReducer()
     let toolItems = packageReader.GetToolItems()
 
@@ -147,7 +111,7 @@ let getToolItems (packageName: string) (packageReader: PackageFolderReader) =
     |> List.choose id
     |> Map.ofList
 
-let getItems folderName (packageReader: PackageFolderReader) =
+let getItems (tfms: NuGetFramework list) folderName (packageReader: PackageFolderReader) =
     let frameworkReducer = FrameworkReducer()
 
     let fileItems = packageReader.GetItems(folderName)
@@ -166,15 +130,15 @@ let getItems folderName (packageReader: PackageFolderReader) =
 
             (targetFramework.GetShortFolderName(), frameworkFileItems))
 
-let getFiles (packageReader: PackageFolderReader) =
+let getFiles (tfms: NuGetFramework list) (packageReader: PackageFolderReader) =
     let frameworkReducer = FrameworkReducer()
 
     let dict = Dictionary<string, string list>()
 
-    getItems "lib" packageReader
-    |> List.append (getItems "runtimes" packageReader)
-    |> List.append (getItems "typeproviders" packageReader)
-    |> List.append (getItems "tools" packageReader)
+    getItems tfms "lib" packageReader
+    |> List.append (getItems tfms "runtimes" packageReader)
+    |> List.append (getItems tfms "typeproviders" packageReader)
+    |> List.append (getItems tfms "tools" packageReader)
     |> List.iter
         (fun (x, y) ->
             if dict.ContainsKey(x) then
@@ -189,7 +153,7 @@ let getFiles (packageReader: PackageFolderReader) =
     |> List.map (fun i -> (i.Key, i.Value))
     |> Map.ofList
 
-let getDependenciesPerFramework (allDeps: string list) (group: string) (packageReader: PackageFolderReader) =
+let getDependenciesPerFramework (tfms: NuGetFramework list) (allDeps: string list) (group: string) (packageReader: PackageFolderReader) =
     let frameworkReducer = FrameworkReducer()
 
     let deps = packageReader.GetPackageDependencies()
@@ -226,62 +190,66 @@ let getSha256 (packagesFolderPath: string) (packageName: string) (packageVersion
 
     result
 
-let processInstalledPackages (dependencies: Package list) paketDir : ProcessedPackage list =
-    dependencies
+let processInstalledPackages (groups: Group list) paketDir : ProcessedPackage list =
+    groups
     |> List.map
-        (fun d ->
-            let packageReader =
-                new PackageFolderReader(
-                    if d.group.ToLower() = "main" then
-                        $"{paketDir}/packages/{d.name}"
-                    else
-                        $"{paketDir}/packages/{d.group}/{d.name}"
-                )
+        (fun group ->
+            let packages =
+                group.packages 
+                |> List.map (fun d -> 
+                    let tfms = group.tfms |> List.map NuGetFramework.Parse
+                    let packageReader =
+                        new PackageFolderReader(
+                            if group.name.ToLower() = "main" then
+                                $"{paketDir}/packages/{d.name}"
+                            else
+                                $"{paketDir}/packages/{group.name}/{d.name}"
+                        )
 
-            maybe {
-                let sha256 =
-                    getSha256
-                        (if d.group.ToLower() = "main" then
-                             $"{paketDir}/packages"
-                         else
-                             $"{paketDir}/packages/{d.group}")
-                        d.name
-                        d.version
+                    maybe {
+                        let sha256 =
+                            getSha256
+                                (if group.name.ToLower() = "main" then
+                                    $"{paketDir}/packages"
+                                else
+                                    $"{paketDir}/packages/{group.name}")
+                                d.name
+                                d.version
 
-                let libFile = getLibFile d.name packageReader
-                let refItems = getRefItems d.name packageReader
-                let toolItems = getToolItems d.name packageReader
-                let fileItems = getFiles packageReader
+                        let libFile = getLibFile tfms d.name packageReader
+                        let refItems = getRefItems tfms d.name packageReader
+                        let toolItems = getToolItems tfms d.name packageReader
+                        let fileItems = getFiles tfms packageReader
 
-                let deps =
-                    getDependenciesPerFramework (dependencies |> List.map (fun d -> d.name)) d.group packageReader
+                        let deps =
+                            getDependenciesPerFramework tfms (group.packages |> List.map (fun d -> d.name)) group.name packageReader
 
-                let targetedPackages =
-                    tfms
-                    |> Seq.map
-                        (fun tfm ->
-                            let tfm = tfm.GetShortFolderName()
-                            let targetedPackage: TargetedPackage =
-                                { lib = Map.tryFind tfm libFile
-                                  deps = Map.findOrDefault tfm [] deps
-                                  ref = Map.tryFind tfm refItems
-                                  tool = Map.tryFind tfm toolItems
-                                  pdb = (Map.tryFind tfm fileItems) |>Option.bind (fun files -> List.tryFind (fun x -> x.EndsWith(".pdb")) files)
-                                  files = Map.findOrDefault tfm [] fileItems |> List.filter (fun x -> not (x.EndsWith(".pdb"))) }
+                        let targetedPackages =
+                            tfms
+                            |> Seq.map
+                                (fun tfm ->
+                                    let tfm = tfm.GetShortFolderName()
+                                    let targetedPackage: TargetedPackage =
+                                        { lib = Map.tryFind tfm libFile
+                                          deps = Map.findOrDefault tfm [] deps
+                                          ref = Map.tryFind tfm refItems
+                                          tool = Map.tryFind tfm toolItems
+                                          pdb = (Map.tryFind tfm fileItems) |>Option.bind (fun files -> List.tryFind (fun x -> x.EndsWith(".pdb")) files)
+                                          files = Map.findOrDefault tfm [] fileItems |> List.filter (fun x -> not (x.EndsWith(".pdb"))) }
 
-                            (tfm, targetedPackage))
-                    |> Map.ofSeq
+                                    (tfm, targetedPackage))
+                            |> Map.ofSeq
 
-                return
-                    { name = $"{d.group.ToLower()}.{d.name.ToLower()}"
-                      package = d.name.ToLower()
-                      group = d.group
-                      version = d.version
-                      buildFileOverride = d.buildFileOverride
-                      sha256 = sha256
-                      targets = targetedPackages }
-            })
-    |> List.choose id
+                        return
+                            { name = $"{group.name.ToLower()}.{d.name.ToLower()}"
+                              package = d.name.ToLower()
+                              group = group.name
+                              version = d.version
+                              buildFileOverride = d.buildFileOverride
+                              sha256 = sha256
+                              targets = targetedPackages }})
+            packages |> List.choose id
+        ) |> List.concat
 
 let generateTarget (package: ProcessedPackage) =
     let i = "    "
@@ -308,6 +276,7 @@ let generateTarget (package: ProcessedPackage) =
     )
     |> ignore
 
+    let tfms = package.targets.Keys |> Seq.map NuGetFramework.Parse |> Seq.toList
     for tfm in tfms do
         let tfm =tfm.GetShortFolderName()
         let lib = package.targets |> Map.tryFind (tfm)
