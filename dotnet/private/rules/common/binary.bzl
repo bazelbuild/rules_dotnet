@@ -48,8 +48,8 @@ def _create_launcher(ctx, runfiles, executable):
             template = ctx.file._launcher_bat,
             output = launcher,
             substitutions = {
-                "TEMPLATED_dotnet_root": runtime.files_to_run.executable.dirname,
-                "TEMPLATED_executable": executable.short_path,
+                "TEMPLATED_dotnet": _to_manifest_path(ctx, runtime.files_to_run.executable),
+                "TEMPLATED_executable": _to_manifest_path(ctx, executable),
             },
             is_executable = True,
         )

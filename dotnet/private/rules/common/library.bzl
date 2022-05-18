@@ -34,7 +34,7 @@ def build_library(ctx, compile_action):
     result = providers.values()
     result.append(DefaultInfo(
         files = depset([result[0].out]),
-        default_runfiles = ctx.runfiles(files = [result[0].pdb]),
+        runfiles = ctx.runfiles(files = [result[0].pdb]),
     ))
 
     return result
