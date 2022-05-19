@@ -55,7 +55,6 @@ def _create_launcher(ctx, runfiles, executable):
         )
         runfiles.append(ctx.file._bash_runfiles)
     else:
-        print(runtime)
         ctx.actions.expand_template(
             template = ctx.file._launcher_sh,
             output = launcher,

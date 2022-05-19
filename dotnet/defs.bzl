@@ -36,6 +36,14 @@ load(
     _fsharp_nunit_test = "fsharp_nunit_test",
 )
 load(
+    "//dotnet/private:rules/csharp/test.bzl",
+    _csharp_test = "csharp_test",
+)
+load(
+    "//dotnet/private:rules/fsharp/test.bzl",
+    _fsharp_test = "fsharp_test",
+)
+load(
     "//dotnet/private:rules/imports.bzl",
     _import_library = "import_library",
     _import_multiframework_library = "import_multiframework_library",
@@ -53,9 +61,11 @@ load(
 dotnet_wrapper = _dotnet_wrapper
 csharp_binary = _csharp_binary
 csharp_library = _csharp_library
+csharp_test = _csharp_test
 csharp_nunit_test = _csharp_nunit_test
 fsharp_binary = _fsharp_binary
 fsharp_library = _fsharp_library
+fsharp_test = _fsharp_test
 fsharp_nunit_test = _fsharp_nunit_test
 library_set = _library_set
 import_multiframework_library = _import_multiframework_library
