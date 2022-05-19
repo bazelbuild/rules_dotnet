@@ -18,7 +18,7 @@ load("@bazel_skylib//lib:paths.bzl", "paths")
 
 def _to_manifest_path(ctx, file):
     if file.short_path.startswith("../"):
-        return "external/" + file.short_path[3:]
+        return file.short_path[3:]
     else:
         return ctx.workspace_name + "/" + file.short_path
 

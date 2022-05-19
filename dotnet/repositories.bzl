@@ -181,17 +181,17 @@ exports_files(
 
 filegroup(
     name = "runtime",
-    srcs = glob(
-        [
-            "dotnet",
-            "dotnet.exe",  # windows
-        ],
-        allow_empty = True,
-    ),
+    srcs = select({{
+        "@bazel_tools//src/conditions:windows": ["dotnet.exe"],
+        "//conditions:default": ["dotnet"],
+    }}),
     data = glob([
         "host/**/*",
         "shared/**/*",
-    ]),
+    ]) + select({{
+        "@bazel_tools//src/conditions:windows": ["dotnet.exe"],
+        "//conditions:default": ["dotnet"],
+    }}),
     visibility = ["//visibility:public"],
 )
 
@@ -218,26 +218,20 @@ filegroup(
 cc_binary(
     name = "dotnetw",
     srcs = [":main-cc"],
-    data = glob(
-        [
-            "dotnet",
-            "dotnet.exe",
-        ],
-        allow_empty = True,
-    ),
+    data = select({{
+        "@bazel_tools//src/conditions:windows": ["dotnet.exe"],
+        "//conditions:default": ["dotnet"],
+    }}),
     visibility = ["//visibility:public"],
     deps = ["@bazel_tools//tools/cpp/runfiles"],
 )
 
 dotnet_wrapper(
     name = "main-cc",
-    dotnet = glob(
-        [
-            "dotnet",
-            "dotnet.exe",
-        ],
-        allow_empty = True,
-    ),
+    dotnet = select({{
+        "@bazel_tools//src/conditions:windows": ["dotnet.exe"],
+        "//conditions:default": ["dotnet"],
+    }}),
 )
 
 dotnet_toolchain(
