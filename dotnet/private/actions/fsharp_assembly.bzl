@@ -215,6 +215,7 @@ def _compile(
     args.add("/deterministic+")
     args.add("/nowin32manifest")
     args.add("/nocopyfsharpcore")
+    args.add("/simpleresolution")
     args.add(_format_targetprofile(target_framework))
     args.add("/nologo")
 

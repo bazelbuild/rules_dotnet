@@ -64,13 +64,11 @@ let main argv =
 
     let cache = Dictionary<string, Package>()
 
-    let dependencies =
+    let groups =
         getDependencies dependenciesFile config cache
 
-    let processedPackages =
-        processInstalledPackages dependencies paketDir
 
-    let bazelFile = generateBazelFile processedPackages
+    let bazelFile = generateBazelFile groups
 
     File.WriteAllText($"{outputFolder}/BUILD.bazel", "")
     File.WriteAllText($"{outputFolder}/paket.bzl", bazelFile)
