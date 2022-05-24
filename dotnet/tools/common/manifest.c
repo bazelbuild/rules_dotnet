@@ -122,7 +122,7 @@ const char *GetPathFromManifestEntries(const char *curPath, const char *prefix)
         else
             *p = '\0';
 
-        /* Check if directory is already present */  
+        /* Check if directory is already present */
         for(i = 0; i < dirsCount; ++i)
             if (strcmp(dirs[i], dir)==0)
                 break;
@@ -149,7 +149,7 @@ const char *GetPathFromManifestEntries(const char *curPath, const char *prefix)
         strncat(result, ":", bufferSize - strlen(result));
         #endif
         free(dirs[i]);
-    }    
+    }
     free(dirs);
 
     /* Add current PATH to the end */
@@ -435,7 +435,7 @@ const char *GetManifestPath()
         return buffer;
 
     getcwd(buffer, sizeof(buffer));
-    strncat(buffer, "/MANIFEST", sizeof(buffer)-strlen(buffer));
+    strncat(buffer, "/MANIFEST", sizeof(buffer)-strlen(buffer)-1);
     if (IsVerbose())
         printf("4. Checking MANIFEST %s\n", buffer);
     if (access(buffer, F_OK) != -1)
