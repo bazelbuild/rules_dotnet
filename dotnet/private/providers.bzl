@@ -10,9 +10,9 @@ def _make_dotnet_provider(tfm):
     return provider(
         doc = "A DLL or exe, targetting %s." % tfm,
         fields = {
-            "out": "a dll (for libraries and tests) or an exe (for binaries).",
-            "prefout": "A reference-only assembly containing only public symbols. See docs/ReferenceAssemblies.md for more info.",
-            "irefout": "A reference-only assembly containing public and internal symbols. See docs/ReferenceAssemblies.md for more info.",
+            "out": "DLLs (for libraries and tests) or an exe (for binaries).",
+            "prefout": "Reference-only assemblies containing only public symbols. See docs/ReferenceAssemblies.md for more info.",
+            "irefout": "Reference-only assemblies containing public and internal symbols. See docs/ReferenceAssemblies.md for more info.",
             "internals_visible_to": "A list of assemblies that can must use irefout for compilation. See docs/ReferenceAssemblies.md for more info.",
             "pdb": "debug symbols",
             "native_dlls": "A list of native DLLs required to build and run this assembly",

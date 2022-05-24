@@ -26,6 +26,8 @@ type Group =
       packages: Package list
       tfms: FrameworkIdentifier list }
 
+let supportedRids = ["win-x64"; "linux-x64"; "osx-x64"; "osx-arm64"]
+
 // type TargetedPackage =
 //     { lib: string option
 //       deps: string list

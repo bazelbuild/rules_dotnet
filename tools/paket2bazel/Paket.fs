@@ -9,7 +9,6 @@ open System.IO
 open System.Security.Cryptography
 open Paket.Requirements
 
-let supportedRids = ["win-x64"; "linux-x64"; "osx-x64"; "osx-arm64"]
 
 let frameworkRestrictionsToTFMs (frameworkRestrictions: FrameworkRestrictions) : FrameworkIdentifier list =
     match frameworkRestrictions with
@@ -115,7 +114,7 @@ let getRuntimeDependenciesPerTFM (tfms: FrameworkIdentifier list) (installModel:
             let targetPlatform = TargetProfile.SinglePlatform tfm
 
             let byRids =
-                supportedRids
+                Models.supportedRids
                 |> List.map (fun rid -> 
                     let libraries = installModel.GetRuntimeLibraries RuntimeGraph.Empty (Rid.Of rid) targetPlatform
                     (rid, libraries |> Seq.map (fun library -> library.Library.PathWithinPackage) |> Seq.toList)) |> Map.ofSeq

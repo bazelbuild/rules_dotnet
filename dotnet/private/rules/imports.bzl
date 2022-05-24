@@ -12,15 +12,9 @@ load("//dotnet/private:providers.bzl", "AnyTargetFrameworkInfo", "DotnetAssembly
 def _import_library(ctx):
     files = []
 
-    if ctx.file.dll != None:
-        files.append(ctx.file.dll)
-
-    if ctx.file.pdb != None:
-        files.append(ctx.file.pdb)
-
-    if ctx.file.refdll != None:
-        files.append(ctx.file.refdll)
-
+    files += ctx.files.dll
+    files += ctx.files.pdb
+    files += ctx.files.refdll
     files += ctx.files.native_dlls
     files += ctx.files.data
 
@@ -30,11 +24,11 @@ def _import_library(ctx):
 
     providers = {
         tfm: DotnetAssemblyInfo[tfm](
-            out = ctx.file.dll,
-            prefout = ctx.file.refdll,
+            out = ctx.files.dll,
+            prefout = ctx.files.refdll,
             irefout = None,
             internals_visible_to = [],
-            pdb = ctx.file.pdb,
+            pdb = ctx.files.pdb,
             native_dlls = depset(direct = ctx.files.native_dlls, transitive = [native_dlls]),
             deps = ctx.attr.deps,
             transitive_refs = refs,
@@ -55,17 +49,17 @@ import_library = rule(
             doc = "The target framework for this DLL",
             mandatory = True,
         ),
-        "dll": attr.label(
-            doc = "A static DLL",
-            allow_single_file = [".dll"],
+        "dll": attr.label_list(
+            doc = "Static DLLs",
+            allow_files = [".dll"],
         ),
-        "pdb": attr.label(
-            doc = "Debug symbols for the dll",
-            allow_single_file = [".pdb"],
+        "pdb": attr.label_list(
+            doc = "Debug symbols for the DLLs",
+            allow_files = [".pdb"],
         ),
-        "refdll": attr.label(
-            doc = "A metadata-only DLL, suitable for compiling against but not running",
-            allow_single_file = [".dll"],
+        "refdll": attr.label_list(
+            doc = "Metadata-only DLLs, suitable for compiling against but not running",
+            allow_files = [".dll"],
         ),
         "native_dlls": attr.label_list(
             doc = "A list of native dlls, which while unreferenced, are required for running and compiling",
