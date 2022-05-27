@@ -54,6 +54,12 @@ COMMON_ATTRS = {
         For Asp.Net Core > 2.1 the NuGet packages use the following naming convention:
         Microsoft.AspNetCore.App.Ref with with the major/minor version of the target framework e.g. for .Net Core 6.0 Microsoft.AspNetCore.App.Ref with version 6.0.x
 
+        For .Net Standard 2.0 the NuGet packages use the following naming convention:
+        NETStandard.Library 2.0.x
+
+        For .Net Standard 2.1 the NuGet packages use the following naming convention:
+        NETStandard.Library.Ref 2.1.x
+
         By default we use the SDK that is included in the toolchain which is declared in the WORKSPACE file
 
         See https://docs.microsoft.com/en-us/dotnet/core/project-sdk/overview for more information on project SDKs

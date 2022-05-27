@@ -7,6 +7,11 @@ load(
     "collect_transitive_info",
     "get_analyzer_dll",
     "use_highentropyva",
+    "format_ref_arg",
+    "format_analyzer_arg",
+    "format_additionalfile_arg",
+    "format_resource_arg",
+    "format_define",
 )
 load(
     "//dotnet/private:providers.bzl",
@@ -15,21 +20,6 @@ load(
 )
 load("//dotnet/private:actions/misc.bzl", "framework_preprocessor_symbols", "write_internals_visible_to_csharp")
 
-def _format_ref_arg(assembly):
-    return "/r:" + assembly.path
-
-def _format_analyzer_arg(analyzer):
-    return "/analyzer:" + analyzer
-
-def _format_additionalfile_arg(additionalfile):
-    return "/additionalfile:" + additionalfile.path
-
-def _format_resource_arg(resource):
-    return "/resource:" + resource.path
-
-def _format_define(symbol):
-    return "/d:" + symbol
-
 def AssemblyAction(
         actions,
         additionalfiles,
@@ -37,6 +27,7 @@ def AssemblyAction(
         debug,
         defines,
         deps,
+        project_sdk,
         internals_visible_to,
         keyfile,
         langversion,
@@ -60,6 +51,7 @@ def AssemblyAction(
         debug: Emits debugging information.
         defines: The list of conditional compilation symbols.
         deps: The list of other libraries to be linked in to the assembly.
+        project_sdk: The project SDK that the the library/binary is in use.
         internals_visible_to: An optional list of assemblies that can see this assemblies internal symbols.
         keyfile: Specifies a strong name key file of the assembly.
         langversion: Specify language version: Default, ISO-1, ISO-2, 3, 4, 5, 6, 7, 7.1, 7.2, 7.3, or Latest
@@ -80,6 +72,7 @@ def AssemblyAction(
     assembly_name = target_name if out == "" else out
     (subsystem_version, default_lang_version) = GetFrameworkVersionInfo(target_framework)
     (refs, runfiles, native_dlls) = collect_transitive_info(target_name, deps, target_framework)
+    (project_sdk_refs, _, _) = collect_transitive_info(target_name, [project_sdk], target_framework)
     analyzer_assemblies = [get_analyzer_dll(a) for a in analyzers]
     defines = framework_preprocessor_symbols(target_framework) + defines
 
@@ -103,6 +96,7 @@ def AssemblyAction(
             langversion,
             native_dlls,
             refs,
+            project_sdk_refs,
             resources,
             srcs,
             subsystem_version,
@@ -137,6 +131,7 @@ def AssemblyAction(
             langversion,
             native_dlls,
             refs,
+            project_sdk_refs,
             resources,
             srcs + [internals_visible_to_cs],
             subsystem_version,
@@ -161,6 +156,7 @@ def AssemblyAction(
             langversion,
             native_dlls,
             refs,
+            project_sdk_refs,
             resources,
             srcs,
             subsystem_version,
@@ -199,6 +195,7 @@ def _compile(
         langversion,
         native_dlls,
         refs,
+        project_sdk_refs,
         resources,
         srcs,
         subsystem_version,
@@ -257,20 +254,20 @@ def _compile(
         outputs = [out_ref]
 
     # assembly references
-    args.add_all(refs, map_each = _format_ref_arg)
+    format_ref_arg(args, target_framework, refs, project_sdk_refs)
 
     # analyzers
-    args.add_all(analyzer_assemblies, map_each = _format_analyzer_arg)
-    args.add_all(additionalfiles, map_each = _format_additionalfile_arg)
+    args.add_all(analyzer_assemblies, map_each = format_analyzer_arg)
+    args.add_all(additionalfiles, map_each = format_additionalfile_arg)
 
     # .cs files
     args.add_all([cs for cs in srcs])
 
     # resources
-    args.add_all(resources, map_each = _format_resource_arg)
+    args.add_all(resources, map_each = format_resource_arg)
 
     # defines
-    args.add_all(defines, map_each = _format_define)
+    args.add_all(defines, map_each = format_define)
 
     # keyfile
     if keyfile != None:
@@ -310,7 +307,7 @@ def _compile(
         progress_message = "Compiling " + target_name + (" (internals ref-only dll)" if out_dll == None else ""),
         inputs = depset(
             direct = direct_inputs,
-            transitive = [refs] + [native_dlls],
+            transitive = [project_sdk_refs] + [refs] + [native_dlls],
         ),
         outputs = outputs,
         executable = toolchain.runtime.files_to_run,

@@ -92,7 +92,7 @@ def build_binary(ctx, compile_action):
     """
     providers = {}
 
-    sdk = [ctx.attr.sdk]
+    sdk = ctx.attr.sdk
 
     for tfm in ctx.attr.target_frameworks:
         if is_standard_framework(tfm):

@@ -12,14 +12,15 @@ load("//dotnet/private:rules/common/binary.bzl", "build_binary")
 load("//dotnet/private:rules/common/attrs.bzl", "CSHARP_BINARY_COMMON_ATTRS")
 load("@bazel_skylib//lib:dicts.bzl", "dicts")
 
-def _compile_action(ctx, tfm, stdrefs, runtimeconfig, depsjson):
+def _compile_action(ctx, tfm, project_sdk, runtimeconfig, depsjson):
     return AssemblyAction(
         ctx.actions,
         additionalfiles = ctx.files.additionalfiles,
         analyzers = ctx.attr.analyzers,
         debug = is_debug(ctx),
         defines = ctx.attr.defines,
-        deps = ctx.attr.deps + stdrefs,
+        deps = ctx.attr.deps,
+        project_sdk = project_sdk,
         internals_visible_to = ctx.attr.internals_visible_to,
         keyfile = ctx.file.keyfile,
         langversion = ctx.attr.langversion,

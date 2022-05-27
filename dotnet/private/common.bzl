@@ -20,6 +20,45 @@ def is_standard_framework(tfm):
 def is_core_framework(tfm):
     return tfm.startswith("netcoreapp") or tfm.startswith("net5.0") or tfm.startswith("net6.0")
 
+def format_ref_arg(args, tfm, refs, project_sdk_refs):
+    """Takes all deps and the project SDK and deduplicates all DLLs that are part of the project SDK.
+
+    Args:
+        args: The args object that will be sent into the compilation action
+        tfm: The TFM that is being targeted
+        refs: List of all references that are being sent into the compilation action excluding the project SDK
+        project_sdk_refs: The references that are in the project SDK
+
+    Returns:
+        The updated args object
+    """
+    project_sdk_dll_map = { dll.basename: dll.path for dll in project_sdk_refs.to_list()}
+    def _format_ref_arg(assembly):
+        return "/r:" + assembly.path
+
+    def _format_ref_arg_remove_duplicates(assembly):
+        if assembly.basename in project_sdk_dll_map:
+            return None
+
+        return "/r:" + assembly.path
+    
+    args.add_all(project_sdk_refs, allow_closure= True, map_each = _format_ref_arg)
+    args.add_all(refs, allow_closure= True, map_each = _format_ref_arg_remove_duplicates)
+
+    return args
+
+def format_analyzer_arg(analyzer):
+    return "/analyzer:" + analyzer
+
+def format_additionalfile_arg(additionalfile):
+    return "/additionalfile:" + additionalfile.path
+
+def format_resource_arg(resource):
+    return "/resource:" + resource.path
+
+def format_define(symbol):
+    return "/d:" + symbol
+
 def collect_transitive_info(name, deps, tfm):
     """Determine the transitive dependencies by the target framework.
 
@@ -71,7 +110,7 @@ def collect_transitive_info(name, deps, tfm):
         depset(direct = direct_refs, transitive = transitive_refs),
         depset(direct = direct_runfiles, transitive = transitive_runfiles),
         depset(transitive = native_dlls),
-    )
+    )      
 
 def _get_provided_by_netstandard(providerInfo):
     actual_tfm = providerInfo[0].actual_tfm
