@@ -33,16 +33,37 @@ COMMON_ATTRS = {
         default = [],
         allow_empty = True,
     ),
-    "include_stdrefs": attr.bool(
-        doc = "Whether to reference @net//:StandardReferences (the default set of references that MSBuild adds to every project).",
-        default = True,
+    "sdk": attr.label(
+        doc = """
+        The SDK to use for compilation.
+
+        We use NuGet packages to choose the SDK that the target should be compiled with.
+
+        For .Net Framework the NuGet packages use the following naming convention:
+        Microsoft.NETFramework.ReferenceAssemblies.<tfm> eg. Microsoft.NETFramework.ReferenceAssemblies.net472
+
+        For .Net Core > 2.1 < 3.0 the NuGet packages use the following naming convention:
+        Microsoft.NETCore.App with with the major/minor version of the target framework e.g. for .Net Core 2.1 Microsoft.NETCore.App with version 2.1.x
+
+        For .Net Core > 2.1 the NuGet packages use the following naming convention:
+        Microsoft.NETCore.App.Ref with with the major/minor version of the target framework e.g. for .Net Core 6.0 Microsoft.NETCore.App.Ref with version 6.0.x
+
+        For Asp.Net Core > 2.1 < 3.0 the NuGet packages use the following naming convention:
+        Microsoft.AspNetCore.App with with the major/minor version of the target framework e.g. for .Net Core 2.1 Microsoft.AspNetCore.App with version 2.1.x
+
+        For Asp.Net Core > 2.1 the NuGet packages use the following naming convention:
+        Microsoft.AspNetCore.App.Ref with with the major/minor version of the target framework e.g. for .Net Core 6.0 Microsoft.AspNetCore.App.Ref with version 6.0.x
+
+        By default we use the SDK that is included in the toolchain which is declared in the WORKSPACE file
+
+        See https://docs.microsoft.com/en-us/dotnet/core/project-sdk/overview for more information on project SDKs
+        """,
+        providers = AnyTargetFrameworkInfo,
+        mandatory = False,
+        default = "@rules_dotnet_default_project_sdk//:Microsoft.NETCore.App.Ref",
     ),
     "internals_visible_to": attr.string_list(
         doc = "Other libraries that can see the assembly's internal symbols. Using this rather than the InternalsVisibleTo assembly attribute will improve build caching.",
-    ),
-    "_stdrefs": attr.label(
-        doc = "The standard set of assemblies to reference.",
-        default = "@net//:StandardReferences",
     ),
     "_windows_constraint": attr.label(default = "@platforms//os:windows"),
 }

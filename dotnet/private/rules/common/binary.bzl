@@ -70,7 +70,7 @@ def _create_launcher(ctx, runfiles, executable):
 
 def _symlink_manifest_loader(ctx, executable):
     loader = ctx.actions.declare_file("ManifestLoader.dll", sibling = executable)
-    ctx.actions.symlink(output = loader, target_file = GetDotnetAssemblyInfoFromLabel(ctx.attr._manifest_loader).out)
+    ctx.actions.symlink(output = loader, target_file = GetDotnetAssemblyInfoFromLabel(ctx.attr._manifest_loader).out[0])
     return loader
 
 def build_binary(ctx, compile_action):
@@ -82,7 +82,7 @@ def build_binary(ctx, compile_action):
             Args:
                 ctx: Bazel build ctx.
                 tfm: Target framework string
-                stdrefs: .Net standard library references
+                sdk: .Net project SDK label
                 runtimeconfig: .Net runtimeconfig file
                 depsjson: .Net depsjson file
             Returns:
@@ -92,7 +92,7 @@ def build_binary(ctx, compile_action):
     """
     providers = {}
 
-    stdrefs = [ctx.attr._stdrefs] if ctx.attr.include_stdrefs else []
+    sdk = [ctx.attr.sdk]
 
     for tfm in ctx.attr.target_frameworks:
         if is_standard_framework(tfm):
@@ -115,13 +115,14 @@ def build_binary(ctx, compile_action):
                 tfm = tfm,
             )
 
-        providers[tfm] = compile_action(ctx, tfm, stdrefs, runtimeconfig, depsjson)
+        providers[tfm] = compile_action(ctx, tfm, sdk, runtimeconfig, depsjson)
 
     fill_in_missing_frameworks(ctx.attr.name, providers)
 
     result = providers.values()
-    executable = result[0].out
-    pdb = result[0].pdb
+    executable = result[0].out[0]
+    pdb = result[0].pdb[0]
+    prefout = result[0].prefout[0] if len(result[0].prefout) >0 else None
     runtimeconfig = result[0].runtimeconfig
     depsjson = result[0].depsjson
 
@@ -135,7 +136,7 @@ def build_binary(ctx, compile_action):
     manifest_loader = _symlink_manifest_loader(ctx, executable)
     direct_runfiles.append(manifest_loader)
 
-    files = [executable, result[0].prefout, pdb]
+    files = [executable, prefout, pdb]
     if ctx.attr.use_apphost_shim:
         executable = _create_shim_exe(ctx, executable)
         direct_runfiles.append(executable)

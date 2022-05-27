@@ -1,9 +1,20 @@
+#r "nuget: NuGet.Protocol"
+
 open System.Net
 open System.IO
 open System.Text.Json.Serialization
 open System.Text.Json
 open System.Text
-open System
+open System.Threading
+open NuGet.Common;
+open NuGet.Configuration;
+open NuGet.Protocol;
+open NuGet.Protocol.Core.Types;
+open System.Xml.Linq
+open NuGet.Versioning
+open NuGet.Packaging.Core
+open NuGet.Packaging
+open System.Security.Cryptography
 
 let supportedChannels = [ "6.0"; "7.0" ]
 
@@ -94,6 +105,41 @@ let convertRid rid =
 let base64Encode (input: string) =
     System.Convert.ToBase64String(System.Convert.FromHexString(input))
 
+let getSha256 (stream: MemoryStream) =
+    use sha256 = SHA256.Create()
+    let bytes = sha256.ComputeHash(stream)
+    let mutable result = ""
+
+    for b in bytes do
+        result <- result + b.ToString("x2")
+
+    result
+
+let getPackageSha256 (resource: FindPackageByIdResource) packageId packageVersion =
+    use cache = new SourceCacheContext()
+    use packageStream = new MemoryStream();
+    resource.CopyNupkgToStreamAsync(
+                packageId,
+                packageVersion,
+                packageStream,
+                cache,
+                NullLogger.Instance,
+                CancellationToken.None).Result |> ignore
+    packageStream.Position <- 0
+    getSha256 packageStream
+
+let getDefaultProjectSdkSha256 () =
+    let packageId = "Microsoft.NETCore.App.Ref"
+    let source = PackageSource("https://api.nuget.org/v3/index.json")
+    let providers = Repository.Provider.GetCoreV3()
+    let repository = new SourceRepository(source, providers)
+    let resource = repository.GetResourceAsync<FindPackageByIdResource>().Result
+    use cacheContext = new SourceCacheContext()
+    
+    (resource.GetAllVersionsAsync(packageId, cacheContext, NullLogger.Instance, CancellationToken.None)).Result
+    |> Seq.map(fun v -> (v.ToString(), getPackageSha256 resource packageId v))
+
+
 let generateVersionsBzl (channels: Channel seq) =
     let sb = StringBuilder()
 
@@ -126,11 +172,17 @@ let generateVersionsBzl (channels: Channel seq) =
                 sb.AppendLine("    },") |> ignore
 
     sb.AppendLine("}") |> ignore
-    
+
+    let defaultProjectSdks = getDefaultProjectSdkSha256()
+    sb.AppendLine() |> ignore
+    sb.AppendLine("DEFAULT_PROJECT_SDK_SHA256 = {") |> ignore
+    for (version, integrity) in defaultProjectSdks |> Seq.sort do
+        sb.AppendLine((sprintf "    \"%s\": \"%s\"," version integrity))
+        |> ignore
+    sb.AppendLine("}") |> ignore
+
     File.WriteAllText("dotnet/private/versions.bzl", sb.ToString())
     
 supportedChannels
 |> Seq.map downloadReleaseInfoForChannel
 |> generateVersionsBzl
-
-// sha512-Utcg6Qz7iJqS1gXWTm0OkLliCeG9fqsA2rHVZwF9elpP9K28Va/0z/zqSxv5K7jTUYWdANjrZQWe7F5EmIbJOA==

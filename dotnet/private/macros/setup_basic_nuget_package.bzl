@@ -7,9 +7,9 @@ load("//dotnet/private:rules/imports.bzl", "import_library", "import_multiframew
 
 # name is generated. This macro is not exported from this file.
 # buildifier: disable=unnamed-macro
-def _import_dll(lib_name, dlls_per_tfm, pdbs_per_tfm, imports):
+def _import_dll(lib_name, items_per_tfm, imports):
 
-    for (tfm, dlls) in dlls_per_tfm.items():
+    for (tfm, items) in items_per_tfm.items():
         # Ignore frameworks we don't support (like net35)
         if tfm not in DotnetAssemblyInfo:
             return
@@ -24,8 +24,9 @@ def _import_dll(lib_name, dlls_per_tfm, pdbs_per_tfm, imports):
         import_library(
             name = target_name,
             target_framework = tfm,
-            dll = dlls,
-            pdb = pdbs_per_tfm[tfm],
+            dll = items["dlls"] if items.get("dlls") else [],
+            refdll = items["refs"] if items.get("refs") else [],
+            pdb = items["pdbs"] if items.get("pdb") else [],
         )
     
 
@@ -33,7 +34,7 @@ def _import_dll(lib_name, dlls_per_tfm, pdbs_per_tfm, imports):
 # (There may be multiple assemblies in a package).
 # This macro is public, but isn't meant to be used directly by users.
 # buildifier: disable=unnamed-macro
-def setup_basic_nuget_package():
+def setup_basic_nuget_package(name):
     """This macro gets used to implement the default NuGet BUILD file.
 
        We are limited by the fact that Bazel does not allow the analysis phase to
@@ -43,32 +44,51 @@ def setup_basic_nuget_package():
 
        This has to be public so that packages can call it but you probably
        shouldn't use it directly.
+
+    Args:
+        name: The name of the package
     """
     dlls = native.glob(["lib/*/*.dll"])
     pdbs = native.glob(["lib/*/*.pdb"])
-    lib_name = dlls[0].split("/")[-1].rsplit(".", 1)[0]
+    refs = native.glob(["ref/*/*.dll"])
 
     # Map from lib name to dict from tfm to target name
     imports = {}
 
     # Output import_library rules
-    dlls_per_tfm = {tfm: [] for tfm in DotnetAssemblyInfo.keys()}
+    items_per_tfm = {}
+
     for dll in dlls:
         path = dll.split("/")
         tfm = path[1]
-        dlls_per_tfm[tfm] = dlls_per_tfm[tfm] + [dll]
+        if items_per_tfm.get(tfm, None) == None:
+            items_per_tfm[tfm] = {}
+            items_per_tfm[tfm]["dlls"] = [dll]
+        else:
+            items_per_tfm[tfm]["dlls"] = items_per_tfm[tfm]["dlls"] + [dll]
 
-    pdbs_per_tfm = {tfm: [] for tfm in DotnetAssemblyInfo.keys()}
     for pdb in pdbs:
         path = pdb.split("/")
         tfm = path[1]
-        pdbs_per_tfm[tfm] = pdbs_per_tfm[tfm] + [pdb]
+        if items_per_tfm.get(tfm, None) == None:
+            items_per_tfm[tfm] = {}
+            items_per_tfm[tfm]["pdbs"] = [pdb]
+        else:
+            items_per_tfm[tfm]["pdbs"] = items_per_tfm[tfm]["pdbs"] + [pdb]
+
+    for ref in refs:
+        path = ref.split("/")
+        tfm = path[1]
+        if items_per_tfm.get(tfm, None) == None:
+            items_per_tfm[tfm] = {}
+            items_per_tfm[tfm]["refs"] = [ref]
+        else:
+            items_per_tfm[tfm]["refs"] = items_per_tfm[tfm]["refs"] + [ref]
         
-    _import_dll(lib_name, dlls_per_tfm, pdbs_per_tfm, imports)
+    _import_dll(name, items_per_tfm, imports)
 
     # Output import_multiframework_library rules
     for (name, tfms) in imports.items():
-        print(imports)
         import_multiframework_library(
             name = name,
             visibility = ["//visibility:public"],

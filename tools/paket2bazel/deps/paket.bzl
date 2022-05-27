@@ -42,6 +42,7 @@ import_library(
     refdll = [
     ],
     pdb = [
+        "lib/netstandard2.0/Argu.pdb",
     ],
     deps = [
         "@paket2bazel.fsharp.core//:lib",
@@ -220,7 +221,20 @@ import_library(
     name = "net6.0",
     target_framework = "net6.0",
     dll = [
+        "lib/netstandard2.1/cs/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/de/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/es/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/fr/FSharp.Core.resources.dll",
         "lib/netstandard2.1/FSharp.Core.dll",
+        "lib/netstandard2.1/it/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/ja/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/ko/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/pl/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/pt-BR/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/ru/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/tr/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/zh-Hans/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/zh-Hant/FSharp.Core.resources.dll",
     ],
     refdll = [
     ],
@@ -284,6 +298,7 @@ import_library(
     refdll = [
     ],
     pdb = [
+        "lib/netstandard2.0/FSharp.SystemTextJson.pdb",
     ],
     deps = [
         "@paket2bazel.fsharp.core//:lib",
@@ -406,6 +421,7 @@ import_library(
     refdll = [
     ],
     pdb = [
+        "lib/netstandard2.0/FSharpx.Collections.pdb",
     ],
     deps = [
         "@paket2bazel.fsharp.core//:lib",
@@ -762,6 +778,7 @@ import_library(
     refdll = [
     ],
     pdb = [
+        "lib/netstandard2.0/Microsoft.Web.XmlTransform.pdb",
     ],
     deps = [
     ],
@@ -883,6 +900,10 @@ import_library(
     refdll = [
     ],
     pdb = [
+        "lib/netstandard2.0/Mono.Cecil.Mdb.pdb",
+        "lib/netstandard2.0/Mono.Cecil.pdb",
+        "lib/netstandard2.0/Mono.Cecil.Pdb.pdb",
+        "lib/netstandard2.0/Mono.Cecil.Rocks.pdb",
     ],
     deps = [
     ],
@@ -937,6 +958,119 @@ import_library(
     name = "net6.0",
     target_framework = "net6.0",
     dll = [
+        "build/netstandard2.0/ref/Microsoft.Win32.Primitives.dll",
+        "build/netstandard2.0/ref/mscorlib.dll",
+        "build/netstandard2.0/ref/netstandard.dll",
+        "build/netstandard2.0/ref/System.AppContext.dll",
+        "build/netstandard2.0/ref/System.Collections.Concurrent.dll",
+        "build/netstandard2.0/ref/System.Collections.dll",
+        "build/netstandard2.0/ref/System.Collections.NonGeneric.dll",
+        "build/netstandard2.0/ref/System.Collections.Specialized.dll",
+        "build/netstandard2.0/ref/System.ComponentModel.Composition.dll",
+        "build/netstandard2.0/ref/System.ComponentModel.dll",
+        "build/netstandard2.0/ref/System.ComponentModel.EventBasedAsync.dll",
+        "build/netstandard2.0/ref/System.ComponentModel.Primitives.dll",
+        "build/netstandard2.0/ref/System.ComponentModel.TypeConverter.dll",
+        "build/netstandard2.0/ref/System.Console.dll",
+        "build/netstandard2.0/ref/System.Core.dll",
+        "build/netstandard2.0/ref/System.Data.Common.dll",
+        "build/netstandard2.0/ref/System.Data.dll",
+        "build/netstandard2.0/ref/System.Diagnostics.Contracts.dll",
+        "build/netstandard2.0/ref/System.Diagnostics.Debug.dll",
+        "build/netstandard2.0/ref/System.Diagnostics.FileVersionInfo.dll",
+        "build/netstandard2.0/ref/System.Diagnostics.Process.dll",
+        "build/netstandard2.0/ref/System.Diagnostics.StackTrace.dll",
+        "build/netstandard2.0/ref/System.Diagnostics.TextWriterTraceListener.dll",
+        "build/netstandard2.0/ref/System.Diagnostics.Tools.dll",
+        "build/netstandard2.0/ref/System.Diagnostics.TraceSource.dll",
+        "build/netstandard2.0/ref/System.Diagnostics.Tracing.dll",
+        "build/netstandard2.0/ref/System.dll",
+        "build/netstandard2.0/ref/System.Drawing.dll",
+        "build/netstandard2.0/ref/System.Drawing.Primitives.dll",
+        "build/netstandard2.0/ref/System.Dynamic.Runtime.dll",
+        "build/netstandard2.0/ref/System.Globalization.Calendars.dll",
+        "build/netstandard2.0/ref/System.Globalization.dll",
+        "build/netstandard2.0/ref/System.Globalization.Extensions.dll",
+        "build/netstandard2.0/ref/System.IO.Compression.dll",
+        "build/netstandard2.0/ref/System.IO.Compression.FileSystem.dll",
+        "build/netstandard2.0/ref/System.IO.Compression.ZipFile.dll",
+        "build/netstandard2.0/ref/System.IO.dll",
+        "build/netstandard2.0/ref/System.IO.FileSystem.dll",
+        "build/netstandard2.0/ref/System.IO.FileSystem.DriveInfo.dll",
+        "build/netstandard2.0/ref/System.IO.FileSystem.Primitives.dll",
+        "build/netstandard2.0/ref/System.IO.FileSystem.Watcher.dll",
+        "build/netstandard2.0/ref/System.IO.IsolatedStorage.dll",
+        "build/netstandard2.0/ref/System.IO.MemoryMappedFiles.dll",
+        "build/netstandard2.0/ref/System.IO.Pipes.dll",
+        "build/netstandard2.0/ref/System.IO.UnmanagedMemoryStream.dll",
+        "build/netstandard2.0/ref/System.Linq.dll",
+        "build/netstandard2.0/ref/System.Linq.Expressions.dll",
+        "build/netstandard2.0/ref/System.Linq.Parallel.dll",
+        "build/netstandard2.0/ref/System.Linq.Queryable.dll",
+        "build/netstandard2.0/ref/System.Net.dll",
+        "build/netstandard2.0/ref/System.Net.Http.dll",
+        "build/netstandard2.0/ref/System.Net.NameResolution.dll",
+        "build/netstandard2.0/ref/System.Net.NetworkInformation.dll",
+        "build/netstandard2.0/ref/System.Net.Ping.dll",
+        "build/netstandard2.0/ref/System.Net.Primitives.dll",
+        "build/netstandard2.0/ref/System.Net.Requests.dll",
+        "build/netstandard2.0/ref/System.Net.Security.dll",
+        "build/netstandard2.0/ref/System.Net.Sockets.dll",
+        "build/netstandard2.0/ref/System.Net.WebHeaderCollection.dll",
+        "build/netstandard2.0/ref/System.Net.WebSockets.Client.dll",
+        "build/netstandard2.0/ref/System.Net.WebSockets.dll",
+        "build/netstandard2.0/ref/System.Numerics.dll",
+        "build/netstandard2.0/ref/System.ObjectModel.dll",
+        "build/netstandard2.0/ref/System.Reflection.dll",
+        "build/netstandard2.0/ref/System.Reflection.Extensions.dll",
+        "build/netstandard2.0/ref/System.Reflection.Primitives.dll",
+        "build/netstandard2.0/ref/System.Resources.Reader.dll",
+        "build/netstandard2.0/ref/System.Resources.ResourceManager.dll",
+        "build/netstandard2.0/ref/System.Resources.Writer.dll",
+        "build/netstandard2.0/ref/System.Runtime.CompilerServices.VisualC.dll",
+        "build/netstandard2.0/ref/System.Runtime.dll",
+        "build/netstandard2.0/ref/System.Runtime.Extensions.dll",
+        "build/netstandard2.0/ref/System.Runtime.Handles.dll",
+        "build/netstandard2.0/ref/System.Runtime.InteropServices.dll",
+        "build/netstandard2.0/ref/System.Runtime.InteropServices.RuntimeInformation.dll",
+        "build/netstandard2.0/ref/System.Runtime.Numerics.dll",
+        "build/netstandard2.0/ref/System.Runtime.Serialization.dll",
+        "build/netstandard2.0/ref/System.Runtime.Serialization.Formatters.dll",
+        "build/netstandard2.0/ref/System.Runtime.Serialization.Json.dll",
+        "build/netstandard2.0/ref/System.Runtime.Serialization.Primitives.dll",
+        "build/netstandard2.0/ref/System.Runtime.Serialization.Xml.dll",
+        "build/netstandard2.0/ref/System.Security.Claims.dll",
+        "build/netstandard2.0/ref/System.Security.Cryptography.Algorithms.dll",
+        "build/netstandard2.0/ref/System.Security.Cryptography.Csp.dll",
+        "build/netstandard2.0/ref/System.Security.Cryptography.Encoding.dll",
+        "build/netstandard2.0/ref/System.Security.Cryptography.Primitives.dll",
+        "build/netstandard2.0/ref/System.Security.Cryptography.X509Certificates.dll",
+        "build/netstandard2.0/ref/System.Security.Principal.dll",
+        "build/netstandard2.0/ref/System.Security.SecureString.dll",
+        "build/netstandard2.0/ref/System.ServiceModel.Web.dll",
+        "build/netstandard2.0/ref/System.Text.Encoding.dll",
+        "build/netstandard2.0/ref/System.Text.Encoding.Extensions.dll",
+        "build/netstandard2.0/ref/System.Text.RegularExpressions.dll",
+        "build/netstandard2.0/ref/System.Threading.dll",
+        "build/netstandard2.0/ref/System.Threading.Overlapped.dll",
+        "build/netstandard2.0/ref/System.Threading.Tasks.dll",
+        "build/netstandard2.0/ref/System.Threading.Tasks.Parallel.dll",
+        "build/netstandard2.0/ref/System.Threading.Thread.dll",
+        "build/netstandard2.0/ref/System.Threading.ThreadPool.dll",
+        "build/netstandard2.0/ref/System.Threading.Timer.dll",
+        "build/netstandard2.0/ref/System.Transactions.dll",
+        "build/netstandard2.0/ref/System.ValueTuple.dll",
+        "build/netstandard2.0/ref/System.Web.dll",
+        "build/netstandard2.0/ref/System.Windows.dll",
+        "build/netstandard2.0/ref/System.Xml.dll",
+        "build/netstandard2.0/ref/System.Xml.Linq.dll",
+        "build/netstandard2.0/ref/System.Xml.ReaderWriter.dll",
+        "build/netstandard2.0/ref/System.Xml.Serialization.dll",
+        "build/netstandard2.0/ref/System.Xml.XDocument.dll",
+        "build/netstandard2.0/ref/System.Xml.XmlDocument.dll",
+        "build/netstandard2.0/ref/System.Xml.XmlSerializer.dll",
+        "build/netstandard2.0/ref/System.Xml.XPath.dll",
+        "build/netstandard2.0/ref/System.Xml.XPath.XDocument.dll",
     ],
     refdll = [
     ],
@@ -1610,7 +1744,6 @@ import_library(
     pdb = [
     ],
     deps = [
-        "@paket2bazel.nuget.packaging//:lib",
     ],
     data = select({
         ":linux-x64": [
@@ -1858,9 +1991,9 @@ import_library(
         "@paket2bazel.mono.cecil//:lib",
         "@paket2bazel.newtonsoft.json//:lib",
         "@paket2bazel.nuget.packaging//:lib",
+        "@paket2bazel.system.net.http//:lib",
         "@paket2bazel.system.net.http.winhttphandler//:lib",
         "@paket2bazel.system.security.cryptography.protecteddata//:lib",
-        "@paket2bazel.system.net.http//:lib",
     ],
     data = select({
         ":linux-x64": [
@@ -1975,6 +2108,7 @@ import_library(
     name = "net6.0",
     target_framework = "net6.0",
     dll = [
+        "lib/netstandard1.3/System.Collections.Concurrent.dll",
     ],
     refdll = [
         "ref/netstandard1.3/System.Collections.Concurrent.dll",
@@ -1986,12 +2120,12 @@ import_library(
         "@paket2bazel.system.diagnostics.debug//:lib",
         "@paket2bazel.system.diagnostics.tracing//:lib",
         "@paket2bazel.system.globalization//:lib",
+        "@paket2bazel.system.reflection//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
         "@paket2bazel.system.runtime.extensions//:lib",
         "@paket2bazel.system.threading//:lib",
         "@paket2bazel.system.threading.tasks//:lib",
-        "@paket2bazel.system.reflection//:lib",
     ],
     data = select({
         ":linux-x64": [
@@ -2110,8 +2244,8 @@ import_library(
     pdb = [
     ],
     deps = [
-        "@paket2bazel.system.security.permissions//:lib",
         "@paket2bazel.system.security.cryptography.protecteddata//:lib",
+        "@paket2bazel.system.security.permissions//:lib",
     ],
     data = select({
         ":linux-x64": [
@@ -2728,10 +2862,10 @@ import_library(
     pdb = [
     ],
     deps = [
-        "@paket2bazel.system.io.filesystem.primitives//:lib",
         "@paket2bazel.microsoft.netcore.platforms//:lib",
         "@paket2bazel.microsoft.netcore.targets//:lib",
         "@paket2bazel.system.io//:lib",
+        "@paket2bazel.system.io.filesystem.primitives//:lib",
         "@paket2bazel.system.runtime//:lib",
         "@paket2bazel.system.runtime.handles//:lib",
         "@paket2bazel.system.text.encoding//:lib",
@@ -2788,6 +2922,7 @@ import_library(
     name = "net6.0",
     target_framework = "net6.0",
     dll = [
+        "lib/netstandard1.3/System.IO.FileSystem.Primitives.dll",
     ],
     refdll = [
         "ref/netstandard1.3/System.IO.FileSystem.Primitives.dll",
@@ -2848,6 +2983,7 @@ import_library(
     name = "net6.0",
     target_framework = "net6.0",
     dll = [
+        "lib/netstandard1.6/System.Linq.dll",
     ],
     refdll = [
         "ref/netstandard1.6/System.Linq.dll",
@@ -2919,32 +3055,32 @@ import_library(
     pdb = [
     ],
     deps = [
-        "@paket2bazel.system.security.cryptography.x509certificates//:lib",
         "@paket2bazel.microsoft.netcore.platforms//:lib",
+        "@paket2bazel.runtime.native.system//:lib",
+        "@paket2bazel.runtime.native.system.net.http//:lib",
+        "@paket2bazel.runtime.native.system.security.cryptography.openssl//:lib",
         "@paket2bazel.system.collections//:lib",
         "@paket2bazel.system.diagnostics.debug//:lib",
         "@paket2bazel.system.diagnostics.diagnosticsource//:lib",
         "@paket2bazel.system.diagnostics.tracing//:lib",
         "@paket2bazel.system.globalization//:lib",
+        "@paket2bazel.system.globalization.extensions//:lib",
         "@paket2bazel.system.io//:lib",
+        "@paket2bazel.system.io.filesystem//:lib",
         "@paket2bazel.system.net.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
         "@paket2bazel.system.runtime.extensions//:lib",
+        "@paket2bazel.system.runtime.handles//:lib",
         "@paket2bazel.system.runtime.interopservices//:lib",
+        "@paket2bazel.system.security.cryptography.algorithms//:lib",
+        "@paket2bazel.system.security.cryptography.encoding//:lib",
+        "@paket2bazel.system.security.cryptography.openssl//:lib",
+        "@paket2bazel.system.security.cryptography.primitives//:lib",
+        "@paket2bazel.system.security.cryptography.x509certificates//:lib",
         "@paket2bazel.system.text.encoding//:lib",
         "@paket2bazel.system.threading//:lib",
         "@paket2bazel.system.threading.tasks//:lib",
-        "@paket2bazel.system.runtime.handles//:lib",
-        "@paket2bazel.system.security.cryptography.encoding//:lib",
-        "@paket2bazel.runtime.native.system//:lib",
-        "@paket2bazel.runtime.native.system.net.http//:lib",
-        "@paket2bazel.runtime.native.system.security.cryptography.openssl//:lib",
-        "@paket2bazel.system.globalization.extensions//:lib",
-        "@paket2bazel.system.io.filesystem//:lib",
-        "@paket2bazel.system.security.cryptography.algorithms//:lib",
-        "@paket2bazel.system.security.cryptography.openssl//:lib",
-        "@paket2bazel.system.security.cryptography.primitives//:lib",
     ],
     data = select({
         ":linux-x64": [
@@ -3618,11 +3754,11 @@ import_library(
     pdb = [
     ],
     deps = [
-        "@paket2bazel.system.runtime//:lib",
         "@paket2bazel.microsoft.netcore.platforms//:lib",
         "@paket2bazel.microsoft.netcore.targets//:lib",
         "@paket2bazel.system.reflection//:lib",
         "@paket2bazel.system.reflection.primitives//:lib",
+        "@paket2bazel.system.runtime//:lib",
         "@paket2bazel.system.runtime.handles//:lib",
     ],
     data = select({
@@ -3676,6 +3812,7 @@ import_library(
     name = "net6.0",
     target_framework = "net6.0",
     dll = [
+        "lib/netstandard1.3/System.Runtime.Numerics.dll",
     ],
     refdll = [
         "ref/netstandard1.1/System.Runtime.Numerics.dll",
@@ -3805,20 +3942,20 @@ import_library(
     pdb = [
     ],
     deps = [
-        "@paket2bazel.system.security.cryptography.primitives//:lib",
-        "@paket2bazel.system.io//:lib",
-        "@paket2bazel.system.runtime//:lib",
-        "@paket2bazel.system.security.cryptography.encoding//:lib",
         "@paket2bazel.microsoft.netcore.platforms//:lib",
-        "@paket2bazel.system.resources.resourcemanager//:lib",
-        "@paket2bazel.system.runtime.extensions//:lib",
-        "@paket2bazel.system.runtime.handles//:lib",
-        "@paket2bazel.system.runtime.interopservices//:lib",
-        "@paket2bazel.system.text.encoding//:lib",
         "@paket2bazel.runtime.native.system.security.cryptography.apple//:lib",
         "@paket2bazel.runtime.native.system.security.cryptography.openssl//:lib",
         "@paket2bazel.system.collections//:lib",
+        "@paket2bazel.system.io//:lib",
+        "@paket2bazel.system.resources.resourcemanager//:lib",
+        "@paket2bazel.system.runtime//:lib",
+        "@paket2bazel.system.runtime.extensions//:lib",
+        "@paket2bazel.system.runtime.handles//:lib",
+        "@paket2bazel.system.runtime.interopservices//:lib",
         "@paket2bazel.system.runtime.numerics//:lib",
+        "@paket2bazel.system.security.cryptography.encoding//:lib",
+        "@paket2bazel.system.security.cryptography.primitives//:lib",
+        "@paket2bazel.system.text.encoding//:lib",
     ],
     data = select({
         ":linux-x64": [
@@ -3871,6 +4008,7 @@ import_library(
     name = "net6.0",
     target_framework = "net6.0",
     dll = [
+        "lib/netcoreapp3.0/System.Security.Cryptography.Cng.dll",
     ],
     refdll = [
         "ref/netcoreapp3.0/System.Security.Cryptography.Cng.dll",
@@ -3938,8 +4076,6 @@ import_library(
     pdb = [
     ],
     deps = [
-        "@paket2bazel.system.security.cryptography.algorithms//:lib",
-        "@paket2bazel.system.security.cryptography.primitives//:lib",
         "@paket2bazel.microsoft.netcore.platforms//:lib",
         "@paket2bazel.system.io//:lib",
         "@paket2bazel.system.reflection//:lib",
@@ -3948,7 +4084,9 @@ import_library(
         "@paket2bazel.system.runtime.extensions//:lib",
         "@paket2bazel.system.runtime.handles//:lib",
         "@paket2bazel.system.runtime.interopservices//:lib",
+        "@paket2bazel.system.security.cryptography.algorithms//:lib",
         "@paket2bazel.system.security.cryptography.encoding//:lib",
+        "@paket2bazel.system.security.cryptography.primitives//:lib",
         "@paket2bazel.system.text.encoding//:lib",
         "@paket2bazel.system.threading//:lib",
     ],
@@ -4074,6 +4212,7 @@ import_library(
     name = "net6.0",
     target_framework = "net6.0",
     dll = [
+        "lib/netcoreapp3.0/System.Security.Cryptography.OpenSsl.dll",
     ],
     refdll = [
         "ref/netcoreapp3.0/System.Security.Cryptography.OpenSsl.dll",
@@ -4194,6 +4333,7 @@ import_library(
     name = "net6.0",
     target_framework = "net6.0",
     dll = [
+        "lib/netstandard1.3/System.Security.Cryptography.Primitives.dll",
     ],
     refdll = [
         "ref/netstandard1.3/System.Security.Cryptography.Primitives.dll",
@@ -4326,31 +4466,31 @@ import_library(
     pdb = [
     ],
     deps = [
-        "@paket2bazel.system.security.cryptography.algorithms//:lib",
-        "@paket2bazel.system.security.cryptography.encoding//:lib",
         "@paket2bazel.microsoft.netcore.platforms//:lib",
+        "@paket2bazel.runtime.native.system//:lib",
+        "@paket2bazel.runtime.native.system.net.http//:lib",
+        "@paket2bazel.runtime.native.system.security.cryptography.openssl//:lib",
         "@paket2bazel.system.collections//:lib",
+        "@paket2bazel.system.diagnostics.debug//:lib",
         "@paket2bazel.system.globalization//:lib",
         "@paket2bazel.system.globalization.calendars//:lib",
         "@paket2bazel.system.io//:lib",
         "@paket2bazel.system.io.filesystem//:lib",
+        "@paket2bazel.system.io.filesystem.primitives//:lib",
         "@paket2bazel.system.resources.resourcemanager//:lib",
         "@paket2bazel.system.runtime//:lib",
         "@paket2bazel.system.runtime.extensions//:lib",
         "@paket2bazel.system.runtime.handles//:lib",
         "@paket2bazel.system.runtime.interopservices//:lib",
         "@paket2bazel.system.runtime.numerics//:lib",
+        "@paket2bazel.system.security.cryptography.algorithms//:lib",
         "@paket2bazel.system.security.cryptography.cng//:lib",
+        "@paket2bazel.system.security.cryptography.csp//:lib",
+        "@paket2bazel.system.security.cryptography.encoding//:lib",
+        "@paket2bazel.system.security.cryptography.openssl//:lib",
         "@paket2bazel.system.security.cryptography.primitives//:lib",
         "@paket2bazel.system.text.encoding//:lib",
         "@paket2bazel.system.threading//:lib",
-        "@paket2bazel.runtime.native.system//:lib",
-        "@paket2bazel.runtime.native.system.net.http//:lib",
-        "@paket2bazel.runtime.native.system.security.cryptography.openssl//:lib",
-        "@paket2bazel.system.diagnostics.debug//:lib",
-        "@paket2bazel.system.io.filesystem.primitives//:lib",
-        "@paket2bazel.system.security.cryptography.csp//:lib",
-        "@paket2bazel.system.security.cryptography.openssl//:lib",
     ],
     data = select({
         ":linux-x64": [
@@ -4585,6 +4725,7 @@ import_library(
     name = "net6.0",
     target_framework = "net6.0",
     dll = [
+        "lib/netstandard1.3/System.Threading.dll",
     ],
     refdll = [
         "ref/netstandard1.3/System.Threading.dll",

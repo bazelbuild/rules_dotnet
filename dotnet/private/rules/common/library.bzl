@@ -16,7 +16,7 @@ def build_library(ctx, compile_action):
             Args:
                 ctx: Bazel build ctx.
                 tfm: Target framework string
-                stdrefs: .Net standard library references
+                sdk: .Net project SDK label
             Returns:
                 An DotnetAssemblyInfo provider
     Returns:
@@ -24,17 +24,17 @@ def build_library(ctx, compile_action):
     """
     providers = {}
 
-    stdrefs = [ctx.attr._stdrefs] if ctx.attr.include_stdrefs else []
+    sdk = ctx.attr.sdk
 
     for tfm in ctx.attr.target_frameworks:
-        providers[tfm] = compile_action(ctx, tfm, stdrefs)
+        providers[tfm] = compile_action(ctx, tfm, ctx.attr.sdk)
 
     fill_in_missing_frameworks(ctx.attr.name, providers)
 
     result = providers.values()
     result.append(DefaultInfo(
-        files = depset([result[0].out]),
-        runfiles = ctx.runfiles(files = [result[0].pdb]),
+        files = depset(result[0].out),
+        runfiles = ctx.runfiles(files = result[0].pdb),
     ))
 
     return result

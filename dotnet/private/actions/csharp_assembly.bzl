@@ -174,11 +174,11 @@ def AssemblyAction(
         )
 
     return DotnetAssemblyInfo[target_framework](
-        out = out_dll,
-        irefout = out_iref or out_ref,
-        prefout = out_ref,
+        out = [out_dll],
+        irefout = [out_iref] if out_iref else [out_ref],
+        prefout = [out_ref],
         internals_visible_to = internals_visible_to or [],
-        pdb = out_pdb,
+        pdb = [out_pdb],
         native_dlls = native_dlls,
         deps = deps,
         transitive_refs = refs,

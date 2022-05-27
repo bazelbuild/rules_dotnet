@@ -15,16 +15,16 @@ type Package =
       version: string
       buildFileOverride: string option
       sha256: string
-      dependencies: Map<FrameworkIdentifier,list<string>>
-      libs: Map<FrameworkIdentifier,list<string>>
-      refs: Map<FrameworkIdentifier,list<string>>
-      pdbs: Map<FrameworkIdentifier,list<string>>
-      runtimeFiles: Map<FrameworkIdentifier,Map<string,list<string>>> }
+      dependencies: Map<string,seq<string>>
+      libs: Map<string,seq<string>>
+      refs: Map<string,seq<string>>
+      pdbs: Map<string,seq<string>>
+      runtimeFiles: Map<string,Map<string,seq<string>>> }
 
 type Group =
     { name: string
-      packages: Package list
-      tfms: FrameworkIdentifier list }
+      packages: Package seq
+      tfms: string seq }
 
 let supportedRids = ["win-x64"; "linux-x64"; "osx-x64"; "osx-arm64"]
 

@@ -49,20 +49,20 @@ def collect_transitive_info(name, deps, tfm):
         # and the mechanics of irefout vs. prefout.
         if name not in assembly.internals_visible_to and assembly.prefout:
             # Best compile caching (prefout changes less frequently than irefout or out)
-            direct_refs.append(assembly.prefout)
+            direct_refs.extend(assembly.prefout)
         elif assembly.irefout:
             # Ok compile caching (irefout changes less frequently than out)
-            direct_refs.append(assembly.irefout)
+            direct_refs.extend(assembly.irefout)
         elif assembly.out:
             # No compile caching when the dependencies change
-            direct_refs.append(assembly.out)
+            direct_refs.extend(assembly.out)
 
         transitive_refs.append(assembly.transitive_refs)
 
         if assembly.out:
-            direct_runfiles.append(assembly.out)
+            direct_runfiles.extend(assembly.out)
         if assembly.pdb:
-            direct_runfiles.append(assembly.pdb)
+            direct_runfiles.extend(assembly.pdb)
 
         transitive_runfiles.append(assembly.transitive_runfiles)
         native_dlls.append(assembly.native_dlls)

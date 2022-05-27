@@ -8,22 +8,45 @@ open Paket2Bazel.Models
 open System.IO
 open System.Security.Cryptography
 open Paket.Requirements
+open NuGet.Packaging
+open NuGet.Frameworks
 
 
-let frameworkRestrictionsToTFMs (frameworkRestrictions: FrameworkRestrictions) : FrameworkIdentifier list =
+let getPackageFilePath (packageName: string) (packageVersion: string) =
+    Paket.NuGetCache.GetTargetUserNupkg (Domain.PackageName packageName) (Paket.SemVer.Parse packageVersion)
+
+let getPackageFolderPath (packageName: string) (packageVersion: string) =
+    Paket.NuGetCache.GetTargetUserFolder (Domain.PackageName packageName) (Paket.SemVer.Parse packageVersion)
+
+let getClosestFrameworkFiles (targetFramework: NuGetFramework) (frameworkItems: FrameworkSpecificGroup seq) =
+    let frameworkReducer = FrameworkReducer()
+
+    let nearest =
+        frameworkReducer.GetNearest(
+            targetFramework,
+            (frameworkItems
+             |> Seq.map (fun i -> i.TargetFramework))
+        )
+
+    let frameworkFileItems =
+        frameworkItems
+        |> Seq.filter (fun i -> i.TargetFramework = nearest)
+        |> Seq.collect (fun group -> group.Items)
+
+    frameworkFileItems
+
+let frameworkRestrictionsToTFMs (frameworkRestrictions: FrameworkRestrictions) : FrameworkIdentifier seq =
     match frameworkRestrictions with
     | Paket.Requirements.ExplicitRestriction restriction ->
         restriction.RepresentedFrameworks
         |> Seq.map (fun r -> r.Frameworks)
         |> Seq.concat
-        |> Seq.toList
     | Paket.Requirements.AutoDetectFramework ->
         failwith
             "Framework auto detection is not supported by paket2bazel. Please specify framework restrictions in the paket.dependencies file."
 
 let getSha256 (packageName: string) (packageVersion: string) =
-    let path =
-        Paket.NuGetCache.GetTargetUserNupkg (Domain.PackageName packageName) (Paket.SemVer.Parse packageVersion)
+    let path = getPackageFilePath packageName packageVersion
 
     use stream = File.OpenRead(path)
 
@@ -36,90 +59,86 @@ let getSha256 (packageName: string) (packageVersion: string) =
 
     result
 
-let getDependenciesPerTFM (packageName: string) (packageVersion: string) =
-    let path =
-        Paket.NuGetCache.GetTargetUserNupkg (Domain.PackageName packageName) (Paket.SemVer.Parse packageVersion)
-        |> Path.GetDirectoryName
+let getDependenciesPerTFM (tfms: NuGetFramework seq) (allDeps: string seq) (packageReader: PackageFolderReader) =
+    let frameworkReducer = FrameworkReducer()
+    let deps = packageReader.GetPackageDependencies()
 
-    let nuspec = Paket.NuGet.GetContent path
+    tfms
+    |> Seq.map (fun targetFramework ->
+        let nearest =
+            frameworkReducer.GetNearest(targetFramework, (deps |> Seq.map (fun i -> i.TargetFramework)))
 
-    // TODO: Filter out framework references
-    nuspec.Value.Spec.Dependencies.Value
-    |> List.map (fun (name, _versionRestrictions, frameworkRestrictions) ->
-        frameworkRestrictionsToTFMs frameworkRestrictions
-        |> List.map (fun identifier -> (identifier, name.Name)))
-    |> List.concat
-    |> List.groupBy (fun (frameworkIdentifier, name) -> frameworkIdentifier)
-    |> List.map (fun (frameworkIdentifier, packages) ->
-        (frameworkIdentifier, packages |> List.map (fun (_, name) -> name)))
+        let frameworkdeps =
+            deps
+
+            |> Seq.filter (fun i -> i.TargetFramework = nearest)
+            |> Seq.collect (fun group -> group.Packages)
+            // Only use deps that Paket has resolved
+            // Paket does not resolve framework built in dependencies
+            |> Seq.filter (fun i -> Seq.contains i.Id allDeps)
+            |> Seq.map (fun i -> i.Id)
+
+        (targetFramework.GetShortFolderName(), frameworkdeps))
     |> Map.ofSeq
 
-let getLibsPerTFM (tfms: FrameworkIdentifier list) (installModel: InstallModel) =
+let getLibsPerTFM (tfms: NuGetFramework seq) (packageReader: PackageFolderReader) =
     tfms
     |> Seq.map (fun tfm ->
-        let targetPlatform = TargetProfile.SinglePlatform tfm
-        (tfm,
-         installModel.GetCompileReferences targetPlatform
-         |> Seq.choose (fun library ->
-             if library.PathWithinPackage.StartsWith("lib") then
-                 (Some library.PathWithinPackage)
-             else
-                 None)
-         |> Seq.toList))
+        let items =
+            packageReader.GetItems "build"
+            |> Seq.append (packageReader.GetItems "lib")
+            |> getClosestFrameworkFiles tfm
+            |> Seq.filter (fun f -> f.EndsWith(".dll"))
+
+        (tfm.GetShortFolderName(), items))
     |> Map.ofSeq
 
-let getRefsPerTFM (tfms: FrameworkIdentifier list) (installModel: InstallModel) =
+let getRefsPerTFM (tfms: NuGetFramework seq) (packageReader: PackageFolderReader) =
     tfms
     |> Seq.map (fun tfm ->
-        let targetPlatform = TargetProfile.SinglePlatform tfm
+        let items =
+            packageReader.GetItems "ref"
+            |> getClosestFrameworkFiles tfm
+            |> Seq.filter (fun f -> f.EndsWith(".dll"))
 
-        (tfm,
-         installModel.GetCompileReferences targetPlatform
-         |> Seq.choose (fun library ->
-             if library.PathWithinPackage.StartsWith("ref") then
-                 (Some library.PathWithinPackage)
-             else
-                 None)
-         |> Seq.toList))
+        (tfm.GetShortFolderName(), items))
     |> Map.ofSeq
 
-let getPdbsPerTFM (tfms: FrameworkIdentifier list) packageName packageVersion =
-    // let content =
-    //     Paket.NuGetCache.GetTargetUserNupkg packageName packageVersion
-    //     |> Path.GetDirectoryName
-    //     |> NuGet.GetContent
-    //     |> (fun c -> c.Force())
-
-    // NuGet.tryFindFile
-    // let libFiles =
-    //     NuGet.tryFindFolder "lib" content
-    //     |> Option.defaultValue []
-
-    // tfms
-    // |> List.map (fun tfm ->
-    //     let targetPlatform = TargetProfile.SinglePlatform tfm
-    //     targetPlatform.SupportedPlatformsTransitive |> Seq.iter (fun p -> System.Console.WriteLine($"%A{p.}"))
-        
-    //     let files =
-    //         libFiles
-    //         |> List.map (fun f -> f.PathWithinPackage)
-    //         |> List.filter (fun f -> f.StartsWith($"lib/{tfm}"))
-    //     (tfm, files))
-    // |> Map.ofSeq
-    Map.empty
-
-let getRuntimeDependenciesPerTFM (tfms: FrameworkIdentifier list) (installModel: InstallModel) =
+let getPdbsPerTFM (tfms: NuGetFramework seq) (packageReader: PackageFolderReader) =
     tfms
-        |> Seq.map (fun tfm ->
-            let targetPlatform = TargetProfile.SinglePlatform tfm
+    |> Seq.map (fun tfm ->
+        let items =
+            packageReader.GetItems "lib"
+            |> getClosestFrameworkFiles tfm
+            |> Seq.filter (fun f -> f.EndsWith(".pdb"))
 
-            let byRids =
-                Models.supportedRids
-                |> List.map (fun rid -> 
-                    let libraries = installModel.GetRuntimeLibraries RuntimeGraph.Empty (Rid.Of rid) targetPlatform
-                    (rid, libraries |> Seq.map (fun library -> library.Library.PathWithinPackage) |> Seq.toList)) |> Map.ofSeq
-            (tfm, byRids))
-        |> Map.ofSeq
+        (tfm.GetShortFolderName(), items))
+    |> Map.ofSeq
+
+let getRuntimeDependenciesPerTFM (tfms: NuGetFramework seq) (packageReader: PackageFolderReader) =
+    tfms
+    |> Seq.map (fun tfm ->
+        let items =
+            packageReader.GetItems("runtimes")
+            |> Seq.collect (fun group -> group.Items)
+
+        (tfm.GetShortFolderName(), items))
+    |> Seq.map (fun (tfm, files) ->
+        (tfm,
+         Models.supportedRids
+         |> Seq.map (fun rid ->
+             (rid,
+              Seq.fold
+                  (fun (state: string seq) (current: string) ->
+                      if current.Contains(rid) then
+                          Seq.append [ current ] state
+                      else
+                          state)
+                  []
+                  files))
+         |> Map.ofSeq))
+    |> Map.ofSeq
+
 
 let getDependencies dependenciesFile (config: Config) (cache: Dictionary<string, Package>) =
     let maybeDeps = Dependencies.TryLocate(dependenciesFile)
@@ -130,8 +149,8 @@ let getDependencies dependenciesFile (config: Config) (cache: Dictionary<string,
 
         let groups =
             deps.GetInstalledPackages()
-            |> List.groupBy (fun (group, name, version) -> group)
-            |> List.map (fun (group, packages) ->
+            |> Seq.groupBy (fun (group, name, version) -> group)
+            |> Seq.map (fun (group, packages) ->
 
                 let tfms =
                     match
@@ -144,40 +163,44 @@ let getDependencies dependenciesFile (config: Config) (cache: Dictionary<string,
                         with
                     | Paket.Requirements.ExplicitRestriction restriction ->
                         restriction.RepresentedFrameworks
-                        |> Seq.map (fun r -> r.Frameworks |> Seq.map (fun f -> f))
+                        |> Seq.map (fun r ->
+                            r.Frameworks
+                            |> Seq.map (fun f -> NuGetFramework.Parse(f.ToString())))
                         |> Seq.concat
-                        |> Seq.toList
                     | Paket.Requirements.AutoDetectFramework ->
                         failwith
                             "Framework auto detection is not supported by paket2bazel. Please specify framework restrictions in the paket.dependencies file."
 
                 let packagesInGroup =
                     packages
-                    |> List.map (fun (_, name, version) ->
+                    |> Seq.map (fun (_, name, version) ->
                         let found, value = cache.TryGetValue(sprintf "%s-%s" group name)
-                        let installModel = deps.GetInstalledPackageModel((Some group), name)
-                        let sha256 = getSha256 name version
 
-                        let dependencies = getDependenciesPerTFM name version
-
-                        let overrides =
-                            config.packageOverrides
-                            |> Option.bind (fun i -> i.GetValueOrDefault(name, None))
 
                         match found with
                         | true -> value
                         | false ->
+                            let packageReader = new PackageFolderReader(getPackageFolderPath name version)
+                            let sha256 = getSha256 name version
+
                             let package =
                                 { name = name
                                   group = group
                                   sha256 = sha256
                                   version = NuGetVersion.Parse(version).ToFullString()
-                                  buildFileOverride = overrides |> Option.map (fun o -> o.buildFile)
-                                  dependencies = dependencies
-                                  libs = getLibsPerTFM tfms installModel
-                                  refs = getRefsPerTFM tfms installModel
-                                  pdbs = getPdbsPerTFM tfms (Domain.PackageName name) (Paket.SemVer.Parse version)
-                                  runtimeFiles = getRuntimeDependenciesPerTFM tfms installModel }
+                                  buildFileOverride =
+                                    config.packageOverrides
+                                    |> Option.bind (fun i -> i.GetValueOrDefault(name, None))
+                                    |> Option.map (fun o -> o.buildFile)
+                                  dependencies =
+                                    getDependenciesPerTFM
+                                        tfms
+                                        (packages |> Seq.map (fun (_, name, _) -> name))
+                                        packageReader
+                                  libs = getLibsPerTFM tfms packageReader
+                                  refs = getRefsPerTFM tfms packageReader
+                                  pdbs = getPdbsPerTFM tfms packageReader
+                                  runtimeFiles = getRuntimeDependenciesPerTFM tfms packageReader }
 
                             cache.Add((sprintf "%s-%s" group name), package)
                             |> ignore
@@ -186,7 +209,7 @@ let getDependencies dependenciesFile (config: Config) (cache: Dictionary<string,
 
                 { name = group
                   packages = packagesInGroup
-                  tfms = tfms })
+                  tfms = tfms |> Seq.map (fun f -> f.GetShortFolderName()) })
 
         groups
     | None -> failwith "Failed to locate paket.dependencies file"

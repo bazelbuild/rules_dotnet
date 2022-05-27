@@ -4,12 +4,12 @@ Rules for importing NuGet packages.
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-def _get_build_file_content(build_file, build_file_content):
+def _get_build_file_content(name, build_file, build_file_content):
     if build_file == None and build_file_content == None:
         return """
 load("@rules_dotnet//dotnet:defs.bzl", "setup_basic_nuget_package")
-setup_basic_nuget_package()
-"""
+setup_basic_nuget_package(\"{0}\")
+""".format(name)
 
     return build_file_content
 
@@ -53,7 +53,7 @@ def import_nuget_package(
     if dir != None and file != None:
         fail("Only one of dir or file may be provided.")
 
-    build_file_content = _get_build_file_content(build_file, build_file_content)
+    build_file_content = _get_build_file_content(name, build_file, build_file_content)
 
     if dir != None:
         native.new_local_repository(
@@ -78,6 +78,7 @@ def nuget_package(
         version,
         nuget_sources = None,
         sha256 = None,
+        integrity = None,
         build_file = None,
         build_file_content = None):
     """Download an external NuGet package.
@@ -92,6 +93,7 @@ def nuget_package(
       version: The version of the package in the NuGet feed.
       nuget_sources: A list of nuget package sources. Defaults to nuget.org.
       sha256: The SHA256 of the package.
+      integrity: Expected checksum in Subresource Integrity format of the package.
       build_file: The path to a BUILD file to use for the package.
       build_file_content: A string containing the contents of a BUILD file.
     """
@@ -99,13 +101,14 @@ def nuget_package(
     nuget_sources = nuget_sources or ["https://www.nuget.org/api/v2/package"]
     urls = ["{}/{}/{}".format(s, package, version) for s in nuget_sources]
 
-    build_file_content = _get_build_file_content(build_file, build_file_content)
+    build_file_content = _get_build_file_content(package, build_file, build_file_content)
 
     http_archive(
         name = name,
         urls = urls,
         type = "zip",
         sha256 = sha256,
+        integrity = integrity,
         build_file = build_file,
         build_file_content = build_file_content,
     )
