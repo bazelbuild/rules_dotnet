@@ -5,72 +5,55 @@ Rules for importing assemblies for .NET frameworks.
 load(
     "//dotnet/private:common.bzl",
     "collect_transitive_info",
-    "fill_in_missing_frameworks",
 )
 load("//dotnet/private:providers.bzl", "AnyTargetFrameworkInfo", "DotnetAssemblyInfo")
 
 def _import_library(ctx):
-    files = []
-
-    if ctx.file.dll != None:
-        files.append(ctx.file.dll)
-
-    if ctx.file.pdb != None:
-        files.append(ctx.file.pdb)
-
-    if ctx.file.refdll != None:
-        files.append(ctx.file.refdll)
-
-    files += ctx.files.native_dlls
-    files += ctx.files.data
-
-    tfm = ctx.attr.target_framework
-
-    (refs, runfiles, native_dlls) = collect_transitive_info(ctx.attr.name, ctx.attr.deps, tfm)
-
-    providers = {
-        tfm: DotnetAssemblyInfo[tfm](
-            out = ctx.file.dll,
-            prefout = ctx.file.refdll,
-            irefout = None,
-            internals_visible_to = [],
-            pdb = ctx.file.pdb,
-            native_dlls = depset(direct = ctx.files.native_dlls, transitive = [native_dlls]),
-            deps = ctx.attr.deps,
-            transitive_refs = refs,
-            transitive_runfiles = runfiles,
-            actual_tfm = tfm,
+    return DotnetAssemblyInfo(
+        name = ctx.label.name,
+        version = ctx.attr.version,
+        libs = ctx.files.libs,
+        prefs = ctx.files.refs,
+        irefs = None,
+        internals_visible_to = [],
+        deps = ctx.attr.deps,
+        # todo is this one needed?
+        transitive = depset(direct = ctx.attr.deps, transitive = [a[DotnetAssemblyInfo].transitive for a in ctx.attr.deps]),
+        transitive_prefs = depset(direct = ctx.files.refs, transitive = [a[DotnetAssemblyInfo].transitive_prefs for a in ctx.attr.deps]),
+        transitive_analyzers = depset(direct = ctx.files.analyzers, transitive = [a[DotnetAssemblyInfo].transitive_analyzers for a in ctx.attr.deps]),
+        transitive_runfiles = depset(
+            direct = ctx.files.data + ctx.files.libs,
+            transitive = [a[DotnetAssemblyInfo].transitive_runfiles for a in ctx.attr.deps]
         ),
-    }
-
-    fill_in_missing_frameworks(ctx.attr.name, providers)
-
-    return [DefaultInfo(files = depset(files))] + providers.values()
+    )
 
 import_library = rule(
     _import_library,
     doc = "Creates a target for a static C# DLL for a specific target framework",
     attrs = {
-        "target_framework": attr.string(
-            doc = "The target framework for this DLL",
-            mandatory = True,
+        # todo where is this required?
+        "version": attr.string(),
+        "libs": attr.label_list(
+            doc = "static DLLs",
+            allow_files = True, # [".dll"] currently does not work with empty file groups
+            allow_empty = True,
         ),
-        "dll": attr.label(
-            doc = "A static DLL",
-            allow_single_file = [".dll"],
+        "analyzers": attr.label_list(
+            doc = "static DLLs",
+            allow_files = True, # [".dll"] currently does not work with empty file groups
+            allow_empty = True,
         ),
-        "pdb": attr.label(
-            doc = "Debug symbols for the dll",
-            allow_single_file = [".pdb"],
+        # todo maybe add pdb's as data.
+        "refs": attr.label_list(
+            doc = "metadata-only DLLs, suitable for compiling against but not running",
+            allow_files = True, # [".dll"] currently does not work with empty file groups
+            allow_empty = True,
         ),
-        "refdll": attr.label(
-            doc = "A metadata-only DLL, suitable for compiling against but not running",
-            allow_single_file = [".dll"],
-        ),
-        "native_dlls": attr.label_list(
-            doc = "A list of native dlls, which while unreferenced, are required for running and compiling",
-            allow_files = [".dll"],
-        ),
+        # arent these just deps?
+        # "native_dlls": attr.label_list(
+        #     doc = "A list of native dlls, which while unreferenced, are required for running and compiling",
+        #     allow_files = [".dll"],
+        # ),
         "deps": attr.label_list(
             doc = "other DLLs that this DLL depends on.",
             providers = AnyTargetFrameworkInfo,
@@ -81,73 +64,4 @@ import_library = rule(
         ),
     },
     executable = False,
-)
-
-def _import_multiframework_library_impl(ctx):
-    # Oh dear. I don't know of any way to do this better. ctx.attr is a struct
-    # and it doesn't look like there's too much available to reflect on it.
-    attrs = {
-        "netstandard": ctx.attr.netstandard,
-        "netstandard1.0": ctx.attr.netstandard1_0,
-        "netstandard1.1": ctx.attr.netstandard1_1,
-        "netstandard1.2": ctx.attr.netstandard1_2,
-        "netstandard1.3": ctx.attr.netstandard1_3,
-        "netstandard1.4": ctx.attr.netstandard1_4,
-        "netstandard1.5": ctx.attr.netstandard1_5,
-        "netstandard1.6": ctx.attr.netstandard1_6,
-        "netstandard2.0": ctx.attr.netstandard2_0,
-        "netstandard2.1": ctx.attr.netstandard2_1,
-        "net11": ctx.attr.net11,
-        "net20": ctx.attr.net20,
-        "net30": ctx.attr.net30,
-        "net35": ctx.attr.net35,
-        "net40": ctx.attr.net40,
-        "net403": ctx.attr.net403,
-        "net45": ctx.attr.net45,
-        "net451": ctx.attr.net451,
-        "net452": ctx.attr.net452,
-        "net46": ctx.attr.net46,
-        "net461": ctx.attr.net461,
-        "net462": ctx.attr.net462,
-        "net47": ctx.attr.net47,
-        "net471": ctx.attr.net471,
-        "net472": ctx.attr.net472,
-        "net48": ctx.attr.net48,
-        "netcoreapp1.0": ctx.attr.netcoreapp1_0,
-        "netcoreapp1.1": ctx.attr.netcoreapp1_1,
-        "netcoreapp2.0": ctx.attr.netcoreapp2_0,
-        "netcoreapp2.1": ctx.attr.netcoreapp2_1,
-        "netcoreapp2.2": ctx.attr.netcoreapp2_2,
-        "netcoreapp3.0": ctx.attr.netcoreapp3_0,
-        "netcoreapp3.1": ctx.attr.netcoreapp3_1,
-        "net5.0": ctx.attr.net5_0,
-        "net6.0": ctx.attr.net6_0,
-    }
-
-    providers = {}
-
-    for (tfm, attr) in attrs.items():
-        if attr != None:
-            providers[tfm] = attr[DotnetAssemblyInfo[tfm]]
-
-    fill_in_missing_frameworks(ctx.attr.name, providers)
-
-    # TODO: we don't return an explicit DefaultInfo for this rule... maybe we
-    # should construct one from a specific (indicated by the user) framework?
-    return providers.values()
-
-def _generate_multiframework_attrs():
-    attrs = {}
-    for (tfm, tf_provider) in DotnetAssemblyInfo.items():
-        attrs[tfm.replace(".", "_")] = attr.label(
-            doc = "The %s version of this library" % tfm,
-            providers = [tf_provider],
-        )
-
-    return attrs
-
-import_multiframework_library = rule(
-    _import_multiframework_library_impl,
-    doc = "Aggregate import_library targets for specific target-frameworks into one target",
-    attrs = _generate_multiframework_attrs(),
 )

@@ -33,16 +33,8 @@ COMMON_ATTRS = {
         default = [],
         allow_empty = True,
     ),
-    "include_stdrefs": attr.bool(
-        doc = "Whether to reference @net//:StandardReferences (the default set of references that MSBuild adds to every project).",
-        default = True,
-    ),
     "internals_visible_to": attr.string_list(
         doc = "Other libraries that can see the assembly's internal symbols. Using this rather than the InternalsVisibleTo assembly attribute will improve build caching.",
-    ),
-    "_stdrefs": attr.label(
-        doc = "The standard set of assemblies to reference.",
-        default = "@net//:StandardReferences",
     ),
     "_windows_constraint": attr.label(default = "@platforms//os:windows"),
 }

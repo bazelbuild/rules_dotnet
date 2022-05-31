@@ -10,7 +10,6 @@ load(
 )
 load(
     "//dotnet/private:common.bzl",
-    "fill_in_missing_frameworks",
     "is_core_framework",
     "is_standard_framework",
 )
@@ -86,34 +85,34 @@ def build_binary(ctx, compile_action):
     """
     providers = {}
 
-    stdrefs = [ctx.attr._stdrefs] if ctx.attr.include_stdrefs else []
+    stdrefs = []
 
-    for tfm in ctx.attr.target_frameworks:
-        if is_standard_framework(tfm):
-            fail("It doesn't make sense to build an executable for " + tfm)
+    # todo
+    tfm = "net5.0"
 
-        runtimeconfig = None
-        depsjson = None
-        if is_core_framework(tfm):
-            runtimeconfig = write_runtimeconfig(
-                ctx.actions,
-                template = ctx.file.runtimeconfig_template,
-                name = ctx.attr.name,
-                tfm = tfm,
-                runtime_version = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].dotnetinfo.runtime_version,
-            )
-            depsjson = write_depsjson(
-                ctx.actions,
-                template = ctx.file.depsjson_template,
-                name = ctx.attr.name,
-                tfm = tfm,
-            )
+    # TODO
+    if is_standard_framework(tfm):
+        fail("It doesn't make sense to build an executable for " + tfm)
 
-        providers[tfm] = compile_action(ctx, tfm, stdrefs, runtimeconfig, depsjson)
+    runtimeconfig = None
+    depsjson = None
+    if is_core_framework(tfm):
+        runtimeconfig = write_runtimeconfig(
+            ctx.actions,
+            template = ctx.file.runtimeconfig_template,
+            name = ctx.attr.name,
+            tfm = tfm,
+            runtime_version = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].dotnetinfo.runtime_version,
+        )
+        depsjson = write_depsjson(
+            ctx.actions,
+            template = ctx.file.depsjson_template,
+            name = ctx.attr.name,
+            tfm = tfm,
+        )
 
-    fill_in_missing_frameworks(ctx.attr.name, providers)
+    result = [compile_action(ctx, tfm, stdrefs, runtimeconfig, depsjson)]
 
-    result = providers.values()
     executable = result[0].out
     pdb = result[0].pdb
     runtimeconfig = result[0].runtimeconfig

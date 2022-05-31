@@ -6,101 +6,27 @@ lookup tables for dealing with frameworks.
 See docs/MultiTargetingDesign.md for more info.
 """
 
-def _make_dotnet_provider(tfm):
-    return provider(
-        doc = "A DLL or exe, targetting %s." % tfm,
-        fields = {
-            "out": "a dll (for libraries and tests) or an exe (for binaries).",
-            "prefout": "A reference-only assembly containing only public symbols. See docs/ReferenceAssemblies.md for more info.",
-            "irefout": "A reference-only assembly containing public and internal symbols. See docs/ReferenceAssemblies.md for more info.",
-            "internals_visible_to": "A list of assemblies that can must use irefout for compilation. See docs/ReferenceAssemblies.md for more info.",
-            "pdb": "debug symbols",
-            "native_dlls": "A list of native DLLs required to build and run this assembly",
-            "deps": "the non-transitive dependencies for this assembly (used by import_multiframework_library).",
-            "transitive_refs": "A list of other assemblies to reference when referencing this assembly in a compilation.",
-            "transitive_runfiles": "Runfiles from the transitive dependencies.",
-            "actual_tfm": "The target framework of the actual dlls",
-            "runtimeconfig": "An optional runtimeconfig.json for executable assemblies",
-            "depsjson": "An optional deps.json for executable assemblies",
-        },
-    )
+load("@bazel_skylib//lib:sets.bzl", "sets")
+load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
 
-# Bazel requires that providers be "top level" objects, so this stuff is a bit
-# more boilerplate than it could otherwise be.
-DotnetAssemblyNetStandardInfo = _make_dotnet_provider("netstandard")
-DotnetAssemblyNetStandard10Info = _make_dotnet_provider("netstandard1.0")
-DotnetAssemblyNetStandard11Info = _make_dotnet_provider("netstandard1.1")
-DotnetAssemblyNetStandard12Info = _make_dotnet_provider("netstandard1.2")
-DotnetAssemblyNetStandard13Info = _make_dotnet_provider("netstandard1.3")
-DotnetAssemblyNetStandard14Info = _make_dotnet_provider("netstandard1.4")
-DotnetAssemblyNetStandard15Info = _make_dotnet_provider("netstandard1.5")
-DotnetAssemblyNetStandard16Info = _make_dotnet_provider("netstandard1.6")
-DotnetAssemblyNetStandard20Info = _make_dotnet_provider("netstandard2.0")
-DotnetAssemblyNetStandard21Info = _make_dotnet_provider("netstandard2.1")
-DotnetAssemblyNet11Info = _make_dotnet_provider("net11")
-DotnetAssemblyNet20Info = _make_dotnet_provider("net20")
-DotnetAssemblyNet30Info = _make_dotnet_provider("net30")
-DotnetAssemblyNet35Info = _make_dotnet_provider("net35")
-DotnetAssemblyNet40Info = _make_dotnet_provider("net40")
-DotnetAssemblyNet403Info = _make_dotnet_provider("net403")
-DotnetAssemblyNet45Info = _make_dotnet_provider("net45")
-DotnetAssemblyNet451Info = _make_dotnet_provider("net451")
-DotnetAssemblyNet452Info = _make_dotnet_provider("net452")
-DotnetAssemblyNet46Info = _make_dotnet_provider("net46")
-DotnetAssemblyNet461Info = _make_dotnet_provider("net461")
-DotnetAssemblyNet462Info = _make_dotnet_provider("net462")
-DotnetAssemblyNet47Info = _make_dotnet_provider("net47")
-DotnetAssemblyNet471Info = _make_dotnet_provider("net471")
-DotnetAssemblyNet472Info = _make_dotnet_provider("net472")
-DotnetAssemblyNet48Info = _make_dotnet_provider("net48")
-DotnetAssemblyNetCoreApp10Info = _make_dotnet_provider("netcoreapp1.0")
-DotnetAssemblyNetCoreApp11Info = _make_dotnet_provider("netcoreapp1.1")
-DotnetAssemblyNetCoreApp20Info = _make_dotnet_provider("netcoreapp2.0")
-DotnetAssemblyNetCoreApp21Info = _make_dotnet_provider("netcoreapp2.1")
-DotnetAssemblyNetCoreApp22Info = _make_dotnet_provider("netcoreapp2.2")
-DotnetAssemblyNetCoreApp30Info = _make_dotnet_provider("netcoreapp3.0")
-DotnetAssemblyNetCoreApp31Info = _make_dotnet_provider("netcoreapp3.1")
-DotnetAssemblyNet50Info = _make_dotnet_provider("net5.0")
-DotnetAssemblyNet60Info = _make_dotnet_provider("net6.0")
-
-# A dict from TFM to provider. The order of keys is not used.
-DotnetAssemblyInfo = {
-    "netstandard": DotnetAssemblyNetStandardInfo,
-    "netstandard1.0": DotnetAssemblyNetStandard10Info,
-    "netstandard1.1": DotnetAssemblyNetStandard11Info,
-    "netstandard1.2": DotnetAssemblyNetStandard12Info,
-    "netstandard1.3": DotnetAssemblyNetStandard13Info,
-    "netstandard1.4": DotnetAssemblyNetStandard14Info,
-    "netstandard1.5": DotnetAssemblyNetStandard15Info,
-    "netstandard1.6": DotnetAssemblyNetStandard16Info,
-    "netstandard2.0": DotnetAssemblyNetStandard20Info,
-    "netstandard2.1": DotnetAssemblyNetStandard21Info,
-    "net11": DotnetAssemblyNet11Info,
-    "net20": DotnetAssemblyNet20Info,
-    "net30": DotnetAssemblyNet30Info,
-    "net35": DotnetAssemblyNet35Info,
-    "net40": DotnetAssemblyNet40Info,
-    "net403": DotnetAssemblyNet403Info,
-    "net45": DotnetAssemblyNet45Info,
-    "net451": DotnetAssemblyNet451Info,
-    "net452": DotnetAssemblyNet452Info,
-    "net46": DotnetAssemblyNet46Info,
-    "net461": DotnetAssemblyNet461Info,
-    "net462": DotnetAssemblyNet462Info,
-    "net47": DotnetAssemblyNet47Info,
-    "net471": DotnetAssemblyNet471Info,
-    "net472": DotnetAssemblyNet472Info,
-    "net48": DotnetAssemblyNet48Info,
-    "netcoreapp1.0": DotnetAssemblyNetCoreApp10Info,
-    "netcoreapp1.1": DotnetAssemblyNetCoreApp11Info,
-    "netcoreapp2.0": DotnetAssemblyNetCoreApp20Info,
-    "netcoreapp2.1": DotnetAssemblyNetCoreApp21Info,
-    "netcoreapp2.2": DotnetAssemblyNetCoreApp22Info,
-    "netcoreapp3.0": DotnetAssemblyNetCoreApp30Info,
-    "netcoreapp3.1": DotnetAssemblyNetCoreApp31Info,
-    "net5.0": DotnetAssemblyNet50Info,
-    "net6.0": DotnetAssemblyNet60Info,
-}
+# todo rename. Maybe to DotnetLibrary like on master?
+DotnetAssemblyInfo = provider(
+    doc = "A DLL or exe.",
+    # fields = {
+    #     "out": "a dll (for libraries and tests) or an exe (for binaries).",
+    #     "prefout": "A reference-only assembly containing only public symbols. See docs/ReferenceAssemblies.md for more info.",
+    #     "irefout": "A reference-only assembly containing public and internal symbols. See docs/ReferenceAssemblies.md for more info.",
+    #     "internals_visible_to": "A list of assemblies that can must use irefout for compilation. See docs/ReferenceAssemblies.md for more info.",
+    #     "pdb": "debug symbols",
+    #     "native_dlls": "A list of native DLLs required to build and run this assembly",
+    #     "deps": "the non-transitive dependencies for this assembly (used by import_multiframework_library).",
+    #     "transitive_refs": "A list of other assemblies to reference when referencing this assembly in a compilation.",
+    #     "transitive_runfiles": "Runfiles from the transitive dependencies.",
+    #     "actual_tfm": "The target framework of the actual dlls",
+    #     "runtimeconfig": "An optional runtimeconfig.json for executable assemblies",
+    #     "depsjson": "An optional deps.json for executable assemblies",
+    # },
+)
 
 # A dict of target frameworks to the set of other framworks it can compile
 # against. This relationship is transitive. The order of this dictionary also
@@ -148,6 +74,12 @@ FRAMEWORK_COMPATIBILITY = {
     "net5.0": ["netcoreapp3.1"],
     "net6.0": ["net5.0"],
 }
+
+_net = FRAMEWORK_COMPATIBILITY.keys().index("net11")
+_cor = FRAMEWORK_COMPATIBILITY.keys().index("netcoreapp1.0")
+STD_FRAMEWORKS = FRAMEWORK_COMPATIBILITY.keys()[:_net]
+NET_FRAMEWORKS = FRAMEWORK_COMPATIBILITY.keys()[_net:_cor]
+COR_FRAMEWORKS = FRAMEWORK_COMPATIBILITY.keys()[_cor:]
 
 _subsystem_version = {
     "netstandard": None,
@@ -251,4 +183,4 @@ def GetFrameworkVersionInfo(tfm):
 
 # A convenience used in attributes that need to specify that they accept any
 # kind of C# assembly. This is an array of single-element arrays.
-AnyTargetFrameworkInfo = [[a] for a in DotnetAssemblyInfo.values()]
+AnyTargetFrameworkInfo = [DotnetAssemblyInfo]

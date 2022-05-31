@@ -173,7 +173,7 @@ def AssemblyAction(
             out_pdb = None,
         )
 
-    return DotnetAssemblyInfo[target_framework](
+    return DotnetAssemblyInfo(
         out = out_dll,
         irefout = out_iref or out_ref,
         prefout = out_ref,

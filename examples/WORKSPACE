@@ -24,26 +24,16 @@ load(
     "rules_dotnet_dependencies",
 )
 
+load("@rules_dotnet//dotnet/private:rules/nuget_repo.bzl", "nuget_repo")
+
+nuget_repo(
+    name = "nuget",
+    packages = [
+        ("Microsoft.NETCore.App.Ref", "5.0.0", "sha512-bBp1LYzTBY58dMaCABHnp44CYBcBvW7RrfSsXENaS7iRq/yx39g+jhWdgUBZcJQBoF6AZeGbHhKV+JAoT3LHDw==", ["System.Text.Encodings.Web"]),
+        ("System.Text.Encodings.Web", "5.0.1", "sha512-OIgt7MMK++wCxGYX4CFnYrF59Xj+CSdGGFLCey204hr/9nBlW1uwfkFOrPbvh/BkOHy85zyHaP+trTO4mY0thA==", []),
+    ]
+)
+
 rules_dotnet_dependencies()
 
 dotnet_register_toolchains("dotnet", "6.0.300")
-
-load("//paket/deps:paket.bzl", "paket")
-
-paket()
-
-load(
-    "@rules_dotnet//dotnet:defs.bzl",
-    "import_nuget_package",
-)
-
-import_nuget_package(
-    name = "ExamplePackageFolder",
-    dir = "import_nuget_package/ExamplePackageFolder",
-)
-
-import_nuget_package(
-    name = "ExampleNupkg",
-    file = "import_nuget_package/Example.nupkg",
-    sha256 = "a658761334ffab1773c10dc53c7aa964f61a793963bb8111d416d2e1e1e95635",
-)

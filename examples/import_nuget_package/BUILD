@@ -5,15 +5,14 @@ csharp_library(
     srcs = ["Class.cs"],
     target_frameworks = ["netcoreapp3.0"],
     deps = [
-        "@ExampleNupkg//:SomePackage",
-        "@ExamplePackageFolder//:SomePackage",
+        "@nuget//microsoft.netcore.app.ref",
+        # "@ExamplePackageFolder//:SomePackage",
     ],
 )
 
 csharp_library(
     name = "OldThing",
     srcs = ["Class.cs"],
-    include_stdrefs = False,
     target_frameworks = ["net11"],
-    deps = ["@ExamplePackageFolder//:SomePackage"],
+    deps = ["@nuget//microsoft.netcore.app.ref"],
 )
