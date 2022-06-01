@@ -9,7 +9,7 @@ load(
 load("//dotnet/private:providers.bzl", "AnyTargetFrameworkInfo", "DotnetAssemblyInfo")
 
 def _import_library(ctx):
-    (_irefs, prefs, runfiles) = collect_transitive_info(ctx.label.name, ctx.attr.deps)
+    (_irefs, prefs, analyzers, runfiles) = collect_transitive_info(ctx.label.name, ctx.attr.deps)
 
     return DotnetAssemblyInfo(
         name = ctx.label.name,
@@ -24,7 +24,7 @@ def _import_library(ctx):
         # todo is this one needed?
         # transitive = depset(direct = ctx.attr.deps, transitive = [a[DotnetAssemblyInfo].transitive for a in ctx.attr.deps]),
         transitive_prefs = prefs,
-        transitive_analyzers = depset(direct = ctx.files.analyzers, transitive = [a[DotnetAssemblyInfo].transitive_analyzers for a in ctx.attr.deps]),
+        transitive_analyzers = analyzers,
         transitive_runfiles = runfiles,
     )
 

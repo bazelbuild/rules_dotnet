@@ -33,7 +33,6 @@ def _format_define(symbol):
 def AssemblyAction(
         actions,
         additionalfiles,
-        analyzers,
         debug,
         defines,
         deps,
@@ -79,8 +78,7 @@ def AssemblyAction(
 
     assembly_name = target_name if out == "" else out
     (subsystem_version, default_lang_version) = GetFrameworkVersionInfo(target_framework)
-    (irefs, prefs, runfiles) = collect_transitive_info(target_name, deps)
-    analyzer_assemblies = [get_analyzer_dll(a) for a in analyzers]
+    (irefs, prefs, analyzers, runfiles) = collect_transitive_info(target_name, deps)
     defines = framework_preprocessor_symbols(target_framework) + defines
 
     out_dir = "bazelout/" + target_framework
@@ -95,7 +93,7 @@ def AssemblyAction(
         _compile(
             actions,
             additionalfiles,
-            analyzer_assemblies,
+            analyzers,
             debug,
             default_lang_version,
             defines,
@@ -128,7 +126,7 @@ def AssemblyAction(
         _compile(
             actions,
             additionalfiles,
-            analyzer_assemblies,
+            analyzers,
             debug,
             default_lang_version,
             defines,
@@ -151,7 +149,7 @@ def AssemblyAction(
         _compile(
             actions,
             additionalfiles,
-            analyzer_assemblies,
+            analyzers,
             debug,
             default_lang_version,
             defines,
@@ -178,6 +176,7 @@ def AssemblyAction(
         data = [out_pdb] if out_pdb else [],
         deps = deps,
         transitive_prefs = prefs,
+        transitive_analyzers = analyzers,
         transitive_runfiles = runfiles,
         actual_tfm = target_framework,
         runtimeconfig = runtimeconfig,
@@ -295,7 +294,7 @@ def _compile(
     # of 1024 bytes, so always use a param file.
     args.use_param_file("@%s", use_always = True)
 
-    direct_inputs = srcs + resources + analyzer_assemblies + additionalfiles + [toolchain.csharp_compiler]
+    direct_inputs = srcs + resources + additionalfiles + [toolchain.csharp_compiler]
     direct_inputs += [keyfile] if keyfile else []
 
     # dotnet.exe csc.dll /noconfig <other csc args>
@@ -305,7 +304,7 @@ def _compile(
         progress_message = "Compiling " + target_name + (" (internals ref-only dll)" if out_dll == None else ""),
         inputs = depset(
             direct = direct_inputs,
-            transitive = [refs],
+            transitive = [refs, analyzer_assemblies],
         ),
         outputs = outputs,
         executable = toolchain.runtime.files_to_run,

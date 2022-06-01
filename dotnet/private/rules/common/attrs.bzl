@@ -84,10 +84,6 @@ CSHARP_COMMON_ATTRS = dicts.add(
             doc = "The source files used in the compilation.",
             allow_files = [".cs"],
         ),
-        "analyzers": attr.label_list(
-            doc = "A list of analyzer references.",
-            providers = AnyTargetFrameworkInfo,
-        ),
         "additionalfiles": attr.label_list(
             doc = "Extra files to configure analyzers.",
             allow_files = True,

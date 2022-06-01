@@ -34,9 +34,12 @@ def collect_transitive_info(name, deps):
     direct_irefs = []
     direct_prefs = []
     transitive_prefs = []
-    
+
     direct_runfiles = []
     transitive_runfiles = []
+
+    direct_analyzers = []
+    transitive_analyzers = []
 
     for dep in deps:
         assembly = dep[DotnetAssemblyInfo]
@@ -51,9 +54,13 @@ def collect_transitive_info(name, deps):
         direct_runfiles.extend(assembly.data)
         transitive_runfiles.append(assembly.transitive_runfiles)
 
+        direct_analyzers.extend(assembly.analyzers)
+        transitive_analyzers.append(assembly.transitive_analyzers)
+
     return (
         depset(direct = direct_irefs, transitive = transitive_prefs),
         depset(direct = direct_prefs, transitive = transitive_prefs),
+        depset(direct = direct_analyzers, transitive = transitive_analyzers),
         depset(direct = direct_runfiles, transitive = transitive_runfiles),
     )
 

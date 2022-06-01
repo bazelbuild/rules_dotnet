@@ -79,7 +79,7 @@ def AssemblyAction(
 
     assembly_name = target_name if out == "" else out
     (subsystem_version, _default_lang_version) = GetFrameworkVersionInfo(target_framework)
-    (refs, runfiles, native_dlls) = collect_transitive_info(target_name, deps, target_framework)
+    (irefs, prefs, analyzers, runfiles) = collect_transitive_info(target_name, deps)
     defines = framework_preprocessor_symbols(target_framework) + defines
 
     out_dir = "bazelout/" + target_framework
@@ -99,8 +99,7 @@ def AssemblyAction(
             defines,
             keyfile,
             langversion,
-            native_dlls,
-            refs,
+            irefs,
             resources,
             srcs,
             subsystem_version,
@@ -132,8 +131,7 @@ def AssemblyAction(
             defines,
             keyfile,
             langversion,
-            native_dlls,
-            refs,
+            irefs,
             resources,
             srcs + [internals_visible_to_cs],
             subsystem_version,
@@ -155,7 +153,6 @@ def AssemblyAction(
         #     defines,
         #     keyfile,
         #     langversion,
-        #     native_dlls,
         #     refs,
         #     resources,
         #     srcs,
@@ -178,9 +175,8 @@ def AssemblyAction(
         prefout = None,
         internals_visible_to = internals_visible_to or [],
         pdb = out_pdb,
-        native_dlls = native_dlls,
         deps = deps,
-        transitive_prefs = refs,
+        transitive_prefs = prefs,
         transitive_runfiles = runfiles,
         actual_tfm = target_framework,
         runtimeconfig = runtimeconfig,
@@ -193,7 +189,6 @@ def _compile(
         defines,
         keyfile,
         langversion,
-        native_dlls,
         refs,
         resources,
         srcs,
@@ -293,7 +288,7 @@ def _compile(
         progress_message = "Compiling " + target_name + (" (internals ref-only dll)" if out_dll == None else ""),
         inputs = depset(
             direct = direct_inputs,
-            transitive = [refs] + [native_dlls],
+            transitive = [refs],
         ),
         outputs = outputs,
         executable = toolchain.runtime.files_to_run,
