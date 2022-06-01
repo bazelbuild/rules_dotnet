@@ -21,7 +21,7 @@ def _library_set(ctx):
         pdb = None,
         native_dlls = native_dlls,
         deps = ctx.attr.deps,
-        transitive_refs = refs,
+        transitive_prefs = refs,
         transitive_runfiles = runfiles,
         actual_tfm = tfm,
     )]

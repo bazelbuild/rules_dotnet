@@ -79,7 +79,7 @@ def AssemblyAction(
 
     assembly_name = target_name if out == "" else out
     (subsystem_version, default_lang_version) = GetFrameworkVersionInfo(target_framework)
-    (refs, runfiles, native_dlls) = collect_transitive_info(target_name, deps, target_framework)
+    (irefs, prefs, runfiles) = collect_transitive_info(target_name, deps)
     analyzer_assemblies = [get_analyzer_dll(a) for a in analyzers]
     defines = framework_preprocessor_symbols(target_framework) + defines
 
@@ -101,8 +101,7 @@ def AssemblyAction(
             defines,
             keyfile,
             langversion,
-            native_dlls,
-            refs,
+            irefs,
             resources,
             srcs,
             subsystem_version,
@@ -135,8 +134,7 @@ def AssemblyAction(
             defines,
             keyfile,
             langversion,
-            native_dlls,
-            refs,
+            irefs,
             resources,
             srcs + [internals_visible_to_cs],
             subsystem_version,
@@ -159,8 +157,7 @@ def AssemblyAction(
             defines,
             keyfile,
             langversion,
-            native_dlls,
-            refs,
+            irefs,
             resources,
             srcs,
             subsystem_version,
@@ -174,14 +171,13 @@ def AssemblyAction(
         )
 
     return DotnetAssemblyInfo(
-        out = out_dll,
-        irefout = out_iref or out_ref,
-        prefout = out_ref,
+        libs = [out_dll],
+        irefs = [out_iref or out_ref],
+        prefs = [out_ref],
         internals_visible_to = internals_visible_to or [],
-        pdb = out_pdb,
-        native_dlls = native_dlls,
+        data = [out_pdb] if out_pdb else [],
         deps = deps,
-        transitive_refs = refs,
+        transitive_prefs = prefs,
         transitive_runfiles = runfiles,
         actual_tfm = target_framework,
         runtimeconfig = runtimeconfig,
@@ -197,7 +193,6 @@ def _compile(
         defines,
         keyfile,
         langversion,
-        native_dlls,
         refs,
         resources,
         srcs,
@@ -310,7 +305,7 @@ def _compile(
         progress_message = "Compiling " + target_name + (" (internals ref-only dll)" if out_dll == None else ""),
         inputs = depset(
             direct = direct_inputs,
-            transitive = [refs] + [native_dlls],
+            transitive = [refs],
         ),
         outputs = outputs,
         executable = toolchain.runtime.files_to_run,

@@ -9,22 +9,23 @@ load(
 load("//dotnet/private:providers.bzl", "AnyTargetFrameworkInfo", "DotnetAssemblyInfo")
 
 def _import_library(ctx):
+    (_irefs, prefs, runfiles) = collect_transitive_info(ctx.label.name, ctx.attr.deps)
+
     return DotnetAssemblyInfo(
         name = ctx.label.name,
         version = ctx.attr.version,
         libs = ctx.files.libs,
-        prefs = ctx.files.refs,
-        irefs = None,
+        analyzers = ctx.files.analyzers,
+        data = ctx.files.data,
+        prefs = ctx.files.refs or ctx.files.libs,
+        irefs = ctx.files.refs or ctx.files.libs,
         internals_visible_to = [],
         deps = ctx.attr.deps,
         # todo is this one needed?
-        transitive = depset(direct = ctx.attr.deps, transitive = [a[DotnetAssemblyInfo].transitive for a in ctx.attr.deps]),
-        transitive_prefs = depset(direct = ctx.files.refs, transitive = [a[DotnetAssemblyInfo].transitive_prefs for a in ctx.attr.deps]),
+        # transitive = depset(direct = ctx.attr.deps, transitive = [a[DotnetAssemblyInfo].transitive for a in ctx.attr.deps]),
+        transitive_prefs = prefs,
         transitive_analyzers = depset(direct = ctx.files.analyzers, transitive = [a[DotnetAssemblyInfo].transitive_analyzers for a in ctx.attr.deps]),
-        transitive_runfiles = depset(
-            direct = ctx.files.data + ctx.files.libs,
-            transitive = [a[DotnetAssemblyInfo].transitive_runfiles for a in ctx.attr.deps]
-        ),
+        transitive_runfiles = runfiles,
     )
 
 import_library = rule(

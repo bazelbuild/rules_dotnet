@@ -18,18 +18,14 @@ def build_library(ctx, compile_action):
     Returns:
         A collection of the references, runfiles and native dlls.
     """
-    providers = {}
-
-    stdrefs = []
-
     # todo
     tfm = "net5.0"
 
-    result = [compile_action(ctx, tfm, stdrefs)]
+    result = [compile_action(ctx, tfm)]
 
     result.append(DefaultInfo(
-        files = depset([result[0].out]),
-        default_runfiles = ctx.runfiles(files = [result[0].pdb]),
+        files = depset(result[0].libs),
+        default_runfiles = ctx.runfiles(files = result[0].data),
     ))
 
     return result

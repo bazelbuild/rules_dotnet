@@ -180,7 +180,7 @@ def AssemblyAction(
         pdb = out_pdb,
         native_dlls = native_dlls,
         deps = deps,
-        transitive_refs = refs,
+        transitive_prefs = refs,
         transitive_runfiles = runfiles,
         actual_tfm = target_framework,
         runtimeconfig = runtimeconfig,

@@ -10,12 +10,12 @@ load(
     "is_debug",
 )
 
-def _compile_action(ctx, tfm, stdrefs):
+def _compile_action(ctx, tfm):
     return AssemblyAction(
         ctx.actions,
         debug = is_debug(ctx),
         defines = ctx.attr.defines,
-        deps = ctx.attr.deps + stdrefs,
+        deps = ctx.attr.deps,
         internals_visible_to = ctx.attr.internals_visible_to,
         keyfile = ctx.file.keyfile,
         langversion = ctx.attr.langversion,
