@@ -49,11 +49,7 @@ def _create_framework_select(name, group):
   return "".join(result)
 
 def _nuget_archive_impl(ctx):
-  nuget_sources = [
-    "https://www.nuget.org/api/v2/package/{id}/{version}", 
-    "https://pkgs.dev.azure.com/afassoftware/_packaging/focus/nuget/v3/flat2/{id}/{version}/{id}.{version}.nupkg",
-    "https://pkgs.dev.azure.com/afassoftware/_packaging/aol/nuget/v3/flat2/{id}/{version}/{id}.{version}.nupkg",
-  ]
+  nuget_sources = ["https://www.nuget.org/api/v2/package/{id}/{version}"]
   urls = [s.format(id = ctx.attr.id, version = ctx.attr.version) for s in nuget_sources]
   auth = { url: {
       "type": "basic",
