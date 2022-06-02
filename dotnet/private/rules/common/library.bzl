@@ -2,6 +2,7 @@
 Common implementation for building a .Net library
 """
 
+load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 
 def build_library(ctx, compile_action):
     """Builds a .Net library from a compilation action
@@ -18,8 +19,7 @@ def build_library(ctx, compile_action):
     Returns:
         A collection of the references, runfiles and native dlls.
     """
-    # todo
-    tfm = "net5.0"
+    tfm = ctx.attr._target_framework[BuildSettingInfo].value
 
     result = [compile_action(ctx, tfm)]
 

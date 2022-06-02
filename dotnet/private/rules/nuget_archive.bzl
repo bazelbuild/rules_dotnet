@@ -139,7 +139,10 @@ def tfm_filegroup(name, tfms):
     else:
       fail("unknown framework %s" % tfm) 
 
-  # in this case there can be a conflict between std and other packages
+  # there can be a conflict between std and (cor/net) packages where both have a
+  # candidate but none encapsulates the other. If this can be the case we
+  # bootstrap different filegroups for each framework type (cor, std, net) and
+  # determine which filegroup to hit using alias().
   if std and (net or cor):
     native.filegroup(
       name = "%s_std" % name,

@@ -14,6 +14,7 @@ load(
     "is_standard_framework",
 )
 load("@bazel_skylib//lib:paths.bzl", "paths")
+load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 
 def _create_shim_exe(ctx, dll):
     runtime = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].runtime
@@ -87,12 +88,7 @@ def build_binary(ctx, compile_action):
 
     stdrefs = []
 
-    # todo
-    tfm = "net5.0"
-
-    # TODO
-    if is_standard_framework(tfm):
-        fail("It doesn't make sense to build an executable for " + tfm)
+    tfm = ctx.attr._target_framework[BuildSettingInfo].value
 
     runtimeconfig = None
     depsjson = None

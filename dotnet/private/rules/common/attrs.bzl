@@ -2,12 +2,17 @@
 
 load("@bazel_skylib//lib:dicts.bzl", "dicts")
 load("//dotnet/private:providers.bzl", "AnyTargetFrameworkInfo")
+load("//dotnet/private:macros/register_tfms.bzl", "nuget_framework_transition")
 
 # These are attributes that are common across all the binary/library/test .Net rules
 COMMON_ATTRS = {
     "deps": attr.label_list(
         doc = "Other libraries, binaries, or imported DLLs",
         providers = AnyTargetFrameworkInfo,
+        cfg = nuget_framework_transition,
+    ),
+    "_allowlist_function_transition": attr.label(
+        default = "@bazel_tools//tools/allowlists/function_transition_allowlist"
     ),
     "keyfile": attr.label(
         doc = "The key file used to sign the assembly with a strong name.",
@@ -27,6 +32,9 @@ COMMON_ATTRS = {
         doc = "A list of target framework monikers to build" +
               "See https://docs.microsoft.com/en-us/dotnet/standard/frameworks",
         allow_empty = False,
+    ),
+    "_target_framework": attr.label(
+        default = "@rules_dotnet//dotnet:target_framework"
     ),
     "defines": attr.string_list(
         doc = "A list of preprocessor directive symbols to define.",
