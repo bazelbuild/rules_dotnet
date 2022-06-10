@@ -31,7 +31,8 @@ COMMON_ATTRS = {
     "target_frameworks": attr.string_list(
         doc = "A list of target framework monikers to build" +
               "See https://docs.microsoft.com/en-us/dotnet/standard/frameworks",
-        allow_empty = False,
+        allow_empty = True,
+        default = [],
     ),
     "_target_framework": attr.label(
         default = "@rules_dotnet//dotnet:target_framework"

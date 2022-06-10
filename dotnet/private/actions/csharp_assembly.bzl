@@ -15,21 +15,6 @@ load(
 )
 load("//dotnet/private:actions/misc.bzl", "framework_preprocessor_symbols", "write_internals_visible_to_csharp")
 
-def _format_ref_arg(assembly):
-    return "/r:" + assembly.path
-
-def _format_analyzer_arg(analyzer):
-    return "/analyzer:" + analyzer
-
-def _format_additionalfile_arg(additionalfile):
-    return "/additionalfile:" + additionalfile.path
-
-def _format_resource_arg(resource):
-    return "/resource:" + resource.path
-
-def _format_define(symbol):
-    return "/d:" + symbol
-
 def AssemblyAction(
         actions,
         additionalfiles,
@@ -170,6 +155,7 @@ def AssemblyAction(
 
     return DotnetAssemblyInfo(
         libs = [out_dll],
+        analyzers = [],
         irefs = [out_iref or out_ref],
         prefs = [out_ref],
         internals_visible_to = internals_visible_to or [],
@@ -251,20 +237,20 @@ def _compile(
         outputs = [out_ref]
 
     # assembly references
-    args.add_all(refs, map_each = _format_ref_arg)
+    args.add_all(refs, format_each = "/r:%s")
 
     # analyzers
-    args.add_all(analyzer_assemblies, map_each = _format_analyzer_arg)
-    args.add_all(additionalfiles, map_each = _format_additionalfile_arg)
+    args.add_all(analyzer_assemblies, format_each = "/analyzer:%s")
+    args.add_all(additionalfiles, format_each = "/additionalfile:%s")
 
     # .cs files
-    args.add_all([cs for cs in srcs])
+    args.add_all(srcs)
 
     # resources
-    args.add_all(resources, map_each = _format_resource_arg)
+    args.add_all(resources, format_each = "/resource:%s")
 
     # defines
-    args.add_all(defines, map_each = _format_define)
+    args.add_all(defines, format_each = "/d:%s")
 
     # keyfile
     if keyfile != None:

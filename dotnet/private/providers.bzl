@@ -157,24 +157,6 @@ _default_lang_version_csharp = {
     "net6.0": "10.0",
 }
 
-def GetDotnetAssemblyInfoFromLabel(label):
-    """Create a *.deps.json file.
-
-    This file is necessary when running a .NET Core binary.
-
-    Args:
-      label: The label from which the DotnetAssemblyInfo provider should be extracted from
-    Returns:
-        The DotnetAssemblyInfo provider for the target framework of the label
-    """
-    for info in reversed(DotnetAssemblyInfo.values()):
-        provider = label[info]
-        if provider:
-            return provider
-        else:
-            continue
-    fail("No DotnetAassemlyInfo provider found in label {}".format(label))
-
 def GetFrameworkVersionInfo(tfm):
     return (
         _subsystem_version[tfm],

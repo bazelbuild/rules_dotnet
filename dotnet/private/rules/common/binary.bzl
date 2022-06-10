@@ -2,7 +2,7 @@
 Base rule for building .Net binaries
 """
 
-load("//dotnet/private:providers.bzl", "GetDotnetAssemblyInfoFromLabel")
+load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo")
 load(
     "//dotnet/private:actions/misc.bzl",
     "write_depsjson",
@@ -64,7 +64,7 @@ def _create_launcher(ctx, runfiles, executable):
 
 def _symlink_manifest_loader(ctx, executable):
     loader = ctx.actions.declare_file("ManifestLoader.dll", sibling = executable)
-    ctx.actions.symlink(output = loader, target_file = GetDotnetAssemblyInfoFromLabel(ctx.attr._manifest_loader).out)
+    ctx.actions.symlink(output = loader, target_file = ctx.attr._manifest_loader[DotnetAssemblyInfo].libs[0])
     return loader
 
 def build_binary(ctx, compile_action):
@@ -109,8 +109,8 @@ def build_binary(ctx, compile_action):
 
     result = [compile_action(ctx, tfm, stdrefs, runtimeconfig, depsjson)]
 
-    executable = result[0].out
-    pdb = result[0].pdb
+    executable = result[0].libs[0]
+    pdb = result[0].data[0]
     runtimeconfig = result[0].runtimeconfig
     depsjson = result[0].depsjson
 
@@ -124,7 +124,7 @@ def build_binary(ctx, compile_action):
     manifest_loader = _symlink_manifest_loader(ctx, executable)
     direct_runfiles.append(manifest_loader)
 
-    files = [executable, result[0].prefout, pdb]
+    files = [executable, result[0].prefs[0], pdb]
     if ctx.attr.use_apphost_shim:
         executable = _create_shim_exe(ctx, executable)
         direct_runfiles.append(executable)
