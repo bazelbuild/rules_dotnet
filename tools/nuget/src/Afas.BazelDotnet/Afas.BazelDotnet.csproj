@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <Authors>AFAS Software B.V.</Authors>
+    <Company>AFAS Software B.V.</Company>
+    <Product>Profit Focus</Product>
+    <RootNamespace>Afas</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.5.0" />
+    <PackageReference Include="Microsoft.NET.HostModel" Version="3.1.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Afas.BazelDotnet.Nuget\Afas.BazelDotnet.Nuget.csproj" />
+    <ProjectReference Include="..\Afas.BazelDotnet.Project\Afas.BazelDotnet.Project.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="assets/bazel_dotnet.BUILD" Link="BUILD" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="assets/bazel_dotnet.WORKSPACE" Link="WORKSPACE" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

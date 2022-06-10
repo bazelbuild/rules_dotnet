@@ -1,0 +1,14 @@
+.vs/
+.vscode/
+.idea/
+bin/
+obj/
+**/Properties/launchSettings.json
+
+/bazel-out
+/bazel-bin
+/bazel-bazel-dotnet
+/bazel-testlogs
+
+tools
+publish
