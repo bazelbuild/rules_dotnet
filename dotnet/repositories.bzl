@@ -4,10 +4,10 @@ Rules to load all the .NET SDK & framework dependencies of rules_dotnet.
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
-load("//dotnet/private:macros/nuget.bzl", "nuget_package")
 load("//dotnet/private:toolchains_repo.bzl", "PLATFORMS", "toolchains_repo")
-load("//dotnet/private:versions.bzl", "TOOL_VERSIONS", "DEFAULT_PROJECT_SDK_SHA256")
+load("//dotnet/private:versions.bzl", "TOOL_VERSIONS")
 load("//tools/paket2bazel/deps:paket.bzl", "paket")
+load("//dotnet/private:rules/nuget_repo.bzl", "nuget_repo")
 
 # WARNING: any changes in this function may be BREAKING CHANGES for users
 # because we'll fetch a dependency which may be different from one that
@@ -28,29 +28,15 @@ def rules_dotnet_dependencies():
         sha256 = "f7be3474d42aae265405a592bb7da8e171919d74c16f082a5457840f06054728",
     )
 
-    # NUnit
-    # TODO: Create testing toolchain for NUnit
-    nuget_package(
-        name = "NUnitLite",
-        package = "NUnitLite",
-        version = "3.12.0",
-        sha256 = "0b05b83f05b4eee07152e88b7b60b093fa408bfea56489a977ae655b640992f2",
-    )
-
-    # TODO: Create testing toolchain for NUnit
-    nuget_package(
-        name = "NUnit",
-        package = "NUnit",
-        version = "3.12.0",
-        sha256 = "62b67516a08951a20b12b02e5d20b5045edbb687c3aabe9170286ec5bb9000a1",
-    )
-
-    # Required for building the Apphost shimming program
-    nuget_package(
-        name = "Microsoft.NET.HostModel",
-        package = "Microsoft.NET.HostModel",
-        version = "3.1.6",
-        sha256 = "a142f0a518e5a0dfa3f5e00dc131f386dc9de9a6f817a5984ac2f251c0e895c3",
+    nuget_repo(
+        name = "rules_dotnet_deps",
+        packages = [
+            ("Microsoft.NETCore.App.Ref", "6.0.5", "sha512-quj/gyLoZLypJO7PwsZ8ib6ZSgFv1C9s5SJgwzl/gztynTJ/3oO/stA2gNMf0C33vTJ0J3SSF/kRPQ/ifY5xZg==", [], {}),
+            ("Microsoft.NET.HostModel", "3.1.6", "sha512-hzPXcTF6xmZZMmtumMgI7wcsWvU/S4oszoBWVZuASIVRDkjKJJ+QVesvhdjH2+JaqjxCHwQ2TagOtR7yGgT2Hg==", [], {}),
+            # TODO: Create a toolchain for NUnit
+            ("NUnit", "3.12.0", "sha512-HAhwFxr+Z+PJf8hXzc747NecvsDwEZ+3X8SA5+GIRM43GAy1Ap+TQPMHsWCnisfes5vPZ1/a2md/91u+shoTsQ==", [], {}),
+            ("NUnitLite", "3.12.0", "sha512-M9VVS4x3KURXFS4HTl2b7uJOX7vOi2wzpHACmNX6ANlBmb0/hIehJLciiVvddD3ubIIL81EF4Qk54kpsUOtVFQ==", [], {}),
+        ],
     )
 
     # paket2bazel dependencies
@@ -192,16 +178,6 @@ def dotnet_register_toolchains(name, dotnet_version, **kwargs):
             **kwargs
         )
         native.register_toolchains("@%s_toolchains//:%s_toolchain" % (name, platform))
-
-    # Default project SDK
-    runtime_version = TOOL_VERSIONS[dotnet_version]["runtimeVersion"]
-    default_project_sdk_sha256 = DEFAULT_PROJECT_SDK_SHA256[runtime_version]
-    nuget_package(
-        name = "rules_dotnet_default_project_sdk",
-        package = "Microsoft.NETCore.App.Ref",
-        version = runtime_version,
-        sha256 = default_project_sdk_sha256,
-    )
 
     toolchains_repo(
         name = name + "_toolchains",

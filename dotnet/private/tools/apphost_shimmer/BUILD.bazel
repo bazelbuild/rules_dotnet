@@ -11,5 +11,8 @@ csharp_binary_without_shim(
     ],
     target_frameworks = ["net6.0"],
     visibility = ["//visibility:public"],
-    deps = ["@Microsoft.NET.HostModel//:Microsoft.NET.HostModel"],
+    deps = [
+        "@rules_dotnet_deps//microsoft.net.hostmodel",
+        "@rules_dotnet_deps//microsoft.netcore.app.ref",
+    ],
 )

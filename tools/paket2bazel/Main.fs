@@ -5,7 +5,6 @@ open Argu
 open System
 open System.Collections.Generic
 open System.IO
-open Paket2Bazel.Paket
 open Paket2Bazel.Gen
 open Paket2Bazel.Models
 open System.Text.Json
@@ -53,10 +52,6 @@ let main argv =
 
     let dependenciesFile =
         Path.GetFullPath(results.GetResult Dependencies_File)
-
-    let paketDir = Path.GetDirectoryName(dependenciesFile)
-
-    let lockFile = paketDir + "/paket.lock"
 
     let outputFolder = results.GetResult Output_Folder
 

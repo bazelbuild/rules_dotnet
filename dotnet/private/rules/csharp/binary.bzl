@@ -2,7 +2,7 @@
 Rules for compiling C# binaries.
 """
 
-load("//dotnet/private:providers.bzl", "AnyTargetFrameworkInfo")
+load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo")
 load("//dotnet/private:actions/csharp_assembly.bzl", "AssemblyAction")
 load(
     "//dotnet/private:common.bzl",
@@ -12,15 +12,13 @@ load("//dotnet/private:rules/common/binary.bzl", "build_binary")
 load("//dotnet/private:rules/common/attrs.bzl", "CSHARP_BINARY_COMMON_ATTRS")
 load("@bazel_skylib//lib:dicts.bzl", "dicts")
 
-def _compile_action(ctx, tfm, project_sdk, runtimeconfig, depsjson):
+def _compile_action(ctx, tfm, runtimeconfig, depsjson):
     return AssemblyAction(
         ctx.actions,
         additionalfiles = ctx.files.additionalfiles,
-        analyzers = ctx.attr.analyzers,
         debug = is_debug(ctx),
         defines = ctx.attr.defines,
         deps = ctx.attr.deps,
-        project_sdk = project_sdk,
         internals_visible_to = ctx.attr.internals_visible_to,
         keyfile = ctx.file.keyfile,
         langversion = ctx.attr.langversion,
@@ -46,7 +44,7 @@ csharp_binary = rule(
         {
             "_apphost_shimmer": attr.label(
                 default = "@rules_dotnet//dotnet/private/tools/apphost_shimmer:apphost_shimmer",
-                providers = AnyTargetFrameworkInfo,
+                providers = [DotnetAssemblyInfo],
                 executable = True,
                 cfg = "exec",
             ),

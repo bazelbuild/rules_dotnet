@@ -1,11 +1,8 @@
+load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
+
 """
 Common implementation for building a .Net library
 """
-
-load(
-    "//dotnet/private:common.bzl",
-    "fill_in_missing_frameworks",
-)
 
 def build_library(ctx, compile_action):
     """Builds a .Net library from a compilation action
@@ -16,25 +13,18 @@ def build_library(ctx, compile_action):
             Args:
                 ctx: Bazel build ctx.
                 tfm: Target framework string
-                sdk: .Net project SDK label
             Returns:
                 An DotnetAssemblyInfo provider
     Returns:
         A collection of the references, runfiles and native dlls.
     """
-    providers = {}
+    tfm = ctx.attr._target_framework[BuildSettingInfo].value
 
-    sdk = ctx.attr.sdk
+    result = [compile_action(ctx, tfm)]
 
-    for tfm in ctx.attr.target_frameworks:
-        providers[tfm] = compile_action(ctx, tfm, ctx.attr.sdk)
-
-    fill_in_missing_frameworks(ctx.attr.name, providers)
-
-    result = providers.values()
     result.append(DefaultInfo(
-        files = depset(result[0].out),
-        runfiles = ctx.runfiles(files = result[0].pdb),
+        files = depset(result[0].libs),
+        default_runfiles = ctx.runfiles(files = result[0].data),
     ))
 
     return result

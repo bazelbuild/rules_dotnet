@@ -1,3 +1,8 @@
+load(
+    "//dotnet/private:macros/register_tfms.bzl",
+    "register_tfms",
+)
+
 exports_files(
     [
         "defs.bzl",
@@ -10,3 +15,5 @@ toolchain_type(
     name = "toolchain_type",
     visibility = ["//visibility:public"],
 )
+
+register_tfms()

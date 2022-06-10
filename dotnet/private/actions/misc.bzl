@@ -132,6 +132,7 @@ def framework_preprocessor_symbols(tfm):
     Returns:
         A list of preprocessor symbols.
     """
+    # TODO: All built in preprocessor directives: https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/preprocessor-directives
 
     specific = tfm.upper().replace(".", "_")
 

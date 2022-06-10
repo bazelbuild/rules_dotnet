@@ -24,7 +24,6 @@ stardoc(
     symbol_names = [
         "csharp_binary",
         "csharp_library",
-        "library_set",
         "csharp_nunit_test",
         "dotnet_register_toolchains",
         "dotnet_repositories",

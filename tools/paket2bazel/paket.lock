@@ -29,6 +29,7 @@ NUGET
       System.Reflection.Emit.Lightweight (>= 4.7)
     Microsoft.Bcl.AsyncInterfaces (6.0)
     Microsoft.CSharp (4.7)
+    Microsoft.NETCore.App.Ref (6.0.5)
     Microsoft.NETCore.Platforms (6.0.3)
     Microsoft.NETCore.Targets (5.0)
     Microsoft.Web.Xdt (3.1)

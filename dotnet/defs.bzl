@@ -24,10 +24,6 @@ load(
     _fsharp_library = "fsharp_library",
 )
 load(
-    "//dotnet/private:rules/library_set.bzl",
-    _library_set = "library_set",
-)
-load(
     "//dotnet/private:rules/csharp/nunit_test.bzl",
     _csharp_nunit_test = "csharp_nunit_test",
 )
@@ -46,16 +42,14 @@ load(
 load(
     "//dotnet/private:rules/imports.bzl",
     _import_library = "import_library",
-    _import_multiframework_library = "import_multiframework_library",
 )
 load(
-    "//dotnet/private:macros/nuget.bzl",
-    _import_nuget_package = "import_nuget_package",
-    _nuget_package = "nuget_package",
+    "@rules_dotnet//dotnet/private:rules/nuget_archive.bzl",
+    _nuget_archive = "nuget_archive",
 )
 load(
-    "//dotnet/private:macros/setup_basic_nuget_package.bzl",
-    _setup_basic_nuget_package = "setup_basic_nuget_package",
+    "@rules_dotnet//dotnet/private:rules/nuget_repo.bzl",
+    _nuget_repo = "nuget_repo",
 )
 
 dotnet_wrapper = _dotnet_wrapper
@@ -67,9 +61,6 @@ fsharp_binary = _fsharp_binary
 fsharp_library = _fsharp_library
 fsharp_test = _fsharp_test
 fsharp_nunit_test = _fsharp_nunit_test
-library_set = _library_set
-import_multiframework_library = _import_multiframework_library
 import_library = _import_library
-import_nuget_package = _import_nuget_package
-nuget_package = _nuget_package
-setup_basic_nuget_package = _setup_basic_nuget_package
+nuget_repo = _nuget_repo
+nuget_archive = _nuget_archive
