@@ -55,6 +55,119 @@ def _sanitize_path(file_path):
 
   return file_path
 
+def _process_lib_file(groups, file):
+  if not file.endswith(".dll"):
+    return
+
+  i = file.find("/")
+  tfm_start = i + 1
+  tfm_end = file.find("/", i + 1)
+  tfm = file[tfm_start:tfm_end]
+
+  if tfm not in FRAMEWORK_COMPATIBILITY:
+      return
+  
+  if file.find("/", tfm_end + 1) != -1:
+      return
+
+  if not groups.get("lib"):
+      groups["lib"] = {}
+
+  group = groups["lib"]
+
+  if not group.get(tfm):
+      group[tfm] = []
+
+  group[tfm].append(file)
+
+  return
+
+def _process_ref_file(groups, file):
+  if not file.endswith(".dll"):
+    return
+
+  i = file.find("/")
+  tfm_start = i + 1
+  tfm_end = file.find("/", i + 1)
+  tfm = file[tfm_start:tfm_end]
+
+  if tfm not in FRAMEWORK_COMPATIBILITY:
+      return
+  
+  if file.find("/", tfm_end + 1) != -1:
+      return
+
+  if not groups.get("ref"):
+      groups["ref"] = {}
+
+  group = groups["ref"]
+
+  if not group.get(tfm):
+      group[tfm] = []
+
+  group[tfm].append(file)
+
+  return
+
+def _process_analyzer_file(groups, file):
+  if (not file.endswith(".dll")) or file.endswith("resources.dll"):
+    return
+
+  group = groups["analyzers"]
+  group["dotnet"].append(file)
+
+  return
+
+def _process_content_file(groups, file):
+  group = groups["contentFiles"]
+  group["any"].append(file)
+
+  return
+
+def _process_typeprovider_file(groups, file):
+  # See https://github.com/fsharp/fslang-design/blob/main/tooling/FST-1003-loading-type-provider-design-time-components.md
+
+  if not file.endswith(".dll"):
+    return
+
+  parts = file.split("/")
+
+  if len(parts) < 3:
+    return
+
+  tfm = parts[2]
+
+  if tfm not in FRAMEWORK_COMPATIBILITY:
+      return
+  
+  if not groups.get("lib"):
+      groups["lib"] = {}
+
+  group = groups["lib"]
+
+  if not group.get(tfm):
+      group[tfm] = []
+
+  group[tfm].append(file)
+
+  return
+
+def _process_key_and_file(groups, key, file):
+  # todo runtime specific
+  # todo resource dlls
+  if key == "lib":
+    _process_lib_file(groups, file)
+  elif key == "ref":
+    _process_ref_file(groups, file)
+  elif key == "analyzers":
+    _process_analyzer_file(groups, file)
+  elif key == "contentFiles":
+    _process_content_file(groups, file)
+  elif key == "typeproviders":
+    _process_typeprovider_file(groups, file)
+
+  return
+
 def _nuget_archive_impl(ctx):
   nuget_sources = ["https://www.nuget.org/api/v2/package/{id}/{version}"]
   urls = [s.format(id = ctx.attr.id, version = ctx.attr.version) for s in nuget_sources]
@@ -82,29 +195,12 @@ def _nuget_archive_impl(ctx):
     i = file.find("/")
     key = file[:i]
 
-    if not (key == "contentFiles" or file.endswith(".dll") or file.endswith("_._")):
+    if file.endswith("_._"):
       continue
 
-    if not groups.get(key):
-      groups[key] = {}
-    group = groups[key]
 
-    tfm_start = i + 1
-    tfm_end = file.find("/", i + 1)
-    tfm = file[tfm_start:tfm_end]
-
-    if tfm not in FRAMEWORK_COMPATIBILITY and tfm not in groups[key]:
-      continue
-
-    # todo runtime specific
-    # todo resource dlls
-    if key not in ["analyzers", "contentFiles"] and file.find("/", tfm_end + 1) != -1:
-      continue
-
-    if not group.get(tfm):
-      group[tfm] = []
-    group[tfm].append(file)
-
+    _process_key_and_file(groups, key, file)
+    
   # in some runtime specific edge cases there exist certain tfm refs but the libs are not shipped
   if groups.get("ref") and groups.get("lib"):
     libs = groups.get("lib")
