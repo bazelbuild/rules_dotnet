@@ -138,6 +138,7 @@ def AssemblyAction(
         data = [out_pdb] if out_pdb else [],
         deps = deps,
         transitive_prefs = prefs,
+        transitive_analyzers = analyzers,
         transitive_runfiles = runfiles,
         actual_tfm = target_framework,
         runtimeconfig = runtimeconfig,
