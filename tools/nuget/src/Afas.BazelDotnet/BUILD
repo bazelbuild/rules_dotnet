@@ -5,8 +5,8 @@ csharp_binary(
   srcs = glob(["**/*.cs"], exclude = ["**/obj/**", "**/bin/**"]),
   deps = [
     #Adding built-in .Net libs
-    "@nuget//microsoft.netcore.app.ref",
-    "@nuget//mcmaster.extensions.commandlineutils",
+    "@rules_dotnet_deps//microsoft.netcore.app.ref",
+    "@rules_dotnet_deps//mcmaster.extensions.commandlineutils",
     "@rules_dotnet//tools/nuget/src/Afas.BazelDotnet.Nuget",
     "@rules_dotnet//tools/nuget/src/Afas.BazelDotnet.Project"
   ],

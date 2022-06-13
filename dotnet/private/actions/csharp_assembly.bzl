@@ -158,6 +158,7 @@ def AssemblyAction(
 
     return DotnetAssemblyInfo(
         libs = [out_dll],
+        analyzers = [],
         irefs = [out_iref] if out_iref else [out_ref],
         prefs = [out_ref],
         internals_visible_to = internals_visible_to or [],
@@ -169,6 +170,7 @@ def AssemblyAction(
         actual_tfm = target_framework,
         runtimeconfig = runtimeconfig,
         depsjson = depsjson,
+        targeting_pack_overrides = {},
     )
 
 def _compile(

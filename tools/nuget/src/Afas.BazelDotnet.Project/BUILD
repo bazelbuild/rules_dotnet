@@ -5,7 +5,7 @@ csharp_library(
   srcs = glob(["**/*.cs"], exclude = ["**/obj/**", "**/bin/**"]),
   deps = [
     #Adding built-in .Net libs
-    "@nuget//microsoft.netcore.app.ref",
+    "@rules_dotnet_deps//microsoft.netcore.app.ref",
   ],
   visibility = ["//visibility:public"]
 )
