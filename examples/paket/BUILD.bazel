@@ -9,9 +9,10 @@ fsharp_binary(
     tags = ["requires-network"],
     target_frameworks = ["net6.0"],
     deps = [
-        "@main.argu//:lib",
-        "@main.fsharp.core//:lib",
-        "@main.fsharp.data//:lib",
+        "@paket.main//argu",
+        "@paket.main//fsharp.core",
+        "@paket.main//fsharp.data",
+        "@paket.main//microsoft.netcore.app.ref",
     ],
 )
 
@@ -25,8 +26,10 @@ fsharp_binary(
     tags = ["requires-network"],
     target_frameworks = ["net6.0"],
     deps = [
-        "@othergroup.argu//:lib",
-        "@othergroup.fsharp.core//:lib",
-        "@othergroup.fsharp.data//:lib",
+        "@paket.othergroup//argu",
+        "@paket.othergroup//fsharp.core",
+        "@paket.othergroup//fsharp.data",
+        "@paket.othergroup//microsoft.netcore.app.ref",
+
     ],
 )

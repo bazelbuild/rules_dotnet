@@ -10,7 +10,10 @@ csharp_binary(
     name = "hello",
     srcs = ["hello.cs"],
     target_frameworks = ["net6.0"],
-    deps = [":lib"],
+    deps = [
+        ":lib",
+        "@example_deps//microsoft.netcore.app.ref",
+    ],
 )
 
 # bazel test //examples:lib_test
@@ -21,7 +24,10 @@ csharp_nunit_test(
     name = "lib_test",
     srcs = ["libtest.cs"],
     target_frameworks = ["net6.0"],
-    deps = [":lib"],
+    deps = [
+        ":lib",
+        "@example_deps//microsoft.netcore.app.ref",
+    ],
 )
 
 csharp_library(
@@ -29,4 +35,5 @@ csharp_library(
     srcs = ["lib.cs"],
     internals_visible_to = ["lib_test"],
     target_frameworks = ["net6.0"],
+    deps = ["@example_deps//microsoft.netcore.app.ref"],
 )

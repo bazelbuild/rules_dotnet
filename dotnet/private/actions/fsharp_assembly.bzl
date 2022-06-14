@@ -132,8 +132,8 @@ def AssemblyAction(
     return DotnetAssemblyInfo(
         libs = [out_dll],
         analyzers = [],
-        irefs = [],
-        prefs = [],
+        irefs = [out_dll],
+        prefs = [out_dll],
         internals_visible_to = internals_visible_to or [],
         data = [out_pdb] if out_pdb else [],
         deps = deps,
@@ -174,7 +174,7 @@ def _compile(
     args.add("/deterministic+")
     args.add("/nowin32manifest")
     args.add("/nocopyfsharpcore")
-    # args.add("/simpleresolution")
+    args.add("/simpleresolution")
     args.add(_format_targetprofile(target_framework))
     args.add("/nologo")
 

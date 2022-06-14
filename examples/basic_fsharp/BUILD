@@ -11,7 +11,8 @@ fsharp_binary(
     target_frameworks = ["net6.0"],
     deps = [
         ":lib",
-        "@FSharp.Core//:FSharp.Core",
+        "@example_deps//fsharp.core",
+        "@example_deps//microsoft.netcore.app.ref",
     ],
 )
 
@@ -21,7 +22,8 @@ fsharp_nunit_test(
     target_frameworks = ["net6.0"],
     deps = [
         ":lib",
-        "@FSharp.Core//:FSharp.Core",
+        "@example_deps//fsharp.core",
+        "@example_deps//microsoft.netcore.app.ref",
     ],
 )
 
@@ -30,5 +32,8 @@ fsharp_library(
     srcs = ["lib.fs"],
     internals_visible_to = ["lib_test"],
     target_frameworks = ["net6.0"],
-    deps = ["@FSharp.Core//:FSharp.Core"],
+    deps = [
+        "@example_deps//fsharp.core",
+        "@example_deps//microsoft.netcore.app.ref",
+    ],
 )
