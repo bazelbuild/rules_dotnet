@@ -17,8 +17,8 @@ def _import_library(ctx):
         libs = ctx.files.libs,
         analyzers = ctx.files.analyzers,
         data = ctx.files.data,
-        prefs = ctx.files.refs or ctx.files.libs,
-        irefs = ctx.files.refs or ctx.files.libs,
+        prefs = ctx.files.refs,
+        irefs = ctx.files.refs,
         internals_visible_to = [],
         deps = ctx.attr.deps,
         # todo is this one needed?
@@ -37,23 +37,23 @@ import_library = rule(
             doc = "The version of the library"
         ),
         "libs": attr.label_list(
-            doc = "static DLLs",
+            doc = "Static runtime DLLs",
             allow_files = True, # [".dll"] currently does not work with empty file groups
             allow_empty = True,
         ),
         "analyzers": attr.label_list(
-            doc = "static DLLs",
+            doc = "Static analyzer DLLs",
             allow_files = True, # [".dll"] currently does not work with empty file groups
             allow_empty = True,
         ),
         # todo maybe add pdb's as data.
         "refs": attr.label_list(
-            doc = "metadata-only DLLs, suitable for compiling against but not running",
+            doc = "Compile time DLLs",
             allow_files = True, # [".dll"] currently does not work with empty file groups
             allow_empty = True,
         ),
         "deps": attr.label_list(
-            doc = "other DLLs that this DLL depends on.",
+            doc = "Other DLLs that this DLL depends on.",
             providers = [DotnetAssemblyInfo],
         ),
         "data": attr.label_list(

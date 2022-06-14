@@ -81,7 +81,7 @@ def _process_lib_file(groups, file):
   if file.endswith("_._"):
       return
 
-  if not file.endswith(".dll"):
+  if not file.endswith(".dll") or file.endswith(".resources.dll"):
     return
 
   group[tfm].append(file)
@@ -114,7 +114,7 @@ def _process_ref_file(groups, file):
   if file.endswith("_._"):
       return
 
-  if not file.endswith(".dll"):
+  if not file.endswith(".dll") or file.endswith(".resources.dll"):
     return
 
   group[tfm].append(file)
@@ -202,10 +202,6 @@ def _nuget_archive_impl(ctx):
     }
   }
 
-  # Dlls that are only required at runtime but are not bound
-  # to e.g. a specific OS/architecture.
-  runtime_agnostic_data = []
-
   for file in files:
     file = _sanitize_path(file)
     i = file.find("/")
@@ -213,17 +209,6 @@ def _nuget_archive_impl(ctx):
 
     _process_key_and_file(groups, key, file)
 
-  # If there exists a _._ file in `ref` folder for the same TFM
-  # then this file should not be referenced by the compiler but is only
-  # required at runtime so we move it from the libs to the data attribute
-  if groups.get("ref") and groups.get("lib"):
-    for (tfm, dlls) in groups.get("ref").items():
-      if len(dlls) == 0 and groups.get("lib") and groups.get("lib").get(tfm):
-        lib_dlls = groups.get("lib")[tfm]
-        runtime_agnostic_data.extend(lib_dlls)
-
-        groups.get("lib")[tfm] = []
-    
   # in some runtime specific edge cases there exist certain tfm refs but the libs are not shipped
   if groups.get("ref") and groups.get("lib"):
     libs = groups.get("lib")
@@ -238,7 +223,7 @@ load("@rules_dotnet//dotnet/private:rules/nuget_archive.bzl", "tfm_filegroup")
     _create_framework_select("libs", groups.get("lib")) or "filegroup(name = \"libs\", srcs = [])",
     _create_framework_select("refs", groups.get("ref")) or _create_framework_select("refs", groups.get("lib")) or "filegroup(name = \"refs\", srcs = [])",
     "filegroup(name = \"analyzers\", srcs = [%s])" % ",".join(["\n  \"%s\"" % a for a in groups.get("analyzers")["dotnet"]]),
-    "filegroup(name = \"data\", srcs = [%s])" % ",".join(["\n  \"%s\"" % d for d in runtime_agnostic_data]),
+    "filegroup(name = \"data\", srcs = [])",
     "filegroup(name = \"content_files\", srcs = [%s])"% ",".join(["\n  \"%s\"" % a for a in groups.get("contentFiles")["any"]]),
   ]))
 
