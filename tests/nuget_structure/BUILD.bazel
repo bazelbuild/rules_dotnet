@@ -1,0 +1,5 @@
+load(":nuget_structure_test.bzl", "nuget_structure_suite")
+
+nuget_structure_suite(
+    name = "nuget_structure_test",
+)
