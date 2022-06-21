@@ -39,21 +39,21 @@ ENV PATH=$PATH:$HOME/bin
 ### Bazel and Bazel releated binaries ###
 #########################################
 # Install bazelisk and make it available on PATH as it as bazel
-RUN curl -o bazelisk-linux-amd64 -fsSL https://github.com/bazelbuild/bazelisk/releases/download/v1.10.1/bazelisk-linux-amd64 \
+RUN curl -o bazelisk-linux-amd64 -fsSL https://github.com/bazelbuild/bazelisk/releases/download/v1.12.0/bazelisk-linux-amd64 \
   && mv ./bazelisk-linux-amd64 $HOME/bin/bazel \
   && chmod +x $HOME/bin/bazel
 
 # Install bazel-watcher
-RUN curl -o ibazel_linux_amd64 -fsSL https://github.com/bazelbuild/bazel-watcher/releases/download/v0.15.10/ibazel_linux_amd64 \
+RUN curl -o ibazel_linux_amd64 -fsSL https://github.com/bazelbuild/bazel-watcher/releases/download/v0.16.2/ibazel_linux_amd64 \
   && mv ./ibazel_linux_amd64 $HOME/bin/ibazel \
   && chmod +x $HOME/bin/ibazel
 
 # Install buildifier
-RUN curl -o buildifier-linux-amd64 -fsSL https://github.com/bazelbuild/buildtools/releases/download/4.2.2/buildifier-linux-amd64 \
+RUN curl -o buildifier-linux-amd64 -fsSL https://github.com/bazelbuild/buildtools/releases/download/5.1.0/buildifier-linux-amd64 \
   && mv ./buildifier-linux-amd64 $HOME/bin/buildifier \
   && chmod +x $HOME/bin/buildifier
 
 # Install buildozer
-RUN curl -o buildozer-linux-amd64 -fsSL https://github.com/bazelbuild/buildtools/releases/download/4.2.2/buildozer-linux-amd64 \
+RUN curl -o buildozer-linux-amd64 -fsSL https://github.com/bazelbuild/buildtools/releases/download/5.1.0/buildozer-linux-amd64 \
   && mv ./buildozer-linux-amd64 $HOME/bin/buildozer \
   && chmod +x $HOME/bin/buildozer
