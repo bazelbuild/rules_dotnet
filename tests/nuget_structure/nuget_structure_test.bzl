@@ -1,3 +1,5 @@
+"NuGet structure tests"
+
 load("@bazel_skylib//lib:unittest.bzl", "analysistest", "asserts")
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo")
 
@@ -15,38 +17,38 @@ def _nuget_structure_test_impl(ctx):
 
     libs_files = _get_nuget_relative_paths(provider.libs)
     asserts.true(
-            env,
-            sorted(ctx.attr.expected_libs) == sorted(libs_files),
-            "\nExpected libs:\n{}\nActual libs:\n{}".format(ctx.attr.expected_libs, libs_files),
-        )
+        env,
+        sorted(ctx.attr.expected_libs) == sorted(libs_files),
+        "\nExpected libs:\n{}\nActual libs:\n{}".format(ctx.attr.expected_libs, libs_files),
+    )
 
     prefs_files = _get_nuget_relative_paths(provider.prefs)
     asserts.true(
-            env,
-            sorted(ctx.attr.expected_refs) == sorted(prefs_files),
-            "\nExpected prefs:\n{}\nActual prefs:\n{}".format(ctx.attr.expected_refs, prefs_files),
-        )
+        env,
+        sorted(ctx.attr.expected_refs) == sorted(prefs_files),
+        "\nExpected prefs:\n{}\nActual prefs:\n{}".format(ctx.attr.expected_refs, prefs_files),
+    )
 
     irefs_files = _get_nuget_relative_paths(provider.irefs)
     asserts.true(
-            env,
-            sorted(ctx.attr.expected_refs) == sorted(irefs_files),
-            "\nExpected irefs:\n{}\nActual irefs:\n{}".format(ctx.attr.expected_refs, irefs_files),
-        )
+        env,
+        sorted(ctx.attr.expected_refs) == sorted(irefs_files),
+        "\nExpected irefs:\n{}\nActual irefs:\n{}".format(ctx.attr.expected_refs, irefs_files),
+    )
 
     analyzers_files = _get_nuget_relative_paths(provider.analyzers)
     asserts.true(
-            env,
-            sorted(ctx.attr.expected_analyzers) == sorted(analyzers_files),
-            "\nExpected analyzers:\n{}\nActual analyzers:\n{}".format(ctx.attr.expected_analyzers, analyzers_files),
-        )
+        env,
+        sorted(ctx.attr.expected_analyzers) == sorted(analyzers_files),
+        "\nExpected analyzers:\n{}\nActual analyzers:\n{}".format(ctx.attr.expected_analyzers, analyzers_files),
+    )
 
     data_files = _get_nuget_relative_paths(provider.data)
     asserts.true(
-            env,
-            sorted(ctx.attr.expected_data) == sorted(data_files),
-            "\nExpected data:\n{}\nActual data:\n{}".format(ctx.attr.expected_data, data_files),
-        )
+        env,
+        sorted(ctx.attr.expected_data) == sorted(data_files),
+        "\nExpected data:\n{}\nActual data:\n{}".format(ctx.attr.expected_data, data_files),
+    )
 
     return analysistest.end(env)
 

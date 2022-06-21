@@ -16,9 +16,9 @@ fsharp_binary(
         "@paket.paket2bazel//fsharp.systemtextjson",
         "@paket.paket2bazel//fsharpx.collections",
         "@paket.paket2bazel//fsharpx.extras",
+        "@paket.paket2bazel//microsoft.netcore.app.ref",
         "@paket.paket2bazel//nuget.packagemanagement",
         "@paket.paket2bazel//paket.core",
         "@paket.paket2bazel//system.text.json",
-        "@paket.paket2bazel//microsoft.netcore.app.ref",
     ],
 )

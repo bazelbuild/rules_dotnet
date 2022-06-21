@@ -9,7 +9,6 @@ load(
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo")
 load("//dotnet/private:macros/register_tfms.bzl", "nuget_framework_transition")
 
-
 def _import_library(ctx):
     (_irefs, prefs, analyzers, runfiles, _overrides) = collect_transitive_info(ctx.label.name, ctx.attr.deps)
 

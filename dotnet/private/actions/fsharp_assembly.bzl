@@ -5,10 +5,10 @@ Actions for compiling targets with C#.
 load(
     "//dotnet/private:common.bzl",
     "collect_transitive_info",
+    "format_ref_arg",
     "is_core_framework",
     "is_standard_framework",
     "use_highentropyva",
-    "format_ref_arg",
 )
 load(
     "//dotnet/private:providers.bzl",

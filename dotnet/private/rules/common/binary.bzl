@@ -91,9 +91,9 @@ def build_binary(ctx, compile_action):
         A collection of the references, runfiles and native dlls.
     """
     tfm = ctx.attr._target_framework[BuildSettingInfo].value
-    
+
     if is_standard_framework(tfm):
-            fail("It doesn't make sense to build an executable for " + tfm)
+        fail("It doesn't make sense to build an executable for " + tfm)
 
     runtimeconfig = None
     depsjson = None
@@ -115,7 +115,7 @@ def build_binary(ctx, compile_action):
     result = compile_action(ctx, tfm, runtimeconfig, depsjson)
     executable = result.libs[0]
     data = result.data
-    prefs = result.prefs[0] if len(result.prefs) >0 else None
+    prefs = result.prefs[0] if len(result.prefs) > 0 else None
     runtimeconfig = result.runtimeconfig
     depsjson = result.depsjson
 

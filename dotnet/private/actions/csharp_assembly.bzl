@@ -5,8 +5,8 @@ Actions for compiling targets with C#.
 load(
     "//dotnet/private:common.bzl",
     "collect_transitive_info",
-    "use_highentropyva",
     "format_ref_arg",
+    "use_highentropyva",
 )
 load(
     "//dotnet/private:providers.bzl",
@@ -40,7 +40,6 @@ def AssemblyAction(
     Args:
         actions: Bazel module providing functions to create actions.
         additionalfiles: Names additional files that don't directly affect code generation but may be used by analyzers for producing errors or warnings.
-        analyzers: The list of analyzers to run from this assembly.
         debug: Emits debugging information.
         defines: The list of conditional compilation symbols.
         deps: The list of other libraries to be linked in to the assembly.

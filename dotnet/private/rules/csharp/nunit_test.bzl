@@ -1,6 +1,7 @@
 """
 Rules for compiling NUnit tests.
 """
+
 load("//dotnet/private:rules/csharp/test.bzl", "csharp_test")
 
 def csharp_nunit_test(**kwargs):

@@ -1,3 +1,5 @@
+"Providers"
+
 DotnetAssemblyInfo = provider(
     doc = "A DLL or exe.",
     fields = {
@@ -16,7 +18,7 @@ DotnetAssemblyInfo = provider(
         "actual_tfm": "The target framework of the actual dlls",
         "runtimeconfig": "An optional runtimeconfig.json for executable assemblies",
         "depsjson": "An optional deps.json for executable assemblies",
-        "targeting_pack_overrides": "Targeting packs like e.g. Microsoft.NETCore.App.Ref have a PackageOverride.txt that includes a list of NuGet packages that should be omitted in a compiliation because they are included in the targeting pack"
+        "targeting_pack_overrides": "Targeting packs like e.g. Microsoft.NETCore.App.Ref have a PackageOverride.txt that includes a list of NuGet packages that should be omitted in a compiliation because they are included in the targeting pack",
     },
 )
 

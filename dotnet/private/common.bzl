@@ -25,7 +25,7 @@ def format_ref_arg(args, refs, targeting_pack_overrides):
     Args:
         args: The args object that will be sent into the compilation action
         refs: List of all references that are being sent into the compilation action
-        targeting_pack_overrides: Dict of overrides that are declared by targeting packs 
+        targeting_pack_overrides: Dict of overrides that are declared by targeting packs
     Returns:
         The updated args object
     """
@@ -41,8 +41,8 @@ def format_ref_arg(args, refs, targeting_pack_overrides):
             return None
 
         return "/r:" + assembly.path
-    
-    args.add_all(refs, allow_closure= True, map_each = _format_ref_with_overrides)
+
+    args.add_all(refs, allow_closure = True, map_each = _format_ref_with_overrides)
 
     return args
 
@@ -90,11 +90,10 @@ def collect_transitive_info(name, deps):
         direct_analyzers.extend(assembly.analyzers)
         transitive_analyzers.append(assembly.transitive_analyzers)
 
-
     return (
         depset(direct = direct_irefs, transitive = transitive_prefs),
         depset(direct = direct_prefs, transitive = transitive_prefs),
         depset(direct = direct_analyzers, transitive = transitive_analyzers),
         depset(direct = direct_runfiles, transitive = transitive_runfiles),
-        overrides
-    )    
+        overrides,
+    )

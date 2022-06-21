@@ -35,4 +35,3 @@ dotnet_register_toolchains("dotnet", "6.0.300")
 load("//tests:dependencies.bzl", "test_dependencies")
 
 test_dependencies()
-

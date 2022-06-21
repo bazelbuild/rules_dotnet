@@ -30,6 +30,5 @@ fsharp_binary(
         "@paket.othergroup//fsharp.core",
         "@paket.othergroup//fsharp.data",
         "@paket.othergroup//microsoft.netcore.app.ref",
-
     ],
 )

@@ -40,11 +40,11 @@ COMMON_ATTRS = {
         doc = "Other libraries that can see the assembly's internal symbols. Using this rather than the InternalsVisibleTo assembly attribute will improve build caching.",
     ),
     "_target_framework": attr.label(
-        default = "@rules_dotnet//dotnet:target_framework"
+        default = "@rules_dotnet//dotnet:target_framework",
     ),
     "_windows_constraint": attr.label(default = "@platforms//os:windows"),
     "_allowlist_function_transition": attr.label(
-        default = "@bazel_tools//tools/allowlists/function_transition_allowlist"
+        default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
     ),
 }
 
