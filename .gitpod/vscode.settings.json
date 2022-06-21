@@ -4,6 +4,7 @@
     ////////////
     "extensions.ignoreRecommendations": true,
     "extensions.autoUpdate": false,
+    "editor.formatOnSave": true,
     // Files excluded from watches for performance reasons
     "files.watcherExclude": {
         "**/.git": true,
