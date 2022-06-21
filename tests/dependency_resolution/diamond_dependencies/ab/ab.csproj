@@ -5,6 +5,9 @@
     <EnableDefaultItems>false</EnableDefaultItems>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ac.cs" />
+    <Compile Include="ab.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../d/d.csproj"/>
   </ItemGroup>
 </Project>
