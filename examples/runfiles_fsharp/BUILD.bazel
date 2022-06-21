@@ -9,8 +9,8 @@ fsharp_nunit_test(
     data = ["data-file"],
     target_frameworks = ["net6.0"],
     deps = [
+        "@example_deps//fsharp.core",
         "@example_deps//microsoft.netcore.app.ref",
         "@rules_dotnet//tools/runfiles",
-        "@example_deps//fsharp.core",
     ],
 )
