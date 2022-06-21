@@ -1,0 +1,14 @@
+load(
+    "@rules_dotnet//dotnet:defs.bzl",
+    "csharp_nunit_test",
+)
+
+csharp_nunit_test(
+    name = "runfiles_test",
+    srcs = ["Runfiles.cs", "MockFile.cs"],
+    target_frameworks = ["net6.0"],
+    deps = [
+        "@rules_dotnet_test_deps//microsoft.netcore.app.ref",
+        "//tools/runfiles"
+    ],
+)

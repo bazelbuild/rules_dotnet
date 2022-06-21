@@ -26,6 +26,7 @@ def AssemblyAction(
         langversion,
         resources,
         srcs,
+        data,
         out,
         target,
         target_name,
@@ -48,6 +49,7 @@ def AssemblyAction(
         langversion: Specify language version: Default, ISO-1, ISO-2, 3, 4, 5, 6, 7, 7.1, 7.2, 7.3, or Latest
         resources: The list of resouces to be embedded in the assembly.
         srcs: The list of source (.cs) files that are processed to create the assembly.
+        data: List of files that are a direct runtime dependency 
         target_name: A unique name for this target.
         out: Specifies the output file name.
         target: Specifies the format of the output file by using one of four options.
@@ -62,7 +64,7 @@ def AssemblyAction(
 
     assembly_name = target_name if out == "" else out
     (subsystem_version, default_lang_version) = GetFrameworkVersionInfo(target_framework)
-    (irefs, prefs, analyzers, runfiles, overrides) = collect_transitive_info(target_name, deps)
+    (irefs, prefs, analyzers, transitive_runfiles, overrides) = collect_transitive_info(target_name, deps)
     defines = framework_preprocessor_symbols(target_framework) + defines
 
     out_dir = "bazelout/" + target_framework
@@ -154,6 +156,10 @@ def AssemblyAction(
             out_ref = out_ref,
             out_pdb = None,
         )
+    direct_data = []
+    direct_data.extend(data)
+    if out_pdb:
+        direct_data.append(out_pdb)
 
     return DotnetAssemblyInfo(
         libs = [out_dll],
@@ -161,11 +167,11 @@ def AssemblyAction(
         irefs = [out_iref] if out_iref else [out_ref],
         prefs = [out_ref],
         internals_visible_to = internals_visible_to or [],
-        data = [out_pdb] if out_pdb else [],
+        data = direct_data,
         deps = deps,
         transitive_prefs = prefs,
         transitive_analyzers = analyzers,
-        transitive_runfiles = runfiles,
+        transitive_runfiles = transitive_runfiles,
         actual_tfm = target_framework,
         runtimeconfig = runtimeconfig,
         depsjson = depsjson,

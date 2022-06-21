@@ -1,0 +1,15 @@
+load(
+    "@rules_dotnet//dotnet:defs.bzl",
+    "csharp_nunit_test",
+)
+
+csharp_nunit_test(
+    name = "runfiles_test",
+    srcs = ["RunfilesTest.cs"],
+    data = ["data-file"],
+    target_frameworks = ["net6.0"],
+    deps = [
+        "@example_deps//microsoft.netcore.app.ref",
+        "@rules_dotnet//tools/runfiles",
+    ],
+)

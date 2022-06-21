@@ -24,6 +24,7 @@ def _compile_action(ctx, tfm, runtimeconfig, depsjson):
         langversion = ctx.attr.langversion,
         resources = ctx.files.resources,
         srcs = ctx.files.srcs,
+        data = ctx.files.data,
         out = ctx.attr.out,
         target = "exe",
         target_name = ctx.attr.name,

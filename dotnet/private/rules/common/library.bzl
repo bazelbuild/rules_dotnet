@@ -18,11 +18,12 @@ def build_library(ctx, compile_action):
     """
     tfm = ctx.attr._target_framework[BuildSettingInfo].value
 
-    result = [compile_action(ctx, tfm)]
+    dotnet_assembly_info_provider = compile_action(ctx, tfm)
+    result = [dotnet_assembly_info_provider]
 
     result.append(DefaultInfo(
-        files = depset(result[0].libs),
-        default_runfiles = ctx.runfiles(files = result[0].data),
+        files = depset(dotnet_assembly_info_provider.libs),
+        default_runfiles = ctx.runfiles(files = dotnet_assembly_info_provider.data, transitive_files = dotnet_assembly_info_provider.transitive_runfiles),
     ))
 
     return result

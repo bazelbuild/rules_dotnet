@@ -11,6 +11,12 @@ COMMON_ATTRS = {
         providers = [DotnetAssemblyInfo],
         cfg = nuget_framework_transition,
     ),
+    "data": attr.label_list(
+        doc = "Runtime files. It is recommended to use the @rules_dotnet//tools/runfiles library to read the runtime files.",
+        allow_files = True,
+        default = [],
+        allow_empty = True,
+    ),
     "keyfile": attr.label(
         doc = "The key file used to sign the assembly with a strong name.",
         allow_single_file = True,
