@@ -25,8 +25,7 @@ _transition_outputs = {
     for (tfm, tfm_compatible_set) in TRANSITIVE_FRAMEWORK_COMPATIBILITY.items()
 }
 
-def _impl(settings, attr):
-    _ignore = attr
+def _impl(settings, _attr):
     tfm = settings["@rules_dotnet//dotnet:target_framework"]
 
     if tfm not in _transition_outputs:

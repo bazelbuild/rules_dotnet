@@ -1,6 +1,8 @@
 "NuGet structure tests"
 
 load("@bazel_skylib//lib:unittest.bzl", "analysistest", "asserts")
+
+# buildifier: disable=bzl-visibility
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo")
 
 def _get_nuget_relative_paths(files):

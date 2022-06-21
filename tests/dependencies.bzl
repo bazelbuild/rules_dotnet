@@ -1,6 +1,6 @@
 "Test dependencies"
 
-load("//dotnet/private:rules/nuget_repo.bzl", "nuget_repo")
+load("//dotnet:defs.bzl", "nuget_repo")
 
 def test_dependencies():
     nuget_repo(

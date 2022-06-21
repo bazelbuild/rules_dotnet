@@ -1,8 +1,6 @@
-load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
+"Common implementation for building .Net libraries"
 
-"""
-Common implementation for building a .Net library
-"""
+load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 
 def build_library(ctx, compile_action):
     """Builds a .Net library from a compilation action

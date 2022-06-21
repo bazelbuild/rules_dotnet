@@ -16,7 +16,7 @@ sdk_version = "v3.1.100"
 
 # sdk_version = "v3.0.100"
 
-load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_register_sdk", "dotnet_register_toolchains", "dotnet_repositories", "nuget_package")
+load("@io_bazel_rules_dotnet//dotnet:defs.bzl", "core_register_sdk", "dotnet_register_toolchains")
 
 # Disabled because of naming collissions with newtonsoft.json
 # dotnet_repositories()

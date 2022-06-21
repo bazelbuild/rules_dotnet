@@ -44,7 +44,7 @@ _nuget_repo = repository_rule(
 def nuget_repo(name, packages):
     # TODO: Add docs
     # scaffold individual nuget archives
-    for (package_name, version, hash, deps, targeting_pack_overrides) in packages:
+    for (package_name, version, hash, _deps, _targeting_pack_overrides) in packages:
         package_name = package_name.lower()
         version = version.lower()
 
