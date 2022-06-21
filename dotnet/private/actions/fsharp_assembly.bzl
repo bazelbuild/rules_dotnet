@@ -58,7 +58,7 @@ def AssemblyAction(
         langversion: Specify language version: Default, ISO-1, ISO-2, 3, 4, 5, 6, 7, 7.1, 7.2, 7.3, or Latest
         resources: The list of resouces to be embedded in the assembly.
         srcs: The list of source (.cs) files that are processed to create the assembly.
-        data: List of files that are a direct runtime dependency 
+        data: List of files that are a direct runtime dependency
         target_name: A unique name for this target.
         out: Specifies the output file name.
         target: Specifies the format of the output file by using one of four options.

@@ -5,10 +5,13 @@ load(
 
 csharp_nunit_test(
     name = "runfiles_test",
-    srcs = ["Runfiles.cs", "MockFile.cs"],
+    srcs = [
+        "MockFile.cs",
+        "Runfiles.cs",
+    ],
     target_frameworks = ["net6.0"],
     deps = [
+        "//tools/runfiles",
         "@rules_dotnet_test_deps//microsoft.netcore.app.ref",
-        "//tools/runfiles"
     ],
 )

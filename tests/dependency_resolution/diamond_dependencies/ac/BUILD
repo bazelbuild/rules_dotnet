@@ -1,7 +1,6 @@
 load(
     "@rules_dotnet//dotnet:defs.bzl",
     "csharp_library",
-    "csharp_nunit_test",
 )
 
 csharp_library(

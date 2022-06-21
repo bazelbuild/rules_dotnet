@@ -7,8 +7,8 @@ csharp_library(
     name = "runfiles",
     srcs = ["Runfiles.cs"],
     target_frameworks = ["net6.0"],
+    visibility = ["//visibility:public"],
     deps = [
         "@rules_dotnet_deps//microsoft.netcore.app.ref",
     ],
-    visibility = ["//visibility:public"]
 )
