@@ -64,7 +64,6 @@ import_library = rule(
         "data": attr.label_list(
             doc = "Other files that this DLL depends on at runtime",
             allow_files = True,
-            cfg = nuget_framework_transition,
         ),
         "targeting_pack_overrides": attr.string_dict(
             doc = "Targeting packs like e.g. Microsoft.NETCore.App.Ref have a PackageOverride.txt that includes a list of NuGet packages that should be omitted in a compiliation because they are included in the targeting pack",
