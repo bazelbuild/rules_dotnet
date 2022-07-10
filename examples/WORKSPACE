@@ -206,6 +206,17 @@ nuget_repo(
             ],
         ),
         ("FSharp.Core", "6.0.3", "sha512-aDyKHiVFMwXWJrfW90iAeKyvw/lN+x98DPfx4oXke9Qnl4dz1sOi8KT2iczGeunqyWXh7nm+XUJ18i/0P3pZYw==", [], []),
+        (
+            "Expecto",
+            "9.0.4",
+            "sha512-k0TT6pNIyzDaJD0ZxHDhNU0UmmWZlum2XFfHTGrkApQ+JUdjcoBqKOACXrSkfiLVYsD8Ww768eeAiKPP3QYetw==",
+            [
+                "FSharp.Core",
+                "Mono.Cecil",
+            ],
+            [],
+        ),
+        ("Mono.Cecil", "0.11.4", "sha512-CnjwUMmFHnScNG8e/4DRZQQX67H5ajekRDudmZ6Fy1jCLhyH1jjzbQCOEFhBLa2NjPWQpMF+RHdBJY8a7GgmlA==", [], []),
     ],
 )
 
