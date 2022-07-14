@@ -17,7 +17,8 @@ def is_standard_framework(tfm):
     return tfm.startswith("netstandard")
 
 def is_core_framework(tfm):
-    return tfm.startswith("netcoreapp") or tfm.startswith("net5.0") or tfm.startswith("net6.0")
+    # TODO: Make this work with future versions
+    return tfm.startswith("netcoreapp") or tfm.startswith("net5.0") or tfm.startswith("net6.0") or tfm.startswith("net7.0") or tfm.startswith("net8.0") or tfm.startswith("net9.0")
 
 def format_ref_arg(args, refs, targeting_pack_overrides):
     """Takes 

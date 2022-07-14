@@ -18,6 +18,8 @@ load(
 load("//dotnet/private:actions/misc.bzl", "framework_preprocessor_symbols", "write_internals_visible_to_fsharp")
 
 def _format_targetprofile(tfm):
+    print(tfm)
+
     if is_standard_framework(tfm):
         return "/targetprofile:netstandard"
 
@@ -175,7 +177,6 @@ def _compile(
     # Our goal is to match msbuild as much as reasonable
     # https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-options
     args = actions.args()
-    args.add("/checked-")
     args.add("/noframework")
     args.add("/utf8output")
     args.add("/deterministic+")
@@ -203,6 +204,7 @@ def _compile(
         args.add("/debug+")
         args.add("/optimize-")
         args.add("/define:TRACE;DEBUG")
+        args.add("/tailcalls-")
     else:
         args.add("/debug-")
         args.add("/optimize+")
