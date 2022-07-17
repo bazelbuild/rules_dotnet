@@ -6,12 +6,12 @@ load(
     "//dotnet/private:common.bzl",
     "collect_transitive_info",
     "format_ref_arg",
+    "get_framework_version_info",
     "use_highentropyva",
 )
 load(
     "//dotnet/private:providers.bzl",
     "DotnetAssemblyInfo",
-    "GetFrameworkVersionInfo",
 )
 load("//dotnet/private:actions/misc.bzl", "framework_preprocessor_symbols", "write_internals_visible_to_csharp")
 
@@ -63,7 +63,7 @@ def AssemblyAction(
     """
 
     assembly_name = target_name if out == "" else out
-    (subsystem_version, default_lang_version) = GetFrameworkVersionInfo(target_framework)
+    (subsystem_version, default_lang_version) = get_framework_version_info(target_framework)
     (irefs, prefs, analyzers, transitive_runfiles, overrides) = collect_transitive_info(target_name, deps)
     defines = framework_preprocessor_symbols(target_framework) + defines
 

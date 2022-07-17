@@ -2,14 +2,14 @@
 
 load("@bazel_skylib//lib:dicts.bzl", "dicts")
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo")
-load("//dotnet/private:macros/register_tfms.bzl", "nuget_framework_transition")
+load("//dotnet/private:transitions/tfm_transition.bzl", "tfm_transition")
 
 # These are attributes that are common across all the binary/library/test .Net rules
 COMMON_ATTRS = {
     "deps": attr.label_list(
         doc = "Other libraries, binaries, or imported DLLs",
         providers = [DotnetAssemblyInfo],
-        cfg = nuget_framework_transition,
+        cfg = tfm_transition,
     ),
     "data": attr.label_list(
         doc = "Runtime files. It is recommended to use the @rules_dotnet//tools/runfiles library to read the runtime files.",
@@ -31,12 +31,6 @@ COMMON_ATTRS = {
     "out": attr.string(
         doc = "File name, without extension, of the built assembly.",
     ),
-    "target_frameworks": attr.string_list(
-        doc = "A list of target framework monikers to build" +
-              "See https://docs.microsoft.com/en-us/dotnet/standard/frameworks",
-        allow_empty = True,
-        default = [],
-    ),
     "defines": attr.string_list(
         doc = "A list of preprocessor directive symbols to define.",
         default = [],
@@ -54,8 +48,19 @@ COMMON_ATTRS = {
     ),
 }
 
+LIBRARY_COMMON_ATTRS = {
+    "target_frameworks": attr.string_list(
+        doc = "A list of target framework monikers to build" +
+              "See https://docs.microsoft.com/en-us/dotnet/standard/frameworks",
+    ),
+}
+
 # These are attributes that are common across all binary/test rules
 BINARY_COMMON_ATTRS = {
+    "target_framework": attr.string(
+        doc = "A target framework moniker indicating the framework version used to build the binary" +
+              "See https://docs.microsoft.com/en-us/dotnet/standard/frameworks",
+    ),
     "winexe": attr.bool(
         doc = "If true, output a winexe-style executable, otherwise" +
               "output a console-style executable.",
@@ -106,6 +111,12 @@ CSHARP_COMMON_ATTRS = dicts.add(
     },
 )
 
+# These are attributes that are common across all the library C# rules
+CSHARP_LIBRARY_COMMON_ATTRS = dicts.add(
+    CSHARP_COMMON_ATTRS,
+    LIBRARY_COMMON_ATTRS,
+)
+
 # These are attributes that are common across all the binary C# rules
 CSHARP_BINARY_COMMON_ATTRS = dicts.add(
     CSHARP_COMMON_ATTRS,
@@ -123,7 +134,13 @@ FSHARP_COMMON_ATTRS = dicts.add(
     },
 )
 
-# These are attributes that are common across all the binary/library/test F# rules
+# These are attributes that are common across all the library F# rules
+FSHARP_LIBRARY_COMMON_ATTRS = dicts.add(
+    FSHARP_COMMON_ATTRS,
+    LIBRARY_COMMON_ATTRS,
+)
+
+# These are attributes that are common across all the binary F# rules
 FSHARP_BINARY_COMMON_ATTRS = dicts.add(
     FSHARP_COMMON_ATTRS,
     BINARY_COMMON_ATTRS,

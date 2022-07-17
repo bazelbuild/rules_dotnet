@@ -9,7 +9,7 @@ fsharp_binary(
         "Gen.fs",
         "Main.fs",
     ],
-    target_frameworks = ["net6.0"],
+    target_framework = "net6.0",
     deps = [
         "@paket.paket2bazel//argu",
         "@paket.paket2bazel//fsharp.core",

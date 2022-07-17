@@ -1,7 +1,7 @@
 "NuGet Archive"
 
 load(
-    "//dotnet/private:providers.bzl",
+    "//dotnet/private:common.bzl",
     "COR_FRAMEWORKS",
     "FRAMEWORK_COMPATIBILITY",
     "NET_FRAMEWORKS",

@@ -6,7 +6,7 @@ load(
 csharp_nunit_test(
     name = "a",
     srcs = ["a.cs"],
-    target_frameworks = ["net6.0"],
+    target_framework = "net6.0",
     deps = [
         "//tests/dependency_resolution/diamond_dependencies/ab",
         "//tests/dependency_resolution/diamond_dependencies/ac",

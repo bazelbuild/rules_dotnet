@@ -6,6 +6,7 @@ load(
     "//dotnet/private:common.bzl",
     "collect_transitive_info",
     "format_ref_arg",
+    "get_framework_version_info",
     "is_core_framework",
     "is_standard_framework",
     "use_highentropyva",
@@ -13,13 +14,10 @@ load(
 load(
     "//dotnet/private:providers.bzl",
     "DotnetAssemblyInfo",
-    "GetFrameworkVersionInfo",
 )
 load("//dotnet/private:actions/misc.bzl", "framework_preprocessor_symbols", "write_internals_visible_to_fsharp")
 
 def _format_targetprofile(tfm):
-    print(tfm)
-
     if is_standard_framework(tfm):
         return "/targetprofile:netstandard"
 
@@ -74,7 +72,7 @@ def AssemblyAction(
     """
 
     assembly_name = target_name if out == "" else out
-    (subsystem_version, _default_lang_version) = GetFrameworkVersionInfo(target_framework)
+    (subsystem_version, _default_lang_version) = get_framework_version_info(target_framework)
     (irefs, prefs, analyzers, transitive_runfiles, overrides) = collect_transitive_info(target_name, deps)
     defines = framework_preprocessor_symbols(target_framework) + defines
 

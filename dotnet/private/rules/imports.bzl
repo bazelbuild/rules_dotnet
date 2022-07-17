@@ -7,7 +7,7 @@ load(
     "collect_transitive_info",
 )
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo")
-load("//dotnet/private:macros/register_tfms.bzl", "nuget_framework_transition")
+load("//dotnet/private:transitions/tfm_transition.bzl", "tfm_transition")
 
 def _import_library(ctx):
     (_irefs, prefs, analyzers, runfiles, _overrides) = collect_transitive_info(ctx.label.name, ctx.attr.deps)
@@ -41,30 +41,30 @@ import_library = rule(
             doc = "Static runtime DLLs",
             allow_files = True,  # [".dll"] currently does not work with empty file groups
             allow_empty = True,
-            cfg = nuget_framework_transition,
+            cfg = tfm_transition,
         ),
         "analyzers": attr.label_list(
             doc = "Static analyzer DLLs",
             allow_files = True,  # [".dll"] currently does not work with empty file groups
             allow_empty = True,
-            cfg = nuget_framework_transition,
+            cfg = tfm_transition,
         ),
         # todo maybe add pdb's as data.
         "refs": attr.label_list(
             doc = "Compile time DLLs",
             allow_files = True,  # [".dll"] currently does not work with empty file groups
             allow_empty = True,
-            cfg = nuget_framework_transition,
+            cfg = tfm_transition,
         ),
         "deps": attr.label_list(
             doc = "Other DLLs that this DLL depends on.",
             providers = [DotnetAssemblyInfo],
-            cfg = nuget_framework_transition,
+            cfg = tfm_transition,
         ),
         "data": attr.label_list(
             doc = "Other files that this DLL depends on at runtime",
             allow_files = True,
-            cfg = nuget_framework_transition,
+            cfg = tfm_transition,
         ),
         "targeting_pack_overrides": attr.string_dict(
             doc = "Targeting packs like e.g. Microsoft.NETCore.App.Ref have a PackageOverride.txt that includes a list of NuGet packages that should be omitted in a compiliation because they are included in the targeting pack",
