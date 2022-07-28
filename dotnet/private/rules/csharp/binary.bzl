@@ -10,6 +10,7 @@ load(
 )
 load("//dotnet/private:rules/common/binary.bzl", "build_binary")
 load("//dotnet/private:rules/common/attrs.bzl", "CSHARP_BINARY_COMMON_ATTRS")
+load("//dotnet/private:transitions/tfm_transition.bzl", "tfm_transition")
 load("@bazel_skylib//lib:dicts.bzl", "dicts")
 
 def _compile_action(ctx, tfm, runtimeconfig, depsjson):
@@ -59,6 +60,7 @@ csharp_binary = rule(
     toolchains = [
         "@rules_dotnet//dotnet:toolchain_type",
     ],
+    cfg = tfm_transition,
 )
 
 csharp_binary_without_shim = rule(
@@ -80,4 +82,5 @@ It is needed to remove a circular dependency between csharp_binary and the appho
         "@rules_dotnet//dotnet:toolchain_type",
         "@bazel_tools//tools/sh:toolchain_type",
     ],
+    cfg = tfm_transition,
 )

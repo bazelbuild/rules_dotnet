@@ -9,6 +9,6 @@ csharp_library(
     target_frameworks = ["netstandard2.1"],
     visibility = ["//visibility:public"],
     deps = [
-        "@rules_dotnet_test_deps//microsoft.netcore.app.ref",
+        "@rules_dotnet_test_deps//netstandard.library.ref",
     ],
 )

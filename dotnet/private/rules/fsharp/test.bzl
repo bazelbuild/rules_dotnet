@@ -10,6 +10,7 @@ load(
 )
 load("//dotnet/private:rules/common/binary.bzl", "build_binary")
 load("//dotnet/private:rules/common/attrs.bzl", "FSHARP_BINARY_COMMON_ATTRS")
+load("//dotnet/private:transitions/tfm_transition.bzl", "tfm_transition")
 load("@bazel_skylib//lib:dicts.bzl", "dicts")
 
 def _compile_action(ctx, tfm, runtimeconfig, depsjson):
@@ -58,4 +59,5 @@ fsharp_test = rule(
     toolchains = [
         "@rules_dotnet//dotnet:toolchain_type",
     ],
+    cfg = tfm_transition,
 )

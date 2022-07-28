@@ -193,7 +193,7 @@ def collect_transitive_info(name, deps):
         deps: Dependencies that the compilation target depends on.
 
     Returns:
-        A collection of the references, runfiles and native dlls.
+        A collection of the overrides, references, analyzers and runfiles.
     """
     direct_irefs = []
     direct_prefs = []
@@ -242,3 +242,25 @@ def get_framework_version_info(tfm):
         _subsystem_version[tfm],
         _default_lang_version_csharp[tfm],
     )
+
+def get_highest_compatible_target_framework(incoming_tfm, tfms):
+    """Returns the highest compatible framework version for the incoming_tfm.
+
+    Args:
+      incoming_tfm: The target framework of the incoming binary
+      tfms: A list of target frameworks
+    Returns:
+        The highest compatible framework version
+    """
+    if incoming_tfm in tfms:
+        return incoming_tfm
+
+    if FRAMEWORK_COMPATIBILITY[incoming_tfm] == None:
+        fail("Target framework moniker is not supported/valid: {}", incoming_tfm)
+
+    incoming_tfm_index = FRAMEWORK_COMPATIBILITY.keys().index(incoming_tfm)
+    for tfm in reversed(FRAMEWORK_COMPATIBILITY.keys()[:incoming_tfm_index]):
+        if tfm in tfms:
+            return tfm
+
+    return None

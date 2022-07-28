@@ -10,6 +10,6 @@ csharp_library(
     visibility = ["//visibility:public"],
     deps = [
         "//tests/dependency_resolution/diamond_dependencies/d",
-        "@rules_dotnet_test_deps//microsoft.netcore.app.ref",
+        "@rules_dotnet_test_deps//netstandard.library.ref",
     ],
 )

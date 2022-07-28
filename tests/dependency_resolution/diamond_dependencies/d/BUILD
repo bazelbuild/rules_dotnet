@@ -11,5 +11,8 @@ csharp_library(
         "netstandard2.1",
     ],
     visibility = ["//visibility:public"],
-    deps = ["@rules_dotnet_test_deps//microsoft.netcore.app.ref"],
+    deps = select({
+        "@rules_dotnet//dotnet:tfm_net6.0": ["@rules_dotnet_test_deps//microsoft.netcore.app.ref"],
+        "@rules_dotnet//dotnet:tfm_netstandard2.1": ["@rules_dotnet_test_deps//netstandard.library.ref"],
+    }),
 )

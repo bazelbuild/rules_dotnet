@@ -2,14 +2,14 @@
 
 load("@bazel_skylib//lib:dicts.bzl", "dicts")
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo")
-load("//dotnet/private:transitions/tfm_transition.bzl", "tfm_transition")
+load("//dotnet/private:transitions/nuget_transition.bzl", "nuget_transition")
 
 # These are attributes that are common across all the binary/library/test .Net rules
 COMMON_ATTRS = {
     "deps": attr.label_list(
         doc = "Other libraries, binaries, or imported DLLs",
         providers = [DotnetAssemblyInfo],
-        cfg = tfm_transition,
+        cfg = nuget_transition,
     ),
     "data": attr.label_list(
         doc = "Runtime files. It is recommended to use the @rules_dotnet//tools/runfiles library to read the runtime files.",
@@ -52,6 +52,8 @@ LIBRARY_COMMON_ATTRS = {
     "target_frameworks": attr.string_list(
         doc = "A list of target framework monikers to build" +
               "See https://docs.microsoft.com/en-us/dotnet/standard/frameworks",
+        mandatory = True,
+        allow_empty = False,
     ),
 }
 
@@ -60,6 +62,7 @@ BINARY_COMMON_ATTRS = {
     "target_framework": attr.string(
         doc = "A target framework moniker indicating the framework version used to build the binary" +
               "See https://docs.microsoft.com/en-us/dotnet/standard/frameworks",
+        mandatory = True,
     ),
     "winexe": attr.bool(
         doc = "If true, output a winexe-style executable, otherwise" +

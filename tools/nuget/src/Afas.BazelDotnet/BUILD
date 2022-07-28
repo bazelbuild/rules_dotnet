@@ -9,6 +9,7 @@ csharp_binary(
             "**/bin/**",
         ],
     ),
+    target_framework = "net6.0",
     visibility = ["//visibility:public"],
     deps = [
         #Adding built-in .Net libs
