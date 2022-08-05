@@ -12,10 +12,6 @@ load(
     _fsharp_binary = "fsharp_binary",
 )
 load(
-    "//dotnet/private:rules/wrapper.bzl",
-    _dotnet_wrapper = "dotnet_wrapper",
-)
-load(
     "//dotnet/private:rules/csharp/library.bzl",
     _csharp_library = "csharp_library",
 )
@@ -52,7 +48,6 @@ load(
     _nuget_repo = "nuget_repo",
 )
 
-dotnet_wrapper = _dotnet_wrapper
 csharp_binary = _csharp_binary
 csharp_library = _csharp_library
 csharp_test = _csharp_test

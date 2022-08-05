@@ -7,7 +7,6 @@ filegroup(
 exports_files([
     "nunit/shim.cs",
     "nunit/shim.fs",
-    "wrappers/dotnet.cc",
     "runtimeconfig.json.tpl",
     "deps.json.tpl",
     "launcher.sh.tpl",
