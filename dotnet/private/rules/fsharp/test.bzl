@@ -19,6 +19,7 @@ def _compile_action(ctx, tfm, runtimeconfig, depsjson):
         debug = is_debug(ctx),
         defines = ctx.attr.defines,
         deps = ctx.attr.deps,
+        private_deps = ctx.attr.private_deps,
         internals_visible_to = ctx.attr.internals_visible_to,
         keyfile = ctx.file.keyfile,
         langversion = ctx.attr.langversion,

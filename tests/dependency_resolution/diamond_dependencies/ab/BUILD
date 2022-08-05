@@ -6,10 +6,12 @@ load(
 csharp_library(
     name = "ab",
     srcs = ["ab.cs"],
+    private_deps = [
+        "@rules_dotnet_test_deps//microsoft.netcore.app.ref",
+    ],
     target_frameworks = ["net6.0"],
     visibility = ["//visibility:public"],
     deps = [
         "//tests/dependency_resolution/diamond_dependencies/d",
-        "@rules_dotnet_test_deps//microsoft.netcore.app.ref",
     ],
 )

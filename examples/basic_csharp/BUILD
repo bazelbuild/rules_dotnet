@@ -9,10 +9,12 @@ load(
 csharp_binary(
     name = "hello",
     srcs = ["hello.cs"],
+    private_deps = [
+        "@example_deps//microsoft.netcore.app.ref",
+    ],
     target_frameworks = ["net6.0"],
     deps = [
         ":lib",
-        "@example_deps//microsoft.netcore.app.ref",
     ],
 )
 
@@ -23,10 +25,12 @@ csharp_binary(
 csharp_nunit_test(
     name = "lib_test",
     srcs = ["libtest.cs"],
+    private_deps = [
+        "@example_deps//microsoft.netcore.app.ref",
+    ],
     target_frameworks = ["net6.0"],
     deps = [
         ":lib",
-        "@example_deps//microsoft.netcore.app.ref",
     ],
 )
 
@@ -34,6 +38,9 @@ csharp_library(
     name = "lib",
     srcs = ["lib.cs"],
     internals_visible_to = ["lib_test"],
+    private_deps = [
+        "@example_deps//microsoft.netcore.app.ref",
+    ],
     target_frameworks = ["net6.0"],
-    deps = ["@example_deps//microsoft.netcore.app.ref"],
+    deps = [],
 )

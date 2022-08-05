@@ -6,13 +6,15 @@ fsharp_binary(
         # Keep order
         "Main.fs",
     ],
+    private_deps = [
+        "@example_deps//microsoft.netcore.app.ref",
+    ],
     tags = ["requires-network"],
     target_frameworks = ["net6.0"],
     deps = [
         "@paket.main//argu",
         "@paket.main//fsharp.core",
         "@paket.main//fsharp.data",
-        "@paket.main//microsoft.netcore.app.ref",
     ],
 )
 
@@ -23,12 +25,14 @@ fsharp_binary(
         # Keep order
         "Main.fs",
     ],
+    private_deps = [
+        "@example_deps//microsoft.netcore.app.ref",
+    ],
     tags = ["requires-network"],
     target_frameworks = ["net6.0"],
     deps = [
         "@paket.othergroup//argu",
         "@paket.othergroup//fsharp.core",
         "@paket.othergroup//fsharp.data",
-        "@paket.othergroup//microsoft.netcore.app.ref",
     ],
 )

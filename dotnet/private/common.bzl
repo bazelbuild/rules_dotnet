@@ -185,12 +185,13 @@ def format_ref_arg(args, refs, targeting_pack_overrides):
 
     return args
 
-def collect_transitive_info(name, deps):
+def collect_transitive_info(name, deps, private_deps):
     """Determine the transitive dependencies by the target framework.
 
     Args:
         name: The name of the assembly that is asking.
         deps: Dependencies that the compilation target depends on.
+        private_deps: Private dependencies that the compilation target depends on.
 
     Returns:
         A collection of the overrides, references, analyzers and runfiles.
@@ -203,8 +204,13 @@ def collect_transitive_info(name, deps):
     direct_analyzers = []
     transitive_analyzers = []
 
+    direct_private_refs = []
+    transitive_private_refs = []
+    direct_private_analyzers = []
+    transitive_private_analyzers = []
+
     overrides = {}
-    for dep in deps:
+    for dep in deps + private_deps:
         assembly = dep[DotnetAssemblyInfo]
 
         for override_name, override_version in assembly.targeting_pack_overrides.items():
@@ -229,11 +235,22 @@ def collect_transitive_info(name, deps):
         direct_analyzers.extend(assembly.analyzers)
         transitive_analyzers.append(assembly.transitive_analyzers)
 
+    for dep in private_deps:
+        assembly = dep[DotnetAssemblyInfo]
+
+        direct_private_refs.extend(assembly.irefs if name in assembly.internals_visible_to else assembly.prefs)
+        transitive_private_refs.append(assembly.transitive_prefs)
+
+        direct_private_analyzers.extend(assembly.analyzers)
+        transitive_private_analyzers.append(assembly.transitive_analyzers)
+
     return (
         depset(direct = direct_irefs, transitive = transitive_prefs),
         depset(direct = direct_prefs, transitive = transitive_prefs),
         depset(direct = direct_analyzers, transitive = transitive_analyzers),
         depset(direct = direct_runfiles, transitive = transitive_runfiles),
+        depset(direct = direct_private_refs, transitive = transitive_private_refs),
+        depset(direct = direct_private_analyzers, transitive = transitive_private_analyzers),
         overrides,
     )
 

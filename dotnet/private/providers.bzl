@@ -1,5 +1,6 @@
 "Providers"
 
+# TODO: Split up into multiple providers e.g. DotnetAssemblyInfo, DotnetRuntimeInfo, NuGetInfo
 DotnetAssemblyInfo = provider(
     doc = "A DLL or exe.",
     fields = {
@@ -15,10 +16,8 @@ DotnetAssemblyInfo = provider(
         "transitive_prefs": "A list of public assemblies to reference when referencing this assembly in a compilation.",
         "transitive_runfiles": "Runfiles from the transitive dependencies.",
         "transitive_analyzers": "Transitive analyzer dlls",
-        "actual_tfm": "The target framework of the actual dlls",
         "runtimeconfig": "An optional runtimeconfig.json for executable assemblies",
         "depsjson": "An optional deps.json for executable assemblies",
         "targeting_pack_overrides": "Targeting packs like e.g. Microsoft.NETCore.App.Ref have a PackageOverride.txt that includes a list of NuGet packages that should be omitted in a compiliation because they are included in the targeting pack",
     },
 )
-

@@ -9,11 +9,13 @@ csharp_binary(
             "**/bin/**",
         ],
     ),
-    target_framework = "net6.0",
+    private_deps = [
+        "@rules_dotnet_deps//microsoft.netcore.app.ref",
+    ],
+    target_frameworks = ["net6.0"],
     visibility = ["//visibility:public"],
     deps = [
         #Adding built-in .Net libs
-        "@rules_dotnet_deps//microsoft.netcore.app.ref",
         "@rules_dotnet_deps//mcmaster.extensions.commandlineutils",
         "@rules_dotnet//tools/nuget/src/Afas.BazelDotnet.Nuget",
         "@rules_dotnet//tools/nuget/src/Afas.BazelDotnet.Project",

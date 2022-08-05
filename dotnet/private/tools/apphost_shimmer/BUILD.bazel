@@ -9,10 +9,10 @@ csharp_binary_without_shim(
         "AppHostShellShimMaker.cs",
         "Program.cs",
     ],
-    target_framework = "net6.0",
+    private_deps = ["@rules_dotnet_deps//microsoft.netcore.app.ref"],
+    target_frameworks = ["net6.0"],
     visibility = ["//visibility:public"],
     deps = [
         "@rules_dotnet_deps//microsoft.net.hostmodel",
-        "@rules_dotnet_deps//microsoft.netcore.app.ref",
     ],
 )

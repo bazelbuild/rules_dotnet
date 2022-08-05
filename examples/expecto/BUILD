@@ -11,11 +11,13 @@ fsharp_test(
         "test.fs",
         "main.fs",
     ],
+    private_deps = [
+        "@example_deps//microsoft.netcore.app.ref",
+    ],
     target_frameworks = ["net6.0"],
     deps = [
         "@example_deps//expecto",
         "@example_deps//fsharp.core",
-        "@example_deps//microsoft.netcore.app.ref",
     ],
 )
 
@@ -26,10 +28,12 @@ fsharp_binary(
         "test.fs",
         "main.fs",
     ],
+    private_deps = [
+        "@example_deps//microsoft.netcore.app.ref",
+    ],
     target_frameworks = ["net6.0"],
     deps = [
         "@example_deps//expecto",
         "@example_deps//fsharp.core",
-        "@example_deps//microsoft.netcore.app.ref",
     ],
 )

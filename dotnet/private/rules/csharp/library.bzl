@@ -4,7 +4,7 @@ Rules for compiling C# libraries.
 
 load("//dotnet/private:actions/csharp_assembly.bzl", "AssemblyAction")
 load("//dotnet/private:rules/common/library.bzl", "build_library")
-load("//dotnet/private:rules/common/attrs.bzl", "CSHARP_LIBRARY_COMMON_ATTRS")
+load("//dotnet/private:rules/common/attrs.bzl", "CSHARP_COMMON_ATTRS")
 load("//dotnet/private:transitions/tfm_transition.bzl", "tfm_transition")
 load(
     "//dotnet/private:common.bzl",
@@ -18,6 +18,7 @@ def _compile_action(ctx, tfm):
         debug = is_debug(ctx),
         defines = ctx.attr.defines,
         deps = ctx.attr.deps,
+        private_deps = ctx.attr.private_deps,
         internals_visible_to = ctx.attr.internals_visible_to,
         keyfile = ctx.file.keyfile,
         langversion = ctx.attr.langversion,
@@ -37,7 +38,7 @@ def _library_impl(ctx):
 csharp_library = rule(
     _library_impl,
     doc = "Compile a C# DLL",
-    attrs = CSHARP_LIBRARY_COMMON_ATTRS,
+    attrs = CSHARP_COMMON_ATTRS,
     executable = False,
     toolchains = ["@rules_dotnet//dotnet:toolchain_type"],
     cfg = tfm_transition,

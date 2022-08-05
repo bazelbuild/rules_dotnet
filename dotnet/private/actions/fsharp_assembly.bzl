@@ -31,6 +31,7 @@ def AssemblyAction(
         debug,
         defines,
         deps,
+        private_deps,
         internals_visible_to,
         keyfile,
         langversion,
@@ -53,6 +54,7 @@ def AssemblyAction(
         debug: Emits debugging information.
         defines: The list of conditional compilation symbols.
         deps: The list of other libraries to be linked in to the assembly.
+        private_deps: The list of libraries that are private to the target. These deps are not passed transitively.
         internals_visible_to: An optional list of assemblies that can see this assemblies internal symbols.
         keyfile: Specifies a strong name key file of the assembly.
         langversion: Specify language version: Default, ISO-1, ISO-2, 3, 4, 5, 6, 7, 7.1, 7.2, 7.3, or Latest
@@ -73,7 +75,7 @@ def AssemblyAction(
 
     assembly_name = target_name if out == "" else out
     (subsystem_version, _default_lang_version) = get_framework_version_info(target_framework)
-    (irefs, prefs, analyzers, transitive_runfiles, overrides) = collect_transitive_info(target_name, deps)
+    (irefs, prefs, analyzers, transitive_runfiles, private_refs, _private_analyzers, overrides) = collect_transitive_info(target_name, deps, private_deps)
     defines = framework_preprocessor_symbols(target_framework) + defines
 
     out_dir = "bazelout/" + target_framework
@@ -94,6 +96,7 @@ def AssemblyAction(
             keyfile,
             langversion,
             irefs,
+            private_refs,
             overrides,
             resources,
             srcs,
@@ -119,6 +122,7 @@ def AssemblyAction(
             keyfile,
             langversion,
             irefs,
+            private_refs,
             overrides,
             resources,
             srcs + [internals_visible_to_cs],
@@ -147,7 +151,6 @@ def AssemblyAction(
         transitive_prefs = prefs,
         transitive_analyzers = analyzers,
         transitive_runfiles = transitive_runfiles,
-        actual_tfm = target_framework,
         runtimeconfig = runtimeconfig,
         depsjson = depsjson,
         targeting_pack_overrides = {},
@@ -160,6 +163,7 @@ def _compile(
         keyfile,
         langversion,
         refs,
+        private_refs,
         overrides,
         resources,
         srcs,
@@ -228,7 +232,7 @@ def _compile(
         # outputs = [out_ref]
 
     # assembly references
-    format_ref_arg(args, refs, overrides)
+    format_ref_arg(args, depset(transitive = [private_refs, refs]), overrides)
 
     # .fs files
     args.add_all(srcs)
@@ -260,7 +264,7 @@ def _compile(
         progress_message = "Compiling " + target_name + (" (internals ref-only dll)" if out_dll == None else ""),
         inputs = depset(
             direct = direct_inputs,
-            transitive = [refs],
+            transitive = [refs, private_refs],
         ),
         outputs = outputs,
         executable = toolchain.runtime.files_to_run,

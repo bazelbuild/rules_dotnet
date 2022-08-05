@@ -31,6 +31,12 @@ COMMON_ATTRS = {
     "out": attr.string(
         doc = "File name, without extension, of the built assembly.",
     ),
+    "target_frameworks": attr.string_list(
+        doc = "A list of target framework monikers to build" +
+              "See https://docs.microsoft.com/en-us/dotnet/standard/frameworks",
+        mandatory = True,
+        allow_empty = False,
+    ),
     "defines": attr.string_list(
         doc = "A list of preprocessor directive symbols to define.",
         default = [],
@@ -38,6 +44,16 @@ COMMON_ATTRS = {
     ),
     "internals_visible_to": attr.string_list(
         doc = "Other libraries that can see the assembly's internal symbols. Using this rather than the InternalsVisibleTo assembly attribute will improve build caching.",
+    ),
+    "private_deps": attr.label_list(
+        doc = """Private dependencies 
+
+        This attribute should be used for dependencies are only private to the target. 
+        The dependencies will not be propagated transitively to parent targets and 
+        do not become part of the targets runfiles.
+        """,
+        providers = [DotnetAssemblyInfo],
+        cfg = nuget_transition,
     ),
     "_target_framework": attr.label(
         default = "@rules_dotnet//dotnet:target_framework",
@@ -48,22 +64,8 @@ COMMON_ATTRS = {
     ),
 }
 
-LIBRARY_COMMON_ATTRS = {
-    "target_frameworks": attr.string_list(
-        doc = "A list of target framework monikers to build" +
-              "See https://docs.microsoft.com/en-us/dotnet/standard/frameworks",
-        mandatory = True,
-        allow_empty = False,
-    ),
-}
-
 # These are attributes that are common across all binary/test rules
 BINARY_COMMON_ATTRS = {
-    "target_framework": attr.string(
-        doc = "A target framework moniker indicating the framework version used to build the binary" +
-              "See https://docs.microsoft.com/en-us/dotnet/standard/frameworks",
-        mandatory = True,
-    ),
     "winexe": attr.bool(
         doc = "If true, output a winexe-style executable, otherwise" +
               "output a console-style executable.",
@@ -114,12 +116,6 @@ CSHARP_COMMON_ATTRS = dicts.add(
     },
 )
 
-# These are attributes that are common across all the library C# rules
-CSHARP_LIBRARY_COMMON_ATTRS = dicts.add(
-    CSHARP_COMMON_ATTRS,
-    LIBRARY_COMMON_ATTRS,
-)
-
 # These are attributes that are common across all the binary C# rules
 CSHARP_BINARY_COMMON_ATTRS = dicts.add(
     CSHARP_COMMON_ATTRS,
@@ -135,12 +131,6 @@ FSHARP_COMMON_ATTRS = dicts.add(
             allow_files = [".fs"],
         ),
     },
-)
-
-# These are attributes that are common across all the library F# rules
-FSHARP_LIBRARY_COMMON_ATTRS = dicts.add(
-    FSHARP_COMMON_ATTRS,
-    LIBRARY_COMMON_ATTRS,
 )
 
 # These are attributes that are common across all the binary F# rules

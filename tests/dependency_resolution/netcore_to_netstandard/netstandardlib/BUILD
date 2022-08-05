@@ -6,9 +6,11 @@ load(
 csharp_library(
     name = "netstandardlib",
     srcs = ["netstandardlib.cs"],
+    private_deps = [
+        "@rules_dotnet_test_deps//netstandard.library.ref",
+    ],
     target_frameworks = ["netstandard2.1"],
     visibility = ["//visibility:public"],
     deps = [
-        "@rules_dotnet_test_deps//netstandard.library.ref",
     ],
 )

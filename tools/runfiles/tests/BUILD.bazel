@@ -9,9 +9,11 @@ csharp_nunit_test(
         "MockFile.cs",
         "Runfiles.cs",
     ],
-    target_framework = "net6.0",
+    private_deps = [
+        "@rules_dotnet_test_deps//microsoft.netcore.app.ref",
+    ],
+    target_frameworks = ["net6.0"],
     deps = [
         "//tools/runfiles",
-        "@rules_dotnet_test_deps//microsoft.netcore.app.ref",
     ],
 )

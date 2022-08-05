@@ -10,10 +10,10 @@ load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo")
 load("//dotnet/private:transitions/nuget_transition.bzl", "nuget_transition")
 
 def _import_library(ctx):
-    (_irefs, prefs, analyzers, runfiles, _overrides) = collect_transitive_info(ctx.label.name, ctx.attr.deps)
+    (_irefs, prefs, analyzers, runfiles, _private_refs, _private_analyzers, _overrides) = collect_transitive_info(ctx.label.name, ctx.attr.deps, [])
 
     return DotnetAssemblyInfo(
-        name = ctx.label.name,
+        name = ctx.attr.library_name,
         version = ctx.attr.version,
         libs = ctx.files.libs,
         analyzers = ctx.files.analyzers,
@@ -22,8 +22,6 @@ def _import_library(ctx):
         irefs = ctx.files.refs,
         internals_visible_to = [],
         deps = ctx.attr.deps,
-        # todo is this one needed?
-        # transitive = depset(direct = ctx.attr.deps, transitive = [a[DotnetAssemblyInfo].transitive for a in ctx.attr.deps]),
         transitive_prefs = prefs,
         transitive_analyzers = analyzers,
         transitive_runfiles = runfiles,
@@ -34,6 +32,10 @@ import_library = rule(
     _import_library,
     doc = "Creates a target for a static C# DLL for a specific target framework",
     attrs = {
+        "library_name": attr.string(
+            doc = "The name of the library",
+            mandatory = True,
+        ),
         "version": attr.string(
             doc = "The version of the library",
         ),

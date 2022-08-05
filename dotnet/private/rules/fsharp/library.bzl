@@ -4,7 +4,7 @@ Rules for compiling F# libraries.
 
 load("//dotnet/private:actions/fsharp_assembly.bzl", "AssemblyAction")
 load("//dotnet/private:rules/common/library.bzl", "build_library")
-load("//dotnet/private:rules/common/attrs.bzl", "FSHARP_LIBRARY_COMMON_ATTRS")
+load("//dotnet/private:rules/common/attrs.bzl", "FSHARP_COMMON_ATTRS")
 load("//dotnet/private:transitions/tfm_transition.bzl", "tfm_transition")
 load(
     "//dotnet/private:common.bzl",
@@ -17,6 +17,7 @@ def _compile_action(ctx, tfm):
         debug = is_debug(ctx),
         defines = ctx.attr.defines,
         deps = ctx.attr.deps,
+        private_deps = ctx.attr.private_deps,
         internals_visible_to = ctx.attr.internals_visible_to,
         keyfile = ctx.file.keyfile,
         langversion = ctx.attr.langversion,
@@ -36,7 +37,7 @@ def _library_impl(ctx):
 fsharp_library = rule(
     _library_impl,
     doc = "Compile a F# DLL",
-    attrs = FSHARP_LIBRARY_COMMON_ATTRS,
+    attrs = FSHARP_COMMON_ATTRS,
     executable = False,
     toolchains = ["@rules_dotnet//dotnet:toolchain_type"],
     cfg = tfm_transition,

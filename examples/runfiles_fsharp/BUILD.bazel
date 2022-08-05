@@ -7,10 +7,12 @@ fsharp_nunit_test(
     name = "runfiles_test",
     srcs = ["RunfilesTest.fs"],
     data = ["data-file"],
+    private_deps = [
+        "@example_deps//microsoft.netcore.app.ref",
+    ],
     target_frameworks = ["net6.0"],
     deps = [
         "@example_deps//fsharp.core",
-        "@example_deps//microsoft.netcore.app.ref",
         "@rules_dotnet//tools/runfiles",
     ],
 )
