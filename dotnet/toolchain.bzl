@@ -121,6 +121,7 @@ def _dotnet_toolchain_impl(ctx):
         csharp_compiler = ctx.file.csharp_compiler,
         fsharp_compiler = ctx.file.fsharp_compiler,
         apphost = ctx.file.apphost,
+        strict_deps = ctx.attr.strict_deps,
     )
     return [
         toolchain_info,
@@ -184,6 +185,10 @@ dotnet_toolchain = rule(
         ),
         "fsharp_default_version": attr.string(
             doc = "The default F# version used by the current dotnet SDK",
+            mandatory = True,
+        ),
+        "strict_deps": attr.bool(
+            doc = "Whether to use strict deps or not",
             mandatory = True,
         ),
     },

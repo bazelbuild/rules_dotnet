@@ -28,5 +28,7 @@ csharp_library(
         "@rules_dotnet_deps//nuget.protocol",
         "@rules_dotnet_deps//nuget.resolver",
         "@rules_dotnet_deps//nuget.versioning",
+        "@rules_dotnet_deps//nuget.credentials",
+        "@rules_dotnet_deps//nuget.librarymodel",
     ],
 )

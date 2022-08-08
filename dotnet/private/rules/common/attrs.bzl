@@ -55,6 +55,13 @@ COMMON_ATTRS = {
         providers = [DotnetAssemblyInfo],
         cfg = nuget_transition,
     ),
+    "strict_deps": attr.bool(
+        doc = """Whether to use strict dependencies or not. 
+        
+        This attribute mirrors the DisableTransitiveProjectReferences in MSBuild.
+        The default setting of this attribute can be overridden in the toolchain configuration""",
+        default = True,
+    ),
     "_target_framework": attr.label(
         default = "@rules_dotnet//dotnet:target_framework",
     ),

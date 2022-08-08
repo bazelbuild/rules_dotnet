@@ -43,6 +43,7 @@ def AssemblyAction(
         target_name,
         target_framework,
         toolchain,
+        strict_deps,
         runtimeconfig = None,
         depsjson = None):
     """Creates an action that runs the F# compiler with the specified inputs.
@@ -66,6 +67,7 @@ def AssemblyAction(
         target: Specifies the format of the output file by using one of four options.
         target_framework: The target framework moniker for the assembly.
         toolchain: The toolchain that supply the F# compiler.
+        strict_deps: Whether or not to use strict dependencies.
         runtimeconfig: The runtime configuration of the assembly.
         depsjson: The deps.json for the assembly.
 
@@ -75,7 +77,7 @@ def AssemblyAction(
 
     assembly_name = target_name if out == "" else out
     (subsystem_version, _default_lang_version) = get_framework_version_info(target_framework)
-    (irefs, prefs, analyzers, transitive_runfiles, private_refs, _private_analyzers, overrides) = collect_transitive_info(target_name, deps, private_deps)
+    (irefs, prefs, analyzers, transitive_runfiles, private_refs, _private_analyzers, overrides) = collect_transitive_info(target_name, deps, private_deps, strict_deps)
     defines = framework_preprocessor_symbols(target_framework) + defines
 
     out_dir = "bazelout/" + target_framework

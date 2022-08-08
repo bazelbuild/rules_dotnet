@@ -185,13 +185,14 @@ def format_ref_arg(args, refs, targeting_pack_overrides):
 
     return args
 
-def collect_transitive_info(name, deps, private_deps):
+def collect_transitive_info(name, deps, private_deps, strict_deps):
     """Determine the transitive dependencies by the target framework.
 
     Args:
         name: The name of the assembly that is asking.
         deps: Dependencies that the compilation target depends on.
         private_deps: Private dependencies that the compilation target depends on.
+        strict_deps: Whether or not to use strict dependencies.
 
     Returns:
         A collection of the overrides, references, analyzers and runfiles.
@@ -226,23 +227,24 @@ def collect_transitive_info(name, deps, private_deps):
         # and the mechanics of irefout vs. prefout.
         direct_irefs.extend(assembly.irefs if name in assembly.internals_visible_to else assembly.prefs)
         direct_prefs.extend(assembly.prefs)
-        transitive_prefs.append(assembly.transitive_prefs)
-
+        direct_analyzers.extend(assembly.analyzers)
         direct_runfiles.extend(assembly.libs)
         direct_runfiles.extend(assembly.data)
         transitive_runfiles.append(assembly.transitive_runfiles)
 
-        direct_analyzers.extend(assembly.analyzers)
-        transitive_analyzers.append(assembly.transitive_analyzers)
+        if not strict_deps:
+            transitive_prefs.append(assembly.transitive_prefs)
+            transitive_analyzers.append(assembly.transitive_analyzers)
 
     for dep in private_deps:
         assembly = dep[DotnetAssemblyInfo]
 
         direct_private_refs.extend(assembly.irefs if name in assembly.internals_visible_to else assembly.prefs)
-        transitive_private_refs.append(assembly.transitive_prefs)
-
         direct_private_analyzers.extend(assembly.analyzers)
-        transitive_private_analyzers.append(assembly.transitive_analyzers)
+
+        if not strict_deps:
+            transitive_private_refs.append(assembly.transitive_prefs)
+            transitive_private_analyzers.append(assembly.transitive_analyzers)
 
     return (
         depset(direct = direct_irefs, transitive = transitive_prefs),
@@ -281,3 +283,20 @@ def get_highest_compatible_target_framework(incoming_tfm, tfms):
             return tfm
 
     return None
+
+def is_strict_deps_enabled(toolchain, strict_deps_attr):
+    """Determines if strict dependencies are enabled.
+
+    Args:
+        toolchain: The toolchain that is being used.
+        strict_deps_attr: Target level override for strict dependencies.
+
+    Returns:
+        True if strict dependencies are enabled, False otherwise.
+    """
+    default = toolchain.strict_deps
+
+    if strict_deps_attr != default:
+        return strict_deps_attr
+
+    return default

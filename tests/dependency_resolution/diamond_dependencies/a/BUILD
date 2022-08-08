@@ -13,5 +13,6 @@ csharp_nunit_test(
     deps = [
         "//tests/dependency_resolution/diamond_dependencies/ab",
         "//tests/dependency_resolution/diamond_dependencies/ac",
+        "//tests/dependency_resolution/diamond_dependencies/d",
     ],
 )

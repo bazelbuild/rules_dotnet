@@ -9,9 +9,11 @@ load("//dotnet/private:transitions/tfm_transition.bzl", "tfm_transition")
 load(
     "//dotnet/private:common.bzl",
     "is_debug",
+    "is_strict_deps_enabled"
 )
 
 def _compile_action(ctx, tfm):
+    toolchain = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"]
     return AssemblyAction(
         ctx.actions,
         debug = is_debug(ctx),
@@ -28,7 +30,8 @@ def _compile_action(ctx, tfm):
         target = "library",
         target_name = ctx.attr.name,
         target_framework = tfm,
-        toolchain = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"],
+        toolchain = toolchain,
+        strict_deps = is_strict_deps_enabled(toolchain, ctx.attr.strict_deps),
     )
 
 def _library_impl(ctx):

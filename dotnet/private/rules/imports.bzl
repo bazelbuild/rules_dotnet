@@ -10,7 +10,7 @@ load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo")
 load("//dotnet/private:transitions/nuget_transition.bzl", "nuget_transition")
 
 def _import_library(ctx):
-    (_irefs, prefs, analyzers, runfiles, _private_refs, _private_analyzers, _overrides) = collect_transitive_info(ctx.label.name, ctx.attr.deps, [])
+    (_irefs, prefs, analyzers, runfiles, _private_refs, _private_analyzers, _overrides) = collect_transitive_info(ctx.label.name, ctx.attr.deps, [], ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].strict_deps)
 
     return DotnetAssemblyInfo(
         name = ctx.attr.library_name,
@@ -76,5 +76,8 @@ import_library = rule(
             default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
         ),
     },
+    toolchains = [
+        "@rules_dotnet//dotnet:toolchain_type",
+    ],
     executable = False,
 )
