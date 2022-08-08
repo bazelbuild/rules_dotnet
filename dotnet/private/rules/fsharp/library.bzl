@@ -9,7 +9,7 @@ load("//dotnet/private:transitions/tfm_transition.bzl", "tfm_transition")
 load(
     "//dotnet/private:common.bzl",
     "is_debug",
-    "is_strict_deps_enabled"
+    "is_strict_deps_enabled",
 )
 
 def _compile_action(ctx, tfm):

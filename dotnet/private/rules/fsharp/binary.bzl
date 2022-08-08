@@ -7,7 +7,7 @@ load("//dotnet/private:actions/fsharp_assembly.bzl", "AssemblyAction")
 load(
     "//dotnet/private:common.bzl",
     "is_debug",
-    "is_strict_deps_enabled"
+    "is_strict_deps_enabled",
 )
 load("//dotnet/private:rules/common/binary.bzl", "build_binary")
 load("//dotnet/private:rules/common/attrs.bzl", "FSHARP_BINARY_COMMON_ATTRS")
