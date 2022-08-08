@@ -174,6 +174,7 @@ def dotnet_register_toolchains(name, dotnet_version, strict_deps = True, **kwarg
             name = name + "_" + platform,
             platform = platform,
             dotnet_version = dotnet_version,
+            strict_deps = strict_deps,
             **kwargs
         )
         native.register_toolchains("@%s_toolchains//:%s_toolchain" % (name, platform))
