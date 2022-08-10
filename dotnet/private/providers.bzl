@@ -21,3 +21,9 @@ DotnetAssemblyInfo = provider(
         "targeting_pack_overrides": "Targeting packs like e.g. Microsoft.NETCore.App.Ref have a PackageOverride.txt that includes a list of NuGet packages that should be omitted in a compiliation because they are included in the targeting pack",
     },
 )
+
+NuGetInfo = provider(
+    doc = "Information about a NuGet package.",
+    fields = {
+    },
+)

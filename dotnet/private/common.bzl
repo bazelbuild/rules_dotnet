@@ -6,6 +6,7 @@ load("@bazel_skylib//lib:sets.bzl", "sets")
 load(
     "//dotnet/private:providers.bzl",
     "DotnetAssemblyInfo",
+    "NuGetInfo",
 )
 
 def _collect_transitive():
@@ -209,6 +210,7 @@ def collect_transitive_info(name, deps, private_deps, strict_deps):
     transitive_private_refs = []
     direct_private_analyzers = []
     transitive_private_analyzers = []
+    direct_labels = [d.label for d in deps]
 
     overrides = {}
     for dep in deps + private_deps:
@@ -229,8 +231,23 @@ def collect_transitive_info(name, deps, private_deps, strict_deps):
         direct_prefs.extend(assembly.prefs)
         direct_analyzers.extend(assembly.analyzers)
         direct_runfiles.extend(assembly.libs)
+
+        # Runfiles are always collected transitively
+        # We need to make sure that we do not include multiple versions of the same first party dll
+        # in the runfiles. We can do that by taking the direct first party deps and see if any of them are already
+        # in the runfiles and if they are we remove them from the transitive runfiles.
+        if NuGetInfo in dep:
+            transitive_runfiles.append(assembly.transitive_runfiles)
+        else:
+            runfiles = []
+            for transitive_runfile in assembly.transitive_runfiles.to_list():
+                if transitive_runfile.owner in direct_labels:
+                    continue
+                runfiles.append(transitive_runfile)
+
+            transitive_runfiles.append(depset(runfiles))
+
         direct_runfiles.extend(assembly.data)
-        transitive_runfiles.append(assembly.transitive_runfiles)
 
         if not strict_deps:
             transitive_prefs.append(assembly.transitive_prefs)
