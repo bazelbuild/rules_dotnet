@@ -1,5 +1,6 @@
-load(":nuget_structure_test.bzl", "nuget_structure_suite")
+load(":runtimes.bzl", "runtimes_structure")
+load(":typeproviders.bzl", "typeproviders_structure")
 
-nuget_structure_suite(
-    name = "nuget_structure_test",
-)
+typeproviders_structure()
+
+runtimes_structure()

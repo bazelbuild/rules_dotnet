@@ -2,7 +2,6 @@
 Rules for compiling C# binaries.
 """
 
-load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo")
 load("//dotnet/private:actions/csharp_assembly.bzl", "AssemblyAction")
 load(
     "//dotnet/private:common.bzl",
@@ -45,46 +44,10 @@ def _binary_private_impl(ctx):
 csharp_binary = rule(
     _binary_private_impl,
     doc = """Compile a C# exe""",
-    attrs = dicts.add(
-        CSHARP_BINARY_COMMON_ATTRS,
-        {
-            "_apphost_shimmer": attr.label(
-                default = "@rules_dotnet//dotnet/private/tools/apphost_shimmer:apphost_shimmer",
-                providers = [DotnetAssemblyInfo],
-                executable = True,
-                cfg = "exec",
-            ),
-            "use_apphost_shim": attr.bool(
-                doc = "Whether to create a executable shim for the binary.",
-                default = True,
-            ),
-        },
-    ),
+    attrs = CSHARP_BINARY_COMMON_ATTRS,
     executable = True,
     toolchains = [
         "@rules_dotnet//dotnet:toolchain_type",
-    ],
-    cfg = tfm_transition,
-)
-
-csharp_binary_without_shim = rule(
-    _binary_private_impl,
-    doc = """Compile a C# exe. 
-This rule is internal only and is only used to compile the apphost shimmer. 
-It is needed to remove a circular dependency between csharp_binary and the apphost shimmer when building the apphost shimmer""",
-    attrs = dicts.add(
-        CSHARP_BINARY_COMMON_ATTRS,
-        {
-            "use_apphost_shim": attr.bool(
-                doc = "Whether to create a executable shim for the binary.",
-                default = False,
-            ),
-        },
-    ),
-    executable = True,
-    toolchains = [
-        "@rules_dotnet//dotnet:toolchain_type",
-        "@bazel_tools//tools/sh:toolchain_type",
     ],
     cfg = tfm_transition,
 )

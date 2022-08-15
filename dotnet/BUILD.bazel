@@ -2,6 +2,11 @@ load(
     "//dotnet/private:macros/register_tfms.bzl",
     "register_tfms",
 )
+load(
+    "//dotnet/private:macros/register_rids.bzl",
+    "register_rids",
+)
+
 
 exports_files(
     [
@@ -17,3 +22,4 @@ toolchain_type(
 )
 
 register_tfms()
+register_rids()

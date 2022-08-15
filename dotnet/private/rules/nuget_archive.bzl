@@ -7,6 +7,10 @@ load(
     "NET_FRAMEWORKS",
     "STD_FRAMEWORKS",
 )
+load(
+    "//dotnet/private:rids.bzl",
+    "RUNTIME_GRAPH",
+)
 
 def _is_windows(repository_ctx):
     """Returns true if the host operating system is windows."""
@@ -45,6 +49,23 @@ def _create_framework_select(name, group):
         result.append(tfm)
         result.append('": [')
         result.append(",".join(["\n   \"{}\"".format(item) for item in items if not item.endswith("_._")]))
+        result.append("],\n")
+
+    result.append("})")
+
+    return "".join(result)
+
+def _create_rid_native_select(name, group):
+    if not group:
+        return None
+
+    result = ["rid_filegroup(\"%s\", {\n" % name]
+
+    for (rid, items) in group.items():
+        result.append(' "')
+        result.append(rid)
+        result.append('": [')
+        result.append(",".join(["\n   \"{}\"".format(item) for item in items["native"]]))
         result.append("],\n")
 
     result.append("})")
@@ -167,6 +188,43 @@ def _process_typeprovider_file(groups, file):
 
     return
 
+def _process_runtimes_file(groups, file):
+    # See https://docs.microsoft.com/en-us/nuget/create-packages/supporting-multiple-target-frameworks#architecture-specific-folders
+    # TODO: Handle runtimes/lib/<SOME TFM>
+    parts = file.split("/")
+
+    if len(parts) < 2:
+        return
+
+    rid = parts[1]
+
+    if rid not in RUNTIME_GRAPH:
+        return
+
+    if not groups.get("runtimes"):
+        groups["runtimes"] = {}
+
+    group = groups["runtimes"]
+
+    if not group.get(rid):
+        group[rid] = {
+            "native": [],
+            "lib": {},
+        }
+
+    if parts[2] == "native":
+        group[rid]["native"].append(file)
+
+    if parts[2] == "lib":
+        tfm = parts[3]
+
+        if not group[rid]["lib"].get(tfm):
+            group[rid]["lib"][tfm] = []
+
+        group[rid]["lib"][tfm].append(file)
+
+    return
+
 def _process_key_and_file(groups, key, file):
     # todo runtime specific
     # todo resource dlls
@@ -180,6 +238,8 @@ def _process_key_and_file(groups, key, file):
         _process_content_file(groups, file)
     elif key == "typeproviders":
         _process_typeprovider_file(groups, file)
+    elif key == "runtimes":
+        _process_runtimes_file(groups, file)
 
     return
 
@@ -221,12 +281,12 @@ def _nuget_archive_impl(ctx):
 
     ctx.file("BUILD.bazel", r"""package(default_visibility = ["//visibility:public"])
 exports_files(glob(["**"]))
-load("@rules_dotnet//dotnet/private:rules/nuget_archive.bzl", "tfm_filegroup")
+load("@rules_dotnet//dotnet/private:rules/nuget_archive.bzl", "tfm_filegroup", "rid_filegroup")
 """ + "\n".join([
         _create_framework_select("libs", groups.get("lib")) or "filegroup(name = \"libs\", srcs = [])",
         _create_framework_select("refs", groups.get("ref")) or _create_framework_select("refs", groups.get("lib")) or "filegroup(name = \"refs\", srcs = [])",
         "filegroup(name = \"analyzers\", srcs = [%s])" % ",".join(["\n  \"%s\"" % a for a in groups.get("analyzers")["dotnet"]]),
-        "filegroup(name = \"data\", srcs = [])",
+        _create_rid_native_select("data", groups.get("runtimes")) or "filegroup(name = \"data\", srcs = [])",
         "filegroup(name = \"content_files\", srcs = [%s])" % ",".join(["\n  \"%s\"" % a for a in groups.get("contentFiles")["any"]]),
     ]))
 
@@ -293,4 +353,14 @@ def tfm_filegroup(name, tfms):
     return native.filegroup(
         name = name,
         srcs = select({"@rules_dotnet//dotnet:tfm_%s" % tfm: value for (tfm, value) in tfms.items()}),
+    )
+
+# This function is public because it's used by the nuget_archive repository rule.
+# buildifier: disable=function-docstring
+def rid_filegroup(name, files_per_rid):
+    map = {"@rules_dotnet//dotnet:rid_%s" % rid: files for (rid, files) in files_per_rid.items()}
+    map["//conditions:default"] = []
+    return native.filegroup(
+        name = name,
+        srcs = select(map),
     )

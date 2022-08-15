@@ -38,10 +38,22 @@ PLATFORMS = {
             "@platforms//cpu:x86_64",
         ],
     ),
+    "arm64-unknown-linux-gnu": struct(
+        compatible_with = [
+            "@platforms//os:linux",
+            "@platforms//cpu:arm64",
+        ],
+    ),
     "x86_64-pc-windows-msvc": struct(
         compatible_with = [
             "@platforms//os:windows",
             "@platforms//cpu:x86_64",
+        ],
+    ),
+    "arm64-pc-windows-msvc": struct(
+        compatible_with = [
+            "@platforms//os:windows",
+            "@platforms//cpu:arm64",
         ],
     ),
 }

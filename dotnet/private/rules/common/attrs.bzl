@@ -2,14 +2,14 @@
 
 load("@bazel_skylib//lib:dicts.bzl", "dicts")
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo")
-load("//dotnet/private:transitions/nuget_transition.bzl", "nuget_transition")
+load("//dotnet/private:transitions/tfm_transition.bzl", "tfm_transition")
 
 # These are attributes that are common across all the binary/library/test .Net rules
 COMMON_ATTRS = {
     "deps": attr.label_list(
         doc = "Other libraries, binaries, or imported DLLs",
         providers = [DotnetAssemblyInfo],
-        cfg = nuget_transition,
+        cfg = tfm_transition,
     ),
     "data": attr.label_list(
         doc = "Runtime files. It is recommended to use the @rules_dotnet//tools/runfiles library to read the runtime files.",
@@ -37,6 +37,11 @@ COMMON_ATTRS = {
         mandatory = True,
         allow_empty = False,
     ),
+    "runtime_identifier": attr.string(
+        doc = "The runtime identifier that is being targeted. " +
+              "See https://docs.microsoft.com/en-us/dotnet/core/rid-catalog",
+        mandatory = True,
+    ),
     "defines": attr.string_list(
         doc = "A list of preprocessor directive symbols to define.",
         default = [],
@@ -53,7 +58,7 @@ COMMON_ATTRS = {
         do not become part of the targets runfiles.
         """,
         providers = [DotnetAssemblyInfo],
-        cfg = nuget_transition,
+        cfg = tfm_transition,
     ),
     "strict_deps": attr.bool(
         doc = """Whether to use strict dependencies or not. 
@@ -87,6 +92,11 @@ BINARY_COMMON_ATTRS = {
         doc = "A template file to use for generating deps.json",
         default = ":deps.json.tpl",
         allow_single_file = True,
+    ),
+    "apphost_shimmer": attr.label(
+        providers = [DotnetAssemblyInfo],
+        executable = True,
+        cfg = "exec",
     ),
     "_manifest_loader": attr.label(
         default = "@rules_dotnet//dotnet/private/tools/manifest_loader:ManifestLoader",

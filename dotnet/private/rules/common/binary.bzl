@@ -29,9 +29,9 @@ def _create_shim_exe(ctx, dll):
 
     ctx.actions.run(
         executable = runtime.files_to_run,
-        arguments = [ctx.executable._apphost_shimmer.path, apphost.path, dll.path],
-        inputs = [apphost, dll, ctx.attr._apphost_shimmer.files_to_run.runfiles_manifest],
-        tools = [ctx.attr._apphost_shimmer.files, ctx.attr._apphost_shimmer.default_runfiles.files],
+        arguments = [ctx.executable.apphost_shimmer.path, apphost.path, dll.path],
+        inputs = [apphost, dll, ctx.attr.apphost_shimmer.files_to_run.runfiles_manifest],
+        tools = [ctx.attr.apphost_shimmer.files, ctx.attr.apphost_shimmer.default_runfiles.files],
         outputs = [output],
     )
 
@@ -130,7 +130,7 @@ def build_binary(ctx, compile_action):
     direct_runfiles.append(manifest_loader)
 
     files = [executable, prefs] + data
-    if ctx.attr.use_apphost_shim:
+    if ctx.attr.apphost_shimmer:
         executable = _create_shim_exe(ctx, executable)
         direct_runfiles.append(executable)
         files = files.append(executable)

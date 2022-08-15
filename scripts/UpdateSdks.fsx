@@ -1,20 +1,22 @@
 #r "nuget: NuGet.Protocol"
 
+open System
 open System.Net
 open System.IO
 open System.Text.Json.Serialization
 open System.Text.Json
 open System.Text
 open System.Threading
-open NuGet.Common;
-open NuGet.Configuration;
-open NuGet.Protocol;
-open NuGet.Protocol.Core.Types;
+open NuGet.Common
+open NuGet.Configuration
+open NuGet.Protocol
+open NuGet.Protocol.Core.Types
 open System.Xml.Linq
 open NuGet.Versioning
 open NuGet.Packaging.Core
 open NuGet.Packaging
 open System.Security.Cryptography
+open System.Collections.Generic
 
 let supportedChannels = [ "6.0"; "7.0" ]
 
@@ -50,6 +52,14 @@ type Channel =
       [<JsonPropertyName "releases">]
       Releases: Release seq }
 
+type Runtime =
+    { [<JsonPropertyName "#import">]
+      Import: string seq }
+
+type Runtimes =
+    { [<JsonPropertyName "runtimes">]
+      Runtimes: Dictionary<string, Runtime> }
+
 let releaseJsonUrl channel =
     $"https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/{channel}/releases.json"
 
@@ -61,35 +71,48 @@ let downloadReleaseInfoForChannel channel =
     let json = webClient.DownloadString(url)
     JsonSerializer.Deserialize<Channel>(json)
 
+let downloadRuntimes () =
+    let webClient = new WebClient()
+
+    let json =
+        webClient.DownloadString(
+            "https://raw.githubusercontent.com/dotnet/runtime/main/src/libraries/Microsoft.NETCore.Platforms/src/runtime.json"
+        )
+
+    JsonSerializer.Deserialize<Runtimes>(json)
+
+
 let filterSdkFiles (sdk: Sdk) =
-    let files = 
+    let files =
         sdk.Files
         |> Seq.filter (fun f ->
             match f.Rid with
             | "linux-x64" -> true
+            | "linux-arm64" -> true
             | "osx-arm64" -> true
             | "osx-x64" -> true
             | "win-x64" -> true
-            | _ -> false )
-        |> Seq.filter
-            (fun f ->
-                // We are only intersted in the compressed artifacts, not exe or pkg or similar artifacts
-                f.Name.EndsWith(".zip")
-                || f.Name.EndsWith(".tar.gz"))
-        |> Seq.filter
-            (fun f ->
-                // Some releases have .zip and .tar.gz artifacts for linux so we remove the .zip artifacts
-                not (f.Rid = "linux-x64" && f.Name.EndsWith(".zip")))
-        |> Seq.filter
-            (fun f ->
-                // There were some incorrect preview releases which had arm binaries released as x64 binaries, removing those
-                not (f.Rid = "osx-x64" && f.Name.EndsWith("arm64.tar.gz")))
+            | "win-arm64" -> true
+            | _ -> false)
+        |> Seq.filter (fun f ->
+            // We are only intersted in the compressed artifacts, not exe or pkg or similar artifacts
+            f.Name.EndsWith(".zip")
+            || f.Name.EndsWith(".tar.gz"))
+        |> Seq.filter (fun f ->
+            // Some releases have .zip and .tar.gz artifacts for linux so we remove the .zip artifacts
+            not (f.Rid = "linux-x64" && f.Name.EndsWith(".zip")))
+        |> Seq.filter (fun f ->
+            // There were some incorrect preview releases which had arm binaries released as x64 binaries, removing those
+            not (
+                f.Rid = "osx-x64"
+                && f.Name.EndsWith("arm64.tar.gz")
+            ))
 
     // If there is no MacOS arm version of in the release then we add an entry where we use the x64
     // version since that can be run with Rosetta
-    if not (Seq.exists(fun f -> f.Rid = "osx-arm64") files) then
+    if not (Seq.exists (fun f -> f.Rid = "osx-arm64") files) then
         let x64 = Seq.find (fun f -> f.Rid = "osx-x64") files
-        Seq.append [{ x64 with Rid = "osx-arm64"}] files
+        Seq.append [ { x64 with Rid = "osx-arm64" } ] files
     else
         files
     |> Seq.sortBy (fun f -> f.Rid)
@@ -97,53 +120,21 @@ let filterSdkFiles (sdk: Sdk) =
 let convertRid rid =
     match rid with
     | "linux-x64" -> "x86_64-unknown-linux-gnu"
+    | "linux-arm64" -> "arm64-unknown-linux-gnu"
     | "osx-arm64" -> "aarch64-apple-darwin"
     | "osx-x64" -> "x86_64-apple-darwin"
     | "win-x64" -> "x86_64-pc-windows-msvc"
+    | "win-arm64" -> "arm64-pc-windows-msvc"
     | _ -> failwith "Unsupported platform"
 
 let base64Encode (input: string) =
     System.Convert.ToBase64String(System.Convert.FromHexString(input))
 
-let getSha256 (stream: MemoryStream) =
-    use sha256 = SHA256.Create()
-    let bytes = sha256.ComputeHash(stream)
-    let mutable result = ""
-
-    for b in bytes do
-        result <- result + b.ToString("x2")
-
-    result
-
-let getPackageSha256 (resource: FindPackageByIdResource) packageId packageVersion =
-    use cache = new SourceCacheContext()
-    use packageStream = new MemoryStream();
-    resource.CopyNupkgToStreamAsync(
-                packageId,
-                packageVersion,
-                packageStream,
-                cache,
-                NullLogger.Instance,
-                CancellationToken.None).Result |> ignore
-    packageStream.Position <- 0
-    getSha256 packageStream
-
-let getDefaultProjectSdkSha256 () =
-    let packageId = "Microsoft.NETCore.App.Ref"
-    let source = PackageSource("https://api.nuget.org/v3/index.json")
-    let providers = Repository.Provider.GetCoreV3()
-    let repository = new SourceRepository(source, providers)
-    let resource = repository.GetResourceAsync<FindPackageByIdResource>().Result
-    use cacheContext = new SourceCacheContext()
-    
-    (resource.GetAllVersionsAsync(packageId, cacheContext, NullLogger.Instance, CancellationToken.None)).Result
-    |> Seq.map(fun v -> (v.ToString(), getPackageSha256 resource packageId v))
-
 
 let generateVersionsBzl (channels: Channel seq) =
     let sb = StringBuilder()
 
-    sb.AppendLine("\"\"\"Mirror of release info\"\"\"")
+    sb.AppendLine("\"\"\"Mirror of release info  (Generated by UpdateSdks.fsx script)\"\"\"")
     |> ignore
 
     sb.AppendLine() |> ignore
@@ -155,10 +146,18 @@ let generateVersionsBzl (channels: Channel seq) =
                 sb.AppendLine((sprintf "    \"%s\": {" sdk.Version))
                 |> ignore
 
-                sb.AppendLine((sprintf "        \"runtimeVersion\": \"%s\"," sdk.RuntimeVersion)) |>ignore
-                sb.AppendLine((sprintf "        \"runtimeTfm\": \"%s\"," $"net{channel.ChannelVersion}")) |>ignore
-                sb.AppendLine((sprintf "        \"csharpDefaultVersion\": \"%s\"," sdk.CSharpVersion)) |>ignore
-                sb.AppendLine((sprintf "        \"fsharpDefaultVersion\": \"%s\"," sdk.FSharpVersion)) |>ignore
+                sb.AppendLine((sprintf "        \"runtimeVersion\": \"%s\"," sdk.RuntimeVersion))
+                |> ignore
+
+                sb.AppendLine((sprintf "        \"runtimeTfm\": \"%s\"," $"net{channel.ChannelVersion}"))
+                |> ignore
+
+                sb.AppendLine((sprintf "        \"csharpDefaultVersion\": \"%s\"," sdk.CSharpVersion))
+                |> ignore
+
+                sb.AppendLine((sprintf "        \"fsharpDefaultVersion\": \"%s\"," sdk.FSharpVersion))
+                |> ignore
+
                 for file in filterSdkFiles sdk do
                     sb.AppendLine(
                         (sprintf
@@ -172,17 +171,55 @@ let generateVersionsBzl (channels: Channel seq) =
                 sb.AppendLine("    },") |> ignore
 
     sb.AppendLine("}") |> ignore
-
-    let defaultProjectSdks = getDefaultProjectSdkSha256()
     sb.AppendLine() |> ignore
-    sb.AppendLine("DEFAULT_PROJECT_SDK_SHA256 = {") |> ignore
-    for (version, integrity) in defaultProjectSdks |> Seq.sort do
-        sb.AppendLine((sprintf "    \"%s\": \"%s\"," version integrity))
-        |> ignore
-    sb.AppendLine("}") |> ignore
 
     File.WriteAllText("dotnet/private/versions.bzl", sb.ToString())
-    
+
+
+let rec getGraphForRid (rid: string) (runtimeGraph: Dictionary<string, Runtime>) =
+    let rids = runtimeGraph[rid].Import
+
+    rids
+    |> Seq.append (Seq.collect (fun r -> getGraphForRid r runtimeGraph) rids)
+
+let generateRidsBzl () =
+    let runtimes = downloadRuntimes ()
+    let runtimeGraph = Dictionary<string, string seq>()
+
+    for entry in runtimes.Runtimes do
+        let ridGraph =
+            getGraphForRid entry.Key runtimes.Runtimes
+            |> Seq.distinct
+
+        runtimeGraph[entry.Key] <- ridGraph
+
+    let sb = StringBuilder()
+
+    sb.AppendLine("\"\"\".Net Runtime identifiers (Generated by UpdateSdks.fsx script)\"\"\"")
+    |> ignore
+
+    sb.AppendLine() |> ignore
+    sb.AppendLine("RUNTIME_GRAPH = {") |> ignore
+
+    for entry in runtimeGraph do
+        let values =
+            entry.Value
+            |> Seq.fold (fun state current -> state + $"\"{current}\", ") ""
+            |> (fun s ->
+                if String.IsNullOrEmpty(s) then
+                    s
+                else
+                    s.Substring(0, s.Length - 2))
+
+        sb.AppendLine((sprintf "    \"%s\": [%s]," entry.Key values))
+        |> ignore
+
+    sb.AppendLine("}") |> ignore
+
+    File.WriteAllText("dotnet/private/rids.bzl", sb.ToString())
+
 supportedChannels
 |> Seq.map downloadReleaseInfoForChannel
 |> generateVersionsBzl
+
+generateRidsBzl ()

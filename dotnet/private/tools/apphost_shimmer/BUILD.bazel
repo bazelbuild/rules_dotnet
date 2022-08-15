@@ -1,9 +1,9 @@
 load(
-    "@rules_dotnet//dotnet/private:rules/csharp/binary.bzl",
-    "csharp_binary_without_shim",
+    "@rules_dotnet//dotnet:defs.bzl",
+    "csharp_binary",
 )
 
-csharp_binary_without_shim(
+csharp_binary(
     name = "apphost_shimmer",
     srcs = [
         "AppHostShellShimMaker.cs",
@@ -11,6 +11,7 @@ csharp_binary_without_shim(
     ],
     private_deps = ["@rules_dotnet_deps//microsoft.netcore.app.ref"],
     target_frameworks = ["net6.0"],
+    use_apphost_shim = False,
     visibility = ["//visibility:public"],
     deps = [
         "@rules_dotnet_deps//microsoft.net.hostmodel",

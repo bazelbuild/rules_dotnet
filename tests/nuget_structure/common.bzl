@@ -1,9 +1,8 @@
-"NuGet structure tests"
+"Common functionality for nuget structure tests"
 
 load("@bazel_skylib//lib:unittest.bzl", "analysistest", "asserts")
-
-# buildifier: disable=bzl-visibility
-load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo")
+load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "NuGetInfo")
+load("//dotnet/private:transitions/tfm_transition.bzl", "tfm_transition")
 
 def _get_nuget_relative_paths(files):
     # The path of the files is of the form external/<packagename>.v<version>/<path within nuget package>
@@ -64,20 +63,31 @@ nuget_structure_test = analysistest.make(
     },
 )
 
-def _test_nuget_structure():
-    nuget_structure_test(
-        name = "nuget_structure_should_parse_typeprovider_folder_correctly",
-        target_under_test = "@rules_dotnet_test_deps//fsharp.data",
-        expected_libs = ["lib/netstandard2.0/FSharp.Data.dll", "typeproviders/fsharp41/netstandard2.0/FSharp.Data.DesignTime.dll"],
-        expected_refs = ["lib/netstandard2.0/FSharp.Data.dll", "typeproviders/fsharp41/netstandard2.0/FSharp.Data.DesignTime.dll"],
-    )
+def _nuget_test_wrapper(ctx):
+    return [ctx.attr.package[0][DotnetAssemblyInfo], ctx.attr.package[0][NuGetInfo]]
 
-def nuget_structure_suite(name):
-    _test_nuget_structure()
-
-    native.test_suite(
-        name = name,
-        tests = [
-            ":nuget_structure_should_parse_typeprovider_folder_correctly",
-        ],
-    )
+nuget_test_wrapper = rule(
+    _nuget_test_wrapper,
+    doc = "Used for testing nuget structure parsing",
+    attrs = {
+        "package": attr.label(
+            doc = "The NuGet package to test",
+            mandatory = True,
+            cfg = tfm_transition,
+            providers = [DotnetAssemblyInfo, NuGetInfo],
+        ),
+        "target_framework": attr.string(
+            doc = "The target framework to test",
+        ),
+        "runtime_identifier": attr.string(
+            doc = "The runtime identifier to test",
+        ),
+        "_allowlist_function_transition": attr.label(
+            default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
+        ),
+    },
+    toolchains = [
+        "@rules_dotnet//dotnet:toolchain_type",
+    ],
+    executable = False,
+)
