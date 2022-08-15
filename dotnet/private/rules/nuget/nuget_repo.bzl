@@ -1,7 +1,7 @@
 "NuGet Repo"
 
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
-load("@rules_dotnet//dotnet/private:rules/nuget_archive.bzl", "nuget_archive")
+load("@rules_dotnet//dotnet/private:rules/nuget/nuget_archive.bzl", "nuget_archive")
 
 _GLOBAL_NUGET_PREFIX = "nuget"
 
@@ -10,7 +10,7 @@ def _nuget_repo_impl(ctx):
         [name, version] = name_version.lower().split("/")
 
         targeting_pack_overrides = ctx.attr.targeting_pack_overrides[name]
-        template = Label("@rules_dotnet//dotnet/private:rules/template.BUILD")
+        template = Label("@rules_dotnet//dotnet/private:rules/nuget/template.BUILD")
 
         ctx.template("{}/{}/BUILD.bazel".format(name, version), template, {
             "PREFIX": _GLOBAL_NUGET_PREFIX,

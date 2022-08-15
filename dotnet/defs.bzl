@@ -36,15 +36,15 @@ load(
     _fsharp_test = "fsharp_test",
 )
 load(
-    "//dotnet/private:rules/imports.bzl",
+    "//dotnet/private:rules/nuget/imports.bzl",
     _import_library = "import_library",
 )
 load(
-    "@rules_dotnet//dotnet/private:rules/nuget_archive.bzl",
+    "@rules_dotnet//dotnet/private:rules/nuget/nuget_archive.bzl",
     _nuget_archive = "nuget_archive",
 )
 load(
-    "@rules_dotnet//dotnet/private:rules/nuget_repo.bzl",
+    "@rules_dotnet//dotnet/private:rules/nuget/nuget_repo.bzl",
     _nuget_repo = "nuget_repo",
 )
 

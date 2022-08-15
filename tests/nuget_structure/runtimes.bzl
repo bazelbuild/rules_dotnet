@@ -37,25 +37,25 @@ def runtimes_structure():
     nuget_structure_test(
         name = "nuget_structure_should_parse_runtimes_native_folder_correctly_linux_x64",
         target_under_test = ":libgit2sharp.nativebinaries.linux-x64",
-        expected_data = ["runtimes/linux-x64/native/libgit2-182d0d1.so"],
+        expected_data = ["runtimes/linux-x64/native/libgit2-b7bad55.so"],
     )
 
     nuget_structure_test(
         name = "nuget_structure_should_parse_runtimes_native_folder_correctly_osx_x64",
         target_under_test = ":libgit2sharp.nativebinaries.osx-x64",
-        expected_data = ["runtimes/osx-x64/native/libgit2-182d0d1.dylib"],
+        expected_data = ["runtimes/osx-x64/native/libgit2-b7bad55.dylib"],
     )
 
     nuget_structure_test(
         name = "nuget_structure_should_parse_runtimes_native_folder_correctly_win_x64",
         target_under_test = ":libgit2sharp.nativebinaries.win-x64",
-        expected_data = ["runtimes/win-x64/native/git2-182d0d1.dll", "runtimes/win-x64/native/libgit2_tests.exe"],
+        expected_data = ["runtimes/win-x64/native/git2-b7bad55.dll"],
     )
 
     nuget_structure_test(
         name = "nuget_structure_should_parse_runtimes_native_folder_correctly_alpine_x64",
         target_under_test = ":libgit2sharp.nativebinaries.alpine-x64",
-        expected_data = ["runtimes/linux-musl-x64/native/libgit2-182d0d1.so"],
+        expected_data = ["runtimes/linux-musl-x64/native/libgit2-b7bad55.so"],
     )
 
     # x86
@@ -82,7 +82,7 @@ def runtimes_structure():
     nuget_structure_test(
         name = "nuget_structure_should_parse_runtimes_native_folder_correctly_win_x86",
         target_under_test = ":libgit2sharp.nativebinaries.win-x86",
-        expected_data = ["runtimes/win-x86/native/git2-182d0d1.dll", "runtimes/win-x86/native/libgit2_tests.exe"],
+        expected_data = ["runtimes/win-x86/native/git2-b7bad55.dll"],
     )
 
     # arm64
@@ -117,25 +117,25 @@ def runtimes_structure():
     nuget_structure_test(
         name = "nuget_structure_should_parse_runtimes_native_folder_correctly_linux_arm64",
         target_under_test = ":libgit2sharp.nativebinaries.linux-arm64",
-        expected_data = ["runtimes/linux-arm64/native/libgit2-182d0d1.so"],
+        expected_data = ["runtimes/linux-arm64/native/libgit2-b7bad55.so"],
     )
 
     nuget_structure_test(
         name = "nuget_structure_should_parse_runtimes_native_folder_correctly_osx_arm64",
         target_under_test = ":libgit2sharp.nativebinaries.osx-arm64",
-        expected_data = ["runtimes/osx-arm64/native/libgit2-182d0d1.dylib"],
+        expected_data = ["runtimes/osx-arm64/native/libgit2-b7bad55.dylib"],
     )
 
     nuget_structure_test(
         name = "nuget_structure_should_parse_runtimes_native_folder_correctly_win_arm64",
         target_under_test = ":libgit2sharp.nativebinaries.win-arm64",
-        expected_data = ["runtimes/win-arm64/native/git2-182d0d1.dll", "runtimes/win-arm64/native/libgit2_tests.exe"],
+        expected_data = ["runtimes/win-arm64/native/git2-b7bad55.dll"],
     )
 
     nuget_structure_test(
         name = "nuget_structure_should_parse_runtimes_native_folder_correctly_alpine_arm64",
         target_under_test = ":libgit2sharp.nativebinaries.alpine-arm64",
-        expected_data = ["runtimes/linux-musl-arm64/native/libgit2-182d0d1.so"],
+        expected_data = ["runtimes/linux-musl-arm64/native/libgit2-b7bad55.so"],
     )
 
     # arm
@@ -163,7 +163,7 @@ def runtimes_structure():
     nuget_structure_test(
         name = "nuget_structure_should_parse_runtimes_native_folder_correctly_linux_arm",
         target_under_test = ":libgit2sharp.nativebinaries.linux-arm",
-        expected_data = ["runtimes/linux-arm/native/libgit2-182d0d1.so"],
+        expected_data = ["runtimes/linux-arm/native/libgit2-b7bad55.so"],
     )
 
     nuget_structure_test(
@@ -175,5 +175,5 @@ def runtimes_structure():
     nuget_structure_test(
         name = "nuget_structure_should_parse_runtimes_native_folder_correctly_alpine_arm",
         target_under_test = ":libgit2sharp.nativebinaries.alpine-arm",
-        expected_data = ["runtimes/linux-musl-arm/native/libgit2-182d0d1.so"],
+        expected_data = ["runtimes/linux-musl-arm/native/libgit2-b7bad55.so"],
     )

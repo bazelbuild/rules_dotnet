@@ -7,7 +7,7 @@ load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("//dotnet/private:toolchains_repo.bzl", "PLATFORMS", "toolchains_repo")
 load("//dotnet/private:versions.bzl", "TOOL_VERSIONS")
 load("//tools/paket2bazel/deps:paket.bzl", "paket")
-load("//dotnet/private:rules/nuget_repo.bzl", "nuget_repo")
+load("//dotnet/private:rules/nuget/nuget_repo.bzl", "nuget_repo")
 
 # WARNING: any changes in this function may be BREAKING CHANGES for users
 # because we'll fetch a dependency which may be different from one that
