@@ -190,7 +190,7 @@ def _process_typeprovider_file(groups, file):
 
 def _process_runtimes_file(groups, file):
     # See https://docs.microsoft.com/en-us/nuget/create-packages/supporting-multiple-target-frameworks#architecture-specific-folders
-    # TODO: Handle runtimes/lib/<SOME TFM>
+    # TODO: Handle runtimes/lib/<SOME TFM>. Need to find a pakcage that uses this pattern.
     parts = file.split("/")
 
     if len(parts) < 2:
@@ -226,7 +226,6 @@ def _process_runtimes_file(groups, file):
     return
 
 def _process_key_and_file(groups, key, file):
-    # todo runtime specific
     # todo resource dlls
     if key == "lib":
         _process_lib_file(groups, file)

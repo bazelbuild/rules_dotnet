@@ -11,8 +11,8 @@ using System.Runtime.Loader;
 public class BazelManifest
 {
     private static readonly string BinPath = Process.GetCurrentProcess().MainModule?.FileName;
-    
-    private static readonly string[] _manifest_options = 
+
+    private static readonly string[] _manifest_options =
     {
         Environment.GetEnvironmentVariable("RUNFILES_MANIFEST_FILE"),
         Path.Combine($"{AppContext.BaseDirectory}", $"{System.AppDomain.CurrentDomain.FriendlyName}.dll.runfiles", "MANIFEST"),
@@ -24,11 +24,16 @@ public class BazelManifest
     private BazelManifest(string[] lines)
     {
         var dict = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        foreach(var l in lines.Select(l => l.Split(' ')))
+        foreach (var l in lines.Select(l => l.Split(' ')))
         {
-            if (l[0].EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
+            if (l[0].EndsWith(".dll", StringComparison.OrdinalIgnoreCase) || l[0].EndsWith(".so", StringComparison.OrdinalIgnoreCase) || l[0].EndsWith(".dylib", StringComparison.OrdinalIgnoreCase))
             {
                 dict[Path.GetFileNameWithoutExtension(l[0])] = l[1];
+            }
+
+            if ((l[0].EndsWith(".so", StringComparison.OrdinalIgnoreCase) || l[0].EndsWith(".dylib", StringComparison.OrdinalIgnoreCase)) && Path.GetFileNameWithoutExtension(l[0]).StartsWith("lib"))
+            {
+                dict[Path.GetFileNameWithoutExtension(l[0]).Replace("lib", "")] = l[1];
             }
         }
         EntriesByFileName = dict;
@@ -38,10 +43,10 @@ public class BazelManifest
 
     public static bool TryRead(out BazelManifest manifest)
     {
-        foreach(var option in _manifest_options.Where(o => !string.IsNullOrEmpty(o)))
+        foreach (var option in _manifest_options.Where(o => !string.IsNullOrEmpty(o)))
         {
             var file = new FileInfo(option);
-            if(file.Exists)
+            if (file.Exists)
             {
                 manifest = new BazelManifest(File.ReadAllLines(option));
                 return true;
@@ -56,7 +61,6 @@ public class BazelManifest
     {
         if (EntriesByFileName.TryGetValue(name.Name, out var path))
         {
-            
             return context.LoadFromAssemblyPath(path);
         }
 
@@ -67,7 +71,6 @@ public class BazelManifest
     {
         if (EntriesByFileName.TryGetValue(Path.GetFileNameWithoutExtension(assemblyName), out var path))
         {
-            
             return NativeLibrary.Load(path);
         }
 
