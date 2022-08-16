@@ -12,6 +12,11 @@ load(
     _fsharp_binary = "fsharp_binary",
 )
 load(
+    "//dotnet/private:rules/publish/publish.bzl",
+    _publish_binary = "publish_binary",
+    _publish_binary_wrapper = "publish_binary_wrapper",
+)
+load(
     "//dotnet/private:rules/csharp/library.bzl",
     _csharp_library = "csharp_library",
 )
@@ -115,6 +120,26 @@ def fsharp_nunit_test(runtime_identifier = None, use_apphost_shim = True, **kwar
     _fsharp_nunit_test(
         runtime_identifier = _get_runtime_runtime_identifier(runtime_identifier),
         apphost_shimmer = "@rules_dotnet//dotnet/private/tools/apphost_shimmer:apphost_shimmer" if use_apphost_shim else None,
+        **kwargs
+    )
+
+def publish_binary(name, binary, target_framework, self_contained = False, publishing_pack = None, runtime_identifier = None, **kwargs):
+    runtime_identifier = _get_runtime_runtime_identifier(runtime_identifier)
+
+    _publish_binary(
+        name = "{}_wrapped".format(name),
+        binary = binary,
+        target_framework = target_framework,
+        self_contained = self_contained,
+        publishing_pack = publishing_pack,
+        tags = ["manual"],
+    )
+
+    _publish_binary_wrapper(
+        name = name,
+        wrapped_target = "{}_wrapped".format(name),
+        target_framework = target_framework,
+        runtime_identifier = _get_runtime_runtime_identifier(runtime_identifier),
         **kwargs
     )
 

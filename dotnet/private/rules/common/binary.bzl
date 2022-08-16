@@ -2,7 +2,7 @@
 Base rule for building .Net binaries
 """
 
-load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo")
+load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "DotnetBinaryInfo")
 load(
     "//dotnet/private:actions/misc.bzl",
     "write_depsjson",
@@ -70,7 +70,7 @@ def _create_launcher(ctx, runfiles, executable):
 
 def _symlink_manifest_loader(ctx, executable):
     loader = ctx.actions.declare_file("ManifestLoader.dll", sibling = executable)
-    ctx.actions.symlink(output = loader, target_file = ctx.attr._manifest_loader[DotnetAssemblyInfo].libs[0])
+    ctx.actions.symlink(output = loader, target_file = ctx.attr._manifest_loader[DotnetAssemblyInfo].lib[0])
     return loader
 
 def build_binary(ctx, compile_action):
@@ -82,9 +82,6 @@ def build_binary(ctx, compile_action):
             Args:
                 ctx: Bazel build ctx.
                 tfm: Target framework string
-                sdk: .Net project SDK label
-                runtimeconfig: .Net runtimeconfig file
-                depsjson: .Net depsjson file
             Returns:
                 An DotnetAssemblyInfo provider
     Returns:
@@ -112,38 +109,45 @@ def build_binary(ctx, compile_action):
             tfm = tfm,
         )
 
-    result = compile_action(ctx, tfm, runtimeconfig, depsjson)
-    executable = result.libs[0]
-    data = result.data
-    prefs = result.prefs[0] if len(result.prefs) > 0 else None
-    runtimeconfig = result.runtimeconfig
-    depsjson = result.depsjson
-
-    direct_runfiles = [executable] + data
+    result = compile_action(ctx, tfm)
+    dll = result.lib[0]
+    default_info_files = [dll]
+    direct_runfiles = [dll] + result.data
 
     if runtimeconfig != None:
         direct_runfiles.append(runtimeconfig)
     if depsjson != None:
         direct_runfiles.append(depsjson)
 
-    manifest_loader = _symlink_manifest_loader(ctx, executable)
+    manifest_loader = _symlink_manifest_loader(ctx, dll)
     direct_runfiles.append(manifest_loader)
 
-    files = [executable, prefs] + data
+    app_host = None
+    launcher = None
     if ctx.attr.apphost_shimmer:
-        executable = _create_shim_exe(ctx, executable)
-        direct_runfiles.append(executable)
-        files = files.append(executable)
-        executable = _create_launcher(ctx, direct_runfiles, executable)
+        app_host = _create_shim_exe(ctx, dll)
+        direct_runfiles.append(app_host)
+        default_info_files = default_info_files.append(app_host)
+        launcher = _create_launcher(ctx, direct_runfiles, app_host)
 
-    # TODO: Should we have separate flags for a standalone deployment and not?
     default_info = DefaultInfo(
-        executable = executable,
+        executable = launcher if launcher != None else dll,
         runfiles = ctx.runfiles(
             files = direct_runfiles,
             transitive_files = result.transitive_runfiles,
         ).merge(ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].runtime[DefaultInfo].default_runfiles),
-        files = depset(files),
+        files = depset(default_info_files),
     )
 
-    return [default_info, result]
+    dotnet_binary_info = DotnetBinaryInfo(
+        dll = dll,
+        app_host = app_host,
+        runfiles = ctx.runfiles(
+            files = [dll] + result.data,
+            transitive_files = result.transitive_runfiles,
+        ),
+        runtimeconfig = runtimeconfig,
+        depsjson = depsjson,
+    )
+
+    return [default_info, dotnet_binary_info, result]

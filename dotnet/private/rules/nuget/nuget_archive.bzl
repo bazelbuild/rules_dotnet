@@ -190,7 +190,6 @@ def _process_typeprovider_file(groups, file):
 
 def _process_runtimes_file(groups, file):
     # See https://docs.microsoft.com/en-us/nuget/create-packages/supporting-multiple-target-frameworks#architecture-specific-folders
-    # TODO: Handle runtimes/lib/<SOME TFM>. Need to find a pakcage that uses this pattern.
     parts = file.split("/")
 
     if len(parts) < 2:
@@ -216,12 +215,31 @@ def _process_runtimes_file(groups, file):
         group[rid]["native"].append(file)
 
     if parts[2] == "lib":
+        # If there are TFM specific folders under the runtimes folder
+        # we add the files in those folders to the lib group with the
+        # TFM set to a combination of the TFM and RID. That way the
+        # RID specific lib files will be picked if the RID is part of the
+        # TFM constraint.
         tfm = parts[3]
+        combined_tfm_and_rid = "{}_{}".format(tfm, rid)
 
-        if not group[rid]["lib"].get(tfm):
-            group[rid]["lib"][tfm] = []
+        if not groups.get("lib"):
+            groups["lib"] = {}
 
-        group[rid]["lib"][tfm].append(file)
+        lib_group = groups["lib"]
+
+        if not lib_group.get(combined_tfm_and_rid):
+            lib_group[combined_tfm_and_rid] = []
+
+        # If the folder contains a _._ file we create the group but do not add the file to it
+        # to indicate that there was an _._ file in the folder.
+        if file.endswith("_._"):
+            return
+
+        if not file.endswith(".dll") or file.endswith(".resources.dll"):
+            return
+
+        lib_group[combined_tfm_and_rid].append(file)
 
     return
 
@@ -306,12 +324,18 @@ def tfm_filegroup(name, tfms):
     cor = []
 
     for (tfm, value) in tfms.items():
+        # If the tfm is a combination of the TFM and RID we split it into the TFM and RID.
+        original_tfm = tfm
+        parts = tfm.split("_")
+        if len(parts) == 2:
+            tfm = parts[0]
+
         if tfm in COR_FRAMEWORKS:
-            cor.append((tfm, value))
+            cor.append((original_tfm, value))
         elif tfm in STD_FRAMEWORKS:
-            std.append((tfm, value))
+            std.append((original_tfm, value))
         elif tfm in NET_FRAMEWORKS:
-            net.append((tfm, value))
+            net.append((original_tfm, value))
         else:
             fail("unknown framework %s" % tfm)
 

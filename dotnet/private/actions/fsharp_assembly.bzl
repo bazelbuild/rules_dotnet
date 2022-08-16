@@ -43,9 +43,7 @@ def AssemblyAction(
         target_name,
         target_framework,
         toolchain,
-        strict_deps,
-        runtimeconfig = None,
-        depsjson = None):
+        strict_deps):
     """Creates an action that runs the F# compiler with the specified inputs.
 
     This macro aims to match the [F# compiler](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-options), with the inputs mapping to compiler options.
@@ -68,8 +66,6 @@ def AssemblyAction(
         target_framework: The target framework moniker for the assembly.
         toolchain: The toolchain that supply the F# compiler.
         strict_deps: Whether or not to use strict dependencies.
-        runtimeconfig: The runtime configuration of the assembly.
-        depsjson: The deps.json for the assembly.
 
     Returns:
         The compiled fsharp artifacts.
@@ -143,19 +139,15 @@ def AssemblyAction(
         direct_data.append(out_pdb)
 
     return DotnetAssemblyInfo(
-        libs = [out_dll],
+        lib = [out_dll],
+        ref = [out_dll],
+        iref = [out_dll],
         analyzers = [],
-        irefs = [out_dll],
-        prefs = [out_dll],
         internals_visible_to = internals_visible_to or [],
         data = direct_data,
-        deps = deps,
-        transitive_prefs = prefs,
+        transitive_ref = prefs,
         transitive_analyzers = analyzers,
         transitive_runfiles = transitive_runfiles,
-        runtimeconfig = runtimeconfig,
-        depsjson = depsjson,
-        targeting_pack_overrides = {},
     )
 
 def _compile(

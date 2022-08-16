@@ -26,7 +26,7 @@ load(
 
 rules_dotnet_dependencies()
 
-dotnet_register_toolchains("dotnet", "6.0.300")
+dotnet_register_toolchains("dotnet", "6.0.400")
 
 load("@rules_dotnet//dotnet:defs.bzl", "nuget_repo")
 
@@ -35,8 +35,8 @@ nuget_repo(
     packages = [
         (
             "Microsoft.NETCore.App.Ref",
-            "6.0.5",
-            "sha512-quj/gyLoZLypJO7PwsZ8ib6ZSgFv1C9s5SJgwzl/gztynTJ/3oO/stA2gNMf0C33vTJ0J3SSF/kRPQ/ifY5xZg==",
+            "6.0.8",
+            "sha512-TcZWOpmw+hWGQANrK0YWS3oHvtxdkn5A5JB284IdgXNvQ4rGABOPK8u52qB2bATbpSy3DbiMdobRxgAB2/mcJQ==",
             [],
             [
                 "Microsoft.CSharp|4.4.0",
@@ -217,6 +217,9 @@ nuget_repo(
             [],
         ),
         ("Mono.Cecil", "0.11.4", "sha512-CnjwUMmFHnScNG8e/4DRZQQX67H5ajekRDudmZ6Fy1jCLhyH1jjzbQCOEFhBLa2NjPWQpMF+RHdBJY8a7GgmlA==", [], []),
+        ("Microsoft.NETCore.App.Runtime.win-x64", "6.0.8", "sha512-pgpxzvQPZzBPD1lWulgRO/aafBhSBLhqH+SrBD+sYSIu7eswlxE5icW/r8o60fNFKYVg0CFvrnmCut5YpTT27Q==", [], []),
+        ("Microsoft.NETCore.App.Runtime.linux-x64", "6.0.8", "sha512-cjVzAUiYxPv949mXl0IbwzSRq0xBTGcW3N619CUcCwe35Ma1C1Tg1nh75Xc+OEn5+eAMW/S66dy+kQhdc277tA==", [], []),
+        ("Microsoft.NETCore.App.Runtime.osx-x64", "6.0.8", "sha512-RDOy3pzl0sutv5U3JAx23JWiw2UCoHAPNsCo35TA8MU2DM+LMDXN/lxi2cslot6GfFsxe0cYhclkEocHa2xMPQ==", [], []),
     ],
 )
 

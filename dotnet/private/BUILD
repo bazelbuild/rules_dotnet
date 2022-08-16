@@ -8,6 +8,7 @@ exports_files([
     "nunit/shim.cs",
     "nunit/shim.fs",
     "runtimeconfig.json.tpl",
+    "runtimeconfig_without_loader.json.tpl",
     "deps.json.tpl",
     "launcher.sh.tpl",
     "launcher.bat.tpl",

@@ -198,39 +198,40 @@ def collect_transitive_info(name, deps, private_deps, strict_deps):
     Returns:
         A collection of the overrides, references, analyzers and runfiles.
     """
-    direct_irefs = []
-    direct_prefs = []
-    transitive_prefs = []
+    direct_iref = []
+    direct_ref = []
+    transitive_ref = []
     direct_runfiles = []
     transitive_runfiles = []
     direct_analyzers = []
     transitive_analyzers = []
 
-    direct_private_refs = []
-    transitive_private_refs = []
+    direct_private_ref = []
+    transitive_private_ref = []
     direct_private_analyzers = []
     transitive_private_analyzers = []
     direct_labels = [d.label for d in deps]
 
     overrides = {}
     for dep in deps + private_deps:
-        assembly = dep[DotnetAssemblyInfo]
+        if NuGetInfo in dep:
+            nuget_info = dep[NuGetInfo]
 
-        for override_name, override_version in assembly.targeting_pack_overrides.items():
-            # TODO: In case there are multiple overrides of the same package
-            # we should take the one with the highest version
-            # Need to get a semver comparison function to do that
-            overrides[override_name] = override_version
+            for override_name, override_version in nuget_info.targeting_pack_overrides.items():
+                # TODO: In case there are multiple overrides of the same package
+                # we should take the one with the highest version
+                # Need to get a semver comparison function to do that
+                overrides[override_name] = override_version
 
     for dep in deps:
         assembly = dep[DotnetAssemblyInfo]
 
         # See docs/ReferenceAssemblies.md for more info on why we use (and prefer) refout
         # and the mechanics of irefout vs. prefout.
-        direct_irefs.extend(assembly.irefs if name in assembly.internals_visible_to else assembly.prefs)
-        direct_prefs.extend(assembly.prefs)
+        direct_iref.extend(assembly.iref if name in assembly.internals_visible_to else assembly.ref)
+        direct_ref.extend(assembly.ref)
         direct_analyzers.extend(assembly.analyzers)
-        direct_runfiles.extend(assembly.libs)
+        direct_runfiles.extend(assembly.lib)
 
         # Runfiles are always collected transitively
         # We need to make sure that we do not include multiple versions of the same first party dll
@@ -250,25 +251,25 @@ def collect_transitive_info(name, deps, private_deps, strict_deps):
         direct_runfiles.extend(assembly.data)
 
         if not strict_deps:
-            transitive_prefs.append(assembly.transitive_prefs)
+            transitive_ref.append(assembly.transitive_ref)
             transitive_analyzers.append(assembly.transitive_analyzers)
 
     for dep in private_deps:
         assembly = dep[DotnetAssemblyInfo]
 
-        direct_private_refs.extend(assembly.irefs if name in assembly.internals_visible_to else assembly.prefs)
+        direct_private_ref.extend(assembly.iref if name in assembly.internals_visible_to else assembly.ref)
         direct_private_analyzers.extend(assembly.analyzers)
 
         if not strict_deps:
-            transitive_private_refs.append(assembly.transitive_prefs)
+            transitive_private_ref.append(assembly.transitive_ref)
             transitive_private_analyzers.append(assembly.transitive_analyzers)
 
     return (
-        depset(direct = direct_irefs, transitive = transitive_prefs),
-        depset(direct = direct_prefs, transitive = transitive_prefs),
+        depset(direct = direct_iref, transitive = transitive_ref),
+        depset(direct = direct_ref, transitive = transitive_ref),
         depset(direct = direct_analyzers, transitive = transitive_analyzers),
         depset(direct = direct_runfiles, transitive = transitive_runfiles),
-        depset(direct = direct_private_refs, transitive = transitive_private_refs),
+        depset(direct = direct_private_ref, transitive = transitive_private_ref),
         depset(direct = direct_private_analyzers, transitive = transitive_private_analyzers),
         overrides,
     )

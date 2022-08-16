@@ -12,20 +12,20 @@ def _import_library(ctx):
     (_irefs, prefs, analyzers, runfiles, _private_refs, _private_analyzers, _overrides) = collect_transitive_info(ctx.label.name, ctx.attr.deps, [], ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].strict_deps)
 
     return [DotnetAssemblyInfo(
-        name = ctx.attr.library_name,
-        version = ctx.attr.version,
-        libs = ctx.files.libs,
+        lib = ctx.files.libs,
+        ref = ctx.files.refs,
+        iref = ctx.files.refs,
         analyzers = ctx.files.analyzers,
         data = ctx.files.data,
-        prefs = ctx.files.refs,
-        irefs = ctx.files.refs,
         internals_visible_to = [],
-        deps = ctx.attr.deps,
-        transitive_prefs = prefs,
+        transitive_ref = prefs,
         transitive_analyzers = analyzers,
         transitive_runfiles = runfiles,
+    ), NuGetInfo(
+        package_name = ctx.attr.library_name,
+        version = ctx.attr.version,
         targeting_pack_overrides = ctx.attr.targeting_pack_overrides,
-    ), NuGetInfo()]
+    )]
 
 import_library = rule(
     _import_library,

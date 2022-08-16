@@ -11,9 +11,8 @@ load(
 load("//dotnet/private:rules/common/binary.bzl", "build_binary")
 load("//dotnet/private:rules/common/attrs.bzl", "CSHARP_BINARY_COMMON_ATTRS")
 load("//dotnet/private:transitions/tfm_transition.bzl", "tfm_transition")
-load("@bazel_skylib//lib:dicts.bzl", "dicts")
 
-def _compile_action(ctx, tfm, runtimeconfig, depsjson):
+def _compile_action(ctx, tfm):
     toolchain = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"]
     return AssemblyAction(
         ctx.actions,
@@ -34,8 +33,6 @@ def _compile_action(ctx, tfm, runtimeconfig, depsjson):
         target_framework = tfm,
         toolchain = toolchain,
         strict_deps = is_strict_deps_enabled(toolchain, ctx.attr.strict_deps),
-        runtimeconfig = runtimeconfig,
-        depsjson = depsjson,
     )
 
 def _binary_private_impl(ctx):

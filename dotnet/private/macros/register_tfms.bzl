@@ -1,11 +1,16 @@
 "Register TFM flags and set up the compatibility chains"
 
 load("@bazel_skylib//lib:sets.bzl", "sets")
+load("@bazel_skylib//lib:dicts.bzl", "dicts")
 load("@bazel_skylib//rules:common_settings.bzl", "bool_setting", "string_flag")
 load(
     "//dotnet/private:common.bzl",
     "FRAMEWORK_COMPATIBILITY",
     "TRANSITIVE_FRAMEWORK_COMPATIBILITY",
+)
+load(
+    "//dotnet/private:rids.bzl",
+    "RUNTIME_GRAPH",
 )
 
 # buildifier: disable=unnamed-macro
@@ -31,9 +36,18 @@ def register_tfms():
         # best match is correctly picked because it has the largest set of compatible frameworks.
 
         # e.g. a setting with {"net6.0": "True", "net5.0": "True", ...} takes precedence over {"net5.0": "True", ...}
-        flags = {":framework_compatible_%s" % f: repr(True) for f in sets.to_list(TRANSITIVE_FRAMEWORK_COMPATIBILITY[framework])}
+        tfm_flags = {":framework_compatible_%s" % f: repr(True) for f in sets.to_list(TRANSITIVE_FRAMEWORK_COMPATIBILITY[framework])}
 
         native.config_setting(
             name = "tfm_%s" % framework,
-            flag_values = flags,
+            flag_values = tfm_flags,
         )
+
+        # Also register TFM flags that are compatible with a specific RID
+        for rid in RUNTIME_GRAPH.keys():
+            rid_flags = {":rid_compatible_%s" % f: repr(True) for f in RUNTIME_GRAPH[rid] + [rid]}
+
+            native.config_setting(
+                name = "tfm_%s_%s" % (framework, rid),
+                flag_values = dicts.add(tfm_flags, rid_flags),
+            )

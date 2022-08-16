@@ -33,9 +33,7 @@ def AssemblyAction(
         target_name,
         target_framework,
         toolchain,
-        strict_deps,
-        runtimeconfig = None,
-        depsjson = None):
+        strict_deps):
     """Creates an action that runs the CSharp compiler with the specified inputs.
 
     This macro aims to match the [C# compiler](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/listed-alphabetically), with the inputs mapping to compiler options.
@@ -59,8 +57,6 @@ def AssemblyAction(
         target_framework: The target framework moniker for the assembly.
         toolchain: The toolchain that supply the C# compiler.
         strict_deps: Whether or not to use strict dependencies.
-        runtimeconfig: The runtime configuration of the assembly.
-        depsjson: The deps.json for the assembly.
 
     Returns:
         The compiled csharp artifacts.
@@ -172,19 +168,15 @@ def AssemblyAction(
         direct_data.append(out_pdb)
 
     return DotnetAssemblyInfo(
-        libs = [out_dll],
+        lib = [out_dll],
+        ref = [out_ref],
+        iref = [out_iref] if out_iref else [out_ref],
         analyzers = [],
-        irefs = [out_iref] if out_iref else [out_ref],
-        prefs = [out_ref],
         internals_visible_to = internals_visible_to or [],
         data = direct_data,
-        deps = deps,
-        transitive_prefs = prefs,
+        transitive_ref = prefs,
         transitive_analyzers = analyzers,
         transitive_runfiles = transitive_runfiles,
-        runtimeconfig = runtimeconfig,
-        depsjson = depsjson,
-        targeting_pack_overrides = {},
     )
 
 def _compile(
