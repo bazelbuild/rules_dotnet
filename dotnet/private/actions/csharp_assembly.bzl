@@ -33,7 +33,8 @@ def AssemblyAction(
         target_name,
         target_framework,
         toolchain,
-        strict_deps):
+        strict_deps,
+        include_host_model_dll):
     """Creates an action that runs the CSharp compiler with the specified inputs.
 
     This macro aims to match the [C# compiler](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/listed-alphabetically), with the inputs mapping to compiler options.
@@ -57,6 +58,7 @@ def AssemblyAction(
         target_framework: The target framework moniker for the assembly.
         toolchain: The toolchain that supply the C# compiler.
         strict_deps: Whether or not to use strict dependencies.
+        include_host_model_dll: Whether or not to include he Microsoft.NET.HostModel dll. ONLY USED FOR COMPILING THE APPHOST SHIMMER.
 
     Returns:
         The compiled csharp artifacts.
@@ -96,6 +98,7 @@ def AssemblyAction(
             target_name,
             target_framework,
             toolchain,
+            include_host_model_dll,
             out_dll = out_dll,
             out_ref = out_ref,
             out_pdb = out_pdb,
@@ -132,6 +135,7 @@ def AssemblyAction(
             target_name,
             target_framework,
             toolchain,
+            include_host_model_dll,
             out_ref = out_iref,
             out_dll = out_dll,
             out_pdb = out_pdb,
@@ -158,6 +162,7 @@ def AssemblyAction(
             target_name,
             target_framework,
             toolchain,
+            include_host_model_dll,
             out_dll = None,
             out_ref = out_ref,
             out_pdb = None,
@@ -166,6 +171,13 @@ def AssemblyAction(
     direct_data.extend(data)
     if out_pdb:
         direct_data.append(out_pdb)
+
+    # This is only required to compile the apphost shimmer
+    # The reason for it not being a normal dependency in the
+    # apphost shimmer target is that the DLL is part of the downloaded runtime
+    # TODO: Maybe it's possible to make this a normal dependency?
+    if include_host_model_dll:
+        direct_data.append(toolchain.host_model)
 
     return DotnetAssemblyInfo(
         lib = [out_dll],
@@ -199,6 +211,7 @@ def _compile(
         target_name,
         target_framework,
         toolchain,
+        include_host_model_dll,
         out_dll = None,
         out_ref = None,
         out_pdb = None):
@@ -294,6 +307,14 @@ def _compile(
 
     direct_inputs = srcs + resources + additionalfiles + [toolchain.csharp_compiler]
     direct_inputs += [keyfile] if keyfile else []
+
+    # This is only required to compile the apphost shimmer
+    # The reason for it not being a normal dependency in the
+    # apphost shimmer target is that the DLL is part of the downloaded runtime
+    # TODO: Maybe it's possible to make this a normal dependency?
+    if include_host_model_dll:
+        direct_inputs.append(toolchain.host_model)
+        args.add("/r:" + toolchain.host_model.path)
 
     # dotnet.exe csc.dll /noconfig <other csc args>
     # https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/command-line-building-with-csc-exe

@@ -3,34 +3,36 @@
 
 // Original source https://github.com/dotnet/sdk/blob/master/src/Cli/dotnet/ShellShim/AppHostShimMaker.cs
 
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.NET.HostModel.AppHost;
 
 namespace ApphostShimmer
 {
-  internal class AppHostShellShimMaker
-  {
-    private readonly string _apphost;
-
-    public AppHostShellShimMaker(string apphost)
+    internal class AppHostShellShimMaker
     {
-      _apphost = apphost;
-    }
+        private readonly string _apphost;
 
-    public void CreateApphostShellShim(string entryPoint, string shimPath)
-    {
-      var appHostDestinationFilePath = Path.GetFullPath(shimPath);
-      string entryPointFullPath = Path.GetFullPath(entryPoint);
-      var appBinaryFilePath = Path.GetRelativePath(Path.GetDirectoryName(appHostDestinationFilePath), entryPointFullPath);
+        public AppHostShellShimMaker(string apphost)
+        {
+            _apphost = apphost;
+        }
 
-      // by passing null to assemblyToCopyResorcesFrom, it will skip copying resources,
-      // which is only supported on Windows
-      HostWriter.CreateAppHost(appHostSourceFilePath: Path.GetFullPath(_apphost),
-        appHostDestinationFilePath: appHostDestinationFilePath,
-        appBinaryFilePath: appBinaryFilePath,
-        windowsGraphicalUserInterface: false,
-        assemblyToCopyResorcesFrom: null);
+        public void CreateApphostShellShim(string entryPoint, string shimPath)
+        {
+            var appHostDestinationFilePath = Path.GetFullPath(shimPath);
+            string entryPointFullPath = Path.GetFullPath(entryPoint);
+            var appBinaryFilePath = Path.GetRelativePath(Path.GetDirectoryName(appHostDestinationFilePath), entryPointFullPath);
+
+            // by passing null to assemblyToCopyResorcesFrom, it will skip copying resources,
+            // which is only supported on Windows
+            HostWriter.CreateAppHost(appHostSourceFilePath: Path.GetFullPath(_apphost),
+              appHostDestinationFilePath: appHostDestinationFilePath,
+              appBinaryFilePath: appBinaryFilePath,
+              windowsGraphicalUserInterface: false,
+              assemblyToCopyResorcesFrom: null,
+              enableMacOSCodeSign: OperatingSystem.IsMacOS());
+        }
     }
-  }
 }

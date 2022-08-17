@@ -21,6 +21,10 @@ May be empty if the fsharp_compiler_path points to a locally installed tool bina
         "apphost_files": """Files required in runfiles to make the apphost executable available.
 
 May be empty if the apphost_path points to a locally installed tool binary.""",
+        "host_model_path": "Path to the apphost executable",
+        "host_model_files": """Files required in runfiles to make the apphost executable available.
+
+May be empty if the apphost_path points to a locally installed tool binary.""",
         "sdk_version": "Version of the dotnet SDK",
         "runtime_version": "Version of the dotnet runtime",
         "runtime_tfm": "The target framework moniker for the current SDK",
@@ -57,6 +61,11 @@ def _dotnet_toolchain_impl(ctx):
     if not ctx.attr.apphost and not ctx.attr.apphost_path:
         fail("Must set one of apphost or apphost_path.")
 
+    if ctx.attr.host_model and ctx.attr.host_model_path:
+        fail("Can only set one of host_model or host_model_path but both were set.")
+    if not ctx.attr.host_model and not ctx.attr.host_model_path:
+        fail("Must set one of host_model or host_model_path.")
+
     runtime_files = []
     runtime_path = ctx.attr.runtime_path
 
@@ -68,6 +77,9 @@ def _dotnet_toolchain_impl(ctx):
 
     apphost_files = []
     apphost_path = ctx.attr.apphost_path
+
+    host_model_files = []
+    host_model_path = ctx.attr.host_model_path
 
     if ctx.attr.runtime:
         runtime_files = ctx.attr.runtime.files.to_list()
@@ -84,6 +96,10 @@ def _dotnet_toolchain_impl(ctx):
     if ctx.attr.apphost:
         apphost_files = ctx.attr.apphost.files.to_list()
         apphost_path = _to_manifest_path(ctx, apphost_files[0])
+
+    if ctx.attr.host_model:
+        host_model_files = ctx.attr.host_model.files.to_list()
+        host_model_path = _to_manifest_path(ctx, host_model_files[0])
 
     # Make the $(tool_BIN) variable available in places like genrules.
     # See https://docs.bazel.build/versions/main/be/make-variables.html#custom_variables
@@ -105,6 +121,8 @@ def _dotnet_toolchain_impl(ctx):
         fsharp_compiler_files = fsharp_compiler_files,
         apphost_path = apphost_path,
         apphost_files = apphost_files,
+        host_model_path = host_model_path,
+        host_model_files = host_model_files,
         sdk_version = ctx.attr.sdk_version,
         runtime_version = ctx.attr.runtime_version,
         runtime_tfm = ctx.attr.runtime_tfm,
@@ -121,6 +139,7 @@ def _dotnet_toolchain_impl(ctx):
         csharp_compiler = ctx.file.csharp_compiler,
         fsharp_compiler = ctx.file.fsharp_compiler,
         apphost = ctx.file.apphost,
+        host_model = ctx.file.host_model,
         strict_deps = ctx.attr.strict_deps,
     )
     return [
@@ -132,39 +151,48 @@ dotnet_toolchain = rule(
     implementation = _dotnet_toolchain_impl,
     attrs = {
         "runtime": attr.label(
-            doc = "A hermetically downloaded executable target for the target platform.",
+            doc = "The dotnet CLI",
             mandatory = False,
             allow_single_file = True,
         ),
         "runtime_path": attr.string(
-            doc = "Path to an existing executable for the target platform.",
+            doc = "Path to the dotnet CLI. Do not set if `runtime` is set",
             mandatory = False,
         ),
         "csharp_compiler": attr.label(
-            doc = "A hermetically downloaded executable target for the target platform.",
+            doc = "The C# compiler binary",
             mandatory = False,
             allow_single_file = True,
         ),
         "csharp_compiler_path": attr.string(
-            doc = "Path to an existing executable for the target platform.",
+            doc = "Path to the C# compiler binary. Do not set if `csharp_compiler` is set",
             mandatory = False,
         ),
         "fsharp_compiler": attr.label(
-            doc = "A hermetically downloaded executable target for the target platform.",
+            doc = "The F# compiler binary",
             mandatory = False,
             allow_single_file = True,
         ),
         "fsharp_compiler_path": attr.string(
-            doc = "Path to an existing executable for the target platform.",
+            doc = "Path to the F# compiler binary. Do not set if `fsharp_compiler` is set",
             mandatory = False,
         ),
         "apphost": attr.label(
-            doc = "A hermetically downloaded executable target for the target platform.",
+            doc = "The apphost binary",
             mandatory = False,
             allow_single_file = True,
         ),
         "apphost_path": attr.string(
-            doc = "Path to an existing executable for the target platform.",
+            doc = "Path to the apphost binary. Do not set if `apphost` is set",
+            mandatory = False,
+        ),
+        "host_model": attr.label(
+            doc = "The System.NET.HostModel DLL",
+            mandatory = False,
+            allow_single_file = True,
+        ),
+        "host_model_path": attr.string(
+            doc = "Path to the System.NET.HostModel DLL. Do not set if `host_model` is set",
             mandatory = False,
         ),
         "sdk_version": attr.string(

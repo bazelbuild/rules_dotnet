@@ -41,5 +41,6 @@ DotnetPublishBinaryInfo = provider(
         "binary_info": "DotnetBinaryInfo: Information about the binary",
         "publishing_pack": "depset[File]: The files that belong to the publishing pack",
         "target_framework": "string: The target framework of the published binary",
+        "self_contained": "bool: True if the binary is self-contained",
     },
 )

@@ -2,14 +2,15 @@ using System.IO;
 
 namespace ApphostShimmer
 {
-  public class Program
-  {
-    public static void Main(string[] args)
+    public class Program
     {
-      var apphost = args[0];
-      var dll = args[1];
+        public static void Main(string[] args)
+        {
+            var apphost = args[0];
+            var dll = args[1];
+            var output = args[2];
 
-      new AppHostShellShimMaker(apphost).CreateApphostShellShim(dll, Path.ChangeExtension(dll, ".exe"));
+            new AppHostShellShimMaker(apphost).CreateApphostShellShim(dll, output);
+        }
     }
-  }
 }

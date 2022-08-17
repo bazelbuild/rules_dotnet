@@ -33,6 +33,7 @@ def _compile_action(ctx, tfm):
         target_framework = tfm,
         toolchain = toolchain,
         strict_deps = is_strict_deps_enabled(toolchain, ctx.attr.strict_deps),
+        include_host_model_dll = False,
     )
 
 def _library_impl(ctx):

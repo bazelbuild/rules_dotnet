@@ -17,6 +17,7 @@ open NuGet.Packaging.Core
 open NuGet.Packaging
 open System.Security.Cryptography
 open System.Collections.Generic
+open NuGet.RuntimeModel
 
 let supportedChannels = [ "6.0"; "7.0" ]
 
@@ -175,23 +176,15 @@ let generateVersionsBzl (channels: Channel seq) =
 
     File.WriteAllText("dotnet/private/versions.bzl", sb.ToString())
 
-
-let rec getGraphForRid (rid: string) (runtimeGraph: Dictionary<string, Runtime>) =
-    let rids = runtimeGraph[rid].Import
-
-    rids
-    |> Seq.append (Seq.collect (fun r -> getGraphForRid r runtimeGraph) rids)
-
 let generateRidsBzl () =
     let runtimes = downloadRuntimes ()
     let runtimeGraph = Dictionary<string, string seq>()
 
-    for entry in runtimes.Runtimes do
-        let ridGraph =
-            getGraphForRid entry.Key runtimes.Runtimes
-            |> Seq.distinct
+    let runtimeDescriptions: RuntimeDescription seq =
+        runtimes.Runtimes
+        |> Seq.map (fun entry -> RuntimeDescription(entry.Key, entry.Value.Import))
 
-        runtimeGraph[entry.Key] <- ridGraph
+    let graph = RuntimeGraph(runtimeDescriptions)
 
     let sb = StringBuilder()
 
@@ -201,9 +194,10 @@ let generateRidsBzl () =
     sb.AppendLine() |> ignore
     sb.AppendLine("RUNTIME_GRAPH = {") |> ignore
 
-    for entry in runtimeGraph do
+    for key in runtimes.Runtimes.Keys do
         let values =
-            entry.Value
+            graph.ExpandRuntime(key)
+            |> Seq.filter (fun rid -> rid <> key)
             |> Seq.fold (fun state current -> state + $"\"{current}\", ") ""
             |> (fun s ->
                 if String.IsNullOrEmpty(s) then
@@ -211,7 +205,7 @@ let generateRidsBzl () =
                 else
                     s.Substring(0, s.Length - 2))
 
-        sb.AppendLine((sprintf "    \"%s\": [%s]," entry.Key values))
+        sb.AppendLine((sprintf "    \"%s\": [%s]," key values))
         |> ignore
 
     sb.AppendLine("}") |> ignore

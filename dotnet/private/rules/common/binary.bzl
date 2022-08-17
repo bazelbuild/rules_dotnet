@@ -23,13 +23,15 @@ def _to_manifest_path(ctx, file):
         return ctx.workspace_name + "/" + file.short_path
 
 def _create_shim_exe(ctx, dll):
+    windows_constraint = ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]
+
     runtime = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].runtime
     apphost = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].apphost
-    output = ctx.actions.declare_file(paths.replace_extension(dll.basename, ".exe"), sibling = dll)
+    output = ctx.actions.declare_file(paths.replace_extension(dll.basename, ".exe" if ctx.target_platform_has_constraint(windows_constraint) else ""), sibling = dll)
 
     ctx.actions.run(
         executable = runtime.files_to_run,
-        arguments = [ctx.executable.apphost_shimmer.path, apphost.path, dll.path],
+        arguments = [ctx.executable.apphost_shimmer.path, apphost.path, dll.path, output.path],
         inputs = [apphost, dll, ctx.attr.apphost_shimmer.files_to_run.runfiles_manifest],
         tools = [ctx.attr.apphost_shimmer.files, ctx.attr.apphost_shimmer.default_runfiles.files],
         outputs = [output],

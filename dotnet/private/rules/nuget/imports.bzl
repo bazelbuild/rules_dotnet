@@ -29,7 +29,7 @@ def _import_library(ctx):
 
 import_library = rule(
     _import_library,
-    doc = "Creates a target for a static C# DLL for a specific target framework",
+    doc = "Creates a target for a static DLL for a specific target framework",
     attrs = {
         "library_name": attr.string(
             doc = "The name of the library",
