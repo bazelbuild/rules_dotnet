@@ -3,6 +3,9 @@ startup --windows_enable_symlinks
 build --enable_runfiles
 test --test_output=errors
 
+# So that the bazel-bin folder is populated since we use transitions heavily
+--use_top_level_targets_for_symlinks
+
 # Load any settings specific to the current user.
 # .bazelrc.user should appear in .gitignore so that settings are not shared with team members
 # This needs to be last statement in this
