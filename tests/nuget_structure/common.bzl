@@ -51,6 +51,13 @@ def _nuget_structure_test_impl(ctx):
         "\nExpected data:\n{}\nActual data:\n{}".format(ctx.attr.expected_data, data_files),
     )
 
+    native_files = _get_nuget_relative_paths(provider.native)
+    asserts.true(
+        env,
+        sorted(ctx.attr.expected_native) == sorted(native_files),
+        "\nExpected native:\n{}\nActual native:\n{}".format(ctx.attr.expected_native, native_files),
+    )
+
     return analysistest.end(env)
 
 nuget_structure_test = analysistest.make(
@@ -60,6 +67,7 @@ nuget_structure_test = analysistest.make(
         "expected_refs": attr.string_list(default = []),
         "expected_analyzers": attr.string_list(default = []),
         "expected_data": attr.string_list(default = []),
+        "expected_native": attr.string_list(default = []),
     },
 )
 

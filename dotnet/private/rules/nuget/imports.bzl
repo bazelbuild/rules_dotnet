@@ -9,18 +9,21 @@ load(
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "NuGetInfo")
 
 def _import_library(ctx):
-    (_irefs, prefs, analyzers, runfiles, _private_refs, _private_analyzers, _overrides) = collect_transitive_info(ctx.label.name, ctx.attr.deps, [], ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].strict_deps)
+    (_irefs, prefs, analyzers, libs, native, data, _private_refs, _private_analyzers, _overrides) = collect_transitive_info(ctx.label.name, ctx.attr.deps, [], ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].strict_deps)
 
     return [DotnetAssemblyInfo(
         lib = ctx.files.libs,
         ref = ctx.files.refs,
         iref = ctx.files.refs,
         analyzers = ctx.files.analyzers,
+        native = ctx.files.native,
         data = ctx.files.data,
-        internals_visible_to = [],
+        transitive_lib = libs,
+        transitive_native = native,
+        transitive_data = data,
         transitive_ref = prefs,
         transitive_analyzers = analyzers,
-        transitive_runfiles = runfiles,
+        internals_visible_to = [],
     ), NuGetInfo(
         package_name = ctx.attr.library_name,
         version = ctx.attr.version,
@@ -40,6 +43,11 @@ import_library = rule(
         ),
         "libs": attr.label_list(
             doc = "Static runtime DLLs",
+            allow_files = True,  # [".dll"] currently does not work with empty file groups
+            allow_empty = True,
+        ),
+        "native": attr.label_list(
+            doc = "Native runtime DLLs",
             allow_files = True,  # [".dll"] currently does not work with empty file groups
             allow_empty = True,
         ),

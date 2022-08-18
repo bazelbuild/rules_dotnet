@@ -4,13 +4,16 @@ DotnetAssemblyInfo = provider(
     doc = "A DLL or exe.",
     fields = {
         "lib": "depset[File]: Runtime DLLs",
+        "native": "depset[File]: Native runtime files",
         "ref": "depset[File]: Reference-only assemblies containing only public symbols. See docs/ReferenceAssemblies.md for more info.",
         "iref": "depset[File]: Reference-only assemblies containing public and internal symbols. See docs/ReferenceAssemblies.md for more info.",
         "analyzers": "depset[File]: Analyzer dlls",
         "internals_visible_to": "list[string]: A list of assemblies that can use the assemblies listed in iref for compilation. See docs/ReferenceAssemblies.md for more info.",
         "data": "depset[File]: Runtime data files",
+        "transitive_lib": "depset[File]: Transitive runtime DLLs",
+        "transitive_native": "depset[File]: Transitive native runtime files",
+        "transitive_data": "depset[File]: Transitive runtime data files",
         "transitive_ref": "depset[File]: Transitive reference-only assemblies containing only public symbols.",
-        "transitive_runfiles": "depset[File]: Runfiles from the transitive dependencies.",
         "transitive_analyzers": "depset[File]: Transitive analyzer dlls",
     },
 )

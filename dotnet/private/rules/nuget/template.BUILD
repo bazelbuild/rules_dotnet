@@ -8,6 +8,7 @@ import_library(
     data = ["@PREFIX.NAME.vVERSION//:data"],
     library_name = "NAME",
     libs = ["@PREFIX.NAME.vVERSION//:libs"],
+    native = ["@PREFIX.NAME.vVERSION//:native"],
     refs = ["@PREFIX.NAME.vVERSION//:refs"],
     targeting_pack_overrides = TARGETING_PACK_OVERRIDES,
     version = "VERSION",

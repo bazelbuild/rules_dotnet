@@ -201,8 +201,12 @@ def collect_transitive_info(name, deps, private_deps, strict_deps):
     direct_iref = []
     direct_ref = []
     transitive_ref = []
-    direct_runfiles = []
-    transitive_runfiles = []
+    direct_lib = []
+    transitive_lib = []
+    direct_native = []
+    transitive_native = []
+    direct_data = []
+    transitive_data = []
     direct_analyzers = []
     transitive_analyzers = []
 
@@ -231,24 +235,42 @@ def collect_transitive_info(name, deps, private_deps, strict_deps):
         direct_iref.extend(assembly.iref if name in assembly.internals_visible_to else assembly.ref)
         direct_ref.extend(assembly.ref)
         direct_analyzers.extend(assembly.analyzers)
-        direct_runfiles.extend(assembly.lib)
+        direct_lib.extend(assembly.lib)
+        direct_native.extend(assembly.native)
+        direct_data.extend(assembly.data)
 
         # Runfiles are always collected transitively
         # We need to make sure that we do not include multiple versions of the same first party dll
         # in the runfiles. We can do that by taking the direct first party deps and see if any of them are already
         # in the runfiles and if they are we remove them from the transitive runfiles.
         if NuGetInfo in dep:
-            transitive_runfiles.append(assembly.transitive_runfiles)
+            transitive_lib.append(assembly.transitive_lib)
+            transitive_native.append(assembly.transitive_native)
+            transitive_data.append(assembly.transitive_data)
         else:
-            runfiles = []
-            for transitive_runfile in assembly.transitive_runfiles.to_list():
-                if transitive_runfile.owner in direct_labels:
+            # TODO: This might be a performance issue. See if we can do this without
+            # having to iterate over the transitive files.
+            lib = []
+            native = []
+            data = []
+            for tlib in assembly.transitive_lib.to_list():
+                if tlib.owner in direct_labels:
                     continue
-                runfiles.append(transitive_runfile)
+                lib.append(tlib)
 
-            transitive_runfiles.append(depset(runfiles))
+            for tnative in assembly.transitive_native.to_list():
+                if tnative.owner in direct_labels:
+                    continue
+                native.append(tnative)
 
-        direct_runfiles.extend(assembly.data)
+            for tdata in assembly.transitive_data.to_list():
+                if tdata.owner in direct_labels:
+                    continue
+                data.append(tdata)
+
+            transitive_lib.append(depset(lib))
+            transitive_native.append(depset(native))
+            transitive_data.append(depset(data))
 
         if not strict_deps:
             transitive_ref.append(assembly.transitive_ref)
@@ -268,7 +290,9 @@ def collect_transitive_info(name, deps, private_deps, strict_deps):
         depset(direct = direct_iref, transitive = transitive_ref),
         depset(direct = direct_ref, transitive = transitive_ref),
         depset(direct = direct_analyzers, transitive = transitive_analyzers),
-        depset(direct = direct_runfiles, transitive = transitive_runfiles),
+        depset(direct = direct_lib, transitive = transitive_lib),
+        depset(direct = direct_native, transitive = transitive_native),
+        depset(direct = direct_data, transitive = transitive_data),
         depset(direct = direct_private_ref, transitive = transitive_private_ref),
         depset(direct = direct_private_analyzers, transitive = transitive_private_analyzers),
         overrides,

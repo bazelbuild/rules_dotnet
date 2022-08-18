@@ -66,7 +66,22 @@ def AssemblyAction(
 
     assembly_name = target_name if out == "" else out
     (subsystem_version, default_lang_version) = get_framework_version_info(target_framework)
-    (irefs, prefs, analyzers, transitive_runfiles, private_refs, private_analyzers, overrides) = collect_transitive_info(target_name, deps, private_deps, strict_deps)
+    (
+        irefs,
+        prefs,
+        analyzers,
+        transitive_libs,
+        transitive_native,
+        transitive_data,
+        private_refs,
+        private_analyzers,
+        overrides,
+    ) = collect_transitive_info(
+        target_name,
+        deps,
+        private_deps,
+        strict_deps,
+    )
     defines = framework_preprocessor_symbols(target_framework) + defines
 
     out_dir = "bazelout/" + target_framework
@@ -186,9 +201,12 @@ def AssemblyAction(
         analyzers = [],
         internals_visible_to = internals_visible_to or [],
         data = direct_data,
+        native = [],
         transitive_ref = prefs,
         transitive_analyzers = analyzers,
-        transitive_runfiles = transitive_runfiles,
+        transitive_lib = transitive_libs,
+        transitive_native = transitive_native,
+        transitive_data = transitive_data,
     )
 
 def _compile(

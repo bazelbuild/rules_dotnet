@@ -136,7 +136,7 @@ def build_binary(ctx, compile_action):
         executable = launcher if launcher != None else dll,
         runfiles = ctx.runfiles(
             files = direct_runfiles,
-            transitive_files = result.transitive_runfiles,
+            transitive_files = depset(transitive = [result.transitive_lib, result.transitive_native, result.transitive_data]),
         ).merge(ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].runtime[DefaultInfo].default_runfiles),
         files = depset(default_info_files),
     )
@@ -146,7 +146,7 @@ def build_binary(ctx, compile_action):
         app_host = app_host,
         runfiles = ctx.runfiles(
             files = [dll] + result.data,
-            transitive_files = result.transitive_runfiles,
+            transitive_files = depset(transitive = [result.transitive_lib, result.transitive_native, result.transitive_data]),
         ),
         runtimeconfig = runtimeconfig,
         depsjson = depsjson,
