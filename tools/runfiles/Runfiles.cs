@@ -3,7 +3,9 @@ using System.IO;
 using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
+// For the Runfiles spec see https://docs.google.com/document/d/e/2PACX-1vSDIrFnFvEYhKsCMdGdD40wZRBX3m3aZ5HhVj4CtHPmiXKDCxioTUbYsDydjKtFDAzER5eg7OjJWs3V/pub
 namespace Bazel
 {
 
@@ -61,12 +63,13 @@ namespace Bazel
         /// <returns>A new <c>Runfiles</c> instance.</returns>
         public static Runfiles Create()
         {
+            var argv0 = Environment.GetCommandLineArgs()[0];
             var env = new Dictionary<string, string>();
             foreach (DictionaryEntry e in System.Environment.GetEnvironmentVariables())
             {
                 env.Add(e.Key.ToString(), e.Value.ToString());
             }
-            return Create(env);
+            return Create(argv0, env);
         }
 
         /// <summary>
@@ -80,12 +83,18 @@ namespace Bazel
         /// If <paramref name="env"/> contains RUNFILES_MANIFEST_ONLY=1, this method returns a manifest-based implementation.
         /// The manifest's path is defined by the RUNFILES_MANIFEST_FILE key's value in <paramref name="env"/>.
         ///
-        /// Otherwise this method returns a directory-based implementation. The directory's path is defined by the
-        /// value in <paramref name="env"/> under the RUNFILES_DIR key, or if absent, then under the JAVA_RUNFILES key.
+        /// If <paramref name="env"/> contains RUNFILES_DIR=<SOME_DIRECTORY> or JAVA_RUNFILES=<SOME_DIRECTORY>, 
+        /// this method returns a directory-based implementation.
+        ///
+        /// Otherwise this method tries to find a the manifest file based on the argv0 
+        /// If argv0 + ".runfiles/MANFIEST" exists RUNFILES_MANIFEST_FILE will be set to to that path
+        /// else if argv0 + ".runfiles_manifest" exists RUNFILES_MANIFEST_FILE will be set to to that path.
+        /// If argv0 + ".runfiles" exists RUNFILES_DIR will be set to to that path.
         ///
         /// Note about performance: the manifest-based implementation eagerly reads and caches the whole manifest file upon
         /// instantiation.
         /// </summary>
+        /// <param name="argv0">The first parameter to the running process. Usually the executable itself.</param>
         /// <param name="env">The environment variables to use.</param>
         /// <returns>A new <c>Runfiles</c> instance.</returns>
         /// <exception cref="System.IO.FileNotFoundException">
@@ -93,18 +102,52 @@ namespace Bazel
         /// "RUNFILES_MANIFEST_FILE", "RUNFILES_DIR", or "JAVA_RUNFILES" key in <paramref name="env"/> or their
         /// values are empty, or some IO error occurs
         /// </exception>
-        public static Runfiles Create(IDictionary<string, string> env)
+        public static Runfiles Create(string argv0, IDictionary<string, string> env)
         {
             if (isManifestOnly(env))
             {
                 // On Windows, Bazel sets RUNFILES_MANIFEST_ONLY=1.
                 // On every platform, Bazel also sets RUNFILES_MANIFEST_FILE, but on Linux and macOS it's
                 // faster to use RUNFILES_DIR.
-                return new ManifestBased(getManifestPath(env));
+
+                var manifestPath = getManifestPath(env);
+                if (!String.IsNullOrEmpty(manifestPath))
+                {
+                    return new ManifestBased(manifestPath);
+                }
+                else
+                {
+                    var argv0ManifestPath = getManifestPathFromArgv0(argv0);
+
+                    if (!String.IsNullOrEmpty(argv0ManifestPath))
+                    {
+                        return new ManifestBased(argv0ManifestPath);
+                    }
+
+                    throw new FileNotFoundException(
+                        "Cannot load runfiles manifest: $RUNFILES_MANIFEST_ONLY is 1 but"
+                            + " $RUNFILES_MANIFEST_FILE is empty or undefined");
+                }
             }
             else
             {
-                return new DirectoryBased(getRunfilesDir(env));
+                var runfilesDir = getRunfilesDir(env);
+                if (!String.IsNullOrEmpty(runfilesDir))
+                {
+                    return new DirectoryBased(runfilesDir);
+                }
+                else
+                {
+                    var argv0RunfilesDir = getRunfilesDirFromArgv0(argv0);
+                    if (!String.IsNullOrEmpty(argv0RunfilesDir))
+                    {
+                        return new DirectoryBased(argv0RunfilesDir);
+                    }
+                    else
+                    {
+                        throw new FileNotFoundException("Cannot find runfiles: $RUNFILES_DIR and $JAVA_RUNFILES are both unset or empty");
+                    }
+                }
             }
         }
 
@@ -153,20 +196,15 @@ namespace Bazel
 
         private static Boolean isManifestOnly(IDictionary<string, string> env)
         {
-            // TODO: make sure that this is correct
             env.TryGetValue("RUNFILES_MANIFEST_ONLY", out var value);
             return value == "1" ? true : false;
         }
 
+
         private static string getManifestPath(IDictionary<string, string> env)
         {
             env.TryGetValue("RUNFILES_MANIFEST_FILE", out var value);
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new FileNotFoundException(
-                    "Cannot load runfiles manifest: $RUNFILES_MANIFEST_ONLY is 1 but"
-                        + " $RUNFILES_MANIFEST_FILE is empty or undefined");
-            }
+
             return value;
         }
 
@@ -177,11 +215,71 @@ namespace Bazel
             {
                 env.TryGetValue("JAVA_RUNFILES", out value);
             }
-            if (String.IsNullOrEmpty(value))
-            {
-                throw new FileNotFoundException("Cannot find runfiles: $RUNFILES_DIR and $JAVA_RUNFILES are both unset or empty");
-            }
+
             return value;
+        }
+
+        private static String getManifestPathFromArgv0(string argv0)
+        {
+            if (String.IsNullOrEmpty(argv0))
+            {
+                return "";
+            }
+            else
+            {
+                var parentDir = Directory.GetParent(argv0).ToString();
+                var fileName = Path.GetFileName(argv0);
+                // We need to work around this issue: https://github.com/dotnet/runtime/issues/11305
+                if (Path.HasExtension(".dll"))
+                {
+                    var fileWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+                    fileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? fileWithoutExtension + ".exe" : fileWithoutExtension;
+                }
+
+                var manifest = Path.Combine(parentDir, fileName + ".runfiles", "MANIFEST");
+
+                if (File.Exists(manifest))
+                {
+                    return manifest;
+                }
+
+                manifest = Path.Combine(parentDir, fileName + ".runfiles_manifest");
+
+                if (File.Exists(manifest))
+                {
+                    return manifest;
+                }
+            }
+
+            return "";
+        }
+
+        private static String getRunfilesDirFromArgv0(string argv0)
+        {
+            if (String.IsNullOrEmpty(argv0))
+            {
+                return "";
+            }
+            else
+            {
+                var parentDir = Directory.GetParent(argv0).ToString();
+                var fileName = Path.GetFileName(argv0);
+                // We need to work around this issue: https://github.com/dotnet/runtime/issues/11305
+                if (Path.HasExtension(".dll"))
+                {
+                    var fileWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+                    fileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? fileWithoutExtension + ".exe" : fileWithoutExtension;
+                }
+
+                var runfilesDir = Path.Combine(parentDir, fileName + ".runfiles");
+
+                if (Directory.Exists(runfilesDir))
+                {
+                    return runfilesDir;
+                }
+            }
+
+            return "";
         }
 
         public abstract string RlocationChecked(string path);
@@ -275,7 +373,8 @@ namespace Bazel
                     throw new ArgumentException("Runfiles directory was null or empty");
                 }
 
-                if (!Directory.Exists(runfilesDir)) {
+                if (!Directory.Exists(runfilesDir))
+                {
                     throw new ArgumentException($"Runfiles directory did not exist: {runfilesDir}");
                 }
 

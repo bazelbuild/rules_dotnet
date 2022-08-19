@@ -2,26 +2,27 @@
 Rules for compiling F# binaries.
 """
 
+load("@bazel_skylib//lib:shell.bzl", "shell")
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "DotnetBinaryInfo", "DotnetPublishBinaryInfo")
 load("//dotnet/private:transitions/tfm_transition.bzl", "tfm_transition")
 load("//dotnet/private:rids.bzl", "RUNTIME_GRAPH")
 
 def _publish_binary_impl(ctx):
-    binary = ctx.attr.binary[0][DotnetBinaryInfo]
-
     publishing_pack = None
     if ctx.attr.self_contained == True:
         if ctx.attr.publishing_pack == None or len(ctx.attr.publishing_pack) == 0:
             fail("Can not publish self-contained binaries without a publishing pack")
         publishing_pack = depset(
             ctx.attr.publishing_pack[0][DotnetAssemblyInfo].lib +
+            ctx.attr.publishing_pack[0][DotnetAssemblyInfo].native +
             ctx.attr.publishing_pack[0][DotnetAssemblyInfo].data,
-            transitive = [ctx.attr.publishing_pack[0][DotnetAssemblyInfo].transitive_runfiles],
+            transitive = [ctx.attr.publishing_pack[0][DotnetAssemblyInfo].transitive_lib, ctx.attr.publishing_pack[0][DotnetAssemblyInfo].transitive_native, ctx.attr.publishing_pack[0][DotnetAssemblyInfo].transitive_data],
         )
 
     return [
+        ctx.attr.binary[0][DotnetAssemblyInfo],
+        ctx.attr.binary[0][DotnetBinaryInfo],
         DotnetPublishBinaryInfo(
-            binary_info = binary,
             publishing_pack = publishing_pack,
             target_framework = ctx.attr.target_framework,
             self_contained = ctx.attr.self_contained,
@@ -91,42 +92,90 @@ publish_binary = rule(
     cfg = tfm_transition,
 )
 
-def _copy_to_publish(ctx, runtime_identifier, app_host, runfiles, publishing_pack):
+def _to_manifest_path(ctx, file):
+    if file.short_path.startswith("../"):
+        return file.short_path[3:]
+    else:
+        return ctx.workspace_name + "/" + file.short_path
+
+def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, assembly_info):
+    command = """\
+    #! /usr/bin/env bash
+    set -eou pipefail
+
+    """
+    inputs = [binary_info.app_host]
+    outputs = []
     app_host_copy = ctx.actions.declare_file(
-        "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, app_host.basename),
+        "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, binary_info.app_host.basename),
     )
-    runfiles = runfiles.files.to_list()
-    inputs = [app_host]
+    command = command + "cp {} {}\n".format(shell.quote(binary_info.app_host.path), shell.quote(app_host_copy.path))
 
-    runfiles_copy = []
-    for file in runfiles:
-        inputs.append(file)
-        runfiles_copy.append(
-            ctx.actions.declare_file(
-                "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, file.basename),
-            ),
+    # All managed DLLs are copied next to the app host in the publish directory
+    for file in assembly_info.lib + assembly_info.transitive_lib.to_list():
+        output = ctx.actions.declare_file(
+            "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, file.basename),
         )
+        outputs.append(output)
+        inputs.append(file)
+        command = command + "cp {} {}\n".format(shell.quote(file.path), shell.quote(output.path))
 
-    if publishing_pack:
-        for file in publishing_pack.to_list():
-            runfiles_copy.append(ctx.actions.declare_file(file.basename, sibling = app_host_copy))
+    # When publishing a self-contained binary, we need to copy the native DLLs to the
+    # publish directory as well. If the binary is not self-contained, we need to copy
+    # the native files to a subfolder with the pattern `runtimes/<RID>/native/<file>`
+    # or `runtimes/<RID>/<TFM>/<file>`.
+    for file in assembly_info.native + assembly_info.transitive_native.to_list():
+        # TODO: Do correct folder structure for non-self-contained publishing
+        inputs.append(file)
+        output = ctx.actions.declare_file(
+            "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, file.basename),
+        )
+        outputs.append(output)
+        command = command + "cp {} {}\n".format(shell.quote(file.path), shell.quote(output.path))
+
+    # The data files put into the publish folder in a structure that works with
+    # the runfiles lib. End users should not expect files in the `data` attribute
+    # to be resolvable by relative paths. They need to use the runfiles lib.
+    #
+    # Since we want the published binary and all it's files to be easily extracted
+    # into e.g. a tar/zip/docker we manually create the runfiles structure because
+    # there are many sharp edges with extracting runfiles from Bazel. By manually
+    # creating the runfiles structure the runfiles are just normal files in the
+    # DefaultInfo provider and can thus be easily forwarded to filegroups/tars/containers.
+    #
+    # The runfiles library follows the spec and tries to find a `<DLL>.runfiles` directory
+    # next to the the DLL based on argv0 of the running process if
+    # RUNFILES_DIR/RUNFILES_MANIFEST_FILE/RUNFILES_MANIFEST_ONLY is not set).
+    for file in assembly_info.data + assembly_info.transitive_data.to_list():
+        inputs.append(file)
+        manifest_path = _to_manifest_path(ctx, file)
+        output = ctx.actions.declare_file(
+            "{}/publish/{}/{}.runfiles/{}".format(ctx.label.name, runtime_identifier, binary_info.app_host.basename, manifest_path),
+        )
+        outputs.append(output)
+        command = command + "cp {} {}\n".format(shell.quote(file.path), shell.quote(output.path))
+
+    # In case the publish is self-contained there needs to be a publishing pack available
+    # with the runtime dependencies that are required for the targeted runtime.
+    # The publishing pack contents should always be copied to the root of the publish folder
+    if publish_binary_info.publishing_pack:
+        for file in publish_binary_info.publishing_pack.to_list():
+            output = ctx.actions.declare_file(file.basename, sibling = app_host_copy)
+            outputs.append(output)
             inputs.append(file)
+            command = command + "cp {} {}\n".format(shell.quote(file.path), shell.quote(output.path))
 
-    args = ctx.actions.args()
-    args.add_all(inputs)
     ctx.actions.run_shell(
-        outputs = [app_host_copy] + runfiles_copy,
+        outputs = [app_host_copy] + outputs,
         inputs = inputs,
-        arguments = [args],
         # TODO: Windows version of this script
-        command = "set -euo pipefail && mkdir publish && for f in $@; do cp $f {}/$(basename $f); done".format(
-            app_host_copy.dirname,
-        ),
+        command = command,
     )
 
-    return (app_host_copy, runfiles_copy)
+    return (app_host_copy, outputs)
 
 # TODO: Reuse this when we create the runtimeconfig.json in the csharp_binary/fsharp_binary rules
+# For runtimeconfig.json spec see https://github.com/dotnet/sdk/blob/main/documentation/specs/runtime-configuration-file.md
 def _generate_runtimeconfig(ctx, output, target_framework, is_self_contained, toolchain):
     runtime_version = toolchain.dotnetinfo.runtime_version
     base = {
@@ -152,6 +201,7 @@ def _generate_runtimeconfig(ctx, output, target_framework, is_self_contained, to
     )
 
 # TODO: Reuse this when we create the deps.json in the csharp_binary/fsharp_binary rules
+# For deps.json spec see: https://github.com/dotnet/sdk/blob/main/documentation/specs/runtime-configuration-file.md
 def _generate_depsjson(
         ctx,
         output,
@@ -192,19 +242,20 @@ def _generate_depsjson(
     )
 
 def _publish_binary_wrapper_impl(ctx):
-    binary = ctx.attr.wrapped_target[0][DotnetPublishBinaryInfo].binary_info
-    target_framework = ctx.attr.wrapped_target[0][DotnetPublishBinaryInfo].target_framework
+    assembly_info = ctx.attr.wrapped_target[0][DotnetAssemblyInfo]
+    binary_info = ctx.attr.wrapped_target[0][DotnetBinaryInfo]
+    publish_binary_info = ctx.attr.wrapped_target[0][DotnetPublishBinaryInfo]
     runtime_identifier = ctx.attr.runtime_identifier
-    publishing_pack = ctx.attr.wrapped_target[0][DotnetPublishBinaryInfo].publishing_pack
-    is_self_contained = ctx.attr.wrapped_target[0][DotnetPublishBinaryInfo].self_contained
-    dll_name = binary.dll.basename.replace(".dll", "")
+    target_framework = publish_binary_info.target_framework
+    is_self_contained = publish_binary_info.self_contained
+    dll_name = binary_info.dll.basename.replace(".dll", "")
 
     (executable, runfiles) = _copy_to_publish(
         ctx,
         runtime_identifier,
-        binary.app_host,
-        binary.runfiles,
-        publishing_pack,
+        publish_binary_info,
+        binary_info,
+        assembly_info,
     )
 
     runtimeconfig = ctx.actions.declare_file("{}/publish/{}/{}.runtimeconfig.json".format(

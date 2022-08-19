@@ -144,12 +144,6 @@ def build_binary(ctx, compile_action):
     dotnet_binary_info = DotnetBinaryInfo(
         dll = dll,
         app_host = app_host,
-        runfiles = ctx.runfiles(
-            files = [dll] + result.data,
-            transitive_files = depset(transitive = [result.transitive_lib, result.transitive_native, result.transitive_data]),
-        ),
-        runtimeconfig = runtimeconfig,
-        depsjson = depsjson,
     )
 
     return [default_info, dotnet_binary_info, result]

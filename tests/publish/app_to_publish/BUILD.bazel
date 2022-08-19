@@ -1,0 +1,19 @@
+load(
+    "@rules_dotnet//dotnet:defs.bzl",
+    "csharp_binary",
+)
+
+csharp_binary(
+    name = "app_to_publish",
+    srcs = ["Main.cs"],
+    data = ["nested/runfiles/data-file"],
+    private_deps = [
+        "@rules_dotnet_test_deps//microsoft.netcore.app.ref",
+    ],
+    target_frameworks = ["net6.0"],
+    visibility = ["//tests/publish:__subpackages__"],
+    deps = [
+        "@rules_dotnet//tools/runfiles",
+        "@rules_dotnet_test_deps//libgit2sharp",
+    ],
+)

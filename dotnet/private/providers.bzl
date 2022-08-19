@@ -3,13 +3,13 @@
 DotnetAssemblyInfo = provider(
     doc = "A DLL or exe.",
     fields = {
-        "lib": "depset[File]: Runtime DLLs",
-        "native": "depset[File]: Native runtime files",
-        "ref": "depset[File]: Reference-only assemblies containing only public symbols. See docs/ReferenceAssemblies.md for more info.",
-        "iref": "depset[File]: Reference-only assemblies containing public and internal symbols. See docs/ReferenceAssemblies.md for more info.",
-        "analyzers": "depset[File]: Analyzer dlls",
+        "lib": "list[File]: Runtime DLLs",
+        "native": "list[File]: Native runtime files",
+        "ref": "list[File]: Reference-only assemblies containing only public symbols. See docs/ReferenceAssemblies.md for more info.",
+        "iref": "list[File]: Reference-only assemblies containing public and internal symbols. See docs/ReferenceAssemblies.md for more info.",
+        "analyzers": "list[File]: Analyzer dlls",
         "internals_visible_to": "list[string]: A list of assemblies that can use the assemblies listed in iref for compilation. See docs/ReferenceAssemblies.md for more info.",
-        "data": "depset[File]: Runtime data files",
+        "data": "list[File]: Runtime data files",
         "transitive_lib": "depset[File]: Transitive runtime DLLs",
         "transitive_native": "depset[File]: Transitive native runtime files",
         "transitive_data": "depset[File]: Transitive runtime data files",
@@ -32,16 +32,12 @@ DotnetBinaryInfo = provider(
     fields = {
         "app_host": "File: The apphost executable",
         "dll": "File: The main binary dll",
-        "runfiles": "depset[File]: The runfiles required by the binary",
-        "runtimeconfig": "File: An optional runtimeconfig.json",
-        "depsjson": "File: An optional deps.json",
     },
 )
 
 DotnetPublishBinaryInfo = provider(
     doc = "Information about a published .Net binary",
     fields = {
-        "binary_info": "DotnetBinaryInfo: Information about the binary",
         "publishing_pack": "depset[File]: The files that belong to the publishing pack",
         "target_framework": "string: The target framework of the published binary",
         "self_contained": "bool: True if the binary is self-contained",
