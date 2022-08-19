@@ -14,3 +14,11 @@ publish_binary(
     self_contained = True,
     target_framework = "net6.0",
 )
+
+sh_test(
+    name = "self_contained_test",
+    srcs = [
+        "test.sh",
+    ],
+    data = [":self_contained"],
+)

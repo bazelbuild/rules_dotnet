@@ -3,6 +3,7 @@ using LibGit2Sharp;
 using System;
 using System.IO;
 using System.Diagnostics;
+using System.Linq;
 
 namespace AppToPublish
 {
@@ -10,11 +11,6 @@ namespace AppToPublish
     {
         public static void Main()
         {
-            var process = Process.GetCurrentProcess();
-            Console.WriteLine($"Process args: {Environment.GetCommandLineArgs()[0]}");
-            Console.WriteLine($"Process args2: {System.Environment.ProcessPath}");
-            Console.WriteLine($"Process location: {process.MainModule.FileName}");
-
             // Make sure that runfiles work when publishing
             var runfiles = Runfiles.Create();
             var dataFilePath = runfiles.Rlocation("rules_dotnet/tests/publish/app_to_publish/nested/runfiles/data-file");

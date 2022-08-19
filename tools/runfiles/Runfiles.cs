@@ -109,7 +109,6 @@ namespace Bazel
                 // On Windows, Bazel sets RUNFILES_MANIFEST_ONLY=1.
                 // On every platform, Bazel also sets RUNFILES_MANIFEST_FILE, but on Linux and macOS it's
                 // faster to use RUNFILES_DIR.
-
                 var manifestPath = getManifestPath(env);
                 if (!String.IsNullOrEmpty(manifestPath))
                 {
