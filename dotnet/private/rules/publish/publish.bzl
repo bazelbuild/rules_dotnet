@@ -101,8 +101,6 @@ def _to_manifest_path(ctx, file):
 def _copy_file(script_body, src, dst, is_windows):
     if is_windows:
         script_body.append("@copy /Y \"{src}\" \"{dst}\" >NUL".format(src = src.path.replace("/", "\\"), dst = dst.path.replace("/", "\\")))
-    elif src.dirname == dst.dirname:
-        script_body.append("cp -f {src} {dst}".format(src = shell.quote(src.path), dst = shell.quote(dst.path)))
     else:
         script_body.append("mkdir -p {dir} && cp -f {src} {dst}".format(dir = shell.quote(dst.dirname), src = shell.quote(src.path), dst = shell.quote(dst.path)))
 
