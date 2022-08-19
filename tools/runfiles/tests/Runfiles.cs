@@ -145,58 +145,59 @@ public sealed class RunfilesTest
                 Assert.Null(r.Rlocation("foo"));
             }
         }
-
-
-        var relativeManifestPath = "some.runfiles/MANIFEST";
-        using (MockFile mf = new MockFile(new string[1] { "a/b c/d" }, relativeManifestPath))
+        else
         {
-            var r =
-                Runfiles.Create(
-                    Path.Combine(Directory.GetParent(Directory.GetParent(mf.Path).ToString()).ToString(), "some.dll"),
-                    new Dictionary<string, string>{
+            var relativeManifestPath = "some.runfiles/MANIFEST";
+            using (MockFile mf = new MockFile(new string[1] { "a/b c/d" }, relativeManifestPath))
+            {
+                var r =
+                    Runfiles.Create(
+                        Path.Combine(Directory.GetParent(Directory.GetParent(mf.Path).ToString()).ToString(), "some.dll"),
+                        new Dictionary<string, string>{
                        {"RUNFILES_MANIFEST_ONLY", "1"},
                        {"TEST_SRCDIR", "should always be ignored"}});
-            Assert.AreEqual("c/d", r.Rlocation("a/b"));
-            Assert.Null(r.Rlocation("foo"));
-        }
+                Assert.AreEqual("c/d", r.Rlocation("a/b"));
+                Assert.Null(r.Rlocation("foo"));
+            }
 
-        relativeManifestPath = "some.runfiles/MANIFEST";
-        using (MockFile mf = new MockFile(new string[1] { "a/b c/d" }, relativeManifestPath))
-        {
-            var r =
-                Runfiles.Create(
-                    Path.Combine(Directory.GetParent(Directory.GetParent(mf.Path).ToString()).ToString(), "some"),
-                    new Dictionary<string, string>{
+            relativeManifestPath = "some.runfiles/MANIFEST";
+            using (MockFile mf = new MockFile(new string[1] { "a/b c/d" }, relativeManifestPath))
+            {
+                var r =
+                    Runfiles.Create(
+                        Path.Combine(Directory.GetParent(Directory.GetParent(mf.Path).ToString()).ToString(), "some"),
+                        new Dictionary<string, string>{
                        {"RUNFILES_MANIFEST_ONLY", "1"},
                        {"TEST_SRCDIR", "should always be ignored"}});
-            Assert.AreEqual("c/d", r.Rlocation("a/b"));
-            Assert.Null(r.Rlocation("foo"));
-        }
+                Assert.AreEqual("c/d", r.Rlocation("a/b"));
+                Assert.Null(r.Rlocation("foo"));
+            }
 
-        relativeManifestPath = "some.runfiles_manifest";
-        using (MockFile mf = new MockFile(new string[1] { "a/b c/d" }, relativeManifestPath))
-        {
-            var r =
-                Runfiles.Create(
-                    Path.Combine(Directory.GetParent(mf.Path).ToString(), "some.dll"),
-                    new Dictionary<string, string>{
+            relativeManifestPath = "some.runfiles_manifest";
+            using (MockFile mf = new MockFile(new string[1] { "a/b c/d" }, relativeManifestPath))
+            {
+                var r =
+                    Runfiles.Create(
+                        Path.Combine(Directory.GetParent(mf.Path).ToString(), "some.dll"),
+                        new Dictionary<string, string>{
                        {"RUNFILES_MANIFEST_ONLY", "1"},
                        {"TEST_SRCDIR", "should always be ignored"}});
-            Assert.AreEqual("c/d", r.Rlocation("a/b"));
-            Assert.Null(r.Rlocation("foo"));
-        }
+                Assert.AreEqual("c/d", r.Rlocation("a/b"));
+                Assert.Null(r.Rlocation("foo"));
+            }
 
-        relativeManifestPath = "some.runfiles_manifest";
-        using (MockFile mf = new MockFile(new string[1] { "a/b c/d" }, relativeManifestPath))
-        {
-            var r =
-                Runfiles.Create(
-                    Path.Combine(Directory.GetParent(mf.Path).ToString(), "some"),
-                    new Dictionary<string, string>{
+            relativeManifestPath = "some.runfiles_manifest";
+            using (MockFile mf = new MockFile(new string[1] { "a/b c/d" }, relativeManifestPath))
+            {
+                var r =
+                    Runfiles.Create(
+                        Path.Combine(Directory.GetParent(mf.Path).ToString(), "some"),
+                        new Dictionary<string, string>{
                        {"RUNFILES_MANIFEST_ONLY", "1"},
                        {"TEST_SRCDIR", "should always be ignored"}});
-            Assert.AreEqual("c/d", r.Rlocation("a/b"));
-            Assert.Null(r.Rlocation("foo"));
+                Assert.AreEqual("c/d", r.Rlocation("a/b"));
+                Assert.Null(r.Rlocation("foo"));
+            }
         }
     }
 
@@ -228,29 +229,32 @@ public sealed class RunfilesTest
             StringAssert.EndsWith("a/b", rWindows.Rlocation("a/b"));
             StringAssert.EndsWith("foo", rWindows.Rlocation("/foo"));
         }
+        else
+        {
 
-        var dir = createTempDirectory();
-        Directory.CreateDirectory(Path.Combine(dir, "some.runfiles"));
+            var dir = createTempDirectory();
+            Directory.CreateDirectory(Path.Combine(dir, "some.runfiles"));
 
-        var r =
-            Runfiles.Create(
-                Path.Combine(dir, "some.dll"),
-                new Dictionary<string, string> {
+            var r =
+                Runfiles.Create(
+                    Path.Combine(dir, "some.dll"),
+                    new Dictionary<string, string> {
                     {"RUNFILES_MANIFEST_FILE", "ignored when RUNFILES_MANIFEST_ONLY is not set to 1"},
                     {"TEST_SRCDIR", "should always be ignored"} });
 
-        StringAssert.EndsWith("a/b", r.Rlocation("a/b"));
-        StringAssert.EndsWith("foo", r.Rlocation("/foo"));
+            StringAssert.EndsWith("a/b", r.Rlocation("a/b"));
+            StringAssert.EndsWith("foo", r.Rlocation("/foo"));
 
-        r =
-            Runfiles.Create(
-                Path.Combine(dir, "some"),
-                new Dictionary<string, string> {
+            r =
+                Runfiles.Create(
+                    Path.Combine(dir, "some"),
+                    new Dictionary<string, string> {
                     {"RUNFILES_MANIFEST_FILE", "ignored when RUNFILES_MANIFEST_ONLY is not set to 1"},
                     {"TEST_SRCDIR", "should always be ignored"} });
 
-        StringAssert.EndsWith("a/b", r.Rlocation("a/b"));
-        StringAssert.EndsWith("foo", r.Rlocation("/foo"));
+            StringAssert.EndsWith("a/b", r.Rlocation("a/b"));
+            StringAssert.EndsWith("foo", r.Rlocation("/foo"));
+        }
     }
 
     [Test]
