@@ -2,7 +2,7 @@
 Rules for compiling F# binaries.
 """
 
-load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file_action")
+load("@bazel_skylib//lib:shell.bzl", "shell")
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "DotnetBinaryInfo", "DotnetPublishBinaryInfo")
 load("//dotnet/private:transitions/tfm_transition.bzl", "tfm_transition")
 load("//dotnet/private:rids.bzl", "RUNTIME_GRAPH")
@@ -98,6 +98,14 @@ def _to_manifest_path(ctx, file):
     else:
         return ctx.workspace_name + "/" + file.short_path
 
+def _copy_file(script_body, src, dst, is_windows):
+    if is_windows:
+        script_body.append("@copy /Y \"{src}\" \"{dst}\" >NUL".format(src = src.path.replace("/", "\\"), dst = dst.path.replace("/", "\\")))
+    elif src.dirname == dst.dirname:
+        script_body.append("cp -f {src} {dst}".format(src = shell.quote(src.path), dst = shell.quote(dst.path)))
+    else:
+        script_body.append("mkdir -p {dir} && cp -f {src} {dst}".format(dir = shell.quote(dst.dirname), src = shell.quote(src.path), dst = shell.quote(dst.path)))
+
 def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, assembly_info):
     is_windows = ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo])
     inputs = [binary_info.app_host]
@@ -105,8 +113,9 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
         "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, binary_info.app_host.basename),
     )
     outputs = [app_host_copy]
+    script_body = []
 
-    copy_file_action(ctx, binary_info.app_host, app_host_copy, is_windows = is_windows)
+    _copy_file(script_body, binary_info.app_host, app_host_copy, is_windows = is_windows)
 
     # All managed DLLs are copied next to the app host in the publish directory
     for file in assembly_info.lib + assembly_info.transitive_lib.to_list():
@@ -115,7 +124,7 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
         )
         outputs.append(output)
         inputs.append(file)
-        copy_file_action(ctx, file, output, is_windows = is_windows)
+        _copy_file(script_body, file, output, is_windows = is_windows)
 
     # When publishing a self-contained binary, we need to copy the native DLLs to the
     # publish directory as well. If the binary is not self-contained, we need to copy
@@ -128,7 +137,7 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
             "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, file.basename),
         )
         outputs.append(output)
-        copy_file_action(ctx, file, output, is_windows = is_windows)
+        _copy_file(script_body, file, output, is_windows = is_windows)
 
     # The data files put into the publish folder in a structure that works with
     # the runfiles lib. End users should not expect files in the `data` attribute
@@ -150,7 +159,7 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
             "{}/publish/{}/{}.runfiles/{}".format(ctx.label.name, runtime_identifier, binary_info.app_host.basename, manifest_path),
         )
         outputs.append(output)
-        copy_file_action(ctx, file, output, is_windows = is_windows)
+        _copy_file(script_body, file, output, is_windows = is_windows)
 
     # In case the publish is self-contained there needs to be a publishing pack available
     # with the runtime dependencies that are required for the targeted runtime.
@@ -160,7 +169,21 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
             output = ctx.actions.declare_file(file.basename, sibling = app_host_copy)
             outputs.append(output)
             inputs.append(file)
-            copy_file_action(ctx, file, output, is_windows = is_windows)
+            _copy_file(script_body, file, output, is_windows = is_windows)
+
+    copy_script = ctx.actions.declare_file(ctx.label.name + ".copy.sh")
+    ctx.actions.write(
+        output = copy_script,
+        content = "\r\n".join(script_body) if is_windows else "\n".join(script_body),
+        is_executable = True,
+    )
+
+    ctx.actions.run(
+        outputs = outputs,
+        inputs = inputs,
+        executable = copy_script,
+        tools = [copy_script],
+    )
 
     return (app_host_copy, outputs)
 
