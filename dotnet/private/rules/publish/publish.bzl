@@ -330,16 +330,6 @@ publish_binary_wrapper = rule(
                   "See https://docs.microsoft.com/en-us/dotnet/core/rid-catalog",
             mandatory = True,
         ),
-        "_runtimeconfig_self_contained_template": attr.label(
-            doc = "A template file to use for generating runtimeconfig.json without the manifest loader",
-            default = ":runtimeconfig_self_contained.json.tpl",
-            allow_single_file = True,
-        ),
-        "_runtimeconfig_not_self_contained_template": attr.label(
-            doc = "A template file to use for generating runtimeconfig.json without the manifest loader",
-            default = ":runtimeconfig_not_self_contained.json.tpl",
-            allow_single_file = True,
-        ),
         "_allowlist_function_transition": attr.label(
             default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
         ),

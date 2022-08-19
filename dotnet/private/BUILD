@@ -8,8 +8,6 @@ exports_files([
     "nunit/shim.cs",
     "nunit/shim.fs",
     "runtimeconfig.json.tpl",
-    "runtimeconfig_not_self_contained.json.tpl",
-    "runtimeconfig_self_contained.json.tpl",
     "deps.json.tpl",
     "launcher.sh.tpl",
     "launcher.bat.tpl",
