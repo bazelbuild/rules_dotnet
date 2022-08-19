@@ -15,6 +15,7 @@ load(
 )
 load("//dotnet/private:actions/misc.bzl", "framework_preprocessor_symbols", "write_internals_visible_to_csharp")
 
+# buildifier: disable=unnamed-macro
 def AssemblyAction(
         actions,
         additionalfiles,

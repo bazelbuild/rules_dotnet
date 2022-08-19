@@ -26,6 +26,7 @@ def _format_targetprofile(tfm):
 
     return "/targetprofile:mscorlib"
 
+# buildifier: disable=unnamed-macro
 def AssemblyAction(
         actions,
         debug,

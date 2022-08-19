@@ -2,6 +2,7 @@
 
 load("//tests/nuget_structure:common.bzl", "nuget_structure_test", "nuget_test_wrapper")
 
+# buildifier: disable=unnamed-macro
 def typeproviders_structure():
     "Tests for the typeproviders folder"
     nuget_test_wrapper(

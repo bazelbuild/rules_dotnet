@@ -1,7 +1,11 @@
 "Common functionality for nuget structure tests"
 
 load("@bazel_skylib//lib:unittest.bzl", "analysistest", "asserts")
+
+# buildifier: disable=bzl-visibility
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "NuGetInfo")
+
+# buildifier: disable=bzl-visibility
 load("//dotnet/private:transitions/tfm_transition.bzl", "tfm_transition")
 
 def _get_nuget_relative_paths(files):

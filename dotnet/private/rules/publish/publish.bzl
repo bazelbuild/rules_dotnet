@@ -229,6 +229,7 @@ def _generate_depsjson(
 
     if runtime_identifier:
         if runtime_pack:
+            # buildifier: disable=print
             print("TODO!")
 
         if is_self_contained:
