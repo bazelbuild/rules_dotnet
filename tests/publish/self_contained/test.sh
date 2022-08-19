@@ -8,6 +8,21 @@ export JAVA_RUNFILES=""
 export RUNFILES_MANIFEST_FILE=""
 export RUNFILES_MANIFEST_ONLY=""
 
+# MacOS does not have readlink -f so we need to do some bash hacking
+realpath_macos() (
+  OURPWD=$PWD
+  cd "$(dirname "$1")"
+  LINK=$(readlink "$(basename "$1")")
+  while [ "$LINK" ]; do
+    cd "$(dirname "$LINK")"
+    LINK=$(readlink "$(basename "$1")")
+  done
+  REALPATH="$PWD/$(basename "$1")"
+  cd "$OURPWD"
+  echo "$REALPATH"
+)
+realpath_macos "$@"
+
 # Since we are in the runfiles tree of the sh_test target the binary
 # is a symlink to the actual binary. We follow the symlink to the
 # actual binary so that we can emulate starting outside runfiles
@@ -15,10 +30,10 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     bin=$(readlink -f ./tests/publish/self_contained/self_contained/publish/linux-x64/app_to_publish)
     $bin
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    bin=$(readlink -f ./tests/publish/self_contained/self_contained/publish/osx-x64/app_to_publish)
+    bin=$(realpath_macos ./tests/publish/self_contained/self_contained/publish/osx-x64/app_to_publish)
     $bin
 elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "win32" ]]; then
-    bin=$(readlink -f ./tests/publish/self_contained/self_contained/publish/win-x64/app_to_publish)
+    bin=$(realpath_macos ./tests/publish/self_contained/self_contained/publish/win-x64/app_to_publish)
     $bin
 else
     echo "Could not figure out which OS is running the test"
