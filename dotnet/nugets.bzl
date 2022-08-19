@@ -4,6 +4,7 @@ This is in a separate bzl from repositories.bzl because nuget_repo uses
 the dependencies that repositories.bzl declares and thus they have to
 be loaded before the NuGet dependencies are loaded
 """
+
 load("//tools/paket2bazel/deps:paket.bzl", "paket")
 load("//dotnet/private:rules/nuget/nuget_repo.bzl", "nuget_repo")
 
