@@ -32,7 +32,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     bin=$(realpath_macos ./tests/publish/self_contained/self_contained/publish/osx-x64/app_to_publish)
     $bin
 elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "win32" ]]; then
-    bin=$(realpath_macos ./tests/publish/self_contained/self_contained/publish/win-x64/app_to_publish)
+    bin=$(readlink -f ./tests/publish/self_contained/self_contained/publish/win-x64/app_to_publish)
     $bin
 else
     echo "Could not figure out which OS is running the test"
