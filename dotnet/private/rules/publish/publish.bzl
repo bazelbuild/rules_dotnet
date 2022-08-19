@@ -2,7 +2,7 @@
 Rules for compiling F# binaries.
 """
 
-load("@bazel_skylib//lib:shell.bzl", "shell")
+load("@aspect_bazel_lib//lib:copy_file.bzl", "copy_file_action")
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "DotnetBinaryInfo", "DotnetPublishBinaryInfo")
 load("//dotnet/private:transitions/tfm_transition.bzl", "tfm_transition")
 load("//dotnet/private:rids.bzl", "RUNTIME_GRAPH")
@@ -99,17 +99,13 @@ def _to_manifest_path(ctx, file):
         return ctx.workspace_name + "/" + file.short_path
 
 def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, assembly_info):
-    command = """\
-    #! /usr/bin/env bash
-    set -eou pipefail
-
-    """
+    is_windows = ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo])
     inputs = [binary_info.app_host]
     outputs = []
     app_host_copy = ctx.actions.declare_file(
         "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, binary_info.app_host.basename),
     )
-    command = command + "cp {} {}\n".format(shell.quote(binary_info.app_host.path), shell.quote(app_host_copy.path))
+    copy_file_action(ctx, binary_info.app_host, app_host_copy, is_windows = is_windows)
 
     # All managed DLLs are copied next to the app host in the publish directory
     for file in assembly_info.lib + assembly_info.transitive_lib.to_list():
@@ -118,7 +114,7 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
         )
         outputs.append(output)
         inputs.append(file)
-        command = command + "cp {} {}\n".format(shell.quote(file.path), shell.quote(output.path))
+        copy_file_action(ctx, file, output, is_windows = is_windows)
 
     # When publishing a self-contained binary, we need to copy the native DLLs to the
     # publish directory as well. If the binary is not self-contained, we need to copy
@@ -131,7 +127,7 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
             "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, file.basename),
         )
         outputs.append(output)
-        command = command + "cp {} {}\n".format(shell.quote(file.path), shell.quote(output.path))
+        copy_file_action(ctx, file, output, is_windows = is_windows)
 
     # The data files put into the publish folder in a structure that works with
     # the runfiles lib. End users should not expect files in the `data` attribute
@@ -153,7 +149,7 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
             "{}/publish/{}/{}.runfiles/{}".format(ctx.label.name, runtime_identifier, binary_info.app_host.basename, manifest_path),
         )
         outputs.append(output)
-        command = command + "cp {} {}\n".format(shell.quote(file.path), shell.quote(output.path))
+        copy_file_action(ctx, file, output, is_windows = is_windows)
 
     # In case the publish is self-contained there needs to be a publishing pack available
     # with the runtime dependencies that are required for the targeted runtime.
@@ -163,14 +159,7 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
             output = ctx.actions.declare_file(file.basename, sibling = app_host_copy)
             outputs.append(output)
             inputs.append(file)
-            command = command + "cp {} {}\n".format(shell.quote(file.path), shell.quote(output.path))
-
-    ctx.actions.run_shell(
-        outputs = [app_host_copy] + outputs,
-        inputs = inputs,
-        # TODO: Windows version of this script
-        command = command,
-    )
+            copy_file_action(ctx, file, output, is_windows = is_windows)
 
     return (app_host_copy, outputs)
 
@@ -331,6 +320,7 @@ publish_binary_wrapper = rule(
         "_allowlist_function_transition": attr.label(
             default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
         ),
+        "_windows_constraint": attr.label(default = "@platforms//os:windows"),
     },
     toolchains = [
         "@rules_dotnet//dotnet:toolchain_type",
