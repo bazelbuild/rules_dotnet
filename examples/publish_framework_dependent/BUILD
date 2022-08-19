@@ -1,0 +1,26 @@
+load(
+    "@rules_dotnet//dotnet:defs.bzl",
+    "csharp_binary",
+    "publish_binary",
+)
+
+csharp_binary(
+    name = "hello",
+    srcs = ["hello.cs"],
+    private_deps = [
+        "@example_deps//microsoft.netcore.app.ref",
+    ],
+    target_frameworks = ["net6.0"],
+    deps = [
+    ],
+)
+
+# Note: Since this is not a self_contained publish you need to have the .Net runtime installed
+# on you host machine with the DOTNET_ROOT environment variable set to its location to be
+# able to bazel run this target.
+publish_binary(
+    name = "publish_dependent",
+    binary = ":hello",
+    self_contained = False,
+    target_framework = "net6.0",
+)

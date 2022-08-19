@@ -15,16 +15,6 @@ csharp_binary(
     ],
 )
 
-# Note: Since this is not a self_contained publish you need to have the .Net runtime installed
-# on you host machine with the DOTNET_ROOT environment variable set to its location to be
-# able to bazel run this target.
-publish_binary(
-    name = "publish_not_self_contained",
-    binary = ":hello",
-    self_contained = False,
-    target_framework = "net6.0",
-)
-
 publish_binary(
     name = "publish_self_contained",
     binary = ":hello",
