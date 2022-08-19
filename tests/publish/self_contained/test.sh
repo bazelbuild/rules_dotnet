@@ -21,7 +21,6 @@ realpath_macos() (
   cd "$OURPWD"
   echo "$REALPATH"
 )
-realpath_macos "$@"
 
 # Since we are in the runfiles tree of the sh_test target the binary
 # is a symlink to the actual binary. We follow the symlink to the
