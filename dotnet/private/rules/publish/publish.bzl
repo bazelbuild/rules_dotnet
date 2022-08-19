@@ -171,7 +171,7 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
             inputs.append(file)
             _copy_file(script_body, file, output, is_windows = is_windows)
 
-    copy_script = ctx.actions.declare_file(ctx.label.name + ".copy.sh")
+    copy_script = ctx.actions.declare_file(ctx.label.name + ".copy.bat" if is_windows else ctx.label.name + ".copy.sh")
     ctx.actions.write(
         output = copy_script,
         content = "\r\n".join(script_body) if is_windows else "\n".join(script_body),
