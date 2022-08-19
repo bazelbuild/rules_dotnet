@@ -101,10 +101,11 @@ def _to_manifest_path(ctx, file):
 def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, assembly_info):
     is_windows = ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo])
     inputs = [binary_info.app_host]
-    outputs = []
     app_host_copy = ctx.actions.declare_file(
         "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, binary_info.app_host.basename),
     )
+    outputs = [app_host_copy]
+
     copy_file_action(ctx, binary_info.app_host, app_host_copy, is_windows = is_windows)
 
     # All managed DLLs are copied next to the app host in the publish directory

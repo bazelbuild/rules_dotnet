@@ -8,16 +8,18 @@ export JAVA_RUNFILES=""
 export RUNFILES_MANIFEST_FILE=""
 export RUNFILES_MANIFEST_ONLY=""
 
+# Since we are in the runfiles tree of the sh_test target the binary
+# is a symlink to the actual binary. We follow the symlink to the
+# actual binary so that we can emulate starting outside runfiles
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    ./tests/publish/self_contained/self_contained/publish/linux-x64/app_to_publish
+    bin=$(readlink -f ./tests/publish/self_contained/self_contained/publish/linux-x64/app_to_publish)
+    $bin
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    ./tests/publish/self_contained/self_contained/publish/osx-x64/app_to_publish
-elif [[ "$OSTYPE" == "cygwin" ]]; then
-    ./tests/publish/self_contained/self_contained/publish/win-x64/app_to_publish
-elif [[ "$OSTYPE" == "msys" ]]; then
-    ./tests/publish/self_contained/self_contained/publish/win-x64/app_to_publish
-elif [[ "$OSTYPE" == "win32" ]]; then
-    ./tests/publish/self_contained/self_contained/publish/win-x64/app_to_publish
+    bin=$(readlink -f ./tests/publish/self_contained/self_contained/publish/osx-x64/app_to_publish)
+    $bin
+elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "win32" ]]; then
+    bin=$(readlink -f ./tests/publish/self_contained/self_contained/publish/win-x64/app_to_publish)
+    $bin
 else
     echo "Could not figure out which OS is running the test"
     exit 1
