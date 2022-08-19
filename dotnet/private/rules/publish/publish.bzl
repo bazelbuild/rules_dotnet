@@ -283,7 +283,7 @@ def _publish_binary_wrapper_impl(ctx):
         DefaultInfo(
             executable = executable,
             files = depset([executable, runtimeconfig] + runfiles + depsjson),
-            runfiles = ctx.runfiles([executable, runtimeconfig] + runfiles + depsjson)
+            runfiles = ctx.runfiles([executable, runtimeconfig] + runfiles + depsjson),
         ),
     ]
 
