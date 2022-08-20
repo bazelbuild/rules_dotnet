@@ -228,12 +228,10 @@ namespace Bazel
             {
                 var parentDir = Directory.GetParent(argv0).ToString();
                 var fileName = Path.GetFileName(argv0);
+                
                 // We need to work around this issue: https://github.com/dotnet/runtime/issues/11305
-                if (Path.HasExtension(".dll"))
-                {
-                    var fileWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
-                    fileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? fileWithoutExtension + ".exe" : fileWithoutExtension;
-                }
+                var fileWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+                fileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? fileWithoutExtension + ".exe" : fileWithoutExtension;
 
                 var manifest = Path.Combine(parentDir, fileName + ".runfiles", "MANIFEST");
 
@@ -263,12 +261,10 @@ namespace Bazel
             {
                 var parentDir = Directory.GetParent(argv0).ToString();
                 var fileName = Path.GetFileName(argv0);
+
                 // We need to work around this issue: https://github.com/dotnet/runtime/issues/11305
-                if (Path.HasExtension(".dll"))
-                {
-                    var fileWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
-                    fileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? fileWithoutExtension + ".exe" : fileWithoutExtension;
-                }
+                var fileWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+                fileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? fileWithoutExtension + ".exe" : fileWithoutExtension;
 
                 var runfilesDir = Path.Combine(parentDir, fileName + ".runfiles");
 

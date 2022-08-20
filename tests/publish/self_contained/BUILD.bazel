@@ -15,10 +15,21 @@ publish_binary(
     target_framework = "net6.0",
 )
 
+# We need an itermediary target since sh_test only accepts
+# a single .sh file in srcs. We are also using srcs instead
+# of data because we want to test the output from the publish
+# without interference from Bazel's runfile handling
+sh_library(
+    name = "test_lib",
+    srcs = [
+        ":self_contained"
+    ]
+)
+
 sh_test(
     name = "self_contained_test",
     srcs = [
         "test.sh",
     ],
-    data = [":self_contained"],
+    deps = [":test_lib"],
 )
