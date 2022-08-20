@@ -12,9 +12,9 @@ export RUNFILES_MANIFEST_ONLY=""
 # is a symlink to the actual binary. We follow the symlink to the
 # actual binary so that we can emulate starting outside runfiles
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    ./tests/publish/self_contained/self_contained/publish/linux-x64/app_to_publish.exe
+    ./tests/publish/self_contained/self_contained/publish/linux-x64/app_to_publish
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    ./tests/publish/self_contained/self_contained/publish/osx-x64/app_to_publish.exe
+    ./tests/publish/self_contained/self_contained/publish/osx-x64/app_to_publish
 elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "win32" ]]; then
     ./tests/publish/self_contained/self_contained/publish/win-x64/app_to_publish.exe
 else

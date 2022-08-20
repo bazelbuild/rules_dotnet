@@ -22,8 +22,8 @@ publish_binary(
 sh_library(
     name = "test_lib",
     srcs = [
-        ":self_contained"
-    ]
+        ":self_contained",
+    ],
 )
 
 sh_test(
