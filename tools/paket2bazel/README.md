@@ -20,7 +20,7 @@ Then you needs to run `paket2bazel` to generate the `paket.bzl` file which will 
 loaded in your `WORKSPACE` file.
 
 ```sh
-bazel run @rules_dotnet//tools/paket2bazel:paket2bazel.exe -- --dependencies-file $(pwd)/paket.dependencies  --output-folder $(pwd)/deps --config $(pwd)/paket2bazel.config.json
+bazel run @rules_dotnet//tools/paket2bazel:paket2bazel.exe -- --dependencies-file $(pwd)/paket.dependencies  --output-folder $(pwd)/deps
 ```
 Next you need to add the following to your `WORKSPACE` file
 
@@ -42,22 +42,3 @@ If you are using groups in your `paket.dependencies` file:
 ```
 
 Full examples can be seen in the `examples/paket` directory in this repository.
-
-## Config file
-`paket2bazel` supports a config file that allows overriding the generated BUILD file
-for the NuGet packages. This can be very useful when you have NuGet packages that have
-unique folder structures.
-
-The schema of the config file looks like this:
-```json
-{
-    "packageOverrides": {
-        "FSharp.Data": {
-            "buildFile": "@workspace_name//3rdparty/nuget/custom_build_files:fsharp.data.BUILD"
-        },
-        "prometheus-net": {
-            "buildFile": "@workspace_name//3rdparty/nuget/custom_build_files:prometheus-net.BUILD"
-        }
-    }
-}
-```

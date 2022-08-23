@@ -92,7 +92,7 @@ let getOverrides (packageName: string) (packageVersion: string) (packageReader: 
         )
     |> Option.defaultValue [||]
 
-let getDependencies dependenciesFile (config: Config) (cache: Dictionary<string, Package>) =
+let getDependencies dependenciesFile (cache: Dictionary<string, Package>) =
     let maybeDeps = Dependencies.TryLocate(dependenciesFile)
 
     match maybeDeps with
@@ -140,10 +140,6 @@ let getDependencies dependenciesFile (config: Config) (cache: Dictionary<string,
                                   group = group
                                   sha512sri = sha256
                                   version = NuGetVersion.Parse(version).ToFullString()
-                                  buildFileOverride =
-                                    config.packageOverrides
-                                    |> Option.bind (fun i -> i.GetValueOrDefault(name, None))
-                                    |> Option.map (fun o -> o.buildFile)
                                   dependencies =
                                     getDependenciesPerTFM
                                         tfms

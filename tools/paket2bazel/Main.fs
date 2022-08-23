@@ -13,27 +13,12 @@ open System.Text.Json.Serialization
 type CliArguments =
     | [<Mandatory>] Dependencies_File of path: string
     | [<Mandatory>] Output_Folder of path: string
-    | Config of path: string
 
     interface IArgParserTemplate with
         member s.Usage =
             match s with
             | Dependencies_File _ -> "Path to paket.dependencies file"
             | Output_Folder _ -> "Folder where the output will be generated in"
-            | Config _ -> "Configuration file in JSON format for per dependency overrides"
-
-let getConfig (results: ParseResults<CliArguments>) =
-    let options : JsonSerializerOptions =
-        let options = JsonSerializerOptions()
-        options.Converters.Add(JsonFSharpConverter())
-        options.PropertyNamingPolicy <- JsonNamingPolicy.CamelCase
-        options
-
-    let json =
-        Path.GetFullPath(results.GetResult Config)
-        |> File.ReadAllText
-
-    JsonSerializer.Deserialize<Config>(json, options)
 
 [<EntryPoint>]
 let main argv =
@@ -55,12 +40,10 @@ let main argv =
 
     let outputFolder = results.GetResult Output_Folder
 
-    let config = getConfig results
-
     let cache = Dictionary<string, Package>()
 
     let groups =
-        getDependencies dependenciesFile config cache
+        getDependencies dependenciesFile cache
 
 
     let bazelFile = generateBazelFile groups
