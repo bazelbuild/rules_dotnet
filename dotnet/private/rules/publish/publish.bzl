@@ -221,6 +221,7 @@ def _generate_depsjson(
         target_framework,
         is_self_contained,
         runtime_deps,
+        transitive_runtime_deps,
         runtime_identifier = None,
         runtime_pack_info = None):
     runtime_target = ".NETCoreApp,Version=v{}".format(
@@ -260,18 +261,13 @@ def _generate_depsjson(
     else:
         base["libraries"][".NETCoreApp,Version=v{}".format(target_framework.replace("net", ""))] = {}
 
-    for runtime_dep in runtime_deps.to_list():
+    for runtime_dep in runtime_deps + transitive_runtime_deps.to_list():
         library_name = "{}/{}".format(runtime_dep.assembly_info.name, runtime_dep.assembly_info.version)
 
         library_fragment = {
             "type": "project",
             "serviceable": False,
             "sha512": "",
-        }
-
-        target_fragment = {
-            "runtime": {dll.basename: {} for dll in runtime_dep.assembly_info.lib},
-            "native": {native_file.basename: {} for native_file in runtime_dep.assembly_info.native},
         }
 
         if runtime_dep.nuget_info:
@@ -281,6 +277,12 @@ def _generate_depsjson(
             library_fragment["path"] = library_name.lower()
             library_fragment["hashPath"] = "{}.{}.nupkg.sha512".format(runtime_dep.assembly_info.name.lower(), runtime_dep.assembly_info.version)
 
+        target_fragment = {
+            "runtime": {dll.basename: {} for dll in runtime_dep.assembly_info.lib},
+            "native": {native_file.basename: {} for native_file in runtime_dep.assembly_info.native},
+            "dependencies": {dep.assembly_info.name: dep.assembly_info.version for dep in runtime_dep.assembly_info.runtime_deps},
+        }
+
         base["libraries"][library_name] = library_fragment
         base["targets"][runtime_target][library_name] = target_fragment
 
@@ -288,7 +290,6 @@ def _generate_depsjson(
         output = output,
         content = json.encode_indent(base),
     )
-    print(base)
 
 def _publish_binary_wrapper_impl(ctx):
     assembly_info = ctx.attr.wrapped_target[0][DotnetAssemblyInfo]
@@ -327,6 +328,7 @@ def _publish_binary_wrapper_impl(ctx):
         target_framework,
         is_self_contained,
         assembly_info.runtime_deps,
+        assembly_info.transitive_runtime_deps,
         runtime_identifier,
         publish_binary_info.runtime_pack,
     )

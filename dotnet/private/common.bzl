@@ -210,7 +210,7 @@ def collect_transitive_info(name, deps, private_deps, strict_deps):
     transitive_data = []
     direct_analyzers = []
     transitive_analyzers = []
-    direct_runtime_deps = transform_deps(deps)
+    direct_runtime_deps = []
     transitive_runtime_deps = []
 
     direct_private_ref = []
@@ -241,7 +241,8 @@ def collect_transitive_info(name, deps, private_deps, strict_deps):
         direct_lib.extend(assembly.lib)
         direct_native.extend(assembly.native)
         direct_data.extend(assembly.data)
-        transitive_runtime_deps.append(assembly.runtime_deps)
+        direct_runtime_deps.extend(assembly.runtime_deps)
+        transitive_runtime_deps.append(assembly.transitive_runtime_deps)
 
         # Runfiles are always collected transitively
         # We need to make sure that we do not include multiple versions of the same first party dll

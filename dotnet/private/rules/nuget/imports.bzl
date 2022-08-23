@@ -5,11 +5,12 @@ Rules for importing assemblies for .NET frameworks.
 load(
     "//dotnet/private:common.bzl",
     "collect_transitive_info",
+    "transform_deps",
 )
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "NuGetInfo")
 
 def _import_library(ctx):
-    (_irefs, prefs, analyzers, libs, native, data, _private_refs, _private_analyzers, runtime_deps, _overrides) = collect_transitive_info(ctx.label.name, ctx.attr.deps, [], ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].strict_deps)
+    (_irefs, prefs, analyzers, libs, native, data, _private_refs, _private_analyzers, transitive_runtime_deps, _overrides) = collect_transitive_info(ctx.label.name, ctx.attr.deps, [], ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].strict_deps)
 
     return [DotnetAssemblyInfo(
         name = ctx.attr.library_name,
@@ -26,7 +27,8 @@ def _import_library(ctx):
         transitive_ref = prefs,
         transitive_analyzers = analyzers,
         internals_visible_to = [],
-        runtime_deps = runtime_deps,
+        runtime_deps = transform_deps(ctx.attr.deps),
+        transitive_runtime_deps = transitive_runtime_deps,
     ), NuGetInfo(
         targeting_pack_overrides = ctx.attr.targeting_pack_overrides,
         sha512 = ctx.attr.sha512,

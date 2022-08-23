@@ -9,6 +9,7 @@ load(
     "get_framework_version_info",
     "is_core_framework",
     "is_standard_framework",
+    "transform_deps",
     "use_highentropyva",
 )
 load(
@@ -83,7 +84,7 @@ def AssemblyAction(
         transitive_data,
         private_refs,
         _private_analyzers,
-        runtime_deps,
+        transitive_runtime_deps,
         overrides,
     ) = collect_transitive_info(
         target_name,
@@ -170,7 +171,8 @@ def AssemblyAction(
         transitive_lib = transitive_libs,
         transitive_native = transitive_native,
         transitive_data = transitive_data,
-        runtime_deps = runtime_deps,
+        runtime_deps = transform_deps(deps),
+        transitive_runtime_deps = transitive_runtime_deps,
     )
 
 def _compile(
