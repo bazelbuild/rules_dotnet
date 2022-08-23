@@ -2,10 +2,13 @@
 Rules to load all the .NET SDK & framework dependencies of rules_dotnet.
 """
 
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", _http_archive = "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("//dotnet/private:toolchains_repo.bzl", "PLATFORMS", "toolchains_repo")
 load("//dotnet/private:versions.bzl", "TOOL_VERSIONS")
+
+def http_archive(name, **kwargs):
+    maybe(_http_archive, name = name, **kwargs)
 
 # WARNING: any changes in this function may be BREAKING CHANGES for users
 # because we'll fetch a dependency which may be different from one that
@@ -16,8 +19,7 @@ load("//dotnet/private:versions.bzl", "TOOL_VERSIONS")
 # buildifier: disable=function-docstring
 def rules_dotnet_dependencies():
     # The minimal version of bazel_skylib we require
-    maybe(
-        http_archive,
+    http_archive(
         name = "bazel_skylib",
         urls = [
             "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.2.1/bazel-skylib-1.2.1.tar.gz",
@@ -26,12 +28,11 @@ def rules_dotnet_dependencies():
         sha256 = "f7be3474d42aae265405a592bb7da8e171919d74c16f082a5457840f06054728",
     )
 
-    maybe(
-        http_archive,
+    http_archive(
         name = "aspect_bazel_lib",
-        sha256 = "e00a57d37a8d8b629951e43d1af9b079429b6ea9710752f08910f13afdb825f0",
-        strip_prefix = "bazel-lib-1.10.1",
-        url = "https://github.com/aspect-build/bazel-lib/archive/refs/tags/v1.10.1.tar.gz",
+        sha256 = "779885424473657cc50c8391b627321e920f23aa57141445015d00d2a0def8ff",
+        strip_prefix = "bazel-lib-1.11.0",
+        url = "https://github.com/aspect-build/bazel-lib/archive/refs/tags/v1.11.0.tar.gz",
     )
 
 ########

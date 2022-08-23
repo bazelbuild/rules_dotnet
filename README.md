@@ -11,6 +11,8 @@ it's recommended to take a look at the [Bazel documentation](https://bazel.build
 primer on Bazel.
 
 ## Installation
+The minimal supported Bazel version is: 5.3.0
+
 From the release you wish to use: https://github.com/bazelbuild/rules_dotnet/releases copy the WORKSPACE snippet into your WORKSPACE file.
 
 If you are using Windows you need to make sure that symlinks and runfiles are enabled.
