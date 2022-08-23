@@ -29,6 +29,7 @@ def _import_library(ctx):
         runtime_deps = runtime_deps,
     ), NuGetInfo(
         targeting_pack_overrides = ctx.attr.targeting_pack_overrides,
+        sha512 = ctx.attr.sha512,
     )]
 
 import_library = rule(
@@ -74,6 +75,9 @@ import_library = rule(
         "targeting_pack_overrides": attr.string_dict(
             doc = "Targeting packs like e.g. Microsoft.NETCore.App.Ref have a PackageOverride.txt that includes a list of NuGet packages that should be omitted in a compiliation because they are included in the targeting pack",
             default = {},
+        ),
+        "sha512": attr.string(
+            doc = "The SHA512 sum of the NuGet package",
         ),
     },
     toolchains = [

@@ -10,6 +10,7 @@ import_library(
     libs = ["@{PREFIX}.{NAME_LOWER}.v{VERSION}//:libs"],
     native = ["@{PREFIX}.{NAME_LOWER}.v{VERSION}//:native"],
     refs = ["@{PREFIX}.{NAME_LOWER}.v{VERSION}//:refs"],
+    sha512 = "{SHA_512}",
     targeting_pack_overrides = {TARGETING_PACK_OVERRIDES},
     version = "{VERSION}",
     deps = [{DEPS}],

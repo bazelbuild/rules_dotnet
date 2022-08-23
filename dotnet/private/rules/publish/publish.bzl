@@ -270,13 +270,16 @@ def _generate_depsjson(
         }
 
         target_fragment = {
-            "runtime": {dll.basename: {} for dll in runtime_dep.assembly_info.lib + runtime_dep.assembly_info.transitive_lib.to_list()},
-            "native": {native_file.basename: {} for native_file in runtime_dep.assembly_info.native + runtime_dep.assembly_info.transitive_native.to_list()},
+            "runtime": {dll.basename: {} for dll in runtime_dep.assembly_info.lib},
+            "native": {native_file.basename: {} for native_file in runtime_dep.assembly_info.native},
         }
 
         if runtime_dep.nuget_info:
             library_fragment["type"] = "package"
             library_fragment["serviceable"] = True
+            library_fragment["sha512"] = runtime_dep.nuget_info.sha512
+            library_fragment["path"] = library_name.lower()
+            library_fragment["hashPath"] = "{}.{}.nupkg.sha512".format(runtime_dep.assembly_info.name.lower(), runtime_dep.assembly_info.version)
 
         base["libraries"][library_name] = library_fragment
         base["targets"][runtime_target][library_name] = target_fragment

@@ -273,7 +273,7 @@ def _nuget_archive_impl(ctx):
         "password": "TODO",
     } for url in urls}
 
-    ctx.download_and_extract(urls, type = "zip", integrity = ctx.attr.hash, auth = auth)
+    ctx.download_and_extract(urls, type = "zip", integrity = ctx.attr.sha512, auth = auth)
 
     files = _read_dir(ctx, ".").replace(str(ctx.path(".")) + "/", "").splitlines()
 
@@ -317,7 +317,7 @@ nuget_archive = repository_rule(
     attrs = {
         "id": attr.string(),
         "version": attr.string(),
-        "hash": attr.string(),
+        "sha512": attr.string(),
     },
 )
 

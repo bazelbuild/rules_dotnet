@@ -34,8 +34,8 @@ DotnetDepVariantInfo = provider(
 NuGetInfo = provider(
     doc = "Information about a NuGet package.",
     fields = {
-        "version": "string: The version of the NuGet package",
         "targeting_pack_overrides": "map[string, string]: Targeting packs like e.g. Microsoft.NETCore.App.Ref have a PackageOverride.txt that includes a list of NuGet packages that should be omitted in a compiliation because they are included in the targeting pack",
+        "sha512": "string: the SHA512 SRI string for the package",
     },
 )
 

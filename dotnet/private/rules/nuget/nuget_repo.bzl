@@ -7,7 +7,7 @@ _GLOBAL_NUGET_PREFIX = "nuget"
 
 def _nuget_repo_impl(ctx):
     for (name_version, deps) in ctx.attr.packages.items():
-        [name, version] = name_version.split("/")
+        [name, version, sha512] = name_version.split("|")
 
         targeting_pack_overrides = ctx.attr.targeting_pack_overrides[name.lower()]
         template = Label("@rules_dotnet//dotnet/private:rules/nuget/template.BUILD")
@@ -19,6 +19,7 @@ def _nuget_repo_impl(ctx):
             "{VERSION}": version,
             "{DEPS}": ",".join(["\n    \"@{}//{}\"".format(ctx.name.lower(), d.lower()) for d in deps]),
             "{TARGETING_PACK_OVERRIDES}": json.encode({override.lower().split("|")[0]: override.lower().split("|")[1] for override in targeting_pack_overrides}),
+            "{SHA_512}": sha512,
         })
 
         # currently we only support one version of a package
@@ -45,7 +46,7 @@ _nuget_repo = repository_rule(
 def nuget_repo(name, packages):
     # TODO: Add docs
     # scaffold individual nuget archives
-    for (package_name, version, hash, _deps, _targeting_pack_overrides) in packages:
+    for (package_name, version, sha512, _deps, _targeting_pack_overrides) in packages:
         package_name = package_name.lower()
         version = version.lower()
 
@@ -55,12 +56,12 @@ def nuget_repo(name, packages):
             name = "{}.{}.v{}".format(_GLOBAL_NUGET_PREFIX, package_name, version),
             id = package_name,
             version = version,
-            hash = hash,
+            sha512 = sha512,
         )
 
     # scaffold transitive @name// dependency tree
     _nuget_repo(
         name = name,
-        packages = {"{}/{}".format(name, version): deps for (name, version, _, deps, _) in packages},
+        packages = {"{}|{}|{}".format(name, version, sha512): deps for (name, version, sha512, deps, _) in packages},
         targeting_pack_overrides = {"{}".format(name.lower()): targeting_pack_overrides for (name, _, _, _, targeting_pack_overrides) in packages},
     )
