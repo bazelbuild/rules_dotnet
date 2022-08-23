@@ -8,11 +8,11 @@ load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "NuGetInfo")
 # buildifier: disable=bzl-visibility
 load("//dotnet/private:transitions/tfm_transition.bzl", "tfm_transition")
 
+# buildifier: disable=bzl-visibility
+load("//dotnet/private:common.bzl", "get_nuget_relative_path")
+
 def _get_nuget_relative_paths(files):
-    # The path of the files is of the form external/<packagename>.v<version>/<path within nuget package>
-    # So we remove the first two parts of the path to get the path within the nuget package.
-    nuget_paths_parts = [file.path.split("/")[2:] for file in files]
-    return ["/".join(path_parts) for path_parts in nuget_paths_parts]
+    return [get_nuget_relative_path(file) for file in files]
 
 def _nuget_structure_test_impl(ctx):
     env = analysistest.begin(ctx)

@@ -18,7 +18,7 @@ csharp_binary(
 publish_binary(
     name = "publish_self_contained",
     binary = ":hello",
-    publishing_pack = select({
+    runtime_pack = select({
         "@rules_dotnet//dotnet:rid_linux-x64": "@example_deps//microsoft.netcore.app.runtime.linux-x64",
         "@rules_dotnet//dotnet:rid_osx-x64": "@example_deps//microsoft.netcore.app.runtime.osx-x64",
         "@rules_dotnet//dotnet:rid_win-x64": "@example_deps//microsoft.netcore.app.runtime.win-x64",

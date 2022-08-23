@@ -6,6 +6,7 @@ load("@bazel_skylib//lib:sets.bzl", "sets")
 load(
     "//dotnet/private:providers.bzl",
     "DotnetAssemblyInfo",
+    "DotnetDepVariantInfo",
     "NuGetInfo",
 )
 
@@ -209,6 +210,8 @@ def collect_transitive_info(name, deps, private_deps, strict_deps):
     transitive_data = []
     direct_analyzers = []
     transitive_analyzers = []
+    direct_runtime_deps = transform_deps(deps)
+    transitive_runtime_deps = []
 
     direct_private_ref = []
     transitive_private_ref = []
@@ -238,6 +241,7 @@ def collect_transitive_info(name, deps, private_deps, strict_deps):
         direct_lib.extend(assembly.lib)
         direct_native.extend(assembly.native)
         direct_data.extend(assembly.data)
+        transitive_runtime_deps.append(assembly.runtime_deps)
 
         # Runfiles are always collected transitively
         # We need to make sure that we do not include multiple versions of the same first party dll
@@ -295,6 +299,7 @@ def collect_transitive_info(name, deps, private_deps, strict_deps):
         depset(direct = direct_data, transitive = transitive_data),
         depset(direct = direct_private_ref, transitive = transitive_private_ref),
         depset(direct = direct_private_analyzers, transitive = transitive_private_analyzers),
+        depset(direct = direct_runtime_deps, transitive = transitive_runtime_deps),
         overrides,
     )
 
@@ -342,3 +347,32 @@ def is_strict_deps_enabled(toolchain, strict_deps_attr):
         return strict_deps_attr
 
     return default
+
+def get_nuget_relative_path(file):
+    """Returns NuGet package relative path of a file that is part of a NuGet package
+
+    Args:
+        file: A file that is part of a nuget_archive/nuget_repo.
+
+    Returns:
+        The package relateive path of the file
+    """
+
+    # The path of the files is of the form external/<packagename>.v<version>/<path within nuget package>
+    # So we remove the first two parts of the path to get the path within the nuget package.
+    return "/".join(file.path.split("/")[2:])
+
+def transform_deps(deps):
+    """Transforms a [Target] into [DotnetDepVariantInfo].
+
+    This helper function is used to transform ctx.attr.deps into
+    [DotnetDepVariantInfo].
+    Args:
+        deps (list of Targets): Dependencies coming from ctx.attr.deps
+    Returns:
+        list of DotnetDepVariantInfos.
+    """
+    return [DotnetDepVariantInfo(
+        assembly_info = dep[DotnetAssemblyInfo] if DotnetAssemblyInfo in dep else None,
+        nuget_info = dep[NuGetInfo] if NuGetInfo in dep else None,
+    ) for dep in deps]

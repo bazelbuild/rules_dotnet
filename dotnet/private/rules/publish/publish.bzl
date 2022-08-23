@@ -8,22 +8,18 @@ load("//dotnet/private:transitions/tfm_transition.bzl", "tfm_transition")
 load("//dotnet/private:rids.bzl", "RUNTIME_GRAPH")
 
 def _publish_binary_impl(ctx):
-    publishing_pack = None
+    runtime_pack_info = None
     if ctx.attr.self_contained == True:
-        if ctx.attr.publishing_pack == None or len(ctx.attr.publishing_pack) == 0:
-            fail("Can not publish self-contained binaries without a publishing pack")
-        publishing_pack = depset(
-            ctx.attr.publishing_pack[0][DotnetAssemblyInfo].lib +
-            ctx.attr.publishing_pack[0][DotnetAssemblyInfo].native +
-            ctx.attr.publishing_pack[0][DotnetAssemblyInfo].data,
-            transitive = [ctx.attr.publishing_pack[0][DotnetAssemblyInfo].transitive_lib, ctx.attr.publishing_pack[0][DotnetAssemblyInfo].transitive_native, ctx.attr.publishing_pack[0][DotnetAssemblyInfo].transitive_data],
-        )
+        if ctx.attr.runtime_pack == None or len(ctx.attr.runtime_pack) == 0:
+            fail("Can not publish self-contained binaries without a runtime pack")
+
+        runtime_pack_info = ctx.attr.runtime_pack[0][DotnetAssemblyInfo]
 
     return [
         ctx.attr.binary[0][DotnetAssemblyInfo],
         ctx.attr.binary[0][DotnetBinaryInfo],
         DotnetPublishBinaryInfo(
-            publishing_pack = publishing_pack,
+            runtime_pack = runtime_pack_info,
             target_framework = ctx.attr.target_framework,
             self_contained = ctx.attr.self_contained,
         ),
@@ -48,23 +44,23 @@ publish_binary = rule(
             Whether the binary should be self-contained.
             
             If true, the binary will be published as a self-contained but you need to provide
-            a publishing pack in the `publishing_pack` attribute. At some point the rules might
-            resolve the publishing pack automatically.
+            a runtime pack in the `runtime_pack` attribute. At some point the rules might
+            resolve the runtime pack automatically.
 
             If false, the binary will be published as a non-self-contained. That means that to be
             able to run the binary you need to have a .Net runtime installed on the host system.
             """,
             default = False,
         ),
-        "publishing_pack": attr.label(
+        "runtime_pack": attr.label(
             doc = """
-            The publishing pack that should be used to publish the binary.
+            The runtime pack that should be used to publish the binary.
             Should only be declared if `self_contained` is true.
 
-            The publishing pack is a NuGet package that contains the runtime that should be
+            The runtime pack is a NuGet package that contains the runtime that should be
             used to run the binary.
 
-            Example publishing pack: https://www.nuget.org/packages/Microsoft.NETCore.App.Runtime.linux-x64/6.0.8
+            Example runtime pack: https://www.nuget.org/packages/Microsoft.NETCore.App.Runtime.linux-x64/6.0.8
             """,
             providers = [DotnetAssemblyInfo],
             default = None,
@@ -159,11 +155,17 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
         outputs.append(output)
         _copy_file(script_body, file, output, is_windows = is_windows)
 
-    # In case the publish is self-contained there needs to be a publishing pack available
+    # In case the publish is self-contained there needs to be a runtime pack available
     # with the runtime dependencies that are required for the targeted runtime.
-    # The publishing pack contents should always be copied to the root of the publish folder
-    if publish_binary_info.publishing_pack:
-        for file in publish_binary_info.publishing_pack.to_list():
+    # The runtime pack contents should always be copied to the root of the publish folder
+    if publish_binary_info.runtime_pack:
+        runtime_pack_files = depset(
+            publish_binary_info.runtime_pack.lib +
+            publish_binary_info.runtime_pack.native +
+            publish_binary_info.runtime_pack.data,
+            transitive = [publish_binary_info.runtime_pack.transitive_lib, publish_binary_info.runtime_pack.transitive_native, publish_binary_info.runtime_pack.transitive_data],
+        )
+        for file in runtime_pack_files.to_list():
             output = ctx.actions.declare_file(file.basename, sibling = app_host_copy)
             outputs.append(output)
             inputs.append(file)
@@ -218,8 +220,9 @@ def _generate_depsjson(
         output,
         target_framework,
         is_self_contained,
+        runtime_deps,
         runtime_identifier = None,
-        runtime_pack = None):
+        runtime_pack_info = None):
     runtime_target = ".NETCoreApp,Version=v{}".format(
         target_framework.replace("net", "") if not runtime_identifier else "{}/{}".format(
             target_framework.replace("net", ""),
@@ -237,21 +240,52 @@ def _generate_depsjson(
         },
     }
     base["targets"][runtime_target] = {}
+    base["libraries"] = {}
 
     if runtime_identifier:
-        if runtime_pack:
-            # buildifier: disable=print
-            print("TODO!")
+        if runtime_pack_info:
+            runtime_pack_name = "runtimepack.{}/{}".format(runtime_pack_info.name, runtime_pack_info.version)
+            base["libraries"][runtime_pack_name] = {
+                "type": "runtimepack",
+                "serviceable": False,
+                "sha512": "",
+            }
+            base["targets"][runtime_target][runtime_pack_name] = {
+                "runtime": {dll.basename: {} for dll in runtime_pack_info.lib + runtime_pack_info.transitive_lib.to_list()},
+                "native": {native_file.basename: {} for native_file in runtime_pack_info.native + runtime_pack_info.transitive_native.to_list()},
+            }
 
         if is_self_contained:
             base["runtimes"] = {rid: RUNTIME_GRAPH[rid] for rid, supported_rids in RUNTIME_GRAPH.items() if runtime_identifier in supported_rids or runtime_identifier == rid}
     else:
-        base["targets"][".NETCoreApp,Version=v{}".format(target_framework.replace("net", ""))] = {}
+        base["libraries"][".NETCoreApp,Version=v{}".format(target_framework.replace("net", ""))] = {}
+
+    for runtime_dep in runtime_deps.to_list():
+        library_name = "{}/{}".format(runtime_dep.assembly_info.name, runtime_dep.assembly_info.version)
+
+        library_fragment = {
+            "type": "project",
+            "serviceable": False,
+            "sha512": "",
+        }
+
+        target_fragment = {
+            "runtime": {dll.basename: {} for dll in runtime_dep.assembly_info.lib + runtime_dep.assembly_info.transitive_lib.to_list()},
+            "native": {native_file.basename: {} for native_file in runtime_dep.assembly_info.native + runtime_dep.assembly_info.transitive_native.to_list()},
+        }
+
+        if runtime_dep.nuget_info:
+            library_fragment["type"] = "package"
+            library_fragment["serviceable"] = True
+
+        base["libraries"][library_name] = library_fragment
+        base["targets"][runtime_target][library_name] = target_fragment
 
     ctx.actions.write(
         output = output,
         content = json.encode_indent(base),
     )
+    print(base)
 
 def _publish_binary_wrapper_impl(ctx):
     assembly_info = ctx.attr.wrapped_target[0][DotnetAssemblyInfo]
@@ -283,34 +317,29 @@ def _publish_binary_wrapper_impl(ctx):
         ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"],
     )
 
-    # The deps.json file is not really needed for self contained publishing
-    # A warning will be printed if it's not present but that warning is being removed in .Net 7
-    # https://github.com/dotnet/runtime/issues/64606
-    # We can add proper support for generating fully fledged deps.json and runtimeconfig.json files later
-    depsjson = []
-    if not is_self_contained:
-        depsjson_file = ctx.actions.declare_file("{}/publish/{}/{}.deps.json".format(ctx.label.name, runtime_identifier, dll_name))
-        _generate_depsjson(
-            ctx,
-            depsjson_file,
-            target_framework,
-            is_self_contained,
-            runtime_identifier,
-        )
-        depsjson.append(depsjson_file)
+    depsjson = ctx.actions.declare_file("{}/publish/{}/{}.deps.json".format(ctx.label.name, runtime_identifier, dll_name))
+    _generate_depsjson(
+        ctx,
+        depsjson,
+        target_framework,
+        is_self_contained,
+        assembly_info.runtime_deps,
+        runtime_identifier,
+        publish_binary_info.runtime_pack,
+    )
 
     return [
         ctx.attr.wrapped_target[0][DotnetPublishBinaryInfo],
         DefaultInfo(
             executable = executable,
-            files = depset([executable, runtimeconfig] + runfiles + depsjson),
-            runfiles = ctx.runfiles([executable, runtimeconfig] + runfiles + depsjson),
+            files = depset([executable, runtimeconfig, depsjson] + runfiles),
+            runfiles = ctx.runfiles([executable, runtimeconfig, depsjson] + runfiles),
         ),
     ]
 
 # This wrapper is only needed so that we can turn the incoming transition in `publish_binary`
 # into an outgoing transition in the wrapper. This allows us to select on the runtime_identifier
-# and publishing_pack attributes. We also need to have all the file copying in the wrapper rule
+# and runtime_pack attributes. We also need to have all the file copying in the wrapper rule
 # because Bazel does not allow forwarding executable files as they have to be created by the wrapper rule.
 publish_binary_wrapper = rule(
     _publish_binary_wrapper_impl,

@@ -83,6 +83,7 @@ def AssemblyAction(
         transitive_data,
         private_refs,
         _private_analyzers,
+        runtime_deps,
         overrides,
     ) = collect_transitive_info(
         target_name,
@@ -155,6 +156,8 @@ def AssemblyAction(
         direct_data.append(out_pdb)
 
     return DotnetAssemblyInfo(
+        name = target_name,
+        version = "1.0.0",  #TODO: Maybe make this configurable?
         lib = [out_dll],
         ref = [out_dll],
         iref = [out_dll],
@@ -167,6 +170,7 @@ def AssemblyAction(
         transitive_lib = transitive_libs,
         transitive_native = transitive_native,
         transitive_data = transitive_data,
+        runtime_deps = runtime_deps,
     )
 
 def _compile(

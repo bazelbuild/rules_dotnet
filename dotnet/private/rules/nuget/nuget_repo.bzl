@@ -7,24 +7,25 @@ _GLOBAL_NUGET_PREFIX = "nuget"
 
 def _nuget_repo_impl(ctx):
     for (name_version, deps) in ctx.attr.packages.items():
-        [name, version] = name_version.lower().split("/")
+        [name, version] = name_version.split("/")
 
-        targeting_pack_overrides = ctx.attr.targeting_pack_overrides[name]
+        targeting_pack_overrides = ctx.attr.targeting_pack_overrides[name.lower()]
         template = Label("@rules_dotnet//dotnet/private:rules/nuget/template.BUILD")
 
-        ctx.template("{}/{}/BUILD.bazel".format(name, version), template, {
-            "PREFIX": _GLOBAL_NUGET_PREFIX,
-            "NAME": name,
-            "VERSION": version,
-            "DEPS": ",".join(["\n    \"@{}//{}\"".format(ctx.name, d.lower()) for d in deps]),
-            "TARGETING_PACK_OVERRIDES": json.encode({override.lower().split("|")[0]: override.lower().split("|")[1] for override in targeting_pack_overrides}),
+        ctx.template("{}/{}/BUILD.bazel".format(name.lower(), version), template, {
+            "{PREFIX}": _GLOBAL_NUGET_PREFIX,
+            "{NAME}": name,
+            "{NAME_LOWER}": name.lower(),
+            "{VERSION}": version,
+            "{DEPS}": ",".join(["\n    \"@{}//{}\"".format(ctx.name.lower(), d.lower()) for d in deps]),
+            "{TARGETING_PACK_OVERRIDES}": json.encode({override.lower().split("|")[0]: override.lower().split("|")[1] for override in targeting_pack_overrides}),
         })
 
         # currently we only support one version of a package
-        ctx.file("{}/BUILD.bazel".format(name), r"""package(default_visibility = ["//visibility:public"])
+        ctx.file("{}/BUILD.bazel".format(name.lower()), r"""package(default_visibility = ["//visibility:public"])
 alias(name = "{name}", actual = "//{name}/{version}")
 alias(name = "content_files", actual = "@{prefix}.{name}.v{version}//:content_files")
-""".format(prefix = _GLOBAL_NUGET_PREFIX, name = name, version = version))
+""".format(prefix = _GLOBAL_NUGET_PREFIX, name = name.lower(), version = version))
 
 _nuget_repo = repository_rule(
     _nuget_repo_impl,

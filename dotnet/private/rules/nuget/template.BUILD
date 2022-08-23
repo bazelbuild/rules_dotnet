@@ -3,14 +3,14 @@ load("@rules_dotnet//dotnet:defs.bzl", "import_library")
 package(default_visibility = ["//visibility:public"])
 
 import_library(
-    name = "VERSION",
-    analyzers = ["@PREFIX.NAME.vVERSION//:analyzers"],
-    data = ["@PREFIX.NAME.vVERSION//:data"],
-    library_name = "NAME",
-    libs = ["@PREFIX.NAME.vVERSION//:libs"],
-    native = ["@PREFIX.NAME.vVERSION//:native"],
-    refs = ["@PREFIX.NAME.vVERSION//:refs"],
-    targeting_pack_overrides = TARGETING_PACK_OVERRIDES,
-    version = "VERSION",
-    deps = [DEPS],
+    name = "{VERSION}",
+    analyzers = ["@{PREFIX}.{NAME_LOWER}.v{VERSION}//:analyzers"],
+    data = ["@{PREFIX}.{NAME_LOWER}.v{VERSION}//:data"],
+    library_name = "{NAME}",
+    libs = ["@{PREFIX}.{NAME_LOWER}.v{VERSION}//:libs"],
+    native = ["@{PREFIX}.{NAME_LOWER}.v{VERSION}//:native"],
+    refs = ["@{PREFIX}.{NAME_LOWER}.v{VERSION}//:refs"],
+    targeting_pack_overrides = {TARGETING_PACK_OVERRIDES},
+    version = "{VERSION}",
+    deps = [{DEPS}],
 )
