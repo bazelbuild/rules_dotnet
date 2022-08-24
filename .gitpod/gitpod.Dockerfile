@@ -1,4 +1,4 @@
-FROM gitpod/workspace-base
+FROM gitpod/workspace-full
 
 ############
 ### .Net ###
@@ -57,3 +57,10 @@ RUN curl -o buildifier-linux-amd64 -fsSL https://github.com/bazelbuild/buildtool
 RUN curl -o buildozer-linux-amd64 -fsSL https://github.com/bazelbuild/buildtools/releases/download/5.1.0/buildozer-linux-amd64 \
   && mv ./buildozer-linux-amd64 $HOME/bin/buildozer \
   && chmod +x $HOME/bin/buildozer
+
+# pre-commit and shellcheck
+USER root
+RUN install-packages shellcheck \
+    && pip3 install pre-commit
+
+USER gitpod

@@ -2,6 +2,8 @@ image:
   file: .gitpod/gitpod.Dockerfile
 
 tasks:
+  - name: install pre-commit git hooks
+    init: pre-commit install
   - name: Bazel
     before: "./.gitpod/gitpod-init.sh"
     init: |
@@ -12,6 +14,7 @@ vscode:
     - BazelBuild.vscode-bazel
     - Ionide.Ionide-fsharp
     - muhammad-sammy.csharp
+    - timonwong.shellcheck
 
 github:
   prebuilds:
