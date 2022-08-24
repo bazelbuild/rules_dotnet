@@ -1,7 +1,0 @@
-{
-    "packageOverrides": {
-        "FSharp.Data": {
-            "buildFile": "@examples//paket/deps/custom_build_files:FSharp.Data.BUILD"
-        }
-    }
-}

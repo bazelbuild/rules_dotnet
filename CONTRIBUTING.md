@@ -3,6 +3,7 @@
 Want to contribute? Great! First, read this page!
 
 ## Before you contribute
+
 **Before we can use your code, you must sign the
 [Google Individual Contributor License Agreement](https://developers.google.com/open-source/cla/individual?csw=1)
 (CLA)**, which you can do online.
@@ -20,6 +21,7 @@ with us first. Use the issue tracker to explain your idea so we can help and
 possibly guide you.
 
 ### The small print
+
 Contributions made by corporations are covered by a different agreement than
 the one above, the
 [Software Grant and Corporate Contributor License Agreement](https://cla.developers.google.com/about/google-corporate).
@@ -61,6 +63,7 @@ echo "common $OVERRIDE" >> ~/.bazelrc
 This means that any usage of `@rules_dotnet` on your system will point to this folder.
 
 ## Running tests
+
 To run and build all tests simply run `bazel test //...`
 To build and test all lexamples run `cd examples && bazel test //...`
 

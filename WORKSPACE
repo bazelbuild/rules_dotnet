@@ -21,10 +21,10 @@ load("//dotnet:nugets.bzl", "rules_dotnet_nuget_packages")
 
 rules_dotnet_nuget_packages()
 
-# Fetch deps needed for our tests
-load("//dotnet/private/tests:dependencies.bzl", "test_dependencies")
+# Fetch NuGet packages needed for our tests
+load("//dotnet:dev_nugets.bzl", "rules_dotnet_dev_nuget_packages")
 
-test_dependencies()
+rules_dotnet_dev_nuget_packages()
 
 # For running our own unit tests
 load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")

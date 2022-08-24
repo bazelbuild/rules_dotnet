@@ -2,7 +2,7 @@
 
 load("//dotnet:defs.bzl", "nuget_repo")
 
-def test_dependencies():
+def rules_dotnet_dev_nuget_packages():
     nuget_repo(
         name = "rules_dotnet_test_deps",
         packages = [

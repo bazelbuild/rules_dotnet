@@ -6,10 +6,12 @@ Paket fits well with Bazel because it generates a `paket.lock` file that can be 
 to deterministically generate Bazel targets for NuGet packages.
 
 ## How to use
+
 First you need to set up your paket.dependencies and paket.lock file. See the [Paket docs](https://fsprojects.github.io/Paket/) on how to get started with Paket.
 Note that the `storage: none` feature of Paket is not supported currently because `paket2bazel` needs to read the contents of the `packages` folder that Paket generates.
 
 Next you will have to add the following to your `WORKSPACE` file:
+
 ```python
 load("@rules_dotnet//dotnet:repositories.bzl", "paket2bazel_repositories")
 
@@ -22,6 +24,7 @@ loaded in your `WORKSPACE` file.
 ```sh
 bazel run @rules_dotnet//tools/paket2bazel:paket2bazel.exe -- --dependencies-file $(pwd)/paket.dependencies  --output-folder $(pwd)/deps
 ```
+
 Next you need to add the following to your `WORKSPACE` file
 
 ```python
@@ -32,11 +35,13 @@ paket()
 Once you have this set up you can reference each package with the following format:
 
 If you only have the main Paket group in `paket.dependencies` file:
+
 ```
 @main.package.name//:lib
 ```
 
 If you are using groups in your `paket.dependencies` file:
+
 ```
 @groupname.package.name//:lib
 ```

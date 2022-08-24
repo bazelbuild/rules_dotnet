@@ -58,6 +58,13 @@ bzl_library(
 )
 
 bzl_library(
+    name = "dev_nugets",
+    srcs = ["dev_nugets.bzl"],
+    visibility = ["//visibility:public"],
+    deps = [":defs"],
+)
+
+bzl_library(
     name = "toolchain",
     srcs = ["toolchain.bzl"],
     visibility = ["//visibility:public"],

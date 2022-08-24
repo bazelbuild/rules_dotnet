@@ -1,1 +1,4 @@
-exports_files(["Afas.BazelDotnet.exe", "Afas.BazelDotnet.dll"])
+exports_files([
+    "Afas.BazelDotnet.exe",
+    "Afas.BazelDotnet.dll",
+])
