@@ -1,0 +1,51 @@
+load(
+    "@rules_dotnet//dotnet:defs.bzl",
+    "csharp_binary",
+    "publish_binary",
+)
+
+publish_binary(
+    name = "framework_dependent",
+    binary = "//dotnet/private/tests/publish/app_to_publish",
+    self_contained = False,
+    target_framework = "net6.0",
+)
+
+# This target is only here to provide the dotnet toolchain
+# to the sh_test target. I could not figure out a better way
+# to supply the dotnet toolchain to the sh_test target without
+# having to create a custom rule
+csharp_binary(
+    name = "toolchain_provider",
+    srcs = ["hello.cs"],
+    private_deps = [
+        "@rules_dotnet_test_deps//microsoft.netcore.app.ref",
+    ],
+    target_frameworks = ["net6.0"],
+    deps = [
+    ],
+)
+
+# We need an itermediary target since sh_test only accepts
+# a single .sh file in srcs. We are also using srcs instead
+# of data because we want to test the output from the publish
+# without interference from Bazel's runfile handling
+sh_library(
+    name = "test_lib",
+    srcs = [
+        ":framework_dependent",
+    ],
+)
+
+sh_test(
+    name = "framework_dependent_test",
+    srcs = [
+        "test.sh",
+    ],
+    args = ["$(DOTNET_BIN)"],
+    data = [":toolchain_provider"],
+    toolchains = ["@dotnet_toolchains//:resolved_toolchain"],
+    deps = [
+        ":test_lib",
+    ],
+)

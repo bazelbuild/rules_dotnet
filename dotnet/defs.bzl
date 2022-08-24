@@ -12,7 +12,7 @@ load(
     _fsharp_binary = "fsharp_binary",
 )
 load(
-    "//dotnet/private/rules/publish:publish.bzl",
+    "//dotnet/private/rules/publish_binary:publish_binary.bzl",
     _publish_binary = "publish_binary",
     _publish_binary_wrapper = "publish_binary_wrapper",
 )

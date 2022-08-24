@@ -1,0 +1,43 @@
+<!-- Generated with Stardoc: http://skydoc.bazel.build -->
+
+
+Rules for compiling F# binaries.
+
+
+<a id="fsharp_binary"></a>
+
+## fsharp_binary
+
+<pre>
+fsharp_binary(<a href="#fsharp_binary-name">name</a>, <a href="#fsharp_binary-apphost_shimmer">apphost_shimmer</a>, <a href="#fsharp_binary-data">data</a>, <a href="#fsharp_binary-defines">defines</a>, <a href="#fsharp_binary-deps">deps</a>, <a href="#fsharp_binary-depsjson_template">depsjson_template</a>, <a href="#fsharp_binary-internals_visible_to">internals_visible_to</a>,
+              <a href="#fsharp_binary-keyfile">keyfile</a>, <a href="#fsharp_binary-langversion">langversion</a>, <a href="#fsharp_binary-out">out</a>, <a href="#fsharp_binary-private_deps">private_deps</a>, <a href="#fsharp_binary-resources">resources</a>, <a href="#fsharp_binary-runtime_identifier">runtime_identifier</a>,
+              <a href="#fsharp_binary-runtimeconfig_template">runtimeconfig_template</a>, <a href="#fsharp_binary-srcs">srcs</a>, <a href="#fsharp_binary-strict_deps">strict_deps</a>, <a href="#fsharp_binary-target_frameworks">target_frameworks</a>, <a href="#fsharp_binary-winexe">winexe</a>)
+</pre>
+
+Compile a F# exe
+
+**ATTRIBUTES**
+
+
+| Name  | Description | Type | Mandatory | Default |
+| :------------- | :------------- | :------------- | :------------- | :------------- |
+| <a id="fsharp_binary-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/concepts/labels#target-names">Name</a> | required |  |
+| <a id="fsharp_binary-apphost_shimmer"></a>apphost_shimmer |  -   | <a href="https://bazel.build/concepts/labels">Label</a> | optional | None |
+| <a id="fsharp_binary-data"></a>data |  Runtime files. It is recommended to use the @rules_dotnet//tools/runfiles library to read the runtime files.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
+| <a id="fsharp_binary-defines"></a>defines |  A list of preprocessor directive symbols to define.   | List of strings | optional | [] |
+| <a id="fsharp_binary-deps"></a>deps |  Other libraries, binaries, or imported DLLs   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
+| <a id="fsharp_binary-depsjson_template"></a>depsjson_template |  A template file to use for generating deps.json   | <a href="https://bazel.build/concepts/labels">Label</a> | optional | @rules_dotnet//dotnet/private:deps.json.tpl |
+| <a id="fsharp_binary-internals_visible_to"></a>internals_visible_to |  Other libraries that can see the assembly's internal symbols. Using this rather than the InternalsVisibleTo assembly attribute will improve build caching.   | List of strings | optional | [] |
+| <a id="fsharp_binary-keyfile"></a>keyfile |  The key file used to sign the assembly with a strong name.   | <a href="https://bazel.build/concepts/labels">Label</a> | optional | None |
+| <a id="fsharp_binary-langversion"></a>langversion |  The version string for the language.   | String | optional | "" |
+| <a id="fsharp_binary-out"></a>out |  File name, without extension, of the built assembly.   | String | optional | "" |
+| <a id="fsharp_binary-private_deps"></a>private_deps |  Private dependencies <br><br>        This attribute should be used for dependencies are only private to the target.          The dependencies will not be propagated transitively to parent targets and          do not become part of the targets runfiles.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
+| <a id="fsharp_binary-resources"></a>resources |  A list of files to embed in the DLL as resources.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
+| <a id="fsharp_binary-runtime_identifier"></a>runtime_identifier |  The runtime identifier that is being targeted. See https://docs.microsoft.com/en-us/dotnet/core/rid-catalog   | String | required |  |
+| <a id="fsharp_binary-runtimeconfig_template"></a>runtimeconfig_template |  A template file to use for generating runtimeconfig.json   | <a href="https://bazel.build/concepts/labels">Label</a> | optional | @rules_dotnet//dotnet/private:runtimeconfig.json.tpl |
+| <a id="fsharp_binary-srcs"></a>srcs |  The source files used in the compilation.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
+| <a id="fsharp_binary-strict_deps"></a>strict_deps |  Whether to use strict dependencies or not. <br><br>        This attribute mirrors the DisableTransitiveProjectReferences in MSBuild.         The default setting of this attribute can be overridden in the toolchain configuration   | Boolean | optional | True |
+| <a id="fsharp_binary-target_frameworks"></a>target_frameworks |  A list of target framework monikers to buildSee https://docs.microsoft.com/en-us/dotnet/standard/frameworks   | List of strings | required |  |
+| <a id="fsharp_binary-winexe"></a>winexe |  If true, output a winexe-style executable, otherwiseoutput a console-style executable.   | Boolean | optional | False |
+
+

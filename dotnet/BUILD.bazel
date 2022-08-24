@@ -1,3 +1,4 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load(
     "//dotnet/private/macros:register_tfms.bzl",
     "register_tfms",
@@ -15,3 +16,49 @@ toolchain_type(
 register_tfms()
 
 register_rids()
+
+bzl_library(
+    name = "defs",
+    srcs = ["defs.bzl"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//dotnet/private/rules/csharp:binary",
+        "//dotnet/private/rules/csharp:library",
+        "//dotnet/private/rules/csharp:test",
+        "//dotnet/private/rules/fsharp:binary",
+        "//dotnet/private/rules/fsharp:library",
+        "//dotnet/private/rules/fsharp:test",
+        "//dotnet/private/rules/nuget:imports",
+        "//dotnet/private/rules/publish_binary",
+        "@rules_dotnet//dotnet/private/rules/nuget:nuget_archive",
+        "@rules_dotnet//dotnet/private/rules/nuget:nuget_repo",
+    ],
+)
+
+bzl_library(
+    name = "nugets",
+    srcs = ["nugets.bzl"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//dotnet/private/rules/nuget:nuget_repo",
+        "//tools/paket2bazel/deps:paket",
+    ],
+)
+
+bzl_library(
+    name = "repositories",
+    srcs = ["repositories.bzl"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//dotnet/private:toolchains_repo",
+        "//dotnet/private:versions",
+        "@bazel_tools//tools/build_defs/repo:http.bzl",
+        "@bazel_tools//tools/build_defs/repo:utils.bzl",
+    ],
+)
+
+bzl_library(
+    name = "toolchain",
+    srcs = ["toolchain.bzl"],
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,45 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+
+exports_files(
+    glob(["*.bzl"]),
+    visibility = ["//docs:__pkg__"],
+)
+
+bzl_library(
+    name = "imports",
+    srcs = ["imports.bzl"],
+    visibility = [
+        "//docs:__subpackages__",
+        "//dotnet:__subpackages__",
+    ],
+    deps = [
+        "//dotnet/private:common",
+        "//dotnet/private:providers",
+    ],
+)
+
+bzl_library(
+    name = "nuget_archive",
+    srcs = ["nuget_archive.bzl"],
+    visibility = [
+        "//docs:__subpackages__",
+        "//dotnet:__subpackages__",
+    ],
+    deps = [
+        "//dotnet/private:common",
+        "//dotnet/private:rids",
+    ],
+)
+
+bzl_library(
+    name = "nuget_repo",
+    srcs = ["nuget_repo.bzl"],
+    visibility = [
+        "//docs:__subpackages__",
+        "//dotnet:__subpackages__",
+    ],
+    deps = [
+        "@bazel_tools//tools/build_defs/repo:utils.bzl",
+        "@rules_dotnet//dotnet/private/rules/nuget:nuget_archive",
+    ],
+)

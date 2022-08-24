@@ -1,6 +1,0 @@
-load(":runtimes.bzl", "runtimes_structure")
-load(":typeproviders.bzl", "typeproviders_structure")
-
-typeproviders_structure()
-
-runtimes_structure()

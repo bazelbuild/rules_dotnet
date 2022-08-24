@@ -1,0 +1,33 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load(":runtimes.bzl", "runtimes_structure")
+load(":typeproviders.bzl", "typeproviders_structure")
+
+typeproviders_structure()
+
+runtimes_structure()
+
+bzl_library(
+    name = "common",
+    srcs = ["common.bzl"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//dotnet/private:common",
+        "//dotnet/private:providers",
+        "//dotnet/private/transitions:tfm_transition",
+        "@bazel_skylib//lib:unittest",
+    ],
+)
+
+bzl_library(
+    name = "runtimes",
+    srcs = ["runtimes.bzl"],
+    visibility = ["//visibility:public"],
+    deps = [":common"],
+)
+
+bzl_library(
+    name = "typeproviders",
+    srcs = ["typeproviders.bzl"],
+    visibility = ["//visibility:public"],
+    deps = [":common"],
+)

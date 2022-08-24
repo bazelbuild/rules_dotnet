@@ -1,3 +1,5 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+
 exports_files(
     [
         "runtimeconfig.json.tpl",
@@ -54,4 +56,38 @@ config_setting(
         "@platforms//cpu:arm64",
         "@platforms//os:windows",
     ],
+)
+
+bzl_library(
+    name = "common",
+    srcs = ["common.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+    deps = [
+        ":providers",
+        "@bazel_skylib//lib:sets",
+    ],
+)
+
+bzl_library(
+    name = "providers",
+    srcs = ["providers.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+)
+
+bzl_library(
+    name = "rids",
+    srcs = ["rids.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+)
+
+bzl_library(
+    name = "toolchains_repo",
+    srcs = ["toolchains_repo.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+)
+
+bzl_library(
+    name = "versions",
+    srcs = ["versions.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
 )

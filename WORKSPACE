@@ -22,7 +22,7 @@ load("//dotnet:nugets.bzl", "rules_dotnet_nuget_packages")
 rules_dotnet_nuget_packages()
 
 # Fetch deps needed for our tests
-load("//tests:dependencies.bzl", "test_dependencies")
+load("//dotnet/private/tests:dependencies.bzl", "test_dependencies")
 
 test_dependencies()
 
