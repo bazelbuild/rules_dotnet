@@ -23,9 +23,6 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     ./dotnet/private/tests/publish/framework_dependent/framework_dependent/publish/osx-x64/app_to_publish
 elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "win32" ]]; then
-    # Set MAX_PATH to more than the default 260 because Bazel runfiles
-    # paths can be very long
-    export MAX_PATH=1000
     ./dotnet/private/tests/publish/framework_dependent/framework_dependent/publish/win-x64/app_to_publish.exe
 else
     echo "Could not figure out which OS is running the test"
