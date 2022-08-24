@@ -63,7 +63,7 @@ namespace Bazel
         /// <returns>A new <c>Runfiles</c> instance.</returns>
         public static Runfiles Create()
         {
-            var argv0 = Environment.GetCommandLineArgs()[0];
+            var argv0 = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
             var env = new Dictionary<string, string>();
             foreach (DictionaryEntry e in System.Environment.GetEnvironmentVariables())
             {
@@ -228,7 +228,7 @@ namespace Bazel
             {
                 var parentDir = Directory.GetParent(argv0).ToString();
                 var fileName = Path.GetFileName(argv0);
-                
+
                 // We need to work around this issue: https://github.com/dotnet/runtime/issues/11305
                 var fileWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
                 fileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? fileWithoutExtension + ".exe" : fileWithoutExtension;

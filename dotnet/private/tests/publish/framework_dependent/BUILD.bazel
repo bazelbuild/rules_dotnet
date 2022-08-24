@@ -19,7 +19,7 @@ csharp_binary(
     name = "toolchain_provider",
     srcs = ["hello.cs"],
     private_deps = [
-        "@rules_dotnet_test_deps//microsoft.netcore.app.ref",
+        "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
     ],
     target_frameworks = ["net6.0"],
     deps = [

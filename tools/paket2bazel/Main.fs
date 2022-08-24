@@ -7,18 +7,19 @@ open System.Collections.Generic
 open System.IO
 open Paket2Bazel.Gen
 open Paket2Bazel.Models
-open System.Text.Json
-open System.Text.Json.Serialization
 
 type CliArguments =
     | [<Mandatory>] Dependencies_File of path: string
     | [<Mandatory>] Output_Folder of path: string
+    | Put_Groups_Into_Separate_Files
 
     interface IArgParserTemplate with
         member s.Usage =
             match s with
             | Dependencies_File _ -> "Path to paket.dependencies file"
             | Output_Folder _ -> "Folder where the output will be generated in"
+            | Put_Groups_Into_Separate_Files ->
+                "If enabled each Paket group will be put into a file with the same name as the group. The default group will always be put into the `paket.bzl` file"
 
 [<EntryPoint>]
 let main argv =
@@ -35,20 +36,16 @@ let main argv =
 
     let results = parser.ParseCommandLine argv
 
-    let dependenciesFile =
-        Path.GetFullPath(results.GetResult Dependencies_File)
+    let dependenciesFile = Path.GetFullPath(results.GetResult Dependencies_File)
 
     let outputFolder = results.GetResult Output_Folder
 
     let cache = Dictionary<string, Package>()
 
-    let groups =
-        getDependencies dependenciesFile cache
+    let groups = getDependencies dependenciesFile cache
 
+    let separateFiles = results.Contains Put_Groups_Into_Separate_Files
 
-    let bazelFile = generateBazelFile groups
-
-    File.WriteAllText($"{outputFolder}/BUILD.bazel", "")
-    File.WriteAllText($"{outputFolder}/paket.bzl", bazelFile)
+    generateBazelFiles groups separateFiles outputFolder
 
     0 // return an integer exit

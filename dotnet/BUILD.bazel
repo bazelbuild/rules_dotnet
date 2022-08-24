@@ -36,16 +36,6 @@ bzl_library(
 )
 
 bzl_library(
-    name = "nugets",
-    srcs = ["nugets.bzl"],
-    visibility = ["//visibility:public"],
-    deps = [
-        "//dotnet/private/rules/nuget:nuget_repo",
-        "//tools/paket2bazel/deps:paket",
-    ],
-)
-
-bzl_library(
     name = "repositories",
     srcs = ["repositories.bzl"],
     visibility = ["//visibility:public"],
@@ -55,13 +45,6 @@ bzl_library(
         "@bazel_tools//tools/build_defs/repo:http.bzl",
         "@bazel_tools//tools/build_defs/repo:utils.bzl",
     ],
-)
-
-bzl_library(
-    name = "dev_nugets",
-    srcs = ["dev_nugets.bzl"],
-    visibility = ["//visibility:public"],
-    deps = [":defs"],
 )
 
 bzl_library(

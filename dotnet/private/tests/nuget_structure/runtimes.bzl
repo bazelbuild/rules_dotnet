@@ -11,28 +11,28 @@ def runtimes_structure():
         name = "libgit2sharp.nativebinaries.linux-x64",
         target_framework = "net6.0",
         runtime_identifier = "linux-x64",
-        package = "@rules_dotnet_test_deps//libgit2sharp.nativebinaries",
+        package = "@rules_dotnet_dev_nuget_packages//libgit2sharp.nativebinaries",
     )
 
     nuget_test_wrapper(
         name = "libgit2sharp.nativebinaries.osx-x64",
         target_framework = "net6.0",
         runtime_identifier = "osx-x64",
-        package = "@rules_dotnet_test_deps//libgit2sharp.nativebinaries",
+        package = "@rules_dotnet_dev_nuget_packages//libgit2sharp.nativebinaries",
     )
 
     nuget_test_wrapper(
         name = "libgit2sharp.nativebinaries.win-x64",
         target_framework = "net6.0",
         runtime_identifier = "win-x64",
-        package = "@rules_dotnet_test_deps//libgit2sharp.nativebinaries",
+        package = "@rules_dotnet_dev_nuget_packages//libgit2sharp.nativebinaries",
     )
 
     nuget_test_wrapper(
         name = "libgit2sharp.nativebinaries.alpine-x64",
         target_framework = "net6.0",
         runtime_identifier = "alpine-x64",
-        package = "@rules_dotnet_test_deps//libgit2sharp.nativebinaries",
+        package = "@rules_dotnet_dev_nuget_packages//libgit2sharp.nativebinaries",
     )
 
     nuget_structure_test(
@@ -64,14 +64,14 @@ def runtimes_structure():
         name = "libgit2sharp.nativebinaries.linux-x86",
         target_framework = "net6.0",
         runtime_identifier = "linux-x86",
-        package = "@rules_dotnet_test_deps//libgit2sharp.nativebinaries",
+        package = "@rules_dotnet_dev_nuget_packages//libgit2sharp.nativebinaries",
     )
 
     nuget_test_wrapper(
         name = "libgit2sharp.nativebinaries.win-x86",
         target_framework = "net6.0",
         runtime_identifier = "win-x86",
-        package = "@rules_dotnet_test_deps//libgit2sharp.nativebinaries",
+        package = "@rules_dotnet_dev_nuget_packages//libgit2sharp.nativebinaries",
     )
 
     nuget_structure_test(
@@ -91,28 +91,28 @@ def runtimes_structure():
         name = "libgit2sharp.nativebinaries.linux-arm64",
         target_framework = "net6.0",
         runtime_identifier = "linux-arm64",
-        package = "@rules_dotnet_test_deps//libgit2sharp.nativebinaries",
+        package = "@rules_dotnet_dev_nuget_packages//libgit2sharp.nativebinaries",
     )
 
     nuget_test_wrapper(
         name = "libgit2sharp.nativebinaries.osx-arm64",
         target_framework = "net6.0",
         runtime_identifier = "osx-arm64",
-        package = "@rules_dotnet_test_deps//libgit2sharp.nativebinaries",
+        package = "@rules_dotnet_dev_nuget_packages//libgit2sharp.nativebinaries",
     )
 
     nuget_test_wrapper(
         name = "libgit2sharp.nativebinaries.win-arm64",
         target_framework = "net6.0",
         runtime_identifier = "win-arm64",
-        package = "@rules_dotnet_test_deps//libgit2sharp.nativebinaries",
+        package = "@rules_dotnet_dev_nuget_packages//libgit2sharp.nativebinaries",
     )
 
     nuget_test_wrapper(
         name = "libgit2sharp.nativebinaries.alpine-arm64",
         target_framework = "net6.0",
         runtime_identifier = "alpine-arm64",
-        package = "@rules_dotnet_test_deps//libgit2sharp.nativebinaries",
+        package = "@rules_dotnet_dev_nuget_packages//libgit2sharp.nativebinaries",
     )
 
     nuget_structure_test(
@@ -144,21 +144,21 @@ def runtimes_structure():
         name = "libgit2sharp.nativebinaries.linux-arm",
         target_framework = "net6.0",
         runtime_identifier = "linux-arm",
-        package = "@rules_dotnet_test_deps//libgit2sharp.nativebinaries",
+        package = "@rules_dotnet_dev_nuget_packages//libgit2sharp.nativebinaries",
     )
 
     nuget_test_wrapper(
         name = "libgit2sharp.nativebinaries.win-arm",
         target_framework = "net6.0",
         runtime_identifier = "win-arm",
-        package = "@rules_dotnet_test_deps//libgit2sharp.nativebinaries",
+        package = "@rules_dotnet_dev_nuget_packages//libgit2sharp.nativebinaries",
     )
 
     nuget_test_wrapper(
         name = "libgit2sharp.nativebinaries.alpine-arm",
         target_framework = "net6.0",
         runtime_identifier = "alpine-arm",
-        package = "@rules_dotnet_test_deps//libgit2sharp.nativebinaries",
+        package = "@rules_dotnet_dev_nuget_packages//libgit2sharp.nativebinaries",
     )
 
     nuget_structure_test(

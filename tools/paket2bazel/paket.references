@@ -1,4 +1,4 @@
-group paket2bazel
+group paket2bazel_dependencies
     FSharp.Core
     Argu
     Paket.Core
