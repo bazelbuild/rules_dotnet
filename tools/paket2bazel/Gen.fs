@@ -13,7 +13,7 @@ let generateTarget (group: Group) =
     let sb = new StringBuilder()
     sb.Append($"{i}nuget_repo(\n") |> ignore
 
-    sb.Append($"{i}    name = \"paket.{group.name.ToLower()}\",\n")
+    sb.Append($"{i}    name = \"{group.name.ToLower()}\",\n")
     |> ignore
 
     sb.Append($"{i}    packages = [\n") |> ignore
