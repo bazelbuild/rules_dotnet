@@ -16,7 +16,7 @@ load(
     "//dotnet/private:providers.bzl",
     "DotnetAssemblyInfo",
 )
-load("//dotnet/private:actions/misc.bzl", "framework_preprocessor_symbols", "write_internals_visible_to_fsharp")
+load("//dotnet/private/actions:misc.bzl", "framework_preprocessor_symbols", "write_internals_visible_to_fsharp")
 
 def _format_targetprofile(tfm):
     if is_standard_framework(tfm):

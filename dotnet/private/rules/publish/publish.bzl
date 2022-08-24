@@ -4,7 +4,7 @@ Rules for compiling F# binaries.
 
 load("@bazel_skylib//lib:shell.bzl", "shell")
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "DotnetBinaryInfo", "DotnetPublishBinaryInfo")
-load("//dotnet/private:transitions/tfm_transition.bzl", "tfm_transition")
+load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 load("//dotnet/private:rids.bzl", "RUNTIME_GRAPH")
 
 def _publish_binary_impl(ctx):

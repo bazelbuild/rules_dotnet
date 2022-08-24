@@ -6,7 +6,7 @@ load(
     "FRAMEWORK_COMPATIBILITY",
     "get_highest_compatible_target_framework",
 )
-load("//dotnet/private:transitions/common.bzl", "FRAMEWORK_COMPATABILITY_TRANSITION_OUTPUTS", "RID_COMPATABILITY_TRANSITION_OUTPUTS")
+load("//dotnet/private/transitions:common.bzl", "FRAMEWORK_COMPATABILITY_TRANSITION_OUTPUTS", "RID_COMPATABILITY_TRANSITION_OUTPUTS")
 load("//dotnet/private:rids.bzl", "RUNTIME_GRAPH")
 
 def _impl(settings, attr):

@@ -302,7 +302,7 @@ def _nuget_archive_impl(ctx):
 
     ctx.file("BUILD.bazel", r"""package(default_visibility = ["//visibility:public"])
 exports_files(glob(["**"]))
-load("@rules_dotnet//dotnet/private:rules/nuget/nuget_archive.bzl", "tfm_filegroup", "rid_filegroup")
+load("@rules_dotnet//dotnet/private/rules/nuget:nuget_archive.bzl", "tfm_filegroup", "rid_filegroup")
 """ + "\n".join([
         _create_framework_select("libs", groups.get("lib")) or "filegroup(name = \"libs\", srcs = [])",
         _create_framework_select("refs", groups.get("ref")) or _create_framework_select("refs", groups.get("lib")) or "filegroup(name = \"refs\", srcs = [])",

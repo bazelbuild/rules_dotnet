@@ -4,7 +4,7 @@ Base rule for building .Net binaries
 
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "DotnetBinaryInfo")
 load(
-    "//dotnet/private:actions/misc.bzl",
+    "//dotnet/private/actions:misc.bzl",
     "write_depsjson",
     "write_runtimeconfig",
 )

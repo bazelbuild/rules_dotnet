@@ -2,15 +2,15 @@
 Rules for compiling C# binaries.
 """
 
-load("//dotnet/private:actions/csharp_assembly.bzl", "AssemblyAction")
+load("//dotnet/private/actions:csharp_assembly.bzl", "AssemblyAction")
 load(
     "//dotnet/private:common.bzl",
     "is_debug",
     "is_strict_deps_enabled",
 )
-load("//dotnet/private:rules/common/binary.bzl", "build_binary")
-load("//dotnet/private:rules/common/attrs.bzl", "CSHARP_BINARY_COMMON_ATTRS")
-load("//dotnet/private:transitions/tfm_transition.bzl", "tfm_transition")
+load("//dotnet/private/rules/common:binary.bzl", "build_binary")
+load("//dotnet/private/rules/common:attrs.bzl", "CSHARP_BINARY_COMMON_ATTRS")
+load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 load("@bazel_skylib//lib:dicts.bzl", "dicts")
 
 def _compile_action(ctx, tfm):

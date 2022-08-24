@@ -2,7 +2,7 @@
 
 load("@bazel_skylib//lib:dicts.bzl", "dicts")
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo")
-load("//dotnet/private:transitions/tfm_transition.bzl", "tfm_transition")
+load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 
 # These are attributes that are common across all the binary/library/test .Net rules
 COMMON_ATTRS = {
@@ -85,12 +85,12 @@ BINARY_COMMON_ATTRS = {
     ),
     "runtimeconfig_template": attr.label(
         doc = "A template file to use for generating runtimeconfig.json",
-        default = ":runtimeconfig.json.tpl",
+        default = "@rules_dotnet//dotnet/private:runtimeconfig.json.tpl",
         allow_single_file = True,
     ),
     "depsjson_template": attr.label(
         doc = "A template file to use for generating deps.json",
-        default = ":deps.json.tpl",
+        default = "@rules_dotnet//dotnet/private:deps.json.tpl",
         allow_single_file = True,
     ),
     "apphost_shimmer": attr.label(
@@ -108,12 +108,12 @@ BINARY_COMMON_ATTRS = {
     ),
     "_launcher_sh": attr.label(
         doc = "A template file for the launcher on Linux/MacOS",
-        default = ":launcher.sh.tpl",
+        default = "@rules_dotnet//dotnet/private:launcher.sh.tpl",
         allow_single_file = True,
     ),
     "_launcher_bat": attr.label(
         doc = "A template file for the launcher on Windows",
-        default = ":launcher.bat.tpl",
+        default = "@rules_dotnet//dotnet/private:launcher.bat.tpl",
         allow_single_file = True,
     ),
 }

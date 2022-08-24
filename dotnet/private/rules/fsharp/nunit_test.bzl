@@ -2,7 +2,7 @@
 Rules for compiling NUnit tests.
 """
 
-load("//dotnet/private:rules/fsharp/test.bzl", "fsharp_test")
+load("//dotnet/private/rules/fsharp:test.bzl", "fsharp_test")
 
 def fsharp_nunit_test(**kwargs):
     # TODO: This should be user configurable
@@ -12,7 +12,7 @@ def fsharp_nunit_test(**kwargs):
     ]
 
     srcs = kwargs.pop("srcs", []) + [
-        "@rules_dotnet//dotnet/private:nunit/shim.fs",
+        "@rules_dotnet//dotnet/private/nunit:shim.fs",
     ]
 
     fsharp_test(

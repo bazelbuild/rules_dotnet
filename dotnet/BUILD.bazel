@@ -1,18 +1,10 @@
 load(
-    "//dotnet/private:macros/register_tfms.bzl",
+    "//dotnet/private/macros:register_tfms.bzl",
     "register_tfms",
 )
 load(
-    "//dotnet/private:macros/register_rids.bzl",
+    "//dotnet/private/macros:register_rids.bzl",
     "register_rids",
-)
-
-exports_files(
-    [
-        "defs.bzl",
-        "repositories.bzl",
-    ],
-    visibility = ["//docs:__pkg__"],
 )
 
 toolchain_type(
