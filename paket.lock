@@ -386,6 +386,7 @@ NUGET
     Microsoft.NETCore.App.Runtime.osx-x64 (6.0.8)
     Microsoft.NETCore.App.Runtime.win-x64 (6.0.8)
     NETStandard.Library.Ref (2.1)
+    System.Security.Principal.Windows (5.0)
 
 GROUP rules_dotnet_nuget_packages
 RESTRICTION: == net6.0

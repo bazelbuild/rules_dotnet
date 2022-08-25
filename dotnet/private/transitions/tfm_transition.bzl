@@ -30,7 +30,7 @@ def _impl(settings, attr):
     if hasattr(attr, "runtime_identifier"):
         runtime_identifier = attr.runtime_identifier
 
-    return dicts.add({"@rules_dotnet//dotnet:target_framework": transitioned_tfm}, {"@rules_dotnet//dotnet:rid": runtime_identifier}, FRAMEWORK_COMPATABILITY_TRANSITION_OUTPUTS[incoming_tfm], RID_COMPATABILITY_TRANSITION_OUTPUTS[runtime_identifier])
+    return dicts.add({"@rules_dotnet//dotnet:target_framework": transitioned_tfm}, {"@rules_dotnet//dotnet:rid": runtime_identifier}, FRAMEWORK_COMPATABILITY_TRANSITION_OUTPUTS[transitioned_tfm], RID_COMPATABILITY_TRANSITION_OUTPUTS[runtime_identifier])
 
 tfm_transition = transition(
     implementation = _impl,

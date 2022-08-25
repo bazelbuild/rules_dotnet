@@ -6,6 +6,7 @@ load(
     "FRAMEWORK_COMPATIBILITY",
     "NET_FRAMEWORKS",
     "STD_FRAMEWORKS",
+    "get_highest_compatible_target_framework",
 )
 load(
     "//dotnet/private:rids.bzl",
@@ -327,20 +328,75 @@ def tfm_filegroup(name, tfms):
     std = []
     net = []
     cor = []
+    tfm_rids = {}
 
     for (tfm, value) in tfms.items():
-        # If the tfm is a combination of the TFM and RID we split it into the TFM and RID.
+        native.filegroup(
+            name = "%s_%s_files" % (name, tfm),
+            srcs = value,
+        )
+        parts = tfm.split("_")
+        if len(parts) == 2:
+            if tfm_rids.get(parts[0]):
+                tfm_rids[parts[0]].append(parts[1])
+            else:
+                tfm_rids[parts[0]] = [parts[1]]
+        elif tfm_rids.get(tfm):
+            tfm_rids[tfm].append("default")
+        else:
+            tfm_rids[tfm] = ["default"]
+
+    # If the TFM only exists without being bound to an RID we can
+    # point the alias to the filegroup for the TFM. If the TFM is
+    # bound to and RID we create the alias with a select statement
+    # that selects on the RIDs that were bound to the TFM and we
+    # then put the alias that points to the highest compatible TFM
+    # as the default case.
+    #
+    # By setting the default case to the next highest compatible TFM we
+    # make sure that we don't select on an TFM that only has RIDs
+    # that are incompatible with the current configuration
+    tfm_target_mapping = {}
+    for (tfm, rids) in tfm_rids.items():
+        if len(rids) == 1:
+            actual = None
+            if rids[0] == "default":
+                actual = "%s_%s_files" % (name, tfm)
+            else:
+                actual = "%s_%s_%s_files" % (name, tfm, rids[0])
+            native.alias(
+                name = "%s_%s_alias" % (name, tfm),
+                actual = actual,
+            )
+            tfm_target_mapping[tfm] = ":%s_%s_alias" % (name, tfm)
+        else:
+            map = {"@rules_dotnet//dotnet:rid_%s" % rid: ":%s_%s_%s_files" % (name, tfm, rid) for rid in rids if rid != "default"}
+
+            if "default" in rids:
+                map["//conditions:default"] = ":%s_%s_files" % (name, tfm)
+            else:
+                next_tfm = get_highest_compatible_target_framework(tfm, [t for t in tfm_rids.keys() if t != tfm])
+                if next_tfm:
+                    map["//conditions:default"] = ":%s_%s_alias" % (name, next_tfm)
+            native.alias(
+                name = "%s_%s_alias" % (name, tfm),
+                actual = select(map),
+            )
+
+        tfm_target_mapping[tfm] = ":%s_%s_alias" % (name, tfm)
+
+    for (tfm, target) in tfm_target_mapping.items():
         original_tfm = tfm
         parts = tfm.split("_")
         if len(parts) == 2:
             tfm = parts[0]
 
-        if tfm in COR_FRAMEWORKS:
-            cor.append((original_tfm, value))
-        elif tfm in STD_FRAMEWORKS:
-            std.append((original_tfm, value))
-        elif tfm in NET_FRAMEWORKS:
-            net.append((original_tfm, value))
+        if tfm in COR_FRAMEWORKS and (tfm not in cor):
+            cor.append((original_tfm, target))
+        elif tfm in STD_FRAMEWORKS and (tfm not in std):
+            std.append((original_tfm, target))
+        elif tfm in NET_FRAMEWORKS and (tfm not in net):
+            net.append((original_tfm, target))
         else:
             fail("unknown framework %s" % tfm)
 
@@ -349,21 +405,21 @@ def tfm_filegroup(name, tfms):
     # bootstrap different filegroups for each framework type (cor, std, net) and
     # determine which filegroup to hit using alias().
     if std and (net or cor):
-        native.filegroup(
+        native.alias(
             name = "%s_std" % name,
-            srcs = select({"@rules_dotnet//dotnet:tfm_%s" % tfm: value for (tfm, value) in std}),
+            actual = select({"@rules_dotnet//dotnet:tfm_%s" % tfm: target for (tfm, target) in std}),
         )
 
         if net:
-            native.filegroup(
+            native.alias(
                 name = "%s_net" % name,
-                srcs = select({"@rules_dotnet//dotnet:tfm_%s" % tfm: value for (tfm, value) in net}),
+                actual = select({"@rules_dotnet//dotnet:tfm_%s" % tfm: target for (tfm, target) in net}),
             )
 
         if cor:
-            native.filegroup(
+            native.alias(
                 name = "%s_cor" % name,
-                srcs = select({"@rules_dotnet//dotnet:tfm_%s" % tfm: value for (tfm, value) in cor}),
+                actual = select({"@rules_dotnet//dotnet:tfm_%s" % tfm: target for (tfm, target) in cor}),
             )
 
         return native.alias(
@@ -378,9 +434,9 @@ def tfm_filegroup(name, tfms):
             }),
         )
 
-    return native.filegroup(
+    return native.alias(
         name = name,
-        srcs = select({"@rules_dotnet//dotnet:tfm_%s" % tfm: value for (tfm, value) in tfms.items()}),
+        actual = select({"@rules_dotnet//dotnet:tfm_%s" % tfm: target for (tfm, target) in tfm_target_mapping.items()}),
     )
 
 # This function is public because it's used by the nuget_archive repository rule.

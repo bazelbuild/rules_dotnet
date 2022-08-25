@@ -178,3 +178,174 @@ def runtimes_structure():
         target_under_test = ":libgit2sharp.nativebinaries.alpine-arm",
         expected_native = ["runtimes/linux-musl-arm/native/libgit2-b7bad55.so"],
     )
+
+    # This package only has the `unix` and `win` RIDs so we want
+    # to see that the right RID is chosen if we choose a parent of
+    # those RIDs
+    nuget_test_wrapper(
+        name = "system.security.principal.windows.net6.0.linux-x64",
+        target_framework = "net6.0",
+        runtime_identifier = "linux-x64",
+        package = "@rules_dotnet_dev_nuget_packages//system.security.principal.windows",
+    )
+
+    nuget_structure_test(
+        name = "nuget_structure_should_parse_runtime_unix_correctly_net6_0_linux_x64",
+        target_under_test = ":system.security.principal.windows.net6.0.linux-x64",
+        expected_libs = [],
+        expected_refs = ["ref/netcoreapp3.0/System.Security.Principal.Windows.dll"],
+    )
+
+    nuget_test_wrapper(
+        name = "system.security.principal.windows.net6.0.linux-arm64",
+        target_framework = "net6.0",
+        runtime_identifier = "linux-arm64",
+        package = "@rules_dotnet_dev_nuget_packages//system.security.principal.windows",
+    )
+
+    nuget_structure_test(
+        name = "nuget_structure_should_parse_runtime_unix_correctly_net6_0_linux_arm64",
+        target_under_test = ":system.security.principal.windows.net6.0.linux-arm64",
+        expected_libs = [],
+        expected_refs = ["ref/netcoreapp3.0/System.Security.Principal.Windows.dll"],
+    )
+
+    nuget_test_wrapper(
+        name = "system.security.principal.windows.net6.0.osx-x64",
+        target_framework = "net6.0",
+        runtime_identifier = "osx-x64",
+        package = "@rules_dotnet_dev_nuget_packages//system.security.principal.windows",
+    )
+
+    nuget_structure_test(
+        name = "nuget_structure_should_parse_runtime_unix_correctly_net6_0_osx_x64",
+        target_under_test = ":system.security.principal.windows.net6.0.osx-x64",
+        expected_libs = [],
+        expected_refs = ["ref/netcoreapp3.0/System.Security.Principal.Windows.dll"],
+    )
+
+    nuget_test_wrapper(
+        name = "system.security.principal.windows.net6.0.osx-arm64",
+        target_framework = "net6.0",
+        runtime_identifier = "osx-arm64",
+        package = "@rules_dotnet_dev_nuget_packages//system.security.principal.windows",
+    )
+
+    nuget_structure_test(
+        name = "nuget_structure_should_parse_runtime_unix_correctly_net6_0_osx_arm64",
+        target_under_test = ":system.security.principal.windows.net6.0.osx-arm64",
+        expected_libs = [],
+        expected_refs = ["ref/netcoreapp3.0/System.Security.Principal.Windows.dll"],
+    )
+
+    nuget_test_wrapper(
+        name = "system.security.principal.windows.net6.0.win-x64",
+        target_framework = "net6.0",
+        runtime_identifier = "win-x64",
+        package = "@rules_dotnet_dev_nuget_packages//system.security.principal.windows",
+    )
+
+    nuget_structure_test(
+        name = "nuget_structure_should_parse_runtime_unix_correctly_net6_0_win_x64",
+        target_under_test = ":system.security.principal.windows.net6.0.win-x64",
+        expected_libs = [],
+        expected_refs = ["ref/netcoreapp3.0/System.Security.Principal.Windows.dll"],
+    )
+
+    nuget_test_wrapper(
+        name = "system.security.principal.windows.net6.0.win-arm64",
+        target_framework = "net6.0",
+        runtime_identifier = "win-arm64",
+        package = "@rules_dotnet_dev_nuget_packages//system.security.principal.windows",
+    )
+
+    nuget_structure_test(
+        name = "nuget_structure_should_parse_runtime_unix_correctly_net6_0_win_arm64",
+        target_under_test = ":system.security.principal.windows.net6.0.win-arm64",
+        expected_libs = [],
+        expected_refs = ["ref/netcoreapp3.0/System.Security.Principal.Windows.dll"],
+    )
+
+    nuget_test_wrapper(
+        name = "system.security.principal.windows.netstandard2.1.linux-x64",
+        target_framework = "netstandard2.1",
+        runtime_identifier = "linux-x64",
+        package = "@rules_dotnet_dev_nuget_packages//system.security.principal.windows",
+    )
+
+    nuget_structure_test(
+        name = "nuget_structure_should_parse_runtime_unix_correctly_netstandard_2_1_linux_x64",
+        target_under_test = ":system.security.principal.windows.netstandard2.1.linux-x64",
+        expected_libs = ["lib/netstandard2.0/System.Security.Principal.Windows.dll"],
+        expected_refs = ["ref/netstandard2.0/System.Security.Principal.Windows.dll"],
+    )
+
+    nuget_test_wrapper(
+        name = "system.security.principal.windows.netstandard2.1.linux-arm64",
+        target_framework = "netstandard2.1",
+        runtime_identifier = "linux-arm64",
+        package = "@rules_dotnet_dev_nuget_packages//system.security.principal.windows",
+    )
+
+    nuget_structure_test(
+        name = "nuget_structure_should_parse_runtime_unix_correctly_netstandard_2_1_linux_arm64",
+        target_under_test = ":system.security.principal.windows.netstandard2.1.linux-arm64",
+        expected_libs = ["lib/netstandard2.0/System.Security.Principal.Windows.dll"],
+        expected_refs = ["ref/netstandard2.0/System.Security.Principal.Windows.dll"],
+    )
+
+    nuget_test_wrapper(
+        name = "system.security.principal.windows.netstandard2.1.osx-x64",
+        target_framework = "netstandard2.1",
+        runtime_identifier = "osx-x64",
+        package = "@rules_dotnet_dev_nuget_packages//system.security.principal.windows",
+    )
+
+    nuget_structure_test(
+        name = "nuget_structure_should_parse_runtime_unix_correctly_netstandard_2_1_osx_x64",
+        target_under_test = ":system.security.principal.windows.netstandard2.1.osx-x64",
+        expected_libs = ["lib/netstandard2.0/System.Security.Principal.Windows.dll"],
+        expected_refs = ["ref/netstandard2.0/System.Security.Principal.Windows.dll"],
+    )
+
+    nuget_test_wrapper(
+        name = "system.security.principal.windows.netstandard2.1.osx-arm64",
+        target_framework = "netstandard2.1",
+        runtime_identifier = "osx-arm64",
+        package = "@rules_dotnet_dev_nuget_packages//system.security.principal.windows",
+    )
+
+    nuget_structure_test(
+        name = "nuget_structure_should_parse_runtime_unix_correctly_netstandard_2_1_osx_arm64",
+        target_under_test = ":system.security.principal.windows.netstandard2.1.osx-arm64",
+        expected_libs = ["lib/netstandard2.0/System.Security.Principal.Windows.dll"],
+        expected_refs = ["ref/netstandard2.0/System.Security.Principal.Windows.dll"],
+    )
+
+    nuget_test_wrapper(
+        name = "system.security.principal.windows.netstandard2.1.win-x64",
+        target_framework = "netstandard2.1",
+        runtime_identifier = "win-x64",
+        package = "@rules_dotnet_dev_nuget_packages//system.security.principal.windows",
+    )
+
+    nuget_structure_test(
+        name = "nuget_structure_should_parse_runtime_unix_correctly_netstandard_2_1_win_x64",
+        target_under_test = ":system.security.principal.windows.netstandard2.1.win-x64",
+        expected_libs = ["lib/netstandard2.0/System.Security.Principal.Windows.dll"],
+        expected_refs = ["ref/netstandard2.0/System.Security.Principal.Windows.dll"],
+    )
+
+    nuget_test_wrapper(
+        name = "system.security.principal.windows.netstandard2.1.win-arm64",
+        target_framework = "netstandard2.1",
+        runtime_identifier = "win-arm64",
+        package = "@rules_dotnet_dev_nuget_packages//system.security.principal.windows",
+    )
+
+    nuget_structure_test(
+        name = "nuget_structure_should_parse_runtime_unix_correctly_netstandard_2_1_win_arm64",
+        target_under_test = ":system.security.principal.windows.netstandard2.1.win-arm64",
+        expected_libs = ["lib/netstandard2.0/System.Security.Principal.Windows.dll"],
+        expected_refs = ["ref/netstandard2.0/System.Security.Principal.Windows.dll"],
+    )

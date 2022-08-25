@@ -26,6 +26,7 @@ group rules_dotnet_dev_nuget_packages
     nuget FSharp.Data 4.2.7
     nuget FSharp.Core 6.0.3
     nuget NETStandard.Library.Ref 2.1.0
+    nuget System.Security.Principal.Windows 5.0.0
 
 group rules_dotnet_nuget_packages
     framework: net6.0
