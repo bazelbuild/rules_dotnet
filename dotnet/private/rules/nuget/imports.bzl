@@ -10,7 +10,7 @@ load(
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "NuGetInfo")
 
 def _import_library(ctx):
-    (_irefs, prefs, analyzers, libs, native, data, _private_refs, _private_analyzers, transitive_runtime_deps, _overrides) = collect_transitive_info(ctx.label.name, ctx.attr.deps, [], ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].strict_deps)
+    (_irefs, prefs, analyzers, libs, native, data, _private_refs, _private_analyzers, transitive_runtime_deps, _exports, _overrides) = collect_transitive_info(ctx.label.name, ctx.attr.deps, [], [], ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].strict_deps)
 
     return [DotnetAssemblyInfo(
         name = ctx.attr.library_name,
@@ -21,6 +21,7 @@ def _import_library(ctx):
         analyzers = ctx.files.analyzers,
         native = ctx.files.native,
         data = ctx.files.data,
+        exports = [],
         transitive_lib = libs,
         transitive_native = native,
         transitive_data = data,

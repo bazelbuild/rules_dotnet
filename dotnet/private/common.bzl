@@ -187,13 +187,14 @@ def format_ref_arg(args, refs, targeting_pack_overrides):
 
     return args
 
-def collect_transitive_info(name, deps, private_deps, strict_deps):
+def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
     """Determine the transitive dependencies by the target framework.
 
     Args:
         name: The name of the assembly that is asking.
         deps: Dependencies that the compilation target depends on.
         private_deps: Private dependencies that the compilation target depends on.
+        exports: Exported targets
         strict_deps: Whether or not to use strict dependencies.
 
     Returns:
@@ -219,6 +220,8 @@ def collect_transitive_info(name, deps, private_deps, strict_deps):
     transitive_private_analyzers = []
     direct_labels = [d.label for d in deps]
 
+    exports_files = []
+
     overrides = {}
     for dep in deps + private_deps:
         if NuGetInfo in dep:
@@ -243,6 +246,10 @@ def collect_transitive_info(name, deps, private_deps, strict_deps):
         direct_data.extend(assembly.data)
         direct_runtime_deps.extend(assembly.runtime_deps)
         transitive_runtime_deps.append(assembly.transitive_runtime_deps)
+
+        # We take all the exports of each dependency and add them
+        # to the direct refs.
+        direct_iref.extend(assembly.exports)
 
         # Runfiles are always collected transitively
         # We need to make sure that we do not include multiple versions of the same first party dll
@@ -291,6 +298,10 @@ def collect_transitive_info(name, deps, private_deps, strict_deps):
             transitive_private_ref.append(assembly.transitive_ref)
             transitive_private_analyzers.append(assembly.transitive_analyzers)
 
+    for export in exports:
+        assembly = export[DotnetAssemblyInfo]
+        exports_files.extend(assembly.ref)
+
     return (
         depset(direct = direct_iref, transitive = transitive_ref),
         depset(direct = direct_ref, transitive = transitive_ref),
@@ -301,6 +312,7 @@ def collect_transitive_info(name, deps, private_deps, strict_deps):
         depset(direct = direct_private_ref, transitive = transitive_private_ref),
         depset(direct = direct_private_analyzers, transitive = transitive_private_analyzers),
         depset(direct = direct_runtime_deps, transitive = transitive_runtime_deps),
+        exports_files,
         overrides,
     )
 

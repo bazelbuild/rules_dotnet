@@ -12,6 +12,7 @@ DotnetAssemblyInfo = provider(
         "analyzers": "list[File]: Analyzer dlls",
         "internals_visible_to": "list[string]: A list of assemblies that can use the assemblies listed in iref for compilation. See docs/ReferenceAssemblies.md for more info.",
         "data": "list[File]: Runtime data files",
+        "exports": "list[File]",
         "runtime_deps": "list[DotnetDepVariantInfo]: The direct dependencies of the assembly",
         "transitive_runtime_deps": "list[DotnetDepVariantInfo]: The transitive runtime dependencies of the assembly",
         "transitive_lib": "depset[File]: Transitive runtime DLLs",

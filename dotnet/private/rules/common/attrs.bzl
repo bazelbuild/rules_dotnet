@@ -76,6 +76,19 @@ COMMON_ATTRS = {
     ),
 }
 
+# These are attributes that are common across all libarary rules
+LIBRARY_COMMON_ATTRS = {
+    "exports": attr.label_list(
+        doc = """
+        List of targets to add to the dependencies of those that depend on this target. 
+        Use this sparingly as it weakens the precision of the build graph.
+        
+        This attribute does nothing if you don't have strict dependencies enabled.""",
+        default = [],
+        providers = [DotnetAssemblyInfo],
+    ),
+}
+
 # These are attributes that are common across all binary/test rules
 BINARY_COMMON_ATTRS = {
     "winexe": attr.bool(
@@ -133,6 +146,12 @@ CSHARP_COMMON_ATTRS = dicts.add(
     },
 )
 
+# These are attributes that are common across all the library C# rules
+CSHARP_LIBRARY_COMMON_ATTRS = dicts.add(
+    CSHARP_COMMON_ATTRS,
+    LIBRARY_COMMON_ATTRS,
+)
+
 # These are attributes that are common across all the binary C# rules
 CSHARP_BINARY_COMMON_ATTRS = dicts.add(
     CSHARP_COMMON_ATTRS,
@@ -148,6 +167,12 @@ FSHARP_COMMON_ATTRS = dicts.add(
             allow_files = [".fs"],
         ),
     },
+)
+
+# These are attributes that are common across all the library F# rules
+FSHARP_LIBRARY_COMMON_ATTRS = dicts.add(
+    FSHARP_COMMON_ATTRS,
+    LIBRARY_COMMON_ATTRS,
 )
 
 # These are attributes that are common across all the binary F# rules

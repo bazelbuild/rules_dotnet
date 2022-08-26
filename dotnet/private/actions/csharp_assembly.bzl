@@ -23,6 +23,7 @@ def AssemblyAction(
         debug,
         defines,
         deps,
+        exports,
         private_deps,
         internals_visible_to,
         keyfile,
@@ -47,6 +48,7 @@ def AssemblyAction(
         debug: Emits debugging information.
         defines: The list of conditional compilation symbols.
         deps: The list of other libraries to be linked in to the assembly.
+        exports: List of exported targets.
         private_deps: The list of libraries that are private to the target. These deps are not passed transitively.
         internals_visible_to: An optional list of assemblies that can see this assemblies internal symbols.
         keyfile: Specifies a strong name key file of the assembly.
@@ -78,11 +80,13 @@ def AssemblyAction(
         private_refs,
         private_analyzers,
         transitive_runtime_deps,
+        exports_files,
         overrides,
     ) = collect_transitive_info(
         target_name,
         deps,
         private_deps,
+        exports,
         strict_deps,
     )
     defines = framework_preprocessor_symbols(target_framework) + defines
@@ -207,6 +211,7 @@ def AssemblyAction(
         internals_visible_to = internals_visible_to or [],
         data = direct_data,
         native = [],
+        exports = exports_files,
         transitive_ref = prefs,
         transitive_analyzers = analyzers,
         transitive_lib = transitive_libs,
