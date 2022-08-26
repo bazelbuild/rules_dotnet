@@ -43,7 +43,7 @@ def _create_launcher(ctx, runfiles, executable):
     runtime = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].runtime
     windows_constraint = ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]
 
-    launcher = ctx.actions.declare_file(paths.replace_extension(executable.basename, ".bat" if ctx.target_platform_has_constraint(windows_constraint) else ".sh"), sibling = executable)
+    launcher = ctx.actions.declare_file("{}.{}".format(executable.basename, "bat" if ctx.target_platform_has_constraint(windows_constraint) else "sh"), sibling = executable)
 
     if ctx.target_platform_has_constraint(windows_constraint):
         ctx.actions.expand_template(
