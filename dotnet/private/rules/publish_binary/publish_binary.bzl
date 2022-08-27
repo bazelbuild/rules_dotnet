@@ -298,7 +298,7 @@ def _publish_binary_wrapper_impl(ctx):
     runtime_identifier = ctx.attr.runtime_identifier
     target_framework = publish_binary_info.target_framework
     is_self_contained = publish_binary_info.self_contained
-    dll_name = binary_info.dll.basename.replace(".dll", "")
+    assembly_name = assembly_info.name
 
     (executable, runfiles) = _copy_to_publish(
         ctx,
@@ -311,7 +311,7 @@ def _publish_binary_wrapper_impl(ctx):
     runtimeconfig = ctx.actions.declare_file("{}/publish/{}/{}.runtimeconfig.json".format(
         ctx.label.name,
         runtime_identifier,
-        dll_name,
+        assembly_name,
     ))
     _generate_runtimeconfig(
         ctx,
@@ -321,7 +321,7 @@ def _publish_binary_wrapper_impl(ctx):
         ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"],
     )
 
-    depsjson = ctx.actions.declare_file("{}/publish/{}/{}.deps.json".format(ctx.label.name, runtime_identifier, dll_name))
+    depsjson = ctx.actions.declare_file("{}/publish/{}/{}.deps.json".format(ctx.label.name, runtime_identifier, assembly_name))
     _generate_depsjson(
         ctx,
         depsjson,

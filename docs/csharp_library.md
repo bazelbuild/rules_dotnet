@@ -9,7 +9,7 @@ Rules for compiling C# libraries.
 ## csharp_library
 
 <pre>
-csharp_library(<a href="#csharp_library-name">name</a>, <a href="#csharp_library-additionalfiles">additionalfiles</a>, <a href="#csharp_library-data">data</a>, <a href="#csharp_library-defines">defines</a>, <a href="#csharp_library-deps">deps</a>, <a href="#csharp_library-internals_visible_to">internals_visible_to</a>, <a href="#csharp_library-keyfile">keyfile</a>,
+csharp_library(<a href="#csharp_library-name">name</a>, <a href="#csharp_library-additionalfiles">additionalfiles</a>, <a href="#csharp_library-data">data</a>, <a href="#csharp_library-defines">defines</a>, <a href="#csharp_library-deps">deps</a>, <a href="#csharp_library-exports">exports</a>, <a href="#csharp_library-internals_visible_to">internals_visible_to</a>, <a href="#csharp_library-keyfile">keyfile</a>,
                <a href="#csharp_library-langversion">langversion</a>, <a href="#csharp_library-out">out</a>, <a href="#csharp_library-private_deps">private_deps</a>, <a href="#csharp_library-resources">resources</a>, <a href="#csharp_library-runtime_identifier">runtime_identifier</a>, <a href="#csharp_library-srcs">srcs</a>, <a href="#csharp_library-strict_deps">strict_deps</a>,
                <a href="#csharp_library-target_frameworks">target_frameworks</a>)
 </pre>
@@ -26,6 +26,7 @@ Compile a C# DLL
 | <a id="csharp_library-data"></a>data |  Runtime files. It is recommended to use the @rules_dotnet//tools/runfiles library to read the runtime files.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
 | <a id="csharp_library-defines"></a>defines |  A list of preprocessor directive symbols to define.   | List of strings | optional | [] |
 | <a id="csharp_library-deps"></a>deps |  Other libraries, binaries, or imported DLLs   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
+| <a id="csharp_library-exports"></a>exports |  List of targets to add to the dependencies of those that depend on this target.          Use this sparingly as it weakens the precision of the build graph.<br><br>        This attribute does nothing if you don't have strict dependencies enabled.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
 | <a id="csharp_library-internals_visible_to"></a>internals_visible_to |  Other libraries that can see the assembly's internal symbols. Using this rather than the InternalsVisibleTo assembly attribute will improve build caching.   | List of strings | optional | [] |
 | <a id="csharp_library-keyfile"></a>keyfile |  The key file used to sign the assembly with a strong name.   | <a href="https://bazel.build/concepts/labels">Label</a> | optional | None |
 | <a id="csharp_library-langversion"></a>langversion |  The version string for the language.   | String | optional | "" |
