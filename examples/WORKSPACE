@@ -32,6 +32,10 @@ load("@rules_dotnet//dotnet:rules_dotnet_nuget_packages.bzl", "rules_dotnet_nuge
 
 rules_dotnet_nuget_packages()
 
+load("@rules_dotnet//dotnet:paket2bazel_dependencies.bzl", "paket2bazel_dependencies")
+
+paket2bazel_dependencies()
+
 load("@rules_dotnet//dotnet:defs.bzl", "nuget_repo")
 
 nuget_repo(

@@ -8,12 +8,12 @@ open System.Text
 open Paket2Bazel.Models
 open System.IO
 
-let generateTarget (group: Group) =
+let generateTarget (group: Group) (repoName: string) =
     let i = "    "
     let sb = new StringBuilder()
     sb.Append($"{i}nuget_repo(\n") |> ignore
 
-    sb.Append($"{i}    name = \"{group.name.ToLower()}\",\n")
+    sb.Append($"{i}    name = \"{repoName}\",\n")
     |> ignore
 
     sb.Append($"{i}    packages = [\n") |> ignore
@@ -67,8 +67,13 @@ let addFileHeaderContent (sb: StringBuilder) (fileName: string) =
     sb.Append($"    \"{fileName}\"") |> ignore
     sb.Append("\n") |> ignore
 
-let addGroupToFileContent (sb: StringBuilder) (group: Group) =
-    sb.Append(generateTarget group) |> ignore
+let addGroupToFileContent (sb: StringBuilder) (group: Group) (repoNamePrefix: string option) =
+    let repoName =
+        match repoNamePrefix with
+        | Some (prefix) -> $"{prefix}.{group.name.ToLower()}"
+        | None -> group.name.ToLower()
+
+    sb.Append(generateTarget group repoName) |> ignore
 
 let generateBazelFiles (groups: Group seq) (separateFiles: bool) (outputFolder: string) =
     if separateFiles then
@@ -76,8 +81,8 @@ let generateBazelFiles (groups: Group seq) (separateFiles: bool) (outputFolder: 
         |> Seq.iter (fun group ->
             let sb = new StringBuilder()
             addFileHeaderContent sb group.name
-            addGroupToFileContent sb group
-            File.WriteAllText($"{outputFolder}/{group.name}.bzl", sb.ToString()))
+            addGroupToFileContent sb group None
+            File.WriteAllText($"{outputFolder}/{group.name.ToLower()}.bzl", sb.ToString()))
     else
         let sb = new StringBuilder()
 
@@ -85,7 +90,6 @@ let generateBazelFiles (groups: Group seq) (separateFiles: bool) (outputFolder: 
 
         groups
         |> Seq.sortBy (fun i -> i.name)
-        |> Seq.map (fun g -> generateTarget g)
-        |> Seq.iter (fun i -> i |> Seq.iter (fun x -> sb.Append(x) |> ignore))
+        |> Seq.iter (fun g -> addGroupToFileContent sb g (Some "paket"))
 
         File.WriteAllText($"{outputFolder}/paket.bzl", sb.ToString())
