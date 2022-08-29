@@ -6,6 +6,7 @@ load(
     "//dotnet/private:common.bzl",
     "collect_transitive_info",
     "format_ref_arg",
+    "generate_warning_args",
     "get_framework_version_info",
     "is_core_framework",
     "is_standard_framework",
@@ -46,7 +47,11 @@ def AssemblyAction(
         target_name,
         target_framework,
         toolchain,
-        strict_deps):
+        strict_deps,
+        treat_warnings_as_errors,
+        warnings_as_errors,
+        warnings_not_as_errors,
+        warning_level):
     """Creates an action that runs the F# compiler with the specified inputs.
 
     This macro aims to match the [F# compiler](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-options), with the inputs mapping to compiler options.
@@ -70,6 +75,10 @@ def AssemblyAction(
         target_framework: The target framework moniker for the assembly.
         toolchain: The toolchain that supply the F# compiler.
         strict_deps: Whether or not to use strict dependencies.
+        treat_warnings_as_errors: Whether or not to treat warnings as errors.
+        warnings_as_errors: List of warnings to treat as errors.
+        warnings_not_as_errors: List of warnings to not treat errors.
+        warning_level: The warning level to use.
 
     Returns:
         The compiled fsharp artifacts.
@@ -125,6 +134,10 @@ def AssemblyAction(
             target_name,
             target_framework,
             toolchain,
+            treat_warnings_as_errors,
+            warnings_as_errors,
+            warnings_not_as_errors,
+            warning_level,
             out_dll = out_dll,
             out_pdb = out_pdb,
         )
@@ -151,6 +164,10 @@ def AssemblyAction(
             target_name,
             target_framework,
             toolchain,
+            treat_warnings_as_errors,
+            warnings_as_errors,
+            warnings_not_as_errors,
+            warning_level,
             out_dll = out_dll,
             out_pdb = out_pdb,
         )
@@ -196,6 +213,10 @@ def _compile(
         target_name,
         target_framework,
         toolchain,
+        treat_warnings_as_errors,
+        warnings_as_errors,
+        warnings_not_as_errors,
+        warning_level,
         out_dll = None,
         # TODO: Reintroduce once the F# compiler supports reference assemblies
         # out_ref = None,
@@ -220,7 +241,13 @@ def _compile(
     if subsystem_version != None:
         args.add("/subsystemversion:" + subsystem_version)
 
-    args.add("/warn:0")  # TODO: this stuff ought to be configurable
+    generate_warning_args(
+        args,
+        treat_warnings_as_errors,
+        warnings_as_errors,
+        warnings_not_as_errors,
+        warning_level,
+    )
 
     args.add("/target:" + target)
     if langversion:

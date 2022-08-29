@@ -6,6 +6,7 @@ load(
     "//dotnet/private:common.bzl",
     "collect_transitive_info",
     "format_ref_arg",
+    "generate_warning_args",
     "get_framework_version_info",
     "transform_deps",
     "use_highentropyva",
@@ -37,7 +38,11 @@ def AssemblyAction(
         target_framework,
         toolchain,
         strict_deps,
-        include_host_model_dll):
+        include_host_model_dll,
+        treat_warnings_as_errors,
+        warnings_as_errors,
+        warnings_not_as_errors,
+        warning_level):
     """Creates an action that runs the CSharp compiler with the specified inputs.
 
     This macro aims to match the [C# compiler](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/listed-alphabetically), with the inputs mapping to compiler options.
@@ -63,7 +68,10 @@ def AssemblyAction(
         toolchain: The toolchain that supply the C# compiler.
         strict_deps: Whether or not to use strict dependencies.
         include_host_model_dll: Whether or not to include he Microsoft.NET.HostModel dll. ONLY USED FOR COMPILING THE APPHOST SHIMMER.
-
+        treat_warnings_as_errors: Whether or not to treat warnings as errors.
+        warnings_as_errors: List of warnings to treat as errors.
+        warnings_not_as_errors: List of warnings to not treat errors.
+        warning_level: The warning level to use.
     Returns:
         The compiled csharp artifacts.
     """
@@ -121,6 +129,10 @@ def AssemblyAction(
             target_framework,
             toolchain,
             include_host_model_dll,
+            treat_warnings_as_errors,
+            warnings_as_errors,
+            warnings_not_as_errors,
+            warning_level,
             out_dll = out_dll,
             out_ref = out_ref,
             out_pdb = out_pdb,
@@ -158,6 +170,10 @@ def AssemblyAction(
             target_framework,
             toolchain,
             include_host_model_dll,
+            treat_warnings_as_errors,
+            warnings_as_errors,
+            warnings_not_as_errors,
+            warning_level,
             out_ref = out_iref,
             out_dll = out_dll,
             out_pdb = out_pdb,
@@ -185,6 +201,10 @@ def AssemblyAction(
             target_framework,
             toolchain,
             include_host_model_dll,
+            treat_warnings_as_errors,
+            warnings_as_errors,
+            warnings_not_as_errors,
+            warning_level,
             out_dll = None,
             out_ref = out_ref,
             out_pdb = None,
@@ -242,6 +262,10 @@ def _compile(
         target_framework,
         toolchain,
         include_host_model_dll,
+        treat_warnings_as_errors,
+        warnings_as_errors,
+        warnings_not_as_errors,
+        warning_level,
         out_dll = None,
         out_ref = None,
         out_pdb = None):
@@ -265,7 +289,13 @@ def _compile(
     if subsystem_version != None:
         args.add("/subsystemversion:" + subsystem_version)
 
-    args.add("/warn:0")  # TODO: this stuff ought to be configurable
+    generate_warning_args(
+        args,
+        treat_warnings_as_errors,
+        warnings_as_errors,
+        warnings_not_as_errors,
+        warning_level,
+    )
 
     args.add("/target:" + target)
     args.add("/langversion:" + (langversion or default_lang_version))

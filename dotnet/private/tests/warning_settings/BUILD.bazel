@@ -1,0 +1,29 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load(":fsharp_warnings.bzl", "fsharp_warnings")
+load(":csharp_warnings.bzl", "csharp_warnings")
+
+fsharp_warnings()
+
+csharp_warnings()
+
+bzl_library(
+    name = "csharp_warnings",
+    srcs = ["csharp_warnings.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+    deps = [
+        "//dotnet:defs",
+        "//dotnet/private/tests:utils",
+        "@bazel_skylib//lib:unittest",
+    ],
+)
+
+bzl_library(
+    name = "fsharp_warnings",
+    srcs = ["fsharp_warnings.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+    deps = [
+        "//dotnet:defs",
+        "//dotnet/private/tests:utils",
+        "@bazel_skylib//lib:unittest",
+    ],
+)

@@ -117,7 +117,6 @@ dotnet_toolchain(
     runtime_tfm = "{runtime_tfm}",
     csharp_default_version = "{csharp_default_version}",
     fsharp_default_version = "{fsharp_default_version}",
-    strict_deps = {strict_deps},
 )
 """.format(
         sdk_version = repository_ctx.attr.dotnet_version,
@@ -125,7 +124,6 @@ dotnet_toolchain(
         runtime_tfm = TOOL_VERSIONS[repository_ctx.attr.dotnet_version]["runtimeTfm"],
         csharp_default_version = TOOL_VERSIONS[repository_ctx.attr.dotnet_version]["csharpDefaultVersion"],
         fsharp_default_version = TOOL_VERSIONS[repository_ctx.attr.dotnet_version]["fsharpDefaultVersion"],
-        strict_deps = repository_ctx.attr.strict_deps,
     )
 
     # Base BUILD file for this repository
@@ -138,7 +136,7 @@ dotnet_repositories = repository_rule(
 )
 
 # Wrapper macro around everything above, this is the primary API
-def dotnet_register_toolchains(name, dotnet_version, strict_deps = True, **kwargs):
+def dotnet_register_toolchains(name, dotnet_version, **kwargs):
     """Convenience macro for users which does typical setup.
 
     - create a repository for each built-in platform like "dotnet_linux_amd64" -
@@ -149,7 +147,6 @@ def dotnet_register_toolchains(name, dotnet_version, strict_deps = True, **kwarg
     Args:
         name: base name for all created repos, like "dotnet"
         dotnet_version: The .Net SDK version to use e.g. 6.0.300
-        strict_deps: If True, transitive dependencies will not be automatically propagated up the dependency tree.
         **kwargs: passed to each dotnet_repositories call
     """
     for platform in PLATFORMS.keys():
@@ -157,7 +154,6 @@ def dotnet_register_toolchains(name, dotnet_version, strict_deps = True, **kwarg
             name = name + "_" + platform,
             platform = platform,
             dotnet_version = dotnet_version,
-            strict_deps = strict_deps,
             **kwargs
         )
         native.register_toolchains("@%s_toolchains//:%s_toolchain" % (name, platform))

@@ -9,11 +9,12 @@ load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 load(
     "//dotnet/private:common.bzl",
     "is_debug",
-    "is_strict_deps_enabled",
 )
+load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 
 def _compile_action(ctx, tfm):
     toolchain = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"]
+
     return AssemblyAction(
         ctx.actions,
         debug = is_debug(ctx),
@@ -32,7 +33,11 @@ def _compile_action(ctx, tfm):
         target_name = ctx.attr.name,
         target_framework = tfm,
         toolchain = toolchain,
-        strict_deps = is_strict_deps_enabled(toolchain, ctx.attr.strict_deps),
+        strict_deps = ctx.attr.strict_deps if ctx.attr.override_strict_deps else toolchain.strict_deps,
+        treat_warnings_as_errors = ctx.attr.treat_warnings_as_errors if ctx.attr.override_treat_warnings_as_errors else toolchain.dotnetinfo.fsharp_treat_warnings_as_errors[BuildSettingInfo].value,
+        warnings_as_errors = ctx.attr.warnings_as_errors if ctx.attr.override_warnings_as_errors else toolchain.dotnetinfo.fsharp_warnings_as_errors[BuildSettingInfo].value,
+        warnings_not_as_errors = ctx.attr.warnings_not_as_errors if ctx.attr.override_warnings_not_as_errors else toolchain.dotnetinfo.fsharp_warnings_not_as_errors[BuildSettingInfo].value,
+        warning_level = ctx.attr.warning_level if ctx.attr.override_warning_level else toolchain.dotnetinfo.fsharp_warning_level[BuildSettingInfo].value,
     )
 
 def _library_impl(ctx):

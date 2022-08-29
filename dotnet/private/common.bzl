@@ -344,23 +344,6 @@ def get_highest_compatible_target_framework(incoming_tfm, tfms):
 
     return None
 
-def is_strict_deps_enabled(toolchain, strict_deps_attr):
-    """Determines if strict dependencies are enabled.
-
-    Args:
-        toolchain: The toolchain that is being used.
-        strict_deps_attr: Target level override for strict dependencies.
-
-    Returns:
-        True if strict dependencies are enabled, False otherwise.
-    """
-    default = toolchain.strict_deps
-
-    if strict_deps_attr != default:
-        return strict_deps_attr
-
-    return default
-
 def get_nuget_relative_path(file):
     """Returns NuGet package relative path of a file that is part of a NuGet package
 
@@ -389,3 +372,34 @@ def transform_deps(deps):
         assembly_info = dep[DotnetAssemblyInfo] if DotnetAssemblyInfo in dep else None,
         nuget_info = dep[NuGetInfo] if NuGetInfo in dep else None,
     ) for dep in deps]
+
+def generate_warning_args(
+        args,
+        treat_warnings_as_errors,
+        warnings_as_errors,
+        warnings_not_as_errors,
+        warning_level):
+    """Generates the compiler arguments for warnings and errors
+
+    Args:
+        args: The args object that will be passed to the compilation action
+        treat_warnings_as_errors: If all warnigns should be treated as errors
+        warnings_as_errors: List of warnings that should be treated as errors
+        warnings_not_as_errors: List of warnings that should not be treated as errors
+        warning_level: The warning level to use
+    """
+    if treat_warnings_as_errors:
+        if len(warnings_as_errors) > 0:
+            fail("Cannot use both treat_warnings_as_errors and warnings_as_errors")
+
+        for warning in warnings_not_as_errors:
+            args.add("/warnaserror-:{}".format(warning))
+
+        args.add("/warnaserror+")
+    else:
+        if len(warnings_not_as_errors) > 0:
+            fail("Cannot use warnings_not_as_errors if treat_warnings_as_errors is not set")
+        for warning in warnings_as_errors:
+            args.add("/warnaserror+:{}".format(warning))
+
+    args.add("/warn:{}".format(warning_level))

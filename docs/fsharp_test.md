@@ -10,8 +10,11 @@ Rules for compiling F# binaries.
 
 <pre>
 fsharp_binary(<a href="#fsharp_binary-name">name</a>, <a href="#fsharp_binary-apphost_shimmer">apphost_shimmer</a>, <a href="#fsharp_binary-data">data</a>, <a href="#fsharp_binary-defines">defines</a>, <a href="#fsharp_binary-deps">deps</a>, <a href="#fsharp_binary-depsjson_template">depsjson_template</a>, <a href="#fsharp_binary-internals_visible_to">internals_visible_to</a>,
-              <a href="#fsharp_binary-keyfile">keyfile</a>, <a href="#fsharp_binary-langversion">langversion</a>, <a href="#fsharp_binary-out">out</a>, <a href="#fsharp_binary-private_deps">private_deps</a>, <a href="#fsharp_binary-resources">resources</a>, <a href="#fsharp_binary-runtime_identifier">runtime_identifier</a>,
-              <a href="#fsharp_binary-runtimeconfig_template">runtimeconfig_template</a>, <a href="#fsharp_binary-srcs">srcs</a>, <a href="#fsharp_binary-strict_deps">strict_deps</a>, <a href="#fsharp_binary-target_frameworks">target_frameworks</a>, <a href="#fsharp_binary-winexe">winexe</a>)
+              <a href="#fsharp_binary-keyfile">keyfile</a>, <a href="#fsharp_binary-langversion">langversion</a>, <a href="#fsharp_binary-out">out</a>, <a href="#fsharp_binary-override_strict_deps">override_strict_deps</a>, <a href="#fsharp_binary-override_treat_warnings_as_errors">override_treat_warnings_as_errors</a>,
+              <a href="#fsharp_binary-override_warning_level">override_warning_level</a>, <a href="#fsharp_binary-override_warnings_as_errors">override_warnings_as_errors</a>, <a href="#fsharp_binary-override_warnings_not_as_errors">override_warnings_not_as_errors</a>,
+              <a href="#fsharp_binary-private_deps">private_deps</a>, <a href="#fsharp_binary-resources">resources</a>, <a href="#fsharp_binary-runtime_identifier">runtime_identifier</a>, <a href="#fsharp_binary-runtimeconfig_template">runtimeconfig_template</a>, <a href="#fsharp_binary-srcs">srcs</a>, <a href="#fsharp_binary-strict_deps">strict_deps</a>,
+              <a href="#fsharp_binary-target_frameworks">target_frameworks</a>, <a href="#fsharp_binary-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#fsharp_binary-warning_level">warning_level</a>, <a href="#fsharp_binary-warnings_as_errors">warnings_as_errors</a>,
+              <a href="#fsharp_binary-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#fsharp_binary-winexe">winexe</a>)
 </pre>
 
 Compile a F# exe
@@ -31,6 +34,11 @@ Compile a F# exe
 | <a id="fsharp_binary-keyfile"></a>keyfile |  The key file used to sign the assembly with a strong name.   | <a href="https://bazel.build/concepts/labels">Label</a> | optional | None |
 | <a id="fsharp_binary-langversion"></a>langversion |  The version string for the language.   | String | optional | "" |
 | <a id="fsharp_binary-out"></a>out |  File name, without extension, of the built assembly.   | String | optional | "" |
+| <a id="fsharp_binary-override_strict_deps"></a>override_strict_deps |  Whether or not to override the strict_deps attribute.   | Boolean | optional | False |
+| <a id="fsharp_binary-override_treat_warnings_as_errors"></a>override_treat_warnings_as_errors |  Whether or not to override the treat_warnings_as_errors attribute.   | Boolean | optional | False |
+| <a id="fsharp_binary-override_warning_level"></a>override_warning_level |  Whether or not to override the warning_level attribute.   | Boolean | optional | False |
+| <a id="fsharp_binary-override_warnings_as_errors"></a>override_warnings_as_errors |  Whether or not to override the warnings_as_errors attribute.   | Boolean | optional | False |
+| <a id="fsharp_binary-override_warnings_not_as_errors"></a>override_warnings_not_as_errors |  Whether or not to override the warnings_not_as_errors attribute.   | Boolean | optional | False |
 | <a id="fsharp_binary-private_deps"></a>private_deps |  Private dependencies <br><br>        This attribute should be used for dependencies are only private to the target.          The dependencies will not be propagated transitively to parent targets and          do not become part of the targets runfiles.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
 | <a id="fsharp_binary-resources"></a>resources |  A list of files to embed in the DLL as resources.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
 | <a id="fsharp_binary-runtime_identifier"></a>runtime_identifier |  The runtime identifier that is being targeted. See https://docs.microsoft.com/en-us/dotnet/core/rid-catalog   | String | required |  |
@@ -38,6 +46,10 @@ Compile a F# exe
 | <a id="fsharp_binary-srcs"></a>srcs |  The source files used in the compilation.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
 | <a id="fsharp_binary-strict_deps"></a>strict_deps |  Whether to use strict dependencies or not. <br><br>        This attribute mirrors the DisableTransitiveProjectReferences in MSBuild.         The default setting of this attribute can be overridden in the toolchain configuration   | Boolean | optional | True |
 | <a id="fsharp_binary-target_frameworks"></a>target_frameworks |  A list of target framework monikers to buildSee https://docs.microsoft.com/en-us/dotnet/standard/frameworks   | List of strings | required |  |
+| <a id="fsharp_binary-treat_warnings_as_errors"></a>treat_warnings_as_errors |  Treat all compiler warnings as errors. Note that this attribute can not be used in conjunction with warnings_as_errors.   | Boolean | optional | False |
+| <a id="fsharp_binary-warning_level"></a>warning_level |  The warning level that should be used by the compiler.   | Integer | optional | 3 |
+| <a id="fsharp_binary-warnings_as_errors"></a>warnings_as_errors |  List of compiler warning codes that should be considered as errors. Note that this attribute can not be used in conjunction with treat_warning_as_errors.   | List of strings | optional | [] |
+| <a id="fsharp_binary-warnings_not_as_errors"></a>warnings_not_as_errors |  List of compiler warning codes that should not be considered as errors. Note that this attribute can only be used in conjunction with treat_warning_as_errors.   | List of strings | optional | [] |
 | <a id="fsharp_binary-winexe"></a>winexe |  If true, output a winexe-style executable, otherwiseoutput a console-style executable.   | Boolean | optional | False |
 
 

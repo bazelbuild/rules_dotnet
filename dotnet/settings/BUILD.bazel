@@ -1,0 +1,64 @@
+load("@bazel_skylib//rules:common_settings.bzl", "bool_flag", "int_flag", "string_list_flag")
+
+# A flag controlling if strict dependencies are enforced or not.
+bool_flag(
+    name = "strict_deps",
+    build_setting_default = True,
+    visibility = ["//visibility:public"],
+)
+
+# A flag controlling if the C# compiler should consider all warnings as errors
+bool_flag(
+    name = "csharp_treat_warnings_as_errors",
+    build_setting_default = False,
+    visibility = ["//visibility:public"],
+)
+
+# A flag controlling what C# compiler warning should be considered as errors.
+string_list_flag(
+    name = "csharp_warnings_as_errors",
+    build_setting_default = [],
+    visibility = ["//visibility:public"],
+)
+
+# A flag controlling what C# compiler warning should not be considered as errors.
+string_list_flag(
+    name = "csharp_warnings_not_as_errors",
+    build_setting_default = [],
+    visibility = ["//visibility:public"],
+)
+
+# A flag controlling the warning level for the C# compiler.
+int_flag(
+    name = "csharp_warning_level",
+    build_setting_default = 3,
+    visibility = ["//visibility:public"],
+)
+
+# A flag controlling if the F# compiler should consider all warnings as errors
+bool_flag(
+    name = "fsharp_treat_warnings_as_errors",
+    build_setting_default = False,
+    visibility = ["//visibility:public"],
+)
+
+# A flag controlling what F# compiler warning should be considered as errors.
+string_list_flag(
+    name = "fsharp_warnings_as_errors",
+    build_setting_default = [],
+    visibility = ["//visibility:public"],
+)
+
+# A flag controlling what F# compiler warning should not be considered as errors.
+string_list_flag(
+    name = "fsharp_warnings_not_as_errors",
+    build_setting_default = [],
+    visibility = ["//visibility:public"],
+)
+
+# A flag controlling the warning level for the F# compiler.
+int_flag(
+    name = "fsharp_warning_level",
+    build_setting_default = 3,
+    visibility = ["//visibility:public"],
+)
