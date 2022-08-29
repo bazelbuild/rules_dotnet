@@ -321,4 +321,10 @@ def _compile(
             toolchain.fsharp_compiler.path,
             args,
         ],
+        env = {
+            "DOTNET_CLI_HOME": toolchain.runtime.files_to_run.executable.dirname,
+            # Set so that compilations work on remote execution workers that don't have ICU installed
+            # ICU should not be required during compliation but only at runtime
+            "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT": "1",
+        },
     )
