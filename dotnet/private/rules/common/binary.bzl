@@ -4,12 +4,9 @@ Base rule for building .Net binaries
 
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "DotnetBinaryInfo")
 load(
-    "//dotnet/private/actions:misc.bzl",
-    "write_depsjson",
-    "write_runtimeconfig",
-)
-load(
     "//dotnet/private:common.bzl",
+    "generate_depsjson",
+    "generate_runtimeconfig",
     "is_core_framework",
     "is_standard_framework",
 )
@@ -100,30 +97,66 @@ def build_binary(ctx, compile_action):
     if is_standard_framework(tfm):
         fail("It doesn't make sense to build an executable for " + tfm)
 
-    runtimeconfig = None
-    depsjson = None
-    if is_core_framework(tfm):
-        runtimeconfig = write_runtimeconfig(
-            ctx.actions,
-            template = ctx.file.runtimeconfig_template,
-            name = ctx.attr.name,
-            tfm = tfm,
-            runtime_version = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].dotnetinfo.runtime_version,
-        )
-        depsjson = write_depsjson(
-            ctx.actions,
-            template = ctx.file.depsjson_template,
-            name = ctx.attr.name,
-            tfm = tfm,
-        )
-
     result = compile_action(ctx, tfm)
     dll = result.libs[0]
     default_info_files = [dll]
     direct_runfiles = [dll] + result.data
 
+    runtimeconfig = None
+    depsjson = None
+    if is_core_framework(tfm):
+        # Create the runtimeconfig.json for the binary
+        runtimeconfig = ctx.actions.declare_file("bazelout/%s/%s.runtimeconfig.json" % (tfm, ctx.attr.name))
+        runtimeconfig_struct = generate_runtimeconfig(
+            target_framework = tfm,
+            is_self_contained = False,
+            toolchain = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"],
+        )
+
+        # Add the manifest loader as a startup hook
+        runtimeconfig_struct["runtimeOptions"]["configProperties"] = {
+            "STARTUP_HOOKS": "ManifestLoader",
+        }
+
+        ctx.actions.write(
+            output = runtimeconfig,
+            content = json.encode_indent(runtimeconfig_struct),
+        )
+
+        # We create a special deps.json for the binary rules because we use the manifest loader
+        # to look up DLLS. This is to avoid the need to copy the DLLs into same folder as the
+        # binary.
+        depsjson = ctx.actions.declare_file("bazelout/%s/%s.deps.json" % (tfm, ctx.attr.name))
+        depsjson_struct = generate_depsjson(
+            target_framework = tfm,
+            is_self_contained = False,
+            runtime_deps = result.runtime_deps,
+            transitive_runtime_deps = result.transitive_runtime_deps,
+            runtime_identifier = ctx.attr.runtime_identifier,
+        )
+
+        # Add the manifest loader to the deps.json so that its loaded correctly
+        depsjson_struct["targets"][depsjson_struct["targets"].keys()[0]] = {
+            "ManifestLoader": {
+                "runtime": {"ManifestLoader.dll": {"assemblyVersion": "1.0.0.0", "fileVersion": "1.0.0.0"}},
+            },
+        }
+        depsjson_struct["libraries"] = {
+            "ManifestLoader": {
+                "type": "package",
+                "serviceable": True,
+                "sha512": "",
+                "path": "",
+            },
+        }
+        ctx.actions.write(
+            output = depsjson,
+            content = json.encode_indent(depsjson_struct),
+        )
+
     if runtimeconfig != None:
         direct_runfiles.append(runtimeconfig)
+
     if depsjson != None:
         direct_runfiles.append(depsjson)
 

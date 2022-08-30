@@ -2,7 +2,7 @@
 Rules for compiling NUnit tests.
 """
 
-load("//dotnet/private/actions:csharp_assembly.bzl", "AssemblyAction")
+load("//dotnet/private/rules/csharp/actions:csharp_assembly.bzl", "AssemblyAction")
 load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 load(
     "//dotnet/private:common.bzl",

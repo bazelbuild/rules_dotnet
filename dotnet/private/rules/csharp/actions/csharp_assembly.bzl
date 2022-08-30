@@ -6,6 +6,7 @@ load(
     "//dotnet/private:common.bzl",
     "collect_transitive_info",
     "format_ref_arg",
+    "framework_preprocessor_symbols",
     "generate_warning_args",
     "get_framework_version_info",
     "transform_deps",
@@ -15,7 +16,38 @@ load(
     "//dotnet/private:providers.bzl",
     "DotnetAssemblyInfo",
 )
-load("//dotnet/private/actions:misc.bzl", "framework_preprocessor_symbols", "write_internals_visible_to_csharp")
+
+def _write_internals_visible_to_csharp(actions, name, others):
+    """Write a .cs file containing InternalsVisibleTo attributes.
+
+    Letting Bazel see which assemblies we are going to have InternalsVisibleTo
+    allows for more robust caching of compiles.
+
+    Args:
+      actions: An actions module, usually from ctx.actions.
+      name: The assembly name.
+      others: The names of other assemblies.
+
+    Returns:
+      A File object for a generated .cs file
+    """
+
+    if len(others) == 0:
+        return None
+
+    attrs = actions.args()
+    attrs.set_param_file_format(format = "multiline")
+
+    attrs.add_all(
+        others,
+        format_each = "[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(\"%s\")]",
+    )
+
+    output = actions.declare_file("bazelout/%s/internalsvisibleto.cs" % name)
+
+    actions.write(output, attrs)
+
+    return output
 
 # buildifier: disable=unnamed-macro
 def AssemblyAction(
@@ -97,6 +129,15 @@ def AssemblyAction(
         exports,
         strict_deps,
     )
+
+    # This is only required to compile the apphost shimmer
+    # The reason for it not being a normal dependency in the
+    # apphost shimmer target is that the DLL is part of the downloaded runtime
+    # TODO: Maybe it's possible to make this a normal dependency?
+    if include_host_model_dll:
+        irefs = depset(direct = [toolchain.host_model], transitive = [irefs])
+        transitive_libs = depset(direct = [toolchain.host_model], transitive = [transitive_libs])
+
     defines = framework_preprocessor_symbols(target_framework) + defines
 
     out_dir = "bazelout/" + target_framework
@@ -128,7 +169,6 @@ def AssemblyAction(
             target_name,
             target_framework,
             toolchain,
-            include_host_model_dll,
             treat_warnings_as_errors,
             warnings_as_errors,
             warnings_not_as_errors,
@@ -143,7 +183,7 @@ def AssemblyAction(
         # InternalsVisibleTo in the main DLL too to be less suprising to users.
         out_iref = actions.declare_file("%s/iref/%s.%s" % (out_dir, assembly_name, out_ext))
 
-        internals_visible_to_cs = write_internals_visible_to_csharp(
+        internals_visible_to_cs = _write_internals_visible_to_csharp(
             actions,
             name = target_name,
             others = internals_visible_to,
@@ -169,7 +209,6 @@ def AssemblyAction(
             target_name,
             target_framework,
             toolchain,
-            include_host_model_dll,
             treat_warnings_as_errors,
             warnings_as_errors,
             warnings_not_as_errors,
@@ -200,7 +239,6 @@ def AssemblyAction(
             target_name,
             target_framework,
             toolchain,
-            include_host_model_dll,
             treat_warnings_as_errors,
             warnings_as_errors,
             warnings_not_as_errors,
@@ -212,13 +250,6 @@ def AssemblyAction(
     direct_data = []
     direct_data.extend(data)
 
-    # This is only required to compile the apphost shimmer
-    # The reason for it not being a normal dependency in the
-    # apphost shimmer target is that the DLL is part of the downloaded runtime
-    # TODO: Maybe it's possible to make this a normal dependency?
-    if include_host_model_dll:
-        direct_data.append(toolchain.host_model)
-
     return DotnetAssemblyInfo(
         name = target_name,
         version = "1.0.0",  #TODO: Maybe make this configurable?
@@ -228,7 +259,7 @@ def AssemblyAction(
         irefs = [out_iref] if out_iref else [out_ref],
         analyzers = [],
         internals_visible_to = internals_visible_to or [],
-        data = direct_data,
+        data = data,
         native = [],
         exports = exports_files,
         transitive_refs = prefs,
@@ -260,7 +291,6 @@ def _compile(
         target_name,
         target_framework,
         toolchain,
-        include_host_model_dll,
         treat_warnings_as_errors,
         warnings_as_errors,
         warnings_not_as_errors,
@@ -366,14 +396,6 @@ def _compile(
 
     direct_inputs = srcs + resources + additionalfiles + [toolchain.csharp_compiler]
     direct_inputs += [keyfile] if keyfile else []
-
-    # This is only required to compile the apphost shimmer
-    # The reason for it not being a normal dependency in the
-    # apphost shimmer target is that the DLL is part of the downloaded runtime
-    # TODO: Maybe it's possible to make this a normal dependency?
-    if include_host_model_dll:
-        direct_inputs.append(toolchain.host_model)
-        args.add("/r:" + toolchain.host_model.path)
 
     # dotnet.exe csc.dll /noconfig <other csc args>
     # https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/command-line-building-with-csc-exe

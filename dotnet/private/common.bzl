@@ -9,6 +9,7 @@ load(
     "DotnetDepVariantInfo",
     "NuGetInfo",
 )
+load("//dotnet/private:rids.bzl", "RUNTIME_GRAPH")
 
 def _collect_transitive():
     t = {}
@@ -403,3 +404,136 @@ def generate_warning_args(
             args.add("/warnaserror+:{}".format(warning))
 
     args.add("/warn:{}".format(warning_level))
+
+def framework_preprocessor_symbols(tfm):
+    """Gets the standard preprocessor symbols for the target framework.
+
+    See https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/preprocessor-directives/preprocessor-if#remarks
+    for the official list.
+
+    Args:
+        tfm: The target framework moniker target being built.
+    Returns:
+        A list of preprocessor symbols.
+    """
+    # TODO: All built in preprocessor directives: https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/preprocessor-directives
+
+    specific = tfm.upper().replace(".", "_")
+
+    if tfm.startswith("netstandard"):
+        return ["NETSTANDARD", specific]
+    elif tfm.startswith("netcoreapp"):
+        return ["NETCOREAPP", specific]
+    else:
+        return ["NETFRAMEWORK", specific]
+
+# For deps.json spec see: https://github.com/dotnet/sdk/blob/main/documentation/specs/runtime-configuration-file.md
+def generate_depsjson(
+        target_framework,
+        is_self_contained,
+        runtime_deps,
+        transitive_runtime_deps,
+        runtime_identifier,
+        runtime_pack_info = None):
+    """Generates a deps.json file.
+
+    Args:
+        target_framework: The target framework moniker for the target being built.
+        is_self_contained: If the target is a self-contained publish.
+        runtime_deps: The runtime dependencies of the target.
+        transitive_runtime_deps: The transitive runtime dependencies of the target.
+        runtime_identifier: The runtime identifier of the target.
+        runtime_pack_info: The DotnetAssemblyInfo of the runtime pack that is used for a self contained publish.
+    Returns:
+        The deps.json file as a struct.
+    """
+    runtime_target = ".NETCoreApp,Version=v{}".format(
+        "{}/{}".format(
+            target_framework.replace("net", ""),
+            runtime_identifier,
+        ),
+    )
+    base = {
+        "runtimeTarget": {
+            "name": runtime_target,
+            "signature": "",
+        },
+        "compilationOptions": {},
+        "targets": {
+        },
+    }
+    base["targets"][runtime_target] = {}
+    base["libraries"] = {}
+
+    if runtime_pack_info:
+        runtime_pack_name = "runtimepack.{}/{}".format(runtime_pack_info.name, runtime_pack_info.version)
+        base["libraries"][runtime_pack_name] = {
+            "type": "runtimepack",
+            "serviceable": False,
+            "sha512": "",
+        }
+        base["targets"][runtime_target][runtime_pack_name] = {
+            "runtime": {dll.basename: {} for dll in runtime_pack_info.libs + runtime_pack_info.transitive_libs.to_list()},
+            "native": {native_file.basename: {} for native_file in runtime_pack_info.native + runtime_pack_info.transitive_native.to_list()},
+        }
+
+    if is_self_contained:
+        base["runtimes"] = {rid: RUNTIME_GRAPH[rid] for rid, supported_rids in RUNTIME_GRAPH.items() if runtime_identifier in supported_rids or runtime_identifier == rid}
+
+    for runtime_dep in runtime_deps + transitive_runtime_deps.to_list():
+        library_name = "{}/{}".format(runtime_dep.assembly_info.name, runtime_dep.assembly_info.version)
+
+        library_fragment = {
+            "type": "project",
+            "serviceable": False,
+            "sha512": "",
+        }
+
+        if runtime_dep.nuget_info:
+            library_fragment["type"] = "package"
+            library_fragment["serviceable"] = True
+            library_fragment["sha512"] = runtime_dep.nuget_info.sha512
+            library_fragment["path"] = library_name.lower()
+            library_fragment["hashPath"] = "{}.{}.nupkg.sha512".format(runtime_dep.assembly_info.name.lower(), runtime_dep.assembly_info.version)
+
+        target_fragment = {
+            "runtime": {dll.basename: {} for dll in runtime_dep.assembly_info.libs},
+            "native": {native_file.basename: {} for native_file in runtime_dep.assembly_info.native},
+            "dependencies": {dep.assembly_info.name: dep.assembly_info.version for dep in runtime_dep.assembly_info.runtime_deps},
+        }
+
+        base["libraries"][library_name] = library_fragment
+        base["targets"][runtime_target][library_name] = target_fragment
+
+    return base
+
+# For runtimeconfig.json spec see https://github.com/dotnet/sdk/blob/main/documentation/specs/runtime-configuration-file.md
+def generate_runtimeconfig(target_framework, is_self_contained, toolchain):
+    """Generates a runtimeconfig.json file.
+
+    Args:
+        target_framework: The target framework moniker for the target being built.
+        is_self_contained: If the target is a self-contained publish.
+        toolchain: The currently configured dotnet toolchain.
+    Returns:
+        The runtimeconfig.json file as a struct.
+    """
+    runtime_version = toolchain.dotnetinfo.runtime_version
+    base = {
+        "runtimeOptions": {
+            "tfm": target_framework,
+        },
+    }
+
+    if is_self_contained:
+        base["runtimeOptions"]["includedFrameworks"] = [{
+            "name": "Microsoft.NETCore.App",
+            "version": runtime_version,
+        }]
+    else:
+        base["runtimeOptions"]["framework"] = {
+            "name": "Microsoft.NETCore.App",
+            "version": runtime_version,
+        }
+
+    return base

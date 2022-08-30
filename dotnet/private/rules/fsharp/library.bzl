@@ -2,7 +2,7 @@
 Rules for compiling F# libraries.
 """
 
-load("//dotnet/private/actions:fsharp_assembly.bzl", "AssemblyAction")
+load("//dotnet/private/rules/fsharp/actions:fsharp_assembly.bzl", "AssemblyAction")
 load("//dotnet/private/rules/common:library.bzl", "build_library")
 load("//dotnet/private/rules/common:attrs.bzl", "FSHARP_LIBRARY_COMMON_ATTRS")
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")

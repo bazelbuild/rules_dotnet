@@ -134,16 +134,6 @@ BINARY_COMMON_ATTRS = {
               "output a console-style executable.",
         default = False,
     ),
-    "runtimeconfig_template": attr.label(
-        doc = "A template file to use for generating runtimeconfig.json",
-        default = "@rules_dotnet//dotnet/private:runtimeconfig.json.tpl",
-        allow_single_file = True,
-    ),
-    "depsjson_template": attr.label(
-        doc = "A template file to use for generating deps.json",
-        default = "@rules_dotnet//dotnet/private:deps.json.tpl",
-        allow_single_file = True,
-    ),
     "apphost_shimmer": attr.label(
         providers = [DotnetAssemblyInfo],
         executable = True,

@@ -5,7 +5,7 @@ Rules for compiling F# binaries.
 load("@bazel_skylib//lib:shell.bzl", "shell")
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "DotnetBinaryInfo", "DotnetPublishBinaryInfo")
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
-load("//dotnet/private:rids.bzl", "RUNTIME_GRAPH")
+load("//dotnet/private:common.bzl", "generate_depsjson", "generate_runtimeconfig")
 
 def _publish_binary_impl(ctx):
     runtime_pack_info = None
@@ -121,11 +121,8 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
         _copy_file(script_body, file, output, is_windows = is_windows)
 
     # When publishing a self-contained binary, we need to copy the native DLLs to the
-    # publish directory as well. If the binary is not self-contained, we need to copy
-    # the native files to a subfolder with the pattern `runtimes/<RID>/native/<file>`
-    # or `runtimes/<RID>/<TFM>/<file>`.
+    # publish directory as well.
     for file in assembly_info.native + assembly_info.transitive_native.to_list():
-        # TODO: Do correct folder structure for non-self-contained publishing
         inputs.append(file)
         output = ctx.actions.declare_file(
             "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, file.basename),
@@ -190,27 +187,11 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
 # TODO: Reuse this when we create the runtimeconfig.json in the csharp_binary/fsharp_binary rules
 # For runtimeconfig.json spec see https://github.com/dotnet/sdk/blob/main/documentation/specs/runtime-configuration-file.md
 def _generate_runtimeconfig(ctx, output, target_framework, is_self_contained, toolchain):
-    runtime_version = toolchain.dotnetinfo.runtime_version
-    base = {
-        "runtimeOptions": {
-            "tfm": target_framework,
-        },
-    }
-
-    if is_self_contained:
-        base["runtimeOptions"]["includedFrameworks"] = [{
-            "name": "Microsoft.NETCore.App",
-            "version": runtime_version,
-        }]
-    else:
-        base["runtimeOptions"]["framework"] = {
-            "name": "Microsoft.NETCore.App",
-            "version": runtime_version,
-        }
+    runtimeconfig_struct = generate_runtimeconfig(target_framework, is_self_contained, toolchain)
 
     ctx.actions.write(
         output = output,
-        content = json.encode_indent(base),
+        content = json.encode_indent(runtimeconfig_struct),
     )
 
 # TODO: Reuse this when we create the deps.json in the csharp_binary/fsharp_binary rules
@@ -222,73 +203,13 @@ def _generate_depsjson(
         is_self_contained,
         runtime_deps,
         transitive_runtime_deps,
-        runtime_identifier = None,
-        runtime_pack_info = None):
-    runtime_target = ".NETCoreApp,Version=v{}".format(
-        target_framework.replace("net", "") if not runtime_identifier else "{}/{}".format(
-            target_framework.replace("net", ""),
-            runtime_identifier,
-        ),
-    )
-    base = {
-        "runtimeTarget": {
-            "name": runtime_target,
-            "signature": "",
-        },
-        "compilationOptions": {},
-        "targets": {
-            ".NETCoreApp,Version=v{}".format(target_framework.replace("net", "")): {},
-        },
-    }
-    base["targets"][runtime_target] = {}
-    base["libraries"] = {}
-
-    if runtime_identifier:
-        if runtime_pack_info:
-            runtime_pack_name = "runtimepack.{}/{}".format(runtime_pack_info.name, runtime_pack_info.version)
-            base["libraries"][runtime_pack_name] = {
-                "type": "runtimepack",
-                "serviceable": False,
-                "sha512": "",
-            }
-            base["targets"][runtime_target][runtime_pack_name] = {
-                "runtime": {dll.basename: {} for dll in runtime_pack_info.libs + runtime_pack_info.transitive_libs.to_list()},
-                "native": {native_file.basename: {} for native_file in runtime_pack_info.native + runtime_pack_info.transitive_native.to_list()},
-            }
-
-        if is_self_contained:
-            base["runtimes"] = {rid: RUNTIME_GRAPH[rid] for rid, supported_rids in RUNTIME_GRAPH.items() if runtime_identifier in supported_rids or runtime_identifier == rid}
-    else:
-        base["libraries"][".NETCoreApp,Version=v{}".format(target_framework.replace("net", ""))] = {}
-
-    for runtime_dep in runtime_deps + transitive_runtime_deps.to_list():
-        library_name = "{}/{}".format(runtime_dep.assembly_info.name, runtime_dep.assembly_info.version)
-
-        library_fragment = {
-            "type": "project",
-            "serviceable": False,
-            "sha512": "",
-        }
-
-        if runtime_dep.nuget_info:
-            library_fragment["type"] = "package"
-            library_fragment["serviceable"] = True
-            library_fragment["sha512"] = runtime_dep.nuget_info.sha512
-            library_fragment["path"] = library_name.lower()
-            library_fragment["hashPath"] = "{}.{}.nupkg.sha512".format(runtime_dep.assembly_info.name.lower(), runtime_dep.assembly_info.version)
-
-        target_fragment = {
-            "runtime": {dll.basename: {} for dll in runtime_dep.assembly_info.libs},
-            "native": {native_file.basename: {} for native_file in runtime_dep.assembly_info.native},
-            "dependencies": {dep.assembly_info.name: dep.assembly_info.version for dep in runtime_dep.assembly_info.runtime_deps},
-        }
-
-        base["libraries"][library_name] = library_fragment
-        base["targets"][runtime_target][library_name] = target_fragment
+        runtime_identifier,
+        runtime_pack_info):
+    depsjson_struct = generate_depsjson(target_framework, is_self_contained, runtime_deps, transitive_runtime_deps, runtime_identifier, runtime_pack_info)
 
     ctx.actions.write(
         output = output,
-        content = json.encode_indent(base),
+        content = json.encode_indent(depsjson_struct),
     )
 
 def _publish_binary_wrapper_impl(ctx):

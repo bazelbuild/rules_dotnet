@@ -2,7 +2,7 @@
 Rules for compiling F# binaries.
 """
 
-load("//dotnet/private/actions:fsharp_assembly.bzl", "AssemblyAction")
+load("//dotnet/private/rules/fsharp/actions:fsharp_assembly.bzl", "AssemblyAction")
 load(
     "//dotnet/private:common.bzl",
     "is_debug",

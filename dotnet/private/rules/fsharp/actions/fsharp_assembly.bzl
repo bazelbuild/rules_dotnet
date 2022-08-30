@@ -6,6 +6,7 @@ load(
     "//dotnet/private:common.bzl",
     "collect_transitive_info",
     "format_ref_arg",
+    "framework_preprocessor_symbols",
     "generate_warning_args",
     "get_framework_version_info",
     "is_core_framework",
@@ -17,7 +18,6 @@ load(
     "//dotnet/private:providers.bzl",
     "DotnetAssemblyInfo",
 )
-load("//dotnet/private/actions:misc.bzl", "framework_preprocessor_symbols", "write_internals_visible_to_fsharp")
 
 def _format_targetprofile(tfm):
     if is_standard_framework(tfm):
@@ -27,6 +27,40 @@ def _format_targetprofile(tfm):
         return "/targetprofile:netcore"
 
     return "/targetprofile:mscorlib"
+
+def _write_internals_visible_to_fsharp(actions, name, others):
+    """Write a .fs file containing InternalsVisibleTo attributes.
+
+    Letting Bazel see which assemblies we are going to have InternalsVisibleTo
+    allows for more robust caching of compiles.
+
+    Args:
+      actions: An actions module, usually from ctx.actions.
+      name: The assembly name.
+      others: The names of other assemblies.
+
+    Returns:
+      A File object for a generated .fs file
+    """
+
+    if len(others) == 0:
+        return None
+
+    content = """
+module AssemblyInfo
+
+"""
+    for other in others:
+        content += """
+[<assembly: System.Runtime.CompilerServices.InternalsVisibleTo(\"%s\")>]
+do()
+
+""" % other
+
+    output = actions.declare_file("bazelout/%s/internalsvisibleto.fs" % name)
+    actions.write(output, content)
+
+    return output
 
 # buildifier: disable=unnamed-macro
 def AssemblyAction(
@@ -142,7 +176,7 @@ def AssemblyAction(
             out_pdb = out_pdb,
         )
     else:
-        internals_visible_to_cs = write_internals_visible_to_fsharp(
+        internals_visible_to_cs = _write_internals_visible_to_fsharp(
             actions,
             name = target_name,
             others = internals_visible_to,

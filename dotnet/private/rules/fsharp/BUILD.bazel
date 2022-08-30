@@ -14,10 +14,11 @@ bzl_library(
     ],
     deps = [
         "//dotnet/private:common",
-        "//dotnet/private/actions:fsharp_assembly",
         "//dotnet/private/rules/common:attrs",
         "//dotnet/private/rules/common:binary",
+        "//dotnet/private/rules/fsharp/actions:fsharp_assembly",
         "//dotnet/private/transitions:tfm_transition",
+        "@bazel_skylib//rules:common_settings",
     ],
 )
 
@@ -30,10 +31,11 @@ bzl_library(
     ],
     deps = [
         "//dotnet/private:common",
-        "//dotnet/private/actions:fsharp_assembly",
         "//dotnet/private/rules/common:attrs",
         "//dotnet/private/rules/common:library",
+        "//dotnet/private/rules/fsharp/actions:fsharp_assembly",
         "//dotnet/private/transitions:tfm_transition",
+        "@bazel_skylib//rules:common_settings",
     ],
 )
 
@@ -46,10 +48,11 @@ bzl_library(
     ],
     deps = [
         "//dotnet/private:common",
-        "//dotnet/private/actions:fsharp_assembly",
         "//dotnet/private/rules/common:attrs",
         "//dotnet/private/rules/common:binary",
+        "//dotnet/private/rules/fsharp/actions:fsharp_assembly",
         "//dotnet/private/transitions:tfm_transition",
+        "@bazel_skylib//rules:common_settings",
     ],
 )
 

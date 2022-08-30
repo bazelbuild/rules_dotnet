@@ -2,7 +2,7 @@
 Rules for compiling C# libraries.
 """
 
-load("//dotnet/private/actions:csharp_assembly.bzl", "AssemblyAction")
+load("//dotnet/private/rules/csharp/actions:csharp_assembly.bzl", "AssemblyAction")
 load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 load("//dotnet/private/rules/common:library.bzl", "build_library")
 load("//dotnet/private/rules/common:attrs.bzl", "CSHARP_LIBRARY_COMMON_ATTRS")
