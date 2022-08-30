@@ -16,6 +16,8 @@ def _import_library(ctx):
         name = ctx.attr.library_name,
         version = ctx.attr.version,
         libs = ctx.files.libs,
+        # TODO: PDBs from nuget packages should also be forwarded
+        pdbs = [],
         refs = ctx.files.refs,
         irefs = ctx.files.refs,
         analyzers = ctx.files.analyzers,

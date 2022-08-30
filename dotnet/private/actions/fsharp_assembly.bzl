@@ -172,20 +172,16 @@ def AssemblyAction(
             out_pdb = out_pdb,
         )
 
-    direct_data = []
-    direct_data.extend(data)
-    if out_pdb:
-        direct_data.append(out_pdb)
-
     return DotnetAssemblyInfo(
         name = target_name,
         version = "1.0.0",  #TODO: Maybe make this configurable?
         libs = [out_dll],
+        pdbs = [out_pdb] if out_pdb else [],
         refs = [out_dll],
         irefs = [out_dll],
         analyzers = [],
         internals_visible_to = internals_visible_to or [],
-        data = direct_data,
+        data = data,
         native = [],
         exports = exports_files,
         transitive_refs = prefs,

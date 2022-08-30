@@ -6,6 +6,7 @@ DotnetAssemblyInfo = provider(
         "name": "string: The name of the assembly",
         "version": "string: The version of the assembly",
         "libs": "list[File]: Runtime DLLs",
+        "pdbs": "list[File]: The PDBs of the assembly",
         "native": "list[File]: Native runtime files",
         "refs": "list[File]: Reference-only assemblies containing only public symbols. See docs/ReferenceAssemblies.md for more info.",
         "irefs": "list[File]: Reference-only assemblies containing public and internal symbols. See docs/ReferenceAssemblies.md for more info.",

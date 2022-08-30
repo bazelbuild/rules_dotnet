@@ -211,8 +211,6 @@ def AssemblyAction(
         )
     direct_data = []
     direct_data.extend(data)
-    if out_pdb:
-        direct_data.append(out_pdb)
 
     # This is only required to compile the apphost shimmer
     # The reason for it not being a normal dependency in the
@@ -225,6 +223,7 @@ def AssemblyAction(
         name = target_name,
         version = "1.0.0",  #TODO: Maybe make this configurable?
         libs = [out_dll],
+        pdbs = [out_pdb] if out_pdb else [],
         refs = [out_ref],
         irefs = [out_iref] if out_iref else [out_ref],
         analyzers = [],
