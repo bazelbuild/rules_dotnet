@@ -112,7 +112,7 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
     _copy_file(script_body, binary_info.app_host, app_host_copy, is_windows = is_windows)
 
     # All managed DLLs are copied next to the app host in the publish directory
-    for file in assembly_info.lib + assembly_info.transitive_lib.to_list():
+    for file in assembly_info.libs + assembly_info.transitive_libs.to_list():
         output = ctx.actions.declare_file(
             "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, file.basename),
         )
@@ -160,10 +160,10 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
     # The runtime pack contents should always be copied to the root of the publish folder
     if publish_binary_info.runtime_pack:
         runtime_pack_files = depset(
-            publish_binary_info.runtime_pack.lib +
+            publish_binary_info.runtime_pack.libs +
             publish_binary_info.runtime_pack.native +
             publish_binary_info.runtime_pack.data,
-            transitive = [publish_binary_info.runtime_pack.transitive_lib, publish_binary_info.runtime_pack.transitive_native, publish_binary_info.runtime_pack.transitive_data],
+            transitive = [publish_binary_info.runtime_pack.transitive_libs, publish_binary_info.runtime_pack.transitive_native, publish_binary_info.runtime_pack.transitive_data],
         )
         for file in runtime_pack_files.to_list():
             output = ctx.actions.declare_file(file.basename, sibling = app_host_copy)
@@ -252,7 +252,7 @@ def _generate_depsjson(
                 "sha512": "",
             }
             base["targets"][runtime_target][runtime_pack_name] = {
-                "runtime": {dll.basename: {} for dll in runtime_pack_info.lib + runtime_pack_info.transitive_lib.to_list()},
+                "runtime": {dll.basename: {} for dll in runtime_pack_info.libs + runtime_pack_info.transitive_libs.to_list()},
                 "native": {native_file.basename: {} for native_file in runtime_pack_info.native + runtime_pack_info.transitive_native.to_list()},
             }
 
@@ -278,7 +278,7 @@ def _generate_depsjson(
             library_fragment["hashPath"] = "{}.{}.nupkg.sha512".format(runtime_dep.assembly_info.name.lower(), runtime_dep.assembly_info.version)
 
         target_fragment = {
-            "runtime": {dll.basename: {} for dll in runtime_dep.assembly_info.lib},
+            "runtime": {dll.basename: {} for dll in runtime_dep.assembly_info.libs},
             "native": {native_file.basename: {} for native_file in runtime_dep.assembly_info.native},
             "dependencies": {dep.assembly_info.name: dep.assembly_info.version for dep in runtime_dep.assembly_info.runtime_deps},
         }

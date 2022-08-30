@@ -20,21 +20,21 @@ def _nuget_structure_test_impl(ctx):
     target_under_test = analysistest.target_under_test(env)
     provider = target_under_test[DotnetAssemblyInfo]
 
-    libs_files = _get_nuget_relative_paths(provider.lib)
+    libs_files = _get_nuget_relative_paths(provider.libs)
     asserts.true(
         env,
         sorted(ctx.attr.expected_libs) == sorted(libs_files),
         "\nExpected libs:\n{}\nActual libs:\n{}".format(ctx.attr.expected_libs, libs_files),
     )
 
-    prefs_files = _get_nuget_relative_paths(provider.ref)
+    prefs_files = _get_nuget_relative_paths(provider.refs)
     asserts.true(
         env,
         sorted(ctx.attr.expected_refs) == sorted(prefs_files),
         "\nExpected prefs:\n{}\nActual prefs:\n{}".format(ctx.attr.expected_refs, prefs_files),
     )
 
-    irefs_files = _get_nuget_relative_paths(provider.iref)
+    irefs_files = _get_nuget_relative_paths(provider.irefs)
     asserts.true(
         env,
         sorted(ctx.attr.expected_refs) == sorted(irefs_files),

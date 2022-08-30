@@ -238,10 +238,10 @@ def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
 
         # See docs/ReferenceAssemblies.md for more info on why we use (and prefer) refout
         # and the mechanics of irefout vs. prefout.
-        direct_iref.extend(assembly.iref if name in assembly.internals_visible_to else assembly.ref)
-        direct_ref.extend(assembly.ref)
+        direct_iref.extend(assembly.irefs if name in assembly.internals_visible_to else assembly.refs)
+        direct_ref.extend(assembly.refs)
         direct_analyzers.extend(assembly.analyzers)
-        direct_lib.extend(assembly.lib)
+        direct_lib.extend(assembly.libs)
         direct_native.extend(assembly.native)
         direct_data.extend(assembly.data)
         direct_runtime_deps.extend(assembly.runtime_deps)
@@ -256,7 +256,7 @@ def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
         # in the runfiles. We can do that by taking the direct first party deps and see if any of them are already
         # in the runfiles and if they are we remove them from the transitive runfiles.
         if NuGetInfo in dep:
-            transitive_lib.append(assembly.transitive_lib)
+            transitive_lib.append(assembly.transitive_libs)
             transitive_native.append(assembly.transitive_native)
             transitive_data.append(assembly.transitive_data)
         else:
@@ -265,7 +265,7 @@ def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
             lib = []
             native = []
             data = []
-            for tlib in assembly.transitive_lib.to_list():
+            for tlib in assembly.transitive_libs.to_list():
                 if tlib.owner in direct_labels:
                     continue
                 lib.append(tlib)
@@ -285,22 +285,22 @@ def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
             transitive_data.append(depset(data))
 
         if not strict_deps:
-            transitive_ref.append(assembly.transitive_ref)
+            transitive_ref.append(assembly.transitive_refs)
             transitive_analyzers.append(assembly.transitive_analyzers)
 
     for dep in private_deps:
         assembly = dep[DotnetAssemblyInfo]
 
-        direct_private_ref.extend(assembly.iref if name in assembly.internals_visible_to else assembly.ref)
+        direct_private_ref.extend(assembly.irefs if name in assembly.internals_visible_to else assembly.refs)
         direct_private_analyzers.extend(assembly.analyzers)
 
         if not strict_deps:
-            transitive_private_ref.append(assembly.transitive_ref)
+            transitive_private_ref.append(assembly.transitive_refs)
             transitive_private_analyzers.append(assembly.transitive_analyzers)
 
     for export in exports:
         assembly = export[DotnetAssemblyInfo]
-        exports_files.extend(assembly.ref)
+        exports_files.extend(assembly.refs)
 
     return (
         depset(direct = direct_iref, transitive = transitive_ref),

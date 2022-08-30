@@ -78,7 +78,7 @@ def _create_launcher(ctx, runfiles, executable):
 
 def _symlink_manifest_loader(ctx, executable):
     loader = ctx.actions.declare_file("ManifestLoader.dll", sibling = executable)
-    ctx.actions.symlink(output = loader, target_file = ctx.attr._manifest_loader[DotnetAssemblyInfo].lib[0])
+    ctx.actions.symlink(output = loader, target_file = ctx.attr._manifest_loader[DotnetAssemblyInfo].libs[0])
     return loader
 
 def build_binary(ctx, compile_action):
@@ -118,7 +118,7 @@ def build_binary(ctx, compile_action):
         )
 
     result = compile_action(ctx, tfm)
-    dll = result.lib[0]
+    dll = result.libs[0]
     default_info_files = [dll]
     direct_runfiles = [dll] + result.data
 
@@ -142,7 +142,7 @@ def build_binary(ctx, compile_action):
         executable = launcher if launcher != None else dll,
         runfiles = ctx.runfiles(
             files = direct_runfiles,
-            transitive_files = depset(transitive = [result.transitive_lib, result.transitive_native, result.transitive_data]),
+            transitive_files = depset(transitive = [result.transitive_libs, result.transitive_native, result.transitive_data]),
         ).merge(ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].runtime[DefaultInfo].default_runfiles),
         files = depset(default_info_files),
     )
