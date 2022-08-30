@@ -12,7 +12,7 @@ def csharp_nunit_test(**kwargs):
     ]
 
     srcs = kwargs.pop("srcs", []) + [
-        "@rules_dotnet//dotnet/private/nunit:shim.cs",
+        "@rules_dotnet//dotnet/private/rules/common/nunit:shim.cs",
     ]
 
     csharp_test(
