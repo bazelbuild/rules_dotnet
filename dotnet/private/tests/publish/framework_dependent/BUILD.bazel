@@ -3,6 +3,7 @@ load(
     "csharp_binary",
     "publish_binary",
 )
+load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
 
 publish_binary(
     name = "framework_dependent",
@@ -26,6 +27,24 @@ csharp_binary(
     ],
 )
 
+# We tar the output to because that way we can strip the
+# prefix of the files and avoid long path issues on Windows.
+# This also makes sure that it's possible to tar the output
+# of the publish without any problems
+pkg_tar(
+    name = "tar",
+    srcs = [":framework_dependent"],
+    mode = "0755",
+    package_dir = "/",
+    strip_prefix = select(
+        {
+            "@platforms//os:linux": "framework_dependent/publish/linux-x64",
+            "@platforms//os:osx": "framework_dependent/publish/osx-x64",
+            "@platforms//os:windows": "framework_dependent/publish/win-x64",
+        },
+    ),
+)
+
 # We need an itermediary target since sh_test only accepts
 # a single .sh file in srcs. We are also using srcs instead
 # of data because we want to test the output from the publish
@@ -33,7 +52,7 @@ csharp_binary(
 sh_library(
     name = "test_lib",
     srcs = [
-        ":framework_dependent",
+        ":tar",
     ],
 )
 

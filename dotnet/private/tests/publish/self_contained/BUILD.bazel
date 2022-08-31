@@ -2,6 +2,7 @@ load(
     "@rules_dotnet//dotnet:defs.bzl",
     "publish_binary",
 )
+load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
 
 publish_binary(
     name = "self_contained",
@@ -15,6 +16,24 @@ publish_binary(
     target_framework = "net6.0",
 )
 
+# We tar the output to because that way we can strip the
+# prefix of the files and avoid long path issues on Windows.
+# This also makes sure that it's possible to tar the output
+# of the publish without any problems
+pkg_tar(
+    name = "tar",
+    srcs = [":self_contained"],
+    mode = "0755",
+    package_dir = "/",
+    strip_prefix = select(
+        {
+            "@platforms//os:linux": "self_contained/publish/linux-x64",
+            "@platforms//os:osx": "self_contained/publish/osx-x64",
+            "@platforms//os:windows": "self_contained/publish/win-x64",
+        },
+    ),
+)
+
 # We need an itermediary target since sh_test only accepts
 # a single .sh file in srcs. We are also using srcs instead
 # of data because we want to test the output from the publish
@@ -22,7 +41,7 @@ publish_binary(
 sh_library(
     name = "test_lib",
     srcs = [
-        ":self_contained",
+        ":tar",
     ],
 )
 

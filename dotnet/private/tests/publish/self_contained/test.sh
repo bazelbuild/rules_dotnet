@@ -8,20 +8,15 @@ export JAVA_RUNFILES=""
 export RUNFILES_MANIFEST_FILE=""
 export RUNFILES_MANIFEST_ONLY=""
 
-# Since we are in the runfiles tree of the sh_test target the binary
-# is a symlink to the actual binary. We follow the symlink to the
-# actual binary so that we can emulate starting outside runfiles
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    ./dotnet/private/tests/publish/self_contained/self_contained/publish/linux-x64/app_to_publish
+    tar -xvf ./dotnet/private/tests/publish/self_contained/tar.tar
+    ./app_to_publish
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    ./dotnet/private/tests/publish/self_contained/self_contained/publish/osx-x64/app_to_publish
+    tar -xvf ./dotnet/private/tests/publish/self_contained/tar.tar
+    ./app_to_publish
 elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "win32" ]]; then
-    # This is a silly hack to get around long path issues on windows
-    target=$(readlink ./dotnet/private/tests/publish/self_contained/self_contained/publish/win-x64/app_to_publish.exe)
-
-    mkdir ./win
-    cp -a "$(dirname "${target}")" "$(pwd)/win"
-    ./win/app_to_publish.exe 
+    tar -xvf ./dotnet/private/tests/publish/self_contained/tar.tar
+    ./app_to_publish.exe
 else
     echo "Could not figure out which OS is running the test"
     exit 1
