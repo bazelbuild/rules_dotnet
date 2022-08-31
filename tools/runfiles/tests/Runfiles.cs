@@ -132,18 +132,6 @@ public sealed class RunfilesTest
                 Assert.Null(r.Rlocation("foo"));
             }
 
-            relativeManifestPathWindows = "some.exe.runfiles/MANIFEST";
-            using (MockFile mf = new MockFile(new string[1] { "a/b c/d" }, relativeManifestPathWindows))
-            {
-                var r =
-                    Runfiles.Create(
-                        Path.Combine(Directory.GetParent(Directory.GetParent(mf.Path).ToString()).ToString(), "some"),
-                        new Dictionary<string, string>{
-                       {"RUNFILES_MANIFEST_ONLY", "1"},
-                       {"TEST_SRCDIR", "should always be ignored"}});
-                Assert.AreEqual("c/d", r.Rlocation("a/b"));
-                Assert.Null(r.Rlocation("foo"));
-            }
 
             relativeManifestPathWindows = "some.exe.runfiles_manifest";
             using (MockFile mf = new MockFile(new string[1] { "a/b c/d" }, relativeManifestPathWindows))
