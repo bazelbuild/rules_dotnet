@@ -11,6 +11,8 @@ tasks:
     include_json_profile:
       - build
       - test
+    build_flags:
+      - "--noenable_runfiles"
     build_targets:
       - "//..."
     test_targets:
