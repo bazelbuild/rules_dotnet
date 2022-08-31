@@ -20,7 +20,7 @@ elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" ==
     target=$(readlink ./dotnet/private/tests/publish/self_contained/self_contained/publish/win-x64/app_to_publish.exe)
 
     mkdir ./win
-    cp -a "$(dirname "${target}")/." ./win/
+    cp -a "$(dirname "${target}")" "$(pwd)/win"
     ./win/app_to_publish.exe 
 else
     echo "Could not figure out which OS is running the test"
