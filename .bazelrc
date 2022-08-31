@@ -1,5 +1,6 @@
 # TODO: Document that these two flags are required on Windows
 startup --windows_enable_symlinks
+build --enable_runfiles
 test --test_output=errors
 
 # So that the bazel-bin folder is populated since we use transitions heavily

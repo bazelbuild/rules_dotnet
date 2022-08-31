@@ -16,7 +16,6 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     ./dotnet/private/tests/publish/self_contained/self_contained/publish/osx-x64/app_to_publish
 elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "win32" ]]; then
-    ls -la
     ./dotnet/private/tests/publish/self_contained/self_contained/publish/win-x64/app_to_publish.exe
 else
     echo "Could not figure out which OS is running the test"
