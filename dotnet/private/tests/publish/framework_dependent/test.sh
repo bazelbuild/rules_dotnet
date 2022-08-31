@@ -22,7 +22,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     tar -xvf ./dotnet/private/tests/publish/framework_dependent/tar.tar
     ./app_to_publish
 elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "win32" ]]; then
-    unzip ./dotnet/private/tests/publish/framework_dependent/zip.zip ./
+    tar -xvf ./dotnet/private/tests/publish/framework_dependent/tar.tar
     ./app_to_publish.exe
 else
     echo "Could not figure out which OS is running the test"
