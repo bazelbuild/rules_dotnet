@@ -24,7 +24,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     ./dotnet/private/tests/publish/framework_dependent/framework_dependent/publish/osx-x64/app_to_publish
 elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "win32" ]]; then
     # This is a silly hack to get around long path issues on windows
-    cp -r ./dotnet/private/tests/publish/framework_dependent/framework_dependent/publish/win-x64 ./win
+    cp -r --preserve=links ./dotnet/private/tests/publish/framework_dependent/framework_dependent/publish/win-x64 ./win
     ./win/app_to_publish.exe 
 else
     echo "Could not figure out which OS is running the test"
