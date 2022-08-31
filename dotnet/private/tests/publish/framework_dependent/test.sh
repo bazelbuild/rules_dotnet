@@ -43,7 +43,7 @@ elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" ==
     # This is a silly hack to get around long path issues on windows
     target=$(readlink ./dotnet/private/tests/publish/framework_dependent/framework_dependent/publish/win-x64/app_to_publish.exe)
 
-    cp -r "$(dirname "${target}")" ./win
+    cp -a "$(dirname "${target}")" ./win
     ./win/app_to_publish.exe 
 else
     echo "Could not figure out which OS is running the test"
