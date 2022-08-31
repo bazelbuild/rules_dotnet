@@ -4,6 +4,7 @@ load(
     "publish_binary",
 )
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
+load("@rules_pkg//pkg:zip.bzl", "pkg_zip")
 
 publish_binary(
     name = "framework_dependent",
@@ -43,6 +44,27 @@ pkg_tar(
             "@platforms//os:windows": "framework_dependent/publish/win-x64",
         },
     ),
+    target_compatible_with = select({
+        "@platforms//os:osx": [],
+        "@platforms//os:linux": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+)
+
+# There are some issues with pkg_tar and windows so
+# we zip the output instead
+pkg_zip(
+    name = "zip",
+    srcs = [":framework_dependent"],
+    mode = "0755",
+    package_dir = "/",
+    strip_prefix = select(
+        {
+            "@platforms//os:linux": "framework_dependent/publish/linux-x64",
+            "@platforms//os:osx": "framework_dependent/publish/osx-x64",
+            "@platforms//os:windows": "framework_dependent/publish/win-x64",
+        },
+    ),
 )
 
 sh_test(
@@ -51,9 +73,19 @@ sh_test(
         "test.sh",
     ],
     args = ["$(DOTNET_BIN)"],
-    data = [
-        ":tar",
-        ":toolchain_provider",
-    ],
+    data = select({
+        "@platforms//os:linux": [
+            ":tar",
+            ":toolchain_provider",
+        ],
+        "@platforms//os:osx": [
+            ":tar",
+            ":toolchain_provider",
+        ],
+        "@platforms//os:windows": [
+            ":zip",
+            ":toolchain_provider",
+        ],
+    }),
     toolchains = ["@dotnet_toolchains//:resolved_toolchain"],
 )
