@@ -125,7 +125,8 @@ namespace Bazel
 
                     throw new FileNotFoundException(
                         "Cannot load runfiles manifest: $RUNFILES_MANIFEST_ONLY is 1 but"
-                            + " $RUNFILES_MANIFEST_FILE is empty or undefined");
+                            + " $RUNFILES_MANIFEST_FILE is empty or undefined."
+                            + " argv0 was: " + argv0);
                 }
             }
             else
@@ -144,7 +145,7 @@ namespace Bazel
                     }
                     else
                     {
-                        throw new FileNotFoundException("Cannot find runfiles: $RUNFILES_DIR and $JAVA_RUNFILES are both unset or empty");
+                        throw new FileNotFoundException("Cannot find runfiles: $RUNFILES_DIR and $JAVA_RUNFILES are both unset or empty. argv0 was: " + argv0);
                     }
                 }
             }
