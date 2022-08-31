@@ -257,9 +257,8 @@ def _publish_binary_wrapper_impl(ctx):
     return [
         ctx.attr.wrapped_target[0][DotnetPublishBinaryInfo],
         DefaultInfo(
-            # executable = executable,
+            executable = executable,
             files = depset([executable, runtimeconfig, depsjson] + runfiles),
-            # runfiles = ctx.runfiles([executable, runtimeconfig, depsjson] + runfiles),
         ),
     ]
 
@@ -293,5 +292,5 @@ publish_binary_wrapper = rule(
     toolchains = [
         "@rules_dotnet//dotnet:toolchain_type",
     ],
-    # executable = True,
+    executable = True,
 )
