@@ -170,19 +170,6 @@ public sealed class RunfilesTest
                 Assert.AreEqual("c/d", r.Rlocation("a/b"));
                 Assert.Null(r.Rlocation("foo"));
             }
-
-            relativeManifestPathWindows = "some.exe.runfiles_manifest";
-            using (MockFile mf = new MockFile(new string[1] { "a/b c/d" }, relativeManifestPathWindows))
-            {
-                var r =
-                    Runfiles.Create(
-                        Path.Combine(Directory.GetParent(mf.Path).ToString(), "some"),
-                        new Dictionary<string, string>{
-                       {"RUNFILES_MANIFEST_ONLY", "1"},
-                       {"TEST_SRCDIR", "should always be ignored"}});
-                Assert.AreEqual("c/d", r.Rlocation("a/b"));
-                Assert.Null(r.Rlocation("foo"));
-            }
         }
         else
         {
@@ -287,16 +274,6 @@ public sealed class RunfilesTest
             rWindows =
                 Runfiles.Create(
                     Path.Combine(dirWindows, "some.dll"),
-                    new Dictionary<string, string> {
-                    {"RUNFILES_MANIFEST_FILE", "ignored when RUNFILES_MANIFEST_ONLY is not set to 1"},
-                    {"TEST_SRCDIR", "should always be ignored"} });
-
-            StringAssert.EndsWith("a/b", rWindows.Rlocation("a/b"));
-            StringAssert.EndsWith("foo", rWindows.Rlocation("/foo"));
-
-            rWindows =
-                Runfiles.Create(
-                    Path.Combine(dirWindows, "some"),
                     new Dictionary<string, string> {
                     {"RUNFILES_MANIFEST_FILE", "ignored when RUNFILES_MANIFEST_ONLY is not set to 1"},
                     {"TEST_SRCDIR", "should always be ignored"} });
