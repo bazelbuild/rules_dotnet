@@ -15,6 +15,23 @@ export RUNFILES_MANIFEST_ONLY=""
 DOTNET_ROOT=$(dirname ./"$1")
 export DOTNET_ROOT
 
+function cp_dereference {
+    local src=$1
+    local dst=$2
+
+    if [ -h "$dst" ] ; then
+        target=$(readlink "$1")
+        rm "$1"
+        cp "$target" "$1"
+    fi
+    if [[ -d "$src" ]]; then
+        mkdir -p "$dst"
+        cp -r --preserve=links "$src"/* "$dst"
+    else
+        cp "$src" "$dst"
+    fi
+}
+
 # Since we are in the runfiles tree of the sh_test target the binary
 # is a symlink to the actual binary. We follow the symlink to the
 # actual binary so that we can emulate starting outside runfiles
@@ -24,7 +41,9 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     ./dotnet/private/tests/publish/framework_dependent/framework_dependent/publish/osx-x64/app_to_publish
 elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "win32" ]]; then
     # This is a silly hack to get around long path issues on windows
-    cp -r --preserve=links ./dotnet/private/tests/publish/framework_dependent/framework_dependent/publish/win-x64 ./win
+    target=$(readlink ./dotnet/private/tests/publish/framework_dependent/framework_dependent/publish/win-x64/app_to_publish.exe)
+
+    cp -r "$(dirname "${target}")" ./win
     ./win/app_to_publish.exe 
 else
     echo "Could not figure out which OS is running the test"
