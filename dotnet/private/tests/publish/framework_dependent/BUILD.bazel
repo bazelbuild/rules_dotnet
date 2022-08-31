@@ -3,7 +3,7 @@ load(
     "csharp_binary",
     "publish_binary",
 )
-load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
+load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 
 publish_binary(
     name = "framework_dependent",
@@ -45,26 +45,15 @@ pkg_tar(
     ),
 )
 
-# We need an itermediary target since sh_test only accepts
-# a single .sh file in srcs. We are also using srcs instead
-# of data because we want to test the output from the publish
-# without interference from Bazel's runfile handling
-sh_library(
-    name = "test_lib",
-    srcs = [
-        ":tar",
-    ],
-)
-
 sh_test(
     name = "framework_dependent_test",
     srcs = [
         "test.sh",
     ],
     args = ["$(DOTNET_BIN)"],
-    data = [":toolchain_provider"],
-    toolchains = ["@dotnet_toolchains//:resolved_toolchain"],
-    deps = [
-        ":test_lib",
+    data = [
+        ":tar",
+        ":toolchain_provider",
     ],
+    toolchains = ["@dotnet_toolchains//:resolved_toolchain"],
 )
