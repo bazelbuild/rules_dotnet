@@ -8,9 +8,10 @@ load(
     "transform_deps",
 )
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "NuGetInfo")
+load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 
 def _import_library(ctx):
-    (_irefs, prefs, analyzers, libs, native, data, _private_refs, _private_analyzers, transitive_runtime_deps, _exports, _overrides) = collect_transitive_info(ctx.label.name, ctx.attr.deps, [], [], ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].strict_deps)
+    (_irefs, prefs, analyzers, libs, native, data, _private_refs, _private_analyzers, transitive_runtime_deps, _exports, _overrides) = collect_transitive_info(ctx.label.name, ctx.attr.deps, [], [], ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].strict_deps[BuildSettingInfo].value)
 
     return [DotnetAssemblyInfo(
         name = ctx.attr.library_name,
