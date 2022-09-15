@@ -1,0 +1,43 @@
+load(
+    "@rules_dotnet//dotnet:defs.bzl",
+    "csharp_binary",
+    "publish_binary",
+)
+
+# bazel run //examples:hello
+csharp_binary(
+    name = "aspnetcore",
+    srcs = [
+        "Controllers/WeatherForecastController.cs",
+        "Program.cs",
+        "WeatherForecast.cs",
+    ],
+    private_deps = [
+        "@example_deps//microsoft.netcore.app.ref",
+        "@example_deps//microsoft.aspnetcore.app.ref",
+    ],
+    target_frameworks = ["net6.0"],
+    deps = [
+    ],
+)
+
+publish_binary(
+    name = "publish",
+    binary = ":aspnetcore",
+    runtime_packs = select({
+        "@rules_dotnet//dotnet:rid_linux-x64": [
+            "@example_deps//microsoft.netcore.app.runtime.linux-x64",
+            "@example_deps//microsoft.aspnetcore.app.runtime.linux-x64",
+        ],
+        "@rules_dotnet//dotnet:rid_osx-x64": [
+            "@example_deps//microsoft.netcore.app.runtime.osx-x64",
+            "@example_deps//microsoft.aspnetcore.app.runtime.osx-x64",
+        ],
+        "@rules_dotnet//dotnet:rid_win-x64": [
+            "@example_deps//microsoft.netcore.app.runtime.win-x64",
+            "@example_deps//microsoft.aspnetcore.app.runtime.win-x64",
+        ],
+    }),
+    self_contained = True,
+    target_framework = "net6.0",
+)

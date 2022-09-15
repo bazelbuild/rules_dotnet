@@ -53,7 +53,7 @@ DotnetBinaryInfo = provider(
 DotnetPublishBinaryInfo = provider(
     doc = "Information about a published .Net binary",
     fields = {
-        "runtime_pack": "AssemblyInfo: Optional information about the used runtime pack. Used by self-contained publishing",
+        "runtime_packs": "list[AssemblyInfo]: Optional information about the used runtime packs. Used by self-contained publishing",
         "target_framework": "string: The target framework of the published binary",
         "self_contained": "bool: True if the binary is self-contained",
     },

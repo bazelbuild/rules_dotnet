@@ -265,7 +265,7 @@ def fsharp_nunit_test(
         **kwargs
     )
 
-def publish_binary(name, binary, target_framework, self_contained = False, runtime_pack = None, runtime_identifier = None, **kwargs):
+def publish_binary(name, binary, target_framework, self_contained = False, runtime_packs = [], runtime_identifier = None, **kwargs):
     runtime_identifier = _get_runtime_runtime_identifier(runtime_identifier)
 
     _publish_binary(
@@ -273,7 +273,7 @@ def publish_binary(name, binary, target_framework, self_contained = False, runti
         binary = binary,
         target_framework = target_framework,
         self_contained = self_contained,
-        runtime_pack = runtime_pack,
+        runtime_packs = runtime_packs,
         tags = ["manual"],
     )
 

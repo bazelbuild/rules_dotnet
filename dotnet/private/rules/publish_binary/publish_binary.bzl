@@ -8,18 +8,21 @@ load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 load("//dotnet/private:common.bzl", "generate_depsjson", "generate_runtimeconfig")
 
 def _publish_binary_impl(ctx):
-    runtime_pack_info = None
+    runtime_pack_infos = []
     if ctx.attr.self_contained == True:
-        if ctx.attr.runtime_pack == None or len(ctx.attr.runtime_pack) == 0:
+        if len(ctx.attr.runtime_packs) == 0:
             fail("Can not publish self-contained binaries without a runtime pack")
 
-        runtime_pack_info = ctx.attr.runtime_pack[0][DotnetAssemblyInfo]
+        for runtime_pack in ctx.attr.runtime_packs:
+            runtime_pack_infos.append(runtime_pack[DotnetAssemblyInfo])
+    elif len(ctx.attr.runtime_packs) > 0:
+        fail("Can not do a framework dependent publish with a runtime pack")
 
     return [
         ctx.attr.binary[0][DotnetAssemblyInfo],
         ctx.attr.binary[0][DotnetBinaryInfo],
         DotnetPublishBinaryInfo(
-            runtime_pack = runtime_pack_info,
+            runtime_packs = runtime_pack_infos,
             target_framework = ctx.attr.target_framework,
             self_contained = ctx.attr.self_contained,
         ),
@@ -44,7 +47,7 @@ publish_binary = rule(
             Whether the binary should be self-contained.
             
             If true, the binary will be published as a self-contained but you need to provide
-            a runtime pack in the `runtime_pack` attribute. At some point the rules might
+            a runtime pack in the `runtime_packs` attribute. At some point the rules might
             resolve the runtime pack automatically.
 
             If false, the binary will be published as a non-self-contained. That means that to be
@@ -52,18 +55,20 @@ publish_binary = rule(
             """,
             default = False,
         ),
-        "runtime_pack": attr.label(
+        "runtime_packs": attr.label_list(
             doc = """
-            The runtime pack that should be used to publish the binary.
+            The runtime packs that should be used to publish the binary.
             Should only be declared if `self_contained` is true.
 
-            The runtime pack is a NuGet package that contains the runtime that should be
-            used to run the binary.
+            A runtime pack is a NuGet package that contains the runtime that should be
+            used to run the binary. There can be multiple runtime packs for a given
+            publish e.g. when a AspNetCore application is published you need the base
+            runtime pack and the AspNetCore runtime pack.
 
             Example runtime pack: https://www.nuget.org/packages/Microsoft.NETCore.App.Runtime.linux-x64/6.0.8
             """,
             providers = [DotnetAssemblyInfo],
-            default = None,
+            default = [],
             cfg = tfm_transition,
         ),
         # TODO:
@@ -155,18 +160,19 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
     # In case the publish is self-contained there needs to be a runtime pack available
     # with the runtime dependencies that are required for the targeted runtime.
     # The runtime pack contents should always be copied to the root of the publish folder
-    if publish_binary_info.runtime_pack:
-        runtime_pack_files = depset(
-            publish_binary_info.runtime_pack.libs +
-            publish_binary_info.runtime_pack.native +
-            publish_binary_info.runtime_pack.data,
-            transitive = [publish_binary_info.runtime_pack.transitive_libs, publish_binary_info.runtime_pack.transitive_native, publish_binary_info.runtime_pack.transitive_data],
-        )
-        for file in runtime_pack_files.to_list():
-            output = ctx.actions.declare_file(file.basename, sibling = app_host_copy)
-            outputs.append(output)
-            inputs.append(file)
-            _copy_file(script_body, file, output, is_windows = is_windows)
+    if len(publish_binary_info.runtime_packs) > 0:
+        for runtime_pack in publish_binary_info.runtime_packs:
+            runtime_pack_files = depset(
+                runtime_pack.libs +
+                runtime_pack.native +
+                runtime_pack.data,
+                transitive = [runtime_pack.transitive_libs, runtime_pack.transitive_native, runtime_pack.transitive_data],
+            )
+            for file in runtime_pack_files.to_list():
+                output = ctx.actions.declare_file(file.basename, sibling = app_host_copy)
+                outputs.append(output)
+                inputs.append(file)
+                _copy_file(script_body, file, output, is_windows = is_windows)
 
     copy_script = ctx.actions.declare_file(ctx.label.name + ".copy.bat" if is_windows else ctx.label.name + ".copy.sh")
     ctx.actions.write(
@@ -204,8 +210,8 @@ def _generate_depsjson(
         runtime_deps,
         transitive_runtime_deps,
         runtime_identifier,
-        runtime_pack_info):
-    depsjson_struct = generate_depsjson(target_framework, is_self_contained, runtime_deps, transitive_runtime_deps, runtime_identifier, runtime_pack_info)
+        runtime_pack_infos):
+    depsjson_struct = generate_depsjson(target_framework, is_self_contained, runtime_deps, transitive_runtime_deps, runtime_identifier, runtime_pack_infos)
 
     ctx.actions.write(
         output = output,
@@ -251,7 +257,7 @@ def _publish_binary_wrapper_impl(ctx):
         assembly_info.runtime_deps,
         assembly_info.transitive_runtime_deps,
         runtime_identifier,
-        publish_binary_info.runtime_pack,
+        publish_binary_info.runtime_packs,
     )
 
     return [
@@ -264,7 +270,7 @@ def _publish_binary_wrapper_impl(ctx):
 
 # This wrapper is only needed so that we can turn the incoming transition in `publish_binary`
 # into an outgoing transition in the wrapper. This allows us to select on the runtime_identifier
-# and runtime_pack attributes. We also need to have all the file copying in the wrapper rule
+# and runtime_packs attributes. We also need to have all the file copying in the wrapper rule
 # because Bazel does not allow forwarding executable files as they have to be created by the wrapper rule.
 publish_binary_wrapper = rule(
     _publish_binary_wrapper_impl,
