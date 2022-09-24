@@ -48,6 +48,8 @@ public class BazelManifest
             var file = new FileInfo(option);
             if (file.Exists)
             {
+                System.Console.WriteLine($"Found manifest file: {file.FullName}");
+                System.Console.WriteLine(File.ReadAllLines(option));
                 manifest = new BazelManifest(File.ReadAllLines(option));
                 return true;
             }
@@ -61,6 +63,7 @@ public class BazelManifest
     {
         if (EntriesByFileName.TryGetValue(name.Name, out var path))
         {
+            System.Console.WriteLine(path);
             return context.LoadFromAssemblyPath(path);
         }
 

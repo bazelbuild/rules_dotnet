@@ -152,8 +152,8 @@ def _dotnet_toolchain_impl(ctx):
         dotnetinfo = dotnetinfo,
         template_variables = template_variables,
         runtime = ctx.attr.runtime,
-        csharp_compiler = ctx.file.csharp_compiler,
-        fsharp_compiler = ctx.file.fsharp_compiler,
+        csharp_compiler = ctx.attr.csharp_compiler,
+        fsharp_compiler = ctx.attr.fsharp_compiler,
         apphost = ctx.file.apphost,
         host_model = ctx.file.host_model,
         strict_deps = ctx.attr._strict_deps,
@@ -169,7 +169,8 @@ dotnet_toolchain = rule(
         "runtime": attr.label(
             doc = "The dotnet CLI",
             mandatory = False,
-            allow_single_file = True,
+            executable = True,
+            cfg = "exec",
         ),
         "runtime_path": attr.string(
             doc = "Path to the dotnet CLI. Do not set if `runtime` is set",
@@ -178,7 +179,8 @@ dotnet_toolchain = rule(
         "csharp_compiler": attr.label(
             doc = "The C# compiler binary",
             mandatory = False,
-            allow_single_file = True,
+            executable = True,
+            cfg = "exec",
         ),
         "csharp_compiler_path": attr.string(
             doc = "Path to the C# compiler binary. Do not set if `csharp_compiler` is set",
@@ -187,7 +189,8 @@ dotnet_toolchain = rule(
         "fsharp_compiler": attr.label(
             doc = "The F# compiler binary",
             mandatory = False,
-            allow_single_file = True,
+            executable = True,
+            cfg = "exec",
         ),
         "fsharp_compiler_path": attr.string(
             doc = "Path to the F# compiler binary. Do not set if `fsharp_compiler` is set",

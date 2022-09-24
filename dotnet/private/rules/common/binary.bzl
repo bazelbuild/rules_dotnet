@@ -29,7 +29,7 @@ def _create_shim_exe(ctx, dll):
     ctx.actions.run(
         executable = runtime.files_to_run,
         arguments = [ctx.executable.apphost_shimmer.path, apphost.path, dll.path, output.path],
-        inputs = [apphost, dll, ctx.attr.apphost_shimmer.files_to_run.runfiles_manifest],
+        inputs = depset([ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].host_model, apphost, dll, ctx.attr.apphost_shimmer.files_to_run.runfiles_manifest], transitive = [ctx.attr.apphost_shimmer.default_runfiles.files]),
         tools = [ctx.attr.apphost_shimmer.files, ctx.attr.apphost_shimmer.default_runfiles.files],
         outputs = [output],
         env = {
@@ -37,6 +37,7 @@ def _create_shim_exe(ctx, dll):
             # Set so that compilations work on remote execution workers that don't have ICU installed
             # ICU should not be required during compliation but only at runtime
             "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT": "1",
+            "RUNFILES_MANIFEST_FILE": ctx.attr.apphost_shimmer.files_to_run.runfiles_manifest.path,
         },
     )
 

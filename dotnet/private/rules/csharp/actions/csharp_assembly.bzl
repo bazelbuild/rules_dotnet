@@ -394,7 +394,7 @@ def _compile(
 
     args.use_param_file("@%s", use_always = True)
 
-    direct_inputs = srcs + resources + additionalfiles + [toolchain.csharp_compiler]
+    direct_inputs = srcs + resources + additionalfiles + [toolchain.csharp_compiler.files_to_run.executable]
     direct_inputs += [keyfile] if keyfile else []
 
     # dotnet.exe csc.dll /noconfig <other csc args>
@@ -404,12 +404,12 @@ def _compile(
         progress_message = "Compiling " + target_name + (" (internals ref-only dll)" if out_dll == None else ""),
         inputs = depset(
             direct = direct_inputs,
-            transitive = [private_refs, refs, analyzer_assemblies, private_analyzer_assemblies],
+            transitive = [private_refs, refs, analyzer_assemblies, private_analyzer_assemblies, toolchain.runtime.default_runfiles.files, toolchain.csharp_compiler.default_runfiles.files],
         ),
         outputs = outputs,
-        executable = toolchain.runtime.files_to_run,
+        executable = toolchain.runtime.files_to_run.executable,
         arguments = [
-            toolchain.csharp_compiler.path,
+            toolchain.csharp_compiler.files_to_run.executable.path,
 
             # This can't go in the response file (if it does it won't be seen
             # until it's too late).
