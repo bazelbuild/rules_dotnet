@@ -107,7 +107,7 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
         "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, binary_info.app_host.basename),
     )
     outputs = [app_host_copy]
-    script_body = []
+    script_body = [] if is_windows else ["#! /usr/bin/env bash"]
 
     _copy_file(script_body, binary_info.app_host, app_host_copy, is_windows = is_windows)
 

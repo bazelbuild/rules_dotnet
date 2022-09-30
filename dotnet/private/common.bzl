@@ -370,6 +370,7 @@ def transform_deps(deps):
         list of DotnetDepVariantInfos.
     """
     return [DotnetDepVariantInfo(
+        label = dep.label,
         assembly_info = dep[DotnetAssemblyInfo] if DotnetAssemblyInfo in dep else None,
         nuget_info = dep[NuGetInfo] if NuGetInfo in dep else None,
     ) for dep in deps]
@@ -434,7 +435,8 @@ def generate_depsjson(
         runtime_deps,
         transitive_runtime_deps,
         runtime_identifier,
-        runtime_pack_info = None):
+        runtime_pack_info = None,
+        use_relative_paths = False):
     """Generates a deps.json file.
 
     Args:
@@ -444,6 +446,7 @@ def generate_depsjson(
         transitive_runtime_deps: The transitive runtime dependencies of the target.
         runtime_identifier: The runtime identifier of the target.
         runtime_pack_info: The DotnetAssemblyInfo of the runtime pack that is used for a self contained publish.
+        use_relative_paths: If the paths to the dependencies should be relative to the workspace root.
     Returns:
         The deps.json file as a struct.
     """
@@ -488,8 +491,10 @@ def generate_depsjson(
             "serviceable": False,
             "sha512": "",
         }
+        if use_relative_paths:
+            library_fragment["path"] = "./"
 
-        if runtime_dep.nuget_info:
+        if runtime_dep.nuget_info and not use_relative_paths:
             library_fragment["type"] = "package"
             library_fragment["serviceable"] = True
             library_fragment["sha512"] = runtime_dep.nuget_info.sha512
@@ -497,8 +502,8 @@ def generate_depsjson(
             library_fragment["hashPath"] = "{}.{}.nupkg.sha512".format(runtime_dep.assembly_info.name.lower(), runtime_dep.assembly_info.version)
 
         target_fragment = {
-            "runtime": {dll.basename: {} for dll in runtime_dep.assembly_info.libs},
-            "native": {native_file.basename: {} for native_file in runtime_dep.assembly_info.native},
+            "runtime": {dll.basename if not use_relative_paths else dll.path: {} for dll in runtime_dep.assembly_info.libs},
+            "native": {native_file.basename: {} if not use_relative_paths else native_file.path for native_file in runtime_dep.assembly_info.native},
             "dependencies": {dep.assembly_info.name: dep.assembly_info.version for dep in runtime_dep.assembly_info.runtime_deps},
         }
 

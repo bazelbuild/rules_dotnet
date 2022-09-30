@@ -139,10 +139,6 @@ BINARY_COMMON_ATTRS = {
         executable = True,
         cfg = "exec",
     ),
-    "_manifest_loader": attr.label(
-        default = "@rules_dotnet//dotnet/private/tools/manifest_loader:ManifestLoader",
-        providers = [DotnetAssemblyInfo],
-    ),
     "_bash_runfiles": attr.label(
         default = "@bazel_tools//tools/bash/runfiles",
         allow_single_file = True,

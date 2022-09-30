@@ -11,7 +11,25 @@ load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "NuGetInfo")
 load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 
 def _import_library(ctx):
-    (_irefs, prefs, analyzers, libs, native, data, _private_refs, _private_analyzers, transitive_runtime_deps, _exports, _overrides) = collect_transitive_info(ctx.label.name, ctx.attr.deps, [], [], ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].strict_deps[BuildSettingInfo].value)
+    (
+        _irefs,
+        prefs,
+        analyzers,
+        libs,
+        native,
+        data,
+        _private_refs,
+        _private_analyzers,
+        transitive_runtime_deps,
+        _exports,
+        _overrides,
+    ) = collect_transitive_info(
+        ctx.label.name,
+        ctx.attr.deps,
+        [],
+        [],
+        ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].strict_deps[BuildSettingInfo].value,
+    )
 
     return [DotnetAssemblyInfo(
         name = ctx.attr.library_name,
@@ -89,5 +107,43 @@ import_library = rule(
     toolchains = [
         "@rules_dotnet//dotnet:toolchain_type",
     ],
+    executable = False,
+)
+
+def _import_dll(ctx):
+    return [DotnetAssemblyInfo(
+        name = ctx.file.dll.basename[:-4],
+        version = ctx.attr.version,
+        libs = [ctx.file.dll],
+        pdbs = [],
+        refs = [ctx.file.dll],
+        irefs = [],
+        analyzers = [],
+        native = [],
+        data = [],
+        exports = [],
+        transitive_libs = depset([]),
+        transitive_native = depset([]),
+        transitive_data = depset([]),
+        transitive_refs = depset([]),
+        transitive_analyzers = depset([]),
+        internals_visible_to = [],
+        runtime_deps = [],
+        transitive_runtime_deps = depset([]),
+    )]
+
+import_dll = rule(
+    _import_dll,
+    doc = "Imports a DLL",
+    attrs = {
+        "dll": attr.label(
+            doc = "The name of the library",
+            mandatory = True,
+            allow_single_file = True,
+        ),
+        "version": attr.string(
+            doc = "The version of the library",
+        ),
+    },
     executable = False,
 )

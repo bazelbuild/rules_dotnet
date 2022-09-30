@@ -2,7 +2,7 @@
 Base rule for building .Net binaries
 """
 
-load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "DotnetBinaryInfo")
+load("//dotnet/private:providers.bzl", "DotnetBinaryInfo")
 load(
     "//dotnet/private:common.bzl",
     "generate_depsjson",
@@ -29,7 +29,7 @@ def _create_shim_exe(ctx, dll):
     ctx.actions.run(
         executable = runtime.files_to_run,
         arguments = [ctx.executable.apphost_shimmer.path, apphost.path, dll.path, output.path],
-        inputs = depset([ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].host_model, apphost, dll, ctx.attr.apphost_shimmer.files_to_run.runfiles_manifest], transitive = [ctx.attr.apphost_shimmer.default_runfiles.files]),
+        inputs = depset([apphost, dll], transitive = [ctx.attr.apphost_shimmer.default_runfiles.files]),
         tools = [ctx.attr.apphost_shimmer.files, ctx.attr.apphost_shimmer.default_runfiles.files],
         outputs = [output],
         env = {
@@ -37,7 +37,6 @@ def _create_shim_exe(ctx, dll):
             # Set so that compilations work on remote execution workers that don't have ICU installed
             # ICU should not be required during compliation but only at runtime
             "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT": "1",
-            "RUNFILES_MANIFEST_FILE": ctx.attr.apphost_shimmer.files_to_run.runfiles_manifest.path,
         },
     )
 
@@ -74,11 +73,6 @@ def _create_launcher(ctx, runfiles, executable):
 
     return launcher
 
-def _symlink_manifest_loader(ctx, executable):
-    loader = ctx.actions.declare_file("ManifestLoader.dll", sibling = executable)
-    ctx.actions.symlink(output = loader, target_file = ctx.attr._manifest_loader[DotnetAssemblyInfo].libs[0])
-    return loader
-
 def build_binary(ctx, compile_action):
     """Builds a .Net binary from a compilation action
 
@@ -114,10 +108,10 @@ def build_binary(ctx, compile_action):
             toolchain = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"],
         )
 
-        # Add the manifest loader as a startup hook
-        runtimeconfig_struct["runtimeOptions"]["configProperties"] = {
-            "STARTUP_HOOKS": "ManifestLoader",
-        }
+        # Add additional lookup paths so that we can avoid copying all DLLs
+        # into the output directory. The deps.json file will then contain
+        # paths that are relative to the workspace root
+        runtimeconfig_struct["runtimeOptions"]["additionalProbingPaths"] = ["./"]
 
         ctx.actions.write(
             output = runtimeconfig,
@@ -134,22 +128,9 @@ def build_binary(ctx, compile_action):
             runtime_deps = result.runtime_deps,
             transitive_runtime_deps = result.transitive_runtime_deps,
             runtime_identifier = ctx.attr.runtime_identifier,
+            use_relative_paths = True,
         )
 
-        # Add the manifest loader to the deps.json so that its loaded correctly
-        depsjson_struct["targets"][depsjson_struct["targets"].keys()[0]] = {
-            "ManifestLoader": {
-                "runtime": {"ManifestLoader.dll": {"assemblyVersion": "1.0.0.0", "fileVersion": "1.0.0.0"}},
-            },
-        }
-        depsjson_struct["libraries"] = {
-            "ManifestLoader": {
-                "type": "package",
-                "serviceable": True,
-                "sha512": "",
-                "path": "",
-            },
-        }
         ctx.actions.write(
             output = depsjson,
             content = json.encode_indent(depsjson_struct),
@@ -160,9 +141,6 @@ def build_binary(ctx, compile_action):
 
     if depsjson != None:
         direct_runfiles.append(depsjson)
-
-    manifest_loader = _symlink_manifest_loader(ctx, dll)
-    direct_runfiles.append(manifest_loader)
 
     app_host = None
     launcher = None
