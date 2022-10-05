@@ -122,9 +122,6 @@ def _bash_launcher(ctx, entry_point_path, fixed_env, is_windows):
 def _create_launcher(ctx, entry_point, direct_runfiles, fixed_env = {}):
     is_windows = ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo])
 
-    if is_windows and not ctx.attr.enable_runfiles:
-        fail("need --enable_runfiles on Windows for to support rules_dotnet")
-
     entry_point_path = entry_point.short_path
     bash_launcher, dotnet_wrapper = _bash_launcher(ctx, entry_point_path, fixed_env, is_windows)
     launcher = create_windows_native_launcher_script(ctx, bash_launcher) if is_windows else bash_launcher
