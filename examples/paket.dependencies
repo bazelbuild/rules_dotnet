@@ -1,0 +1,15 @@
+group example_deps
+    framework: net6.0
+    storage: none
+    source https://api.nuget.org/v3/index.json
+
+    nuget Expecto 9.0.4
+    nuget FSharp.Core 6.0.3
+    nuget Microsoft.NETCore.App.Ref 6.0.8
+    nuget Microsoft.NETCore.App.Runtime.win-x64 6.0.8
+    nuget Microsoft.NETCore.App.Runtime.linux-x64 6.0.8
+    nuget Microsoft.NETCore.App.Runtime.osx-x64 6.0.8
+    nuget Microsoft.AspNetCore.App.Ref 6.0.8
+    nuget Microsoft.AspNetCore.App.Runtime.win-x64 6.0.8
+    nuget Microsoft.AspNetCore.App.Runtime.linux-x64 6.0.8
+    nuget Microsoft.AspNetCore.App.Runtime.osx-x64 6.0.8

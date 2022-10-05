@@ -435,7 +435,7 @@ def generate_depsjson(
         runtime_deps,
         transitive_runtime_deps,
         runtime_identifier,
-        runtime_pack_info = None,
+        runtime_pack_infos = [],
         use_relative_paths = False):
     """Generates a deps.json file.
 
@@ -445,7 +445,7 @@ def generate_depsjson(
         runtime_deps: The runtime dependencies of the target.
         transitive_runtime_deps: The transitive runtime dependencies of the target.
         runtime_identifier: The runtime identifier of the target.
-        runtime_pack_info: The DotnetAssemblyInfo of the runtime pack that is used for a self contained publish.
+        runtime_pack_infos: The DotnetAssemblyInfo of the runtime packs that are used for a self contained publish.
         use_relative_paths: If the paths to the dependencies should be relative to the workspace root.
     Returns:
         The deps.json file as a struct.
@@ -468,7 +468,7 @@ def generate_depsjson(
     base["targets"][runtime_target] = {}
     base["libraries"] = {}
 
-    if runtime_pack_info:
+    for runtime_pack_info in runtime_pack_infos:
         runtime_pack_name = "runtimepack.{}/{}".format(runtime_pack_info.name, runtime_pack_info.version)
         base["libraries"][runtime_pack_name] = {
             "type": "runtimepack",
