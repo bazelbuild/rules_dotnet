@@ -294,10 +294,6 @@ if [ ! -f "$DOTNET_BINARY__DOTNET_WRAPPER" ]; then
     logf_fatal "dotnet wrapper '%s' not found in runfiles" "$DOTNET_BINARY__DOTNET_WRAPPER"
     exit 1
 fi
-if [ ! -x "$DOTNET_BINARY__DOTNET_WRAPPER" ]; then
-    logf_fatal "dotnet wrapper '%s' is not executable" "$DOTNET_BINARY__DOTNET_WRAPPER"
-    exit 1
-fi
 
 ARGS=()
 ALL_ARGS=("$@")
