@@ -9,12 +9,12 @@ Rules for compiling C# binaries.
 ## csharp_binary
 
 <pre>
-csharp_binary(<a href="#csharp_binary-name">name</a>, <a href="#csharp_binary-additionalfiles">additionalfiles</a>, <a href="#csharp_binary-apphost_shimmer">apphost_shimmer</a>, <a href="#csharp_binary-data">data</a>, <a href="#csharp_binary-defines">defines</a>, <a href="#csharp_binary-deps">deps</a>, <a href="#csharp_binary-include_host_model_dll">include_host_model_dll</a>,
-              <a href="#csharp_binary-internals_visible_to">internals_visible_to</a>, <a href="#csharp_binary-keyfile">keyfile</a>, <a href="#csharp_binary-langversion">langversion</a>, <a href="#csharp_binary-out">out</a>, <a href="#csharp_binary-override_strict_deps">override_strict_deps</a>,
-              <a href="#csharp_binary-override_treat_warnings_as_errors">override_treat_warnings_as_errors</a>, <a href="#csharp_binary-override_warning_level">override_warning_level</a>, <a href="#csharp_binary-override_warnings_as_errors">override_warnings_as_errors</a>,
-              <a href="#csharp_binary-override_warnings_not_as_errors">override_warnings_not_as_errors</a>, <a href="#csharp_binary-private_deps">private_deps</a>, <a href="#csharp_binary-resources">resources</a>, <a href="#csharp_binary-runtime_identifier">runtime_identifier</a>, <a href="#csharp_binary-srcs">srcs</a>,
-              <a href="#csharp_binary-strict_deps">strict_deps</a>, <a href="#csharp_binary-target_frameworks">target_frameworks</a>, <a href="#csharp_binary-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#csharp_binary-warning_level">warning_level</a>,
-              <a href="#csharp_binary-warnings_as_errors">warnings_as_errors</a>, <a href="#csharp_binary-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#csharp_binary-winexe">winexe</a>)
+csharp_binary(<a href="#csharp_binary-name">name</a>, <a href="#csharp_binary-additionalfiles">additionalfiles</a>, <a href="#csharp_binary-apphost_shimmer">apphost_shimmer</a>, <a href="#csharp_binary-data">data</a>, <a href="#csharp_binary-defines">defines</a>, <a href="#csharp_binary-deps">deps</a>, <a href="#csharp_binary-env">env</a>, <a href="#csharp_binary-expected_exit_code">expected_exit_code</a>,
+              <a href="#csharp_binary-include_host_model_dll">include_host_model_dll</a>, <a href="#csharp_binary-internals_visible_to">internals_visible_to</a>, <a href="#csharp_binary-keyfile">keyfile</a>, <a href="#csharp_binary-langversion">langversion</a>, <a href="#csharp_binary-log_level">log_level</a>, <a href="#csharp_binary-out">out</a>,
+              <a href="#csharp_binary-override_strict_deps">override_strict_deps</a>, <a href="#csharp_binary-override_treat_warnings_as_errors">override_treat_warnings_as_errors</a>, <a href="#csharp_binary-override_warning_level">override_warning_level</a>,
+              <a href="#csharp_binary-override_warnings_as_errors">override_warnings_as_errors</a>, <a href="#csharp_binary-override_warnings_not_as_errors">override_warnings_not_as_errors</a>, <a href="#csharp_binary-private_deps">private_deps</a>, <a href="#csharp_binary-resources">resources</a>,
+              <a href="#csharp_binary-runtime_identifier">runtime_identifier</a>, <a href="#csharp_binary-srcs">srcs</a>, <a href="#csharp_binary-strict_deps">strict_deps</a>, <a href="#csharp_binary-target_frameworks">target_frameworks</a>, <a href="#csharp_binary-treat_warnings_as_errors">treat_warnings_as_errors</a>,
+              <a href="#csharp_binary-warning_level">warning_level</a>, <a href="#csharp_binary-warnings_as_errors">warnings_as_errors</a>, <a href="#csharp_binary-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#csharp_binary-winexe">winexe</a>)
 </pre>
 
 Compile a C# exe
@@ -30,10 +30,13 @@ Compile a C# exe
 | <a id="csharp_binary-data"></a>data |  Runtime files. It is recommended to use the @rules_dotnet//tools/runfiles library to read the runtime files.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
 | <a id="csharp_binary-defines"></a>defines |  A list of preprocessor directive symbols to define.   | List of strings | optional | [] |
 | <a id="csharp_binary-deps"></a>deps |  Other libraries, binaries, or imported DLLs   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
+| <a id="csharp_binary-env"></a>env |  Environment variables of the action.         Subject to <code>$(location)</code> and make variable expansion.   | <a href="https://bazel.build/rules/lib/dict">Dictionary: String -> String</a> | optional | {} |
+| <a id="csharp_binary-expected_exit_code"></a>expected_exit_code |  The expected exit code.<br><br>        Can be used to write tests that are expected to fail.   | Integer | optional | 0 |
 | <a id="csharp_binary-include_host_model_dll"></a>include_host_model_dll |  Whether to include Microsoft.NET.HostModel from the toolchain. This is only required to build tha apphost shimmer.   | Boolean | optional | False |
 | <a id="csharp_binary-internals_visible_to"></a>internals_visible_to |  Other libraries that can see the assembly's internal symbols. Using this rather than the InternalsVisibleTo assembly attribute will improve build caching.   | List of strings | optional | [] |
 | <a id="csharp_binary-keyfile"></a>keyfile |  The key file used to sign the assembly with a strong name.   | <a href="https://bazel.build/concepts/labels">Label</a> | optional | None |
 | <a id="csharp_binary-langversion"></a>langversion |  The version string for the language.   | String | optional | "" |
+| <a id="csharp_binary-log_level"></a>log_level |  Set the logging level of the launcher script.   | String | optional | "error" |
 | <a id="csharp_binary-out"></a>out |  File name, without extension, of the built assembly.   | String | optional | "" |
 | <a id="csharp_binary-override_strict_deps"></a>override_strict_deps |  Whether or not to override the strict_deps attribute.   | Boolean | optional | False |
 | <a id="csharp_binary-override_treat_warnings_as_errors"></a>override_treat_warnings_as_errors |  Whether or not to override the treat_warnings_as_errors attribute.   | Boolean | optional | False |

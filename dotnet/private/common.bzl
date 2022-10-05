@@ -10,6 +10,7 @@ load(
     "NuGetInfo",
 )
 load("//dotnet/private:rids.bzl", "RUNTIME_GRAPH")
+load("@aspect_bazel_lib//lib:paths.bzl", "to_manifest_path")
 
 def _collect_transitive():
     t = {}
@@ -212,7 +213,7 @@ def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
     transitive_data = []
     direct_analyzers = []
     transitive_analyzers = []
-    direct_runtime_deps = []
+    direct_runtime_deps = transform_deps(deps)
     transitive_runtime_deps = []
 
     direct_private_ref = []
@@ -245,8 +246,6 @@ def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
         direct_lib.extend(assembly.libs)
         direct_native.extend(assembly.native)
         direct_data.extend(assembly.data)
-        direct_runtime_deps.extend(assembly.runtime_deps)
-        transitive_runtime_deps.append(assembly.transitive_runtime_deps)
 
         # We take all the exports of each dependency and add them
         # to the direct refs.
@@ -260,12 +259,14 @@ def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
             transitive_lib.append(assembly.transitive_libs)
             transitive_native.append(assembly.transitive_native)
             transitive_data.append(assembly.transitive_data)
+            transitive_runtime_deps.append(assembly.transitive_runtime_deps)
         else:
             # TODO: This might be a performance issue. See if we can do this without
             # having to iterate over the transitive files.
             lib = []
             native = []
             data = []
+            runtime_deps = []
             for tlib in assembly.transitive_libs.to_list():
                 if tlib.owner in direct_labels:
                     continue
@@ -280,7 +281,12 @@ def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
                 if tdata.owner in direct_labels:
                     continue
                 data.append(tdata)
+            for truntime_dep in assembly.runtime_deps + assembly.transitive_runtime_deps.to_list():
+                if truntime_dep.label in direct_labels:
+                    continue
+                runtime_deps.append(truntime_dep)
 
+            transitive_runtime_deps.append(depset(runtime_deps))
             transitive_lib.append(depset(lib))
             transitive_native.append(depset(native))
             transitive_data.append(depset(data))
@@ -430,6 +436,7 @@ def framework_preprocessor_symbols(tfm):
 
 # For deps.json spec see: https://github.com/dotnet/sdk/blob/main/documentation/specs/runtime-configuration-file.md
 def generate_depsjson(
+        ctx,
         target_framework,
         is_self_contained,
         runtime_deps,
@@ -440,6 +447,7 @@ def generate_depsjson(
     """Generates a deps.json file.
 
     Args:
+        ctx: The ctx object
         target_framework: The target framework moniker for the target being built.
         is_self_contained: If the target is a self-contained publish.
         runtime_deps: The runtime dependencies of the target.
@@ -485,7 +493,6 @@ def generate_depsjson(
 
     for runtime_dep in runtime_deps + transitive_runtime_deps.to_list():
         library_name = "{}/{}".format(runtime_dep.assembly_info.name, runtime_dep.assembly_info.version)
-
         library_fragment = {
             "type": "project",
             "serviceable": False,
@@ -502,8 +509,8 @@ def generate_depsjson(
             library_fragment["hashPath"] = "{}.{}.nupkg.sha512".format(runtime_dep.assembly_info.name.lower(), runtime_dep.assembly_info.version)
 
         target_fragment = {
-            "runtime": {dll.basename if not use_relative_paths else dll.path: {} for dll in runtime_dep.assembly_info.libs},
-            "native": {native_file.basename: {} if not use_relative_paths else native_file.path for native_file in runtime_dep.assembly_info.native},
+            "runtime": {dll.basename if not use_relative_paths else to_manifest_path(ctx, dll): {} for dll in runtime_dep.assembly_info.libs},
+            "native": {native_file.basename if not use_relative_paths else to_manifest_path(ctx, native_file): {} for native_file in runtime_dep.assembly_info.native},
             "dependencies": {dep.assembly_info.name: dep.assembly_info.version for dep in runtime_dep.assembly_info.runtime_deps},
         }
 

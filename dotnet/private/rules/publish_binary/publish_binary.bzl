@@ -211,7 +211,7 @@ def _generate_depsjson(
         transitive_runtime_deps,
         runtime_identifier,
         runtime_pack_infos):
-    depsjson_struct = generate_depsjson(target_framework, is_self_contained, runtime_deps, transitive_runtime_deps, runtime_identifier, runtime_pack_infos)
+    depsjson_struct = generate_depsjson(ctx, target_framework, is_self_contained, runtime_deps, transitive_runtime_deps, runtime_identifier, runtime_pack_infos)
 
     ctx.actions.write(
         output = output,

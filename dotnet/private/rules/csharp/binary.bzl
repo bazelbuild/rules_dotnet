@@ -60,6 +60,7 @@ csharp_binary = rule(
     executable = True,
     toolchains = [
         "@rules_dotnet//dotnet:toolchain_type",
+        "@bazel_tools//tools/sh:toolchain_type",
     ],
     cfg = tfm_transition,
 )

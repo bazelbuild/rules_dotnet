@@ -6,6 +6,7 @@ bzl_library(
     visibility = ["//dotnet:__subpackages__"],
     deps = [
         "//dotnet/private:providers",
+        "//dotnet/private/rules/common:helpers",
         "//dotnet/private/transitions:tfm_transition",
         "@bazel_skylib//lib:dicts",
     ],
@@ -18,6 +19,9 @@ bzl_library(
     deps = [
         "//dotnet/private:common",
         "//dotnet/private:providers",
+        "//dotnet/private/rules/common:helpers",
+        "@aspect_bazel_lib//lib:expand_make_vars",
+        "@aspect_bazel_lib//lib:windows_utils",
         "@bazel_skylib//lib:paths",
         "@bazel_skylib//rules:common_settings",
     ],
@@ -28,4 +32,10 @@ bzl_library(
     srcs = ["library.bzl"],
     visibility = ["//dotnet:__subpackages__"],
     deps = ["@bazel_skylib//rules:common_settings"],
+)
+
+bzl_library(
+    name = "helpers",
+    srcs = ["helpers.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
 )

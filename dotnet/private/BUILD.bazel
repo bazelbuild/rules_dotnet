@@ -3,7 +3,8 @@ load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 exports_files(
     [
         "launcher.sh.tpl",
-        "launcher.bat.tpl",
+        "dotnet_wrapper.sh",
+        "dotnet_wrapper.bat",
     ],
     visibility = ["//visibility:public"],
 )
@@ -62,6 +63,7 @@ bzl_library(
     visibility = ["//dotnet:__subpackages__"],
     deps = [
         ":providers",
+        "@aspect_bazel_lib//lib:paths",
         "@bazel_skylib//lib:sets",
     ],
 )

@@ -3,6 +3,7 @@
 load("@bazel_skylib//lib:dicts.bzl", "dicts")
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo")
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
+load("//dotnet/private/rules/common:helpers.bzl", "LOG_LEVELS")
 
 # These are attributes that are common across all the binary/library/test .Net rules
 COMMON_ATTRS = {
@@ -139,18 +140,35 @@ BINARY_COMMON_ATTRS = {
         executable = True,
         cfg = "exec",
     ),
-    "_bash_runfiles": attr.label(
+    "env": attr.string_dict(
+        doc = """Environment variables of the action.
+        Subject to `$(location)` and make variable expansion.""",
+    ),
+    "expected_exit_code": attr.int(
+        doc = """The expected exit code.
+
+        Can be used to write tests that are expected to fail.""",
+        default = 0,
+    ),
+    "log_level": attr.string(
+        doc = """Set the logging level of the launcher script.""",
+        values = LOG_LEVELS.keys(),
+        default = "error",
+    ),
+    "_runfiles_lib": attr.label(
         default = "@bazel_tools//tools/bash/runfiles",
         allow_single_file = True,
     ),
-    "_launcher_sh": attr.label(
-        doc = "A template file for the launcher on Linux/MacOS",
-        default = "@rules_dotnet//dotnet/private:launcher.sh.tpl",
+    "_launcher_template": attr.label(
+        default = Label("//dotnet/private:launcher.sh.tpl"),
         allow_single_file = True,
     ),
-    "_launcher_bat": attr.label(
-        doc = "A template file for the launcher on Windows",
-        default = "@rules_dotnet//dotnet/private:launcher.bat.tpl",
+    "_dotnet_wrapper_sh": attr.label(
+        default = Label("//dotnet/private:dotnet_wrapper.sh"),
+        allow_single_file = True,
+    ),
+    "_dotnet_wrapper_bat": attr.label(
+        default = Label("//dotnet/private:dotnet_wrapper.bat"),
         allow_single_file = True,
     ),
 }
