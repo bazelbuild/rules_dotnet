@@ -35,6 +35,10 @@ tasks:
       - "//..."
     test_targets:
       - "//..."
+    build_flags:
+      - "--config=remote"
+    test_flags:
+      - "--config=remote"
   macos:
     name: Rules on MacOS
     platform: macos
@@ -89,3 +93,7 @@ tasks:
       - "//..."
     test_targets:
       - "//..."
+    build_flags:
+      - "--config=remote"
+    test_flags:
+      - "--config=remote"
