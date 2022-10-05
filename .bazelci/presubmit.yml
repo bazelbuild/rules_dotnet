@@ -25,6 +25,16 @@ tasks:
       - "//..."
     test_targets:
       - "//..."
+  rbe_ubuntu1604:
+    name: Rules on Linux (RBE)
+    platform: rbe_ubuntu1604
+    include_json_profile:
+      - build
+      - test
+    build_targets:
+      - "//..."
+    test_targets:
+      - "//..."
   macos:
     name: Rules on MacOS
     platform: macos
@@ -60,6 +70,17 @@ tasks:
   examples-macos:
     name: Examples on macOS
     platform: macos
+    include_json_profile:
+      - build
+      - test
+    working_directory: examples
+    build_targets:
+      - "//..."
+    test_targets:
+      - "//..."
+  examples-rbe_ubuntu1604:
+    name: Examples on Ubuntu 18.04 (RBE)
+    platform: rbe_ubuntu1604
     include_json_profile:
       - build
       - test
