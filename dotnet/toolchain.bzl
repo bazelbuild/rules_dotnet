@@ -78,7 +78,7 @@ def _dotnet_toolchain_impl(ctx):
     apphost_path = ctx.attr.apphost_path
 
     if ctx.attr.runtime:
-        runtime_files = ctx.attr.runtime.files.to_list()
+        runtime_files = ctx.attr.runtime.files.to_list() + ctx.attr.runtime.default_runfiles.files.to_list()
         runtime_path = _to_manifest_path(ctx, runtime_files[0])
 
     if ctx.attr.csharp_compiler:
