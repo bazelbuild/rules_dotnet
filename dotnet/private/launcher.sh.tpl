@@ -275,6 +275,7 @@ fi
 
 entry_point="$RUNFILES/{{workspace_name}}/{{entry_point_path}}"
 if [ ! -f "$entry_point" ]; then
+    ls -laR "$RUNFILES"
     logf_fatal "the entry_point '%s' not found in runfiles" "$entry_point"
     exit 1
 fi
