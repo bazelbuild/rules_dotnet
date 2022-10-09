@@ -42,6 +42,7 @@ load(
 )
 load(
     "//dotnet/private/rules/nuget:imports.bzl",
+    _import_dll = "import_dll",
     _import_library = "import_library",
 )
 load(
@@ -286,5 +287,6 @@ def publish_binary(name, binary, target_framework, self_contained = False, runti
     )
 
 import_library = _import_library
+import_dll = _import_dll
 nuget_repo = _nuget_repo
 nuget_archive = _nuget_archive

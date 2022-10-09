@@ -62,6 +62,7 @@ bzl_library(
     visibility = ["//dotnet:__subpackages__"],
     deps = [
         ":providers",
+        "@aspect_bazel_lib//lib:paths",
         "@bazel_skylib//lib:sets",
     ],
 )

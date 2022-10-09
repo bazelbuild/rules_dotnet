@@ -24,8 +24,11 @@ source "$(grep -sm1 "^$f " "$0.exe.runfiles_manifest" | cut -f2- -d' ')" 2>/dev/
 # --- end runfiles.bash initialization v2 ---
 runfiles_export_envvars
 
+set -o pipefail -o errexit -o nounset
+
 export DOTNET_MULTILEVEL_LOOKUP="false"
 export DOTNET_NOLOGO="1"
 export DOTNET_CLI_TELEMETRY_OPTOUT="1"
 export DOTNET_ROOT="$(dirname $(rlocation TEMPLATED_dotnet))"
-$(rlocation TEMPLATED_executable) "$@"
+
+$(rlocation TEMPLATED_dotnet) exec $(rlocation TEMPLATED_executable) "$@"

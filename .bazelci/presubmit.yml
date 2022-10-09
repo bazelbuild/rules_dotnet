@@ -1,5 +1,5 @@
 ---
-bazel: 5.3.0
+bazel: 5.3.1
 
 buildifier:
   version: latest
@@ -25,6 +25,20 @@ tasks:
       - "//..."
     test_targets:
       - "//..."
+  rbe_ubuntu1604:
+    name: Rules on Linux (RBE)
+    platform: rbe_ubuntu1604
+    include_json_profile:
+      - build
+      - test
+    build_targets:
+      - "//..."
+    test_targets:
+      - "//..."
+    build_flags:
+      - "--config=remote"
+    test_flags:
+      - "--config=remote"
   macos:
     name: Rules on MacOS
     platform: macos
@@ -68,3 +82,18 @@ tasks:
       - "//..."
     test_targets:
       - "//..."
+  examples-rbe_ubuntu1604:
+    name: Examples on Ubuntu 18.04 (RBE)
+    platform: rbe_ubuntu1604
+    include_json_profile:
+      - build
+      - test
+    working_directory: examples
+    build_targets:
+      - "//..."
+    test_targets:
+      - "//..."
+    build_flags:
+      - "--config=remote"
+    test_flags:
+      - "--config=remote"

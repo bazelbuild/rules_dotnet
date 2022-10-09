@@ -334,7 +334,7 @@ def _compile(
 
     args.use_param_file("@%s", use_always = True)
 
-    direct_inputs = srcs + resources + [toolchain.fsharp_compiler]
+    direct_inputs = srcs + resources + [toolchain.fsharp_compiler.files_to_run.executable]
     direct_inputs += [keyfile] if keyfile else []
 
     # dotnet.exe fsc.dll /noconfig <other fsc args>
@@ -343,12 +343,12 @@ def _compile(
         progress_message = "Compiling " + target_name + (" (internals ref-only dll)" if out_dll == None else ""),
         inputs = depset(
             direct = direct_inputs,
-            transitive = [refs, private_refs],
+            transitive = [refs, private_refs, toolchain.runtime.default_runfiles.files, toolchain.fsharp_compiler.default_runfiles.files],
         ),
         outputs = outputs,
-        executable = toolchain.runtime.files_to_run,
+        executable = toolchain.runtime.files_to_run.executable,
         arguments = [
-            toolchain.fsharp_compiler.path,
+            toolchain.fsharp_compiler.files_to_run.executable.path,
             args,
         ],
         env = {

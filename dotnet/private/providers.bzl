@@ -15,7 +15,7 @@ DotnetAssemblyInfo = provider(
         "data": "list[File]: Runtime data files",
         "exports": "list[File]",
         "runtime_deps": "list[DotnetDepVariantInfo]: The direct dependencies of the assembly",
-        "transitive_runtime_deps": "list[DotnetDepVariantInfo]: The transitive runtime dependencies of the assembly",
+        "transitive_runtime_deps": "depset[DotnetDepVariantInfo]: The transitive runtime dependencies of the assembly",
         "transitive_libs": "depset[File]: Transitive runtime DLLs",
         "transitive_native": "depset[File]: Transitive native runtime files",
         "transitive_data": "depset[File]: Transitive runtime data files",
@@ -29,6 +29,7 @@ DotnetDepVariantInfo = provider(
           "dependency, in which case the `assembly_info` will be populated" +
           "or a NuGet dependency, in which case `assembly_info` and `nuget_info` will be populated.",
     fields = {
+        "label": "Label: The label of the dependency",
         "assembly_info": "AssemblyInfo: The AssemblyInfo of a dependency",
         "nuget_info": "NuGetInfo: The NuGet info of a dependency",
     },

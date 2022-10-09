@@ -12,7 +12,7 @@ export RUNFILES_MANIFEST_ONLY=""
 # this way the framework dependent publish will use the
 # dotnet installation that is located there to run the
 # binary.
-DOTNET_ROOT=$(dirname ./"$1")
+DOTNET_ROOT="$(dirname "$1")/"
 export DOTNET_ROOT
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then

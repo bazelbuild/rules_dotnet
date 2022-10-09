@@ -6,6 +6,7 @@ load("@bazel_skylib//lib:shell.bzl", "shell")
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "DotnetBinaryInfo", "DotnetPublishBinaryInfo")
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 load("//dotnet/private:common.bzl", "generate_depsjson", "generate_runtimeconfig")
+load("@aspect_bazel_lib//lib:paths.bzl", "to_manifest_path")
 
 def _publish_binary_impl(ctx):
     runtime_pack_infos = []
@@ -93,12 +94,6 @@ publish_binary = rule(
     cfg = tfm_transition,
 )
 
-def _to_manifest_path(ctx, file):
-    if file.short_path.startswith("../"):
-        return file.short_path[3:]
-    else:
-        return ctx.workspace_name + "/" + file.short_path
-
 def _copy_file(script_body, src, dst, is_windows):
     if is_windows:
         script_body.append("@copy /Y \"{src}\" \"{dst}\" >NUL".format(src = src.path.replace("/", "\\"), dst = dst.path.replace("/", "\\")))
@@ -112,7 +107,7 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
         "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, binary_info.app_host.basename),
     )
     outputs = [app_host_copy]
-    script_body = []
+    script_body = [] if is_windows else ["#! /usr/bin/env bash"]
 
     _copy_file(script_body, binary_info.app_host, app_host_copy, is_windows = is_windows)
 
@@ -150,7 +145,7 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
     # RUNFILES_DIR/RUNFILES_MANIFEST_FILE/RUNFILES_MANIFEST_ONLY is not set).
     for file in assembly_info.data + assembly_info.transitive_data.to_list():
         inputs.append(file)
-        manifest_path = _to_manifest_path(ctx, file)
+        manifest_path = to_manifest_path(ctx, file)
         output = ctx.actions.declare_file(
             "{}/publish/{}/{}.runfiles/{}".format(ctx.label.name, runtime_identifier, binary_info.app_host.basename, manifest_path),
         )
@@ -211,7 +206,7 @@ def _generate_depsjson(
         transitive_runtime_deps,
         runtime_identifier,
         runtime_pack_infos):
-    depsjson_struct = generate_depsjson(target_framework, is_self_contained, runtime_deps, transitive_runtime_deps, runtime_identifier, runtime_pack_infos)
+    depsjson_struct = generate_depsjson(ctx, target_framework, is_self_contained, runtime_deps, transitive_runtime_deps, runtime_identifier, runtime_pack_infos)
 
     ctx.actions.write(
         output = output,
@@ -263,7 +258,6 @@ def _publish_binary_wrapper_impl(ctx):
     return [
         ctx.attr.wrapped_target[0][DotnetPublishBinaryInfo],
         DefaultInfo(
-            executable = executable,
             files = depset([executable, runtimeconfig, depsjson] + runfiles),
         ),
     ]
@@ -298,5 +292,5 @@ publish_binary_wrapper = rule(
     toolchains = [
         "@rules_dotnet//dotnet:toolchain_type",
     ],
-    executable = True,
+    executable = False,
 )
