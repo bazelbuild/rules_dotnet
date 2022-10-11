@@ -9,11 +9,12 @@ Rules for compiling C# libraries.
 ## csharp_library
 
 <pre>
-csharp_library(<a href="#csharp_library-name">name</a>, <a href="#csharp_library-additionalfiles">additionalfiles</a>, <a href="#csharp_library-data">data</a>, <a href="#csharp_library-defines">defines</a>, <a href="#csharp_library-deps">deps</a>, <a href="#csharp_library-exports">exports</a>, <a href="#csharp_library-internals_visible_to">internals_visible_to</a>, <a href="#csharp_library-keyfile">keyfile</a>,
-               <a href="#csharp_library-langversion">langversion</a>, <a href="#csharp_library-out">out</a>, <a href="#csharp_library-override_strict_deps">override_strict_deps</a>, <a href="#csharp_library-override_treat_warnings_as_errors">override_treat_warnings_as_errors</a>,
-               <a href="#csharp_library-override_warning_level">override_warning_level</a>, <a href="#csharp_library-override_warnings_as_errors">override_warnings_as_errors</a>, <a href="#csharp_library-override_warnings_not_as_errors">override_warnings_not_as_errors</a>,
-               <a href="#csharp_library-private_deps">private_deps</a>, <a href="#csharp_library-resources">resources</a>, <a href="#csharp_library-runtime_identifier">runtime_identifier</a>, <a href="#csharp_library-srcs">srcs</a>, <a href="#csharp_library-strict_deps">strict_deps</a>, <a href="#csharp_library-target_frameworks">target_frameworks</a>,
-               <a href="#csharp_library-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#csharp_library-warning_level">warning_level</a>, <a href="#csharp_library-warnings_as_errors">warnings_as_errors</a>, <a href="#csharp_library-warnings_not_as_errors">warnings_not_as_errors</a>)
+csharp_library(<a href="#csharp_library-name">name</a>, <a href="#csharp_library-additionalfiles">additionalfiles</a>, <a href="#csharp_library-compile_data">compile_data</a>, <a href="#csharp_library-data">data</a>, <a href="#csharp_library-defines">defines</a>, <a href="#csharp_library-deps">deps</a>, <a href="#csharp_library-exports">exports</a>,
+               <a href="#csharp_library-internals_visible_to">internals_visible_to</a>, <a href="#csharp_library-keyfile">keyfile</a>, <a href="#csharp_library-langversion">langversion</a>, <a href="#csharp_library-out">out</a>, <a href="#csharp_library-override_strict_deps">override_strict_deps</a>,
+               <a href="#csharp_library-override_treat_warnings_as_errors">override_treat_warnings_as_errors</a>, <a href="#csharp_library-override_warning_level">override_warning_level</a>, <a href="#csharp_library-override_warnings_as_errors">override_warnings_as_errors</a>,
+               <a href="#csharp_library-override_warnings_not_as_errors">override_warnings_not_as_errors</a>, <a href="#csharp_library-private_deps">private_deps</a>, <a href="#csharp_library-resources">resources</a>, <a href="#csharp_library-runtime_identifier">runtime_identifier</a>, <a href="#csharp_library-srcs">srcs</a>,
+               <a href="#csharp_library-strict_deps">strict_deps</a>, <a href="#csharp_library-target_frameworks">target_frameworks</a>, <a href="#csharp_library-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#csharp_library-warning_level">warning_level</a>,
+               <a href="#csharp_library-warnings_as_errors">warnings_as_errors</a>, <a href="#csharp_library-warnings_not_as_errors">warnings_not_as_errors</a>)
 </pre>
 
 Compile a C# DLL
@@ -25,6 +26,7 @@ Compile a C# DLL
 | :------------- | :------------- | :------------- | :------------- | :------------- |
 | <a id="csharp_library-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/concepts/labels#target-names">Name</a> | required |  |
 | <a id="csharp_library-additionalfiles"></a>additionalfiles |  Extra files to configure analyzers.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
+| <a id="csharp_library-compile_data"></a>compile_data |  Additional compile time files.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
 | <a id="csharp_library-data"></a>data |  Runtime files. It is recommended to use the @rules_dotnet//tools/runfiles library to read the runtime files.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
 | <a id="csharp_library-defines"></a>defines |  A list of preprocessor directive symbols to define.   | List of strings | optional | [] |
 | <a id="csharp_library-deps"></a>deps |  Other libraries, binaries, or imported DLLs   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |

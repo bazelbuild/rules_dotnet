@@ -9,11 +9,11 @@ Rules for compiling F# libraries.
 ## fsharp_library
 
 <pre>
-fsharp_library(<a href="#fsharp_library-name">name</a>, <a href="#fsharp_library-data">data</a>, <a href="#fsharp_library-defines">defines</a>, <a href="#fsharp_library-deps">deps</a>, <a href="#fsharp_library-exports">exports</a>, <a href="#fsharp_library-internals_visible_to">internals_visible_to</a>, <a href="#fsharp_library-keyfile">keyfile</a>, <a href="#fsharp_library-langversion">langversion</a>, <a href="#fsharp_library-out">out</a>,
-               <a href="#fsharp_library-override_strict_deps">override_strict_deps</a>, <a href="#fsharp_library-override_treat_warnings_as_errors">override_treat_warnings_as_errors</a>, <a href="#fsharp_library-override_warning_level">override_warning_level</a>,
-               <a href="#fsharp_library-override_warnings_as_errors">override_warnings_as_errors</a>, <a href="#fsharp_library-override_warnings_not_as_errors">override_warnings_not_as_errors</a>, <a href="#fsharp_library-private_deps">private_deps</a>, <a href="#fsharp_library-resources">resources</a>,
-               <a href="#fsharp_library-runtime_identifier">runtime_identifier</a>, <a href="#fsharp_library-srcs">srcs</a>, <a href="#fsharp_library-strict_deps">strict_deps</a>, <a href="#fsharp_library-target_frameworks">target_frameworks</a>, <a href="#fsharp_library-treat_warnings_as_errors">treat_warnings_as_errors</a>,
-               <a href="#fsharp_library-warning_level">warning_level</a>, <a href="#fsharp_library-warnings_as_errors">warnings_as_errors</a>, <a href="#fsharp_library-warnings_not_as_errors">warnings_not_as_errors</a>)
+fsharp_library(<a href="#fsharp_library-name">name</a>, <a href="#fsharp_library-compile_data">compile_data</a>, <a href="#fsharp_library-data">data</a>, <a href="#fsharp_library-defines">defines</a>, <a href="#fsharp_library-deps">deps</a>, <a href="#fsharp_library-exports">exports</a>, <a href="#fsharp_library-internals_visible_to">internals_visible_to</a>, <a href="#fsharp_library-keyfile">keyfile</a>,
+               <a href="#fsharp_library-langversion">langversion</a>, <a href="#fsharp_library-out">out</a>, <a href="#fsharp_library-override_strict_deps">override_strict_deps</a>, <a href="#fsharp_library-override_treat_warnings_as_errors">override_treat_warnings_as_errors</a>,
+               <a href="#fsharp_library-override_warning_level">override_warning_level</a>, <a href="#fsharp_library-override_warnings_as_errors">override_warnings_as_errors</a>, <a href="#fsharp_library-override_warnings_not_as_errors">override_warnings_not_as_errors</a>,
+               <a href="#fsharp_library-private_deps">private_deps</a>, <a href="#fsharp_library-resources">resources</a>, <a href="#fsharp_library-runtime_identifier">runtime_identifier</a>, <a href="#fsharp_library-srcs">srcs</a>, <a href="#fsharp_library-strict_deps">strict_deps</a>, <a href="#fsharp_library-target_frameworks">target_frameworks</a>,
+               <a href="#fsharp_library-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#fsharp_library-warning_level">warning_level</a>, <a href="#fsharp_library-warnings_as_errors">warnings_as_errors</a>, <a href="#fsharp_library-warnings_not_as_errors">warnings_not_as_errors</a>)
 </pre>
 
 Compile a F# DLL
@@ -24,6 +24,7 @@ Compile a F# DLL
 | Name  | Description | Type | Mandatory | Default |
 | :------------- | :------------- | :------------- | :------------- | :------------- |
 | <a id="fsharp_library-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/concepts/labels#target-names">Name</a> | required |  |
+| <a id="fsharp_library-compile_data"></a>compile_data |  Additional compile time files.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
 | <a id="fsharp_library-data"></a>data |  Runtime files. It is recommended to use the @rules_dotnet//tools/runfiles library to read the runtime files.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
 | <a id="fsharp_library-defines"></a>defines |  A list of preprocessor directive symbols to define.   | List of strings | optional | [] |
 | <a id="fsharp_library-deps"></a>deps |  Other libraries, binaries, or imported DLLs   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
