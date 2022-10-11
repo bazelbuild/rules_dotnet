@@ -1,6 +1,7 @@
 
 
 GROUP example_deps
+STORAGE: NONE
 RESTRICTION: == net6.0
 NUGET
   remote: https://api.nuget.org/v3/index.json
@@ -8,6 +9,8 @@ NUGET
       FSharp.Core (>= 4.6)
       Mono.Cecil (>= 0.11.3)
     FSharp.Core (6.0.3)
+    FSharp.Data (5.0.2)
+      FSharp.Core (>= 5.0.1)
     Microsoft.AspNetCore.App.Ref (6.0.8)
     Microsoft.AspNetCore.App.Runtime.linux-x64 (6.0.8)
     Microsoft.AspNetCore.App.Runtime.osx-x64 (6.0.8)

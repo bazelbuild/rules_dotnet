@@ -28,6 +28,7 @@ def _compile_action(ctx, tfm):
         resources = ctx.files.resources,
         srcs = ctx.files.srcs,
         data = ctx.files.data,
+        compile_data = ctx.files.compile_data,
         out = ctx.attr.out,
         target = "exe",
         target_name = ctx.attr.name,

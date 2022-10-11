@@ -17,6 +17,12 @@ COMMON_ATTRS = {
         default = [],
         allow_empty = True,
     ),
+    "compile_data": attr.label_list(
+        doc = "Additional compile time files.",
+        allow_files = True,
+        default = [],
+        allow_empty = True,
+    ),
     "keyfile": attr.label(
         doc = "The key file used to sign the assembly with a strong name.",
         allow_single_file = True,

@@ -5,6 +5,7 @@ group example_deps
 
     nuget Expecto 9.0.4
     nuget FSharp.Core 6.0.3
+    nuget FSharp.Data 5.0.2
     nuget Microsoft.NETCore.App.Ref 6.0.8
     nuget Microsoft.NETCore.App.Runtime.win-x64 6.0.8
     nuget Microsoft.NETCore.App.Runtime.linux-x64 6.0.8

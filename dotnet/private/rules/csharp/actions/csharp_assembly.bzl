@@ -64,6 +64,7 @@ def AssemblyAction(
         resources,
         srcs,
         data,
+        compile_data,
         out,
         target,
         target_name,
@@ -93,6 +94,7 @@ def AssemblyAction(
         resources: The list of resouces to be embedded in the assembly.
         srcs: The list of source (.cs) files that are processed to create the assembly.
         data: List of files that are a direct runtime dependency
+        compile_data: List of files that are a direct compile time dependency
         target_name: A unique name for this target.
         out: Specifies the output file name.
         target: Specifies the format of the output file by using one of four options.
@@ -117,6 +119,7 @@ def AssemblyAction(
         transitive_libs,
         transitive_native,
         transitive_data,
+        transitive_compile_data,
         private_refs,
         private_analyzers,
         transitive_runtime_deps,
@@ -156,6 +159,7 @@ def AssemblyAction(
             overrides,
             resources,
             srcs,
+            depset(compile_data, transitive = [transitive_compile_data]),
             subsystem_version,
             target,
             target_name,
@@ -196,6 +200,7 @@ def AssemblyAction(
             overrides,
             resources,
             srcs + [internals_visible_to_cs],
+            depset(compile_data, transitive = [transitive_compile_data]),
             subsystem_version,
             target,
             target_name,
@@ -226,6 +231,7 @@ def AssemblyAction(
             overrides,
             resources,
             srcs,
+            depset(compile_data, transitive = [transitive_compile_data]),
             subsystem_version,
             target,
             target_name,
@@ -252,6 +258,7 @@ def AssemblyAction(
         analyzers = [],
         internals_visible_to = internals_visible_to or [],
         data = data,
+        compile_data = compile_data,
         native = [],
         exports = exports_files,
         transitive_refs = prefs,
@@ -259,6 +266,7 @@ def AssemblyAction(
         transitive_libs = transitive_libs,
         transitive_native = transitive_native,
         transitive_data = transitive_data,
+        transitive_compile_data = transitive_compile_data,
         runtime_deps = transform_deps(deps + [toolchain.host_model] if include_host_model_dll else deps),
         transitive_runtime_deps = transitive_runtime_deps,
     )
@@ -278,6 +286,7 @@ def _compile(
         overrides,
         resources,
         srcs,
+        compile_data,
         subsystem_version,
         target,
         target_name,
@@ -396,7 +405,7 @@ def _compile(
         progress_message = "Compiling " + target_name + (" (internals ref-only dll)" if out_dll == None else ""),
         inputs = depset(
             direct = direct_inputs,
-            transitive = [private_refs, refs, analyzer_assemblies, private_analyzer_assemblies, toolchain.runtime.default_runfiles.files, toolchain.csharp_compiler.default_runfiles.files],
+            transitive = [private_refs, refs, analyzer_assemblies, private_analyzer_assemblies, toolchain.runtime.default_runfiles.files, toolchain.csharp_compiler.default_runfiles.files, compile_data],
         ),
         outputs = outputs,
         executable = toolchain.runtime.files_to_run.executable,

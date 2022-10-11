@@ -17,4 +17,5 @@ package.json
 .fake
 tools/paket2bazel/packages
 examples/paket/packages
+examples/packages
 paket-files

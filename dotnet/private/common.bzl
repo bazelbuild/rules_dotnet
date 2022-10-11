@@ -211,6 +211,8 @@ def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
     transitive_native = []
     direct_data = []
     transitive_data = []
+    direct_compile_data = []
+    transitive_compile_data = []
     direct_analyzers = []
     transitive_analyzers = []
     direct_runtime_deps = transform_deps(deps)
@@ -246,6 +248,7 @@ def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
         direct_lib.extend(assembly.libs)
         direct_native.extend(assembly.native)
         direct_data.extend(assembly.data)
+        direct_compile_data.extend(assembly.compile_data)
 
         # We take all the exports of each dependency and add them
         # to the direct refs.
@@ -281,6 +284,7 @@ def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
                 if tdata.owner in direct_labels:
                     continue
                 data.append(tdata)
+
             for truntime_dep in assembly.runtime_deps + assembly.transitive_runtime_deps.to_list():
                 if truntime_dep.label in direct_labels:
                     continue
@@ -294,16 +298,19 @@ def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
         if not strict_deps:
             transitive_ref.append(assembly.transitive_refs)
             transitive_analyzers.append(assembly.transitive_analyzers)
+            transitive_compile_data.append(assembly.transitive_compile_data)
 
     for dep in private_deps:
         assembly = dep[DotnetAssemblyInfo]
 
         direct_private_ref.extend(assembly.irefs if name in assembly.internals_visible_to else assembly.refs)
         direct_private_analyzers.extend(assembly.analyzers)
+        direct_compile_data.extend(assembly.compile_data)
 
         if not strict_deps:
             transitive_private_ref.append(assembly.transitive_refs)
             transitive_private_analyzers.append(assembly.transitive_analyzers)
+            transitive_compile_data.append(assembly.transitive_compile_data)
 
     for export in exports:
         assembly = export[DotnetAssemblyInfo]
@@ -316,6 +323,7 @@ def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
         depset(direct = direct_lib, transitive = transitive_lib),
         depset(direct = direct_native, transitive = transitive_native),
         depset(direct = direct_data, transitive = transitive_data),
+        depset(direct = direct_compile_data, transitive = transitive_compile_data),
         depset(direct = direct_private_ref, transitive = transitive_private_ref),
         depset(direct = direct_private_analyzers, transitive = transitive_private_analyzers),
         depset(direct = direct_runtime_deps, transitive = transitive_runtime_deps),
