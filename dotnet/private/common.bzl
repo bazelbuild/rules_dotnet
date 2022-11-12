@@ -163,7 +163,7 @@ def is_core_framework(tfm):
     return tfm.startswith("netcoreapp") or tfm.startswith("net5.0") or tfm.startswith("net6.0") or tfm.startswith("net7.0") or tfm.startswith("net8.0") or tfm.startswith("net9.0")
 
 def format_ref_arg(args, refs, targeting_pack_overrides):
-    """Takes
+    """Takes 
 
     Args:
         args: The args object that will be sent into the compilation action
@@ -268,7 +268,6 @@ def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
             # having to iterate over the transitive files.
             lib = []
             native = []
-            files = []
             data = []
             runtime_deps = []
             for tlib in assembly.transitive_libs.to_list():
