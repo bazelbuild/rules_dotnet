@@ -5,6 +5,7 @@ package(default_visibility = ["//visibility:public"])
 import_library(
     name = "{VERSION}",
     analyzers = ["@{PREFIX}.{NAME_LOWER}.v{VERSION}//:analyzers"],
+    files = ["@{PREFIX}.{NAME_LOWER}.v{VERSION}//:files"],
     data = ["@{PREFIX}.{NAME_LOWER}.v{VERSION}//:data"],
     library_name = "{NAME}",
     libs = ["@{PREFIX}.{NAME_LOWER}.v{VERSION}//:libs"],
