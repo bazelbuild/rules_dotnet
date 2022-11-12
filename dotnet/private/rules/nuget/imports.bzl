@@ -134,7 +134,6 @@ def _import_dll(ctx):
         exports = [],
         transitive_libs = depset([]),
         transitive_native = depset([]),
-        transitive_files = depset([]),
         transitive_data = depset([]),
         transitive_compile_data = depset([]),
         transitive_refs = depset([]),
