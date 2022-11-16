@@ -27,16 +27,6 @@ def gather_compile_info(ctx):
             direct_deps.append(variant)
             transitive_deps.append(depset(dep[DotnetCompileInfo].deps, transitive = [ dep[DotnetCompileInfo].transitive_deps ]))
 
-        # if DotnetCompileInfo in dep:
-        #     variant = DotnetCompileDepVariantInfo(
-        #         label = dep.label,
-        #         dotnet_compile_info = dep[DotnetCompileInfo],
-        #         dotnet_assembly_info = None,
-        #     )
-
-        #     direct_deps.append(variant)
-        #     transitive_deps.append(depset(dep[DotnetCompileInfo].deps, transitive = [ dep[DotnetCompileInfo].transitive_deps ]))
-
         if NuGetInfo in dep and DotnetAssemblyInfo in dep:
             variant = DotnetCompileDepVariantInfo(
                 label = dep.label,
@@ -45,7 +35,6 @@ def gather_compile_info(ctx):
             )
 
             direct_deps.append(variant)
-            # transitive_deps.append(depset(dep[DotnetAssemblyInfo].deps, transitive = [ dep[DotnetAssemblyInfo].transitive_deps ]))
 
     return DotnetCompileInfo(
         label = ctx.label,
