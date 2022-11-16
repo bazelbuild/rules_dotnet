@@ -46,7 +46,7 @@ def _library_impl(ctx):
 
 fsharp_library = rule(
     _library_impl,
-    doc = "Compile a F# DLL",
+    doc = "Compile an F# DLL",
     attrs = FSHARP_LIBRARY_COMMON_ATTRS,
     executable = False,
     toolchains = ["@rules_dotnet//dotnet:toolchain_type"],

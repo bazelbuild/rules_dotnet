@@ -2,13 +2,18 @@
 Base rule for building .Net binaries
 """
 
-load("//dotnet/private:providers.bzl", "DotnetBinaryInfo")
+load("//dotnet/private:providers.bzl", "DotnetBinaryInfo", "DotnetAssemblyInfo", "NuGetInfo", "DotnetCompileInfo", "DotnetCompileDepVariantInfo")
+
 load(
     "//dotnet/private:common.bzl",
     "generate_depsjson",
     "generate_runtimeconfig",
     "is_core_framework",
     "is_standard_framework",
+)
+load(
+    "//dotnet/private/rules/common:compile_info.bzl",
+    "gather_compile_info"
 )
 load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
@@ -160,4 +165,6 @@ def build_binary(ctx, compile_action):
         app_host = app_host,
     )
 
-    return [default_info, dotnet_binary_info, result]
+    dotnet_compile_info = gather_compile_info(ctx)
+
+    return [default_info, dotnet_binary_info, dotnet_compile_info, result]

@@ -1,6 +1,11 @@
 "Common implementation for building .Net libraries"
 
 load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
+load("//dotnet/private:providers.bzl", "DotnetCompileInfo")
+load(
+    "//dotnet/private/rules/common:compile_info.bzl",
+    "gather_compile_info"
+)
 
 def build_library(ctx, compile_action):
     """Builds a .Net library from a compilation action
@@ -32,5 +37,8 @@ def build_library(ctx, compile_action):
             ]),
         ),
     ))
+
+    dotnet_compile_info = gather_compile_info(ctx)
+    result.append(dotnet_compile_info)
 
     return result

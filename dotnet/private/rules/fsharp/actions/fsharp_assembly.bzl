@@ -219,6 +219,7 @@ def AssemblyAction(
         irefs = [out_dll],
         analyzers = [],
         internals_visible_to = internals_visible_to or [],
+        files = srcs,
         data = data,
         compile_data = compile_data,
         native = [],
