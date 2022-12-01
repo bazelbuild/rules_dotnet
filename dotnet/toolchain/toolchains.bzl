@@ -137,6 +137,36 @@ CORE_SDK_REPOSITORIES = {
             # "36fde8f0cc339a01134b87158ab922de27bb3005446d764c3efd26ccb67f8c5acc16102a4ecef85a402f46bf4dfc9bdc28063806bb2b4a4faf0def13277a9268"
         ),
     },
+    "7.0.100": {
+        # https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-7.0.100-windows-x64-binaries
+        "windows_amd64": (
+            "https://download.visualstudio.microsoft.com/download/pr/1fb808dc-d017-4460-94f8-bf1ac83e6cd8/756b301e714755e411b84684b885a516/dotnet-sdk-7.0.100-win-x64.zip",
+            "4f6a1d9bfdcffadaf5deb9c9c30d0c7864c2d0478ec2804e766f3d614fc1e33e",
+            # SHA512 Checsum provided
+            # "e77fa3501f6945dd5730dbcec7632f070314717c6abfa95f95e13db53bfd55d2f46faa45809f796535749c8d98251828a4b4ab4d5ceb3ee1daa5262c6907f906"
+        ),
+        # https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-7.0.100-linux-x64-binaries
+        "linux_amd64": (
+            "https://download.visualstudio.microsoft.com/download/pr/253e5af8-41aa-48c6-86f1-39a51b44afdc/5bb2cb9380c5b1a7f0153e0a2775727b/dotnet-sdk-7.0.100-linux-x64.tar.gz",
+            "5d4a58eeca1a4ab095b55e6486b1278147b0ab121ce883b2bcde3d3626c9a81c",
+            # SHA512 Checsum provided
+            # "0a2e74486357a3ee16abb551ecd828836f90d8744d6e2b6b83556395c872090d9e5166f92a8d050331333d07d112c4b27e87100ba1af86cac8a37f1aee953078"
+        ),
+        # https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-7.0.100-macos-arm64-binaries
+        "darwin_arm64": (
+            "https://download.visualstudio.microsoft.com/download/pr/1a0e0146-3401-4c2b-9369-4cb5e72785b7/8548e8f2c619330ea7282e15d1116155/dotnet-sdk-7.0.100-osx-arm64.tar.gz",
+            "1cc8cdaf1251f766ca6b5d2ae4fd45ecde2545dc72e7dc591c7429e10c4fe52b",
+            # SHA512 Checsum provided
+            # "d1af8592bc8aec43069f689449c159a4b13da419a924dab495b66bbf8c99b526c75c609171205b6d1b30bb0ff6f57797135245048e3629fbb33f462171107581"
+        ),
+        # https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-7.0.100-macos-x64-binaries
+        "darwin_amd64": (
+            "https://download.visualstudio.microsoft.com/download/pr/09e4b839-c809-49b5-b424-86d8ca67b42e/54be2d3868ae49fa00b1cc59065d5e2e/dotnet-sdk-7.0.100-osx-x64.tar.gz",
+            "9e69fce86f9e67a8990153828beb081ddb7e6ede5921d0493efba02f0f938f7c",
+            # SHA512 Checsum provided
+            # "86165993dcf768b3ce793e94739ae681f30b63b3f7fdc82c6da7692f3867f93c19ac5b9152bc8f45708f4194187d60b706e0ee61a37f6e1470536c95a5e53e1c"
+        ),
+    },
 }
 
 def _generate_toolchains():

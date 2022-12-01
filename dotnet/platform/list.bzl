@@ -45,6 +45,7 @@ DOTNET_CORE_FRAMEWORKS = {
     "5.0.201": (".NETCore,Version=v5.0", "NETCOREAPP5_0", "net5.0", "5.0.4", True),
     "5.0.404": (".NETCore,Version=v5.0", "NETCOREAPP5_0", "net5.0", "5.0.13", True),
     "6.0.101": (".NETCore,Version=v6.0", "NETCOREAPP6_0", "net6.0", "6.0.1", True),
+    "7.0.100": (".NETCore,Version=v7.0", "NETCOREAPP7_0", "net7.0", "7.0.1", True),
 }
 
 DOTNET_CORE_NAMES = [
@@ -55,9 +56,10 @@ DOTNET_CORE_NAMES = [
     "netcoreapp3.1",
     "net5.0",
     "net6.0",
+    "net7.0",
 ] + DOTNET_NETSTANDARD.keys()
 
-DEFAULT_DOTNET_CORE_FRAMEWORK = "v6.0.101"
+DEFAULT_DOTNET_CORE_FRAMEWORK = "v7.0.100"
 
 def _generate_constraints(names, bazel_constraints):
     return {
