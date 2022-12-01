@@ -121,8 +121,7 @@ def build_binary(ctx, compile_action):
             ctx,
             target_framework = tfm,
             is_self_contained = False,
-            runtime_deps = result.runtime_deps,
-            transitive_runtime_deps = result.transitive_runtime_deps,
+            assembly_info = result,
             runtime_identifier = ctx.attr.runtime_identifier,
             use_relative_paths = True,
         )

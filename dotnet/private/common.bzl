@@ -447,8 +447,7 @@ def generate_depsjson(
         ctx,
         target_framework,
         is_self_contained,
-        runtime_deps,
-        transitive_runtime_deps,
+        assembly_info,
         runtime_identifier,
         runtime_pack_infos = [],
         use_relative_paths = False):
@@ -458,8 +457,7 @@ def generate_depsjson(
         ctx: The ctx object
         target_framework: The target framework moniker for the target being built.
         is_self_contained: If the target is a self-contained publish.
-        runtime_deps: The runtime dependencies of the target.
-        transitive_runtime_deps: The transitive runtime dependencies of the target.
+        assembly_info: The DotnetAssemblyInfo provider for the target being built.
         runtime_identifier: The runtime identifier of the target.
         runtime_pack_infos: The DotnetAssemblyInfo of the runtime packs that are used for a self contained publish.
         use_relative_paths: If the paths to the dependencies should be relative to the workspace root.
@@ -499,7 +497,7 @@ def generate_depsjson(
     if is_self_contained:
         base["runtimes"] = {rid: RUNTIME_GRAPH[rid] for rid, supported_rids in RUNTIME_GRAPH.items() if runtime_identifier in supported_rids or runtime_identifier == rid}
 
-    for runtime_dep in runtime_deps + transitive_runtime_deps.to_list():
+    for runtime_dep in assembly_info.runtime_deps + assembly_info.transitive_runtime_deps.to_list() + [DotnetDepVariantInfo(label = assembly_info.libs[0].owner, assembly_info = assembly_info, nuget_info = None)]:
         library_name = "{}/{}".format(runtime_dep.assembly_info.name, runtime_dep.assembly_info.version)
         library_fragment = {
             "type": "project",

@@ -202,11 +202,10 @@ def _generate_depsjson(
         output,
         target_framework,
         is_self_contained,
-        runtime_deps,
-        transitive_runtime_deps,
+        assembly_info,
         runtime_identifier,
         runtime_pack_infos):
-    depsjson_struct = generate_depsjson(ctx, target_framework, is_self_contained, runtime_deps, transitive_runtime_deps, runtime_identifier, runtime_pack_infos)
+    depsjson_struct = generate_depsjson(ctx, target_framework, is_self_contained, assembly_info, runtime_identifier, runtime_pack_infos)
 
     ctx.actions.write(
         output = output,
@@ -249,8 +248,7 @@ def _publish_binary_wrapper_impl(ctx):
         depsjson,
         target_framework,
         is_self_contained,
-        assembly_info.runtime_deps,
-        assembly_info.transitive_runtime_deps,
+        assembly_info,
         runtime_identifier,
         publish_binary_info.runtime_packs,
     )
