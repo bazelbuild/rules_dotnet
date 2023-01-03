@@ -75,7 +75,8 @@ def AssemblyAction(
         treat_warnings_as_errors,
         warnings_as_errors,
         warnings_not_as_errors,
-        warning_level):
+        warning_level,
+        project_sdk):
     """Creates an action that runs the CSharp compiler with the specified inputs.
 
     This macro aims to match the [C# compiler](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/listed-alphabetically), with the inputs mapping to compiler options.
@@ -106,6 +107,7 @@ def AssemblyAction(
         warnings_as_errors: List of warnings to treat as errors.
         warnings_not_as_errors: List of warnings to not treat errors.
         warning_level: The warning level to use.
+        project_sdk: The project sdk being targeted
     Returns:
         The compiled csharp artifacts.
     """
@@ -251,6 +253,7 @@ def AssemblyAction(
     return DotnetAssemblyInfo(
         name = target_name,
         version = "1.0.0",  #TODO: Maybe make this configurable?
+        project_sdk = project_sdk,
         libs = [out_dll],
         pdbs = [out_pdb] if out_pdb else [],
         refs = [out_ref],

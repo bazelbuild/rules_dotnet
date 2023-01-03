@@ -5,6 +5,7 @@ DotnetAssemblyInfo = provider(
     fields = {
         "name": "string: The name of the assembly",
         "version": "string: The version of the assembly",
+        "project_sdk": "string: The SDK being targeted",
         "libs": "list[File]: Runtime DLLs",
         "pdbs": "list[File]: The PDBs of the assembly",
         "native": "list[File]: Native runtime files",

@@ -35,6 +35,7 @@ def _import_library(ctx):
     return [DotnetAssemblyInfo(
         name = ctx.attr.library_name,
         version = ctx.attr.version,
+        project_sdk = "default",
         libs = ctx.files.libs,
         # TODO: PDBs from nuget packages should also be forwarded
         pdbs = [],
@@ -117,6 +118,7 @@ def _import_dll(ctx):
     return [DotnetAssemblyInfo(
         name = ctx.file.dll.basename[:-4],
         version = ctx.attr.version,
+        project_sdk = "default",
         libs = [ctx.file.dll],
         pdbs = [],
         refs = [ctx.file.dll],

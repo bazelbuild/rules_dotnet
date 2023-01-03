@@ -187,8 +187,8 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
 
 # TODO: Reuse this when we create the runtimeconfig.json in the csharp_binary/fsharp_binary rules
 # For runtimeconfig.json spec see https://github.com/dotnet/sdk/blob/main/documentation/specs/runtime-configuration-file.md
-def _generate_runtimeconfig(ctx, output, target_framework, is_self_contained, toolchain):
-    runtimeconfig_struct = generate_runtimeconfig(target_framework, is_self_contained, toolchain)
+def _generate_runtimeconfig(ctx, output, target_framework, project_sdk, is_self_contained, toolchain):
+    runtimeconfig_struct = generate_runtimeconfig(target_framework, project_sdk, is_self_contained, toolchain)
 
     ctx.actions.write(
         output = output,
@@ -238,6 +238,7 @@ def _publish_binary_wrapper_impl(ctx):
         ctx,
         runtimeconfig,
         target_framework,
+        assembly_info.project_sdk,
         is_self_contained,
         ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"],
     )

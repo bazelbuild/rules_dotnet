@@ -98,6 +98,7 @@ def build_binary(ctx, compile_action):
         runtimeconfig = ctx.actions.declare_file("bazelout/%s/%s.runtimeconfig.json" % (tfm, ctx.attr.name))
         runtimeconfig_struct = generate_runtimeconfig(
             target_framework = tfm,
+            project_sdk = ctx.attr.project_sdk,
             is_self_contained = False,
             toolchain = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"],
         )

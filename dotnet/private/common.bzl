@@ -526,11 +526,12 @@ def generate_depsjson(
     return base
 
 # For runtimeconfig.json spec see https://github.com/dotnet/sdk/blob/main/documentation/specs/runtime-configuration-file.md
-def generate_runtimeconfig(target_framework, is_self_contained, toolchain):
+def generate_runtimeconfig(target_framework, project_sdk, is_self_contained, toolchain):
     """Generates a runtimeconfig.json file.
 
     Args:
         target_framework: The target framework moniker for the target being built.
+        project_sdk: The project SDK that is being used
         is_self_contained: If the target is a self-contained publish.
         toolchain: The currently configured dotnet toolchain.
     Returns:
@@ -543,15 +544,16 @@ def generate_runtimeconfig(target_framework, is_self_contained, toolchain):
         },
     }
 
+    frameworks = [
+        {"name": "Microsoft.NETCore.App", "version": runtime_version},
+    ]
+
+    if project_sdk == "web":
+        frameworks.append({"name": "Microsoft.AspNetCore.App", "version": runtime_version})
+
     if is_self_contained:
-        base["runtimeOptions"]["includedFrameworks"] = [{
-            "name": "Microsoft.NETCore.App",
-            "version": runtime_version,
-        }]
+        base["runtimeOptions"]["includedFrameworks"] = frameworks
     else:
-        base["runtimeOptions"]["framework"] = {
-            "name": "Microsoft.NETCore.App",
-            "version": runtime_version,
-        }
+        base["runtimeOptions"]["frameworks"] = frameworks
 
     return base

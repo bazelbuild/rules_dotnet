@@ -43,6 +43,12 @@ COMMON_ATTRS = {
         mandatory = True,
         allow_empty = False,
     ),
+    "project_sdk": attr.string(
+        doc = "The project SDK that is being targeted. " +
+              "See https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview",
+        default = "default",
+        values = ["default", "web"],
+    ),
     "runtime_identifier": attr.string(
         doc = "The runtime identifier that is being targeted. " +
               "See https://docs.microsoft.com/en-us/dotnet/core/rid-catalog",
