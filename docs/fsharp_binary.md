@@ -12,9 +12,9 @@ Rules for compiling F# binaries.
 fsharp_binary(<a href="#fsharp_binary-name">name</a>, <a href="#fsharp_binary-apphost_shimmer">apphost_shimmer</a>, <a href="#fsharp_binary-compile_data">compile_data</a>, <a href="#fsharp_binary-data">data</a>, <a href="#fsharp_binary-defines">defines</a>, <a href="#fsharp_binary-deps">deps</a>, <a href="#fsharp_binary-internals_visible_to">internals_visible_to</a>,
               <a href="#fsharp_binary-keyfile">keyfile</a>, <a href="#fsharp_binary-langversion">langversion</a>, <a href="#fsharp_binary-out">out</a>, <a href="#fsharp_binary-override_strict_deps">override_strict_deps</a>, <a href="#fsharp_binary-override_treat_warnings_as_errors">override_treat_warnings_as_errors</a>,
               <a href="#fsharp_binary-override_warning_level">override_warning_level</a>, <a href="#fsharp_binary-override_warnings_as_errors">override_warnings_as_errors</a>, <a href="#fsharp_binary-override_warnings_not_as_errors">override_warnings_not_as_errors</a>,
-              <a href="#fsharp_binary-private_deps">private_deps</a>, <a href="#fsharp_binary-resources">resources</a>, <a href="#fsharp_binary-runtime_identifier">runtime_identifier</a>, <a href="#fsharp_binary-srcs">srcs</a>, <a href="#fsharp_binary-strict_deps">strict_deps</a>, <a href="#fsharp_binary-target_frameworks">target_frameworks</a>,
-              <a href="#fsharp_binary-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#fsharp_binary-warning_level">warning_level</a>, <a href="#fsharp_binary-warnings_as_errors">warnings_as_errors</a>, <a href="#fsharp_binary-warnings_not_as_errors">warnings_not_as_errors</a>,
-              <a href="#fsharp_binary-winexe">winexe</a>)
+              <a href="#fsharp_binary-private_deps">private_deps</a>, <a href="#fsharp_binary-project_sdk">project_sdk</a>, <a href="#fsharp_binary-resources">resources</a>, <a href="#fsharp_binary-runtime_identifier">runtime_identifier</a>, <a href="#fsharp_binary-srcs">srcs</a>, <a href="#fsharp_binary-strict_deps">strict_deps</a>,
+              <a href="#fsharp_binary-target_frameworks">target_frameworks</a>, <a href="#fsharp_binary-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#fsharp_binary-warning_level">warning_level</a>, <a href="#fsharp_binary-warnings_as_errors">warnings_as_errors</a>,
+              <a href="#fsharp_binary-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#fsharp_binary-winexe">winexe</a>)
 </pre>
 
 Compile a F# exe
@@ -40,6 +40,7 @@ Compile a F# exe
 | <a id="fsharp_binary-override_warnings_as_errors"></a>override_warnings_as_errors |  Whether or not to override the warnings_as_errors attribute.   | Boolean | optional | False |
 | <a id="fsharp_binary-override_warnings_not_as_errors"></a>override_warnings_not_as_errors |  Whether or not to override the warnings_not_as_errors attribute.   | Boolean | optional | False |
 | <a id="fsharp_binary-private_deps"></a>private_deps |  Private dependencies <br><br>        This attribute should be used for dependencies are only private to the target.          The dependencies will not be propagated transitively to parent targets and          do not become part of the targets runfiles.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
+| <a id="fsharp_binary-project_sdk"></a>project_sdk |  The project SDK that is being targeted. See https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview   | String | optional | "default" |
 | <a id="fsharp_binary-resources"></a>resources |  A list of files to embed in the DLL as resources.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
 | <a id="fsharp_binary-runtime_identifier"></a>runtime_identifier |  The runtime identifier that is being targeted. See https://docs.microsoft.com/en-us/dotnet/core/rid-catalog   | String | required |  |
 | <a id="fsharp_binary-srcs"></a>srcs |  The source files used in the compilation.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
