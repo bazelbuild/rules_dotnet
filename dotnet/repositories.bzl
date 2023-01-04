@@ -152,7 +152,7 @@ def dotnet_register_toolchains(name, dotnet_version, **kwargs):
     Users can avoid this macro and do these steps themselves, if they want more control.
     Args:
         name: base name for all created repos, like "dotnet"
-        dotnet_version: The .Net SDK version to use e.g. 6.0.300
+        dotnet_version: The .Net SDK version to use e.g. 7.0.101
         **kwargs: passed to each dotnet_repositories call
     """
     for platform in PLATFORMS.keys():

@@ -64,6 +64,7 @@ FRAMEWORK_COMPATIBILITY = {
     "netcoreapp3.1": ["netcoreapp3.0"],
     "net5.0": ["netcoreapp3.1"],
     "net6.0": ["net5.0"],
+    "net7.0": ["net6.0"],
 }
 
 _subsystem_version = {
@@ -102,6 +103,7 @@ _subsystem_version = {
     "netcoreapp3.1": None,
     "net5.0": None,
     "net6.0": None,
+    "net7.0": None,
 }
 
 _default_lang_version_csharp = {
@@ -140,6 +142,7 @@ _default_lang_version_csharp = {
     "netcoreapp3.1": "8.0",
     "net5.0": "9.0",
     "net6.0": "10.0",
+    "net7.0": "11.0",
 }
 
 _net = FRAMEWORK_COMPATIBILITY.keys().index("net11")
@@ -183,7 +186,7 @@ def format_ref_arg(args, refs, targeting_pack_overrides):
         if package_name and package_name in targeting_pack_overrides:
             return None
 
-        return "/r:" + assembly.path
+        return "-r:" + assembly.path
 
     args.add_all(refs, allow_closure = True, map_each = _format_ref_with_overrides)
 

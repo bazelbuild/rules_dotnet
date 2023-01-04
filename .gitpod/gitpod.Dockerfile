@@ -18,7 +18,7 @@ RUN bash \
         echo 'fi'; } >> /home/gitpod/.bashrc.d/110-dotnet
 RUN chmod +x /home/gitpod/.bashrc.d/110-dotnet
 
-ENV DOTNET_VERSION=6.0
+ENV DOTNET_VERSION=7.0
 ENV DOTNET_ROOT=/home/gitpod/dotnet
 ENV PATH=$PATH:$DOTNET_ROOT
 ENV PATH=$PATH:/home/gitpod/.dotnet/tools

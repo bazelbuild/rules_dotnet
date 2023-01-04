@@ -21,12 +21,12 @@ load(
 
 def _format_targetprofile(tfm):
     if is_standard_framework(tfm):
-        return "/targetprofile:netstandard"
+        return "--targetprofile:netstandard"
 
     if is_core_framework(tfm):
-        return "/targetprofile:netcore"
+        return "--targetprofile:netcore"
 
-    return "/targetprofile:mscorlib"
+    return "--targetprofile:mscorlib"
 
 def _write_internals_visible_to_fsharp(actions, name, others):
     """Write a .fs file containing InternalsVisibleTo attributes.
@@ -264,22 +264,22 @@ def _compile(
     # Our goal is to match msbuild as much as reasonable
     # https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-options
     args = actions.args()
-    args.add("/noframework")
-    args.add("/utf8output")
-    args.add("/deterministic+")
-    args.add("/nowin32manifest")
-    args.add("/nocopyfsharpcore")
-    args.add("/simpleresolution")
+    args.add("--noframework")
+    args.add("--utf8output")
+    args.add("--deterministic+")
+    args.add("--nowin32manifest")
+    args.add("--nocopyfsharpcore")
+    args.add("--simpleresolution")
     args.add(_format_targetprofile(target_framework))
-    args.add("/nologo")
+    args.add("--nologo")
 
     if use_highentropyva(target_framework):
-        args.add("/highentropyva+")
+        args.add("--highentropyva+")
     else:
-        args.add("/highentropyva-")
+        args.add("--highentropyva-")
 
     if subsystem_version != None:
-        args.add("/subsystemversion:" + subsystem_version)
+        args.add("--subsystemversion:" + subsystem_version)
 
     generate_warning_args(
         args,
@@ -289,37 +289,37 @@ def _compile(
         warning_level,
     )
 
-    args.add("/target:" + target)
+    args.add("--target:" + target)
     if langversion:
-        args.add("/langversion:" + langversion)
+        args.add("--langversion:" + langversion)
 
     if debug:
-        args.add("/debug+")
-        args.add("/optimize-")
-        args.add("/define:TRACE;DEBUG")
-        args.add("/tailcalls-")
+        args.add("--debug+")
+        args.add("--optimize-")
+        args.add("--define:TRACE;DEBUG")
+        args.add("--tailcalls-")
     else:
-        args.add("/debug-")
-        args.add("/optimize+")
-        args.add("/define:TRACE;RELEASE")
+        args.add("--debug-")
+        args.add("--optimize+")
+        args.add("--define:TRACE;RELEASE")
 
-    args.add("/debug:portable")
+    args.add("--debug:portable")
 
     # outputs
     if out_dll != None:
-        args.add("/out:" + out_dll.path)
+        args.add("--out:" + out_dll.path)
 
         # TODO: Reintroduce once the F# compiler supports reference assemblies
-        # args.add("/refout:" + out_ref.path)
-        args.add("/pdb:" + out_pdb.path)
+        # args.add("--refout:" + out_ref.path)
+        args.add("--pdb:" + out_pdb.path)
         outputs = [out_dll, out_pdb]
         # outputs = [out_dll, out_ref, out_pdb]
 
     else:
         fail("F# compiler does not support reference assemblies")
         # TODO: Reintroduce once the F# compiler supports reference assemblies
-        # args.add("/refonly")
-        # args.add("/out:" + out_ref.path)
+        # args.add("--refonly")
+        # args.add("--out:" + out_ref.path)
         # outputs = [out_ref]
 
     # assembly references
@@ -329,14 +329,14 @@ def _compile(
     args.add_all(srcs)
 
     # resources
-    args.add_all(resources, format_each = "/resource:%s")
+    args.add_all(resources, format_each = "--resource:%s")
 
     # defines
-    args.add_all(defines, format_each = "/d:%s")
+    args.add_all(defines, format_each = "-d:%s")
 
     # keyfile
     if keyfile != None:
-        args.add("/keyfile:" + keyfile.path)
+        args.add("--keyfile:" + keyfile.path)
 
     # spill to a "response file" when the argument list gets too big (Bazel
     # makes that call based on limitations of the OS).
@@ -347,7 +347,7 @@ def _compile(
     direct_inputs = srcs + resources + [toolchain.fsharp_compiler.files_to_run.executable]
     direct_inputs += [keyfile] if keyfile else []
 
-    # dotnet.exe fsc.dll /noconfig <other fsc args>
+    # dotnet.exe fsc.dll --noconfig <other fsc args>
     actions.run(
         mnemonic = "FSharpCompile",
         progress_message = "Compiling " + target_name + (" (internals ref-only dll)" if out_dll == None else ""),

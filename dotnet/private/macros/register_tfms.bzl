@@ -19,7 +19,7 @@ def register_tfms():
     string_flag(
         name = "target_framework",
         values = FRAMEWORK_COMPATIBILITY.keys(),
-        build_setting_default = "net6.0",
+        build_setting_default = "net7.0",
         visibility = ["//visibility:public"],
     )
 
