@@ -9,7 +9,7 @@ fsharp_nunit_test(
     private_deps = [
         "@example_deps//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net7.0"],
+    target_frameworks = ["net6.0"],
     deps = [
         "//fsharp_type_provider/type_provider_lib",
         "@example_deps//fsharp.core",

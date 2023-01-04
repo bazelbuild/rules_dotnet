@@ -2,21 +2,21 @@
 
 GROUP example_deps
 STORAGE: NONE
-RESTRICTION: == net7.0
+RESTRICTION: == net6.0
 NUGET
   remote: https://api.nuget.org/v3/index.json
     Expecto (9.0.4)
       FSharp.Core (>= 4.6)
       Mono.Cecil (>= 0.11.3)
-    FSharp.Core (7.0)
+    FSharp.Core (6.0.3)
     FSharp.Data (5.0.2)
       FSharp.Core (>= 5.0.1)
-    Microsoft.AspNetCore.App.Ref (7.0.1)
-    Microsoft.AspNetCore.App.Runtime.linux-x64 (7.0.1)
-    Microsoft.AspNetCore.App.Runtime.osx-x64 (7.0.1)
-    Microsoft.AspNetCore.App.Runtime.win-x64 (7.0.1)
-    Microsoft.NETCore.App.Ref (7.0.1)
-    Microsoft.NETCore.App.Runtime.linux-x64 (7.0.1)
-    Microsoft.NETCore.App.Runtime.osx-x64 (7.0.1)
-    Microsoft.NETCore.App.Runtime.win-x64 (7.0.1)
+    Microsoft.AspNetCore.App.Ref (6.0.8)
+    Microsoft.AspNetCore.App.Runtime.linux-x64 (6.0.8)
+    Microsoft.AspNetCore.App.Runtime.osx-x64 (6.0.8)
+    Microsoft.AspNetCore.App.Runtime.win-x64 (6.0.8)
+    Microsoft.NETCore.App.Ref (6.0.8)
+    Microsoft.NETCore.App.Runtime.linux-x64 (6.0.8)
+    Microsoft.NETCore.App.Runtime.osx-x64 (6.0.8)
+    Microsoft.NETCore.App.Runtime.win-x64 (6.0.8)
     Mono.Cecil (0.11.4)

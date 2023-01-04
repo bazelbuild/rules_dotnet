@@ -11,7 +11,7 @@ csharp_binary(
     ],
     include_host_model_dll = True,
     private_deps = ["@rules_dotnet_nuget_packages//microsoft.netcore.app.ref"],
-    target_frameworks = ["net7.0"],
+    target_frameworks = ["net6.0"],
     use_apphost_shim = False,
     visibility = ["//visibility:public"],
     deps = [

@@ -9,7 +9,7 @@ publish_binary(
     name = "framework_dependent",
     binary = "//dotnet/private/tests/publish/app_to_publish",
     self_contained = False,
-    target_framework = "net7.0",
+    target_framework = "net6.0",
 )
 
 # This target is only here to provide the dotnet toolchain
@@ -22,7 +22,7 @@ csharp_binary(
     private_deps = [
         "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net7.0"],
+    target_frameworks = ["net6.0"],
     deps = [
     ],
 )

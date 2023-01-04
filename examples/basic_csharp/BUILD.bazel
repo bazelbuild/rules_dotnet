@@ -12,7 +12,7 @@ csharp_binary(
     private_deps = [
         "@example_deps//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net7.0"],
+    target_frameworks = ["net6.0"],
     deps = [
         ":lib",
     ],
@@ -28,7 +28,7 @@ csharp_nunit_test(
     private_deps = [
         "@example_deps//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net7.0"],
+    target_frameworks = ["net6.0"],
     deps = [
         ":lib",
     ],
@@ -41,6 +41,6 @@ csharp_library(
     private_deps = [
         "@example_deps//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net7.0"],
+    target_frameworks = ["net6.0"],
     deps = [],
 )

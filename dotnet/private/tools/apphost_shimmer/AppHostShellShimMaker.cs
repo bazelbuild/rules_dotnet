@@ -31,6 +31,7 @@ namespace ApphostShimmer
               appHostDestinationFilePath: appHostDestinationFilePath,
               appBinaryFilePath: appBinaryFilePath,
               windowsGraphicalUserInterface: false,
+              assemblyToCopyResorcesFrom: null,
               enableMacOSCodeSign: OperatingSystem.IsMacOS());
         }
     }
