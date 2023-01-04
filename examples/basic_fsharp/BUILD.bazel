@@ -11,7 +11,7 @@ fsharp_binary(
     private_deps = [
         "@example_deps//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net6.0"],
+    target_frameworks = ["net7.0"],
     deps = [
         ":lib",
         "@example_deps//fsharp.core",
@@ -24,7 +24,7 @@ fsharp_nunit_test(
     private_deps = [
         "@example_deps//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net6.0"],
+    target_frameworks = ["net7.0"],
     deps = [
         ":lib",
         "@example_deps//fsharp.core",
@@ -38,7 +38,7 @@ fsharp_library(
     private_deps = [
         "@example_deps//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net6.0"],
+    target_frameworks = ["net7.0"],
     deps = [
         "@example_deps//fsharp.core",
     ],

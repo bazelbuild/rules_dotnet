@@ -17,7 +17,7 @@ csharp_binary(
         "@example_deps//microsoft.aspnetcore.app.ref",
     ],
     project_sdk = "web",
-    target_frameworks = ["net6.0"],
+    target_frameworks = ["net7.0"],
     deps = [
     ],
 )
@@ -40,5 +40,5 @@ publish_binary(
         ],
     }),
     self_contained = True,
-    target_framework = "net6.0",
+    target_framework = "net7.0",
 )

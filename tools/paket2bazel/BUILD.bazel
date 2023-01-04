@@ -12,7 +12,7 @@ fsharp_binary(
     private_deps = [
         "@paket2bazel_dependencies//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net6.0"],
+    target_frameworks = ["net7.0"],
     deps = [
         "@paket2bazel_dependencies//argu",
         "@paket2bazel_dependencies//chessie",

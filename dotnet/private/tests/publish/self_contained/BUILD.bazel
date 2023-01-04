@@ -13,7 +13,7 @@ publish_binary(
         "@rules_dotnet//dotnet:rid_win-x64": ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.win-x64"],
     }),
     self_contained = True,
-    target_framework = "net6.0",
+    target_framework = "net7.0",
 )
 
 # We tar the output to because that way we can strip the

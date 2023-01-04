@@ -38,7 +38,7 @@ def csharp_warnings():
         name = "csharp",
         srcs = ["warnings.cs"],
         private_deps = ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
-        target_frameworks = ["net6.0"],
+        target_frameworks = ["net7.0"],
         tags = ["manual"],
     )
 
@@ -74,7 +74,7 @@ def csharp_warnings():
         name = "csharp_all_warnings",
         srcs = ["warnings.cs"],
         private_deps = ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
-        target_frameworks = ["net6.0"],
+        target_frameworks = ["net7.0"],
         treat_warnings_as_errors = True,
         tags = ["manual"],
     )
@@ -90,7 +90,7 @@ def csharp_warnings():
         name = "csharp_warnings_as_errors",
         srcs = ["warnings.cs"],
         private_deps = ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
-        target_frameworks = ["net6.0"],
+        target_frameworks = ["net7.0"],
         warnings_as_errors = ["CS0025", "CS0026"],
         tags = ["manual"],
     )
@@ -106,7 +106,7 @@ def csharp_warnings():
         name = "csharp_warnings_not_as_errors",
         srcs = ["warnings.cs"],
         private_deps = ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
-        target_frameworks = ["net6.0"],
+        target_frameworks = ["net7.0"],
         treat_warnings_as_errors = True,
         warnings_not_as_errors = ["CS0025", "CS0026"],
         tags = ["manual"],
@@ -123,7 +123,7 @@ def csharp_warnings():
         name = "csharp_warning_level",
         srcs = ["warnings.cs"],
         private_deps = ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
-        target_frameworks = ["net6.0"],
+        target_frameworks = ["net7.0"],
         warning_level = 5,
         tags = ["manual"],
     )

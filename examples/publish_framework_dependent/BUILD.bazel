@@ -10,7 +10,7 @@ csharp_binary(
     private_deps = [
         "@example_deps//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net6.0"],
+    target_frameworks = ["net7.0"],
     deps = [
     ],
 )
@@ -22,5 +22,5 @@ publish_binary(
     name = "publish_dependent",
     binary = ":hello",
     self_contained = False,
-    target_framework = "net6.0",
+    target_framework = "net7.0",
 )
