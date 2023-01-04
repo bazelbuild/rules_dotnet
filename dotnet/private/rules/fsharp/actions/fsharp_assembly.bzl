@@ -150,11 +150,10 @@ def AssemblyAction(
     out_ext = "dll"
 
     out_dll = actions.declare_file("%s/%s.%s" % (out_dir, assembly_name, out_ext))
-
-    # TODO: Reintroduce once the F# compiler supports reference assemblies
-    # out_iref = None
-    # out_ref = actions.declare_file("%s/ref/%s.%s" % (out_dir, assembly_name, out_ext))
+    out_iref = None
+    out_ref = actions.declare_file("%s/ref/%s.%s" % (out_dir, assembly_name, out_ext))
     out_pdb = actions.declare_file("%s/%s.pdb" % (out_dir, assembly_name))
+
     if len(internals_visible_to) == 0:
         _compile(
             actions,
@@ -178,15 +177,20 @@ def AssemblyAction(
             warnings_not_as_errors,
             warning_level,
             out_dll = out_dll,
+            out_ref = out_ref,
             out_pdb = out_pdb,
         )
     else:
-        internals_visible_to_cs = _write_internals_visible_to_fsharp(
+        # If the user is using internals_visible_to generate an additional
+        # reference-only DLL that contains the internals. We want the
+        # InternalsVisibleTo in the main DLL too to be less suprising to users.
+        out_iref = actions.declare_file("%s/iref/%s.%s" % (out_dir, assembly_name, out_ext))
+
+        internals_visible_to_fs = _write_internals_visible_to_fsharp(
             actions,
             name = target_name,
             others = internals_visible_to,
         )
-
         _compile(
             actions,
             debug,
@@ -197,7 +201,7 @@ def AssemblyAction(
             private_refs,
             overrides,
             resources,
-            srcs + [internals_visible_to_cs],
+            srcs + [internals_visible_to_fs],
             depset(compile_data, transitive = [transitive_compile_data]),
             subsystem_version,
             target,
@@ -208,8 +212,36 @@ def AssemblyAction(
             warnings_as_errors,
             warnings_not_as_errors,
             warning_level,
+            out_ref = out_iref,
             out_dll = out_dll,
             out_pdb = out_pdb,
+        )
+
+        # Generate a ref-only DLL without internals
+        _compile(
+            actions,
+            debug,
+            defines,
+            keyfile,
+            langversion,
+            irefs,
+            private_refs,
+            overrides,
+            resources,
+            srcs,
+            depset(compile_data, transitive = [transitive_compile_data]),
+            subsystem_version,
+            target,
+            target_name,
+            target_framework,
+            toolchain,
+            treat_warnings_as_errors,
+            warnings_as_errors,
+            warnings_not_as_errors,
+            warning_level,
+            out_dll = None,
+            out_ref = out_ref,
+            out_pdb = None,
         )
 
     return DotnetAssemblyInfo(
@@ -219,7 +251,7 @@ def AssemblyAction(
         libs = [out_dll],
         pdbs = [out_pdb] if out_pdb else [],
         refs = [out_dll],
-        irefs = [out_dll],
+        irefs = [out_iref] if out_iref else [out_ref],
         analyzers = [],
         internals_visible_to = internals_visible_to or [],
         data = data,
@@ -258,8 +290,7 @@ def _compile(
         warnings_not_as_errors,
         warning_level,
         out_dll = None,
-        # TODO: Reintroduce once the F# compiler supports reference assemblies
-        # out_ref = None,
+        out_ref = None,
         out_pdb = None):
     # Our goal is to match msbuild as much as reasonable
     # https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-options
@@ -308,19 +339,15 @@ def _compile(
     # outputs
     if out_dll != None:
         args.add("--out:" + out_dll.path)
-
-        # TODO: Reintroduce once the F# compiler supports reference assemblies
-        # args.add("--refout:" + out_ref.path)
+        args.add("--refout:" + out_ref.path)
         args.add("--pdb:" + out_pdb.path)
         outputs = [out_dll, out_pdb]
-        # outputs = [out_dll, out_ref, out_pdb]
+        outputs = [out_dll, out_ref, out_pdb]
 
     else:
-        fail("F# compiler does not support reference assemblies")
-        # TODO: Reintroduce once the F# compiler supports reference assemblies
-        # args.add("--refonly")
-        # args.add("--out:" + out_ref.path)
-        # outputs = [out_ref]
+        args.add("--refonly")
+        args.add("--out:" + out_ref.path)
+        outputs = [out_ref]
 
     # assembly references
     format_ref_arg(args, depset(transitive = [private_refs, refs]), overrides)

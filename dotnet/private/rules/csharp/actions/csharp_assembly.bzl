@@ -247,8 +247,6 @@ def AssemblyAction(
             out_ref = out_ref,
             out_pdb = None,
         )
-    direct_data = []
-    direct_data.extend(data)
 
     return DotnetAssemblyInfo(
         name = target_name,
