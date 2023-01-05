@@ -1,7 +1,7 @@
 <!-- Generated with Stardoc: http://skydoc.bazel.build -->
 
 
-Rules for compiling F# binaries.
+Rule for compiling F# binaries.
 
 
 <a id="fsharp_binary"></a>

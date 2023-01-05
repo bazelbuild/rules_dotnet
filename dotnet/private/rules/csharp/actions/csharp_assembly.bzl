@@ -374,22 +374,6 @@ def _compile(
     if keyfile != None:
         args.add("/keyfile:" + keyfile.path)
 
-    # TODO:
-    # - appconfig(?)
-    # - define
-    #   * Need to audit D2L defines
-    #   * msbuild adds some by default depending on your TF; we should too
-    # - doc (d2l can probably skip this?)
-    # - main (probably not a high priority for d2l)
-    # - pathmap (needed for deterministic pdbs across hosts): this will
-    #   probably need to be done in a wrapper because of the difference between
-    #   the analysis phase (when this code runs) and execution phase.
-    # - various code signing args (not needed for d2l)
-    # - COM-related args like /link
-    # - allow warnings to be configured
-    # - unsafe (not needed for d2l)
-    # - win32 args like /win32icon
-
     # spill to a "response file" when the argument list gets too big (Bazel
     # makes that call based on limitations of the OS).
     args.set_param_file_format("multiline")

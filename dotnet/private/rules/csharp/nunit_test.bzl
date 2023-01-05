@@ -1,5 +1,7 @@
 """
-Rules for compiling NUnit tests.
+Rules for compiling and running NUnit tests.
+
+This rule is a macro that has the same attributes as `csharp_test`
 """
 
 load("//dotnet/private/rules/csharp:test.bzl", "csharp_test")

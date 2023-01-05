@@ -1,5 +1,5 @@
 """
-Rules for compiling C# binaries.
+Rule for compiling C# binaries.
 """
 
 load("//dotnet/private/rules/csharp/actions:csharp_assembly.bzl", "AssemblyAction")

@@ -185,8 +185,6 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
 
     return (app_host_copy, outputs)
 
-# TODO: Reuse this when we create the runtimeconfig.json in the csharp_binary/fsharp_binary rules
-# For runtimeconfig.json spec see https://github.com/dotnet/sdk/blob/main/documentation/specs/runtime-configuration-file.md
 def _generate_runtimeconfig(ctx, output, target_framework, project_sdk, is_self_contained, toolchain):
     runtimeconfig_struct = generate_runtimeconfig(target_framework, project_sdk, is_self_contained, toolchain)
 
@@ -195,8 +193,6 @@ def _generate_runtimeconfig(ctx, output, target_framework, project_sdk, is_self_
         content = json.encode_indent(runtimeconfig_struct),
     )
 
-# TODO: Reuse this when we create the deps.json in the csharp_binary/fsharp_binary rules
-# For deps.json spec see: https://github.com/dotnet/sdk/blob/main/documentation/specs/runtime-configuration-file.md
 def _generate_depsjson(
         ctx,
         output,

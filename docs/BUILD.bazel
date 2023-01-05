@@ -15,12 +15,12 @@ stardoc_with_diff_test(
 
 stardoc_with_diff_test(
     name = "csharp_nunit_test",
-    bzl_library_target = "//dotnet/private/rules/csharp:binary",
+    bzl_library_target = "//dotnet/private/rules/csharp:nunit_test",
 )
 
 stardoc_with_diff_test(
     name = "csharp_test",
-    bzl_library_target = "//dotnet/private/rules/csharp:binary",
+    bzl_library_target = "//dotnet/private/rules/csharp:test",
 )
 
 ####################
@@ -38,12 +38,12 @@ stardoc_with_diff_test(
 
 stardoc_with_diff_test(
     name = "fsharp_nunit_test",
-    bzl_library_target = "//dotnet/private/rules/fsharp:binary",
+    bzl_library_target = "//dotnet/private/rules/fsharp:nunit_test",
 )
 
 stardoc_with_diff_test(
     name = "fsharp_test",
-    bzl_library_target = "//dotnet/private/rules/fsharp:binary",
+    bzl_library_target = "//dotnet/private/rules/fsharp:test",
 )
 
 update_docs(name = "update")

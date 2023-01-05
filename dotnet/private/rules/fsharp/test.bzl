@@ -1,5 +1,8 @@
 """
-Rules for compiling NUnit tests.
+Rule for compiling and running test binaries.
+
+This rule can be used to compile and run any F# binary and run it as
+a Bazel test.
 """
 
 load("//dotnet/private/rules/fsharp/actions:fsharp_assembly.bzl", "AssemblyAction")

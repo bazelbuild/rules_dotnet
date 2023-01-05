@@ -1,7 +1,7 @@
 <!-- Generated with Stardoc: http://skydoc.bazel.build -->
 
 
-Rules for compiling C# binaries.
+Rule for compiling C# binaries.
 
 
 <a id="csharp_binary"></a>

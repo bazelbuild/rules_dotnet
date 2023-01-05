@@ -86,7 +86,6 @@ import_library = rule(
             allow_files = True,  # [".dll"] currently does not work with empty file groups
             allow_empty = True,
         ),
-        # todo maybe add pdb's as data.
         "refs": attr.label_list(
             doc = "Compile time DLLs",
             allow_files = True,  # [".dll"] currently does not work with empty file groups

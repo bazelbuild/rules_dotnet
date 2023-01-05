@@ -1,7 +1,7 @@
 <!-- Generated with Stardoc: http://skydoc.bazel.build -->
 
 
-Rules for compiling F# libraries.
+Rule for compiling F# libraries.
 
 
 <a id="fsharp_library"></a>

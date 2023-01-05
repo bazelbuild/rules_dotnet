@@ -1,7 +1,7 @@
 <!-- Generated with Stardoc: http://skydoc.bazel.build -->
 
 
-Rules for compiling C# libraries.
+Rule for compiling C# libraries.
 
 
 <a id="csharp_library"></a>

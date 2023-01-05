@@ -1,5 +1,5 @@
 """
-Rules for compiling F# binaries.
+Rule for compiling F# binaries.
 """
 
 load("//dotnet/private/rules/fsharp/actions:fsharp_assembly.bzl", "AssemblyAction")
