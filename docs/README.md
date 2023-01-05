@@ -1,6 +1,35 @@
 # Getting started
 
-## Installation
+## Design
+
+These rules try their best to follow the conventions that are used in the
+project files that MSBuild uses. MSBuild is not used behind the scenes
+but the compilers and tools that are part of the .Net toolchain are
+used directly instead.
+
+The biggest change compared to MSBuild out of the box is that by default
+these rules do not propagate transitive dependencies to compilation actions.
+This is similar to setting `<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>`
+in MSBuild.
+
+Transitive dependency propagation can be configured on per-target basis
+and when the toolchain is configured.
+
+## Unsupported workloads
+
+The following workloads are not supported by these rules at this given time:
+
+- VisualBasic
+- Razor
+- Blazor/WebAssembly
+- Workloads that require Mono
+
+Contributions to add the missing workloads are welcomed and the maintainers
+will do their best to guide if needed.
+
+## Usage
+
+### Installation
 
 The minimal supported Bazel version is: 5.3.0
 
@@ -21,35 +50,6 @@ More information on these flags can be found here:
 [--enable_runfiles](https://docs.bazel.build/versions/main/command-line-reference.html#flag--enable_runfiles)
 
 TODO: Create the release process
-
-## Unsupported workloads
-
-The following workloads are not supported by these rules at this given time:
-
-- VisualBasic
-- Razor
-- Blazor/WebAssembly
-- Workloads that require Mono
-
-Contributions to add the missing workloads are welcomed and the maintainers
-will do their best to guide if needed.
-
-## Design
-
-These rules try their best to follow the conventions that are used in the
-project files that MSBuild uses. MSBuild is not used behind the scenes
-but the compilers and tools that are part of the .Net toolchain are
-used directly instead.
-
-The biggest change compared to MSBuild out of the box is that by default
-these rules do not propagate transitive dependencies to compilation actions.
-This is similar to setting `<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>`
-in MSBuild.
-
-Transitive dependency propagation can be configured on per-target basis
-and when the toolchain is configured.
-
-## Usage
 
 ### C#
 
