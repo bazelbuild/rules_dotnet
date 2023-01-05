@@ -6,10 +6,15 @@
 # but we don't want to run the other hooks on commit messages
 default_stages: [commit]
 
+# Use a slightly older version of node by default
+# as the default uses a very new version of GLIBC
+default_language_version:
+  node: 16.18.0
+
 repos:
   # Check formatting and lint for starlark code
   - repo: https://github.com/keith/pre-commit-buildifier
-    rev: 5.0.1
+    rev: 4.0.1.1
     hooks:
       - id: buildifier
       - id: buildifier-lint
@@ -24,7 +29,3 @@ repos:
     rev: "v2.4.0"
     hooks:
       - id: prettier
-  - repo: https://github.com/koalaman/shellcheck-precommit
-    rev: v0.8.0
-    hooks:
-      - id: shellcheck
