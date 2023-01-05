@@ -308,6 +308,7 @@ load("@rules_dotnet//dotnet/private/rules/nuget:nuget_archive.bzl", "tfm_filegro
         _create_framework_select("libs", groups.get("lib")) or "filegroup(name = \"libs\", srcs = [])",
         _create_framework_select("refs", groups.get("ref")) or _create_framework_select("refs", groups.get("lib")) or "filegroup(name = \"refs\", srcs = [])",
         "filegroup(name = \"analyzers\", srcs = [%s])" % ",".join(["\n  \"%s\"" % a for a in groups.get("analyzers")["dotnet"]]),
+        "filegroup(name = \"files\", srcs = glob([\"**\"]))",
         "filegroup(name = \"data\", srcs = [])",
         _create_rid_native_select("native", groups.get("runtimes")) or "filegroup(name = \"native\", srcs = [])",
         "filegroup(name = \"content_files\", srcs = [%s])" % ",".join(["\n  \"%s\"" % a for a in groups.get("contentFiles")["any"]]),

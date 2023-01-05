@@ -43,6 +43,7 @@ def _import_library(ctx):
         irefs = ctx.files.refs,
         analyzers = ctx.files.analyzers,
         native = ctx.files.native,
+        files = ctx.files.files,
         data = ctx.files.data,
         compile_data = [],
         exports = [],
@@ -95,6 +96,10 @@ import_library = rule(
             doc = "Other DLLs that this DLL depends on.",
             providers = [DotnetAssemblyInfo],
         ),
+        "files": attr.label_list(
+            doc = "All files in the package",
+            allow_files = True,
+        ),
         "data": attr.label_list(
             doc = "Other files that this DLL depends on at runtime",
             allow_files = True,
@@ -124,6 +129,7 @@ def _import_dll(ctx):
         irefs = [],
         analyzers = [],
         native = [],
+        files = [],
         data = [],
         compile_data = [],
         exports = [],

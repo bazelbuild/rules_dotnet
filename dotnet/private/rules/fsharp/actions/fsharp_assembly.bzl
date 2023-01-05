@@ -254,6 +254,7 @@ def AssemblyAction(
         irefs = [out_iref] if out_iref else [out_ref],
         analyzers = [],
         internals_visible_to = internals_visible_to or [],
+        files = srcs,
         data = data,
         compile_data = compile_data,
         native = [],

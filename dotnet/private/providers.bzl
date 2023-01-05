@@ -13,6 +13,7 @@ DotnetAssemblyInfo = provider(
         "irefs": "list[File]: Reference-only assemblies containing public and internal symbols. See docs/ReferenceAssemblies.md for more info.",
         "analyzers": "list[File]: Analyzer dlls",
         "internals_visible_to": "list[string]: A list of assemblies that can use the assemblies listed in iref for compilation. See docs/ReferenceAssemblies.md for more info.",
+        "files": "list[File]: All files in the assembly",
         "data": "list[File]: Runtime data files",
         "compile_data": "list[File]: Compile data files",
         "exports": "list[File]",
@@ -60,5 +61,26 @@ DotnetPublishBinaryInfo = provider(
         "runtime_packs": "list[AssemblyInfo]: Optional information about the used runtime packs. Used by self-contained publishing",
         "target_framework": "string: The target framework of the published binary",
         "self_contained": "bool: True if the binary is self-contained",
+    },
+)
+
+DotnetCompileInfo = provider(
+    doc = "Information about how a .Net target is to be compiled",
+    fields = {
+        "label": "Label: The label of the target",
+        "sources": "list[File]: sources to be compiled",
+        "deps": "list[DotnetCompileDepVariantInfo]: The direct dependencies of the target",
+        "transitive_deps": "depset[DotnetCompileDepVariantInfo]: The transitive dependencies of the target",
+    },
+)
+
+DotnetCompileDepVariantInfo = provider(
+    doc = "A wrapper provider for a compilation dependency. The dependency can be a project " +
+          "dependency, in which case the `dotnet_compile_info` will be populated" +
+          "or a NuGet dependency, in which case `dotnet_assembly_info` will be populated.",
+    fields = {
+        "label": "Label: The label of the dependency",
+        "dotnet_compile_info": "DotnetCompileInfo: The DotnetCompileInfo of a dependency",
+        "dotnet_assembly_info": "DotnetAssemblyInfo: The NuGet info of a dependency",
     },
 )
