@@ -1,0 +1,23 @@
+load(
+    "@rules_dotnet//dotnet:defs.bzl",
+    "csharp_binary",
+)
+
+csharp_binary(
+    name = "Compiler.Server.Multiplex",
+    srcs = [
+        "BuildProtocol.cs",
+        "Client.cs",
+        "Logger.cs",
+        "Program.cs",
+        "SymlinkResolver.cs",
+        "WorkerProtocol.cs"
+    ],
+    target_frameworks = ["net6.0"],
+    private_deps = ["@rules_dotnet_nuget_packages//microsoft.netcore.app.ref"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@rules_dotnet_nuget_packages//dnlib",
+        "@rules_dotnet_nuget_packages//google.protobuf",
+    ],
+)
