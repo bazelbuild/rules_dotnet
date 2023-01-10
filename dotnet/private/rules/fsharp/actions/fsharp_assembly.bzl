@@ -10,6 +10,7 @@ load(
     "generate_warning_args",
     "get_framework_version_info",
     "is_core_framework",
+    "is_greater_or_equal_framework",
     "is_standard_framework",
     "transform_deps",
     "use_highentropyva",
@@ -61,6 +62,11 @@ do()
     actions.write(output, content)
 
     return output
+
+# Reference assembly support did not come until .Net 7.0
+# This check should be removed once the .Net 6.0 LTS release is no longer supported
+def _should_output_ref_assembly(toolchain, target_framework):
+    return is_greater_or_equal_framework(target_framework, "net7.0") and is_greater_or_equal_framework(toolchain.dotnetinfo.runtime_tfm, "net7.0")
 
 # buildifier: disable=unnamed-macro
 def AssemblyAction(
@@ -148,10 +154,9 @@ def AssemblyAction(
 
     out_dir = "bazelout/" + target_framework
     out_ext = "dll"
-
     out_dll = actions.declare_file("%s/%s.%s" % (out_dir, assembly_name, out_ext))
     out_iref = None
-    out_ref = actions.declare_file("%s/ref/%s.%s" % (out_dir, assembly_name, out_ext))
+    out_ref = actions.declare_file("%s/ref/%s.%s" % (out_dir, assembly_name, out_ext)) if _should_output_ref_assembly(toolchain, target_framework) else None
     out_pdb = actions.declare_file("%s/%s.pdb" % (out_dir, assembly_name))
 
     if len(internals_visible_to) == 0:
@@ -184,7 +189,7 @@ def AssemblyAction(
         # If the user is using internals_visible_to generate an additional
         # reference-only DLL that contains the internals. We want the
         # InternalsVisibleTo in the main DLL too to be less suprising to users.
-        out_iref = actions.declare_file("%s/iref/%s.%s" % (out_dir, assembly_name, out_ext))
+        out_iref = actions.declare_file("%s/iref/%s.%s" % (out_dir, assembly_name, out_ext)) if _should_output_ref_assembly(toolchain, target_framework) else None
 
         internals_visible_to_fs = _write_internals_visible_to_fsharp(
             actions,
@@ -217,32 +222,33 @@ def AssemblyAction(
             out_pdb = out_pdb,
         )
 
-        # Generate a ref-only DLL without internals
-        _compile(
-            actions,
-            debug,
-            defines,
-            keyfile,
-            langversion,
-            irefs,
-            private_refs,
-            overrides,
-            resources,
-            srcs,
-            depset(compile_data, transitive = [transitive_compile_data]),
-            subsystem_version,
-            target,
-            target_name,
-            target_framework,
-            toolchain,
-            treat_warnings_as_errors,
-            warnings_as_errors,
-            warnings_not_as_errors,
-            warning_level,
-            out_dll = None,
-            out_ref = out_ref,
-            out_pdb = None,
-        )
+        if out_iref != None:
+            # Generate a ref-only DLL without internals
+            _compile(
+                actions,
+                debug,
+                defines,
+                keyfile,
+                langversion,
+                irefs,
+                private_refs,
+                overrides,
+                resources,
+                srcs,
+                depset(compile_data, transitive = [transitive_compile_data]),
+                subsystem_version,
+                target,
+                target_name,
+                target_framework,
+                toolchain,
+                treat_warnings_as_errors,
+                warnings_as_errors,
+                warnings_not_as_errors,
+                warning_level,
+                out_dll = None,
+                out_ref = out_ref,
+                out_pdb = None,
+            )
 
     return DotnetAssemblyInfo(
         name = target_name,
@@ -251,7 +257,7 @@ def AssemblyAction(
         libs = [out_dll],
         pdbs = [out_pdb] if out_pdb else [],
         refs = [out_dll],
-        irefs = [out_iref] if out_iref else [out_ref],
+        irefs = [out_iref] if out_iref else [out_ref] if out_ref else [out_dll],
         analyzers = [],
         internals_visible_to = internals_visible_to or [],
         data = data,
@@ -339,10 +345,12 @@ def _compile(
     # outputs
     if out_dll != None:
         args.add("--out:" + out_dll.path)
-        args.add("--refout:" + out_ref.path)
         args.add("--pdb:" + out_pdb.path)
         outputs = [out_dll, out_pdb]
-        outputs = [out_dll, out_ref, out_pdb]
+
+        if out_ref != None:
+            args.add("--refout:" + out_ref.path)
+            outputs.append(out_ref)
 
     else:
         args.add("--refonly")
