@@ -33,6 +33,11 @@ pkg_tar(
             "@platforms//os:windows": "self_contained/publish/win-x64",
         },
     ),
+    # Disabling this for Windows because there are some runfiles issues with Windows and rules_pkg
+    target_compatible_with = [
+        "@platforms//os:linux",
+        "@platforms//os:macos",
+    ],
 )
 
 sh_test(
@@ -41,4 +46,9 @@ sh_test(
         "test.sh",
     ],
     data = [":tar"],
+    # Disabling this for Windows because there are some runfiles issues with Windows and rules_pkg
+    target_compatible_with = [
+        "@platforms//os:linux",
+        "@platforms//os:macos",
+    ],
 )
