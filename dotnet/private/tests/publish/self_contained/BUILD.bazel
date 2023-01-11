@@ -24,6 +24,7 @@ pkg_tar(
     name = "tar",
     srcs = [":self_contained"],
     mode = "0755",
+    include_runfiles = True,
     package_dir = "/",
     strip_prefix = select(
         {

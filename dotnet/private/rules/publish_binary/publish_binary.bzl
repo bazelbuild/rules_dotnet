@@ -96,6 +96,7 @@ publish_binary = rule(
 
 def _copy_file(script_body, src, dst, is_windows):
     if is_windows:
+        script_body.append("if not exist \"{dir}\" @mkdir \"{dir}\" >NUL".format(dir = dst.dirname.replace("/", "\\")))
         script_body.append("@copy /Y \"{src}\" \"{dst}\" >NUL".format(src = src.path.replace("/", "\\"), dst = dst.path.replace("/", "\\")))
     else:
         script_body.append("mkdir -p {dir} && cp -f {src} {dst}".format(dir = shell.quote(dst.dirname), src = shell.quote(src.path), dst = shell.quote(dst.path)))
@@ -107,7 +108,7 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
         "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, binary_info.app_host.basename),
     )
     outputs = [app_host_copy]
-    script_body = [] if is_windows else ["#! /usr/bin/env bash"]
+    script_body = ["@echo off"] if is_windows else ["#! /usr/bin/env bash", "set -eou pipefail"]
 
     _copy_file(script_body, binary_info.app_host, app_host_copy, is_windows = is_windows)
 

@@ -29,11 +29,16 @@ def _read_dir(repository_ctx, src_dir):
     """
     if _is_windows(repository_ctx):
         src_dir = src_dir.replace("/", "\\")
+        nuget_directory = repository_ctx.execute(["cmd.exe", "/c", "echo|set", "/p=%cd%"])
         find_result = repository_ctx.execute(["cmd.exe", "/c", "dir", src_dir, "/b", "/s", "/a-d"])
+
+        # The output from the find command includes absolute paths so we strip the
+        # current working directory from the paths
+        result = find_result.stdout.replace(nuget_directory.stdout + "\\", "")
 
         # src_files will be used in genrule.outs where the paths must
         # use forward slashes.
-        result = find_result.stdout.replace("\\", "/")
+        result = result.replace("\\", "/")
     else:
         find_result = repository_ctx.execute(["find", src_dir, "-follow", "-type", "f"])
         result = find_result.stdout
