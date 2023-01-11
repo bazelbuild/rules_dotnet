@@ -19,6 +19,7 @@ def _compile_action(ctx, tfm):
     toolchain = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"]
     return AssemblyAction(
         ctx.actions,
+        ctx.executable._compiler_wrapper,
         additionalfiles = ctx.files.additionalfiles,
         debug = is_debug(ctx),
         defines = ctx.attr.defines,

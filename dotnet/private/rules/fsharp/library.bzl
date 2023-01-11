@@ -17,6 +17,7 @@ def _compile_action(ctx, tfm):
 
     return AssemblyAction(
         ctx.actions,
+        ctx.executable._compiler_wrapper,
         debug = is_debug(ctx),
         defines = ctx.attr.defines,
         deps = ctx.attr.deps,

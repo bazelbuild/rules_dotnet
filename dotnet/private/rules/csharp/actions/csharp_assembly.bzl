@@ -52,6 +52,7 @@ def _write_internals_visible_to_csharp(actions, name, others):
 # buildifier: disable=unnamed-macro
 def AssemblyAction(
         actions,
+        compiler_wrapper,
         additionalfiles,
         debug,
         defines,
@@ -83,6 +84,7 @@ def AssemblyAction(
 
     Args:
         actions: Bazel module providing functions to create actions.
+        compiler_wrapper: The wrapper script that invokes the C# compiler.
         additionalfiles: Names additional files that don't directly affect code generation but may be used by analyzers for producing errors or warnings.
         debug: Emits debugging information.
         defines: The list of conditional compilation symbols.
@@ -148,6 +150,7 @@ def AssemblyAction(
     if len(internals_visible_to) == 0:
         _compile(
             actions,
+            compiler_wrapper,
             additionalfiles,
             analyzers,
             private_analyzers,
@@ -189,6 +192,7 @@ def AssemblyAction(
 
         _compile(
             actions,
+            compiler_wrapper,
             additionalfiles,
             analyzers,
             private_analyzers,
@@ -220,6 +224,7 @@ def AssemblyAction(
         # Generate a ref-only DLL without internals
         _compile(
             actions,
+            compiler_wrapper,
             additionalfiles,
             analyzers,
             private_analyzers,
@@ -274,6 +279,7 @@ def AssemblyAction(
 
 def _compile(
         actions,
+        compiler_wrapper,
         additionalfiles,
         analyzer_assemblies,
         private_analyzer_assemblies,
@@ -389,17 +395,14 @@ def _compile(
         mnemonic = "CSharpCompile",
         progress_message = "Compiling " + target_name + (" (internals ref-only dll)" if out_dll == None else ""),
         inputs = depset(
-            direct = direct_inputs,
+            direct = direct_inputs + [compiler_wrapper, toolchain.runtime.files_to_run.executable],
             transitive = [private_refs, refs, analyzer_assemblies, private_analyzer_assemblies, toolchain.runtime.default_runfiles.files, toolchain.csharp_compiler.default_runfiles.files, compile_data],
         ),
         outputs = outputs,
-        executable = toolchain.runtime.files_to_run.executable,
+        executable = compiler_wrapper,
         arguments = [
+            toolchain.runtime.files_to_run.executable.path,
             toolchain.csharp_compiler.files_to_run.executable.path,
-
-            # This can't go in the response file (if it does it won't be seen
-            # until it's too late).
-            "/noconfig",
             args,
         ],
         env = {

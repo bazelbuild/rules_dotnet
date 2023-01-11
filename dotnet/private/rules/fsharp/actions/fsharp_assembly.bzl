@@ -63,14 +63,15 @@ do()
 
     return output
 
-# Reference assembly support did not come until .Net 7.0
+# Reference assembly support did not come to F# until .Net 7.0
 # This check should be removed once the .Net 6.0 LTS release is no longer supported
-def _should_output_ref_assembly(toolchain, target_framework):
-    return is_greater_or_equal_framework(target_framework, "net7.0") and is_greater_or_equal_framework(toolchain.dotnetinfo.runtime_tfm, "net7.0")
+def _should_output_ref_assembly(toolchain):
+    return is_greater_or_equal_framework(toolchain.dotnetinfo.runtime_tfm, "net7.0")
 
 # buildifier: disable=unnamed-macro
 def AssemblyAction(
         actions,
+        compiler_wrapper,
         debug,
         defines,
         deps,
@@ -100,6 +101,7 @@ def AssemblyAction(
 
     Args:
         actions: Bazel module providing functions to create actions.
+        compiler_wrapper: The wrapper script that invokes the F# compiler.
         debug: Emits debugging information.
         defines: The list of conditional compilation symbols.
         deps: The list of other libraries to be linked in to the assembly.
@@ -156,12 +158,13 @@ def AssemblyAction(
     out_ext = "dll"
     out_dll = actions.declare_file("%s/%s.%s" % (out_dir, assembly_name, out_ext))
     out_iref = None
-    out_ref = actions.declare_file("%s/ref/%s.%s" % (out_dir, assembly_name, out_ext)) if _should_output_ref_assembly(toolchain, target_framework) else None
+    out_ref = actions.declare_file("%s/ref/%s.%s" % (out_dir, assembly_name, out_ext)) if _should_output_ref_assembly(toolchain) else None
     out_pdb = actions.declare_file("%s/%s.pdb" % (out_dir, assembly_name))
 
     if len(internals_visible_to) == 0:
         _compile(
             actions,
+            compiler_wrapper,
             debug,
             defines,
             keyfile,
@@ -189,7 +192,7 @@ def AssemblyAction(
         # If the user is using internals_visible_to generate an additional
         # reference-only DLL that contains the internals. We want the
         # InternalsVisibleTo in the main DLL too to be less suprising to users.
-        out_iref = actions.declare_file("%s/iref/%s.%s" % (out_dir, assembly_name, out_ext)) if _should_output_ref_assembly(toolchain, target_framework) else None
+        out_iref = actions.declare_file("%s/iref/%s.%s" % (out_dir, assembly_name, out_ext)) if _should_output_ref_assembly(toolchain) else None
 
         internals_visible_to_fs = _write_internals_visible_to_fsharp(
             actions,
@@ -198,6 +201,7 @@ def AssemblyAction(
         )
         _compile(
             actions,
+            compiler_wrapper,
             debug,
             defines,
             keyfile,
@@ -226,6 +230,7 @@ def AssemblyAction(
             # Generate a ref-only DLL without internals
             _compile(
                 actions,
+                compiler_wrapper,
                 debug,
                 defines,
                 keyfile,
@@ -276,6 +281,7 @@ def AssemblyAction(
 
 def _compile(
         actions,
+        compiler_wrapper,
         debug,
         defines,
         keyfile,
@@ -387,12 +393,13 @@ def _compile(
         mnemonic = "FSharpCompile",
         progress_message = "Compiling " + target_name + (" (internals ref-only dll)" if out_dll == None else ""),
         inputs = depset(
-            direct = direct_inputs,
+            direct = direct_inputs + [compiler_wrapper, toolchain.runtime.files_to_run.executable],
             transitive = [refs, private_refs, toolchain.runtime.default_runfiles.files, toolchain.fsharp_compiler.default_runfiles.files, compile_data],
         ),
         outputs = outputs,
-        executable = toolchain.runtime.files_to_run.executable,
+        executable = compiler_wrapper,
         arguments = [
+            toolchain.runtime.files_to_run.executable.path,
             toolchain.fsharp_compiler.files_to_run.executable.path,
             args,
         ],
