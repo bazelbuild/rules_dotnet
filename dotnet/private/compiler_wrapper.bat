@@ -20,6 +20,7 @@ if "%COMPILER_BASENAME%" == "fsc.dll" set PATHMAP_FLAG="--pathmap"
 
 set PATHMAP="%PATHMAP_FLAG%:%cd%=."
 
+SHIFT
 set args=%*
 rem Escape \ and * in args before passsing it with double quote
 if defined args (
