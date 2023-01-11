@@ -9,7 +9,7 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 : at analysis time we need to override them at execution time.
 ::
 
-set DOTNET_EXECUTABLE=%2
+set DOTNET_EXECUTABLE=%1
 set COMPILER=%2
 for /F "delims=" %%i in (%COMPILER%) do set COMPILER_BASENAME="%%~ni"
 
