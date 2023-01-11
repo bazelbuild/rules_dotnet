@@ -23,8 +23,8 @@ publish_binary(
 pkg_tar(
     name = "tar",
     srcs = [":self_contained"],
-    mode = "0755",
     include_runfiles = True,
+    mode = "0755",
     package_dir = "/",
     strip_prefix = select(
         {
