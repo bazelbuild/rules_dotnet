@@ -9,6 +9,7 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 : at analysis time we need to override them at execution time.
 ::
 
+set DOTNET_EXECUTABLE=%2
 set COMPILER=%2
 for /F "delims=" %%i in (%COMPILER%) do set COMPILER_BASENAME="%%~ni"
 
@@ -19,4 +20,11 @@ if "%COMPILER_BASENAME%" == "fsc.dll" set PATHMAP_FLAG="--pathmap"
 
 set PATHMAP="%PATHMAP_FLAG%:%cd%=."
 
-%* %PATHMAP%
+set args=%*
+rem Escape \ and * in args before passsing it with double quote
+if defined args (
+  set args=!args:\=\\\\!
+  set args=!args:"=\"!
+)
+
+"!DOTNET_EXECUTABLE!" !args!
