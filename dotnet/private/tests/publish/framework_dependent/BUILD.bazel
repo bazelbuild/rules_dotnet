@@ -60,11 +60,11 @@ sh_test(
         ":tar",
         ":toolchain_provider",
     ],
-    toolchains = ["@dotnet_toolchains//:resolved_toolchain"],
 
     # Disabling this for Windows because there are some runfiles issues with Windows and rules_pkg
     target_compatible_with = [
         "@platforms//os:linux",
         "@platforms//os:macos",
     ],
+    toolchains = ["@dotnet_toolchains//:resolved_toolchain"],
 )
