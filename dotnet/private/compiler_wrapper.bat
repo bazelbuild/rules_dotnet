@@ -15,9 +15,7 @@ for /F "delims=" %%i in (%COMPILER%) do set COMPILER_BASENAME="%%~ni"
 set PATHMAP_FLAG="-pathmap"
 
 :: Needed because unfortunately the F# compiler uses a different flag name
-if "%COMPILER_BASENAME%" == "fsc.dll"
-  set PATHMAP_FLAG="--pathmap"
-fi
+if "%COMPILER_BASENAME%" == "fsc.dll" set PATHMAP_FLAG="--pathmap"
 
 set PATHMAP="%PATHMAP_FLAG%:%cd%=."
 
