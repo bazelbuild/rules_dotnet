@@ -11,7 +11,7 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 
 set DOTNET_EXECUTABLE=%1
 set COMPILER=%2
-for /F "delims=" %%i in (%COMPILER%) do set COMPILER_BASENAME="%%~ni"
+for %%F in ("%COMPILER%") do set COMPILER_BASENAME=%%~dpF
 
 set PATHMAP_FLAG="-pathmap"
 
