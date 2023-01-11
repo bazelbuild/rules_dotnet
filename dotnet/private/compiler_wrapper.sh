@@ -6,19 +6,14 @@ set -eou pipefail
 # allow overriding these paths using pathmaps. Since the paths can not be known
 # at analysis time we need to override them at execution time.
 
-DOTNET_EXECUTABLE="$1"
 COMPILER="$2"
-ARGS_FILE="$3"
-OTHER_ARGS="${*:4}"
-
 PATHMAP_FLAG="-pathmap"
 
 # Needed because unfortunately the F# compiler uses a different flag name
 if [[ $(basename "$COMPILER") == "fsc.dll" ]]; then
   PATHMAP_FLAG="--pathmap"
 fi
-
 PATHMAP="$PATHMAP_FLAG:$PWD=."
 
-
-./"$DOTNET_EXECUTABLE" "$COMPILER" "$PATHMAP" "$ARGS_FILE" $OTHER_ARGS
+# shellcheck disable=SC2145
+./"$@" "$PATHMAP"

@@ -124,8 +124,14 @@ COMMON_ATTRS = {
     "_allowlist_function_transition": attr.label(
         default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
     ),
-    "_compiler_wrapper": attr.label(
+    "_compiler_wrapper_sh": attr.label(
         default = "@rules_dotnet//dotnet/private:compiler_wrapper.sh",
+        executable = True,
+        cfg = "exec",
+        allow_single_file = True,
+    ),
+    "_compiler_wrapper_bat": attr.label(
+        default = "@rules_dotnet//dotnet/private:compiler_wrapper.bat",
         executable = True,
         cfg = "exec",
         allow_single_file = True,

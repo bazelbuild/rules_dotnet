@@ -17,7 +17,7 @@ def _compile_action(ctx, tfm):
     toolchain = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"]
     return AssemblyAction(
         ctx.actions,
-        ctx.executable._compiler_wrapper,
+        ctx.executable._compiler_wrapper_bat if ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]) else ctx.executable._compiler_wrapper_sh,
         additionalfiles = ctx.files.additionalfiles,
         debug = is_debug(ctx),
         defines = ctx.attr.defines,
