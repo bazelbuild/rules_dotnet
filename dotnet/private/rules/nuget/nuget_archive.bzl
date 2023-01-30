@@ -339,6 +339,7 @@ def tfm_filegroup(name, tfms):
         native.filegroup(
             name = "%s_%s_files" % (name, tfm),
             srcs = value,
+            visibility = ["//visibility:public"],
         )
         parts = tfm.split("_")
         if len(parts) == 2:
@@ -372,6 +373,7 @@ def tfm_filegroup(name, tfms):
             native.alias(
                 name = "%s_%s_alias" % (name, tfm),
                 actual = actual,
+                visibility = ["//visibility:public"],
             )
             tfm_target_mapping[tfm] = ":%s_%s_alias" % (name, tfm)
         else:
@@ -386,6 +388,7 @@ def tfm_filegroup(name, tfms):
             native.alias(
                 name = "%s_%s_alias" % (name, tfm),
                 actual = select(map),
+                visibility = ["//visibility:public"],
             )
 
         tfm_target_mapping[tfm] = ":%s_%s_alias" % (name, tfm)
@@ -413,18 +416,21 @@ def tfm_filegroup(name, tfms):
         native.alias(
             name = "%s_std" % name,
             actual = select({"@rules_dotnet//dotnet:tfm_%s" % tfm: target for (tfm, target) in std}),
+            visibility = ["//visibility:public"],
         )
 
         if net:
             native.alias(
                 name = "%s_net" % name,
                 actual = select({"@rules_dotnet//dotnet:tfm_%s" % tfm: target for (tfm, target) in net}),
+                visibility = ["//visibility:public"],
             )
 
         if cor:
             native.alias(
                 name = "%s_cor" % name,
                 actual = select({"@rules_dotnet//dotnet:tfm_%s" % tfm: target for (tfm, target) in cor}),
+                visibility = ["//visibility:public"],
             )
 
         return native.alias(
@@ -437,11 +443,13 @@ def tfm_filegroup(name, tfms):
                 # targeting netstandard
                 "//conditions:default": (":%s_std" % name),
             }),
+            visibility = ["//visibility:public"],
         )
 
     return native.alias(
         name = name,
         actual = select({"@rules_dotnet//dotnet:tfm_%s" % tfm: target for (tfm, target) in tfm_target_mapping.items()}),
+        visibility = ["//visibility:public"],
     )
 
 # This function is public because it's used by the nuget_archive repository rule.
@@ -452,4 +460,5 @@ def rid_filegroup(name, files_per_rid):
     return native.filegroup(
         name = name,
         srcs = select(map),
+        visibility = ["//visibility:public"],
     )

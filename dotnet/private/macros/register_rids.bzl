@@ -28,4 +28,5 @@ def register_rids():
         native.config_setting(
             name = "rid_%s" % rid,
             flag_values = flags,
+            visibility = ["//visibility:public"],
         )

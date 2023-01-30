@@ -41,6 +41,7 @@ def register_tfms():
         native.config_setting(
             name = "tfm_%s" % framework,
             flag_values = tfm_flags,
+            visibility = ["//visibility:public"],
         )
 
         # Also register TFM flags that are compatible with a specific RID
@@ -50,4 +51,5 @@ def register_tfms():
             native.config_setting(
                 name = "tfm_%s_%s" % (framework, rid),
                 flag_values = dicts.add(tfm_flags, rid_flags),
+                visibility = ["//visibility:public"],
             )

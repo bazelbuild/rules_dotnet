@@ -34,10 +34,11 @@ pkg_tar(
         },
     ),
     # Disabling this for Windows because there are some runfiles issues with Windows and rules_pkg
-    target_compatible_with = [
-        "@platforms//os:linux",
-        "@platforms//os:macos",
-    ],
+    target_compatible_with = select({
+        "@platforms//os:windows": ["@platforms//:incompatible"],
+        "@platforms//os:linux": [],
+        "@platforms//os:macos": [],
+    }),
 )
 
 sh_test(
@@ -47,8 +48,9 @@ sh_test(
     ],
     data = [":tar"],
     # Disabling this for Windows because there are some runfiles issues with Windows and rules_pkg
-    target_compatible_with = [
-        "@platforms//os:linux",
-        "@platforms//os:macos",
-    ],
+    target_compatible_with = select({
+        "@platforms//os:windows": ["@platforms//:incompatible"],
+        "@platforms//os:linux": [],
+        "@platforms//os:macos": [],
+    }),
 )

@@ -5,6 +5,25 @@ build --enable_runfiles
 build --incompatible_strict_action_env
 test --test_output=errors
 
+# Profiling flags
+build --noslim_profile
+query --noslim_profile
+build --experimental_profile_include_target_label
+query --experimental_profile_include_target_label
+build --experimental_profile_include_primary_output 
+query --experimental_profile_include_primary_output
+build --experimental_collect_load_average_in_profiler
+query --experimental_collect_load_average_in_profiler
+build --experimental_collect_system_network_usage
+query --experimental_collect_system_network_usage
+build --experimental_collect_worker_data_in_profiler
+query --experimental_collect_worker_data_in_profiler
+
+# Bazel 7.0 flags
+# These flags will be flipped in 7.0 so we set them to be compatible when it's released
+build --incompatible_config_setting_private_default_visibility
+build --incompatible_disable_starlark_host_transitions
+
 # Remote config
 build:remote --remote_download_minimal
 
