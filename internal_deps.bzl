@@ -38,16 +38,21 @@ def rules_dotnet_internal_deps():
         ],
     )
 
-    # Override bazel_skylib distribution to fetch sources instead
-    # so that the gazelle extension is included
-    # see https://github.com/bazelbuild/bazel-skylib/issues/250
     http_archive(
         name = "bazel_skylib",
-        sha256 = "710c2ca4b4d46250cdce2bf8f5aa76ea1f0cba514ab368f2988f70e864cfaf51",
-        strip_prefix = "bazel-skylib-1.2.1",
+        sha256 = "f24ab666394232f834f74d19e2ff142b0af17466ea0c69a3f4c276ee75f6efce",
         urls = [
-            "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/archive/1.2.1.tar.gz",
-            "https://github.com/bazelbuild/bazel-skylib/archive/refs/tags/1.2.1.tar.gz",
+            "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.4.0/bazel-skylib-1.4.0.tar.gz",
+            "https://github.com/bazelbuild/bazel-skylib/releases/download/1.4.0/bazel-skylib-1.4.0.tar.gz",
+        ],
+    )
+
+    http_archive(
+        name = "bazel_skylib_gazelle_plugin",
+        sha256 = "04182233284fcb6545d36b94248fe28186b4d9d574c4131d6a511d5aeb278c46",
+        urls = [
+            "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.4.0/bazel-skylib-gazelle-plugin-1.4.0.tar.gz",
+            "https://github.com/bazelbuild/bazel-skylib/releases/download/1.4.0/bazel-skylib-gazelle-plugin-1.4.0.tar.gz",
         ],
     )
 

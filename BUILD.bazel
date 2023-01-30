@@ -7,7 +7,7 @@ exports_files(["AUTHORS"])
 
 gazelle_binary(
     name = "gazelle_bin",
-    languages = ["@bazel_skylib//gazelle/bzl"],
+    languages = ["@bazel_skylib_gazelle_plugin//bzl"],
 )
 
 # gazelle:exclude examples
