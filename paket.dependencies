@@ -27,6 +27,7 @@ group rules_dotnet_dev_nuget_packages
     nuget FSharp.Core 6.0.3
     nuget NETStandard.Library.Ref 2.1.0
     nuget System.Security.Principal.Windows 5.0.0
+    nuget Magick.NET.Core 12.2.2
 
 group rules_dotnet_nuget_packages
     framework: net6.0

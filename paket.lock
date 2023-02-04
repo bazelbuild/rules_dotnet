@@ -381,6 +381,7 @@ NUGET
     LibGit2Sharp (0.27.0-preview-0182)
       LibGit2Sharp.NativeBinaries (2.0.315-alpha.0.9)
     LibGit2Sharp.NativeBinaries (2.0.315-alpha.0.9)
+    Magick.NET.Core (12.2.2)
     Microsoft.NETCore.App.Ref (6.0.5)
     Microsoft.NETCore.App.Runtime.linux-x64 (6.0.8)
     Microsoft.NETCore.App.Runtime.osx-x64 (6.0.8)

@@ -349,3 +349,17 @@ def runtimes_structure():
         expected_libs = ["lib/netstandard2.0/System.Security.Principal.Windows.dll"],
         expected_refs = ["ref/netstandard2.0/System.Security.Principal.Windows.dll"],
     )
+
+    nuget_test_wrapper(
+        name = "magick.net.core.netstandard21.linux-x64",
+        target_framework = "net6.0",
+        runtime_identifier = "linux-x64",
+        package = "@rules_dotnet_dev_nuget_packages//magick.net.core",
+    )
+
+    nuget_structure_test(
+        name = "nuget_structure_should_parse_libs_folder_correctly_netstandard21",
+        target_under_test = ":magick.net.core.netstandard21.linux-x64",
+        expected_libs = ["lib/netstandard21/Magick.NET.Core.dll"],
+        expected_refs = ["lib/netstandard21/Magick.NET.Core.dll"],
+    )

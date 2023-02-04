@@ -91,6 +91,12 @@ def _process_lib_file(groups, file):
     tfm_end = file.find("/", i + 1)
     tfm = file[tfm_start:tfm_end]
 
+    if tfm == "netstandard20":
+        tfm = "netstandard2.0"
+
+    if tfm == "netstandard21":
+        tfm = "netstandard2.1"
+
     if tfm not in FRAMEWORK_COMPATIBILITY:
         return
 
