@@ -1,0 +1,21 @@
+load("@aspect_bazel_lib//lib:testing.bzl", "assert_contains")
+
+# this rule checks that we can resolve the dotnet toolchain and
+# execute the "dotnet" binary using the DOTNET_BIN variable.
+genrule(
+    name = "dotnet_version",
+    outs = ["out.txt"],
+    cmd = "\"$(DOTNET_BIN)\" --version > $@",
+    toolchains = [
+        "@dotnet_toolchains//:resolved_toolchain",
+    ],
+    tools = [
+        "@dotnet_toolchains//:resolved_toolchain",
+    ],
+)
+
+assert_contains(
+    name = "check_dotnet_version",
+    actual = "out.txt",
+    expected = "7.0.101\n",
+)
