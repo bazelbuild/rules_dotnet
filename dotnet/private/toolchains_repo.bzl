@@ -71,6 +71,10 @@ def _resolved_toolchain_impl(ctx):
         toolchain_info,
         toolchain_info.dotnetinfo,
         toolchain_info.template_variables,
+        DefaultInfo(
+           runfiles = ctx.runfiles(transitive_files = depset(toolchain_info.dotnetinfo.runtime_files)),
+           files = depset(toolchain_info.dotnetinfo.runtime_files),
+        ),
     ]
 
 # Copied from java_toolchain_alias
