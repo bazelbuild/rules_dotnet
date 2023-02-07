@@ -82,11 +82,11 @@ def _dotnet_toolchain_impl(ctx):
         runtime_path = _to_manifest_path(ctx, runtime_files[0])
 
     if ctx.attr.csharp_compiler:
-        csharp_compiler_files = ctx.attr.csharp_compiler.files.to_list()
+        csharp_compiler_files = ctx.attr.csharp_compiler.files.to_list() + ctx.attr.csharp_compiler.default_runfiles.files.to_list()
         csharp_compiler_path = _to_manifest_path(ctx, csharp_compiler_files[0])
 
     if ctx.attr.fsharp_compiler:
-        fsharp_compiler_files = ctx.attr.fsharp_compiler.files.to_list()
+        fsharp_compiler_files = ctx.attr.fsharp_compiler.files.to_list() + ctx.attr.fsharp_compiler.default_runfiles.files.to_list()
         fsharp_compiler_path = _to_manifest_path(ctx, fsharp_compiler_files[0])
 
     if ctx.attr.apphost:
