@@ -6,7 +6,7 @@ load("@aspect_bazel_lib//lib:testing.bzl", "assert_contains")
 genrule(
     name = "dotnet_bin",
     outs = ["dotnet_bin.txt"],
-    cmd = "\"$(DOTNET_BIN)\" --help > $@",
+    cmd = "DOTNET_CLI_HOME=\"$(DOTNET_BIN)\" \"$(DOTNET_BIN)\" --help > $@",
     toolchains = [
         "@rules_dotnet//dotnet:resolved_toolchain",
     ],
@@ -25,7 +25,7 @@ assert_contains(
 genrule(
     name = "csc_bin",
     outs = ["csc_bin.txt"],
-    cmd = "\"$(DOTNET_BIN)\" \"$(CSC_BIN)\" > $@ || true",
+    cmd = "DOTNET_CLI_HOME=\"$(DOTNET_BIN)\" \"$(DOTNET_BIN)\" \"$(CSC_BIN)\" > $@ || true",
     toolchains = [
         "@rules_dotnet//dotnet:resolved_toolchain",
     ],
@@ -44,7 +44,7 @@ assert_contains(
 genrule(
     name = "fsc_bin",
     outs = ["fsc_bin.txt"],
-    cmd = "\"$(DOTNET_BIN)\" \"$(FSC_BIN)\" &> $@ || true",
+    cmd = "DOTNET_CLI_HOME=\"$(DOTNET_BIN)\" \"$(DOTNET_BIN)\" \"$(FSC_BIN)\" &> $@ || true",
     toolchains = [
         "@rules_dotnet//dotnet:resolved_toolchain",
     ],
