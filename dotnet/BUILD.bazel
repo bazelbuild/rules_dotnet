@@ -7,9 +7,18 @@ load(
     "//dotnet/private/macros:register_rids.bzl",
     "register_rids",
 )
+load("//dotnet/private:resolved_toolchain.bzl", "resolved_toolchain")
 
 toolchain_type(
     name = "toolchain_type",
+    visibility = ["//visibility:public"],
+)
+
+resolved_toolchain(
+    name = "resolved_toolchain",
+    # Marked manual so that `bazel test //...` passes
+    # even if no toolchain is registered.
+    tags = ["manual"],
     visibility = ["//visibility:public"],
 )
 

@@ -104,6 +104,11 @@ def _dotnet_toolchain_impl(ctx):
         "DOTNET_RUNTIME_TFM": ctx.attr.runtime_tfm,
     })
 
+    default = DefaultInfo(
+        files = depset(runtime_files + csharp_compiler_files + fsharp_compiler_files + apphost_files),
+        runfiles = ctx.runfiles(files = runtime_files + csharp_compiler_files + fsharp_compiler_files + apphost_files),
+    )
+
     dotnetinfo = DotnetInfo(
         runtime_path = runtime_path,
         runtime_files = runtime_files,
@@ -131,6 +136,7 @@ def _dotnet_toolchain_impl(ctx):
     # Export all the providers inside our ToolchainInfo
     # so the resolved_toolchain rule can grab and re-export them.
     toolchain_info = platform_common.ToolchainInfo(
+        default = default,
         dotnetinfo = dotnetinfo,
         template_variables = template_variables,
         runtime = ctx.attr.runtime,
@@ -141,6 +147,7 @@ def _dotnet_toolchain_impl(ctx):
         strict_deps = ctx.attr._strict_deps,
     )
     return [
+        default,
         toolchain_info,
         template_variables,
     ]

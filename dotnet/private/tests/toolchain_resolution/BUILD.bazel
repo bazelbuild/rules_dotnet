@@ -1,21 +1,115 @@
+"""These tests are for asserting that the dotnet toolchain can be resolved and used using template variables.
+"""
+
 load("@aspect_bazel_lib//lib:testing.bzl", "assert_contains")
 
-# this rule checks that we can resolve the dotnet toolchain and
-# execute the "dotnet" binary using the DOTNET_BIN variable.
 genrule(
-    name = "dotnet_version",
-    outs = ["out.txt"],
-    cmd = "\"$(DOTNET_BIN)\" --version > $@",
+    name = "dotnet_bin",
+    outs = ["dotnet_bin.txt"],
+    cmd = "\"$(DOTNET_BIN)\" --help > $@",
     toolchains = [
-        "@dotnet_toolchains//:resolved_toolchain",
+        "@rules_dotnet//dotnet:resolved_toolchain",
     ],
     tools = [
-        "@dotnet_toolchains//:resolved_toolchain",
+        "@rules_dotnet//dotnet:resolved_toolchain",
     ],
 )
 
 assert_contains(
-    name = "check_dotnet_version",
-    actual = "out.txt",
-    expected = "7.0.101\n",
+    name = "check_dotnet_bin_output",
+    actual = ":dotnet_bin",
+    # This is part of the help text that is output when `dotnet` is run without arguments
+    expected = "Usage: dotnet [runtime-options] [path-to-application] [arguments]",
+)
+
+genrule(
+    name = "csc_bin",
+    outs = ["csc_bin.txt"],
+    cmd = "\"$(DOTNET_BIN)\" \"$(CSC_BIN)\" > $@ || true",
+    toolchains = [
+        "@rules_dotnet//dotnet:resolved_toolchain",
+    ],
+    tools = [
+        "@rules_dotnet//dotnet:resolved_toolchain",
+    ],
+)
+
+assert_contains(
+    name = "check_csc_bin_output",
+    actual = ":csc_bin",
+    # This is part of the output when `csc` is run without any sourcefiles to compile
+    expected = "warning CS2008: No source files specified",
+)
+
+genrule(
+    name = "fsc_bin",
+    outs = ["fsc_bin.txt"],
+    cmd = "\"$(DOTNET_BIN)\" \"$(FSC_BIN)\" &> $@ || true",
+    toolchains = [
+        "@rules_dotnet//dotnet:resolved_toolchain",
+    ],
+    tools = [
+        "@rules_dotnet//dotnet:resolved_toolchain",
+    ],
+)
+
+assert_contains(
+    name = "check_fsc_bin_output",
+    actual = ":fsc_bin",
+    # This is part of the output when `fsc` is run without any sourcefiles to compile
+    expected = "error FS0207: No inputs specified",
+)
+
+genrule(
+    name = "dotnet_sdk_version",
+    outs = ["dotnet_sdk_version.txt"],
+    cmd = "echo \"$(DOTNET_SDK_VERSION)\" > $@",
+    toolchains = [
+        "@rules_dotnet//dotnet:resolved_toolchain",
+    ],
+    tools = [
+        "@rules_dotnet//dotnet:resolved_toolchain",
+    ],
+)
+
+assert_contains(
+    name = "check_dotnet_sdk_version_output",
+    actual = ":dotnet_sdk_version",
+    expected = "7.0.101",
+)
+
+genrule(
+    name = "dotnet_runtime_version",
+    outs = ["dotnet_runtime_version.txt"],
+    cmd = "echo \"$(DOTNET_RUNTIME_VERSION)\" > $@",
+    toolchains = [
+        "@rules_dotnet//dotnet:resolved_toolchain",
+    ],
+    tools = [
+        "@rules_dotnet//dotnet:resolved_toolchain",
+    ],
+)
+
+assert_contains(
+    name = "check_dotnet_runtime_version_output",
+    actual = ":dotnet_runtime_version",
+    expected = "7.0.1",
+)
+
+genrule(
+    name = "dotnet_runtime_tfm",
+    outs = ["dotnet_runtime_tfm.txt"],
+    cmd = "echo \"$(DOTNET_RUNTIME_TFM)\" > $@",
+    toolchains = [
+        "@rules_dotnet//dotnet:resolved_toolchain",
+    ],
+    tools = [
+        "@rules_dotnet//dotnet:resolved_toolchain",
+    ],
+)
+
+assert_contains(
+    name = "check_dotnet_runtime_tfm_output",
+    actual = ":dotnet_runtime_tfm",
+    expected = "net7.0",
 )
