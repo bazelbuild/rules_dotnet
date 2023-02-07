@@ -68,5 +68,5 @@ sh_test(
         "@platforms//os:linux": [],
         "@platforms//os:macos": [],
     }),
-    toolchains = ["@dotnet_toolchains//:resolved_toolchain"],
+    toolchains = ["@rules_dotnet//dotnet:resolved_toolchain"],
 )
