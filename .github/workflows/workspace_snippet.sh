@@ -26,7 +26,7 @@ http_archive(
     name = "rules_dotnet",
     sha256 = "${SHA}",
     strip_prefix = "${PREFIX}",
-    url = "https://github.com/bazelbuild/rules_dotnet/releases/download/${TAG}/rules_mylang-${TAG}.tar.gz",
+    url = "https://github.com/bazelbuild/rules_dotnet/releases/download/${TAG}/rules_dotnet-${TAG}.tar.gz",
 )
 
 load(
