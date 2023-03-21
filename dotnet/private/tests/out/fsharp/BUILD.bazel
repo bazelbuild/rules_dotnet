@@ -1,0 +1,38 @@
+"Test that the `out` attribute works as expected"
+
+load(
+    "@rules_dotnet//dotnet:defs.bzl",
+    "fsharp_library",
+    "fsharp_nunit_test",
+)
+
+fsharp_nunit_test(
+    name = "lib_test",
+    srcs = ["libtest.fs"],
+    out = "OtherLibTest",
+    private_deps = [
+        "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
+    ],
+    target_frameworks = ["net6.0"],
+    deps = [
+        ":lib",
+        "@rules_dotnet_dev_nuget_packages//fsharp.core",
+    ],
+)
+
+fsharp_library(
+    name = "lib",
+    srcs = ["lib.fs"],
+    out = "OtherLib",
+    # Note that the we use the name that is used in the `out` attribute of the `lib_test` target.
+    internals_visible_to = [
+        "OtherLibTest",
+    ],
+    private_deps = [
+        "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
+    ],
+    target_frameworks = ["net6.0"],
+    deps = [
+        "@rules_dotnet_dev_nuget_packages//fsharp.core",
+    ],
+)

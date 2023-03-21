@@ -146,7 +146,7 @@ def AssemblyAction(
         exports_files,
         overrides,
     ) = collect_transitive_info(
-        target_name,
+        assembly_name,
         deps,
         private_deps,
         exports,
@@ -196,7 +196,7 @@ def AssemblyAction(
 
         internals_visible_to_fs = _write_internals_visible_to_fsharp(
             actions,
-            name = target_name,
+            name = assembly_name,
             others = internals_visible_to,
         )
         _compile(

@@ -130,7 +130,7 @@ def AssemblyAction(
         exports_files,
         overrides,
     ) = collect_transitive_info(
-        target_name,
+        assembly_name,
         deps + [toolchain.host_model] if include_host_model_dll else deps,
         private_deps,
         exports,
@@ -186,7 +186,7 @@ def AssemblyAction(
 
         internals_visible_to_cs = _write_internals_visible_to_csharp(
             actions,
-            name = target_name,
+            name = assembly_name,
             others = internals_visible_to,
         )
 

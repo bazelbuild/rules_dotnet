@@ -1,0 +1,35 @@
+"Test that the `out` attribute works as expected"
+
+load(
+    "@rules_dotnet//dotnet:defs.bzl",
+    "csharp_library",
+    "csharp_nunit_test",
+)
+
+csharp_nunit_test(
+    name = "lib_test",
+    srcs = ["libtest.cs"],
+    out = "OtherLibTest",
+    private_deps = [
+        "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
+    ],
+    target_frameworks = ["net6.0"],
+    deps = [
+        ":lib",
+    ],
+)
+
+csharp_library(
+    name = "lib",
+    srcs = ["lib.cs"],
+    out = "OtherLib",
+    # Note that the we use the name that is used in the `out` attribute of the `lib_test` target.
+    internals_visible_to = [
+        "OtherLibTest",
+    ],
+    private_deps = [
+        "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
+    ],
+    target_frameworks = ["net6.0"],
+    deps = [],
+)
