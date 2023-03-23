@@ -101,7 +101,6 @@ assert_contains(
     name = "check_output_run_self_contained",
     actual = ":run_self_contained",
     expected = "Hello World!",
-    target_compatible_with = select({
 )
 
 assert_contains(
