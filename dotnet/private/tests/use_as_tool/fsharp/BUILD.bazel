@@ -67,13 +67,6 @@ publish_binary(
         "@rules_dotnet//dotnet:rid_win-x64": ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.win-x64"],
     }),
     self_contained = True,
-
-    # Disabling this for Windows because there are some runfiles issues with Windows and self contained binaries
-    target_compatible_with = select({
-        "@platforms//os:windows": ["@platforms//:incompatible"],
-        "@platforms//os:linux": [],
-        "@platforms//os:macos": [],
-    }),
     target_framework = "net6.0",
 )
 
