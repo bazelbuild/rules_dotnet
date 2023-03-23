@@ -102,19 +102,10 @@ assert_contains(
     actual = ":run_self_contained",
     expected = "Hello World!",
     target_compatible_with = select({
-        "@platforms//os:windows": ["@platforms//:incompatible"],
-        "@platforms//os:linux": [],
-        "@platforms//os:macos": [],
-    }),
 )
 
 assert_contains(
     name = "check_output_run_shell_self_contained",
     actual = ":run_shell_self_contained",
     expected = "Hello World!",
-    target_compatible_with = select({
-        "@platforms//os:windows": ["@platforms//:incompatible"],
-        "@platforms//os:linux": [],
-        "@platforms//os:macos": [],
-    }),
 )
