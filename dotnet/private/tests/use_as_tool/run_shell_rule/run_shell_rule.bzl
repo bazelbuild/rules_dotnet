@@ -8,10 +8,9 @@ def _run_shell_rule_impl(ctx):
 
     ctx.actions.run_shell(
         outputs = [output],
-        arguments = [output.path],
         inputs = inputs,
         input_manifests = input_manifests,
-        command = "./{} %* > {}".format(ctx.executable.tool.path, output.path) if is_windows else "./{} $@ > {}".format(ctx.executable.tool.path, output.path),
+        command = "{} {}".format(ctx.executable.tool.path, output.path) if is_windows else "./{} {}".format(ctx.executable.tool.path, output.path),
     )
 
     return [DefaultInfo(files = depset([output]))]
