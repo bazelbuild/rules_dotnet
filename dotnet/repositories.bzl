@@ -30,9 +30,9 @@ def rules_dotnet_dependencies():
 
     http_archive(
         name = "aspect_bazel_lib",
-        sha256 = "79623d656aa23ad3fd4692ab99786c613cd36e49f5566469ed97bc9b4c655f03",
-        strip_prefix = "bazel-lib-1.23.3",
-        url = "https://github.com/aspect-build/bazel-lib/archive/refs/tags/v1.23.3.tar.gz",
+        sha256 = "ee95bbc80f9ca219b93a8cc49fa19a2d4aa8649ddc9024f46abcdd33935753ca",
+        strip_prefix = "bazel-lib-1.29.2",
+        url = "https://github.com/aspect-build/bazel-lib/releases/download/v1.29.2/bazel-lib-v1.29.2.tar.gz",
     )
 
 ########
