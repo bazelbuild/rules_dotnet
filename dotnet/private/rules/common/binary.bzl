@@ -91,6 +91,14 @@ def build_binary(ctx, compile_action):
     default_info_files = [dll]
     direct_runfiles = [dll] + result.data
 
+    app_host = None
+    if ctx.attr.apphost_shimmer:
+        app_host = _create_shim_exe(ctx, dll)
+        direct_runfiles.append(app_host)
+        default_info_files = default_info_files.append(app_host)
+
+    launcher = _create_launcher(ctx, direct_runfiles, dll)
+
     runtimeconfig = None
     depsjson = None
     if is_core_framework(tfm):
@@ -111,6 +119,8 @@ def build_binary(ctx, compile_action):
             "./external",
             "../",
             "../external",
+            # This one is for when the binary target is used as an tool in e.g. a custom rule
+            "{}.runfiles".format(launcher.path),
         ]
         ctx.actions.write(
             output = runtimeconfig,
@@ -137,14 +147,6 @@ def build_binary(ctx, compile_action):
 
     if depsjson != None:
         direct_runfiles.append(depsjson)
-
-    app_host = None
-    if ctx.attr.apphost_shimmer:
-        app_host = _create_shim_exe(ctx, dll)
-        direct_runfiles.append(app_host)
-        default_info_files = default_info_files.append(app_host)
-
-    launcher = _create_launcher(ctx, direct_runfiles, dll)
 
     default_info = DefaultInfo(
         executable = launcher,

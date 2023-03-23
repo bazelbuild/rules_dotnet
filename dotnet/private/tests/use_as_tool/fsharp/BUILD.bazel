@@ -1,0 +1,93 @@
+"""Tests for using *_binary rules for as tools in custom rules
+
+"""
+
+load(
+    "@rules_dotnet//dotnet:defs.bzl",
+    "fsharp_binary",
+    "fsharp_library",
+    "publish_binary",
+)
+load("@rules_dotnet//dotnet/private/tests/use_as_tool/run_rule:run_rule.bzl", "run_rule")
+load("@rules_dotnet//dotnet/private/tests/use_as_tool/run_shell_rule:run_shell_rule.bzl", "run_shell_rule")
+load("@aspect_bazel_lib//lib:testing.bzl", "assert_contains")
+
+# Test that normal binary targets work as tools
+fsharp_binary(
+    name = "main",
+    srcs = ["main.fs"],
+    private_deps = [
+        "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
+    ],
+    target_frameworks = ["net6.0"],
+    deps = [
+        ":lib",
+    ],
+)
+
+fsharp_library(
+    name = "lib",
+    srcs = ["lib.fs"],
+    private_deps = [
+        "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
+    ],
+    target_frameworks = ["net6.0"],
+    deps = [],
+)
+
+run_rule(
+    name = "run",
+    tool = ":main",
+)
+
+run_shell_rule(
+    name = "run_shell",
+    tool = ":main",
+)
+
+assert_contains(
+    name = "check_output_run",
+    actual = ":run",
+    expected = "Hello World!",
+)
+
+assert_contains(
+    name = "check_output_run_shell",
+    actual = ":run_shell",
+    expected = "Hello World!",
+)
+
+# Also test that self contained binaries are also usable as tools in custom rules
+publish_binary(
+    name = "publish_self_contained",
+    binary = ":main",
+    runtime_packs = select({
+        "@rules_dotnet//dotnet:rid_linux-x64": ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.linux-x64"],
+        "@rules_dotnet//dotnet:rid_osx-x64": ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.osx-x64"],
+        "@rules_dotnet//dotnet:rid_win-x64": ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.win-x64"],
+    }),
+    self_contained = True,
+    target_framework = "net6.0",
+)
+
+run_rule(
+    name = "run_self_contained",
+    tool = ":publish_self_contained",
+)
+
+run_shell_rule(
+    name = "run_shell_self_contained",
+    tool = ":publish_self_contained",
+)
+
+assert_contains(
+    name = "check_output_run_self_contained",
+    actual = ":run_self_contained",
+    expected = "Hello World!",
+)
+
+assert_contains(
+    name = "check_output_run_shell_self_contained",
+    actual = ":run_shell_self_contained",
+    expected = "Hello World!",
+)
