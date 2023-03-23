@@ -68,7 +68,7 @@ publish_binary(
     }),
     self_contained = True,
 
-    # Disabling this for Windows because there are some runfiles issues with Windows and rules_pkg
+    # Disabling this for Windows because there are some runfiles issues with Windows and self contained binaries
     target_compatible_with = select({
         "@platforms//os:windows": ["@platforms//:incompatible"],
         "@platforms//os:linux": [],
@@ -79,11 +79,21 @@ publish_binary(
 
 run_rule(
     name = "run_self_contained",
+    target_compatible_with = select({
+        "@platforms//os:windows": ["@platforms//:incompatible"],
+        "@platforms//os:linux": [],
+        "@platforms//os:macos": [],
+    }),
     tool = ":publish_self_contained",
 )
 
 run_shell_rule(
     name = "run_shell_self_contained",
+    target_compatible_with = select({
+        "@platforms//os:windows": ["@platforms//:incompatible"],
+        "@platforms//os:linux": [],
+        "@platforms//os:macos": [],
+    }),
     tool = ":publish_self_contained",
 )
 
@@ -91,10 +101,20 @@ assert_contains(
     name = "check_output_run_self_contained",
     actual = ":run_self_contained",
     expected = "Hello World!",
+    target_compatible_with = select({
+        "@platforms//os:windows": ["@platforms//:incompatible"],
+        "@platforms//os:linux": [],
+        "@platforms//os:macos": [],
+    }),
 )
 
 assert_contains(
     name = "check_output_run_shell_self_contained",
     actual = ":run_shell_self_contained",
     expected = "Hello World!",
+    target_compatible_with = select({
+        "@platforms//os:windows": ["@platforms//:incompatible"],
+        "@platforms//os:linux": [],
+        "@platforms//os:macos": [],
+    }),
 )
