@@ -22,3 +22,15 @@ bzl_library(
         "@bazel_skylib//lib:dicts",
     ],
 )
+
+bzl_library(
+    name = "default_transition",
+    srcs = ["default_transition.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+    deps = [
+        ":common",
+        "//dotnet/private:common",
+        "//dotnet/private:rids",
+        "@bazel_skylib//lib:dicts",
+    ],
+)

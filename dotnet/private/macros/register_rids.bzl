@@ -1,6 +1,7 @@
 "Register TFM flags and set up the compatibility chains"
 
 load("@bazel_skylib//rules:common_settings.bzl", "bool_setting", "string_flag")
+load("//dotnet/private:common.bzl", "DEFAULT_RID")
 load(
     "//dotnet/private:rids.bzl",
     "RUNTIME_GRAPH",
@@ -12,7 +13,7 @@ def register_rids():
     string_flag(
         name = "rid",
         values = RUNTIME_GRAPH.keys(),
-        build_setting_default = "base",
+        build_setting_default = DEFAULT_RID,
         visibility = ["//visibility:public"],
     )
 

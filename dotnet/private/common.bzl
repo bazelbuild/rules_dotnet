@@ -19,6 +19,9 @@ def _collect_transitive():
         t[framework] = sets.union(sets.make([framework]), *[t[c] for c in compat])
     return t
 
+DEFAULT_TFM = "net7.0"
+DEFAULT_RID = "base"
+
 # A dict of target frameworks to the set of other framworks it can compile
 # against. This relationship is transitive. The order of this dictionary also
 # matters. netstandard should appear first, and keys within a family should

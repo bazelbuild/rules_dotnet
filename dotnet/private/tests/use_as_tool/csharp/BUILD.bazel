@@ -19,7 +19,7 @@ csharp_binary(
     private_deps = [
         "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net6.0"],
+    target_frameworks = ["net7.0"],
     deps = [
         ":lib",
     ],
@@ -67,7 +67,7 @@ publish_binary(
         "@rules_dotnet//dotnet:rid_win-x64": ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.win-x64"],
     }),
     self_contained = True,
-    target_framework = "net6.0",
+    target_framework = "net7.0",
 )
 
 run_rule(
@@ -90,4 +90,24 @@ assert_contains(
     name = "check_output_run_shell_self_contained",
     actual = ":run_shell_self_contained",
     expected = "Hello World!",
+)
+
+# We also set up a scenario where we have two separate binaries where one is targeting a TFM
+# that is not compatible with the other. One of the binaries is going to be a dependency of the
+# custom rule we have and is using it as a tool and the other is using the output of the custom
+# rule as a data dependency. This is to test that the TFM resolution for the two different binaries
+# should be independent of each other.
+csharp_binary(
+    name = "other_binaary",
+    srcs = ["main.cs"],
+    data = [
+        ":run",
+    ],
+    private_deps = [
+        "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
+    ],
+    target_frameworks = ["net6.0"],
+    deps = [
+        ":lib",
+    ],
 )

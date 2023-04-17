@@ -5,6 +5,7 @@ load("@bazel_skylib//lib:dicts.bzl", "dicts")
 load("@bazel_skylib//rules:common_settings.bzl", "bool_setting", "string_flag")
 load(
     "//dotnet/private:common.bzl",
+    "DEFAULT_TFM",
     "FRAMEWORK_COMPATIBILITY",
     "TRANSITIVE_FRAMEWORK_COMPATIBILITY",
 )
@@ -19,7 +20,7 @@ def register_tfms():
     string_flag(
         name = "target_framework",
         values = FRAMEWORK_COMPATIBILITY.keys(),
-        build_setting_default = "net7.0",
+        build_setting_default = DEFAULT_TFM,
         visibility = ["//visibility:public"],
     )
 
