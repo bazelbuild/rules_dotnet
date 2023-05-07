@@ -12,8 +12,8 @@ a Bazel test.
 ## csharp_test
 
 <pre>
-csharp_test(<a href="#csharp_test-name">name</a>, <a href="#csharp_test-additionalfiles">additionalfiles</a>, <a href="#csharp_test-allow_unsafe">allow_unsafe</a>, <a href="#csharp_test-apphost_shimmer">apphost_shimmer</a>, <a href="#csharp_test-compile_data">compile_data</a>, <a href="#csharp_test-data">data</a>, <a href="#csharp_test-defines">defines</a>, <a href="#csharp_test-deps">deps</a>,
-            <a href="#csharp_test-internals_visible_to">internals_visible_to</a>, <a href="#csharp_test-keyfile">keyfile</a>, <a href="#csharp_test-langversion">langversion</a>, <a href="#csharp_test-out">out</a>, <a href="#csharp_test-override_strict_deps">override_strict_deps</a>,
+csharp_test(<a href="#csharp_test-name">name</a>, <a href="#csharp_test-additionalfiles">additionalfiles</a>, <a href="#csharp_test-allow_unsafe_blocks">allow_unsafe_blocks</a>, <a href="#csharp_test-apphost_shimmer">apphost_shimmer</a>, <a href="#csharp_test-compile_data">compile_data</a>, <a href="#csharp_test-data">data</a>,
+            <a href="#csharp_test-defines">defines</a>, <a href="#csharp_test-deps">deps</a>, <a href="#csharp_test-internals_visible_to">internals_visible_to</a>, <a href="#csharp_test-keyfile">keyfile</a>, <a href="#csharp_test-langversion">langversion</a>, <a href="#csharp_test-out">out</a>, <a href="#csharp_test-override_strict_deps">override_strict_deps</a>,
             <a href="#csharp_test-override_treat_warnings_as_errors">override_treat_warnings_as_errors</a>, <a href="#csharp_test-override_warning_level">override_warning_level</a>, <a href="#csharp_test-override_warnings_as_errors">override_warnings_as_errors</a>,
             <a href="#csharp_test-override_warnings_not_as_errors">override_warnings_not_as_errors</a>, <a href="#csharp_test-private_deps">private_deps</a>, <a href="#csharp_test-project_sdk">project_sdk</a>, <a href="#csharp_test-resources">resources</a>, <a href="#csharp_test-runtime_identifier">runtime_identifier</a>,
             <a href="#csharp_test-srcs">srcs</a>, <a href="#csharp_test-strict_deps">strict_deps</a>, <a href="#csharp_test-target_frameworks">target_frameworks</a>, <a href="#csharp_test-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#csharp_test-warning_level">warning_level</a>,
@@ -29,7 +29,7 @@ Compiles a C# executable and runs it as a test
 | :------------- | :------------- | :------------- | :------------- | :------------- |
 | <a id="csharp_test-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/concepts/labels#target-names">Name</a> | required |  |
 | <a id="csharp_test-additionalfiles"></a>additionalfiles |  Extra files to configure analyzers.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
-| <a id="csharp_test-allow_unsafe"></a>allow_unsafe |  Allow compiling unsafe code. It true, /unsafe is passed to the compiler.   | Boolean | optional | False |
+| <a id="csharp_test-allow_unsafe_blocks"></a>allow_unsafe_blocks |  Allow compiling unsafe code. It true, /unsafe is passed to the compiler.   | Boolean | optional | False |
 | <a id="csharp_test-apphost_shimmer"></a>apphost_shimmer |  -   | <a href="https://bazel.build/concepts/labels">Label</a> | optional | None |
 | <a id="csharp_test-compile_data"></a>compile_data |  Additional compile time files.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
 | <a id="csharp_test-data"></a>data |  Runtime files. It is recommended to use the @rules_dotnet//tools/runfiles library to read the runtime files.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |

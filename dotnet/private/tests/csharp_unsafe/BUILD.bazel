@@ -7,7 +7,7 @@ load(
 csharp_library(
     name = "Unsafe",
     srcs = ["unsafe.cs"],
-    allow_unsafe = True,
+    allow_unsafe_blocks = True,
     private_deps = [
         "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
     ],
