@@ -27,7 +27,7 @@ Compile a C# exe
 | :------------- | :------------- | :------------- | :------------- | :------------- |
 | <a id="csharp_binary-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/concepts/labels#target-names">Name</a> | required |  |
 | <a id="csharp_binary-additionalfiles"></a>additionalfiles |  Extra files to configure analyzers.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
-| <a id="csharp_binary-allow_unsafe"></a>allow_unsafe |  Allow to compile unsafe code. It true, /unsafe is pass to the compiler.   | Boolean | optional | False |
+| <a id="csharp_binary-allow_unsafe"></a>allow_unsafe |  Allow compiling unsafe code. It true, /unsafe is passed to the compiler.   | Boolean | optional | False |
 | <a id="csharp_binary-apphost_shimmer"></a>apphost_shimmer |  -   | <a href="https://bazel.build/concepts/labels">Label</a> | optional | None |
 | <a id="csharp_binary-compile_data"></a>compile_data |  Additional compile time files.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
 | <a id="csharp_binary-data"></a>data |  Runtime files. It is recommended to use the @rules_dotnet//tools/runfiles library to read the runtime files.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
