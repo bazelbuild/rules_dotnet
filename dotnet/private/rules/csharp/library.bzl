@@ -42,7 +42,7 @@ def _compile_action(ctx, tfm):
         warnings_not_as_errors = ctx.attr.warnings_not_as_errors if ctx.attr.override_warnings_not_as_errors else toolchain.dotnetinfo.csharp_warnings_not_as_errors[BuildSettingInfo].value,
         warning_level = ctx.attr.warning_level if ctx.attr.override_warning_level else toolchain.dotnetinfo.csharp_warning_level[BuildSettingInfo].value,
         project_sdk = ctx.attr.project_sdk,
-        unsafe = ctx.attr.unsafe,
+        allow_unsafe = ctx.attr.allow_unsafe,
     )
 
 def _library_impl(ctx):
