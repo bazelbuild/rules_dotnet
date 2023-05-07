@@ -211,7 +211,7 @@ CSHARP_COMMON_ATTRS = dicts.add(
             cfg = default_transition,
         ),
         "allow_unsafe": attr.bool(
-            doc = "Allow to compile unsafe code. It true, /unsafe is pass to the compiler.",
+            doc = "Allow compiling unsafe code. It true, /unsafe is passed to the compiler.",
             mandatory = False,
             default = False,
         ),
