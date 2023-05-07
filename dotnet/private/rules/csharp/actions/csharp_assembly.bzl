@@ -78,7 +78,7 @@ def AssemblyAction(
         warnings_not_as_errors,
         warning_level,
         project_sdk,
-        allow_unsafe):
+        unsafe):
     """Creates an action that runs the CSharp compiler with the specified inputs.
 
     This macro aims to match the [C# compiler](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/listed-alphabetically), with the inputs mapping to compiler options.
@@ -111,7 +111,7 @@ def AssemblyAction(
         warnings_not_as_errors: List of warnings to not treat errors.
         warning_level: The warning level to use.
         project_sdk: The project sdk being targeted
-        allow_unsafe: Compiles the target with /unsafe
+        unsafe: Compiles the target with /unsafe
     Returns:
         The compiled csharp artifacts.
     """
@@ -176,7 +176,7 @@ def AssemblyAction(
             warnings_as_errors,
             warnings_not_as_errors,
             warning_level,
-            allow_unsafe,
+            unsafe,
             out_dll = out_dll,
             out_ref = out_ref,
             out_pdb = out_pdb,
@@ -219,7 +219,7 @@ def AssemblyAction(
             warnings_as_errors,
             warnings_not_as_errors,
             warning_level,
-            allow_unsafe,
+            unsafe,
             out_ref = out_iref,
             out_dll = out_dll,
             out_pdb = out_pdb,
@@ -252,7 +252,7 @@ def AssemblyAction(
             warnings_as_errors,
             warnings_not_as_errors,
             warning_level,
-            allow_unsafe,
+            unsafe,
             out_dll = None,
             out_ref = out_ref,
             out_pdb = None,
@@ -308,7 +308,7 @@ def _compile(
         warnings_as_errors,
         warnings_not_as_errors,
         warning_level,
-        allow_unsafe,
+        unsafe,
         out_dll = None,
         out_ref = None,
         out_pdb = None):
@@ -316,7 +316,7 @@ def _compile(
     # https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/listed-alphabetically
     args = actions.args()
     args.add("/unsafe-")
-    if (allow_unsafe):
+    if (unsafe):
         args.add("/unsafe+")
     else:
         args.add("/unsafe-")
