@@ -1,0 +1,28 @@
+load(
+    "@rules_dotnet//dotnet:defs.bzl",
+    "csharp_library",
+    "csharp_nunit_test",
+)
+
+csharp_library(
+    name = "Nullable",
+    srcs = ["nullable.cs"],
+    nullable = "enable",
+    private_deps = [
+        "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
+    ],
+    target_frameworks = ["net6.0"],
+    treat_warnings_as_errors = True,
+)
+
+csharp_nunit_test(
+    name = "NullableTest",
+    srcs = ["nullabletest.cs"],
+    private_deps = [
+        "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
+    ],
+    target_frameworks = ["net6.0"],
+    deps = [
+        ":Nullable",
+    ],
+)

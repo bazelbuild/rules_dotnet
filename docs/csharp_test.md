@@ -13,11 +13,12 @@ a Bazel test.
 
 <pre>
 csharp_test(<a href="#csharp_test-name">name</a>, <a href="#csharp_test-additionalfiles">additionalfiles</a>, <a href="#csharp_test-allow_unsafe_blocks">allow_unsafe_blocks</a>, <a href="#csharp_test-apphost_shimmer">apphost_shimmer</a>, <a href="#csharp_test-compile_data">compile_data</a>, <a href="#csharp_test-data">data</a>,
-            <a href="#csharp_test-defines">defines</a>, <a href="#csharp_test-deps">deps</a>, <a href="#csharp_test-internals_visible_to">internals_visible_to</a>, <a href="#csharp_test-keyfile">keyfile</a>, <a href="#csharp_test-langversion">langversion</a>, <a href="#csharp_test-out">out</a>, <a href="#csharp_test-override_strict_deps">override_strict_deps</a>,
-            <a href="#csharp_test-override_treat_warnings_as_errors">override_treat_warnings_as_errors</a>, <a href="#csharp_test-override_warning_level">override_warning_level</a>, <a href="#csharp_test-override_warnings_as_errors">override_warnings_as_errors</a>,
-            <a href="#csharp_test-override_warnings_not_as_errors">override_warnings_not_as_errors</a>, <a href="#csharp_test-private_deps">private_deps</a>, <a href="#csharp_test-project_sdk">project_sdk</a>, <a href="#csharp_test-resources">resources</a>, <a href="#csharp_test-runtime_identifier">runtime_identifier</a>,
-            <a href="#csharp_test-srcs">srcs</a>, <a href="#csharp_test-strict_deps">strict_deps</a>, <a href="#csharp_test-target_frameworks">target_frameworks</a>, <a href="#csharp_test-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#csharp_test-warning_level">warning_level</a>,
-            <a href="#csharp_test-warnings_as_errors">warnings_as_errors</a>, <a href="#csharp_test-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#csharp_test-winexe">winexe</a>)
+            <a href="#csharp_test-defines">defines</a>, <a href="#csharp_test-deps">deps</a>, <a href="#csharp_test-internals_visible_to">internals_visible_to</a>, <a href="#csharp_test-keyfile">keyfile</a>, <a href="#csharp_test-langversion">langversion</a>, <a href="#csharp_test-nullable">nullable</a>, <a href="#csharp_test-out">out</a>,
+            <a href="#csharp_test-override_strict_deps">override_strict_deps</a>, <a href="#csharp_test-override_treat_warnings_as_errors">override_treat_warnings_as_errors</a>, <a href="#csharp_test-override_warning_level">override_warning_level</a>,
+            <a href="#csharp_test-override_warnings_as_errors">override_warnings_as_errors</a>, <a href="#csharp_test-override_warnings_not_as_errors">override_warnings_not_as_errors</a>, <a href="#csharp_test-private_deps">private_deps</a>, <a href="#csharp_test-project_sdk">project_sdk</a>,
+            <a href="#csharp_test-resources">resources</a>, <a href="#csharp_test-runtime_identifier">runtime_identifier</a>, <a href="#csharp_test-srcs">srcs</a>, <a href="#csharp_test-strict_deps">strict_deps</a>, <a href="#csharp_test-target_frameworks">target_frameworks</a>,
+            <a href="#csharp_test-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#csharp_test-warning_level">warning_level</a>, <a href="#csharp_test-warnings_as_errors">warnings_as_errors</a>, <a href="#csharp_test-warnings_not_as_errors">warnings_not_as_errors</a>,
+            <a href="#csharp_test-winexe">winexe</a>)
 </pre>
 
 Compiles a C# executable and runs it as a test
@@ -38,6 +39,7 @@ Compiles a C# executable and runs it as a test
 | <a id="csharp_test-internals_visible_to"></a>internals_visible_to |  Other libraries that can see the assembly's internal symbols. Using this rather than the InternalsVisibleTo assembly attribute will improve build caching.   | List of strings | optional | [] |
 | <a id="csharp_test-keyfile"></a>keyfile |  The key file used to sign the assembly with a strong name.   | <a href="https://bazel.build/concepts/labels">Label</a> | optional | None |
 | <a id="csharp_test-langversion"></a>langversion |  The version string for the language.   | String | optional | "" |
+| <a id="csharp_test-nullable"></a>nullable |  Enable nullable context, or nullable warnings.   | String | optional | "disable" |
 | <a id="csharp_test-out"></a>out |  File name, without extension, of the built assembly.   | String | optional | "" |
 | <a id="csharp_test-override_strict_deps"></a>override_strict_deps |  Whether or not to override the strict_deps attribute.   | Boolean | optional | False |
 | <a id="csharp_test-override_treat_warnings_as_errors"></a>override_treat_warnings_as_errors |  Whether or not to override the treat_warnings_as_errors attribute.   | Boolean | optional | False |

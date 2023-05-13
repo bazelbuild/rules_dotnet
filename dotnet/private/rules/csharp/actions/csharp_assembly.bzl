@@ -78,7 +78,8 @@ def AssemblyAction(
         warnings_not_as_errors,
         warning_level,
         project_sdk,
-        allow_unsafe_blocks):
+        allow_unsafe_blocks,
+        nullable):
     """Creates an action that runs the CSharp compiler with the specified inputs.
 
     This macro aims to match the [C# compiler](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/listed-alphabetically), with the inputs mapping to compiler options.
@@ -112,6 +113,7 @@ def AssemblyAction(
         warning_level: The warning level to use.
         project_sdk: The project sdk being targeted
         allow_unsafe_blocks: Compiles the target with /unsafe
+        nullable: Enable nullable context, or nullable warnings.
     Returns:
         The compiled csharp artifacts.
     """
@@ -177,6 +179,7 @@ def AssemblyAction(
             warnings_not_as_errors,
             warning_level,
             allow_unsafe_blocks,
+            nullable,
             out_dll = out_dll,
             out_ref = out_ref,
             out_pdb = out_pdb,
@@ -220,6 +223,7 @@ def AssemblyAction(
             warnings_not_as_errors,
             warning_level,
             allow_unsafe_blocks,
+            nullable,
             out_ref = out_iref,
             out_dll = out_dll,
             out_pdb = out_pdb,
@@ -253,6 +257,7 @@ def AssemblyAction(
             warnings_not_as_errors,
             warning_level,
             allow_unsafe_blocks,
+            nullable,
             out_dll = None,
             out_ref = out_ref,
             out_pdb = None,
@@ -309,6 +314,7 @@ def _compile(
         warnings_not_as_errors,
         warning_level,
         allow_unsafe_blocks,
+        nullable,
         out_dll = None,
         out_ref = None,
         out_pdb = None):
@@ -332,6 +338,15 @@ def _compile(
         args.add("/highentropyva+")
     else:
         args.add("/highentropyva-")
+
+    if (nullable == "enable"):
+        args.add("/nullable:enable")
+    elif (nullable == "warnings"):
+        args.add("/nullable:warnings")
+    elif (nullable == "annotations"):
+        args.add("/nullable:annotations")
+    else:
+        args.add("/nullable:disable")
 
     if subsystem_version != None:
         args.add("/subsystemversion:" + subsystem_version)

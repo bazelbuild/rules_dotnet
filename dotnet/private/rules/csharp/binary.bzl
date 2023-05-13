@@ -44,6 +44,7 @@ def _compile_action(ctx, tfm):
         warning_level = ctx.attr.warning_level if ctx.attr.override_warning_level else toolchain.dotnetinfo.csharp_warning_level[BuildSettingInfo].value,
         project_sdk = ctx.attr.project_sdk,
         allow_unsafe_blocks = ctx.attr.allow_unsafe_blocks,
+        nullable = ctx.attr.nullable,
     )
 
 def _binary_private_impl(ctx):

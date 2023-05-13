@@ -215,6 +215,12 @@ CSHARP_COMMON_ATTRS = dicts.add(
             mandatory = False,
             default = False,
         ),
+        "nullable": attr.string(
+            doc = "Enable nullable context, or nullable warnings.",
+            mandatory = False,
+            default = "disable",
+            values = ["disable", "enable", "warnings", "annotations"],
+        ),
     },
 )
 
