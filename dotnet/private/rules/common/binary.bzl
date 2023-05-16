@@ -26,11 +26,6 @@ def _create_shim_exe(ctx, dll):
         inputs = depset([apphost, dll], transitive = [ctx.attr.apphost_shimmer.default_runfiles.files]),
         tools = [ctx.attr.apphost_shimmer.files, ctx.attr.apphost_shimmer.default_runfiles.files],
         outputs = [output],
-        env = {
-            # Set so that compilations work on remote execution workers that don't have ICU installed
-            # ICU should not be required during compliation but only at runtime
-            "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT": "1",
-        },
     )
 
     return output

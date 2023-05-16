@@ -5,6 +5,7 @@ test --test_output=errors
 
 # Remote config
 build:remote --remote_download_minimal
+build:remote --action_env=DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
 
 # Profiling flags
 build --noslim_profile

@@ -91,3 +91,10 @@ and one of the reasons for Paket being a great fit with Bazel is that it support
 out of the box.
 
 See the [paket2bazel](tools/paket2bazel/) docs for instructions on how to set Paket up with Bazel.
+
+## Remote execution
+
+The rules support remote execution out of the box. The remote runners do need to have the required .Net
+system dependencies installed though. A common missing system dependency in existing RBE images is `libicu`.
+You can also work around the missing `libicu` by setting `DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1` using
+the `--action_env/--test_env/--host_action_env` Bazel flags.
