@@ -1,5 +1,9 @@
 "NuGet Archive"
-
+load(
+    "@bazel_tools//tools/build_defs/repo:utils.bzl",
+    "read_netrc",
+    "use_netrc",
+)
 load(
     "//dotnet/private:common.bzl",
     "COR_FRAMEWORKS",
@@ -282,11 +286,20 @@ def _nuget_archive_impl(ctx):
     else:
         nuget_sources = [ctx.attr.source]
     urls = [s.format(id = ctx.attr.id, version = ctx.attr.version) for s in nuget_sources]
-    auth = {url: {
-        "type": "basic",
-        "login": "user",
-        "password": "TODO",
-    } for url in urls}
+    if ctx.attr.netrc_file == "":
+        auth = {url: {
+            "type": "basic",
+            "login": "user",
+            "password": "TODO",
+        } for url in urls}
+    else:
+        netrc = read_netrc(ctx, ctx.attr.netrc_file)
+        cred_dict = use_netrc(netrc, urls, {
+            "type": "basic",
+            "login": "<login>",
+            "password": "<password>",
+        })
+        auth = {url: cred_dict[url] for url in urls}
 
     ctx.download_and_extract(urls, type = "zip", integrity = ctx.attr.sha512, auth = auth)
 
@@ -331,6 +344,7 @@ nuget_archive = repository_rule(
     _nuget_archive_impl,
     attrs = {
         "source": attr.string(),
+        "netrc_file": attr.string(),
         "id": attr.string(),
         "version": attr.string(),
         "sha512": attr.string(),
