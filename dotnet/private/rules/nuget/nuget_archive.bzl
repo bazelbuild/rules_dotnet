@@ -277,7 +277,10 @@ def _process_key_and_file(groups, key, file):
     return
 
 def _nuget_archive_impl(ctx):
-    nuget_sources = ["https://www.nuget.org/api/v2/package/{id}/{version}"]
+    if ctx.attr.source == "":
+        nuget_sources = ["https://www.nuget.org/api/v2/package/{id}/{version}"]
+    else:
+        nuget_sources = [ctx.attr.source]
     urls = [s.format(id = ctx.attr.id, version = ctx.attr.version) for s in nuget_sources]
     auth = {url: {
         "type": "basic",
@@ -327,6 +330,7 @@ load("@rules_dotnet//dotnet/private/rules/nuget:nuget_archive.bzl", "tfm_filegro
 nuget_archive = repository_rule(
     _nuget_archive_impl,
     attrs = {
+        "source": attr.string(),
         "id": attr.string(),
         "version": attr.string(),
         "sha512": attr.string(),
