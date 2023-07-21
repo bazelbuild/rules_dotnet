@@ -43,7 +43,7 @@ _nuget_repo = repository_rule(
 )
 
 # buildifier: disable=function-docstring
-def nuget_repo(name, packages, source):
+def nuget_repo(name, packages, source = None):
     # TODO: Add docs
     # scaffold individual nuget archives
     for (package_name, version, sha512, _deps, _targeting_pack_overrides) in packages:
