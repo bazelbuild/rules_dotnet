@@ -286,13 +286,8 @@ def _nuget_archive_impl(ctx):
     else:
         nuget_sources = [ctx.attr.source]
     urls = [s.format(id = ctx.attr.id, version = ctx.attr.version) for s in nuget_sources]
-    if ctx.attr.netrc_file == "":
-        auth = {url: {
-            "type": "basic",
-            "login": "user",
-            "password": "TODO",
-        } for url in urls}
-    else:
+    auth = {}
+    if ctx.attr.netrc_file != "":
         netrc = read_netrc(ctx, ctx.attr.netrc_file)
         cred_dict = use_netrc(netrc, urls, {
             "type": "basic",
