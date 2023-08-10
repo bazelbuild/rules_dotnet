@@ -7,6 +7,7 @@ type Package =
       group: string
       version: string
       sha512sri: string
+      sources: string seq
       dependencies: Map<string, seq<string>>
       overrides: string seq }
 

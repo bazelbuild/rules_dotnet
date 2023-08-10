@@ -28,6 +28,7 @@ bzl_library(
     deps = [
         "//dotnet/private:common",
         "//dotnet/private:rids",
+        "@bazel_tools//tools/build_defs/repo:utils.bzl",
     ],
 )
 

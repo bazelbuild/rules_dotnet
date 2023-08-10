@@ -1,7 +1,9 @@
 "NuGet Archive"
+
 load(
     "@bazel_tools//tools/build_defs/repo:utils.bzl",
     "read_netrc",
+    "read_user_netrc",
     "use_netrc",
 )
 load(
@@ -280,22 +282,64 @@ def _process_key_and_file(groups, key, file):
 
     return
 
-def _nuget_archive_impl(ctx):
-    if ctx.attr.source == "":
-        nuget_sources = ["https://www.nuget.org/api/v2/package/{id}/{version}"]
-    else:
-        nuget_sources = [ctx.attr.source]
-    urls = [s.format(id = ctx.attr.id, version = ctx.attr.version) for s in nuget_sources]
-    auth = {}
-    if ctx.attr.netrc_file != "":
-        netrc = read_netrc(ctx, ctx.attr.netrc_file)
-        cred_dict = use_netrc(netrc, urls, {
-            "type": "basic",
-            "login": "<login>",
-            "password": "<password>",
-        })
-        auth = {url: cred_dict[url] for url in urls}
+def _get_package_urls(rctx, sources, auth, package_id, package_version):
+    base_addresses = {}
+    package_urls = []
 
+    for source in sources:
+        if base_addresses.get(source):
+            continue
+
+        # If the url ends with index.json we are dealing with a V3 NuGet feed
+        # and the url schema for the package contents will be:
+        # {base_address}/{lower_id}/{lower_version}/{lower_id}.{lower_version}.nupkg
+        if source.endswith("index.json"):
+            rctx.download(source, auth = auth, output = "index.json")
+            index = json.decode(rctx.read("index.json"))
+            rctx.delete("index.json")
+            for resource in index["resources"]:
+                if resource["@type"] == "PackageBaseAddress/3.0.0":
+                    base_addresses[source] = resource["@id"]
+                    package_urls.append(
+                        "{base_address}/{package_id}/{package_version}/{package_id}.{package_version}.nupkg".format(
+                            base_address = resource["@id"],
+                            package_id = package_id.lower(),
+                            package_version = package_version.lower(),
+                        ),
+                    )
+        else:
+            # Else we expect the url to be a V2 NuGet feed and the url schema for the
+            # package contents will be: {source}/package/{id}/{version}
+            base_addresses[source] = source
+            package_urls.append("{source}/{package_id}/{package_version}".format(source = source, package_id = package_id, package_version = package_version))
+
+    return package_urls
+
+def _get_auth_dict(ctx, netrc, urls):
+    # Default to the user's netrc
+    netrc = read_user_netrc(ctx)
+
+    # If there is an netrc file declared for the specific package
+    # we use that one instead of the user netrc
+    if ctx.attr.netrc:
+        netrc = read_netrc(ctx, netrc)
+
+    cred_dict = use_netrc(netrc, urls, {
+        "type": "basic",
+        "login": "<login>",
+        "password": "<password>",
+    })
+
+    return cred_dict
+
+def _nuget_archive_impl(ctx):
+    # First get the auth dict for the package sources since the sources can be different than the
+    # package base url when using NuGet V3 feeds.
+    auth = _get_auth_dict(ctx, ctx.attr.netrc, ctx.attr.sources)
+    urls = _get_package_urls(ctx, ctx.attr.sources, auth, ctx.attr.id, ctx.attr.version)
+
+    # Then get the auth dict for the package base urls
+    auth = _get_auth_dict(ctx, ctx.attr.netrc, urls)
     ctx.download_and_extract(urls, type = "zip", integrity = ctx.attr.sha512, auth = auth)
 
     files = _read_dir(ctx, ".").replace(str(ctx.path(".")) + "/", "").splitlines()
@@ -338,8 +382,8 @@ load("@rules_dotnet//dotnet/private/rules/nuget:nuget_archive.bzl", "tfm_filegro
 nuget_archive = repository_rule(
     _nuget_archive_impl,
     attrs = {
-        "source": attr.string(),
-        "netrc_file": attr.string(),
+        "sources": attr.string_list(),
+        "netrc": attr.string(),
         "id": attr.string(),
         "version": attr.string(),
         "sha512": attr.string(),

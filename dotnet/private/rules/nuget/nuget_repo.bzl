@@ -43,10 +43,10 @@ _nuget_repo = repository_rule(
 )
 
 # buildifier: disable=function-docstring
-def nuget_repo(name, packages, source = None, netrc_file = None):
+def nuget_repo(name, packages):
     # TODO: Add docs
     # scaffold individual nuget archives
-    for (package_name, version, sha512, _deps, _targeting_pack_overrides) in packages:
+    for (package_name, version, sha512, sources, netrc, _deps, _targeting_pack_overrides) in packages:
         package_name = package_name.lower()
         version = version.lower()
 
@@ -54,8 +54,8 @@ def nuget_repo(name, packages, source = None, netrc_file = None):
         maybe(
             nuget_archive,
             name = "{}.{}.v{}".format(_GLOBAL_NUGET_PREFIX, package_name, version),
-            source = source,
-            netrc_file = netrc_file,
+            sources = sources,
+            netrc = netrc,
             id = package_name,
             version = version,
             sha512 = sha512,
@@ -64,6 +64,6 @@ def nuget_repo(name, packages, source = None, netrc_file = None):
     # scaffold transitive @name// dependency tree
     _nuget_repo(
         name = name,
-        packages = {"{}|{}|{}".format(name, version, sha512): deps for (name, version, sha512, deps, _) in packages},
-        targeting_pack_overrides = {"{}".format(name.lower()): targeting_pack_overrides for (name, _, _, _, targeting_pack_overrides) in packages},
+        packages = {"{}|{}|{}".format(name, version, sha512): deps for (name, version, sha512, _sources, _netrc, deps, _) in packages},
+        targeting_pack_overrides = {"{}".format(name.lower()): targeting_pack_overrides for (name, _, _, _, _, _, targeting_pack_overrides) in packages},
     )

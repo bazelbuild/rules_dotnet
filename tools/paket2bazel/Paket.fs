@@ -56,7 +56,7 @@ let getSha512Sri (packageName: string) (packageVersion: string) =
     let base64 = Convert.ToBase64String(sha512Hash.ComputeHash(stream))
 
     $"sha512-{base64}"
-    
+
 
 let getDependenciesPerTFM (tfms: NuGetFramework seq) (allDeps: string seq) (packageReader: PackageFolderReader) =
     let frameworkReducer = FrameworkReducer()
@@ -84,12 +84,12 @@ let getOverrides (packageName: string) (packageVersion: string) (packageReader: 
     packageReader.GetItems "data"
     |> Seq.collect (fun f -> f.Items)
     |> Seq.tryFind (fun f -> f.EndsWith("PackageOverrides.txt"))
-    |> Option.map (fun f -> 
-            let path = Path.Combine((getPackageFolderPath packageName packageVersion), f)
-            let lines = File.ReadAllLines(path)
+    |> Option.map (fun f ->
+        let path = Path.Combine((getPackageFolderPath packageName packageVersion), f)
+        let lines = File.ReadAllLines(path)
 
-            lines |> Array.filter (fun l -> not(String.IsNullOrEmpty l))
-        )
+        lines
+        |> Array.filter (fun l -> not (String.IsNullOrEmpty l)))
     |> Option.defaultValue [||]
 
 let getDependencies dependenciesFile (cache: Dictionary<string, Package>) =
@@ -123,6 +123,13 @@ let getDependencies dependenciesFile (cache: Dictionary<string, Package>) =
                         failwith
                             "Framework auto detection is not supported by paket2bazel. Please specify framework restrictions in the paket.dependencies file."
 
+                let sources =
+                    deps.GetDependenciesFile().Groups.Item(
+                        Domain.GroupName group
+                    )
+                        .Sources
+                    |> Seq.map (fun s -> s.Url)
+
                 let packagesInGroup =
                     packages
                     |> Seq.map (fun (_, name, version) ->
@@ -139,6 +146,7 @@ let getDependencies dependenciesFile (cache: Dictionary<string, Package>) =
                                 { name = name
                                   group = group
                                   sha512sri = sha256
+                                  sources = sources
                                   version = NuGetVersion.Parse(version).ToFullString()
                                   dependencies =
                                     getDependenciesPerTFM

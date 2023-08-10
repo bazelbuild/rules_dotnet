@@ -40,8 +40,17 @@ let generateTarget (group: Group) (repoName: string) =
                 else
                     s.Substring(0, s.Length - 2))
 
+        let sources =
+            package.sources
+            |> Seq.fold (fun state current -> state + $"\"{current}\", ") ""
+            |> (fun s ->
+                if String.IsNullOrEmpty(s) then
+                    s
+                else
+                    s.Substring(0, s.Length - 2))
+
         sb.Append(
-            $"{i}        (\"{package.name}\", \"{package.version}\", \"{package.sha512sri}\", [{packageDeps}], [{overrides}]),\n"
+            $"{i}        (\"{package.name}\", \"{package.version}\", \"{package.sha512sri}\", [{sources}], None, [{packageDeps}], [{overrides}]),\n"
         )
         |> ignore
 
