@@ -301,7 +301,7 @@ def _get_package_urls(rctx, sources, auth, package_id, package_version):
                 if resource["@type"] == "PackageBaseAddress/3.0.0":
                     base_addresses[source] = resource["@id"]
                     package_urls.append(
-                        "{base_address}/{package_id}/{package_version}/{package_id}.{package_version}.nupkg".format(
+                        "{base_address}{package_id}/{package_version}/{package_id}.{package_version}.nupkg".format(
                             base_address = resource["@id"],
                             package_id = package_id.lower(),
                             package_version = package_version.lower(),
