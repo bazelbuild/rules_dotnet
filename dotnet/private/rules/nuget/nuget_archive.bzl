@@ -322,7 +322,7 @@ def _get_auth_dict(ctx, netrc, urls):
     # If there is an netrc file declared for the specific package
     # we use that one instead of the user netrc
     if ctx.attr.netrc:
-        netrc = read_netrc(ctx, netrc)
+        netrc = read_netrc(ctx, ctx.attr.netrc)
 
     cred_dict = use_netrc(netrc, urls, {
         "type": "basic",
@@ -383,7 +383,7 @@ nuget_archive = repository_rule(
     _nuget_archive_impl,
     attrs = {
         "sources": attr.string_list(),
-        "netrc": attr.string(),
+        "netrc": attr.label(),
         "id": attr.string(),
         "version": attr.string(),
         "sha512": attr.string(),

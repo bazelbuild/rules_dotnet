@@ -8,7 +8,7 @@ open System.Text
 open Paket2Bazel.Models
 open System.IO
 
-let generateTarget (group: Group) (repoName: string) =
+let generateTarget (group: Group) (repoName: string) (netrcLabel: string option) =
     let i = "    "
     let sb = new StringBuilder()
     sb.Append($"{i}nuget_repo(\n") |> ignore
@@ -49,8 +49,13 @@ let generateTarget (group: Group) (repoName: string) =
                 else
                     s.Substring(0, s.Length - 2))
 
+        let netrc =
+            match netrcLabel with
+            | Some (path) -> $"\"{path}\""
+            | None -> "None"
+
         sb.Append(
-            $"{i}        (\"{package.name}\", \"{package.version}\", \"{package.sha512sri}\", [{sources}], None, [{packageDeps}], [{overrides}]),\n"
+            $"{i}        (\"{package.name}\", \"{package.version}\", \"{package.sha512sri}\", [{sources}], {netrc}, [{packageDeps}], [{overrides}]),\n"
         )
         |> ignore
 
@@ -76,21 +81,27 @@ let addFileHeaderContent (sb: StringBuilder) (fileName: string) =
     sb.Append($"    \"{fileName}\"") |> ignore
     sb.Append("\n") |> ignore
 
-let addGroupToFileContent (sb: StringBuilder) (group: Group) (repoNamePrefix: string option) =
+let addGroupToFileContent
+    (sb: StringBuilder)
+    (group: Group)
+    (repoNamePrefix: string option)
+    (netrcLabel: string option)
+    =
     let repoName =
         match repoNamePrefix with
         | Some (prefix) -> $"{prefix}.{group.name.ToLower()}"
         | None -> group.name.ToLower()
 
-    sb.Append(generateTarget group repoName) |> ignore
+    sb.Append(generateTarget group repoName netrcLabel)
+    |> ignore
 
-let generateBazelFiles (groups: Group seq) (separateFiles: bool) (outputFolder: string) =
+let generateBazelFiles (groups: Group seq) (separateFiles: bool) (outputFolder: string) (netrcLabel: string option) =
     if separateFiles then
         groups
         |> Seq.iter (fun group ->
             let sb = new StringBuilder()
             addFileHeaderContent sb group.name
-            addGroupToFileContent sb group None
+            addGroupToFileContent sb group None netrcLabel
             File.WriteAllText($"{outputFolder}/{group.name.ToLower()}.bzl", sb.ToString()))
     else
         let sb = new StringBuilder()
@@ -99,6 +110,6 @@ let generateBazelFiles (groups: Group seq) (separateFiles: bool) (outputFolder: 
 
         groups
         |> Seq.sortBy (fun i -> i.name)
-        |> Seq.iter (fun g -> addGroupToFileContent sb g (Some "paket"))
+        |> Seq.iter (fun g -> addGroupToFileContent sb g (Some "paket") netrcLabel)
 
         File.WriteAllText($"{outputFolder}/paket.bzl", sb.ToString())
