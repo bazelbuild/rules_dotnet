@@ -360,12 +360,24 @@ def _nuget_archive_impl(ctx):
 
         _process_key_and_file(groups, key, file)
 
-    # in some runtime specific edge cases there exist certain tfm refs but the libs are not shipped
     if groups.get("ref") and groups.get("lib"):
         libs = groups.get("lib")
+        refs = groups.get("ref")
+
+        # in some runtime specific edge cases there exist certain tfm refs but the libs are not shipped
         for (tfm, _) in groups.get("ref").items():
             if tfm not in libs:
                 libs[tfm] = []
+
+        # We add an empty entry for each tfm that does not exist in the refs
+        # because that way the generated select statement will contain all the
+        # supported tfms and thus we can omit an default case in the select which
+        # would make the build graph more fragile and harder to debug since instead
+        # of Bazel complaining that a some tfm is not supported for a package you would
+        # possibly get an error during compilation
+        for (tfm, _) in groups.get("lib").items():
+            if tfm not in refs:
+                refs[tfm] = []
 
     ctx.file("BUILD.bazel", r"""package(default_visibility = ["//visibility:public"])
 exports_files(glob(["**"]))

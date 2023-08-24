@@ -1,10 +1,13 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load(":runtimes.bzl", "runtimes_structure")
 load(":typeproviders.bzl", "typeproviders_structure")
+load(":resolution.bzl", "resolution_structure")
 
 typeproviders_structure()
 
 runtimes_structure()
+
+resolution_structure()
 
 bzl_library(
     name = "common",

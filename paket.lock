@@ -372,7 +372,7 @@ NUGET
       System.Drawing.Common (>= 6.0)
 
 GROUP rules_dotnet_dev_nuget_packages
-RESTRICTION: || (== net6.0) (== netstandard2.1)
+RESTRICTION: || (== net6.0) (== netstandard2.0) (== netstandard2.1)
 NUGET
   remote: https://api.nuget.org/v3/index.json
     FSharp.Core (6.0.3)
@@ -387,6 +387,13 @@ NUGET
     Microsoft.NETCore.App.Runtime.osx-x64 (6.0.8)
     Microsoft.NETCore.App.Runtime.win-x64 (6.0.8)
     NETStandard.Library.Ref (2.1)
+    System.Buffers (4.5.1) - restriction: || (&& (== net6.0) (>= monotouch)) (&& (== net6.0) (>= net461)) (&& (== net6.0) (< netcoreapp2.0)) (&& (== net6.0) (< netstandard1.1)) (&& (== net6.0) (< netstandard2.0)) (&& (== net6.0) (>= xamarinios)) (&& (== net6.0) (>= xamarinmac)) (&& (== net6.0) (>= xamarintvos)) (&& (== net6.0) (>= xamarinwatchos)) (== netstandard2.0) (== netstandard2.1)
+    System.Memory (4.5.5)
+      System.Buffers (>= 4.5.1) - restriction: || (&& (== net6.0) (>= monotouch)) (&& (== net6.0) (>= net461)) (&& (== net6.0) (< netcoreapp2.0)) (&& (== net6.0) (< netstandard1.1)) (&& (== net6.0) (< netstandard2.0)) (&& (== net6.0) (>= xamarinios)) (&& (== net6.0) (>= xamarinmac)) (&& (== net6.0) (>= xamarintvos)) (&& (== net6.0) (>= xamarinwatchos)) (== netstandard2.0) (== netstandard2.1)
+      System.Numerics.Vectors (>= 4.4) - restriction: || (&& (== net6.0) (< netcoreapp2.0)) (== netstandard2.0) (== netstandard2.1)
+      System.Runtime.CompilerServices.Unsafe (>= 4.5.3) - restriction: || (&& (== net6.0) (>= monotouch)) (&& (== net6.0) (>= net461)) (&& (== net6.0) (< netcoreapp2.0)) (&& (== net6.0) (< netcoreapp2.1)) (&& (== net6.0) (< netstandard1.1)) (&& (== net6.0) (< netstandard2.0)) (&& (== net6.0) (>= uap10.1)) (&& (== net6.0) (>= xamarinios)) (&& (== net6.0) (>= xamarinmac)) (&& (== net6.0) (>= xamarintvos)) (&& (== net6.0) (>= xamarinwatchos)) (== netstandard2.0) (== netstandard2.1)
+    System.Numerics.Vectors (4.5) - restriction: || (&& (== net6.0) (< netcoreapp2.0)) (== netstandard2.0) (== netstandard2.1)
+    System.Runtime.CompilerServices.Unsafe (6.0) - restriction: || (&& (== net6.0) (>= monotouch)) (&& (== net6.0) (>= net461)) (&& (== net6.0) (< netcoreapp2.0)) (&& (== net6.0) (< netcoreapp2.1)) (&& (== net6.0) (< netstandard1.1)) (&& (== net6.0) (< netstandard2.0)) (&& (== net6.0) (>= uap10.1)) (&& (== net6.0) (>= xamarinios)) (&& (== net6.0) (>= xamarinmac)) (&& (== net6.0) (>= xamarintvos)) (&& (== net6.0) (>= xamarinwatchos)) (== netstandard2.0) (== netstandard2.1)
     System.Security.Principal.Windows (5.0)
 
 GROUP rules_dotnet_nuget_packages
