@@ -13,6 +13,46 @@ open NuGet.Versioning
 open System.Buffers.Text
 open System
 
+// List of the supportd TFMS in rules_dotnet
+// Needs to be updated when a new TFM is released
+let tfms =
+    [ "netstandard"
+      "netstandard1.0"
+      "netstandard1.1"
+      "netstandard1.2"
+      "netstandard1.3"
+      "netstandard1.4"
+      "netstandard1.5"
+      "netstandard1.6"
+      "netstandard2.0"
+      "netstandard2.1"
+      "net11"
+      "net20"
+      "net30"
+      "net35"
+      "net40"
+      "net403"
+      "net45"
+      "net451"
+      "net452"
+      "net46"
+      "net461"
+      "net462"
+      "net47"
+      "net471"
+      "net472"
+      "net48"
+      "netcoreapp1.0"
+      "netcoreapp1.1"
+      "netcoreapp2.0"
+      "netcoreapp2.1"
+      "netcoreapp2.2"
+      "netcoreapp3.0"
+      "netcoreapp3.1"
+      "net5.0"
+      "net6.0"
+      "net7.0" ]
+    |> Seq.map (fun f -> NuGetFramework.Parse(f))
 
 let getPackageFilePath (packageName: string) (packageVersion: string) =
     Paket.NuGetCache.GetTargetUserNupkg (Domain.PackageName packageName) (Paket.SemVer.Parse packageVersion)
@@ -103,25 +143,6 @@ let getDependencies dependenciesFile (cache: Dictionary<string, Package>) =
             deps.GetInstalledPackages()
             |> Seq.groupBy (fun (group, name, version) -> group)
             |> Seq.map (fun (group, packages) ->
-
-                let tfms =
-                    match
-                        deps.GetDependenciesFile()
-                            .Groups
-                            .Item(Domain.GroupName group)
-                            .Options
-                            .Settings
-                            .FrameworkRestrictions
-                        with
-                    | Paket.Requirements.ExplicitRestriction restriction ->
-                        restriction.RepresentedFrameworks
-                        |> Seq.map (fun r ->
-                            r.Frameworks
-                            |> Seq.map (fun f -> NuGetFramework.Parse(f.ToString())))
-                        |> Seq.concat
-                    | Paket.Requirements.AutoDetectFramework ->
-                        failwith
-                            "Framework auto detection is not supported by paket2bazel. Please specify framework restrictions in the paket.dependencies file."
 
                 let sources =
                     deps.GetDependenciesFile().Groups.Item(

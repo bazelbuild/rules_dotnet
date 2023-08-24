@@ -13,5 +13,7 @@ import_library(
     sha512 = "{SHA_512}",
     targeting_pack_overrides = {TARGETING_PACK_OVERRIDES},
     version = "{VERSION}",
-    deps = [{DEPS}],
+    deps = select({
+        {DEPS},
+    }),
 )
