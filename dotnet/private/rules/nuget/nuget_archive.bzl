@@ -163,6 +163,44 @@ def _process_ref_file(groups, file):
 
     return
 
+def _process_build_file(groups, file):
+    # See: https://learn.microsoft.com/en-us/nuget/concepts/msbuild-props-and-targets#framework-specific-build-folder
+    i = file.find("/")
+    tfm_start = i + 1
+    tfm_end = file.find("/", i + 1)
+    tfm = file[tfm_start:tfm_end]
+    file_type = file[tfm_end + 1:file.find("/", tfm_end + 1)]
+
+    if tfm not in FRAMEWORK_COMPATIBILITY:
+        return
+
+    if not file.endswith(".dll") or file.endswith(".resources.dll"):
+        return
+
+    if file_type == "ref":
+        if not groups.get("ref"):
+            groups["ref"] = {}
+
+        group = groups["ref"]
+
+        if not group.get(tfm):
+            group[tfm] = []
+
+        group[tfm].append(file)
+
+    if file_type == "lib":
+        if not groups.get("lib"):
+            groups["lib"] = {}
+
+        group = groups["lib"]
+
+        if not group.get(tfm):
+            group[tfm] = []
+
+        group[tfm].append(file)
+
+    return
+
 def _process_analyzer_file(groups, file):
     if (not file.endswith(".dll")) or file.endswith("resources.dll"):
         return
@@ -279,6 +317,8 @@ def _process_key_and_file(groups, key, file):
         _process_typeprovider_file(groups, file)
     elif key == "runtimes":
         _process_runtimes_file(groups, file)
+    elif key == "build":
+        _process_build_file(groups, file)
 
     return
 

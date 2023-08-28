@@ -19,4 +19,7 @@ NUGET
     Microsoft.NETCore.App.Runtime.linux-x64 (6.0.8)
     Microsoft.NETCore.App.Runtime.osx-x64 (6.0.8)
     Microsoft.NETCore.App.Runtime.win-x64 (6.0.8)
+    Microsoft.NETCore.Platforms (7.0.4)
     Mono.Cecil (0.11.4)
+    NETStandard.Library (2.0.3)
+      Microsoft.NETCore.Platforms (>= 1.1)
