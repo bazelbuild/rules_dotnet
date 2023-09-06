@@ -15,8 +15,8 @@ load(
     "DEFAULT_TFM",
     "FRAMEWORK_COMPATIBILITY",
 )
-load("//dotnet/private/transitions:common.bzl", "FRAMEWORK_COMPATABILITY_TRANSITION_OUTPUTS", "RID_COMPATABILITY_TRANSITION_OUTPUTS")
 load("//dotnet/private:rids.bzl", "RUNTIME_GRAPH")
+load("//dotnet/private/transitions:common.bzl", "FRAMEWORK_COMPATABILITY_TRANSITION_OUTPUTS", "RID_COMPATABILITY_TRANSITION_OUTPUTS")
 
 def _impl(settings, _attr):
     incoming_tfm = settings["@rules_dotnet//dotnet:target_framework"]

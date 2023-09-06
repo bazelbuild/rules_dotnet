@@ -2,13 +2,13 @@
 Rules for importing assemblies for .NET frameworks.
 """
 
+load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 load(
     "//dotnet/private:common.bzl",
     "collect_transitive_info",
     "transform_deps",
 )
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "NuGetInfo")
-load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 
 def _import_library(ctx):
     (

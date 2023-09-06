@@ -2,6 +2,7 @@
 
 """
 
+load("@aspect_bazel_lib//lib:testing.bzl", "assert_contains")
 load(
     "@rules_dotnet//dotnet:defs.bzl",
     "fsharp_binary",
@@ -10,7 +11,6 @@ load(
 )
 load("@rules_dotnet//dotnet/private/tests/use_as_tool/run_rule:run_rule.bzl", "run_rule")
 load("@rules_dotnet//dotnet/private/tests/use_as_tool/run_shell_rule:run_shell_rule.bzl", "run_shell_rule")
-load("@aspect_bazel_lib//lib:testing.bzl", "assert_contains")
 
 # Test that normal binary targets work as tools
 fsharp_binary(

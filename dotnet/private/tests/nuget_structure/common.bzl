@@ -3,13 +3,13 @@
 load("@bazel_skylib//lib:unittest.bzl", "analysistest", "asserts")
 
 # buildifier: disable=bzl-visibility
+load("//dotnet/private:common.bzl", "get_nuget_relative_path")
+
+# buildifier: disable=bzl-visibility
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "NuGetInfo")
 
 # buildifier: disable=bzl-visibility
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
-
-# buildifier: disable=bzl-visibility
-load("//dotnet/private:common.bzl", "get_nuget_relative_path")
 
 def _get_nuget_relative_paths(files):
     return [get_nuget_relative_path(file) for file in files]

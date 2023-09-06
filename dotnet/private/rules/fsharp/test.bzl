@@ -5,15 +5,15 @@ This rule can be used to compile and run any F# binary and run it as
 a Bazel test.
 """
 
-load("//dotnet/private/rules/fsharp/actions:fsharp_assembly.bzl", "AssemblyAction")
+load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 load(
     "//dotnet/private:common.bzl",
     "is_debug",
 )
-load("//dotnet/private/rules/common:binary.bzl", "build_binary")
 load("//dotnet/private/rules/common:attrs.bzl", "FSHARP_BINARY_COMMON_ATTRS")
+load("//dotnet/private/rules/common:binary.bzl", "build_binary")
+load("//dotnet/private/rules/fsharp/actions:fsharp_assembly.bzl", "AssemblyAction")
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
-load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 
 def _compile_action(ctx, tfm):
     toolchain = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"]

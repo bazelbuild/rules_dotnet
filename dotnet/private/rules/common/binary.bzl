@@ -2,7 +2,9 @@
 Base rule for building .Net binaries
 """
 
-load("//dotnet/private:providers.bzl", "DotnetBinaryInfo")
+load("@aspect_bazel_lib//lib:paths.bzl", "to_manifest_path")
+load("@bazel_skylib//lib:paths.bzl", "paths")
+load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 load(
     "//dotnet/private:common.bzl",
     "generate_depsjson",
@@ -10,9 +12,7 @@ load(
     "is_core_framework",
     "is_standard_framework",
 )
-load("@bazel_skylib//lib:paths.bzl", "paths")
-load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
-load("@aspect_bazel_lib//lib:paths.bzl", "to_manifest_path")
+load("//dotnet/private:providers.bzl", "DotnetBinaryInfo")
 
 def _create_shim_exe(ctx, dll):
     windows_constraint = ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]

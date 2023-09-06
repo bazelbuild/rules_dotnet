@@ -2,15 +2,15 @@
 Rule for compiling C# libraries.
 """
 
-load("//dotnet/private/rules/csharp/actions:csharp_assembly.bzl", "AssemblyAction")
 load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
-load("//dotnet/private/rules/common:library.bzl", "build_library")
-load("//dotnet/private/rules/common:attrs.bzl", "CSHARP_LIBRARY_COMMON_ATTRS")
-load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 load(
     "//dotnet/private:common.bzl",
     "is_debug",
 )
+load("//dotnet/private/rules/common:attrs.bzl", "CSHARP_LIBRARY_COMMON_ATTRS")
+load("//dotnet/private/rules/common:library.bzl", "build_library")
+load("//dotnet/private/rules/csharp/actions:csharp_assembly.bzl", "AssemblyAction")
+load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 
 def _compile_action(ctx, tfm):
     toolchain = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"]

@@ -2,8 +2,8 @@
 
 load("@bazel_skylib//lib:dicts.bzl", "dicts")
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo")
-load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 load("//dotnet/private/transitions:default_transition.bzl", "default_transition")
+load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 
 # These are attributes that are common across all the binary/library/test .Net rules
 COMMON_ATTRS = {

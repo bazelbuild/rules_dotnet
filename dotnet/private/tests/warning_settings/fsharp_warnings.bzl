@@ -1,7 +1,7 @@
 "F# Warning settings"
 
-load("//dotnet:defs.bzl", "fsharp_library")
 load("@bazel_skylib//lib:unittest.bzl", "analysistest")
+load("//dotnet:defs.bzl", "fsharp_library")
 load("//dotnet/private/tests:utils.bzl", "ACTION_ARGS_TEST_ARGS", "action_args_test", "action_args_test_impl")
 
 fsharp_treat_warnings_as_errors_config_wrapper_test = analysistest.make(

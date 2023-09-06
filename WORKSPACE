@@ -1,7 +1,7 @@
 workspace(name = "rules_dotnet")
 
-load(":internal_deps.bzl", "rules_dotnet_internal_deps")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load(":internal_deps.bzl", "rules_dotnet_internal_deps")
 
 # Fetch deps needed only locally for development
 rules_dotnet_internal_deps()
@@ -40,10 +40,11 @@ load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
 
 rules_pkg_dependencies()
 
+load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
+
 ############################################
 # Gazelle, for generating bzl_library targets
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
-load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 
 go_rules_dependencies()
 

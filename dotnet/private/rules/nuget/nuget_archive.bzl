@@ -51,7 +51,7 @@ def _read_dir(repository_ctx, src_dir):
     return result
 
 def _create_framework_select(name, group):
-    if not group:
+    if len(group) == 0:
         return None
 
     result = ["tfm_filegroup(\"%s\", {\n" % name]
@@ -68,7 +68,7 @@ def _create_framework_select(name, group):
     return "".join(result)
 
 def _create_rid_native_select(name, group):
-    if not group:
+    if len(group) == 0:
         return None
 
     result = ["rid_filegroup(\"%s\", {\n" % name]
@@ -77,7 +77,7 @@ def _create_rid_native_select(name, group):
         result.append(' "')
         result.append(rid)
         result.append('": [')
-        result.append(",".join(["\n   \"{}\"".format(item) for item in items["native"]]))
+        result.append(",".join(["\n   \"{}\"".format(item) for item in items]))
         result.append("],\n")
 
     result.append("})")
@@ -91,50 +91,24 @@ def _sanitize_path(file_path):
 
     return file_path
 
-def _process_lib_file(groups, file):
-    i = file.find("/")
-    tfm_start = i + 1
-    tfm_end = file.find("/", i + 1)
-    tfm = file[tfm_start:tfm_end]
-
+# We have encountered some packages that have non-standard TFM names
+# and we replace the non-standard names with the standard names here
+def _replace_non_standard_tfm(tfm):
     if tfm == "netstandard20":
-        tfm = "netstandard2.0"
+        return "netstandard2.0"
 
     if tfm == "netstandard21":
-        tfm = "netstandard2.1"
+        return "netstandard2.1"
 
-    if tfm not in FRAMEWORK_COMPATIBILITY:
-        return
+    return tfm
 
-    # If the folder is empty we do nothing
-    if file.find("/", tfm_end + 1) != -1:
-        return
-
-    if not groups.get("lib"):
-        groups["lib"] = {}
-
-    group = groups["lib"]
-
-    if not group.get(tfm):
-        group[tfm] = []
-
-    # If the folder contains a _._ file we create the group but do not add the file to it
-    # to indicate that there was an _._ file in the folder.
-    if file.endswith("_._"):
-        return
-
-    if not file.endswith(".dll") or file.endswith(".resources.dll"):
-        return
-
-    group[tfm].append(file)
-
-    return
-
-def _process_ref_file(groups, file):
+# This function processes a package file that has the following format:
+# <group>/<tfm>/<file>
+def _process_group_with_tfm(groups, group_name, file):
     i = file.find("/")
     tfm_start = i + 1
     tfm_end = file.find("/", i + 1)
-    tfm = file[tfm_start:tfm_end]
+    tfm = _replace_non_standard_tfm(file[tfm_start:tfm_end])
 
     if tfm not in FRAMEWORK_COMPATIBILITY:
         return
@@ -143,16 +117,14 @@ def _process_ref_file(groups, file):
     if file.find("/", tfm_end + 1) != -1:
         return
 
-    if not groups.get("ref"):
-        groups["ref"] = {}
-
-    group = groups["ref"]
+    group = groups[group_name]
 
     if not group.get(tfm):
         group[tfm] = []
 
     # If the folder contains a _._ file we create the group but do not add the file to it
-    # to indicate that there was an _._ file in the folder.
+    # to indicate that there was an _._ file in the folder. The file indicates that the
+    # package is compatible with the TFM.
     if file.endswith("_._"):
         return
 
@@ -164,7 +136,6 @@ def _process_ref_file(groups, file):
     return
 
 def _process_build_file(groups, file):
-    # See: https://learn.microsoft.com/en-us/nuget/concepts/msbuild-props-and-targets#framework-specific-build-folder
     i = file.find("/")
     tfm_start = i + 1
     tfm_end = file.find("/", i + 1)
@@ -177,27 +148,42 @@ def _process_build_file(groups, file):
     if not file.endswith(".dll") or file.endswith(".resources.dll"):
         return
 
+    group = groups["build"]
+
+    if not group.get(tfm):
+        group[tfm] = {
+            "lib": [],
+            "ref": [],
+        }
+
     if file_type == "ref":
-        if not groups.get("ref"):
-            groups["ref"] = {}
-
-        group = groups["ref"]
-
-        if not group.get(tfm):
-            group[tfm] = []
-
-        group[tfm].append(file)
+        group[tfm]["ref"].append(file)
 
     if file_type == "lib":
-        if not groups.get("lib"):
-            groups["lib"] = {}
+        group[tfm]["lib"].append(file)
 
-        group = groups["lib"]
+    return
 
-        if not group.get(tfm):
-            group[tfm] = []
+def _process_typeprovider_file(groups, file):
+    if not file.endswith(".dll"):
+        return
 
-        group[tfm].append(file)
+    parts = file.split("/")
+
+    if len(parts) < 3:
+        return
+
+    tfm = parts[2]
+
+    if tfm not in FRAMEWORK_COMPATIBILITY:
+        return
+
+    group = groups["typeproviders"]
+
+    if not group.get(tfm):
+        group[tfm] = []
+
+    group[tfm].append(file)
 
     return
 
@@ -216,36 +202,7 @@ def _process_content_file(groups, file):
 
     return
 
-def _process_typeprovider_file(groups, file):
-    # See https://github.com/fsharp/fslang-design/blob/main/tooling/FST-1003-loading-type-provider-design-time-components.md
-
-    if not file.endswith(".dll"):
-        return
-
-    parts = file.split("/")
-
-    if len(parts) < 3:
-        return
-
-    tfm = parts[2]
-
-    if tfm not in FRAMEWORK_COMPATIBILITY:
-        return
-
-    if not groups.get("lib"):
-        groups["lib"] = {}
-
-    group = groups["lib"]
-
-    if not group.get(tfm):
-        group[tfm] = []
-
-    group[tfm].append(file)
-
-    return
-
 def _process_runtimes_file(groups, file):
-    # See https://docs.microsoft.com/en-us/nuget/create-packages/supporting-multiple-target-frameworks#architecture-specific-folders
     parts = file.split("/")
 
     if len(parts) < 2:
@@ -271,44 +228,27 @@ def _process_runtimes_file(groups, file):
         group[rid]["native"].append(file)
 
     if parts[2] == "lib":
-        # If there are TFM specific folders under the runtimes folder
-        # we add the files in those folders to the lib group with the
-        # TFM set to a combination of the TFM and RID. That way the
-        # RID specific lib files will be picked if the RID is part of the
-        # TFM constraint.
         tfm = parts[3]
 
         if tfm not in FRAMEWORK_COMPATIBILITY:
             return
 
-        combined_tfm_and_rid = "{}_{}".format(tfm, rid)
-
-        if not groups.get("lib"):
-            groups["lib"] = {}
-
-        lib_group = groups["lib"]
-
-        if not lib_group.get(combined_tfm_and_rid):
-            lib_group[combined_tfm_and_rid] = []
-
-        # If the folder contains a _._ file we create the group but do not add the file to it
-        # to indicate that there was an _._ file in the folder.
-        if file.endswith("_._"):
-            return
-
         if not file.endswith(".dll") or file.endswith(".resources.dll"):
             return
 
-        lib_group[combined_tfm_and_rid].append(file)
+        if not group[rid]["lib"].get(tfm):
+            group[rid]["lib"][tfm] = []
+
+        group[rid]["lib"][tfm].append(file)
 
     return
 
 def _process_key_and_file(groups, key, file):
     # todo resource dlls
     if key == "lib":
-        _process_lib_file(groups, file)
+        _process_group_with_tfm(groups, key, file)
     elif key == "ref":
-        _process_ref_file(groups, file)
+        _process_group_with_tfm(groups, key, file)
     elif key == "analyzers":
         _process_analyzer_file(groups, file)
     elif key == "contentFiles":
@@ -384,12 +324,35 @@ def _nuget_archive_impl(ctx):
 
     files = _read_dir(ctx, ".").replace(str(ctx.path(".")) + "/", "").splitlines()
 
+    # The NuGet package format
     groups = {
+        # See https://learn.microsoft.com/en-us/nuget/guides/analyzers-conventions
+        # Example: analyzers/dotnet/cs/System.Runtime.CSharp.Analyzers.dll
+        # NB: The analyzers supports is not fully implemented yet
         "analyzers": {
             "dotnet": [],
         },
+        # See: https://devblogs.microsoft.com/nuget/nuget-contentfiles-demystified/
+        # NB: Only the any group is supported at the moment
         "contentFiles": {
             "any": [],
+        },
+        # Format: lib/<TFM>/<assembly>.dll
+        "lib": {},
+        # Format: ref/<TFM>/<assembly>.dll
+        "ref": {},
+        # See https://github.com/fsharp/fslang-design/blob/main/tooling/FST-1003-loading-type-provider-design-time-components.md
+        # Format: typeproviders/<TFM>/<assembly>.dll
+        "typeproviders": {},
+        # See https://docs.microsoft.com/en-us/nuget/create-packages/supporting-multiple-target-frameworks#architecture-specific-folders
+        # Format: runtimes/<RID>/native/<assembly>.dll OR runtimes/<RID>/lib/<TFM>/<assembly>.dll
+        "runtimes": {
+        },
+        # See: https://learn.microsoft.com/en-us/nuget/concepts/msbuild-props-and-targets#framework-specific-build-folder
+        # Format: build/<TFM>/ref/<assembly>.dll OR build/<TFM>/lib/<assembly>.dll
+        # NB: This folder could be tricky to support globally because packages can bring MSBuild targets with them and we don't support that
+        #     currently we just blindly add the files to the lib or ref group depending on the folder name
+        "build": {
         },
     }
 
@@ -400,34 +363,88 @@ def _nuget_archive_impl(ctx):
 
         _process_key_and_file(groups, key, file)
 
-    if groups.get("ref") and groups.get("lib"):
-        libs = groups.get("lib")
-        refs = groups.get("ref")
+    # Now that we have processed all the files we need to make sure that they are correctly set to be
+    # either a runtime dependency or a compile time dependency. Dependency resolution in .Net is fun!
 
-        # in some runtime specific edge cases there exist certain tfm refs but the libs are not shipped
-        for (tfm, _) in groups.get("ref").items():
-            if tfm not in libs:
-                libs[tfm] = []
+    ##########################################
+    # Let's start with the compile time dlls
+    # The rules are like this:
+    # - If there are dlls for a TFM in the ref folder then they are a compile time dll
+    # - If there are dlls for a TFM in the lib folder but not in the ref folder we know that
+    #   the package is compatible with that TFM and the lib entry should be used as a compile time dll
+    # - If there are dlls for a TFM in the ref folder under the build folder then they are a compile time dll
+    ##########################################
+    refs = {}
 
-        # We add an empty entry for each tfm that does not exist in the refs
-        # because that way the generated select statement will contain all the
-        # supported tfms and thus we can omit an default case in the select which
-        # would make the build graph more fragile and harder to debug since instead
-        # of Bazel complaining that a some tfm is not supported for a package you would
-        # possibly get an error during compilation
-        for (tfm, _) in groups.get("lib").items():
+    for (tfm, files) in groups.get("ref").items():
+        refs[tfm] = files
+
+    for (tfm, files) in groups.get("lib").items():
+        if tfm not in refs:
+            refs[tfm] = files
+
+    for (tfm, ref_or_lib) in groups.get("build").items():
+        if ref_or_lib.get("ref"):
             if tfm not in refs:
-                refs[tfm] = []
+                refs[tfm] = ref_or_lib.get("ref")
+            else:
+                refs[tfm].extend(ref_or_lib.get("ref"))
+
+    ######################################
+    # Now we move on to the runtime dlls
+    # The rules are like this:
+    # - If there are dlls for a TFM in the lib folder they are a runtime dll
+    # - If there are dlls for a TFM in the ref folder but not in the lib folder we know that the
+    #   package supports the TFM so we need to create an empty configuration for the TFM since
+    #   files in the ref folder are never runtime dependencies
+    # - If there are dlls for a TFM in the the typeproviders folder they are a runtime dll
+    # - If there are dlls for a TFM in the the build folder they are a runtime dll
+    # - If there are dlls for a TFM in the runtimes folder they are a runtime dll and should
+    #   replace the dll in the toplevel lib folder for a the TFM and RID combination
+    # - If there are files for an RID in the native folder under runtimes then they are runtime dependencies
+    #   when the target platform is compatible with the RID
+    #####################################
+    libs = {}
+    native = {}
+
+    for (tfm, files) in groups.get("lib").items():
+        libs[tfm] = files
+
+    for (tfm, _) in groups.get("ref").items():
+        if tfm not in libs:
+            libs[tfm] = []
+
+    for (tfm, files) in groups.get("typeproviders").items():
+        if libs.get(tfm):
+            libs[tfm].extend(files)
+        else:
+            libs[tfm] = files
+
+    for (tfm, ref_or_lib) in groups.get("build").items():
+        if ref_or_lib.get("lib"):
+            if tfm not in libs:
+                libs[tfm] = ref_or_lib.get("lib")
+            else:
+                libs[tfm].extend(ref_or_lib.get("lib"))
+
+    for (rid, files_for_rid) in groups.get("runtimes").items():
+        native[rid] = files_for_rid.get("native")
+        for (tfm, tfm_files) in files_for_rid.get("lib").items():
+            # We create a combined TFM and RID entry for the lib files
+            # This entry will only be matched when the Bazel configuration
+            # is configured to this exact RID and TFM combination
+            combined_tfm_and_rid = "{}_{}".format(tfm, rid)
+            libs[combined_tfm_and_rid] = tfm_files
 
     ctx.file("BUILD.bazel", r"""package(default_visibility = ["//visibility:public"])
 exports_files(glob(["**"]))
 load("@rules_dotnet//dotnet/private/rules/nuget:nuget_archive.bzl", "tfm_filegroup", "rid_filegroup")
 """ + "\n".join([
-        _create_framework_select("libs", groups.get("lib")) or "filegroup(name = \"libs\", srcs = [])",
-        _create_framework_select("refs", groups.get("ref")) or _create_framework_select("refs", groups.get("lib")) or "filegroup(name = \"refs\", srcs = [])",
+        _create_framework_select("libs", libs) or "filegroup(name = \"libs\", srcs = [])",
+        _create_framework_select("refs", refs) or "filegroup(name = \"refs\", srcs = [])",
         "filegroup(name = \"analyzers\", srcs = [%s])" % ",".join(["\n  \"%s\"" % a for a in groups.get("analyzers")["dotnet"]]),
         "filegroup(name = \"data\", srcs = [])",
-        _create_rid_native_select("native", groups.get("runtimes")) or "filegroup(name = \"native\", srcs = [])",
+        _create_rid_native_select("native", native) or "filegroup(name = \"native\", srcs = [])",
         "filegroup(name = \"content_files\", srcs = [%s])" % ",".join(["\n  \"%s\"" % a for a in groups.get("contentFiles")["any"]]),
     ]))
 

@@ -16,5 +16,5 @@ def resolution_structure():
         name = "should_resolve_system.memory_netstandard2.0_linux-x64_correctly",
         target_under_test = ":System.Memory.netstandard2.0",
         expected_libs = ["lib/netstandard2.0/System.Memory.dll"],
-        expected_refs = [],
+        expected_refs = ["lib/netstandard2.0/System.Memory.dll"],
     )

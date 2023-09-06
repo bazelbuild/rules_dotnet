@@ -2,11 +2,11 @@
 Rules for compiling F# binaries.
 """
 
+load("@aspect_bazel_lib//lib:paths.bzl", "to_manifest_path")
 load("@bazel_skylib//lib:shell.bzl", "shell")
+load("//dotnet/private:common.bzl", "generate_depsjson", "generate_runtimeconfig")
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "DotnetBinaryInfo", "DotnetPublishBinaryInfo")
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
-load("//dotnet/private:common.bzl", "generate_depsjson", "generate_runtimeconfig")
-load("@aspect_bazel_lib//lib:paths.bzl", "to_manifest_path")
 
 def _publish_binary_impl(ctx):
     runtime_pack_infos = []

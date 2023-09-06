@@ -1,7 +1,7 @@
 "Register TFM flags and set up the compatibility chains"
 
-load("@bazel_skylib//lib:sets.bzl", "sets")
 load("@bazel_skylib//lib:dicts.bzl", "dicts")
+load("@bazel_skylib//lib:sets.bzl", "sets")
 load("@bazel_skylib//rules:common_settings.bzl", "bool_setting", "string_flag")
 load(
     "//dotnet/private:common.bzl",

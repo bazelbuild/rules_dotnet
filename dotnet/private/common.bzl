@@ -2,6 +2,7 @@
 Rules for compatability resolution of dependencies for .NET frameworks.
 """
 
+load("@aspect_bazel_lib//lib:paths.bzl", "to_manifest_path")
 load("@bazel_skylib//lib:sets.bzl", "sets")
 load(
     "//dotnet/private:providers.bzl",
@@ -10,7 +11,6 @@ load(
     "NuGetInfo",
 )
 load("//dotnet/private:rids.bzl", "RUNTIME_GRAPH")
-load("@aspect_bazel_lib//lib:paths.bzl", "to_manifest_path")
 
 def _collect_transitive():
     t = {}
