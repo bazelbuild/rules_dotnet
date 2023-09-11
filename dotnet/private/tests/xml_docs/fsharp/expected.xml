@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+<assembly><name>lib</name></assembly>
+<members>
+<member name="T:SomeModule.SomeType">
+ <summary>
+   A type, see  <see cref="T:TheNamespace.SomeModule"/> and
+  <see cref="M:TheNamespace.SomeModule.someFunction"/>.
+ </summary>
+
+</member>
+<member name="M:SomeModule.someFunction(System.Int32)">
+ <summary>
+   Some actual comment
+   <para>Another paragraph, see  <see cref="T:TheNamespace.SomeType"/>. </para>
+ </summary>
+
+ <param name="x">The input</param>
+
+ <returns>The output</returns>
+
+ <example>
+   Try using
+   <code>
+      open TheNamespace
+      SomeModule.a
+   </code>
+ </example>
+
+ <category>Foo</category>
+</member>
+<member name="T:SomeModule">
+ <summary>
+   A module
+ </summary>
+
+ <namespacedoc>
+   <summary>A namespace to remember</summary>
+
+   <remarks>More on that</remarks>
+ </namespacedoc>
+
+</member>
+</members>
+</doc>

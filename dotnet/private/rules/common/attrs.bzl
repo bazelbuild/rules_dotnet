@@ -130,6 +130,10 @@ COMMON_ATTRS = {
         doc = "Whether or not to override the strict_deps attribute.",
         mandatory = False,
     ),
+    "generate_documentation_file": attr.bool(
+        doc = "Whether or not to generate a documentation file.",
+        default = True,
+    ),
     "_target_framework": attr.label(
         default = "@rules_dotnet//dotnet:target_framework",
     ),

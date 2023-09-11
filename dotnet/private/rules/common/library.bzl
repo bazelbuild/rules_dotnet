@@ -22,7 +22,7 @@ def build_library(ctx, compile_action):
     result = [dotnet_assembly_info_provider]
 
     result.append(DefaultInfo(
-        files = depset(dotnet_assembly_info_provider.libs),
+        files = depset(dotnet_assembly_info_provider.libs + dotnet_assembly_info_provider.xml_docs),
         default_runfiles = ctx.runfiles(
             files = dotnet_assembly_info_provider.data,
             transitive_files = depset(transitive = [

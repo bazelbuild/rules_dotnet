@@ -12,12 +12,12 @@ a Bazel test.
 ## fsharp_test
 
 <pre>
-fsharp_test(<a href="#fsharp_test-name">name</a>, <a href="#fsharp_test-apphost_shimmer">apphost_shimmer</a>, <a href="#fsharp_test-compile_data">compile_data</a>, <a href="#fsharp_test-data">data</a>, <a href="#fsharp_test-defines">defines</a>, <a href="#fsharp_test-deps">deps</a>, <a href="#fsharp_test-internals_visible_to">internals_visible_to</a>, <a href="#fsharp_test-keyfile">keyfile</a>,
-            <a href="#fsharp_test-langversion">langversion</a>, <a href="#fsharp_test-out">out</a>, <a href="#fsharp_test-override_strict_deps">override_strict_deps</a>, <a href="#fsharp_test-override_treat_warnings_as_errors">override_treat_warnings_as_errors</a>,
-            <a href="#fsharp_test-override_warning_level">override_warning_level</a>, <a href="#fsharp_test-override_warnings_as_errors">override_warnings_as_errors</a>, <a href="#fsharp_test-override_warnings_not_as_errors">override_warnings_not_as_errors</a>,
-            <a href="#fsharp_test-private_deps">private_deps</a>, <a href="#fsharp_test-project_sdk">project_sdk</a>, <a href="#fsharp_test-resources">resources</a>, <a href="#fsharp_test-runtime_identifier">runtime_identifier</a>, <a href="#fsharp_test-srcs">srcs</a>, <a href="#fsharp_test-strict_deps">strict_deps</a>,
-            <a href="#fsharp_test-target_frameworks">target_frameworks</a>, <a href="#fsharp_test-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#fsharp_test-warning_level">warning_level</a>, <a href="#fsharp_test-warnings_as_errors">warnings_as_errors</a>,
-            <a href="#fsharp_test-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#fsharp_test-winexe">winexe</a>)
+fsharp_test(<a href="#fsharp_test-name">name</a>, <a href="#fsharp_test-apphost_shimmer">apphost_shimmer</a>, <a href="#fsharp_test-compile_data">compile_data</a>, <a href="#fsharp_test-data">data</a>, <a href="#fsharp_test-defines">defines</a>, <a href="#fsharp_test-deps">deps</a>, <a href="#fsharp_test-generate_documentation_file">generate_documentation_file</a>,
+            <a href="#fsharp_test-internals_visible_to">internals_visible_to</a>, <a href="#fsharp_test-keyfile">keyfile</a>, <a href="#fsharp_test-langversion">langversion</a>, <a href="#fsharp_test-out">out</a>, <a href="#fsharp_test-override_strict_deps">override_strict_deps</a>,
+            <a href="#fsharp_test-override_treat_warnings_as_errors">override_treat_warnings_as_errors</a>, <a href="#fsharp_test-override_warning_level">override_warning_level</a>, <a href="#fsharp_test-override_warnings_as_errors">override_warnings_as_errors</a>,
+            <a href="#fsharp_test-override_warnings_not_as_errors">override_warnings_not_as_errors</a>, <a href="#fsharp_test-private_deps">private_deps</a>, <a href="#fsharp_test-project_sdk">project_sdk</a>, <a href="#fsharp_test-resources">resources</a>, <a href="#fsharp_test-runtime_identifier">runtime_identifier</a>,
+            <a href="#fsharp_test-srcs">srcs</a>, <a href="#fsharp_test-strict_deps">strict_deps</a>, <a href="#fsharp_test-target_frameworks">target_frameworks</a>, <a href="#fsharp_test-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#fsharp_test-warning_level">warning_level</a>,
+            <a href="#fsharp_test-warnings_as_errors">warnings_as_errors</a>, <a href="#fsharp_test-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#fsharp_test-winexe">winexe</a>)
 </pre>
 
 Compile a F# executable and runs it as a test
@@ -33,6 +33,7 @@ Compile a F# executable and runs it as a test
 | <a id="fsharp_test-data"></a>data |  Runtime files. It is recommended to use the @rules_dotnet//tools/runfiles library to read the runtime files.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
 | <a id="fsharp_test-defines"></a>defines |  A list of preprocessor directive symbols to define.   | List of strings | optional | [] |
 | <a id="fsharp_test-deps"></a>deps |  Other libraries, binaries, or imported DLLs   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | [] |
+| <a id="fsharp_test-generate_documentation_file"></a>generate_documentation_file |  Whether or not to generate a documentation file.   | Boolean | optional | True |
 | <a id="fsharp_test-internals_visible_to"></a>internals_visible_to |  Other libraries that can see the assembly's internal symbols. Using this rather than the InternalsVisibleTo assembly attribute will improve build caching.   | List of strings | optional | [] |
 | <a id="fsharp_test-keyfile"></a>keyfile |  The key file used to sign the assembly with a strong name.   | <a href="https://bazel.build/concepts/labels">Label</a> | optional | None |
 | <a id="fsharp_test-langversion"></a>langversion |  The version string for the language.   | String | optional | "" |

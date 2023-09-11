@@ -83,7 +83,7 @@ def build_binary(ctx, compile_action):
 
     result = compile_action(ctx, tfm)
     dll = result.libs[0]
-    default_info_files = [dll]
+    default_info_files = [dll] + result.xml_docs
     direct_runfiles = [dll] + result.data
 
     app_host = None

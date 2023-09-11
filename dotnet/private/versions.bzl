@@ -1106,4 +1106,3 @@ TOOL_VERSIONS = {
         "x86_64-pc-windows-msvc": {"hash": "sha512-nsWrBiDjjDY7ErCSOYKVJOefRg52vg6BBp4fVKennKAdwGpiRuCK1FgIYz+7MxBVnr0wPgg/nXvLJnFX5uSKYQ==", "url": "https://download.visualstudio.microsoft.com/download/pr/9765ed67-8c55-41ad-aeef-21be6d599ce7/4092e82ed77053c5621cfe19ce1d9329/dotnet-sdk-7.0.100-preview.1.22110.4-win-x64.zip"},
     },
 }
-

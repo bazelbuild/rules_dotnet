@@ -83,7 +83,7 @@ namespace Bazel
         /// If <paramref name="env"/> contains RUNFILES_MANIFEST_ONLY=1, this method returns a manifest-based implementation.
         /// The manifest's path is defined by the RUNFILES_MANIFEST_FILE key's value in <paramref name="env"/>.
         ///
-        /// If <paramref name="env"/> contains RUNFILES_DIR=<SOME_DIRECTORY> or JAVA_RUNFILES=<SOME_DIRECTORY>, 
+        /// If <paramref name="env"/> contains RUNFILES_DIR=SOME_DIRECTORY or JAVA_RUNFILES=SOME_DIRECTORY, 
         /// this method returns a directory-based implementation.
         ///
         /// Otherwise this method tries to find a the manifest file based on the argv0 
@@ -188,7 +188,6 @@ namespace Bazel
 
         /// <summary>
         /// Returns environment variables for subprocesses.
-
         /// The caller should add the returned key-value pairs to the environment of subprocesses in
         /// case those subprocesses are also Bazel-built binaries that need to use runfiles.
         /// </summary>

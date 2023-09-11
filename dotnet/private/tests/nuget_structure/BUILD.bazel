@@ -34,3 +34,10 @@ bzl_library(
     visibility = ["//visibility:public"],
     deps = [":common"],
 )
+
+bzl_library(
+    name = "resolution",
+    srcs = ["resolution.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+    deps = [":common"],
+)

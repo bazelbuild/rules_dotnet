@@ -90,6 +90,7 @@ def AssemblyAction(
         target_framework,
         toolchain,
         strict_deps,
+        generate_documentation_file,
         treat_warnings_as_errors,
         warnings_as_errors,
         warnings_not_as_errors,
@@ -120,6 +121,7 @@ def AssemblyAction(
         target_framework: The target framework moniker for the assembly.
         toolchain: The toolchain that supply the F# compiler.
         strict_deps: Whether or not to use strict dependencies.
+        generate_documentation_file: Whether or not to output XML docs for the compiled dll.
         treat_warnings_as_errors: Whether or not to treat warnings as errors.
         warnings_as_errors: List of warnings to treat as errors.
         warnings_not_as_errors: List of warnings to not treat errors.
@@ -160,6 +162,7 @@ def AssemblyAction(
     out_iref = None
     out_ref = actions.declare_file("%s/ref/%s.%s" % (out_dir, assembly_name, out_ext)) if _should_output_ref_assembly(toolchain) else None
     out_pdb = actions.declare_file("%s/%s.pdb" % (out_dir, assembly_name))
+    out_xml = actions.declare_file("%s/%s.xml" % (out_dir, assembly_name)) if generate_documentation_file else None
 
     if len(internals_visible_to) == 0:
         _compile(
@@ -187,6 +190,7 @@ def AssemblyAction(
             out_dll = out_dll,
             out_ref = out_ref,
             out_pdb = out_pdb,
+            out_xml = out_xml,
         )
     else:
         # If the user is using internals_visible_to generate an additional
@@ -224,6 +228,7 @@ def AssemblyAction(
             out_ref = out_iref,
             out_dll = out_dll,
             out_pdb = out_pdb,
+            out_xml = out_xml,
         )
 
         if out_iref != None:
@@ -253,6 +258,7 @@ def AssemblyAction(
                 out_dll = None,
                 out_ref = out_ref,
                 out_pdb = None,
+                out_xml = None,
             )
 
     return DotnetAssemblyInfo(
@@ -264,6 +270,7 @@ def AssemblyAction(
         refs = [out_dll],
         irefs = [out_iref] if out_iref else [out_ref] if out_ref else [out_dll],
         analyzers = [],
+        xml_docs = [out_xml] if out_xml else [],
         internals_visible_to = internals_visible_to or [],
         data = data,
         compile_data = compile_data,
@@ -303,7 +310,8 @@ def _compile(
         warning_level,
         out_dll = None,
         out_ref = None,
-        out_pdb = None):
+        out_pdb = None,
+        out_xml = None):
     # Our goal is to match msbuild as much as reasonable
     # https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-options
     args = actions.args()
@@ -362,6 +370,10 @@ def _compile(
         args.add("--refonly")
         args.add("--out:" + out_ref.path)
         outputs = [out_ref]
+
+    if out_xml != None:
+        args.add("--doc:" + out_xml.path)
+        outputs.append(out_xml)
 
     # assembly references
     format_ref_arg(args, depset(transitive = [private_refs, refs]), overrides)
