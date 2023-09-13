@@ -242,7 +242,6 @@ def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
     transitive_private_ref = []
     direct_private_analyzers = []
     transitive_private_analyzers = []
-    direct_labels = [d.label for d in deps]
 
     exports_files = []
 
@@ -275,45 +274,10 @@ def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
         direct_iref.extend(assembly.exports)
 
         # Runfiles are always collected transitively
-        # We need to make sure that we do not include multiple versions of the same first party dll
-        # in the runfiles. We can do that by taking the direct first party deps and see if any of them are already
-        # in the runfiles and if they are we remove them from the transitive runfiles.
-        if NuGetInfo in dep:
-            transitive_lib.append(assembly.transitive_libs)
-            transitive_native.append(assembly.transitive_native)
-            transitive_data.append(assembly.transitive_data)
-            transitive_runtime_deps.append(assembly.transitive_runtime_deps)
-        else:
-            # TODO: This might be a performance issue. See if we can do this without
-            # having to iterate over the transitive files.
-            lib = []
-            native = []
-            data = []
-            runtime_deps = []
-            for tlib in assembly.transitive_libs.to_list():
-                if tlib.owner in direct_labels:
-                    continue
-                lib.append(tlib)
-
-            for tnative in assembly.transitive_native.to_list():
-                if tnative.owner in direct_labels:
-                    continue
-                native.append(tnative)
-
-            for tdata in assembly.transitive_data.to_list():
-                if tdata.owner in direct_labels:
-                    continue
-                data.append(tdata)
-
-            for truntime_dep in assembly.runtime_deps + assembly.transitive_runtime_deps.to_list():
-                if truntime_dep.label in direct_labels:
-                    continue
-                runtime_deps.append(truntime_dep)
-
-            transitive_runtime_deps.append(depset(runtime_deps))
-            transitive_lib.append(depset(lib))
-            transitive_native.append(depset(native))
-            transitive_data.append(depset(data))
+        transitive_lib.append(assembly.transitive_libs)
+        transitive_native.append(assembly.transitive_native)
+        transitive_data.append(assembly.transitive_data)
+        transitive_runtime_deps.append(assembly.transitive_runtime_deps)
 
         if not strict_deps:
             transitive_ref.append(assembly.transitive_refs)
@@ -517,7 +481,20 @@ def generate_depsjson(
     if is_self_contained:
         base["runtimes"] = {rid: RUNTIME_GRAPH[rid] for rid, supported_rids in RUNTIME_GRAPH.items() if runtime_identifier in supported_rids or runtime_identifier == rid}
 
-    for runtime_dep in assembly_info.runtime_deps + assembly_info.transitive_runtime_deps.to_list() + [DotnetDepVariantInfo(label = assembly_info.libs[0].owner, assembly_info = assembly_info, nuget_info = None)]:
+    target_assembly = [DotnetDepVariantInfo(label = assembly_info.libs[0].owner, assembly_info = assembly_info, nuget_info = None)]
+    runtime_deps = assembly_info.runtime_deps
+
+    # We need to make sure that we do not include multiple versions of the same first party dll
+    # in the deps.json. We can do that by taking the direct deps of the target and see if any of them are already
+    # in the runfiles and if they are we remove them from the transitive runfiles. This makes sure that if we have
+    # diamond dependencies that have e.g. different target frameworks that we choose the one that fits the target best
+    transitive_runtime_deps = [
+        transitive_runtime_dep
+        for transitive_runtime_dep in assembly_info.transitive_runtime_deps.to_list()
+        if transitive_runtime_dep.label not in [info.label for info in assembly_info.runtime_deps]
+    ]
+
+    for runtime_dep in target_assembly + runtime_deps + transitive_runtime_deps:
         library_name = "{}/{}".format(runtime_dep.assembly_info.name, runtime_dep.assembly_info.version)
         library_fragment = {
             "type": "project",
