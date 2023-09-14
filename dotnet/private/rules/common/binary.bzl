@@ -7,6 +7,7 @@ load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 load(
     "//dotnet/private:common.bzl",
+    "collect_transitive_runfiles",
     "generate_depsjson",
     "generate_runtimeconfig",
     "is_core_framework",
@@ -84,15 +85,15 @@ def build_binary(ctx, compile_action):
     result = compile_action(ctx, tfm)
     dll = result.libs[0]
     default_info_files = [dll] + result.xml_docs
-    direct_runfiles = [dll] + result.data
+    additional_runfiles = []
 
     app_host = None
     if ctx.attr.apphost_shimmer:
         app_host = _create_shim_exe(ctx, dll)
-        direct_runfiles.append(app_host)
+        additional_runfiles.append(app_host)
         default_info_files = default_info_files.append(app_host)
 
-    launcher = _create_launcher(ctx, direct_runfiles, dll)
+    launcher = _create_launcher(ctx, additional_runfiles, dll)
 
     runtimeconfig = None
     depsjson = None
@@ -138,17 +139,14 @@ def build_binary(ctx, compile_action):
         )
 
     if runtimeconfig != None:
-        direct_runfiles.append(runtimeconfig)
+        additional_runfiles.append(runtimeconfig)
 
     if depsjson != None:
-        direct_runfiles.append(depsjson)
+        additional_runfiles.append(depsjson)
 
     default_info = DefaultInfo(
         executable = launcher,
-        runfiles = ctx.runfiles(
-            files = direct_runfiles,
-            transitive_files = depset(transitive = [result.transitive_libs, result.transitive_native, result.transitive_data]),
-        ),
+        runfiles = collect_transitive_runfiles(ctx, result, ctx.attr.deps).merge(ctx.runfiles(files = additional_runfiles)),
         files = depset(default_info_files),
     )
 

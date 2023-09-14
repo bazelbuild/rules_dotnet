@@ -1,6 +1,7 @@
 "Common implementation for building .Net libraries"
 
 load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
+load("//dotnet/private:common.bzl", "collect_transitive_runfiles")
 
 def build_library(ctx, compile_action):
     """Builds a .Net library from a compilation action
@@ -21,16 +22,15 @@ def build_library(ctx, compile_action):
     dotnet_assembly_info_provider = compile_action(ctx, tfm)
     result = [dotnet_assembly_info_provider]
 
-    result.append(DefaultInfo(
-        files = depset(dotnet_assembly_info_provider.libs + dotnet_assembly_info_provider.xml_docs),
-        default_runfiles = ctx.runfiles(
-            files = dotnet_assembly_info_provider.data,
-            transitive_files = depset(transitive = [
-                dotnet_assembly_info_provider.transitive_libs,
-                dotnet_assembly_info_provider.transitive_native,
-                dotnet_assembly_info_provider.transitive_data,
-            ]),
+    result.append(
+        DefaultInfo(
+            files = depset(dotnet_assembly_info_provider.libs + dotnet_assembly_info_provider.xml_docs),
+            default_runfiles = collect_transitive_runfiles(
+                ctx,
+                dotnet_assembly_info_provider,
+                ctx.attr.deps,
+            ),
         ),
-    ))
+    )
 
     return result

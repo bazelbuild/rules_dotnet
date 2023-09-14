@@ -6,6 +6,7 @@ load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 load(
     "//dotnet/private:common.bzl",
     "collect_transitive_info",
+    "collect_transitive_runfiles",
     "transform_deps",
 )
 load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "NuGetInfo")
@@ -32,7 +33,7 @@ def _import_library(ctx):
         ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].strict_deps[BuildSettingInfo].value,
     )
 
-    return [DotnetAssemblyInfo(
+    dotnet_assembly_info = DotnetAssemblyInfo(
         name = ctx.attr.library_name,
         version = ctx.attr.version,
         project_sdk = "default",
@@ -56,10 +57,18 @@ def _import_library(ctx):
         internals_visible_to = [],
         runtime_deps = transform_deps(ctx.attr.deps),
         transitive_runtime_deps = transitive_runtime_deps,
-    ), NuGetInfo(
-        targeting_pack_overrides = ctx.attr.targeting_pack_overrides,
-        sha512 = ctx.attr.sha512,
-    )]
+    )
+
+    return [
+        DefaultInfo(
+            runfiles = collect_transitive_runfiles(ctx, dotnet_assembly_info, ctx.attr.deps),
+        ),
+        dotnet_assembly_info,
+        NuGetInfo(
+            targeting_pack_overrides = ctx.attr.targeting_pack_overrides,
+            sha512 = ctx.attr.sha512,
+        ),
+    ]
 
 import_library = rule(
     _import_library,
@@ -115,7 +124,7 @@ import_library = rule(
 )
 
 def _import_dll(ctx):
-    return [DotnetAssemblyInfo(
+    assembly_info = DotnetAssemblyInfo(
         name = ctx.file.dll.basename[:-4],
         version = ctx.attr.version,
         project_sdk = "default",
@@ -138,7 +147,13 @@ def _import_dll(ctx):
         internals_visible_to = [],
         runtime_deps = [],
         transitive_runtime_deps = depset([]),
-    )]
+    )
+    return [
+        DefaultInfo(
+            runfiles = collect_transitive_runfiles(ctx, assembly_info, []),
+        ),
+        assembly_info,
+    ]
 
 import_dll = rule(
     _import_dll,

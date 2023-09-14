@@ -315,6 +315,25 @@ def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
         overrides,
     )
 
+def collect_transitive_runfiles(ctx, assembly_info, deps):
+    """Collect the transitive runfiles of target and its dependencies.
+
+    Args:
+        ctx: The rule context.
+        assembly_info: The DotnetAssemblyInfo provider for the target.
+        deps: Dependencies of the target.
+
+    Returns:
+        A runfiles object that includes the transitive dependencies of the target
+    """
+    runfiles = ctx.runfiles(files = assembly_info.data + assembly_info.native + assembly_info.xml_docs + assembly_info.libs)
+
+    transitive_runfiles = []
+    for dep in deps:
+        transitive_runfiles.append(dep[DefaultInfo].default_runfiles)
+
+    return runfiles.merge_all(transitive_runfiles)
+
 def get_framework_version_info(tfm):
     return (
         _subsystem_version[tfm],
