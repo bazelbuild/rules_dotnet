@@ -493,8 +493,8 @@ def generate_depsjson(
             "sha512": "",
         }
         base["targets"][runtime_target][runtime_pack_name] = {
-            "runtime": {dll.basename: {} for dll in runtime_pack_info.libs + runtime_pack_info.transitive_libs.to_list()},
-            "native": {native_file.basename: {} for native_file in runtime_pack_info.native + runtime_pack_info.transitive_native.to_list()},
+            "runtime": {dll.basename: {} for dll in runtime_pack_info.libs},
+            "native": {native_file.basename: {} for native_file in runtime_pack_info.native},
         }
 
     if is_self_contained:
