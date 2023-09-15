@@ -4,7 +4,7 @@ Actions for compiling targets with C#.
 
 load(
     "//dotnet/private:common.bzl",
-    "collect_transitive_info",
+    "collect_compile_info",
     "format_ref_arg",
     "framework_preprocessor_symbols",
     "generate_warning_args",
@@ -17,7 +17,8 @@ load(
 )
 load(
     "//dotnet/private:providers.bzl",
-    "DotnetAssemblyInfo",
+    "DotnetAssemblyCompileInfo",
+    "DotnetAssemblyRuntimeInfo",
 )
 
 def _format_targetprofile(tfm):
@@ -138,16 +139,12 @@ def AssemblyAction(
         irefs,
         prefs,
         analyzers,
-        transitive_libs,
-        transitive_native,
-        transitive_data,
         transitive_compile_data,
         private_refs,
         _private_analyzers,
-        transitive_runtime_deps,
         exports_files,
         overrides,
-    ) = collect_transitive_info(
+    ) = collect_compile_info(
         assembly_name,
         deps,
         private_deps,
@@ -261,30 +258,30 @@ def AssemblyAction(
                 out_xml = None,
             )
 
-    return DotnetAssemblyInfo(
+    return (DotnetAssemblyCompileInfo(
         name = target_name,
         version = "1.0.0",  #TODO: Maybe make this configurable?
         project_sdk = project_sdk,
-        libs = [out_dll],
-        pdbs = [out_pdb] if out_pdb else [],
         refs = [out_dll],
         irefs = [out_iref] if out_iref else [out_ref] if out_ref else [out_dll],
         analyzers = [],
-        xml_docs = [out_xml] if out_xml else [],
         internals_visible_to = internals_visible_to or [],
-        data = data,
         compile_data = compile_data,
-        native = [],
         exports = exports_files,
         transitive_refs = prefs,
         transitive_analyzers = analyzers,
-        transitive_libs = transitive_libs,
-        transitive_native = transitive_native,
-        transitive_data = transitive_data,
         transitive_compile_data = transitive_compile_data,
-        runtime_deps = transform_deps(deps),
-        transitive_runtime_deps = transitive_runtime_deps,
-    )
+    ), DotnetAssemblyRuntimeInfo(
+        name = target_name,
+        version = "1.0.0",  #TODO: Maybe make this configurable?
+        libs = [out_dll],
+        pdbs = [out_pdb] if out_pdb else [],
+        xml_docs = [out_xml] if out_xml else [],
+        data = data,
+        native = [],
+        deps = depset([dep[DotnetAssemblyRuntimeInfo] for dep in deps], transitive = [dep[DotnetAssemblyRuntimeInfo].deps for dep in deps]),
+        nuget_info = None,
+    ))
 
 def _compile(
         actions,

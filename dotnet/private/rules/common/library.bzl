@@ -13,24 +13,23 @@ def build_library(ctx, compile_action):
                 ctx: Bazel build ctx.
                 tfm: Target framework string
             Returns:
-                An DotnetAssemblyInfo provider
+                An tuple of (DotnetAssemblyCompileInfo, DotnetAssemblyRuntimeInfo)
     Returns:
         A collection of the references, runfiles and native dlls.
     """
     tfm = ctx.attr._target_framework[BuildSettingInfo].value
 
-    dotnet_assembly_info_provider = compile_action(ctx, tfm)
-    result = [dotnet_assembly_info_provider]
+    (compile_provider, runtime_provider) = compile_action(ctx, tfm)
 
-    result.append(
+    return [
+        compile_provider,
+        runtime_provider,
         DefaultInfo(
-            files = depset(dotnet_assembly_info_provider.libs + dotnet_assembly_info_provider.xml_docs),
+            files = depset(runtime_provider.libs + runtime_provider.xml_docs),
             default_runfiles = collect_transitive_runfiles(
                 ctx,
-                dotnet_assembly_info_provider,
+                runtime_provider,
                 ctx.attr.deps,
             ),
         ),
-    )
-
-    return result
+    ]

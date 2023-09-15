@@ -82,9 +82,9 @@ def build_binary(ctx, compile_action):
     if is_standard_framework(tfm):
         fail("It doesn't make sense to build an executable for " + tfm)
 
-    result = compile_action(ctx, tfm)
-    dll = result.libs[0]
-    default_info_files = [dll] + result.xml_docs
+    (compile_provider, runtime_provider) = compile_action(ctx, tfm)
+    dll = runtime_provider.libs[0]
+    default_info_files = [dll] + runtime_provider.xml_docs
     additional_runfiles = []
 
     app_host = None
@@ -128,7 +128,7 @@ def build_binary(ctx, compile_action):
             ctx,
             target_framework = tfm,
             is_self_contained = False,
-            assembly_info = result,
+            assembly_runtime_info = runtime_provider,
             runtime_identifier = ctx.attr.runtime_identifier,
             use_relative_paths = True,
         )
@@ -146,7 +146,7 @@ def build_binary(ctx, compile_action):
 
     default_info = DefaultInfo(
         executable = launcher,
-        runfiles = collect_transitive_runfiles(ctx, result, ctx.attr.deps).merge(ctx.runfiles(files = additional_runfiles)),
+        runfiles = collect_transitive_runfiles(ctx, runtime_provider, ctx.attr.deps).merge(ctx.runfiles(files = additional_runfiles)),
         files = depset(default_info_files),
     )
 
@@ -155,4 +155,4 @@ def build_binary(ctx, compile_action):
         app_host = app_host,
     )
 
-    return [default_info, dotnet_binary_info, result]
+    return [default_info, dotnet_binary_info, compile_provider, runtime_provider]
