@@ -97,6 +97,8 @@ def build_binary(ctx, compile_action):
 
     runtimeconfig = None
     depsjson = None
+    transitive_runtime_deps = runtime_provider.deps.to_list()
+
     if is_core_framework(tfm):
         # Create the runtimeconfig.json for the binary
         runtimeconfig = ctx.actions.declare_file("bazelout/%s/%s.runtimeconfig.json" % (tfm, ctx.attr.out or ctx.attr.name))
@@ -128,7 +130,8 @@ def build_binary(ctx, compile_action):
             ctx,
             target_framework = tfm,
             is_self_contained = False,
-            assembly_runtime_info = runtime_provider,
+            target_assembly_runtime_info = runtime_provider,
+            transitive_runtime_deps = transitive_runtime_deps,
             runtime_identifier = ctx.attr.runtime_identifier,
             use_relative_paths = True,
         )
@@ -153,6 +156,7 @@ def build_binary(ctx, compile_action):
     dotnet_binary_info = DotnetBinaryInfo(
         dll = dll,
         app_host = app_host,
+        transitive_runtime_deps = transitive_runtime_deps,
     )
 
     return [default_info, dotnet_binary_info, compile_provider, runtime_provider]

@@ -430,7 +430,8 @@ def generate_depsjson(
         ctx,
         target_framework,
         is_self_contained,
-        assembly_runtime_info,
+        target_assembly_runtime_info,
+        transitive_runtime_deps,
         runtime_identifier,
         runtime_pack_infos = [],
         use_relative_paths = False):
@@ -440,7 +441,8 @@ def generate_depsjson(
         ctx: The ctx object
         target_framework: The target framework moniker for the target being built.
         is_self_contained: If the target is a self-contained publish.
-        assembly_runtime_info: The DotnetAssemblyRuntimeInfo provider for the target being built.
+        target_assembly_runtime_info: The DotnetAssemblyRuntimeInfo provider for the target being built.
+        transitive_runtime_deps: List of DotnetAssemblyRuntimeInfo providers which are the transitive runtime dependencies of the target.
         runtime_identifier: The runtime identifier of the target.
         runtime_pack_infos: The DotnetAssemblyInfo of the runtime packs that are used for a self contained publish.
         use_relative_paths: If the paths to the dependencies should be relative to the workspace root.
@@ -480,22 +482,13 @@ def generate_depsjson(
     if is_self_contained:
         base["runtimes"] = {rid: RUNTIME_GRAPH[rid] for rid, supported_rids in RUNTIME_GRAPH.items() if runtime_identifier in supported_rids or runtime_identifier == rid}
 
-    target_assembly = assembly_runtime_info
-    runtime_deps = assembly_runtime_info.deps.to_list()
-
-    # We need to make sure that we do not include multiple versions of the same first party dll
-    # in the deps.json. We can do that by taking the direct deps of the target and see if any of them are already
-    # in the runfiles and if they are we remove them from the transitive runfiles. This makes sure that if we have
-    # diamond dependencies that have e.g. different target frameworks that we choose the one that fits the target best
-    # TODO:
-    # transitive_runtime_deps = [
-    #     transitive_runtime_dep
-    #     for transitive_runtime_dep in assembly_info.transitive_runtime_deps.to_list()
-    #     if transitive_runtime_dep.label not in [info.label for info in assembly_info.runtime_deps]
-    # ]
-
-    for runtime_dep in [target_assembly] + runtime_deps:
+    for runtime_dep in [target_assembly_runtime_info] + transitive_runtime_deps:
         library_name = "{}/{}".format(runtime_dep.name, runtime_dep.version)
+
+        # We need to make sure that we do not include multiple versions of the same first party dll
+        # in the deps.json. Using the default ordering of depsets we can be sure that the first instance
+        # of a package is the one that is most compatible with the rest of the tree since our transitions
+        # make it so that you can't depend on incompatible packages
         if library_name in base["libraries"]:
             continue
 
@@ -517,7 +510,7 @@ def generate_depsjson(
         target_fragment = {
             "runtime": {dll.basename if not use_relative_paths else to_manifest_path(ctx, dll): {} for dll in runtime_dep.libs},
             "native": {native_file.basename if not use_relative_paths else to_manifest_path(ctx, native_file): {} for native_file in runtime_dep.native},
-            "dependencies": {dep.name: dep.version for dep in runtime_dep.deps.to_list()},
+            "dependencies": runtime_dep.direct_deps_depsjson_fragment,
         }
 
         base["libraries"][library_name] = library_fragment

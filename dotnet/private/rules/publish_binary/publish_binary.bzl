@@ -102,17 +102,17 @@ def _copy_file(script_body, src, dst, is_windows):
     else:
         script_body.append("mkdir -p {dir} && cp -f {src} {dst}".format(dir = shell.quote(dst.dirname), src = shell.quote(src.path), dst = shell.quote(dst.path)))
 
-def _get_assembly_files(assembly_info):
+def _get_assembly_files(assembly_info, transitive_runtime_deps):
     libs = [] + assembly_info.libs
     native = [] + assembly_info.native
     data = [] + assembly_info.data
-    for dep in assembly_info.deps.to_list():
+    for dep in transitive_runtime_deps:
         libs += dep.libs
         native += dep.native
         data += dep.data
     return (libs, native, data)
 
-def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, assembly_info):
+def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, assembly_info, transitive_runtime_deps):
     is_windows = ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo])
     inputs = [binary_info.app_host]
     app_host_copy = ctx.actions.declare_file(
@@ -123,7 +123,7 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
 
     _copy_file(script_body, binary_info.app_host, app_host_copy, is_windows = is_windows)
 
-    (libs, native, data) = _get_assembly_files(assembly_info)
+    (libs, native, data) = _get_assembly_files(assembly_info, transitive_runtime_deps)
 
     # All managed DLLs are copied next to the app host in the publish directory
     for file in libs:
@@ -212,9 +212,10 @@ def _generate_depsjson(
         target_framework,
         is_self_contained,
         assembly_info,
+        transitive_runtime_deps,
         runtime_identifier,
         runtime_pack_infos):
-    depsjson_struct = generate_depsjson(ctx, target_framework, is_self_contained, assembly_info, runtime_identifier, runtime_pack_infos)
+    depsjson_struct = generate_depsjson(ctx, target_framework, is_self_contained, assembly_info, transitive_runtime_deps, runtime_identifier, runtime_pack_infos)
 
     ctx.actions.write(
         output = output,
@@ -226,6 +227,7 @@ def _publish_binary_wrapper_impl(ctx):
     assembly_runtime_info = ctx.attr.wrapped_target[0][DotnetAssemblyRuntimeInfo]
     binary_info = ctx.attr.wrapped_target[0][DotnetBinaryInfo]
     publish_binary_info = ctx.attr.wrapped_target[0][DotnetPublishBinaryInfo]
+    transitive_runtime_deps = binary_info.transitive_runtime_deps
     runtime_identifier = ctx.attr.runtime_identifier
     target_framework = publish_binary_info.target_framework
     is_self_contained = publish_binary_info.self_contained
@@ -237,6 +239,7 @@ def _publish_binary_wrapper_impl(ctx):
         publish_binary_info,
         binary_info,
         assembly_runtime_info,
+        transitive_runtime_deps,
     )
 
     runtimeconfig = ctx.actions.declare_file("{}/publish/{}/{}.runtimeconfig.json".format(
@@ -260,6 +263,7 @@ def _publish_binary_wrapper_impl(ctx):
         target_framework,
         is_self_contained,
         assembly_runtime_info,
+        transitive_runtime_deps,
         runtime_identifier,
         publish_binary_info.runtime_packs,
     )

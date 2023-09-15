@@ -289,6 +289,7 @@ def AssemblyAction(
         native = [],
         deps = depset([dep[DotnetAssemblyRuntimeInfo] for dep in deps] + [toolchain.host_model[DotnetAssemblyRuntimeInfo]] if include_host_model_dll else [dep[DotnetAssemblyRuntimeInfo] for dep in deps], transitive = [dep[DotnetAssemblyRuntimeInfo].deps for dep in deps]),
         nuget_info = None,
+        direct_deps_depsjson_fragment = {dep[DotnetAssemblyRuntimeInfo].name: dep[DotnetAssemblyRuntimeInfo].version for dep in deps},
     ))
 
 def _compile(

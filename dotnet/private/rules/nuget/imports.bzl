@@ -59,6 +59,7 @@ def _import_library(ctx):
         data = ctx.files.data,
         nuget_info = nuget_info,
         deps = depset([dep[DotnetAssemblyRuntimeInfo] for dep in ctx.attr.deps], transitive = [dep[DotnetAssemblyRuntimeInfo].deps for dep in ctx.attr.deps]),
+        direct_deps_depsjson_fragment = {dep[DotnetAssemblyRuntimeInfo].name: dep[DotnetAssemblyRuntimeInfo].version for dep in ctx.attr.deps},
     )
 
     return [
@@ -148,6 +149,7 @@ def _import_dll(ctx):
         data = [],
         deps = depset([]),
         nuget_info = None,
+        direct_deps_depsjson_fragment = {},
     )
     return [
         DefaultInfo(
