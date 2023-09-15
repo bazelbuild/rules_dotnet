@@ -9,7 +9,6 @@ load(
     "framework_preprocessor_symbols",
     "generate_warning_args",
     "get_framework_version_info",
-    "transform_deps",
     "use_highentropyva",
 )
 load(

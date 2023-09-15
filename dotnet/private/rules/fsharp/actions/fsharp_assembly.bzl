@@ -12,7 +12,6 @@ load(
     "is_core_framework",
     "is_greater_or_equal_framework",
     "is_standard_framework",
-    "transform_deps",
     "use_highentropyva",
 )
 load(
