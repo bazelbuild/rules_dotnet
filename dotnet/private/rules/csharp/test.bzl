@@ -5,14 +5,14 @@ This rule can be used to compile and run any C# binary and run it as
 a Bazel test.
 """
 
-load("//dotnet/private/rules/csharp/actions:csharp_assembly.bzl", "AssemblyAction")
 load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 load(
     "//dotnet/private:common.bzl",
     "is_debug",
 )
-load("//dotnet/private/rules/common:binary.bzl", "build_binary")
 load("//dotnet/private/rules/common:attrs.bzl", "CSHARP_BINARY_COMMON_ATTRS")
+load("//dotnet/private/rules/common:binary.bzl", "build_binary")
+load("//dotnet/private/rules/csharp/actions:csharp_assembly.bzl", "AssemblyAction")
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 
 def _compile_action(ctx, tfm):
@@ -39,6 +39,7 @@ def _compile_action(ctx, tfm):
         target_framework = tfm,
         toolchain = toolchain,
         strict_deps = ctx.attr.strict_deps if ctx.attr.override_strict_deps else toolchain.strict_deps[BuildSettingInfo].value,
+        generate_documentation_file = ctx.attr.generate_documentation_file,
         include_host_model_dll = False,
         treat_warnings_as_errors = ctx.attr.treat_warnings_as_errors if ctx.attr.override_treat_warnings_as_errors else toolchain.dotnetinfo.csharp_treat_warnings_as_errors[BuildSettingInfo].value,
         warnings_as_errors = ctx.attr.warnings_as_errors if ctx.attr.override_warnings_as_errors else toolchain.dotnetinfo.csharp_warnings_as_errors[BuildSettingInfo].value,

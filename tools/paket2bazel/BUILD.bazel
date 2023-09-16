@@ -13,6 +13,7 @@ fsharp_binary(
         "@paket2bazel_dependencies//microsoft.netcore.app.ref",
     ],
     target_frameworks = ["net6.0"],
+    visibility = ["//visibility:public"],
     deps = [
         "@paket2bazel_dependencies//argu",
         "@paket2bazel_dependencies//chessie",

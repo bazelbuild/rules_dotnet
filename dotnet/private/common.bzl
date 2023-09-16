@@ -2,15 +2,16 @@
 Rules for compatability resolution of dependencies for .NET frameworks.
 """
 
+load("@aspect_bazel_lib//lib:paths.bzl", "to_manifest_path")
 load("@bazel_skylib//lib:sets.bzl", "sets")
 load(
     "//dotnet/private:providers.bzl",
-    "DotnetAssemblyInfo",
+    "DotnetAssemblyCompileInfo",
+    "DotnetAssemblyRuntimeInfo",
     "DotnetDepVariantInfo",
     "NuGetInfo",
 )
 load("//dotnet/private:rids.bzl", "RUNTIME_GRAPH")
-load("@aspect_bazel_lib//lib:paths.bzl", "to_manifest_path")
 
 def _collect_transitive():
     t = {}
@@ -209,11 +210,11 @@ def format_ref_arg(args, refs, targeting_pack_overrides):
 
     return args
 
-def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
+def collect_compile_info(name, deps, private_deps, exports, strict_deps):
     """Determine the transitive dependencies by the target framework.
 
     Args:
-        name: The name of the assembly that is asking.
+        name: The name of the assembly that is being compiled.
         deps: Dependencies that the compilation target depends on.
         private_deps: Private dependencies that the compilation target depends on.
         exports: Exported targets
@@ -225,24 +226,15 @@ def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
     direct_iref = []
     direct_ref = []
     transitive_ref = []
-    direct_lib = []
-    transitive_lib = []
-    direct_native = []
-    transitive_native = []
-    direct_data = []
-    transitive_data = []
     direct_compile_data = []
     transitive_compile_data = []
     direct_analyzers = []
     transitive_analyzers = []
-    direct_runtime_deps = transform_deps(deps)
-    transitive_runtime_deps = []
 
     direct_private_ref = []
     transitive_private_ref = []
     direct_private_analyzers = []
     transitive_private_analyzers = []
-    direct_labels = [d.label for d in deps]
 
     exports_files = []
 
@@ -258,62 +250,18 @@ def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
                 overrides[override_name] = override_version
 
     for dep in deps:
-        assembly = dep[DotnetAssemblyInfo]
+        assembly = dep[DotnetAssemblyCompileInfo]
 
         # See docs/ReferenceAssemblies.md for more info on why we use (and prefer) refout
         # and the mechanics of irefout vs. prefout.
         direct_iref.extend(assembly.irefs if name in assembly.internals_visible_to else assembly.refs)
         direct_ref.extend(assembly.refs)
         direct_analyzers.extend(assembly.analyzers)
-        direct_lib.extend(assembly.libs)
-        direct_native.extend(assembly.native)
-        direct_data.extend(assembly.data)
         direct_compile_data.extend(assembly.compile_data)
 
         # We take all the exports of each dependency and add them
         # to the direct refs.
         direct_iref.extend(assembly.exports)
-
-        # Runfiles are always collected transitively
-        # We need to make sure that we do not include multiple versions of the same first party dll
-        # in the runfiles. We can do that by taking the direct first party deps and see if any of them are already
-        # in the runfiles and if they are we remove them from the transitive runfiles.
-        if NuGetInfo in dep:
-            transitive_lib.append(assembly.transitive_libs)
-            transitive_native.append(assembly.transitive_native)
-            transitive_data.append(assembly.transitive_data)
-            transitive_runtime_deps.append(assembly.transitive_runtime_deps)
-        else:
-            # TODO: This might be a performance issue. See if we can do this without
-            # having to iterate over the transitive files.
-            lib = []
-            native = []
-            data = []
-            runtime_deps = []
-            for tlib in assembly.transitive_libs.to_list():
-                if tlib.owner in direct_labels:
-                    continue
-                lib.append(tlib)
-
-            for tnative in assembly.transitive_native.to_list():
-                if tnative.owner in direct_labels:
-                    continue
-                native.append(tnative)
-
-            for tdata in assembly.transitive_data.to_list():
-                if tdata.owner in direct_labels:
-                    continue
-                data.append(tdata)
-
-            for truntime_dep in assembly.runtime_deps + assembly.transitive_runtime_deps.to_list():
-                if truntime_dep.label in direct_labels:
-                    continue
-                runtime_deps.append(truntime_dep)
-
-            transitive_runtime_deps.append(depset(runtime_deps))
-            transitive_lib.append(depset(lib))
-            transitive_native.append(depset(native))
-            transitive_data.append(depset(data))
 
         if not strict_deps:
             transitive_ref.append(assembly.transitive_refs)
@@ -321,7 +269,7 @@ def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
             transitive_compile_data.append(assembly.transitive_compile_data)
 
     for dep in private_deps:
-        assembly = dep[DotnetAssemblyInfo]
+        assembly = dep[DotnetAssemblyCompileInfo]
 
         direct_private_ref.extend(assembly.irefs if name in assembly.internals_visible_to else assembly.refs)
         direct_private_analyzers.extend(assembly.analyzers)
@@ -333,23 +281,38 @@ def collect_transitive_info(name, deps, private_deps, exports, strict_deps):
             transitive_compile_data.append(assembly.transitive_compile_data)
 
     for export in exports:
-        assembly = export[DotnetAssemblyInfo]
+        assembly = export[DotnetAssemblyCompileInfo]
         exports_files.extend(assembly.refs)
 
     return (
         depset(direct = direct_iref, transitive = transitive_ref),
         depset(direct = direct_ref, transitive = transitive_ref),
         depset(direct = direct_analyzers, transitive = transitive_analyzers),
-        depset(direct = direct_lib, transitive = transitive_lib),
-        depset(direct = direct_native, transitive = transitive_native),
-        depset(direct = direct_data, transitive = transitive_data),
         depset(direct = direct_compile_data, transitive = transitive_compile_data),
         depset(direct = direct_private_ref, transitive = transitive_private_ref),
         depset(direct = direct_private_analyzers, transitive = transitive_private_analyzers),
-        depset(direct = direct_runtime_deps, transitive = transitive_runtime_deps),
         exports_files,
         overrides,
     )
+
+def collect_transitive_runfiles(ctx, assembly_runtime_info, deps):
+    """Collect the transitive runfiles of target and its dependencies.
+
+    Args:
+        ctx: The rule context.
+        assembly_runtime_info: The DotnetAssemblyRuntimeInfo provider for the target.
+        deps: Dependencies of the target.
+
+    Returns:
+        A runfiles object that includes the transitive dependencies of the target
+    """
+    runfiles = ctx.runfiles(files = assembly_runtime_info.data + assembly_runtime_info.native + assembly_runtime_info.xml_docs + assembly_runtime_info.libs)
+
+    transitive_runfiles = []
+    for dep in deps:
+        transitive_runfiles.append(dep[DefaultInfo].default_runfiles)
+
+    return runfiles.merge_all(transitive_runfiles)
 
 def get_framework_version_info(tfm):
     return (
@@ -405,7 +368,7 @@ def transform_deps(deps):
     """
     return [DotnetDepVariantInfo(
         label = dep.label,
-        assembly_info = dep[DotnetAssemblyInfo] if DotnetAssemblyInfo in dep else None,
+        assembly_runtime_info = dep[DotnetAssemblyRuntimeInfo] if DotnetAssemblyRuntimeInfo in dep else None,
         nuget_info = dep[NuGetInfo] if NuGetInfo in dep else None,
     ) for dep in deps]
 
@@ -467,7 +430,8 @@ def generate_depsjson(
         ctx,
         target_framework,
         is_self_contained,
-        assembly_info,
+        target_assembly_runtime_info,
+        transitive_runtime_deps,
         runtime_identifier,
         runtime_pack_infos = [],
         use_relative_paths = False):
@@ -477,7 +441,8 @@ def generate_depsjson(
         ctx: The ctx object
         target_framework: The target framework moniker for the target being built.
         is_self_contained: If the target is a self-contained publish.
-        assembly_info: The DotnetAssemblyInfo provider for the target being built.
+        target_assembly_runtime_info: The DotnetAssemblyRuntimeInfo provider for the target being built.
+        transitive_runtime_deps: List of DotnetAssemblyRuntimeInfo providers which are the transitive runtime dependencies of the target.
         runtime_identifier: The runtime identifier of the target.
         runtime_pack_infos: The DotnetAssemblyInfo of the runtime packs that are used for a self contained publish.
         use_relative_paths: If the paths to the dependencies should be relative to the workspace root.
@@ -510,15 +475,23 @@ def generate_depsjson(
             "sha512": "",
         }
         base["targets"][runtime_target][runtime_pack_name] = {
-            "runtime": {dll.basename: {} for dll in runtime_pack_info.libs + runtime_pack_info.transitive_libs.to_list()},
-            "native": {native_file.basename: {} for native_file in runtime_pack_info.native + runtime_pack_info.transitive_native.to_list()},
+            "runtime": {dll.basename: {} for dll in runtime_pack_info.libs},
+            "native": {native_file.basename: {} for native_file in runtime_pack_info.native},
         }
 
     if is_self_contained:
         base["runtimes"] = {rid: RUNTIME_GRAPH[rid] for rid, supported_rids in RUNTIME_GRAPH.items() if runtime_identifier in supported_rids or runtime_identifier == rid}
 
-    for runtime_dep in assembly_info.runtime_deps + assembly_info.transitive_runtime_deps.to_list() + [DotnetDepVariantInfo(label = assembly_info.libs[0].owner, assembly_info = assembly_info, nuget_info = None)]:
-        library_name = "{}/{}".format(runtime_dep.assembly_info.name, runtime_dep.assembly_info.version)
+    for runtime_dep in [target_assembly_runtime_info] + transitive_runtime_deps:
+        library_name = "{}/{}".format(runtime_dep.name, runtime_dep.version)
+
+        # We need to make sure that we do not include multiple versions of the same first party dll
+        # in the deps.json. Using the default ordering of depsets we can be sure that the first instance
+        # of a package is the one that is most compatible with the rest of the tree since our transitions
+        # make it so that you can't depend on incompatible packages
+        if library_name in base["libraries"]:
+            continue
+
         library_fragment = {
             "type": "project",
             "serviceable": False,
@@ -532,12 +505,12 @@ def generate_depsjson(
             library_fragment["serviceable"] = True
             library_fragment["sha512"] = runtime_dep.nuget_info.sha512
             library_fragment["path"] = library_name.lower()
-            library_fragment["hashPath"] = "{}.{}.nupkg.sha512".format(runtime_dep.assembly_info.name.lower(), runtime_dep.assembly_info.version)
+            library_fragment["hashPath"] = "{}.{}.nupkg.sha512".format(runtime_dep.name.lower(), runtime_dep.version)
 
         target_fragment = {
-            "runtime": {dll.basename if not use_relative_paths else to_manifest_path(ctx, dll): {} for dll in runtime_dep.assembly_info.libs},
-            "native": {native_file.basename if not use_relative_paths else to_manifest_path(ctx, native_file): {} for native_file in runtime_dep.assembly_info.native},
-            "dependencies": {dep.assembly_info.name: dep.assembly_info.version for dep in runtime_dep.assembly_info.runtime_deps},
+            "runtime": {dll.basename if not use_relative_paths else to_manifest_path(ctx, dll): {} for dll in runtime_dep.libs},
+            "native": {native_file.basename if not use_relative_paths else to_manifest_path(ctx, native_file): {} for native_file in runtime_dep.native},
+            "dependencies": runtime_dep.direct_deps_depsjson_fragment,
         }
 
         base["libraries"][library_name] = library_fragment

@@ -2,6 +2,7 @@
 
 """
 
+load("@aspect_bazel_lib//lib:testing.bzl", "assert_contains")
 load(
     "@rules_dotnet//dotnet:defs.bzl",
     "csharp_binary",
@@ -10,7 +11,6 @@ load(
 )
 load("@rules_dotnet//dotnet/private/tests/use_as_tool/run_rule:run_rule.bzl", "run_rule")
 load("@rules_dotnet//dotnet/private/tests/use_as_tool/run_shell_rule:run_shell_rule.bzl", "run_shell_rule")
-load("@aspect_bazel_lib//lib:testing.bzl", "assert_contains")
 
 # Test that normal binary targets work as tools
 csharp_binary(
@@ -65,6 +65,7 @@ publish_binary(
         "@rules_dotnet//dotnet:rid_linux-x64": ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.linux-x64"],
         "@rules_dotnet//dotnet:rid_osx-x64": ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.osx-x64"],
         "@rules_dotnet//dotnet:rid_win-x64": ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.win-x64"],
+        "//conditions:default": ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.linux-x64"],
     }),
     self_contained = True,
     target_framework = "net7.0",

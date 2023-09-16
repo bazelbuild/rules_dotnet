@@ -4,17 +4,17 @@ Actions for compiling targets with C#.
 
 load(
     "//dotnet/private:common.bzl",
-    "collect_transitive_info",
+    "collect_compile_info",
     "format_ref_arg",
     "framework_preprocessor_symbols",
     "generate_warning_args",
     "get_framework_version_info",
-    "transform_deps",
     "use_highentropyva",
 )
 load(
     "//dotnet/private:providers.bzl",
-    "DotnetAssemblyInfo",
+    "DotnetAssemblyCompileInfo",
+    "DotnetAssemblyRuntimeInfo",
 )
 
 def _write_internals_visible_to_csharp(actions, name, others):
@@ -72,6 +72,7 @@ def AssemblyAction(
         target_framework,
         toolchain,
         strict_deps,
+        generate_documentation_file,
         include_host_model_dll,
         treat_warnings_as_errors,
         warnings_as_errors,
@@ -106,6 +107,7 @@ def AssemblyAction(
         target_framework: The target framework moniker for the assembly.
         toolchain: The toolchain that supply the C# compiler.
         strict_deps: Whether or not to use strict dependencies.
+        generate_documentation_file: Whether or not to output XML docs for the compiled dll.
         include_host_model_dll: Whether or not to include he Microsoft.NET.HostModel dll. ONLY USED FOR COMPILING THE APPHOST SHIMMER.
         treat_warnings_as_errors: Whether or not to treat warnings as errors.
         warnings_as_errors: List of warnings to treat as errors.
@@ -124,16 +126,12 @@ def AssemblyAction(
         irefs,
         prefs,
         analyzers,
-        transitive_libs,
-        transitive_native,
-        transitive_data,
         transitive_compile_data,
         private_refs,
         private_analyzers,
-        transitive_runtime_deps,
         exports_files,
         overrides,
-    ) = collect_transitive_info(
+    ) = collect_compile_info(
         assembly_name,
         deps + [toolchain.host_model] if include_host_model_dll else deps,
         private_deps,
@@ -150,6 +148,7 @@ def AssemblyAction(
     out_iref = None
     out_ref = actions.declare_file("%s/ref/%s.%s" % (out_dir, assembly_name, out_ext))
     out_pdb = actions.declare_file("%s/%s.pdb" % (out_dir, assembly_name))
+    out_xml = actions.declare_file("%s/%s.xml" % (out_dir, assembly_name)) if generate_documentation_file else None
 
     if len(internals_visible_to) == 0:
         _compile(
@@ -183,6 +182,7 @@ def AssemblyAction(
             out_dll = out_dll,
             out_ref = out_ref,
             out_pdb = out_pdb,
+            out_xml = out_xml,
         )
     else:
         # If the user is using internals_visible_to generate an additional
@@ -227,6 +227,7 @@ def AssemblyAction(
             out_ref = out_iref,
             out_dll = out_dll,
             out_pdb = out_pdb,
+            out_xml = out_xml,
         )
 
         # Generate a ref-only DLL without internals
@@ -261,31 +262,34 @@ def AssemblyAction(
             out_dll = None,
             out_ref = out_ref,
             out_pdb = None,
+            out_xml = None,
         )
 
-    return DotnetAssemblyInfo(
+    return (DotnetAssemblyCompileInfo(
         name = target_name,
         version = "1.0.0",  #TODO: Maybe make this configurable?
         project_sdk = project_sdk,
-        libs = [out_dll],
-        pdbs = [out_pdb] if out_pdb else [],
         refs = [out_ref],
         irefs = [out_iref] if out_iref else [out_ref],
         analyzers = [],
         internals_visible_to = internals_visible_to or [],
-        data = data,
         compile_data = compile_data,
-        native = [],
         exports = exports_files,
         transitive_refs = prefs,
         transitive_analyzers = analyzers,
-        transitive_libs = transitive_libs,
-        transitive_native = transitive_native,
-        transitive_data = transitive_data,
         transitive_compile_data = transitive_compile_data,
-        runtime_deps = transform_deps(deps + [toolchain.host_model] if include_host_model_dll else deps),
-        transitive_runtime_deps = transitive_runtime_deps,
-    )
+    ), DotnetAssemblyRuntimeInfo(
+        name = target_name,
+        version = "1.0.0",  #TODO: Maybe make this configurable?
+        libs = [out_dll],
+        pdbs = [out_pdb] if out_pdb else [],
+        xml_docs = [out_xml] if out_xml else [],
+        data = data,
+        native = [],
+        deps = depset([dep[DotnetAssemblyRuntimeInfo] for dep in deps] + [toolchain.host_model[DotnetAssemblyRuntimeInfo]] if include_host_model_dll else [dep[DotnetAssemblyRuntimeInfo] for dep in deps], transitive = [dep[DotnetAssemblyRuntimeInfo].deps for dep in deps]),
+        nuget_info = None,
+        direct_deps_depsjson_fragment = {dep[DotnetAssemblyRuntimeInfo].name: dep[DotnetAssemblyRuntimeInfo].version for dep in deps},
+    ))
 
 def _compile(
         actions,
@@ -317,7 +321,8 @@ def _compile(
         nullable,
         out_dll = None,
         out_ref = None,
-        out_pdb = None):
+        out_pdb = None,
+        out_xml = None):
     # Our goal is to match msbuild as much as reasonable
     # https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/listed-alphabetically
     args = actions.args()
@@ -383,6 +388,10 @@ def _compile(
         args.add("/refonly")
         args.add("/out:" + out_ref.path)
         outputs = [out_ref]
+
+    if out_xml != None:
+        args.add("/doc:" + out_xml.path)
+        outputs.append(out_xml)
 
     # assembly references
     format_ref_arg(args, depset(transitive = [private_refs, refs]), overrides)

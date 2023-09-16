@@ -2,17 +2,18 @@
 Base rule for building .Net binaries
 """
 
-load("//dotnet/private:providers.bzl", "DotnetBinaryInfo")
+load("@aspect_bazel_lib//lib:paths.bzl", "to_manifest_path")
+load("@bazel_skylib//lib:paths.bzl", "paths")
+load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 load(
     "//dotnet/private:common.bzl",
+    "collect_transitive_runfiles",
     "generate_depsjson",
     "generate_runtimeconfig",
     "is_core_framework",
     "is_standard_framework",
 )
-load("@bazel_skylib//lib:paths.bzl", "paths")
-load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
-load("@aspect_bazel_lib//lib:paths.bzl", "to_manifest_path")
+load("//dotnet/private:providers.bzl", "DotnetBinaryInfo")
 
 def _create_shim_exe(ctx, dll):
     windows_constraint = ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]
@@ -81,21 +82,23 @@ def build_binary(ctx, compile_action):
     if is_standard_framework(tfm):
         fail("It doesn't make sense to build an executable for " + tfm)
 
-    result = compile_action(ctx, tfm)
-    dll = result.libs[0]
-    default_info_files = [dll]
-    direct_runfiles = [dll] + result.data
+    (compile_provider, runtime_provider) = compile_action(ctx, tfm)
+    dll = runtime_provider.libs[0]
+    default_info_files = [dll] + runtime_provider.xml_docs
+    additional_runfiles = []
 
     app_host = None
     if ctx.attr.apphost_shimmer:
         app_host = _create_shim_exe(ctx, dll)
-        direct_runfiles.append(app_host)
+        additional_runfiles.append(app_host)
         default_info_files = default_info_files.append(app_host)
 
-    launcher = _create_launcher(ctx, direct_runfiles, dll)
+    launcher = _create_launcher(ctx, additional_runfiles, dll)
 
     runtimeconfig = None
     depsjson = None
+    transitive_runtime_deps = runtime_provider.deps.to_list()
+
     if is_core_framework(tfm):
         # Create the runtimeconfig.json for the binary
         runtimeconfig = ctx.actions.declare_file("bazelout/%s/%s.runtimeconfig.json" % (tfm, ctx.attr.out or ctx.attr.name))
@@ -127,7 +130,8 @@ def build_binary(ctx, compile_action):
             ctx,
             target_framework = tfm,
             is_self_contained = False,
-            assembly_info = result,
+            target_assembly_runtime_info = runtime_provider,
+            transitive_runtime_deps = transitive_runtime_deps,
             runtime_identifier = ctx.attr.runtime_identifier,
             use_relative_paths = True,
         )
@@ -138,23 +142,21 @@ def build_binary(ctx, compile_action):
         )
 
     if runtimeconfig != None:
-        direct_runfiles.append(runtimeconfig)
+        additional_runfiles.append(runtimeconfig)
 
     if depsjson != None:
-        direct_runfiles.append(depsjson)
+        additional_runfiles.append(depsjson)
 
     default_info = DefaultInfo(
         executable = launcher,
-        runfiles = ctx.runfiles(
-            files = direct_runfiles,
-            transitive_files = depset(transitive = [result.transitive_libs, result.transitive_native, result.transitive_data]),
-        ),
+        runfiles = collect_transitive_runfiles(ctx, runtime_provider, ctx.attr.deps).merge(ctx.runfiles(files = additional_runfiles)),
         files = depset(default_info_files),
     )
 
     dotnet_binary_info = DotnetBinaryInfo(
         dll = dll,
         app_host = app_host,
+        transitive_runtime_deps = transitive_runtime_deps,
     )
 
-    return [default_info, dotnet_binary_info, result]
+    return [default_info, dotnet_binary_info, compile_provider, runtime_provider]

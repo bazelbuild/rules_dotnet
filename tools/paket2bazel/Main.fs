@@ -12,6 +12,7 @@ type CliArguments =
     | [<Mandatory>] Dependencies_File of path: string
     | [<Mandatory>] Output_Folder of path: string
     | Put_Groups_Into_Separate_Files
+    | Netrc_File_Label of path: string option
 
     interface IArgParserTemplate with
         member s.Usage =
@@ -20,6 +21,7 @@ type CliArguments =
             | Output_Folder _ -> "Folder where the output will be generated in"
             | Put_Groups_Into_Separate_Files ->
                 "If enabled each Paket group will be put into a file with the same name as the group. The default group will always be put into the `paket.bzl` file"
+            | Netrc_File_Label _ -> "A Bazel label pointing to a netrc file"
 
 [<EntryPoint>]
 let main argv =
@@ -46,6 +48,10 @@ let main argv =
 
     let separateFiles = results.Contains Put_Groups_Into_Separate_Files
 
-    generateBazelFiles groups separateFiles outputFolder
+    let netrcLabel =
+        results.TryGetResult Netrc_File_Label
+        |> Option.bind (fun x -> x)
+
+    generateBazelFiles groups separateFiles outputFolder netrcLabel
 
     0 // return an integer exit

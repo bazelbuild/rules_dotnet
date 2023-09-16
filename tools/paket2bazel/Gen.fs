@@ -7,8 +7,27 @@ open System
 open System.Text
 open Paket2Bazel.Models
 open System.IO
+open System.Collections.Generic
+open System.Text.Json
+open System.Text.Json.Serialization
+open System.Text.Encodings.Web
 
-let generateTarget (group: Group) (repoName: string) =
+type NugetRepoPackage =
+    { id: string
+      version: string
+      sha512: string
+      sources: string seq
+      netrc: string option
+      dependencies: Dictionary<string, string seq>
+      targeting_pack_overrides: string seq }
+
+type NugetRepo = { packages: NugetRepoPackage seq }
+
+let generateTarget (nugetRepo: NugetRepo) (repoName: string) (netrcLabel: string option) =
+    let jsonOptions = JsonSerializerOptions()
+    jsonOptions.DefaultIgnoreCondition <- JsonIgnoreCondition.WhenWritingNull
+    jsonOptions.Encoder <- JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+
     let i = "    "
     let sb = new StringBuilder()
     sb.Append($"{i}nuget_repo(\n") |> ignore
@@ -18,32 +37,26 @@ let generateTarget (group: Group) (repoName: string) =
 
     sb.Append($"{i}    packages = [\n") |> ignore
 
-    for package in group.packages do
-        // TODO: Handle multiple TFMS
-        let packageDeps =
-            package.dependencies
-            |> Map.values
-            |> Seq.head
-            |> Seq.fold (fun state current -> state + $"\"{current}\", ") ""
-            |> (fun s ->
-                if String.IsNullOrEmpty(s) then
-                    s
-                else
-                    s.Substring(0, s.Length - 2))
-
-        let overrides =
-            package.overrides
-            |> Seq.fold (fun state current -> state + $"\"{current}\", ") ""
-            |> (fun s ->
-                if String.IsNullOrEmpty(s) then
-                    s
-                else
-                    s.Substring(0, s.Length - 2))
+    for package in nugetRepo.packages do
+        sb.Append($"{i}        ") |> ignore
 
         sb.Append(
-            $"{i}        (\"{package.name}\", \"{package.version}\", \"{package.sha512sri}\", [{packageDeps}], [{overrides}]),\n"
+            JsonSerializer
+                .Serialize(package, jsonOptions)
+                // The replacements are so that the Bazel formatter does not have anything to format
+                .Replace(
+                    "\":\"",
+                    "\": \""
+                )
+                .Replace("\",\"", "\", \"")
+                .Replace("\":[", "\": [")
+                .Replace("],", "], ")
+                .Replace("\":{", "\": {")
+                .Replace("},", "}, ")
         )
         |> ignore
+
+        sb.Append(",\n") |> ignore
 
 
     sb.Append($"{i}    ],\n") |> ignore
@@ -67,21 +80,41 @@ let addFileHeaderContent (sb: StringBuilder) (fileName: string) =
     sb.Append($"    \"{fileName}\"") |> ignore
     sb.Append("\n") |> ignore
 
-let addGroupToFileContent (sb: StringBuilder) (group: Group) (repoNamePrefix: string option) =
+let groupToNugetRepo (group: Group) =
+    let repoPackages =
+        group.packages
+        |> Seq.map (fun p ->
+            { id = p.name
+              version = p.version
+              sha512 = p.sha512sri
+              sources = p.sources
+              netrc = None
+              dependencies = Dictionary(p.dependencies)
+              targeting_pack_overrides = p.overrides })
+
+    { packages = repoPackages }
+
+let addGroupToFileContent
+    (sb: StringBuilder)
+    (group: Group)
+    (repoNamePrefix: string option)
+    (netrcLabel: string option)
+    =
     let repoName =
         match repoNamePrefix with
         | Some (prefix) -> $"{prefix}.{group.name.ToLower()}"
         | None -> group.name.ToLower()
 
-    sb.Append(generateTarget group repoName) |> ignore
+    sb.Append(generateTarget (groupToNugetRepo group) repoName netrcLabel)
+    |> ignore
 
-let generateBazelFiles (groups: Group seq) (separateFiles: bool) (outputFolder: string) =
+let generateBazelFiles (groups: Group seq) (separateFiles: bool) (outputFolder: string) (netrcLabel: string option) =
     if separateFiles then
         groups
         |> Seq.iter (fun group ->
             let sb = new StringBuilder()
             addFileHeaderContent sb group.name
-            addGroupToFileContent sb group None
+            addGroupToFileContent sb group None netrcLabel
             File.WriteAllText($"{outputFolder}/{group.name.ToLower()}.bzl", sb.ToString()))
     else
         let sb = new StringBuilder()
@@ -90,6 +123,6 @@ let generateBazelFiles (groups: Group seq) (separateFiles: bool) (outputFolder: 
 
         groups
         |> Seq.sortBy (fun i -> i.name)
-        |> Seq.iter (fun g -> addGroupToFileContent sb g (Some "paket"))
+        |> Seq.iter (fun g -> addGroupToFileContent sb g (Some "paket") netrcLabel)
 
         File.WriteAllText($"{outputFolder}/paket.bzl", sb.ToString())

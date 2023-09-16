@@ -1,0 +1,31 @@
+load("@aspect_bazel_lib//lib:diff_test.bzl", "diff_test")
+load("@bazel_skylib//rules:select_file.bzl", "select_file")
+load(
+    "@rules_dotnet//dotnet:defs.bzl",
+    "fsharp_library",
+)
+
+fsharp_library(
+    name = "lib",
+    srcs = ["lib.fs"],
+    internals_visible_to = ["lib_test"],
+    private_deps = [
+        "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
+    ],
+    target_frameworks = ["net6.0"],
+    deps = [
+        "@rules_dotnet_dev_nuget_packages//fsharp.core",
+    ],
+)
+
+select_file(
+    name = "docs_xml",
+    srcs = ":lib",
+    subpath = "bazelout/net6.0/lib.xml",
+)
+
+diff_test(
+    name = "diff",
+    file1 = ":docs_xml",
+    file2 = "expected.xml",
+)

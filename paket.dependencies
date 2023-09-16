@@ -14,7 +14,7 @@ group paket2bazel_dependencies
     nuget Microsoft.NETCore.App.Ref 6.0.5
 
 group rules_dotnet_dev_nuget_packages
-    framework: net6.0,netstandard2.1
+    framework: net6.0,netstandard2.1,netstandard2.0
     source https://api.nuget.org/v3/index.json
 
     nuget Microsoft.NETCore.App.Ref 6.0.5
@@ -28,6 +28,7 @@ group rules_dotnet_dev_nuget_packages
     nuget NETStandard.Library.Ref 2.1.0
     nuget System.Security.Principal.Windows 5.0.0
     nuget Magick.NET.Core 12.2.2
+    nuget System.Memory 4.5.5
 
 group rules_dotnet_nuget_packages
     framework: net6.0

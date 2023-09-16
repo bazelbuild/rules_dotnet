@@ -5,15 +5,15 @@ This rule can be used to compile and run any F# binary and run it as
 a Bazel test.
 """
 
-load("//dotnet/private/rules/fsharp/actions:fsharp_assembly.bzl", "AssemblyAction")
+load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 load(
     "//dotnet/private:common.bzl",
     "is_debug",
 )
-load("//dotnet/private/rules/common:binary.bzl", "build_binary")
 load("//dotnet/private/rules/common:attrs.bzl", "FSHARP_BINARY_COMMON_ATTRS")
+load("//dotnet/private/rules/common:binary.bzl", "build_binary")
+load("//dotnet/private/rules/fsharp/actions:fsharp_assembly.bzl", "AssemblyAction")
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
-load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 
 def _compile_action(ctx, tfm):
     toolchain = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"]
@@ -38,6 +38,7 @@ def _compile_action(ctx, tfm):
         target_framework = tfm,
         toolchain = toolchain,
         strict_deps = ctx.attr.strict_deps if ctx.attr.override_strict_deps else toolchain.strict_deps[BuildSettingInfo].value,
+        generate_documentation_file = ctx.attr.generate_documentation_file,
         treat_warnings_as_errors = ctx.attr.treat_warnings_as_errors if ctx.attr.override_treat_warnings_as_errors else toolchain.dotnetinfo.fsharp_treat_warnings_as_errors[BuildSettingInfo].value,
         warnings_as_errors = ctx.attr.warnings_as_errors if ctx.attr.override_warnings_as_errors else toolchain.dotnetinfo.fsharp_warnings_as_errors[BuildSettingInfo].value,
         warnings_not_as_errors = ctx.attr.warnings_not_as_errors if ctx.attr.override_warnings_not_as_errors else toolchain.dotnetinfo.fsharp_warnings_not_as_errors[BuildSettingInfo].value,

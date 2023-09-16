@@ -8,33 +8,28 @@ load(
     _csharp_binary = "csharp_binary",
 )
 load(
-    "@rules_dotnet//dotnet/private/rules/fsharp:binary.bzl",
-    _fsharp_binary = "fsharp_binary",
-)
-load(
-    "@rules_dotnet//dotnet/private/rules/publish_binary:publish_binary.bzl",
-    _publish_binary = "publish_binary",
-    _publish_binary_wrapper = "publish_binary_wrapper",
-)
-load(
     "@rules_dotnet//dotnet/private/rules/csharp:library.bzl",
     _csharp_library = "csharp_library",
-)
-load(
-    "@rules_dotnet//dotnet/private/rules/fsharp:library.bzl",
-    _fsharp_library = "fsharp_library",
 )
 load(
     "@rules_dotnet//dotnet/private/rules/csharp:nunit_test.bzl",
     _csharp_nunit_test = "csharp_nunit_test",
 )
 load(
-    "@rules_dotnet//dotnet/private/rules/fsharp:nunit_test.bzl",
-    _fsharp_nunit_test = "fsharp_nunit_test",
-)
-load(
     "@rules_dotnet//dotnet/private/rules/csharp:test.bzl",
     _csharp_test = "csharp_test",
+)
+load(
+    "@rules_dotnet//dotnet/private/rules/fsharp:binary.bzl",
+    _fsharp_binary = "fsharp_binary",
+)
+load(
+    "@rules_dotnet//dotnet/private/rules/fsharp:library.bzl",
+    _fsharp_library = "fsharp_library",
+)
+load(
+    "@rules_dotnet//dotnet/private/rules/fsharp:nunit_test.bzl",
+    _fsharp_nunit_test = "fsharp_nunit_test",
 )
 load(
     "@rules_dotnet//dotnet/private/rules/fsharp:test.bzl",
@@ -52,6 +47,11 @@ load(
 load(
     "@rules_dotnet//dotnet/private/rules/nuget:nuget_repo.bzl",
     _nuget_repo = "nuget_repo",
+)
+load(
+    "@rules_dotnet//dotnet/private/rules/publish_binary:publish_binary.bzl",
+    _publish_binary = "publish_binary",
+    _publish_binary_wrapper = "publish_binary_wrapper",
 )
 
 def _get_runtime_runtime_identifier(rid):

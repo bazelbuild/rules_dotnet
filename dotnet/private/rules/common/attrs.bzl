@@ -1,15 +1,15 @@
 "The attributes used by binary/library/test rules"
 
 load("@bazel_skylib//lib:dicts.bzl", "dicts")
-load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo")
-load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
+load("//dotnet/private:providers.bzl", "DotnetAssemblyCompileInfo", "DotnetAssemblyRuntimeInfo")
 load("//dotnet/private/transitions:default_transition.bzl", "default_transition")
+load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 
 # These are attributes that are common across all the binary/library/test .Net rules
 COMMON_ATTRS = {
     "deps": attr.label_list(
         doc = "Other libraries, binaries, or imported DLLs",
-        providers = [DotnetAssemblyInfo],
+        providers = [DotnetAssemblyCompileInfo, DotnetAssemblyRuntimeInfo],
         cfg = tfm_transition,
     ),
     "data": attr.label_list(
@@ -82,7 +82,7 @@ COMMON_ATTRS = {
         The dependencies will not be propagated transitively to parent targets and 
         do not become part of the targets runfiles.
         """,
-        providers = [DotnetAssemblyInfo],
+        providers = [DotnetAssemblyCompileInfo, DotnetAssemblyRuntimeInfo],
         cfg = tfm_transition,
     ),
     "treat_warnings_as_errors": attr.bool(
@@ -130,6 +130,10 @@ COMMON_ATTRS = {
         doc = "Whether or not to override the strict_deps attribute.",
         mandatory = False,
     ),
+    "generate_documentation_file": attr.bool(
+        doc = "Whether or not to generate a documentation file.",
+        default = True,
+    ),
     "_target_framework": attr.label(
         default = "@rules_dotnet//dotnet:target_framework",
     ),
@@ -160,7 +164,7 @@ LIBRARY_COMMON_ATTRS = {
         
         This attribute does nothing if you don't have strict dependencies enabled.""",
         default = [],
-        providers = [DotnetAssemblyInfo],
+        providers = [DotnetAssemblyCompileInfo, DotnetAssemblyRuntimeInfo],
     ),
 }
 
@@ -172,7 +176,7 @@ BINARY_COMMON_ATTRS = {
         default = False,
     ),
     "apphost_shimmer": attr.label(
-        providers = [DotnetAssemblyInfo],
+        providers = [DotnetAssemblyCompileInfo, DotnetAssemblyRuntimeInfo],
         executable = True,
         cfg = "exec",
     ),

@@ -1,7 +1,7 @@
 workspace(name = "rules_dotnet")
 
-load(":internal_deps.bzl", "rules_dotnet_internal_deps")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load(":internal_deps.bzl", "rules_dotnet_internal_deps")
 
 # gazelle:repo bazel_gazelle
 

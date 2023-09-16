@@ -2,29 +2,25 @@
 Rules for importing assemblies for .NET frameworks.
 """
 
+load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 load(
     "//dotnet/private:common.bzl",
-    "collect_transitive_info",
-    "transform_deps",
+    "collect_compile_info",
+    "collect_transitive_runfiles",
 )
-load("//dotnet/private:providers.bzl", "DotnetAssemblyInfo", "NuGetInfo")
-load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
+load("//dotnet/private:providers.bzl", "DotnetAssemblyCompileInfo", "DotnetAssemblyRuntimeInfo", "NuGetInfo")
 
 def _import_library(ctx):
     (
         _irefs,
         prefs,
         analyzers,
-        libs,
-        native,
-        data,
         _compile_data,
         _private_refs,
         _private_analyzers,
-        transitive_runtime_deps,
         _exports,
         _overrides,
-    ) = collect_transitive_info(
+    ) = collect_compile_info(
         ctx.label.name,
         ctx.attr.deps,
         [],
@@ -32,33 +28,48 @@ def _import_library(ctx):
         ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].strict_deps[BuildSettingInfo].value,
     )
 
-    return [DotnetAssemblyInfo(
+    nuget_info = NuGetInfo(
+        targeting_pack_overrides = ctx.attr.targeting_pack_overrides,
+        sha512 = ctx.attr.sha512,
+    )
+
+    dotnet_assembly_compile_info = DotnetAssemblyCompileInfo(
         name = ctx.attr.library_name,
         version = ctx.attr.version,
         project_sdk = "default",
-        libs = ctx.files.libs,
-        # TODO: PDBs from nuget packages should also be forwarded
-        pdbs = [],
         refs = ctx.files.refs,
         irefs = ctx.files.refs,
         analyzers = ctx.files.analyzers,
-        native = ctx.files.native,
-        data = ctx.files.data,
         compile_data = [],
         exports = [],
-        transitive_libs = libs,
-        transitive_native = native,
-        transitive_data = data,
         transitive_compile_data = depset([]),
         transitive_refs = prefs,
         transitive_analyzers = analyzers,
         internals_visible_to = [],
-        runtime_deps = transform_deps(ctx.attr.deps),
-        transitive_runtime_deps = transitive_runtime_deps,
-    ), NuGetInfo(
-        targeting_pack_overrides = ctx.attr.targeting_pack_overrides,
-        sha512 = ctx.attr.sha512,
-    )]
+    )
+
+    dotnet_assembly_runtime_info = DotnetAssemblyRuntimeInfo(
+        name = ctx.attr.library_name,
+        version = ctx.attr.version,
+        libs = ctx.files.libs,
+        # TODO: PDBs from nuget packages should also be forwarded
+        pdbs = [],
+        xml_docs = [],
+        native = ctx.files.native,
+        data = ctx.files.data,
+        nuget_info = nuget_info,
+        deps = depset([dep[DotnetAssemblyRuntimeInfo] for dep in ctx.attr.deps], transitive = [dep[DotnetAssemblyRuntimeInfo].deps for dep in ctx.attr.deps]),
+        direct_deps_depsjson_fragment = {dep[DotnetAssemblyRuntimeInfo].name: dep[DotnetAssemblyRuntimeInfo].version for dep in ctx.attr.deps},
+    )
+
+    return [
+        DefaultInfo(
+            runfiles = collect_transitive_runfiles(ctx, dotnet_assembly_runtime_info, ctx.attr.deps),
+        ),
+        dotnet_assembly_compile_info,
+        dotnet_assembly_runtime_info,
+        nuget_info,
+    ]
 
 import_library = rule(
     _import_library,
@@ -93,7 +104,7 @@ import_library = rule(
         ),
         "deps": attr.label_list(
             doc = "Other DLLs that this DLL depends on.",
-            providers = [DotnetAssemblyInfo],
+            providers = [DotnetAssemblyRuntimeInfo, DotnetAssemblyCompileInfo],
         ),
         "data": attr.label_list(
             doc = "Other files that this DLL depends on at runtime",
@@ -114,29 +125,39 @@ import_library = rule(
 )
 
 def _import_dll(ctx):
-    return [DotnetAssemblyInfo(
+    assembly_compile_info = DotnetAssemblyCompileInfo(
         name = ctx.file.dll.basename[:-4],
         version = ctx.attr.version,
         project_sdk = "default",
-        libs = [ctx.file.dll],
-        pdbs = [],
         refs = [ctx.file.dll],
         irefs = [],
         analyzers = [],
-        native = [],
-        data = [],
         compile_data = [],
         exports = [],
-        transitive_libs = depset([]),
-        transitive_native = depset([]),
-        transitive_data = depset([]),
         transitive_compile_data = depset([]),
         transitive_refs = depset([]),
         transitive_analyzers = depset([]),
         internals_visible_to = [],
-        runtime_deps = [],
-        transitive_runtime_deps = depset([]),
-    )]
+    )
+    assembly_runtime_info = DotnetAssemblyRuntimeInfo(
+        name = ctx.file.dll.basename[:-4],
+        version = ctx.attr.version,
+        libs = [ctx.file.dll],
+        pdbs = [],
+        xml_docs = [],
+        native = [],
+        data = [],
+        deps = depset([]),
+        nuget_info = None,
+        direct_deps_depsjson_fragment = {},
+    )
+    return [
+        DefaultInfo(
+            runfiles = collect_transitive_runfiles(ctx, assembly_runtime_info, []),
+        ),
+        assembly_compile_info,
+        assembly_runtime_info,
+    ]
 
 import_dll = rule(
     _import_dll,
