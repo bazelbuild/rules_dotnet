@@ -7,9 +7,9 @@ csharp_library(
     name = "runfiles",
     srcs = ["Runfiles.cs"],
     private_deps = [
-        "@rules_dotnet_nuget_packages//netstandard.library.ref",
+        "@rules_dotnet_nuget_packages//netstandard.library",
     ],
-    target_frameworks = ["netstandard2.1"],
+    target_frameworks = ["netstandard2.0"],
     visibility = ["//visibility:public"],
     deps = [
     ],
