@@ -53,7 +53,7 @@ tasks:
       - "--@rules_dotnet//dotnet/settings:strict_deps=false"
       - "--config=remote"
     test_flags:
-      = "--@rules_dotnet//dotnet/settings:strict_deps=false"
+      - "--@rules_dotnet//dotnet/settings:strict_deps=false"
       - "--config=remote"
   macos:
     name: Rules on MacOS
