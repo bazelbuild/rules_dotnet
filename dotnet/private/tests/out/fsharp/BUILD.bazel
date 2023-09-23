@@ -10,10 +10,10 @@ fsharp_nunit_test(
     name = "lib_test",
     srcs = ["libtest.fs"],
     out = "OtherLibTest",
-    private_deps = [
+    target_frameworks = ["net6.0"],
+    targeting_packs = [
         "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net6.0"],
     deps = [
         ":lib",
         "@rules_dotnet_dev_nuget_packages//fsharp.core",
@@ -28,10 +28,10 @@ fsharp_library(
     internals_visible_to = [
         "OtherLibTest",
     ],
-    private_deps = [
+    target_frameworks = ["net6.0"],
+    targeting_packs = [
         "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net6.0"],
     deps = [
         "@rules_dotnet_dev_nuget_packages//fsharp.core",
     ],

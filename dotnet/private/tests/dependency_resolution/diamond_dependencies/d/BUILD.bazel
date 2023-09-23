@@ -6,17 +6,17 @@ load(
 csharp_library(
     name = "d",
     srcs = ["d.cs"],
-    private_deps = select({
+    target_frameworks = [
+        "net6.0",
+        "netstandard2.1",
+    ],
+    targeting_packs = select({
         "@rules_dotnet//dotnet:tfm_net6.0": ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
         "@rules_dotnet//dotnet:tfm_netstandard2.1": ["@rules_dotnet_dev_nuget_packages//netstandard.library.ref"],
         # TODO: look into why this is needed in Bazel 7 but not 6
         # The transition should be taking care of transitioning to a valid config for this select
         "//conditions:default": [],
     }),
-    target_frameworks = [
-        "net6.0",
-        "netstandard2.1",
-    ],
     visibility = ["//visibility:public"],
     deps = [],
 )

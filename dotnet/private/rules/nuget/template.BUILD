@@ -6,6 +6,7 @@ import_library(
     name = "{VERSION}",
     analyzers = ["@{PREFIX}.{NAME_LOWER}.v{VERSION}//:analyzers"],
     data = ["@{PREFIX}.{NAME_LOWER}.v{VERSION}//:data"],
+    framework_list = {FRAMEWORK_LIST},
     library_name = "{NAME}",
     libs = ["@{PREFIX}.{NAME_LOWER}.v{VERSION}//:libs"],
     native = ["@{PREFIX}.{NAME_LOWER}.v{VERSION}//:native"],

@@ -16,10 +16,10 @@ load("@rules_dotnet//dotnet/private/tests/use_as_tool/run_shell_rule:run_shell_r
 csharp_binary(
     name = "main",
     srcs = ["main.cs"],
-    private_deps = [
+    target_frameworks = ["net7.0"],
+    targeting_packs = [
         "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net7.0"],
     deps = [
         ":lib",
     ],
@@ -28,10 +28,10 @@ csharp_binary(
 csharp_library(
     name = "lib",
     srcs = ["lib.cs"],
-    private_deps = [
+    target_frameworks = ["net6.0"],
+    targeting_packs = [
         "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net6.0"],
     deps = [],
 )
 
@@ -104,10 +104,10 @@ csharp_binary(
     data = [
         ":run",
     ],
-    private_deps = [
+    target_frameworks = ["net6.0"],
+    targeting_packs = [
         "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net6.0"],
     deps = [
         ":lib",
     ],

@@ -94,6 +94,7 @@ bzl_library(
     visibility = ["//dotnet:__subpackages__"],
     deps = [
         ":providers",
+        ":semver",
         "@aspect_bazel_lib//lib:paths",
         "@bazel_skylib//lib:sets",
     ],
@@ -114,6 +115,12 @@ bzl_library(
 bzl_library(
     name = "rids",
     srcs = ["rids.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+)
+
+bzl_library(
+    name = "semver",
+    srcs = ["semver.bzl"],
     visibility = ["//dotnet:__subpackages__"],
 )
 

@@ -12,6 +12,7 @@ load(
     "NuGetInfo",
 )
 load("//dotnet/private:rids.bzl", "RUNTIME_GRAPH")
+load("//dotnet/private:semver.bzl", "semver")
 
 def _collect_transitive():
     t = {}
@@ -183,45 +184,42 @@ def is_greater_or_equal_framework(tfm1, tfm2):
         return True
     return False
 
-def format_ref_arg(args, refs, targeting_pack_overrides):
+def _format_ref_with_overrides(assembly):
+    return "-r:" + assembly.path
+
+def format_ref_arg(args, refs):
     """Takes 
 
     Args:
         args: The args object that will be sent into the compilation action
         refs: List of all references that are being sent into the compilation action
-        targeting_pack_overrides: Dict of overrides that are declared by targeting packs
     Returns:
         The updated args object
     """
 
-    def _format_ref_with_overrides(assembly):
-        # TODO: Make it a bit more robust
-        # We rely on the naming convention of nuget_archive/nuget_repo which isn't too nice
-        # We also need to handle the versions here and make sure that if the version of the dep is > version in targeting pack then do not skip
-        package_name = None
-        if assembly.path.startswith("external/nuget."):
-            package_name = assembly.path.lstrip("external/nuget.").split("/")[0].split(".v")[0]
-        if package_name and package_name in targeting_pack_overrides:
-            return None
-
-        return "-r:" + assembly.path
-
-    args.add_all(refs, allow_closure = True, map_each = _format_ref_with_overrides)
+    args.add_all(refs, map_each = _format_ref_with_overrides)
 
     return args
 
-def collect_compile_info(name, deps, private_deps, exports, strict_deps):
+def _find_ref_by_file_name(refs, file_name):
+    for ref in refs:
+        if ref.basename.lower().replace(".dll", "") == file_name.lower():
+            return ref
+
+    return None
+
+def collect_compile_info(name, deps, targeting_packs, exports, strict_deps):
     """Determine the transitive dependencies by the target framework.
 
     Args:
         name: The name of the assembly that is being compiled.
         deps: Dependencies that the compilation target depends on.
-        private_deps: Private dependencies that the compilation target depends on.
+        targeting_packs: Targeting packs that the compilation target depends on.
         exports: Exported targets
         strict_deps: Whether or not to use strict dependencies.
 
     Returns:
-        A collection of the overrides, references, analyzers and runfiles.
+        A collection of the references, analyzers and runfiles.
     """
     direct_iref = []
     direct_ref = []
@@ -231,68 +229,83 @@ def collect_compile_info(name, deps, private_deps, exports, strict_deps):
     direct_analyzers = []
     transitive_analyzers = []
 
-    direct_private_ref = []
-    transitive_private_ref = []
-    direct_private_analyzers = []
-    transitive_private_analyzers = []
-
     exports_files = []
 
-    overrides = {}
-    for dep in deps + private_deps:
-        if NuGetInfo in dep:
-            nuget_info = dep[NuGetInfo]
+    targeting_pack_overrides = {}
+    framework_list = {}
+    framework_files = []
+    for targeting_pack in targeting_packs:
+        compile_info = targeting_pack[DotnetAssemblyCompileInfo]
+        nuget_info = targeting_pack[NuGetInfo]
 
-            for override_name, override_version in nuget_info.targeting_pack_overrides.items():
-                # TODO: In case there are multiple overrides of the same package
-                # we should take the one with the highest version
-                # Need to get a semver comparison function to do that
-                overrides[override_name] = override_version
+        for override_name, override_version in nuget_info.targeting_pack_overrides.items():
+            targeting_pack_overrides[override_name] = override_version
+
+        for dll_name, dll_version in nuget_info.framework_list.items():
+            framework_list[dll_name] = {"version": dll_version, "file": _find_ref_by_file_name(compile_info.refs, dll_name)}
+
+        if len(nuget_info.framework_list) == 0:
+            framework_files.extend(compile_info.irefs)
+
+        direct_analyzers.extend(compile_info.analyzers)
+        direct_compile_data.extend(compile_info.compile_data)
 
     for dep in deps:
         assembly = dep[DotnetAssemblyCompileInfo]
 
-        # See docs/ReferenceAssemblies.md for more info on why we use (and prefer) refout
-        # and the mechanics of irefout vs. prefout.
-        direct_iref.extend(assembly.irefs if name in assembly.internals_visible_to else assembly.refs)
-        direct_ref.extend(assembly.refs)
-        direct_analyzers.extend(assembly.analyzers)
-        direct_compile_data.extend(assembly.compile_data)
+        add_to_output = True
+        if assembly.name.lower() in targeting_pack_overrides:
+            if semver.to_comparable(assembly.version) > semver.to_comparable(targeting_pack_overrides[assembly.name.lower()], relaxed = True):
+                framework_list.pop(assembly.name.lower())
+                add_to_output = True
+            else:
+                add_to_output = False
+        elif assembly.name.lower() in framework_list:
+            if semver.to_comparable(assembly.version) > semver.to_comparable(framework_list[assembly.name.lower()].get("version"), relaxed = True):
+                framework_list.pop(assembly.name.lower())
+                add_to_output = True
+            else:
+                add_to_output = False
+
+        if add_to_output:
+            direct_iref.extend(assembly.irefs if name in assembly.internals_visible_to else assembly.refs)
+            direct_ref.extend(assembly.refs)
+            direct_analyzers.extend(assembly.analyzers)
+            direct_compile_data.extend(assembly.compile_data)
 
         # We take all the exports of each dependency and add them
         # to the direct refs.
         direct_iref.extend(assembly.exports)
 
+        # This is not a complete solution since we are not comparing assembly versions
+        # Transitive dependency resolution is very complicated.
         if not strict_deps:
-            transitive_ref.append(assembly.transitive_refs)
+            for transitive_assembly in assembly.transitive_refs.to_list():
+                add_to_output = True
+                if transitive_assembly.basename.replace(".dll", "").lower() in targeting_pack_overrides:
+                    add_to_output = False
+                elif transitive_assembly.basename.replace(".dll", "").lower() in framework_list:
+                    add_to_output = False
+                if add_to_output:
+                    transitive_ref.append(transitive_assembly)
             transitive_analyzers.append(assembly.transitive_analyzers)
             transitive_compile_data.append(assembly.transitive_compile_data)
 
-    for dep in private_deps:
-        assembly = dep[DotnetAssemblyCompileInfo]
-
-        direct_private_ref.extend(assembly.irefs if name in assembly.internals_visible_to else assembly.refs)
-        direct_private_analyzers.extend(assembly.analyzers)
-        direct_compile_data.extend(assembly.compile_data)
-
-        if not strict_deps:
-            transitive_private_ref.append(assembly.transitive_refs)
-            transitive_private_analyzers.append(assembly.transitive_analyzers)
-            transitive_compile_data.append(assembly.transitive_compile_data)
+    for file in framework_list.values():
+        if file["file"] != None:
+            framework_files.append(file["file"])
 
     for export in exports:
         assembly = export[DotnetAssemblyCompileInfo]
         exports_files.extend(assembly.refs)
 
     return (
-        depset(direct = direct_iref, transitive = transitive_ref),
-        depset(direct = direct_ref, transitive = transitive_ref),
+        depset(direct = direct_iref, transitive = [depset(transitive_ref)]),
+        depset(direct = direct_ref, transitive = [depset(transitive_ref)]),
         depset(direct = direct_analyzers, transitive = transitive_analyzers),
         depset(direct = direct_compile_data, transitive = transitive_compile_data),
-        depset(direct = direct_private_ref, transitive = transitive_private_ref),
-        depset(direct = direct_private_analyzers, transitive = transitive_private_analyzers),
+        framework_files,
         exports_files,
-        overrides,
     )
 
 def collect_transitive_runfiles(ctx, assembly_runtime_info, deps):

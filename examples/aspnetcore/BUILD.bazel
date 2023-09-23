@@ -12,12 +12,12 @@ csharp_binary(
         "Program.cs",
         "WeatherForecast.cs",
     ],
-    private_deps = [
+    project_sdk = "web",
+    target_frameworks = ["net6.0"],
+    targeting_packs = [
         "@example_deps//microsoft.aspnetcore.app.ref",
         "@example_deps//microsoft.netcore.app.ref",
     ],
-    project_sdk = "web",
-    target_frameworks = ["net6.0"],
     deps = [
     ],
 )

@@ -19,7 +19,8 @@ type NugetRepoPackage =
       sources: string seq
       netrc: string option
       dependencies: Dictionary<string, string seq>
-      targeting_pack_overrides: string seq }
+      targeting_pack_overrides: string seq
+      framework_list: string seq }
 
 type NugetRepo = { packages: NugetRepoPackage seq }
 
@@ -90,7 +91,8 @@ let groupToNugetRepo (group: Group) =
               sources = p.sources
               netrc = None
               dependencies = Dictionary(p.dependencies)
-              targeting_pack_overrides = p.overrides })
+              targeting_pack_overrides = p.overrides
+              framework_list = p.frameworkList })
 
     { packages = repoPackages }
 

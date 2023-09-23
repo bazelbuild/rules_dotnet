@@ -9,7 +9,8 @@ type Package =
       sha512sri: string
       sources: string seq
       dependencies: Map<string, seq<string>>
-      overrides: string seq }
+      overrides: string seq
+      frameworkList: string seq }
 
 type Group =
     { name: string

@@ -9,10 +9,10 @@ csharp_library(
             "**/bin/**",
         ],
     ),
-    private_deps = [
+    target_frameworks = ["net6.0"],
+    targeting_packs = [
         "@rules_dotnet_nuget_packages//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net6.0"],
     visibility = ["//visibility:public"],
     deps = [
         #Adding built-in .Net libs

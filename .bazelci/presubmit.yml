@@ -39,6 +39,22 @@ tasks:
       - "--config=remote"
     test_flags:
       - "--config=remote"
+  rbe_ubuntu1604_no_strict_deps:
+    name: Rules on Linux (RBE) without strict deps
+    platform: rbe_ubuntu1604
+    include_json_profile:
+      - build
+      - test
+    build_targets:
+      - "//..."
+    test_targets:
+      - "//..."
+    build_flags:
+      - "--@rules_dotnet//dotnet/settings:strict_deps=false"
+      - "--config=remote"
+    test_flags:
+      = "--@rules_dotnet//dotnet/settings:strict_deps=false"
+      - "--config=remote"
   macos:
     name: Rules on MacOS
     platform: macos
@@ -97,3 +113,20 @@ tasks:
       - "--config=remote"
     test_flags:
       - "--config=remote"
+  examples-rbe_ubuntu1604_no_strict_deps:
+    name: Examples on Ubuntu 18.04 (RBE) without strict deps
+    platform: rbe_ubuntu1604
+    include_json_profile:
+      - build
+      - test
+    working_directory: examples
+    build_targets:
+      - "//..."
+    test_targets:
+      - "//..."
+    build_flags:
+      - "--config=remote"
+      - "--@rules_dotnet//dotnet/settings:strict_deps=false"
+    test_flags:
+      - "--config=remote"
+      - "--@rules_dotnet//dotnet/settings:strict_deps=false"

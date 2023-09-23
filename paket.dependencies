@@ -29,6 +29,7 @@ group rules_dotnet_dev_nuget_packages
     nuget System.Security.Principal.Windows 5.0.0
     nuget Magick.NET.Core 12.2.2
     nuget System.Memory 4.5.5
+    nuget System.Text.Json 7.0.3
 
 group rules_dotnet_nuget_packages
     framework: net6.0

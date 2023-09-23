@@ -10,10 +10,10 @@ fsharp_test(
         "test.fs",
         "main.fs",
     ],
-    private_deps = [
+    target_frameworks = ["net6.0"],
+    targeting_packs = [
         "@example_deps//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net6.0"],
     deps = [
         "@example_deps//expecto",
         "@example_deps//fsharp.core",

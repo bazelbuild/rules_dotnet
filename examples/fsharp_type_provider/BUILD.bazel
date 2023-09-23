@@ -6,10 +6,10 @@ load(
 fsharp_nunit_test(
     name = "fsharp_type_provider",
     srcs = ["Main.fs"],
-    private_deps = [
+    target_frameworks = ["net6.0"],
+    targeting_packs = [
         "@example_deps//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net6.0"],
     deps = [
         "//fsharp_type_provider/type_provider_lib",
         "@example_deps//fsharp.core",

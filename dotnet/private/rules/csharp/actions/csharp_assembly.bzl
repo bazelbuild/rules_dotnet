@@ -58,7 +58,7 @@ def AssemblyAction(
         defines,
         deps,
         exports,
-        private_deps,
+        targeting_packs,
         internals_visible_to,
         keyfile,
         langversion,
@@ -93,7 +93,7 @@ def AssemblyAction(
         defines: The list of conditional compilation symbols.
         deps: The list of other libraries to be linked in to the assembly.
         exports: List of exported targets.
-        private_deps: The list of libraries that are private to the target. These deps are not passed transitively.
+        targeting_packs: The list of targeting packs to be used.
         internals_visible_to: An optional list of assemblies that can see this assemblies internal symbols.
         keyfile: Specifies a strong name key file of the assembly.
         langversion: Specify language version: Default, ISO-1, ISO-2, 3, 4, 5, 6, 7, 7.1, 7.2, 7.3, or Latest
@@ -127,14 +127,12 @@ def AssemblyAction(
         prefs,
         analyzers,
         transitive_compile_data,
-        private_refs,
-        private_analyzers,
+        framework_files,
         exports_files,
-        overrides,
     ) = collect_compile_info(
         assembly_name,
         deps + [toolchain.host_model] if include_host_model_dll else deps,
-        private_deps,
+        targeting_packs,
         exports,
         strict_deps,
     )
@@ -156,15 +154,13 @@ def AssemblyAction(
             compiler_wrapper,
             additionalfiles,
             analyzers,
-            private_analyzers,
             debug,
             default_lang_version,
             defines,
             keyfile,
             langversion,
             irefs,
-            private_refs,
-            overrides,
+            framework_files,
             resources,
             srcs,
             depset(compile_data, transitive = [transitive_compile_data]),
@@ -201,15 +197,13 @@ def AssemblyAction(
             compiler_wrapper,
             additionalfiles,
             analyzers,
-            private_analyzers,
             debug,
             default_lang_version,
             defines,
             keyfile,
             langversion,
             irefs,
-            private_refs,
-            overrides,
+            framework_files,
             resources,
             srcs + [internals_visible_to_cs],
             depset(compile_data, transitive = [transitive_compile_data]),
@@ -236,15 +230,13 @@ def AssemblyAction(
             compiler_wrapper,
             additionalfiles,
             analyzers,
-            private_analyzers,
             debug,
             default_lang_version,
             defines,
             keyfile,
             langversion,
             irefs,
-            private_refs,
-            overrides,
+            framework_files,
             resources,
             srcs,
             depset(compile_data, transitive = [transitive_compile_data]),
@@ -296,15 +288,13 @@ def _compile(
         compiler_wrapper,
         additionalfiles,
         analyzer_assemblies,
-        private_analyzer_assemblies,
         debug,
         default_lang_version,
         defines,
         keyfile,
         langversion,
         refs,
-        private_refs,
-        overrides,
+        framework_files,
         resources,
         srcs,
         compile_data,
@@ -394,11 +384,10 @@ def _compile(
         outputs.append(out_xml)
 
     # assembly references
-    format_ref_arg(args, depset(transitive = [private_refs, refs]), overrides)
+    format_ref_arg(args, depset(framework_files, transitive = [refs]))
 
     # analyzers
     args.add_all(analyzer_assemblies, format_each = "/analyzer:%s")
-    args.add_all(private_analyzer_assemblies, format_each = "/analyzer:%s")
     args.add_all(additionalfiles, format_each = "/additionalfile:%s")
 
     # .cs files
@@ -429,8 +418,8 @@ def _compile(
         mnemonic = "CSharpCompile",
         progress_message = "Compiling " + target_name + (" (internals ref-only dll)" if out_dll == None else ""),
         inputs = depset(
-            direct = direct_inputs + [compiler_wrapper, toolchain.runtime.files_to_run.executable],
-            transitive = [private_refs, refs, analyzer_assemblies, private_analyzer_assemblies, toolchain.runtime.default_runfiles.files, toolchain.csharp_compiler.default_runfiles.files, compile_data],
+            direct = direct_inputs + framework_files + [compiler_wrapper, toolchain.runtime.files_to_run.executable],
+            transitive = [refs, analyzer_assemblies, toolchain.runtime.default_runfiles.files, toolchain.csharp_compiler.default_runfiles.files, compile_data],
         ),
         outputs = outputs,
         executable = compiler_wrapper,

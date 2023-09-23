@@ -10,8 +10,8 @@ csharp_binary(
         "Program.cs",
     ],
     include_host_model_dll = True,
-    private_deps = ["@rules_dotnet_nuget_packages//microsoft.netcore.app.ref"],
     target_frameworks = ["net6.0"],
+    targeting_packs = ["@rules_dotnet_nuget_packages//microsoft.netcore.app.ref"],
     use_apphost_shim = False,
     visibility = ["//visibility:public"],
     deps = [

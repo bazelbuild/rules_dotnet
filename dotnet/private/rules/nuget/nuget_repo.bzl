@@ -20,6 +20,7 @@ def _nuget_repo_impl(ctx):
         #             deps.append(dep)
 
         targeting_pack_overrides = ctx.attr.targeting_pack_overrides[name.lower()]
+        framework_list = ctx.attr.framework_list[name.lower()]
         template = Label("@rules_dotnet//dotnet/private/rules/nuget:template.BUILD")
 
         ctx.template("{}/{}/BUILD.bazel".format(name.lower(), version), template, {
@@ -29,6 +30,7 @@ def _nuget_repo_impl(ctx):
             "{VERSION}": version,
             "{DEPS}": ",".join(["\n    \"@rules_dotnet//dotnet:tfm_{tfm}\": [{deps_list}]".format(tfm = tfm, deps_list = ",".join(["\"@{nuget_repo_name}//{dep_name}\"".format(dep_name = d.lower(), nuget_repo_name = ctx.name.lower()) for d in tfm_deps])) for (tfm, tfm_deps) in deps.items()]),
             "{TARGETING_PACK_OVERRIDES}": json.encode({override.lower().split("|")[0]: override.lower().split("|")[1] for override in targeting_pack_overrides}),
+            "{FRAMEWORK_LIST}": json.encode({override.lower().split("|")[0]: override.lower().split("|")[1] for override in framework_list}),
             "{SHA_512}": sha512,
         })
 
@@ -46,6 +48,10 @@ _nuget_repo = repository_rule(
             allow_empty = False,
         ),
         "targeting_pack_overrides": attr.string_list_dict(
+            allow_empty = True,
+            default = {},
+        ),
+        "framework_list": attr.string_list_dict(
             allow_empty = True,
             default = {},
         ),
@@ -76,4 +82,5 @@ def nuget_repo(name, packages):
         name = name,
         packages = [json.encode(package) for package in packages],
         targeting_pack_overrides = {"{}".format(package["id"].lower()): package["targeting_pack_overrides"] for package in packages},
+        framework_list = {"{}".format(package["id"].lower()): package["framework_list"] for package in packages},
     )

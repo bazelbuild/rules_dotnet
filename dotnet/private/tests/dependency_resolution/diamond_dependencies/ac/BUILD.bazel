@@ -6,10 +6,10 @@ load(
 csharp_library(
     name = "ac",
     srcs = ["ac.cs"],
-    private_deps = [
+    target_frameworks = ["netstandard2.1"],
+    targeting_packs = [
         "@rules_dotnet_dev_nuget_packages//netstandard.library.ref",
     ],
-    target_frameworks = ["netstandard2.1"],
     visibility = ["//visibility:public"],
     deps = [
         "//dotnet/private/tests/dependency_resolution/diamond_dependencies/d",

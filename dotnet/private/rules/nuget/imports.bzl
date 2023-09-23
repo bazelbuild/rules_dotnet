@@ -16,10 +16,8 @@ def _import_library(ctx):
         prefs,
         analyzers,
         _compile_data,
-        _private_refs,
-        _private_analyzers,
+        _framework_files,
         _exports,
-        _overrides,
     ) = collect_compile_info(
         ctx.label.name,
         ctx.attr.deps,
@@ -30,6 +28,7 @@ def _import_library(ctx):
 
     nuget_info = NuGetInfo(
         targeting_pack_overrides = ctx.attr.targeting_pack_overrides,
+        framework_list = ctx.attr.framework_list,
         sha512 = ctx.attr.sha512,
     )
 
@@ -112,6 +111,10 @@ import_library = rule(
         ),
         "targeting_pack_overrides": attr.string_dict(
             doc = "Targeting packs like e.g. Microsoft.NETCore.App.Ref have a PackageOverride.txt that includes a list of NuGet packages that should be omitted in a compiliation because they are included in the targeting pack",
+            default = {},
+        ),
+        "framework_list": attr.string_dict(
+            doc = "Targeting packs like e.g. Microsoft.NETCore.App.Ref have a PlatformManifest.txt that includes all the DLLs that are included in the targeting pack. This is used to determine which version of a DLL should be used during compilation or runtime.",
             default = {},
         ),
         "sha512": attr.string(

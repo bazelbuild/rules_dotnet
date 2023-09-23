@@ -50,6 +50,7 @@ NuGetInfo = provider(
     doc = "Information about a NuGet package.",
     fields = {
         "targeting_pack_overrides": "map[string, string]: Targeting packs like e.g. Microsoft.NETCore.App.Ref have a PackageOverride.txt that includes a list of NuGet packages that should be omitted in a compiliation because they are included in the targeting pack",
+        "framework_list": "map[string, string]: Targeting packs like e.g. Microsoft.NETCore.App.Ref have a FrameworkList.xml that includes a list of the DLLs in the targeting pack. This is used for selecting the correct DLL versions during compilation and runtime.",
         "sha512": "string: the SHA512 SRI string for the package",
     },
 )

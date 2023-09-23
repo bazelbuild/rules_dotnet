@@ -16,10 +16,10 @@ load("@rules_dotnet//dotnet/private/tests/use_as_tool/run_shell_rule:run_shell_r
 fsharp_binary(
     name = "main",
     srcs = ["main.fs"],
-    private_deps = [
+    target_frameworks = ["net6.0"],
+    targeting_packs = [
         "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net6.0"],
     deps = [
         ":lib",
     ],
@@ -28,10 +28,10 @@ fsharp_binary(
 fsharp_library(
     name = "lib",
     srcs = ["lib.fs"],
-    private_deps = [
+    target_frameworks = ["net6.0"],
+    targeting_packs = [
         "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net6.0"],
     deps = [],
 )
 

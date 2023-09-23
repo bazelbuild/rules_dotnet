@@ -6,10 +6,10 @@ load(
 csharp_nunit_test(
     name = "native_dependencies",
     srcs = ["native_dependencies.cs"],
-    private_deps = ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
     target_frameworks = [
         "net6.0",
     ],
+    targeting_packs = ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
     visibility = ["//visibility:public"],
     deps = ["@rules_dotnet_dev_nuget_packages//libgit2sharp"],
 )

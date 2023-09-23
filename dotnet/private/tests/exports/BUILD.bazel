@@ -3,16 +3,16 @@ load("//dotnet:defs.bzl", "fsharp_library")
 fsharp_library(
     name = "a",
     srcs = ["a.fs"],
-    private_deps = ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
     target_frameworks = ["net6.0"],
+    targeting_packs = ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
     deps = [":b"],
 )
 
 fsharp_library(
     name = "b",
     srcs = ["b.fs"],
-    private_deps = ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
     target_frameworks = ["net6.0"],
+    targeting_packs = ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
     exports = [":c"],
     deps = [":c"],
 )
@@ -20,6 +20,6 @@ fsharp_library(
 fsharp_library(
     name = "c",
     srcs = ["c.fs"],
-    private_deps = ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
     target_frameworks = ["net6.0"],
+    targeting_packs = ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
 )

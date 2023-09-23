@@ -75,15 +75,23 @@ COMMON_ATTRS = {
     "internals_visible_to": attr.string_list(
         doc = "Other libraries that can see the assembly's internal symbols. Using this rather than the InternalsVisibleTo assembly attribute will improve build caching.",
     ),
-    "private_deps": attr.label_list(
+    "targeting_packs": attr.label_list(
         doc = """Private dependencies 
 
-        This attribute should be used for dependencies are only private to the target. 
-        The dependencies will not be propagated transitively to parent targets and 
-        do not become part of the targets runfiles.
+        The targeting packs that should be used to build the target.
+        You should use a targeting pack that targets the same framework as the target. 
+        There can be multiple runtime packs for a given target e.g. when a AspNetCore 
+        application is built you need the base runtime pack and the AspNetCore runtime pack.
+        Example runtime packs:
+        https://www.nuget.org/packages/NETStandard.Library - .Net Standard 2.0
+        https://www.nuget.org/packages/NETStandard.Library.Ref - .Net Standard 2.1
+        https://www.nuget.org/packages/Microsoft.NETCore.App.Ref/7.0.11 - .Net 7.0.11
+        https://www.nuget.org/packages/Microsoft.AspNetCore.App.Ref/7.0.11 - AspNetCore 7.0.11
+
         """,
         providers = [DotnetAssemblyCompileInfo, DotnetAssemblyRuntimeInfo],
         cfg = tfm_transition,
+        allow_empty = False,
     ),
     "treat_warnings_as_errors": attr.bool(
         doc = "Treat all compiler warnings as errors. Note that this attribute can not be used in conjunction with warnings_as_errors.",

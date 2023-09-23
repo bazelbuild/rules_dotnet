@@ -10,8 +10,8 @@ open Paket.Requirements
 open NuGet.Packaging
 open NuGet.Frameworks
 open NuGet.Versioning
-open System.Buffers.Text
 open System
+open System.Xml
 
 // List of the supportd TFMS in rules_dotnet
 // Needs to be updated when a new TFM is released
@@ -132,6 +132,26 @@ let getOverrides (packageName: string) (packageVersion: string) (packageReader: 
         |> Array.filter (fun l -> not (String.IsNullOrEmpty l)))
     |> Option.defaultValue [||]
 
+let getFrameworkList (packageName: string) (packageVersion: string) (packageReader: PackageFolderReader) =
+    packageReader.GetItems "data"
+    |> Seq.collect (fun f -> f.Items)
+    |> Seq.tryFind (fun f -> f.EndsWith("FrameworkList.xml"))
+    |> Option.map (fun f ->
+        let path = Path.Combine((getPackageFolderPath packageName packageVersion), f)
+        let xmlDocument = XmlDocument()
+        xmlDocument.Load(path)
+        let root = xmlDocument.DocumentElement
+
+        root.ChildNodes
+        |> Seq.cast<XmlNode>
+        |> Seq.filter (fun node -> node.Attributes.ItemOf("Type").Value = "Managed")
+        |> Seq.map (fun node ->
+            let name = node.Attributes.ItemOf("AssemblyName").Value
+            let version = node.Attributes.ItemOf("AssemblyVersion").Value
+            $"{name}|{version}")
+        |> Seq.filter (fun l -> not (String.IsNullOrEmpty l)))
+    |> Option.defaultValue [||]
+
 let getDependencies dependenciesFile (cache: Dictionary<string, Package>) =
     let maybeDeps = Dependencies.TryLocate(dependenciesFile)
 
@@ -174,7 +194,8 @@ let getDependencies dependenciesFile (cache: Dictionary<string, Package>) =
                                         tfms
                                         (packages |> Seq.map (fun (_, name, _) -> name))
                                         packageReader
-                                  overrides = getOverrides name version packageReader }
+                                  overrides = getOverrides name version packageReader
+                                  frameworkList = getFrameworkList name version packageReader }
 
                             cache.Add((sprintf "%s-%s" group name), package)
                             |> ignore

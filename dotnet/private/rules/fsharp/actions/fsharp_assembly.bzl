@@ -76,7 +76,7 @@ def AssemblyAction(
         defines,
         deps,
         exports,
-        private_deps,
+        targeting_packs,
         internals_visible_to,
         keyfile,
         langversion,
@@ -107,7 +107,7 @@ def AssemblyAction(
         defines: The list of conditional compilation symbols.
         deps: The list of other libraries to be linked in to the assembly.
         exports: List of exported targets.
-        private_deps: The list of libraries that are private to the target. These deps are not passed transitively.
+        targeting_packs: The list of targeting packs to be used.
         internals_visible_to: An optional list of assemblies that can see this assemblies internal symbols.
         keyfile: Specifies a strong name key file of the assembly.
         langversion: Specify language version: Default, ISO-1, ISO-2, 3, 4, 5, 6, 7, 7.1, 7.2, 7.3, or Latest
@@ -139,14 +139,12 @@ def AssemblyAction(
         prefs,
         analyzers,
         transitive_compile_data,
-        private_refs,
-        _private_analyzers,
+        framework_files,
         exports_files,
-        overrides,
     ) = collect_compile_info(
         assembly_name,
         deps,
-        private_deps,
+        targeting_packs,
         exports,
         strict_deps,
     )
@@ -169,8 +167,7 @@ def AssemblyAction(
             keyfile,
             langversion,
             irefs,
-            private_refs,
-            overrides,
+            framework_files,
             resources,
             srcs,
             depset(compile_data, transitive = [transitive_compile_data]),
@@ -207,8 +204,7 @@ def AssemblyAction(
             keyfile,
             langversion,
             irefs,
-            private_refs,
-            overrides,
+            framework_files,
             resources,
             srcs + [internals_visible_to_fs],
             depset(compile_data, transitive = [transitive_compile_data]),
@@ -237,8 +233,7 @@ def AssemblyAction(
                 keyfile,
                 langversion,
                 irefs,
-                private_refs,
-                overrides,
+                framework_files,
                 resources,
                 srcs,
                 depset(compile_data, transitive = [transitive_compile_data]),
@@ -291,8 +286,7 @@ def _compile(
         keyfile,
         langversion,
         refs,
-        private_refs,
-        overrides,
+        framework_files,
         resources,
         srcs,
         compile_data,
@@ -373,7 +367,7 @@ def _compile(
         outputs.append(out_xml)
 
     # assembly references
-    format_ref_arg(args, depset(transitive = [private_refs, refs]), overrides)
+    format_ref_arg(args, depset(framework_files, transitive = [refs]))
 
     # .fs files
     args.add_all(srcs)
@@ -402,8 +396,8 @@ def _compile(
         mnemonic = "FSharpCompile",
         progress_message = "Compiling " + target_name + (" (internals ref-only dll)" if out_dll == None else ""),
         inputs = depset(
-            direct = direct_inputs + [compiler_wrapper, toolchain.runtime.files_to_run.executable],
-            transitive = [refs, private_refs, toolchain.runtime.default_runfiles.files, toolchain.fsharp_compiler.default_runfiles.files, compile_data],
+            direct = direct_inputs + framework_files + [compiler_wrapper, toolchain.runtime.files_to_run.executable],
+            transitive = [refs, toolchain.runtime.default_runfiles.files, toolchain.fsharp_compiler.default_runfiles.files, compile_data],
         ),
         outputs = outputs,
         executable = compiler_wrapper,

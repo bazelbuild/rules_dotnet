@@ -1,0 +1,21 @@
+load(
+    "@rules_dotnet//dotnet:defs.bzl",
+    "csharp_nunit_test",
+)
+
+# This test makes sure that if we are depending on a package that is also included
+# in a targeting pack that we chooset the highest version.
+# Example: Microsoft.NETCore.App.Ref 6.0.0 contains the System.Text.Json reference DLL, but we
+# can also depend on System.Text.Json 7.0.0 as a NuGet package. In that case we should use the
+# 7.0.0 NuGet package and not the 6.0.0 targeting pack.
+csharp_nunit_test(
+    name = "main",
+    srcs = ["Test.cs"],
+    target_frameworks = ["net6.0"],
+    targeting_packs = [
+        "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
+    ],
+    deps = [
+        "@rules_dotnet_dev_nuget_packages//system.text.json",
+    ],
+)

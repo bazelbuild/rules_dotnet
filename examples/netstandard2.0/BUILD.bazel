@@ -7,10 +7,10 @@ load(
 csharp_nunit_test(
     name = "lib_test",
     srcs = ["libtest.cs"],
-    private_deps = [
+    target_frameworks = ["net6.0"],
+    targeting_packs = [
         "@example_deps//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net6.0"],
     deps = [
         ":lib",
     ],
@@ -20,9 +20,9 @@ csharp_library(
     name = "lib",
     srcs = ["lib.cs"],
     internals_visible_to = ["lib_test"],
-    private_deps = [
+    target_frameworks = ["netstandard2.0"],
+    targeting_packs = [
         "@example_deps//netstandard.library",
     ],
-    target_frameworks = ["netstandard2.0"],
     deps = [],
 )

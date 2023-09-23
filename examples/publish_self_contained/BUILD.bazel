@@ -7,10 +7,10 @@ load(
 csharp_binary(
     name = "hello",
     srcs = ["hello.cs"],
-    private_deps = [
+    target_frameworks = ["net6.0"],
+    targeting_packs = [
         "@example_deps//microsoft.netcore.app.ref",
     ],
-    target_frameworks = ["net6.0"],
     deps = [
     ],
 )
