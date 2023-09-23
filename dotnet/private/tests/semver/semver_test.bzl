@@ -1,3 +1,5 @@
+"Semver tests"
+
 load("@bazel_skylib//lib:unittest.bzl", "asserts", "unittest")
 load("//dotnet/private:semver.bzl", "semver")
 
