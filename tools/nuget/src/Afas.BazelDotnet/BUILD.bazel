@@ -1,4 +1,4 @@
-load("@rules_dotnet//dotnet:defs.bzl", "csharp_binary")
+load("//dotnet:defs.bzl", "csharp_binary")
 
 csharp_binary(
     name = "Afas.BazelDotnet",
@@ -17,7 +17,7 @@ csharp_binary(
     deps = [
         #Adding built-in .Net libs
         "@rules_dotnet_nuget_packages//mcmaster.extensions.commandlineutils",
-        "@rules_dotnet//tools/nuget/src/Afas.BazelDotnet.Nuget",
-        "@rules_dotnet//tools/nuget/src/Afas.BazelDotnet.Project",
+        "//tools/nuget/src/Afas.BazelDotnet.Nuget",
+        "//tools/nuget/src/Afas.BazelDotnet.Project",
     ],
 )

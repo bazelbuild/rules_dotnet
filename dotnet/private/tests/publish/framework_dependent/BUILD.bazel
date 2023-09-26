@@ -1,5 +1,5 @@
 load(
-    "@rules_dotnet//dotnet:defs.bzl",
+    "//dotnet:defs.bzl",
     "csharp_binary",
     "publish_binary",
 )
@@ -68,5 +68,5 @@ sh_test(
         "@platforms//os:linux": [],
         "@platforms//os:macos": [],
     }),
-    toolchains = ["@rules_dotnet//dotnet:resolved_toolchain"],
+    toolchains = ["//dotnet:resolved_toolchain"],
 )

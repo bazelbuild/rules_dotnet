@@ -1,4 +1,4 @@
-load("@rules_dotnet//dotnet:defs.bzl", "csharp_library")
+load("//dotnet:defs.bzl", "csharp_library")
 
 csharp_library(
     name = "Afas.BazelDotnet.Nuget",

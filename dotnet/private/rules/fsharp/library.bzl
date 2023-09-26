@@ -13,7 +13,7 @@ load("//dotnet/private/rules/fsharp/actions:fsharp_assembly.bzl", "AssemblyActio
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 
 def _compile_action(ctx, tfm):
-    toolchain = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"]
+    toolchain = ctx.toolchains["//dotnet:toolchain_type"]
 
     return AssemblyAction(
         ctx.actions,
@@ -52,6 +52,6 @@ fsharp_library = rule(
     doc = "Compile a F# DLL",
     attrs = FSHARP_LIBRARY_COMMON_ATTRS,
     executable = False,
-    toolchains = ["@rules_dotnet//dotnet:toolchain_type"],
+    toolchains = ["//dotnet:toolchain_type"],
     cfg = tfm_transition,
 )

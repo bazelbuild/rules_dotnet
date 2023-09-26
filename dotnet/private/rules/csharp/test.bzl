@@ -16,7 +16,7 @@ load("//dotnet/private/rules/csharp/actions:csharp_assembly.bzl", "AssemblyActio
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 
 def _compile_action(ctx, tfm):
-    toolchain = ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"]
+    toolchain = ctx.toolchains["//dotnet:toolchain_type"]
     return AssemblyAction(
         ctx.actions,
         ctx.executable._compiler_wrapper_bat if ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]) else ctx.executable._compiler_wrapper_sh,
@@ -59,7 +59,7 @@ csharp_test = rule(
     attrs = CSHARP_BINARY_COMMON_ATTRS,
     test = True,
     toolchains = [
-        "@rules_dotnet//dotnet:toolchain_type",
+        "//dotnet:toolchain_type",
     ],
     cfg = tfm_transition,
 )

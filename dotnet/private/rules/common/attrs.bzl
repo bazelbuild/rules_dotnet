@@ -143,20 +143,20 @@ COMMON_ATTRS = {
         default = True,
     ),
     "_target_framework": attr.label(
-        default = "@rules_dotnet//dotnet:target_framework",
+        default = "//dotnet:target_framework",
     ),
     "_windows_constraint": attr.label(default = "@platforms//os:windows"),
     "_allowlist_function_transition": attr.label(
         default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
     ),
     "_compiler_wrapper_sh": attr.label(
-        default = "@rules_dotnet//dotnet/private:compiler_wrapper.sh",
+        default = "//dotnet/private:compiler_wrapper.sh",
         executable = True,
         cfg = "exec",
         allow_single_file = True,
     ),
     "_compiler_wrapper_bat": attr.label(
-        default = "@rules_dotnet//dotnet/private:compiler_wrapper.bat",
+        default = "//dotnet/private:compiler_wrapper.bat",
         executable = True,
         cfg = "exec",
         allow_single_file = True,
@@ -194,12 +194,12 @@ BINARY_COMMON_ATTRS = {
     ),
     "_launcher_sh": attr.label(
         doc = "A template file for the launcher on Linux/MacOS",
-        default = "@rules_dotnet//dotnet/private:launcher.sh.tpl",
+        default = "//dotnet/private:launcher.sh.tpl",
         allow_single_file = True,
     ),
     "_launcher_bat": attr.label(
         doc = "A template file for the launcher on Windows",
-        default = "@rules_dotnet//dotnet/private:launcher.bat.tpl",
+        default = "//dotnet/private:launcher.bat.tpl",
         allow_single_file = True,
     ),
 }

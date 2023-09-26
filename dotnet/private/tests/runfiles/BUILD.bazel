@@ -1,5 +1,5 @@
 load(
-    "@rules_dotnet//dotnet:defs.bzl",
+    "//dotnet:defs.bzl",
     "csharp_nunit_test",
 )
 
@@ -12,6 +12,6 @@ csharp_nunit_test(
         "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
     ],
     deps = [
-        "@rules_dotnet//tools/runfiles",
+        "//tools/runfiles",
     ],
 )

@@ -8,10 +8,10 @@ genrule(
     outs = ["dotnet_bin.txt"],
     cmd = "DOTNET_CLI_HOME=\"$$(pwd)/$$(dirname $(DOTNET_BIN))\" \"$(DOTNET_BIN)\" --help > $@",
     toolchains = [
-        "@rules_dotnet//dotnet:resolved_toolchain",
+        "//dotnet:resolved_toolchain",
     ],
     tools = [
-        "@rules_dotnet//dotnet:resolved_toolchain",
+        "//dotnet:resolved_toolchain",
     ],
 )
 
@@ -26,10 +26,10 @@ genrule(
     outs = ["csc_bin.txt"],
     cmd = "DOTNET_CLI_HOME=\"$$(pwd)/$$(dirname $(DOTNET_BIN))\" \"$(DOTNET_BIN)\" \"$(CSC_BIN)\" -help > $@",
     toolchains = [
-        "@rules_dotnet//dotnet:resolved_toolchain",
+        "//dotnet:resolved_toolchain",
     ],
     tools = [
-        "@rules_dotnet//dotnet:resolved_toolchain",
+        "//dotnet:resolved_toolchain",
     ],
 )
 
@@ -44,10 +44,10 @@ genrule(
     outs = ["fsc_bin.txt"],
     cmd = "DOTNET_CLI_HOME=\"$$(pwd)/$$(dirname $(DOTNET_BIN))\" \"$(DOTNET_BIN)\" \"$(FSC_BIN)\" --help > $@",
     toolchains = [
-        "@rules_dotnet//dotnet:resolved_toolchain",
+        "//dotnet:resolved_toolchain",
     ],
     tools = [
-        "@rules_dotnet//dotnet:resolved_toolchain",
+        "//dotnet:resolved_toolchain",
     ],
 )
 
@@ -62,10 +62,10 @@ genrule(
     outs = ["dotnet_sdk_version.txt"],
     cmd = "echo \"$(DOTNET_SDK_VERSION)\" > $@",
     toolchains = [
-        "@rules_dotnet//dotnet:resolved_toolchain",
+        "//dotnet:resolved_toolchain",
     ],
     tools = [
-        "@rules_dotnet//dotnet:resolved_toolchain",
+        "//dotnet:resolved_toolchain",
     ],
 )
 
@@ -80,10 +80,10 @@ genrule(
     outs = ["dotnet_runtime_version.txt"],
     cmd = "echo \"$(DOTNET_RUNTIME_VERSION)\" > $@",
     toolchains = [
-        "@rules_dotnet//dotnet:resolved_toolchain",
+        "//dotnet:resolved_toolchain",
     ],
     tools = [
-        "@rules_dotnet//dotnet:resolved_toolchain",
+        "//dotnet:resolved_toolchain",
     ],
 )
 
@@ -98,10 +98,10 @@ genrule(
     outs = ["dotnet_runtime_tfm.txt"],
     cmd = "echo \"$(DOTNET_RUNTIME_TFM)\" > $@",
     toolchains = [
-        "@rules_dotnet//dotnet:resolved_toolchain",
+        "//dotnet:resolved_toolchain",
     ],
     tools = [
-        "@rules_dotnet//dotnet:resolved_toolchain",
+        "//dotnet:resolved_toolchain",
     ],
 )
 

@@ -4,52 +4,52 @@ Users should not load files under "/dotnet"
 """
 
 load(
-    "@rules_dotnet//dotnet/private/rules/csharp:binary.bzl",
+    "//dotnet/private/rules/csharp:binary.bzl",
     _csharp_binary = "csharp_binary",
 )
 load(
-    "@rules_dotnet//dotnet/private/rules/csharp:library.bzl",
+    "//dotnet/private/rules/csharp:library.bzl",
     _csharp_library = "csharp_library",
 )
 load(
-    "@rules_dotnet//dotnet/private/rules/csharp:nunit_test.bzl",
+    "//dotnet/private/rules/csharp:nunit_test.bzl",
     _csharp_nunit_test = "csharp_nunit_test",
 )
 load(
-    "@rules_dotnet//dotnet/private/rules/csharp:test.bzl",
+    "//dotnet/private/rules/csharp:test.bzl",
     _csharp_test = "csharp_test",
 )
 load(
-    "@rules_dotnet//dotnet/private/rules/fsharp:binary.bzl",
+    "//dotnet/private/rules/fsharp:binary.bzl",
     _fsharp_binary = "fsharp_binary",
 )
 load(
-    "@rules_dotnet//dotnet/private/rules/fsharp:library.bzl",
+    "//dotnet/private/rules/fsharp:library.bzl",
     _fsharp_library = "fsharp_library",
 )
 load(
-    "@rules_dotnet//dotnet/private/rules/fsharp:nunit_test.bzl",
+    "//dotnet/private/rules/fsharp:nunit_test.bzl",
     _fsharp_nunit_test = "fsharp_nunit_test",
 )
 load(
-    "@rules_dotnet//dotnet/private/rules/fsharp:test.bzl",
+    "//dotnet/private/rules/fsharp:test.bzl",
     _fsharp_test = "fsharp_test",
 )
 load(
-    "@rules_dotnet//dotnet/private/rules/nuget:imports.bzl",
+    "//dotnet/private/rules/nuget:imports.bzl",
     _import_dll = "import_dll",
     _import_library = "import_library",
 )
 load(
-    "@rules_dotnet//dotnet/private/rules/nuget:nuget_archive.bzl",
+    "//dotnet/private/rules/nuget:nuget_archive.bzl",
     _nuget_archive = "nuget_archive",
 )
 load(
-    "@rules_dotnet//dotnet/private/rules/nuget:nuget_repo.bzl",
+    "//dotnet/private/rules/nuget:nuget_repo.bzl",
     _nuget_repo = "nuget_repo",
 )
 load(
-    "@rules_dotnet//dotnet/private/rules/publish_binary:publish_binary.bzl",
+    "//dotnet/private/rules/publish_binary:publish_binary.bzl",
     _publish_binary = "publish_binary",
     _publish_binary_wrapper = "publish_binary_wrapper",
 )
@@ -60,12 +60,12 @@ def _get_runtime_runtime_identifier(rid):
     else:
         return select(
             {
-                "@rules_dotnet//dotnet/private:linux-x64": "linux-x64",
-                "@rules_dotnet//dotnet/private:linux-arm64": "linux-arm64",
-                "@rules_dotnet//dotnet/private:macos-x64": "osx-x64",
-                "@rules_dotnet//dotnet/private:macos-arm64": "osx-arm64",
-                "@rules_dotnet//dotnet/private:windows-x64": "win-x64",
-                "@rules_dotnet//dotnet/private:windows-arm64": "win-arm64",
+                "//dotnet/private:linux-x64": "linux-x64",
+                "//dotnet/private:linux-arm64": "linux-arm64",
+                "//dotnet/private:macos-x64": "osx-x64",
+                "//dotnet/private:macos-arm64": "osx-arm64",
+                "//dotnet/private:windows-x64": "win-x64",
+                "//dotnet/private:windows-arm64": "win-arm64",
             },
             no_match_error = "Could not infer default runtime identifier from the current host platform",
         )
@@ -91,7 +91,7 @@ def csharp_binary(
         override_warning_level = True if warning_level != None else False,
         strict_deps = strict_deps if strict_deps != None else True,
         override_strict_deps = True if strict_deps != None else False,
-        apphost_shimmer = "@rules_dotnet//dotnet/private/tools/apphost_shimmer:apphost_shimmer" if use_apphost_shim else None,
+        apphost_shimmer = "//dotnet/private/tools/apphost_shimmer:apphost_shimmer" if use_apphost_shim else None,
         **kwargs
     )
 
@@ -139,7 +139,7 @@ def csharp_test(
         override_warning_level = True if warning_level != None else False,
         strict_deps = strict_deps if strict_deps != None else True,
         override_strict_deps = True if strict_deps != None else False,
-        apphost_shimmer = "@rules_dotnet//dotnet/private/tools/apphost_shimmer:apphost_shimmer" if use_apphost_shim else None,
+        apphost_shimmer = "//dotnet/private/tools/apphost_shimmer:apphost_shimmer" if use_apphost_shim else None,
         **kwargs
     )
 
@@ -164,7 +164,7 @@ def csharp_nunit_test(
         override_warning_level = True if warning_level != None else False,
         strict_deps = strict_deps if strict_deps != None else True,
         override_strict_deps = True if strict_deps != None else False,
-        apphost_shimmer = "@rules_dotnet//dotnet/private/tools/apphost_shimmer:apphost_shimmer" if use_apphost_shim else None,
+        apphost_shimmer = "//dotnet/private/tools/apphost_shimmer:apphost_shimmer" if use_apphost_shim else None,
         **kwargs
     )
 
@@ -189,7 +189,7 @@ def fsharp_binary(
         override_warning_level = True if warning_level != None else False,
         strict_deps = strict_deps if strict_deps != None else True,
         override_strict_deps = True if strict_deps != None else False,
-        apphost_shimmer = "@rules_dotnet//dotnet/private/tools/apphost_shimmer:apphost_shimmer" if use_apphost_shim else None,
+        apphost_shimmer = "//dotnet/private/tools/apphost_shimmer:apphost_shimmer" if use_apphost_shim else None,
         **kwargs
     )
 
@@ -237,7 +237,7 @@ def fsharp_test(
         override_warning_level = True if warning_level != None else False,
         strict_deps = strict_deps if strict_deps != None else True,
         override_strict_deps = True if strict_deps != None else False,
-        apphost_shimmer = "@rules_dotnet//dotnet/private/tools/apphost_shimmer:apphost_shimmer" if use_apphost_shim else None,
+        apphost_shimmer = "//dotnet/private/tools/apphost_shimmer:apphost_shimmer" if use_apphost_shim else None,
         **kwargs
     )
 
@@ -262,7 +262,7 @@ def fsharp_nunit_test(
         override_warning_level = True if warning_level != None else False,
         strict_deps = strict_deps if strict_deps != None else True,
         override_strict_deps = True if strict_deps != None else False,
-        apphost_shimmer = "@rules_dotnet//dotnet/private/tools/apphost_shimmer:apphost_shimmer" if use_apphost_shim else None,
+        apphost_shimmer = "//dotnet/private/tools/apphost_shimmer:apphost_shimmer" if use_apphost_shim else None,
         **kwargs
     )
 

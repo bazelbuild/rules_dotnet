@@ -100,7 +100,7 @@ nuget_test_wrapper = rule(
         ),
     },
     toolchains = [
-        "@rules_dotnet//dotnet:toolchain_type",
+        "//dotnet:toolchain_type",
     ],
     executable = False,
 )

@@ -23,7 +23,7 @@ def _import_library(ctx):
         ctx.attr.deps,
         [],
         [],
-        ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"].strict_deps[BuildSettingInfo].value,
+        ctx.toolchains["//dotnet:toolchain_type"].strict_deps[BuildSettingInfo].value,
     )
 
     nuget_info = NuGetInfo(
@@ -122,7 +122,7 @@ import_library = rule(
         ),
     },
     toolchains = [
-        "@rules_dotnet//dotnet:toolchain_type",
+        "//dotnet:toolchain_type",
     ],
     executable = False,
 )

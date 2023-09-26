@@ -253,7 +253,7 @@ def _publish_binary_wrapper_impl(ctx):
         target_framework,
         assembly_compile_info.project_sdk,
         is_self_contained,
-        ctx.toolchains["@rules_dotnet//dotnet:toolchain_type"],
+        ctx.toolchains["//dotnet:toolchain_type"],
     )
 
     depsjson = ctx.actions.declare_file("{}/publish/{}/{}.deps.json".format(ctx.label.name, runtime_identifier, assembly_name))
@@ -305,7 +305,7 @@ publish_binary_wrapper = rule(
         "_windows_constraint": attr.label(default = "@platforms//os:windows"),
     },
     toolchains = [
-        "@rules_dotnet//dotnet:toolchain_type",
+        "//dotnet:toolchain_type",
     ],
     executable = True,
 )

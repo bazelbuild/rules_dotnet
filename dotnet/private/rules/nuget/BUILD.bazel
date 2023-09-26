@@ -40,7 +40,7 @@ bzl_library(
         "//dotnet:__subpackages__",
     ],
     deps = [
+        "//dotnet/private/rules/nuget:nuget_archive",
         "@bazel_tools//tools/build_defs/repo:utils.bzl",
-        "@rules_dotnet//dotnet/private/rules/nuget:nuget_archive",
     ],
 )

@@ -216,19 +216,19 @@ dotnet_toolchain = rule(
         ),
         "_csharp_treat_warnings_as_errors": attr.label(
             doc = "Treat all C# compiler warnings as errors. Note that this attribute can not be used in conjunction with csharp_warnings_as_errors.",
-            default = "@rules_dotnet//dotnet/settings:csharp_treat_warnings_as_errors",
+            default = "//dotnet/settings:csharp_treat_warnings_as_errors",
         ),
         "_csharp_warnings_as_errors": attr.label(
             doc = "List of C# compiler warning codes that should be considered as errors. Note that this attribute can not be used in conjunction with csharp_treat_warnings_as_errors.",
-            default = "@rules_dotnet//dotnet/settings:csharp_warnings_as_errors",
+            default = "//dotnet/settings:csharp_warnings_as_errors",
         ),
         "_csharp_warnings_not_as_errors": attr.label(
             doc = "List of C# compiler warning codes that should not be considered as errors. Note that this attribute can only be used in conjunction with csharp_treat_warnings_as_errors.",
-            default = "@rules_dotnet//dotnet/settings:csharp_warnings_not_as_errors",
+            default = "//dotnet/settings:csharp_warnings_not_as_errors",
         ),
         "_csharp_warning_level": attr.label(
             doc = "List of C# compiler warning codes that should not be displayed.",
-            default = "@rules_dotnet//dotnet/settings:csharp_warning_level",
+            default = "//dotnet/settings:csharp_warning_level",
         ),
         "fsharp_default_version": attr.string(
             doc = "The default F# version used by the current dotnet SDK",
@@ -236,23 +236,23 @@ dotnet_toolchain = rule(
         ),
         "_fsharp_treat_warnings_as_errors": attr.label(
             doc = "Treat all F# compiler warnings as errors. Note that this attribute can not be used in conjunction with fsharp_warnings_as_errors.",
-            default = "@rules_dotnet//dotnet/settings:fsharp_treat_warnings_as_errors",
+            default = "//dotnet/settings:fsharp_treat_warnings_as_errors",
         ),
         "_fsharp_warnings_as_errors": attr.label(
             doc = "List of F# compiler warning codes that should be considered as errors. Note that this attribute can not be used in conjunction with fsharp_treat_warnings_as_errors.",
-            default = "@rules_dotnet//dotnet/settings:fsharp_warnings_as_errors",
+            default = "//dotnet/settings:fsharp_warnings_as_errors",
         ),
         "_fsharp_warnings_not_as_errors": attr.label(
             doc = "List of F# compiler warning codes that should not be considered as errors. Note that this attribute can only be used in conjunction with fsharp_treat_warnings_as_errors.",
-            default = "@rules_dotnet//dotnet/settings:fsharp_warnings_not_as_errors",
+            default = "//dotnet/settings:fsharp_warnings_not_as_errors",
         ),
         "_fsharp_warning_level": attr.label(
             doc = "List of F# compiler warning codes that should not be displayed.",
-            default = "@rules_dotnet//dotnet/settings:fsharp_warning_level",
+            default = "//dotnet/settings:fsharp_warning_level",
         ),
         "_strict_deps": attr.label(
             doc = "Whether to use strict deps or not",
-            default = "@rules_dotnet//dotnet/settings:strict_deps",
+            default = "//dotnet/settings:strict_deps",
         ),
     },
     doc = """Defines a dotnet compiler/runtime toolchain.

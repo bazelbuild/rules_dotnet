@@ -1,5 +1,5 @@
 load(
-    "@rules_dotnet//dotnet:defs.bzl",
+    "//dotnet:defs.bzl",
     "csharp_binary",
 )
 
@@ -13,7 +13,7 @@ csharp_binary(
     ],
     visibility = ["//dotnet/private/tests/publish:__subpackages__"],
     deps = [
-        "@rules_dotnet//tools/runfiles",
+        "//tools/runfiles",
         "@rules_dotnet_dev_nuget_packages//libgit2sharp",
     ],
 )
