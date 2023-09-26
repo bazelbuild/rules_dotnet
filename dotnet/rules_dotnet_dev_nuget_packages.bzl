@@ -28,3 +28,10 @@ def rules_dotnet_dev_nuget_packages():
             {"id": "System.Threading.Tasks.Extensions", "version": "4.5.4", "sha512": "sha512-aAUghud9PHGYc3o9oWPWd0C3xE+TJQw5ZZs78htlR6mr9ky/QEgfXHjyQ2GvOq9H1S0YizcVVKCSin92ZcH8FA==", "sources": ["https://api.nuget.org/v3/index.json"], "dependencies": {"net11": [], "net20": [], "net30": [], "net35": [], "net40": [], "net403": [], "net45": ["System.Runtime.CompilerServices.Unsafe"], "net451": ["System.Runtime.CompilerServices.Unsafe"], "net452": ["System.Runtime.CompilerServices.Unsafe"], "net46": ["System.Runtime.CompilerServices.Unsafe"], "net461": ["System.Runtime.CompilerServices.Unsafe"], "net462": ["System.Runtime.CompilerServices.Unsafe"], "net47": ["System.Runtime.CompilerServices.Unsafe"], "net471": ["System.Runtime.CompilerServices.Unsafe"], "net472": ["System.Runtime.CompilerServices.Unsafe"], "net48": ["System.Runtime.CompilerServices.Unsafe"], "net5.0": [], "net6.0": [], "net7.0": [], "netcoreapp1.0": ["System.Runtime.CompilerServices.Unsafe"], "netcoreapp1.1": ["System.Runtime.CompilerServices.Unsafe"], "netcoreapp2.0": ["System.Runtime.CompilerServices.Unsafe"], "netcoreapp2.1": [], "netcoreapp2.2": [], "netcoreapp3.0": [], "netcoreapp3.1": [], "netstandard": [], "netstandard1.0": ["System.Runtime.CompilerServices.Unsafe"], "netstandard1.1": ["System.Runtime.CompilerServices.Unsafe"], "netstandard1.2": ["System.Runtime.CompilerServices.Unsafe"], "netstandard1.3": ["System.Runtime.CompilerServices.Unsafe"], "netstandard1.4": ["System.Runtime.CompilerServices.Unsafe"], "netstandard1.5": ["System.Runtime.CompilerServices.Unsafe"], "netstandard1.6": ["System.Runtime.CompilerServices.Unsafe"], "netstandard2.0": ["System.Runtime.CompilerServices.Unsafe"], "netstandard2.1": ["System.Runtime.CompilerServices.Unsafe"]}, "targeting_pack_overrides": [], "framework_list": []},
         ],
     )
+
+def _rules_dotnet_dev_nuget_packages_extension_impl(_ctx):
+    rules_dotnet_dev_nuget_packages()
+
+rules_dotnet_dev_nuget_packages_extension = module_extension(
+    implementation = _rules_dotnet_dev_nuget_packages_extension_impl,
+)

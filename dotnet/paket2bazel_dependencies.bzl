@@ -106,3 +106,10 @@ def paket2bazel_dependencies():
             {"id": "System.Windows.Extensions", "version": "6.0.0", "sha512": "sha512-9R7sgWb5e1/OokgW7HN8JNXFpcsUXvLTMnfJoWBE9AvD+5e0z+f5ojr3BO3pFYbGq9Ks8AsndTi7ME13ocpU8A==", "sources": ["https://api.nuget.org/v3/index.json"], "dependencies": {"net11": [], "net20": [], "net30": [], "net35": [], "net40": [], "net403": [], "net45": [], "net451": [], "net452": [], "net46": [], "net461": [], "net462": [], "net47": [], "net471": [], "net472": [], "net48": [], "net5.0": ["System.Drawing.Common"], "net6.0": ["System.Drawing.Common"], "net7.0": ["System.Drawing.Common"], "netcoreapp1.0": [], "netcoreapp1.1": [], "netcoreapp2.0": [], "netcoreapp2.1": [], "netcoreapp2.2": [], "netcoreapp3.0": [], "netcoreapp3.1": ["System.Drawing.Common"], "netstandard": [], "netstandard1.0": [], "netstandard1.1": [], "netstandard1.2": [], "netstandard1.3": [], "netstandard1.4": [], "netstandard1.5": [], "netstandard1.6": [], "netstandard2.0": [], "netstandard2.1": []}, "targeting_pack_overrides": [], "framework_list": []},
         ],
     )
+
+def _paket2bazel_dependencies_extension_impl(_ctx):
+    paket2bazel_dependencies()
+
+paket2bazel_dependencies_extension = module_extension(
+    implementation = _paket2bazel_dependencies_extension_impl,
+)
