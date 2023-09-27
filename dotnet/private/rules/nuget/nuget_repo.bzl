@@ -13,12 +13,6 @@ def _nuget_repo_impl(ctx):
         sha512 = package["sha512"]
         deps = package["dependencies"]
 
-        # deps = []
-        # for (tfm, tfm_deps) in dependencies.items():
-        #     for dep in tfm_deps:
-        #         if dep not in deps:
-        #             deps.append(dep)
-
         targeting_pack_overrides = ctx.attr.targeting_pack_overrides[name.lower()]
         framework_list = ctx.attr.framework_list[name.lower()]
         template = Label("//dotnet/private/rules/nuget:template.BUILD")

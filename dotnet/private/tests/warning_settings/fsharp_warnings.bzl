@@ -7,28 +7,28 @@ load("//dotnet/private/tests:utils.bzl", "ACTION_ARGS_TEST_ARGS", "action_args_t
 fsharp_treat_warnings_as_errors_config_wrapper_test = analysistest.make(
     action_args_test_impl,
     attrs = ACTION_ARGS_TEST_ARGS,
-    config_settings = {"@//dotnet/settings:fsharp_treat_warnings_as_errors": True},
+    config_settings = {str(Label("//dotnet/settings:fsharp_treat_warnings_as_errors")): True},
 )
 
 fsharp_warnings_as_errors_config_wrapper_test = analysistest.make(
     action_args_test_impl,
     attrs = ACTION_ARGS_TEST_ARGS,
-    config_settings = {"@//dotnet/settings:fsharp_warnings_as_errors": ["FS0025", "FS0026"]},
+    config_settings = {str(Label("//dotnet/settings:fsharp_warnings_as_errors")): ["FS0025", "FS0026"]},
 )
 
 fsharp_warnings_not_as_errors_config_wrapper_test = analysistest.make(
     action_args_test_impl,
     attrs = ACTION_ARGS_TEST_ARGS,
     config_settings = {
-        "@//dotnet/settings:fsharp_treat_warnings_as_errors": True,
-        "@//dotnet/settings:fsharp_warnings_not_as_errors": ["FS0025", "FS0026"],
+        str(Label("//dotnet/settings:fsharp_treat_warnings_as_errors")): True,
+        str(Label("//dotnet/settings:fsharp_warnings_not_as_errors")): ["FS0025", "FS0026"],
     },
 )
 
 fsharp_warning_level_config_wrapper_test = analysistest.make(
     action_args_test_impl,
     attrs = ACTION_ARGS_TEST_ARGS,
-    config_settings = {"@//dotnet/settings:fsharp_warning_level": 5},
+    config_settings = {str(Label("//dotnet/settings:fsharp_warning_level")): 5},
 )
 
 # buildifier: disable=function-docstring

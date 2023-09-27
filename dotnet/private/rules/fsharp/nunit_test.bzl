@@ -14,7 +14,7 @@ def fsharp_nunit_test(**kwargs):
     ]
 
     srcs = kwargs.pop("srcs", []) + [
-        "//dotnet/private/rules/common/nunit:shim.fs",
+        Label("//dotnet/private/rules/common/nunit:shim.fs"),
     ]
 
     fsharp_test(

@@ -60,12 +60,12 @@ def _get_runtime_runtime_identifier(rid):
     else:
         return select(
             {
-                "//dotnet/private:linux-x64": "linux-x64",
-                "//dotnet/private:linux-arm64": "linux-arm64",
-                "//dotnet/private:macos-x64": "osx-x64",
-                "//dotnet/private:macos-arm64": "osx-arm64",
-                "//dotnet/private:windows-x64": "win-x64",
-                "//dotnet/private:windows-arm64": "win-arm64",
+                Label("//dotnet/private:linux-x64"): "linux-x64",
+                Label("//dotnet/private:linux-arm64"): "linux-arm64",
+                Label("//dotnet/private:macos-x64"): "osx-x64",
+                Label("//dotnet/private:macos-arm64"): "osx-arm64",
+                Label("//dotnet/private:windows-x64"): "win-x64",
+                Label("//dotnet/private:windows-arm64"): "win-arm64",
             },
             no_match_error = "Could not infer default runtime identifier from the current host platform",
         )
@@ -91,7 +91,7 @@ def csharp_binary(
         override_warning_level = True if warning_level != None else False,
         strict_deps = strict_deps if strict_deps != None else True,
         override_strict_deps = True if strict_deps != None else False,
-        apphost_shimmer = "//dotnet/private/tools/apphost_shimmer:apphost_shimmer" if use_apphost_shim else None,
+        apphost_shimmer = Label("//dotnet/private/tools/apphost_shimmer:apphost_shimmer") if use_apphost_shim else None,
         **kwargs
     )
 
@@ -139,7 +139,7 @@ def csharp_test(
         override_warning_level = True if warning_level != None else False,
         strict_deps = strict_deps if strict_deps != None else True,
         override_strict_deps = True if strict_deps != None else False,
-        apphost_shimmer = "//dotnet/private/tools/apphost_shimmer:apphost_shimmer" if use_apphost_shim else None,
+        apphost_shimmer = Label("//dotnet/private/tools/apphost_shimmer:apphost_shimmer") if use_apphost_shim else None,
         **kwargs
     )
 
@@ -164,7 +164,7 @@ def csharp_nunit_test(
         override_warning_level = True if warning_level != None else False,
         strict_deps = strict_deps if strict_deps != None else True,
         override_strict_deps = True if strict_deps != None else False,
-        apphost_shimmer = "//dotnet/private/tools/apphost_shimmer:apphost_shimmer" if use_apphost_shim else None,
+        apphost_shimmer = Label("//dotnet/private/tools/apphost_shimmer:apphost_shimmer") if use_apphost_shim else None,
         **kwargs
     )
 
@@ -189,7 +189,7 @@ def fsharp_binary(
         override_warning_level = True if warning_level != None else False,
         strict_deps = strict_deps if strict_deps != None else True,
         override_strict_deps = True if strict_deps != None else False,
-        apphost_shimmer = "//dotnet/private/tools/apphost_shimmer:apphost_shimmer" if use_apphost_shim else None,
+        apphost_shimmer = Label("//dotnet/private/tools/apphost_shimmer:apphost_shimmer") if use_apphost_shim else None,
         **kwargs
     )
 
@@ -237,7 +237,7 @@ def fsharp_test(
         override_warning_level = True if warning_level != None else False,
         strict_deps = strict_deps if strict_deps != None else True,
         override_strict_deps = True if strict_deps != None else False,
-        apphost_shimmer = "//dotnet/private/tools/apphost_shimmer:apphost_shimmer" if use_apphost_shim else None,
+        apphost_shimmer = Label("//dotnet/private/tools/apphost_shimmer:apphost_shimmer") if use_apphost_shim else None,
         **kwargs
     )
 
@@ -262,7 +262,7 @@ def fsharp_nunit_test(
         override_warning_level = True if warning_level != None else False,
         strict_deps = strict_deps if strict_deps != None else True,
         override_strict_deps = True if strict_deps != None else False,
-        apphost_shimmer = "//dotnet/private/tools/apphost_shimmer:apphost_shimmer" if use_apphost_shim else None,
+        apphost_shimmer = Label("//dotnet/private/tools/apphost_shimmer:apphost_shimmer") if use_apphost_shim else None,
         **kwargs
     )
 
