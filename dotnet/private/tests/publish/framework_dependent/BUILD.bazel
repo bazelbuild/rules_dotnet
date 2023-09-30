@@ -1,9 +1,9 @@
+load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load(
     "//dotnet:defs.bzl",
     "csharp_binary",
     "publish_binary",
 )
-load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 
 publish_binary(
     name = "framework_dependent",

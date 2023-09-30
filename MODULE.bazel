@@ -9,6 +9,7 @@ module(
 dotnet = use_extension("@rules_dotnet//dotnet:extensions.bzl", "dotnet")
 dotnet.toolchain(dotnet_version = "7.0.101")
 use_repo(dotnet, "dotnet_toolchains")
+
 register_toolchains("@dotnet_toolchains//:all")
 
 bazel_dep(name = "bazel_skylib", version = "1.4.2")
@@ -17,5 +18,5 @@ bazel_dep(name = "platforms", version = "0.0.7")
 
 # Dev dependencies
 bazel_dep(name = "rules_pkg", version = "0.9.1", dev_dependency = True)
-bazel_dep(name = "gazelle", repo_name = "bazel_gazelle", version = "0.33.0", dev_dependency = True)
+bazel_dep(name = "gazelle", version = "0.33.0", dev_dependency = True, repo_name = "bazel_gazelle")
 bazel_dep(name = "bazel_skylib_gazelle_plugin", version = "1.4.2", dev_dependency = True)
