@@ -39,6 +39,22 @@ tasks:
       - "--config=remote"
     test_flags:
       - "--config=remote"
+  rbe_ubuntu1604_bzlmod:
+    name: Rules on Linux (RBE) with bzlmod
+    platform: rbe_ubuntu1604
+    include_json_profile:
+      - build
+      - test
+    build_targets:
+      - "//..."
+    test_targets:
+      - "//..."
+    build_flags:
+      - "--config=remote"
+      - "--enable_bzlmod"
+    test_flags:
+      - "--config=remote"
+      - "--enable_bzlmod"
   rbe_ubuntu1604_no_strict_deps:
     name: Rules on Linux (RBE) without strict deps
     platform: rbe_ubuntu1604
@@ -113,6 +129,23 @@ tasks:
       - "--config=remote"
     test_flags:
       - "--config=remote"
+  examples-rbe_ubuntu1604_bzlmod:
+    name: Examples on Ubuntu 18.04 (RBE) with bzlmod
+    platform: rbe_ubuntu1604
+    include_json_profile:
+      - build
+      - test
+    working_directory: examples
+    build_targets:
+      - "//..."
+    test_targets:
+      - "//..."
+    build_flags:
+      - "--config=remote"
+      - "--enable_bzlmod"
+    test_flags:
+      - "--config=remote"
+      - "--enable_bzlmod"
   examples-rbe_ubuntu1604_no_strict_deps:
     name: Examples on Ubuntu 18.04 (RBE) without strict deps
     platform: rbe_ubuntu1604
