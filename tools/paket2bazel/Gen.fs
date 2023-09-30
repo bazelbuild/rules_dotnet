@@ -81,23 +81,6 @@ let addFileHeaderContent (sb: StringBuilder) (fileName: string) =
     sb.Append($"    \"{fileName}\"") |> ignore
     sb.Append("\n") |> ignore
 
-let addModuleExtension (sb: StringBuilder) (fileName: string) =
-    sb.Append("\n") |> ignore
-
-    sb.Append($"def _{fileName}_extension_impl(_ctx):\n")
-    |> ignore
-
-    sb.Append($"    {fileName}()\n") |> ignore
-    sb.Append("\n") |> ignore
-
-    sb.Append($"{fileName}_extension = module_extension(\n")
-    |> ignore
-
-    sb.Append($"    implementation = _{fileName}_extension_impl,\n")
-    |> ignore
-
-    sb.Append($")\n") |> ignore
-
 let groupToNugetRepo (group: Group) =
     let repoPackages =
         group.packages
@@ -134,7 +117,6 @@ let generateBazelFiles (groups: Group seq) (separateFiles: bool) (outputFolder: 
             let sb = new StringBuilder()
             addFileHeaderContent sb group.name
             addGroupToFileContent sb group None netrcLabel
-            addModuleExtension sb group.name
             File.WriteAllText($"{outputFolder}/{group.name.ToLower()}.bzl", sb.ToString()))
     else
         let sb = new StringBuilder()
@@ -144,7 +126,5 @@ let generateBazelFiles (groups: Group seq) (separateFiles: bool) (outputFolder: 
         groups
         |> Seq.sortBy (fun i -> i.name)
         |> Seq.iter (fun g -> addGroupToFileContent sb g (Some "paket") netrcLabel)
-
-        addModuleExtension sb "paket"
 
         File.WriteAllText($"{outputFolder}/paket.bzl", sb.ToString())
