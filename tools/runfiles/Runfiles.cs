@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 
 // For the Runfiles spec see https://docs.google.com/document/d/e/2PACX-1vSDIrFnFvEYhKsCMdGdD40wZRBX3m3aZ5HhVj4CtHPmiXKDCxioTUbYsDydjKtFDAzER5eg7OjJWs3V/pub
 namespace Bazel
@@ -55,7 +56,14 @@ namespace Bazel
     /// </summary>
     public abstract class Runfiles
     {
-        private Runfiles() { }
+        private Dictionary<string, string> repoMapping = new Dictionary<string, string>();
+        private string sourceRepo;
+        private readonly string legacyExternalGeneratedFileRegex = "^bazel-out[/][^/]+/bin/external/([^/]+)/";
+        private readonly string legacyExternalFile = "^external/([^/]+)/";
+
+        private Runfiles()
+        {
+        }
 
         /// <summary>
         /// Creates a new <c>Runfiles</c> instance.
@@ -102,8 +110,9 @@ namespace Bazel
         /// "RUNFILES_MANIFEST_FILE", "RUNFILES_DIR", or "JAVA_RUNFILES" key in <paramref name="env"/> or their
         /// values are empty, or some IO error occurs
         /// </exception>
-        public static Runfiles Create(string argv0, IDictionary<string, string> env)
+        public static Runfiles Create(string argv0, IDictionary<string, string> env, string sourceRepo = null)
         {
+            Runfiles strategy;
             if (isManifestOnly(env))
             {
                 // On Windows, Bazel sets RUNFILES_MANIFEST_ONLY=1.
@@ -112,7 +121,7 @@ namespace Bazel
                 var manifestPath = getManifestPath(env);
                 if (!String.IsNullOrEmpty(manifestPath))
                 {
-                    return new ManifestBased(manifestPath);
+                    strategy = new ManifestBased(manifestPath);
                 }
                 else
                 {
@@ -120,13 +129,15 @@ namespace Bazel
 
                     if (!String.IsNullOrEmpty(argv0ManifestPath))
                     {
-                        return new ManifestBased(argv0ManifestPath);
+                        strategy = new ManifestBased(argv0ManifestPath);
                     }
-
-                    throw new FileNotFoundException(
-                        "Cannot load runfiles manifest: $RUNFILES_MANIFEST_ONLY is 1 but"
-                            + " $RUNFILES_MANIFEST_FILE is empty or undefined."
-                            + " argv0 was: " + argv0);
+                    else
+                    {
+                        throw new FileNotFoundException(
+                                     "Cannot load runfiles manifest: $RUNFILES_MANIFEST_ONLY is 1 but"
+                                         + " $RUNFILES_MANIFEST_FILE is empty or undefined."
+                                         + " argv0 was: " + argv0);
+                    }
                 }
             }
             else
@@ -134,14 +145,14 @@ namespace Bazel
                 var runfilesDir = getRunfilesDir(env);
                 if (!String.IsNullOrEmpty(runfilesDir))
                 {
-                    return new DirectoryBased(runfilesDir);
+                    strategy = new DirectoryBased(runfilesDir);
                 }
                 else
                 {
                     var argv0RunfilesDir = getRunfilesDirFromArgv0(argv0);
                     if (!String.IsNullOrEmpty(argv0RunfilesDir))
                     {
-                        return new DirectoryBased(argv0RunfilesDir);
+                        strategy = new DirectoryBased(argv0RunfilesDir);
                     }
                     else
                     {
@@ -149,6 +160,10 @@ namespace Bazel
                     }
                 }
             }
+
+            strategy.ParseRepoMapping(strategy.Rlocation("_repo_mapping"));
+            strategy.SetSourceRepo(sourceRepo);
+            return strategy;
         }
 
         /// <summary>
@@ -183,7 +198,20 @@ namespace Bazel
                 return path;
             }
 
-            return RlocationChecked(path);
+            var mappedPath = path;
+            var split = path.Split(new char[] { '/' }, 2);
+            if (split.Length == 2)
+            {
+                var targetRepo = split[0];
+                var remainder = split[1];
+                var key = $"{this.sourceRepo},{targetRepo}";
+                if (this.repoMapping.ContainsKey(key))
+                {
+                    mappedPath = $"{this.repoMapping[key]}/{remainder}";
+                }
+            }
+
+            return RlocationChecked(mappedPath);
         }
 
         /// <summary>
@@ -192,6 +220,53 @@ namespace Bazel
         /// case those subprocesses are also Bazel-built binaries that need to use runfiles.
         /// </summary>
         public abstract IDictionary<string, string> GetEnvVars();
+
+        private void ParseRepoMapping(string repoMappingPath)
+        {
+            if (!String.IsNullOrEmpty(repoMappingPath))
+            {
+                if (File.Exists(repoMappingPath))
+                {
+                    var lines = File.ReadAllLines(repoMappingPath);
+                    foreach (var line in lines)
+                    {
+                        var segments = line.Split(',');
+                        repoMapping[segments[0] + "," + segments[1]] = segments[2];
+                    }
+                }
+            }
+        }
+
+        private void SetSourceRepo(string sourceRepo)
+        {
+            if (sourceRepo == null)
+            {
+                var caller = System.Reflection.Assembly.GetEntryAssembly().FullName;
+
+                var legacyExternalGeneratedFileMatch = Regex.Match(caller, legacyExternalGeneratedFileRegex);
+                if (legacyExternalGeneratedFileMatch.Success)
+                {
+                    this.sourceRepo = legacyExternalGeneratedFileMatch.Value;
+                }
+                else
+                {
+                    var legacyExternalFileMatch = Regex.Match(caller, legacyExternalFile);
+                    if (legacyExternalFileMatch.Success)
+                    {
+                        this.sourceRepo = legacyExternalFileMatch.Value;
+                    }
+                    else
+                    {
+                        this.sourceRepo = "";
+                    }
+                }
+            }
+            else
+            {
+                this.sourceRepo = sourceRepo;
+            }
+        }
+
 
         /// <summary>
         /// Returns true if the path is fixed to a specific drive or UNC path. This method does no
