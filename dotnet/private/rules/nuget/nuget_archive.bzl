@@ -323,7 +323,7 @@ def _nuget_archive_impl(ctx):
     auth = _get_auth_dict(ctx, ctx.attr.netrc, urls)
     ctx.download_and_extract(urls, type = "zip", integrity = ctx.attr.sha512, auth = auth)
 
-    files = _read_dir(ctx, ".").replace(str(ctx.path(".")) + "/", "").splitlines()
+    files = sorted(_read_dir(ctx, ".").replace(str(ctx.path(".")) + "/", "").splitlines())
 
     # The NuGet package format
     groups = {
