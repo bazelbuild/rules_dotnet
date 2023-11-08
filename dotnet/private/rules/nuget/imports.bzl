@@ -30,6 +30,7 @@ def _import_library(ctx):
         targeting_pack_overrides = ctx.attr.targeting_pack_overrides,
         framework_list = ctx.attr.framework_list,
         sha512 = ctx.attr.sha512,
+        nupkg = ctx.file.nupkg,
     )
 
     dotnet_assembly_compile_info = DotnetAssemblyCompileInfo(
@@ -119,6 +120,10 @@ import_library = rule(
         ),
         "sha512": attr.string(
             doc = "The SHA512 sum of the NuGet package",
+        ),
+        "nupkg": attr.label(
+            doc = "The `.nupkg` file providing this import",
+            allow_single_file = True,
         ),
     },
     toolchains = [

@@ -321,7 +321,16 @@ def _nuget_archive_impl(ctx):
 
     # Then get the auth dict for the package base urls
     auth = _get_auth_dict(ctx, ctx.attr.netrc, urls)
-    ctx.download_and_extract(urls, type = "zip", integrity = ctx.attr.sha512, auth = auth)
+
+    # We download it as .zip because ctx.exract reads the file extension to determine the archive type
+    file_name = "%s.zip" % ctx.name
+    nupkg_name = "%s.%s.nupkg" % (ctx.attr.id, ctx.attr.version)
+    names = [nupkg_name]
+
+    ctx.download(urls, output = file_name, integrity = ctx.attr.sha512, auth = auth)
+    ctx.extract(archive = file_name)
+    for name in names:
+        ctx.symlink(file_name, name)
 
     files = sorted(_read_dir(ctx, ".").replace(str(ctx.path(".")) + "/", "").splitlines())
 
@@ -447,6 +456,7 @@ load("@rules_dotnet//dotnet/private/rules/nuget:nuget_archive.bzl", "tfm_filegro
         "filegroup(name = \"data\", srcs = [])",
         _create_rid_native_select("native", native) or "filegroup(name = \"native\", srcs = [])",
         "filegroup(name = \"content_files\", srcs = [%s])" % ",".join(["\n  \"%s\"" % a for a in groups.get("contentFiles")["any"]]),
+        "exports_files([\"%s\"])" % nupkg_name,
     ]))
 
 nuget_archive = repository_rule(
