@@ -154,7 +154,7 @@ def _import_dll(ctx):
         pdbs = [],
         xml_docs = [],
         native = [],
-        data = [],
+        data = ctx.files.data,
         deps = depset([]),
         nuget_info = None,
         direct_deps_depsjson_fragment = {},
@@ -178,6 +178,10 @@ import_dll = rule(
         ),
         "version": attr.string(
             doc = "The version of the library",
+        ),
+        "data": attr.label_list(
+            doc = "Other files that this DLL depends on at runtime",
+            allow_files = True,
         ),
     },
     executable = False,

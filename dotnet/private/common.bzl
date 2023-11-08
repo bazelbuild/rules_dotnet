@@ -325,6 +325,11 @@ def collect_transitive_runfiles(ctx, assembly_runtime_info, deps):
     for dep in deps:
         transitive_runfiles.append(dep[DefaultInfo].default_runfiles)
 
+    for d in ctx.attr.data:
+        if not DefaultInfo in d:
+            continue
+        runfiles = runfiles.merge(d[DefaultInfo].default_runfiles)
+
     return runfiles.merge_all(transitive_runfiles)
 
 def get_framework_version_info(tfm):
