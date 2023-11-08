@@ -29,7 +29,7 @@ def _format_targetprofile(tfm):
 
     return "--targetprofile:mscorlib"
 
-def _write_internals_visible_to_fsharp(actions, name, others):
+def _write_internals_visible_to_fsharp(actions, label_name, dll_name, others):
     """Write a .fs file containing InternalsVisibleTo attributes.
 
     Letting Bazel see which assemblies we are going to have InternalsVisibleTo
@@ -37,7 +37,8 @@ def _write_internals_visible_to_fsharp(actions, name, others):
 
     Args:
       actions: An actions module, usually from ctx.actions.
-      name: The assembly name.
+      label_name: The label name
+      dll_name: The assembly name.
       others: The names of other assemblies.
 
     Returns:
@@ -58,7 +59,7 @@ do()
 
 """ % other
 
-    output = actions.declare_file("bazelout/%s/internalsvisibleto.fs" % name)
+    output = actions.declare_file("%s/%s/internalsvisibleto.fs" % (label_name, dll_name))
     actions.write(output, content)
 
     return output
@@ -150,7 +151,7 @@ def AssemblyAction(
     )
     defines = framework_preprocessor_symbols(target_framework) + defines
 
-    out_dir = "bazelout/" + target_framework
+    out_dir = target_name + "/" + target_framework
     out_ext = "dll"
     out_dll = actions.declare_file("%s/%s.%s" % (out_dir, assembly_name, out_ext))
     out_iref = None
@@ -193,7 +194,8 @@ def AssemblyAction(
 
         internals_visible_to_fs = _write_internals_visible_to_fsharp(
             actions,
-            name = assembly_name,
+            label_name = target_name,
+            dll_name = assembly_name,
             others = internals_visible_to,
         )
         _compile(
