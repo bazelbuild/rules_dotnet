@@ -30,6 +30,7 @@ def _import_library(ctx):
         targeting_pack_overrides = ctx.attr.targeting_pack_overrides,
         framework_list = ctx.attr.framework_list,
         sha512 = ctx.attr.sha512,
+        nupkg = ctx.file.nupkg,
     )
 
     dotnet_assembly_compile_info = DotnetAssemblyCompileInfo(
@@ -120,6 +121,10 @@ import_library = rule(
         "sha512": attr.string(
             doc = "The SHA512 sum of the NuGet package",
         ),
+        "nupkg": attr.label(
+            doc = "The `.nupkg` file providing this import",
+            allow_single_file = True,
+        ),
     },
     toolchains = [
         "//dotnet:toolchain_type",
@@ -149,7 +154,7 @@ def _import_dll(ctx):
         pdbs = [],
         xml_docs = [],
         native = [],
-        data = [],
+        data = ctx.files.data,
         deps = depset([]),
         nuget_info = None,
         direct_deps_depsjson_fragment = {},
@@ -173,6 +178,10 @@ import_dll = rule(
         ),
         "version": attr.string(
             doc = "The version of the library",
+        ),
+        "data": attr.label_list(
+            doc = "Other files that this DLL depends on at runtime",
+            allow_files = True,
         ),
     },
     executable = False,

@@ -3,6 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <EnableDefaultItems>false</EnableDefaultItems>
+    <PackageId>Runfiles</PackageId>
+    <Version>0.12.0</Version>
+    <Authors>bazelbuild</Authors>
+    <Company>bazelbuild</Company>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Runfiles.cs" />

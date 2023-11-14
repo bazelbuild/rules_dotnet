@@ -101,7 +101,7 @@ def build_binary(ctx, compile_action):
 
     if is_core_framework(tfm):
         # Create the runtimeconfig.json for the binary
-        runtimeconfig = ctx.actions.declare_file("bazelout/%s/%s.runtimeconfig.json" % (tfm, ctx.attr.out or ctx.attr.name))
+        runtimeconfig = ctx.actions.declare_file("%s/%s/%s.runtimeconfig.json" % (ctx.label.name, tfm, ctx.attr.out or ctx.attr.name))
         runtimeconfig_struct = generate_runtimeconfig(
             target_framework = tfm,
             project_sdk = ctx.attr.project_sdk,
@@ -125,7 +125,7 @@ def build_binary(ctx, compile_action):
             content = json.encode_indent(runtimeconfig_struct),
         )
 
-        depsjson = ctx.actions.declare_file("bazelout/%s/%s.deps.json" % (tfm, ctx.attr.out or ctx.attr.name))
+        depsjson = ctx.actions.declare_file("%s/%s/%s.deps.json" % (ctx.label.name, tfm, ctx.attr.out or ctx.attr.name))
         depsjson_struct = generate_depsjson(
             ctx,
             target_framework = tfm,

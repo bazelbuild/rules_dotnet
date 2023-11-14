@@ -20,7 +20,7 @@ csharp_library(
 select_file(
     name = "docs_xml",
     srcs = ":lib",
-    subpath = "bazelout/net6.0/lib.xml",
+    subpath = "lib/net6.0/lib.xml",
 )
 
 diff_test(

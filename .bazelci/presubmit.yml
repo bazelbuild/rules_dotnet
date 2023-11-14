@@ -15,6 +15,10 @@ tasks:
       - "//..."
     test_targets:
       - "//..."
+    build_flags:
+      - "--noenable_bzlmod"
+    test_flags:
+      - "--noenable_bzlmod"
   ubuntu1804:
     name: Rules on Linux
     platform: ubuntu1804
@@ -25,6 +29,10 @@ tasks:
       - "//..."
     test_targets:
       - "//..."
+    build_flags:
+      - "--noenable_bzlmod"
+    test_flags:
+      - "--noenable_bzlmod"
   rbe_ubuntu1604:
     name: Rules on Linux (RBE)
     platform: rbe_ubuntu1604
@@ -37,6 +45,7 @@ tasks:
       - "//..."
     build_flags:
       - "--config=remote"
+      - "--noenable_bzlmod"
     test_flags:
       - "--config=remote"
   rbe_ubuntu1604_bzlmod:
@@ -68,9 +77,11 @@ tasks:
     build_flags:
       - "--@rules_dotnet//dotnet/settings:strict_deps=false"
       - "--config=remote"
+      - "--noenable_bzlmod"
     test_flags:
       - "--@rules_dotnet//dotnet/settings:strict_deps=false"
       - "--config=remote"
+      - "--noenable_bzlmod"
   macos:
     name: Rules on MacOS
     platform: macos
@@ -81,6 +92,10 @@ tasks:
       - "//..."
     test_targets:
       - "//..."
+    build_flags:
+      - "--noenable_bzlmod"
+    test_flags:
+      - "--noenable_bzlmod"
   examples-windows:
     name: Examples on Windows
     platform: windows
@@ -92,6 +107,10 @@ tasks:
       - "//..."
     test_targets:
       - "//..."
+    build_flags:
+      - "--noenable_bzlmod"
+    test_flags:
+      - "--noenable_bzlmod"
   examples-ubuntu1804:
     name: Examples on Ubuntu 18.04
     platform: ubuntu1804
@@ -103,6 +122,10 @@ tasks:
       - "//..."
     test_targets:
       - "//..."
+    build_flags:
+      - "--noenable_bzlmod"
+    test_flags:
+      - "--noenable_bzlmod"
   examples-macos:
     name: Examples on macOS
     platform: macos
@@ -114,6 +137,10 @@ tasks:
       - "//..."
     test_targets:
       - "//..."
+    build_flags:
+      - "--noenable_bzlmod"
+    test_flags:
+      - "--noenable_bzlmod"
   examples-rbe_ubuntu1604:
     name: Examples on Ubuntu 18.04 (RBE)
     platform: rbe_ubuntu1604
@@ -127,6 +154,7 @@ tasks:
       - "//..."
     build_flags:
       - "--config=remote"
+      - "--noenable_bzlmod"
     test_flags:
       - "--config=remote"
   examples-rbe_ubuntu1604_bzlmod:
@@ -160,6 +188,8 @@ tasks:
     build_flags:
       - "--config=remote"
       - "--@rules_dotnet//dotnet/settings:strict_deps=false"
+      - "--noenable_bzlmod"
     test_flags:
       - "--config=remote"
       - "--@rules_dotnet//dotnet/settings:strict_deps=false"
+      - "--noenable_bzlmod"
