@@ -71,5 +71,6 @@ DotnetPublishBinaryInfo = provider(
         "runtime_packs": "list[AssemblyInfo]: Optional information about the used runtime packs. Used by self-contained publishing",
         "target_framework": "string: The target framework of the published binary",
         "self_contained": "bool: True if the binary is self-contained",
+        "repo_mapping_manifest": "File: the repo mapping file for the published binary",
     },
 )

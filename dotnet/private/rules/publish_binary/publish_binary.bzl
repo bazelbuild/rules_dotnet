@@ -19,6 +19,8 @@ def _publish_binary_impl(ctx):
     elif len(ctx.attr.runtime_packs) > 0:
         fail("Can not do a framework dependent publish with a runtime pack")
 
+    repo_mapping_file = ctx.attr.binary[0][DefaultInfo].files_to_run.repo_mapping_manifest if ctx.attr.binary[0][DefaultInfo].files_to_run else None
+
     return [
         ctx.attr.binary[0][DotnetAssemblyCompileInfo],
         ctx.attr.binary[0][DotnetAssemblyRuntimeInfo],
@@ -27,6 +29,7 @@ def _publish_binary_impl(ctx):
             runtime_packs = runtime_pack_infos,
             target_framework = ctx.attr.target_framework,
             self_contained = ctx.attr.self_contained,
+            repo_mapping_manifest = repo_mapping_file,
         ),
     ]
 
@@ -112,7 +115,7 @@ def _get_assembly_files(assembly_info, transitive_runtime_deps):
         data += dep.data
     return (libs, native, data)
 
-def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, assembly_info, transitive_runtime_deps):
+def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, assembly_info, transitive_runtime_deps, repo_mapping_manifest):
     is_windows = ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo])
     inputs = [binary_info.app_host]
     app_host_copy = ctx.actions.declare_file(
@@ -165,6 +168,16 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
         )
         outputs.append(output)
         _copy_file(script_body, file, output, is_windows = is_windows)
+
+    # The repo mapping manifest is not part of the runfiles by default so we
+    # copy it to the runfiles directory manually.
+    if repo_mapping_manifest:
+        inputs.append(repo_mapping_manifest)
+        output = ctx.actions.declare_file(
+            "{}/publish/{}/{}.runfiles/_repo_mapping".format(ctx.label.name, runtime_identifier, binary_info.app_host.basename),
+        )
+        outputs.append(output)
+        _copy_file(script_body, repo_mapping_manifest, output, is_windows = is_windows)
 
     # In case the publish is self-contained there needs to be a runtime pack available
     # with the runtime dependencies that are required for the targeted runtime.
@@ -227,6 +240,7 @@ def _publish_binary_wrapper_impl(ctx):
     assembly_runtime_info = ctx.attr.wrapped_target[0][DotnetAssemblyRuntimeInfo]
     binary_info = ctx.attr.wrapped_target[0][DotnetBinaryInfo]
     publish_binary_info = ctx.attr.wrapped_target[0][DotnetPublishBinaryInfo]
+    repo_mapping_manifest = ctx.attr.wrapped_target[0][DotnetPublishBinaryInfo].repo_mapping_manifest
     transitive_runtime_deps = binary_info.transitive_runtime_deps
     runtime_identifier = ctx.attr.runtime_identifier
     target_framework = publish_binary_info.target_framework
@@ -240,6 +254,7 @@ def _publish_binary_wrapper_impl(ctx):
         binary_info,
         assembly_runtime_info,
         transitive_runtime_deps,
+        repo_mapping_manifest,
     )
 
     runtimeconfig = ctx.actions.declare_file("{}/publish/{}/{}.runtimeconfig.json".format(
