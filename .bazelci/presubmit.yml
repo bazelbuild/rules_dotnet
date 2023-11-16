@@ -16,7 +16,7 @@ buildifier:
 matrix:
   platform: ["windows", "ubuntu1804", "rbe_ubuntu1604", "macos"]
   working_directory: ["", "examples"]
-  strict_deps: ["true", "false"]
+  strict_deps: ["--@rules_dotnet//dotnet/settings:strict_deps=true", "--@rules_dotnet//dotnet/settings:strict_deps=false"]
 
 tasks:
   test_all:
@@ -31,9 +31,9 @@ tasks:
     test_targets:
       - "//..."
     build_flags:
-      - "--@rules_dotnet//dotnet/settings:strict_deps=${{ strict_deps }}"
+      - ${{ strict_deps }}
     test_flags:
-      - "--@rules_dotnet//dotnet/settings:strict_deps=${{ strict_deps }}"
+      - ${{ strict_deps }}
 
 
 # tasks:
