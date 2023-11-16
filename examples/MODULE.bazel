@@ -17,3 +17,13 @@ dotnet.toolchain(dotnet_version = "7.0.101")
 use_repo(dotnet, "dotnet_toolchains")
 
 register_toolchains("@dotnet_toolchains//:all")
+
+rules_dotnet_nuget_packages_extension = use_extension("@rules_dotnet//dotnet:rules_dotnet_nuget_packages_extension.bzl", "rules_dotnet_nuget_packages_extension")
+use_repo(rules_dotnet_nuget_packages_extension, "rules_dotnet_nuget_packages")
+
+example_deps_extension = use_extension("//:example_deps_extension.bzl", "example_deps_extension")
+use_repo(example_deps_extension, "example_deps")
+
+paket_extension = use_extension("//paket/deps:paket_extension.bzl", "paket_extension")
+use_repo(paket_extension, "paket.main")
+use_repo(paket_extension, "paket.othergroup")
