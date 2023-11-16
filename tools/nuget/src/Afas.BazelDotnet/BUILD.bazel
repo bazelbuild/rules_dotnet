@@ -11,12 +11,12 @@ csharp_binary(
     ),
     target_frameworks = ["net6.0"],
     targeting_packs = [
-        "@rules_dotnet_nuget_packages//microsoft.netcore.app.ref",
+        "@paket.rules_dotnet_nuget_packages//microsoft.netcore.app.ref",
     ],
     visibility = ["//visibility:public"],
     deps = [
         #Adding built-in .Net libs
-        "@rules_dotnet_nuget_packages//mcmaster.extensions.commandlineutils",
+        "@paket.rules_dotnet_nuget_packages//mcmaster.extensions.commandlineutils",
         "//tools/nuget/src/Afas.BazelDotnet.Nuget",
         "//tools/nuget/src/Afas.BazelDotnet.Project",
     ],

@@ -87,7 +87,7 @@ let addExtensionFileContent (sb: StringBuilder) (groupName: string) =
 
     sb.Append($"\n") |> ignore
 
-    sb.Append($"load(\":{groupName}.bzl\", _{groupName} =\"{groupName}\")")
+    sb.Append($"load(\":paket.{groupName}.bzl\", _{groupName} =\"{groupName}\")")
     |> ignore
 
     sb.Append("\n") |> ignore
@@ -133,29 +133,14 @@ let addGroupToFileContent
     sb.Append(generateTarget (groupToNugetRepo group) repoName netrcLabel)
     |> ignore
 
-let generateBazelFiles (groups: Group seq) (separateFiles: bool) (outputFolder: string) (netrcLabel: string option) =
-    if separateFiles then
-        groups
-        |> Seq.iter (fun group ->
-            let sb = new StringBuilder()
-            addFileHeaderContent sb group.name
-            addGroupToFileContent sb group None netrcLabel
-            File.WriteAllText($"{outputFolder}/{group.name.ToLower()}.bzl", sb.ToString())
-
-            let extensionSb = new StringBuilder()
-            addExtensionFileContent extensionSb (group.name.ToLower())
-            File.WriteAllText($"{outputFolder}/{group.name.ToLower()}_extension.bzl", extensionSb.ToString()))
-    else
+let generateBazelFiles (groups: Group seq) (outputFolder: string) (netrcLabel: string option) =
+    groups
+    |> Seq.iter (fun group ->
         let sb = new StringBuilder()
-
-        addFileHeaderContent sb "paket"
-
-        groups
-        |> Seq.sortBy (fun i -> i.name)
-        |> Seq.iter (fun g -> addGroupToFileContent sb g (Some "paket") netrcLabel)
-
-        File.WriteAllText($"{outputFolder}/paket.bzl", sb.ToString())
+        addFileHeaderContent sb (group.name.ToLower())
+        addGroupToFileContent sb group (Some "paket") netrcLabel
+        File.WriteAllText($"{outputFolder}/paket.{group.name.ToLower()}.bzl", sb.ToString())
 
         let extensionSb = new StringBuilder()
-        addExtensionFileContent extensionSb "paket"
-        File.WriteAllText($"{outputFolder}/paket_extension.bzl", extensionSb.ToString())
+        addExtensionFileContent extensionSb (group.name.ToLower())
+        File.WriteAllText($"{outputFolder}/paket.{group.name.ToLower()}_extension.bzl", extensionSb.ToString()))

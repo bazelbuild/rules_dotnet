@@ -8,11 +8,11 @@ fsharp_nunit_test(
     srcs = ["Main.fs"],
     target_frameworks = ["net6.0"],
     targeting_packs = [
-        "@example_deps//microsoft.netcore.app.ref",
+        "@paket.example_deps//microsoft.netcore.app.ref",
     ],
     deps = [
         "//fsharp_type_provider/type_provider_lib",
-        "@example_deps//fsharp.core",
-        "@example_deps//fsharp.data",
+        "@paket.example_deps//fsharp.core",
+        "@paket.example_deps//fsharp.data",
     ],
 )

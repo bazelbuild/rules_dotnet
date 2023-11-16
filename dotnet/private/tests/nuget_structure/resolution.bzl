@@ -9,7 +9,7 @@ def resolution_structure():
         name = "System.Memory.netstandard2.0",
         target_framework = "netstandard2.0",
         runtime_identifier = "linux-x64",
-        package = "@rules_dotnet_dev_nuget_packages//system.memory",
+        package = "@paket.rules_dotnet_dev_nuget_packages//system.memory",
     )
 
     nuget_structure_test(

@@ -9,7 +9,7 @@ fsharp_binary(
     tags = ["requires-network"],
     target_frameworks = ["net6.0"],
     targeting_packs = [
-        "@example_deps//microsoft.netcore.app.ref",
+        "@paket.example_deps//microsoft.netcore.app.ref",
     ],
     deps = [
         "@paket.main//argu",
@@ -28,7 +28,7 @@ fsharp_binary(
     tags = ["requires-network"],
     target_frameworks = ["net6.0"],
     targeting_packs = [
-        "@example_deps//microsoft.netcore.app.ref",
+        "@paket.example_deps//microsoft.netcore.app.ref",
     ],
     deps = [
         "@paket.othergroup//argu",

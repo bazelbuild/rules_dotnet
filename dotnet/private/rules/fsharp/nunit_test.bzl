@@ -9,8 +9,8 @@ load("//dotnet/private/rules/fsharp:test.bzl", "fsharp_test")
 def fsharp_nunit_test(**kwargs):
     # TODO: This should be user configurable
     deps = kwargs.pop("deps", []) + [
-        "@rules_dotnet_nuget_packages//nunitlite",
-        "@rules_dotnet_nuget_packages//nunit",
+        "@paket.rules_dotnet_nuget_packages//nunitlite",
+        "@paket.rules_dotnet_nuget_packages//nunit",
     ]
 
     srcs = kwargs.pop("srcs", []) + [

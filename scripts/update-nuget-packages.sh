@@ -5,6 +5,6 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 (
     cd "$SCRIPT_DIR" || exit 1
     (cd .. && dotnet tool restore && dotnet tool run paket install)
-    dotnet run --project ../tools/paket2bazel/paket2bazel.fsproj -- --dependencies-file "$(pwd)"/../paket.dependencies --output-folder "$(pwd)"/../dotnet --put-groups-into-separate-files
-    # bazel run @rules_dotnet//tools/paket2bazel:paket2bazel.exe -- --dependencies-file "$(pwd)"/../paket.dependencies --output-folder "$(pwd)"/../dotnet --put-groups-into-separate-files
+    dotnet run --project ../tools/paket2bazel/paket2bazel.fsproj -- --dependencies-file "$(pwd)"/../paket.dependencies --output-folder "$(pwd)"/../dotnet 
+    # bazel run @rules_dotnet//tools/paket2bazel:paket2bazel.exe -- --dependencies-file "$(pwd)"/../paket.dependencies --output-folder "$(pwd)"/../dotnet 
 )

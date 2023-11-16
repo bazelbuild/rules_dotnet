@@ -9,7 +9,7 @@ def typeproviders_structure():
         name = "fsharp.data",
         target_framework = "net6.0",
         runtime_identifier = "linux-x64",
-        package = "@rules_dotnet_dev_nuget_packages//fsharp.data",
+        package = "@paket.rules_dotnet_dev_nuget_packages//fsharp.data",
     )
 
     nuget_structure_test(

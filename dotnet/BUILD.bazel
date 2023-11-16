@@ -57,22 +57,22 @@ bzl_library(
 )
 
 bzl_library(
-    name = "paket2bazel_dependencies",
-    srcs = ["paket2bazel_dependencies.bzl"],
+    name = "paket.paket2bazel_dependencies",
+    srcs = ["paket.paket2bazel_dependencies.bzl"],
     visibility = ["//visibility:public"],
     deps = ["//dotnet:defs"],
 )
 
 bzl_library(
-    name = "rules_dotnet_dev_nuget_packages",
-    srcs = ["rules_dotnet_dev_nuget_packages.bzl"],
+    name = "paket.rules_dotnet_dev_nuget_packages",
+    srcs = ["paket.rules_dotnet_dev_nuget_packages.bzl"],
     visibility = ["//visibility:public"],
     deps = ["//dotnet:defs"],
 )
 
 bzl_library(
-    name = "rules_dotnet_nuget_packages",
-    srcs = ["rules_dotnet_nuget_packages.bzl"],
+    name = "paket.rules_dotnet_nuget_packages",
+    srcs = ["paket.rules_dotnet_nuget_packages.bzl"],
     visibility = ["//visibility:public"],
     deps = ["//dotnet:defs"],
 )

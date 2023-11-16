@@ -12,11 +12,11 @@ fsharp_nunit_test(
     out = "OtherLibTest",
     target_frameworks = ["net6.0"],
     targeting_packs = [
-        "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
+        "@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
     ],
     deps = [
         ":lib",
-        "@rules_dotnet_dev_nuget_packages//fsharp.core",
+        "@paket.rules_dotnet_dev_nuget_packages//fsharp.core",
     ],
 )
 
@@ -30,9 +30,9 @@ fsharp_library(
     ],
     target_frameworks = ["net6.0"],
     targeting_packs = [
-        "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
+        "@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
     ],
     deps = [
-        "@rules_dotnet_dev_nuget_packages//fsharp.core",
+        "@paket.rules_dotnet_dev_nuget_packages//fsharp.core",
     ],
 )

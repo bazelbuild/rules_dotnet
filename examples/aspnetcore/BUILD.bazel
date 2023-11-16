@@ -15,8 +15,8 @@ csharp_binary(
     project_sdk = "web",
     target_frameworks = ["net6.0"],
     targeting_packs = [
-        "@example_deps//microsoft.aspnetcore.app.ref",
-        "@example_deps//microsoft.netcore.app.ref",
+        "@paket.example_deps//microsoft.aspnetcore.app.ref",
+        "@paket.example_deps//microsoft.netcore.app.ref",
     ],
     deps = [
     ],
@@ -27,16 +27,16 @@ publish_binary(
     binary = ":aspnetcore",
     runtime_packs = select({
         "@rules_dotnet//dotnet:rid_linux-x64": [
-            "@example_deps//microsoft.netcore.app.runtime.linux-x64",
-            "@example_deps//microsoft.aspnetcore.app.runtime.linux-x64",
+            "@paket.example_deps//microsoft.netcore.app.runtime.linux-x64",
+            "@paket.example_deps//microsoft.aspnetcore.app.runtime.linux-x64",
         ],
         "@rules_dotnet//dotnet:rid_osx-x64": [
-            "@example_deps//microsoft.netcore.app.runtime.osx-x64",
-            "@example_deps//microsoft.aspnetcore.app.runtime.osx-x64",
+            "@paket.example_deps//microsoft.netcore.app.runtime.osx-x64",
+            "@paket.example_deps//microsoft.aspnetcore.app.runtime.osx-x64",
         ],
         "@rules_dotnet//dotnet:rid_win-x64": [
-            "@example_deps//microsoft.netcore.app.runtime.win-x64",
-            "@example_deps//microsoft.aspnetcore.app.runtime.win-x64",
+            "@paket.example_deps//microsoft.netcore.app.runtime.win-x64",
+            "@paket.example_deps//microsoft.aspnetcore.app.runtime.win-x64",
         ],
     }),
     self_contained = True,

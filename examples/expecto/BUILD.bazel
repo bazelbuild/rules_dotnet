@@ -12,10 +12,10 @@ fsharp_test(
     ],
     target_frameworks = ["net6.0"],
     targeting_packs = [
-        "@example_deps//microsoft.netcore.app.ref",
+        "@paket.example_deps//microsoft.netcore.app.ref",
     ],
     deps = [
-        "@example_deps//expecto",
-        "@example_deps//fsharp.core",
+        "@paket.example_deps//expecto",
+        "@paket.example_deps//fsharp.core",
     ],
 )

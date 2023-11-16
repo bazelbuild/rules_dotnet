@@ -9,7 +9,7 @@ csharp_nunit_test(
     target_frameworks = [
         "net6.0",
     ],
-    targeting_packs = ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
+    targeting_packs = ["@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
     visibility = ["//visibility:public"],
-    deps = ["@rules_dotnet_dev_nuget_packages//libgit2sharp"],
+    deps = ["@paket.rules_dotnet_dev_nuget_packages//libgit2sharp"],
 )

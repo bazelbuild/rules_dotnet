@@ -18,12 +18,14 @@ use_repo(dotnet, "dotnet_toolchains")
 
 register_toolchains("@dotnet_toolchains//:all")
 
-rules_dotnet_nuget_packages_extension = use_extension("@rules_dotnet//dotnet:rules_dotnet_nuget_packages_extension.bzl", "rules_dotnet_nuget_packages_extension")
-use_repo(rules_dotnet_nuget_packages_extension, "rules_dotnet_nuget_packages")
+rules_dotnet_nuget_packages_extension = use_extension("@rules_dotnet//dotnet:paket.rules_dotnet_nuget_packages_extension.bzl", "rules_dotnet_nuget_packages_extension")
+use_repo(rules_dotnet_nuget_packages_extension, "paket.rules_dotnet_nuget_packages")
 
-example_deps_extension = use_extension("//:example_deps_extension.bzl", "example_deps_extension")
-use_repo(example_deps_extension, "example_deps")
+example_deps_extension = use_extension("//:paket.example_deps_extension.bzl", "example_deps_extension")
+use_repo(example_deps_extension, "paket.example_deps")
 
-paket_extension = use_extension("//paket/deps:paket_extension.bzl", "paket_extension")
-use_repo(paket_extension, "paket.main")
-use_repo(paket_extension, "paket.othergroup")
+main_extension = use_extension("//paket/deps:paket.main_extension.bzl", "main_extension")
+use_repo(main_extension, "paket.main")
+
+othergroup_extension = use_extension("//paket/deps:paket.othergroup_extension.bzl", "othergroup_extension")
+use_repo(othergroup_extension, "paket.othergroup")

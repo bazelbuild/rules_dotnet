@@ -9,11 +9,11 @@ csharp_binary(
     data = ["nested/runfiles/data-file"],
     target_frameworks = ["net6.0"],
     targeting_packs = [
-        "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
+        "@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
     ],
     visibility = ["//dotnet/private/tests/publish:__subpackages__"],
     deps = [
         "//tools/runfiles",
-        "@rules_dotnet_dev_nuget_packages//libgit2sharp",
+        "@paket.rules_dotnet_dev_nuget_packages//libgit2sharp",
     ],
 )

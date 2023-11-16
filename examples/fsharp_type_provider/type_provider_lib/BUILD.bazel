@@ -11,11 +11,11 @@ fsharp_library(
     internals_visible_to = ["lib_test"],
     target_frameworks = ["net6.0"],
     targeting_packs = [
-        "@example_deps//microsoft.netcore.app.ref",
+        "@paket.example_deps//microsoft.netcore.app.ref",
     ],
     visibility = ["//fsharp_type_provider:__subpackages__"],
     deps = [
-        "@example_deps//fsharp.core",
-        "@example_deps//fsharp.data",
+        "@paket.example_deps//fsharp.core",
+        "@paket.example_deps//fsharp.data",
     ],
 )

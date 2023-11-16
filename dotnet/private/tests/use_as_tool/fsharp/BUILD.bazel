@@ -18,7 +18,7 @@ fsharp_binary(
     srcs = ["main.fs"],
     target_frameworks = ["net6.0"],
     targeting_packs = [
-        "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
+        "@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
     ],
     deps = [
         ":lib",
@@ -30,7 +30,7 @@ fsharp_library(
     srcs = ["lib.fs"],
     target_frameworks = ["net6.0"],
     targeting_packs = [
-        "@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
+        "@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
     ],
     deps = [],
 )
@@ -62,10 +62,10 @@ publish_binary(
     name = "publish_self_contained",
     binary = ":main",
     runtime_packs = select({
-        "//dotnet:rid_linux-x64": ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.linux-x64"],
-        "//dotnet:rid_osx-x64": ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.osx-x64"],
-        "//dotnet:rid_win-x64": ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.win-x64"],
-        "//conditions:default": ["@rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.linux-x64"],
+        "//dotnet:rid_linux-x64": ["@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.linux-x64"],
+        "//dotnet:rid_osx-x64": ["@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.osx-x64"],
+        "//dotnet:rid_win-x64": ["@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.win-x64"],
+        "//conditions:default": ["@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.linux-x64"],
     }),
     self_contained = True,
     target_framework = "net6.0",
