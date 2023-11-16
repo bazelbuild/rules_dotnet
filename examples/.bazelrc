@@ -24,9 +24,6 @@ query --experimental_collect_worker_data_in_profiler
 build --incompatible_config_setting_private_default_visibility
 build --incompatible_disable_starlark_host_transitions
 
-# Remote config
-build:remote --remote_download_minimal
-
 # Load any settings specific to the current user.
 # .bazelrc.user should appear in .gitignore so that settings are not shared with team members
 # This needs to be last statement in this

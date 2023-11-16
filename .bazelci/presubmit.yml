@@ -4,30 +4,25 @@ bazel: 7.0.0rc3
 buildifier:
   version: latest
 
+# .common_task_config: &common_task_config
+#   include_json_profile:
+#     - build
+#     - test
+#   build_targets:
+#     - "//..."
+#   test_targets:
+#     - "//..."
+
+matrix:
+  platform: ["windows", "ubuntu1804", "rbe_ubuntu1604", "macos"]
+  working_directory: ["", "examples"]
+  strict_deps: ["true", "false"]
+
 tasks:
-  windows:
-    name: Rules on Windows
-    platform: windows
-    include_json_profile:
-      - build
-      - test
-    build_targets:
-      - "//..."
-    test_targets:
-      - "//..."
-  ubuntu1804:
-    name: Rules on Linux
-    platform: ubuntu1804
-    include_json_profile:
-      - build
-      - test
-    build_targets:
-      - "//..."
-    test_targets:
-      - "//..."
-  rbe_ubuntu1604:
-    name: Rules on Linux (RBE)
-    platform: rbe_ubuntu1604
+  test_all:
+    name: Build and test ${{ working_directory }} on ${{ platform }} with strict_deps=${{ strict_deps }}
+    platform: ${{ platform }}
+    working_directory: ${{ working_directory }}
     include_json_profile:
       - build
       - test
@@ -36,130 +31,131 @@ tasks:
     test_targets:
       - "//..."
     build_flags:
-      - "--config=remote"
+      - "--@rules_dotnet//dotnet/settings:strict_deps=${{ strict_deps }}"
     test_flags:
-      - "--config=remote"
-  rbe_ubuntu1604_without_bzlmod:
-    name: Rules on Linux (RBE) without bzlmod
-    platform: rbe_ubuntu1604
-    include_json_profile:
-      - build
-      - test
-    build_targets:
-      - "//..."
-    test_targets:
-      - "//..."
-    build_flags:
-      - "--config=remote"
-      - "--noenable_bzlmod"
-    test_flags:
-      - "--config=remote"
-      - "--noenable_bzlmod"
-  rbe_ubuntu1604_no_strict_deps:
-    name: Rules on Linux (RBE) without strict deps
-    platform: rbe_ubuntu1604
-    include_json_profile:
-      - build
-      - test
-    build_targets:
-      - "//..."
-    test_targets:
-      - "//..."
-    build_flags:
-      - "--@rules_dotnet//dotnet/settings:strict_deps=false"
-      - "--config=remote"
-    test_flags:
-      - "--@rules_dotnet//dotnet/settings:strict_deps=false"
-      - "--config=remote"
-  macos:
-    name: Rules on MacOS
-    platform: macos
-    include_json_profile:
-      - build
-      - test
-    build_targets:
-      - "//..."
-    test_targets:
-      - "//..."
-  examples-windows:
-    name: Examples on Windows
-    platform: windows
-    include_json_profile:
-      - build
-      - test
-    working_directory: examples
-    build_targets:
-      - "//..."
-    test_targets:
-      - "//..."
-  examples-ubuntu1804:
-    name: Examples on Ubuntu 18.04
-    platform: ubuntu1804
-    include_json_profile:
-      - build
-      - test
-    working_directory: examples
-    build_targets:
-      - "//..."
-    test_targets:
-      - "//..."
-  examples-macos:
-    name: Examples on macOS
-    platform: macos
-    include_json_profile:
-      - build
-      - test
-    working_directory: examples
-    build_targets:
-      - "//..."
-    test_targets:
-      - "//..."
-  examples-rbe_ubuntu1604:
-    name: Examples on Ubuntu 18.04 (RBE)
-    platform: rbe_ubuntu1604
-    include_json_profile:
-      - build
-      - test
-    working_directory: examples
-    build_targets:
-      - "//..."
-    test_targets:
-      - "//..."
-    build_flags:
-      - "--config=remote"
-    test_flags:
-      - "--config=remote"
-  examples-rbe_ubuntu1604_without_bzlmod:
-    name: Examples on Ubuntu 18.04 (RBE) without bzlmod
-    platform: rbe_ubuntu1604
-    include_json_profile:
-      - build
-      - test
-    working_directory: examples
-    build_targets:
-      - "//..."
-    test_targets:
-      - "//..."
-    build_flags:
-      - "--config=remote"
-      - "--noenable_bzlmod"
-    test_flags:
-      - "--config=remote"
-      - "--noenable_bzlmod"
-  examples-rbe_ubuntu1604_no_strict_deps:
-    name: Examples on Ubuntu 18.04 (RBE) without strict deps
-    platform: rbe_ubuntu1604
-    include_json_profile:
-      - build
-      - test
-    working_directory: examples
-    build_targets:
-      - "//..."
-    test_targets:
-      - "//..."
-    build_flags:
-      - "--config=remote"
-      - "--@rules_dotnet//dotnet/settings:strict_deps=false"
-    test_flags:
-      - "--config=remote"
-      - "--@rules_dotnet//dotnet/settings:strict_deps=false"
+      - "--@rules_dotnet//dotnet/settings:strict_deps=${{ strict_deps }}"
+
+
+# tasks:
+#   windows:
+#     name: Rules on Windows
+#     platform: windows
+#     <<: *common_task_config
+#   ubuntu1804:
+#     name: Rules on Linux
+#     platform: ubuntu1804
+#     <<: *common_task_config
+#   rbe_ubuntu1604:
+#     name: Rules on Linux (RBE)
+#     platform: rbe_ubuntu1604
+#     <<: *common_task_config
+#     build_flags:
+#       - "--config=remote"
+#     test_flags:
+#       - "--config=remote"
+#   rbe_ubuntu1604_without_bzlmod:
+#     name: Rules on Linux (RBE) without bzlmod
+#     platform: rbe_ubuntu1604
+#     <<: *common_task_config
+#     build_flags:
+#       - "--config=remote"
+#       - "--noenable_bzlmod"
+#     test_flags:
+#       - "--config=remote"
+#       - "--noenable_bzlmod"
+#   rbe_ubuntu1604_no_strict_deps:
+#     name: Rules on Linux (RBE) without strict deps
+#     platform: rbe_ubuntu1604
+#     <<: *common_task_config
+#     build_flags:
+#       - "--@rules_dotnet//dotnet/settings:strict_deps=false"
+#       - "--config=remote"
+#     test_flags:
+#       - "--@rules_dotnet//dotnet/settings:strict_deps=false"
+#       - "--config=remote"
+#   macos:
+#     name: Rules on MacOS
+#     platform: macos
+#     <<: *common_task_config
+#   examples-windows:
+#     name: Examples on Windows
+#     platform: windows
+#     include_json_profile:
+#       - build
+#       - test
+#     working_directory: examples
+#     build_targets:
+#       - "//..."
+#     test_targets:
+#       - "//..."
+#   examples-ubuntu1804:
+#     name: Examples on Ubuntu 18.04
+#     platform: ubuntu1804
+#     include_json_profile:
+#       - build
+#       - test
+#     working_directory: examples
+#     build_targets:
+#       - "//..."
+#     test_targets:
+#       - "//..."
+#   examples-macos:
+#     name: Examples on macOS
+#     platform: macos
+#     include_json_profile:
+#       - build
+#       - test
+#     working_directory: examples
+#     build_targets:
+#       - "//..."
+#     test_targets:
+#       - "//..."
+#   examples-rbe_ubuntu1604:
+#     name: Examples on Ubuntu 18.04 (RBE)
+#     platform: rbe_ubuntu1604
+#     include_json_profile:
+#       - build
+#       - test
+#     working_directory: examples
+#     build_targets:
+#       - "//..."
+#     test_targets:
+#       - "//..."
+#     build_flags:
+#       - "--config=remote"
+#     test_flags:
+#       - "--config=remote"
+#   examples-rbe_ubuntu1604_without_bzlmod:
+#     name: Examples on Ubuntu 18.04 (RBE) without bzlmod
+#     platform: rbe_ubuntu1604
+#     include_json_profile:
+#       - build
+#       - test
+#     working_directory: examples
+#     build_targets:
+#       - "//..."
+#     test_targets:
+#       - "//..."
+#     build_flags:
+#       - "--config=remote"
+#       - "--noenable_bzlmod"
+#     test_flags:
+#       - "--config=remote"
+#       - "--noenable_bzlmod"
+#   examples-rbe_ubuntu1604_no_strict_deps:
+#     name: Examples on Ubuntu 18.04 (RBE) without strict deps
+#     platform: rbe_ubuntu1604
+#     include_json_profile:
+#       - build
+#       - test
+#     working_directory: examples
+#     build_targets:
+#       - "//..."
+#     test_targets:
+#       - "//..."
+#     build_flags:
+#       - "--config=remote"
+#       - "--@rules_dotnet//dotnet/settings:strict_deps=false"
+#     test_flags:
+#       - "--config=remote"
+#       - "--@rules_dotnet//dotnet/settings:strict_deps=false"
