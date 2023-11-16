@@ -53,8 +53,8 @@ _nuget_repo = repository_rule(
             default = {},
         ),
         "_template": attr.label(
-            default = "//dotnet/private/rules/nuget:template.BUILD"
-        )
+            default = "//dotnet/private/rules/nuget:template.BUILD",
+        ),
     },
 )
 

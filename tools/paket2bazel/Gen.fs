@@ -87,7 +87,7 @@ let addExtensionFileContent (sb: StringBuilder) (groupName: string) =
 
     sb.Append($"\n") |> ignore
 
-    sb.Append($"load(\":paket.{groupName}.bzl\", _{groupName} =\"{groupName}\")")
+    sb.Append($"load(\":paket.{groupName}.bzl\", _{groupName} = \"{groupName}\")")
     |> ignore
 
     sb.Append("\n") |> ignore
