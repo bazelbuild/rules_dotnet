@@ -1,6 +1,6 @@
 {
   "lockFileVersion": 3,
-  "moduleFileHash": "95b2a48527d5a46cbbae8477385ee710bd93ab1d34b075ee08f3aaba755311c8",
+  "moduleFileHash": "1e136a627269dfb85e6411f2ce896188838c383dfb53e2c8811ecdd01693dc9d",
   "flags": {
     "cmdRegistries": [
       "https://bcr.bazel.build/"
@@ -62,7 +62,7 @@
           "usingModule": "<root>",
           "location": {
             "file": "@@//:MODULE.bazel",
-            "line": 14,
+            "line": 15,
             "column": 51
           },
           "imports": {
@@ -79,7 +79,7 @@
           "usingModule": "<root>",
           "location": {
             "file": "@@//:MODULE.bazel",
-            "line": 17,
+            "line": 18,
             "column": 54
           },
           "imports": {
@@ -96,7 +96,7 @@
           "usingModule": "<root>",
           "location": {
             "file": "@@//:MODULE.bazel",
-            "line": 29,
+            "line": 30,
             "column": 58
           },
           "imports": {
@@ -1229,7 +1229,7 @@
     },
     "//dotnet:paket.paket2bazel_dependencies_extension.bzl%paket2bazel_dependencies_extension": {
       "general": {
-        "bzlTransitiveDigest": "VZQu9Xl/DxcJiYnzUJ6xljABXkmPiAmi5yO5fDS5C1c=",
+        "bzlTransitiveDigest": "1e+Umdp9EvBIRlyFf19N5DWRQptP8Ali0S2tZS87WkE=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -3129,7 +3129,7 @@
     },
     "//dotnet:paket.rules_dotnet_dev_nuget_packages_extension.bzl%rules_dotnet_dev_nuget_packages_extension": {
       "general": {
-        "bzlTransitiveDigest": "f/yJn6Acc0Uyd6gfYHJC/IWEpjsIqecc4b9D8gaBujw=",
+        "bzlTransitiveDigest": "qOUuzY36KbegX2iA5C9mfvUeoOpCPDqPXfgU/HVdj1Y=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -3999,7 +3999,7 @@
     },
     "//dotnet:paket.rules_dotnet_nuget_packages_extension.bzl%rules_dotnet_nuget_packages_extension": {
       "general": {
-        "bzlTransitiveDigest": "mrE2Xlgxw93Ntc4sypxcXc61eQ81z5ryDhWNfWBxzRY=",
+        "bzlTransitiveDigest": "VDBd3bZvtS43fx3uCk80l+HF9QXYlGYM7/qSfCU25Rk=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
