@@ -19,21 +19,25 @@ rules_dotnet_dependencies()
 
 dotnet_register_toolchains("dotnet", "7.0.101")
 
-load("@rules_dotnet//dotnet:rules_dotnet_nuget_packages.bzl", "rules_dotnet_nuget_packages")
+load("@rules_dotnet//dotnet:paket.rules_dotnet_nuget_packages.bzl", "rules_dotnet_nuget_packages")
 
 rules_dotnet_nuget_packages()
 
-load("@rules_dotnet//dotnet:paket2bazel_dependencies.bzl", "paket2bazel_dependencies")
+load("@rules_dotnet//dotnet:paket.paket2bazel_dependencies.bzl", "paket2bazel_dependencies")
 
 paket2bazel_dependencies()
 
-load("//:example_deps.bzl", "example_deps")
+load("//:paket.example_deps.bzl", "example_deps")
 
 example_deps()
 
-load("//paket/deps:paket.bzl", "paket")
+load("//paket/deps:paket.main.bzl", "main")
 
-paket()
+main()
+
+load("//paket/deps:paket.othergroup.bzl", "othergroup")
+
+othergroup()
 
 # Used for Bazel CI
 http_archive(

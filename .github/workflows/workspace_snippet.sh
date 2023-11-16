@@ -40,7 +40,7 @@ rules_dotnet_dependencies()
 # Here you can specify the version of the .NET SDK to use.
 dotnet_register_toolchains("dotnet", "7.0.101")
 
-load("@rules_dotnet//dotnet:rules_dotnet_nuget_packages.bzl", "rules_dotnet_nuget_packages")
+load("@rules_dotnet//dotnet:paket.rules_dotnet_nuget_packages.bzl", "rules_dotnet_nuget_packages")
 
 rules_dotnet_nuget_packages()
 \`\`\`

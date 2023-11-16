@@ -18,16 +18,16 @@ rules_dotnet_dependencies()
 dotnet_register_toolchains("dotnet", "7.0.101")
 
 # Fetch NuGet packages needed by end-users
-load("//dotnet:rules_dotnet_nuget_packages.bzl", "rules_dotnet_nuget_packages")
+load("//dotnet:paket.rules_dotnet_nuget_packages.bzl", "rules_dotnet_nuget_packages")
 
 rules_dotnet_nuget_packages()
 
-load("//dotnet:paket2bazel_dependencies.bzl", "paket2bazel_dependencies")
+load("//dotnet:paket.paket2bazel_dependencies.bzl", "paket2bazel_dependencies")
 
 paket2bazel_dependencies()
 
 # Fetch NuGet packages needed for our tests
-load("//dotnet:rules_dotnet_dev_nuget_packages.bzl", "rules_dotnet_dev_nuget_packages")
+load("//dotnet:paket.rules_dotnet_dev_nuget_packages.bzl", "rules_dotnet_dev_nuget_packages")
 
 rules_dotnet_dev_nuget_packages()
 
