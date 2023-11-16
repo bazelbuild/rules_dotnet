@@ -1,42 +1,15 @@
 startup --windows_enable_symlinks
-build --enable_runfiles
-build --incompatible_strict_action_env
-test --test_output=errors
+common --enable_runfiles
+common --incompatible_strict_action_env
+common --test_output=errors
 
 # Profiling flags
-build --noslim_profile
-query --noslim_profile
-build --experimental_profile_include_target_label
-query --experimental_profile_include_target_label
-build --experimental_profile_include_primary_output 
-query --experimental_profile_include_primary_output
-build --experimental_collect_load_average_in_profiler
-query --experimental_collect_load_average_in_profiler
-build --experimental_collect_system_network_usage
-query --experimental_collect_system_network_usage
-build --experimental_collect_worker_data_in_profiler
-query --experimental_collect_worker_data_in_profiler
-
-# Bazel 7.0 flags
-# These flags will be flipped in 7.0 so we set them to be compatible when it's released
-build --incompatible_config_setting_private_default_visibility
-build --incompatible_disable_starlark_host_transitions
-
-# Docker RBE setup, useful for debugging RBE issues
-build:docker-sandbox --java_runtime_version=rbe_jdk
-build:docker-sandbox --tool_java_runtime_version=rbe_jdk
-build:docker-sandbox --extra_toolchains=@buildkite_config//java:all
-build:docker-sandbox --crosstool_top=@buildkite_config//cc:toolchain
-build:docker-sandbox --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
-build:docker-sandbox --extra_toolchains=@buildkite_config//config:cc-toolchain
-build:docker-sandbox --extra_execution_platforms=@buildkite_config//config:platform
-build:docker-sandbox --host_platform=@buildkite_config//config:platform
-build:docker-sandbox --platforms=@buildkite_config//config:platform
-build:docker-sandbox --spawn_strategy=docker --strategy=Javac=docker --genrule_strategy=docker
-build:docker-sandbox --define=EXECUTOR=remote
-build:docker-sandbox --experimental_docker_verbose
-build:docker-sandbox --experimental_enable_docker_sandbox
-build:docker-sandbox --experimental_docker_image=gcr.io/bazel-public/ubuntu1804-bazel-java11@sha256:2d50853a7edbe59a99bc4141d7a03cb1068157b9766077302b46c4ec94eef151
+common --noslim_profile
+common --experimental_profile_include_target_label
+common --experimental_profile_include_primary_output 
+common --experimental_collect_load_average_in_profiler
+common --experimental_collect_system_network_usage
+common --experimental_collect_worker_data_in_profiler
 
 # Load any settings specific to the current user.
 # .bazelrc.user should appear in .gitignore so that settings are not shared with team members
