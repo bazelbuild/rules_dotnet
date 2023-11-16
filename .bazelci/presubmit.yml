@@ -20,7 +20,7 @@ matrix:
 
 tasks:
   test_all:
-    name: Build and test ${{ working_directory }} on ${{ platform }} with strict_deps=${{ strict_deps }}
+    name: Build and test
     platform: ${{ platform }}
     working_directory: ${{ working_directory }}
     include_json_profile:
