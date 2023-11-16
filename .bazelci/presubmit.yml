@@ -17,6 +17,7 @@ matrix:
   platform: ["windows", "ubuntu1804", "rbe_ubuntu1604", "macos"]
   working_directory: ["", "examples"]
   strict_deps: ["--@rules_dotnet//dotnet/settings:strict_deps=true", "--@rules_dotnet//dotnet/settings:strict_deps=false"]
+  flag_combo: [["--enable_bzlmod", "--@rules_dotnet//dotnet/settings:strict_deps=true"], ["--enable_bzlmod", "--@rules_dotnet//dotnet/settings:strict_deps=false"], ["--noenable_bzlmod", "--@rules_dotnet//dotnet/settings:strict_deps=true"], ["--noenable_bzlmod", "--@rules_dotnet//dotnet/settings:strict_deps=false"]]
 
 tasks:
   test_all:
@@ -30,10 +31,8 @@ tasks:
       - "//..."
     test_targets:
       - "//..."
-    build_flags:
-      - ${{ strict_deps }}
-    test_flags:
-      - ${{ strict_deps }}
+    build_flags: ${{ flag_combo }}
+    test_flags: ${{ flag_combo }}
 
 
 # tasks:
