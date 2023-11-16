@@ -1,8 +1,6 @@
 ---
-bazel: 7.0.0rc3
-
 buildifier:
-  version: latest
+  version: 6.3.3
 
 matrix:
   platform: ["windows", "ubuntu1804", "rbe_ubuntu1604", "macos"]
