@@ -10,6 +10,6 @@ type RunfilesTest () =
     [<Test>]
     member this.ShouldBeAbleToReadDataFile() =
         let runfiles = Runfiles.Create()
-        let dataFilePath = runfiles.Rlocation("examples/runfiles_fsharp/data-file")
+        let dataFilePath = runfiles.Rlocation("rules_dotnet_examples/runfiles_fsharp/data-file")
         let data = File.ReadAllLines(dataFilePath)[0]
         Assert.AreEqual("SOME CRAZY DATA!", data)
