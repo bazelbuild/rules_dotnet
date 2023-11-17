@@ -1514,4 +1514,3 @@ TOOL_VERSIONS = {
         "x86_64-pc-windows-msvc": {"hash": "sha512-YIqlw8XIO7N9aRd/FaZmiR7jKeOZAwH4uN8bJEqlWBiSwTJpZl1GO7E7DABJ72nXW9omogXwty1MSGLPTc0dkQ==", "url": "https://download.visualstudio.microsoft.com/download/pr/a1b7c03d-7c06-4d07-a99d-b7c919fc9b9a/0b57d52282f0e56c8701aaafd31cab90/dotnet-sdk-8.0.100-preview.1.23115.2-win-x64.zip"},
     },
 }
-
