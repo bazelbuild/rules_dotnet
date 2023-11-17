@@ -4,9 +4,10 @@ buildifier:
 
 matrix:
   platform: ["windows", "ubuntu1804", "rbe_ubuntu1604", "macos"]
-  working_directory: ["", "examples", "e2e/smoke", "e2e/net6.0", "e2e/net7.0", "e2e/net8.0"]
+  working_directory: ["", "examples"]
   strict_deps: ["--@rules_dotnet//dotnet/settings:strict_deps=true", "--@rules_dotnet//dotnet/settings:strict_deps=false"]
   flag_combo: [["--enable_bzlmod", "--@rules_dotnet//dotnet/settings:strict_deps=true"], ["--enable_bzlmod", "--@rules_dotnet//dotnet/settings:strict_deps=false"], ["--noenable_bzlmod", "--@rules_dotnet//dotnet/settings:strict_deps=true"], ["--noenable_bzlmod", "--@rules_dotnet//dotnet/settings:strict_deps=false"]]
+  e2e_working_directories: ["e2e/smoke", "e2e/net6.0", "e2e/net7.0", "e2e/net8.0"]
 
 tasks:
   test_all:
@@ -22,3 +23,14 @@ tasks:
       - "//..."
     build_flags: ${{ flag_combo }}
     test_flags: ${{ flag_combo }}
+  e2e:
+    name: ${{ e2e_working_directories }}
+    platform: ${{ platform }}
+    working_directory: ${{ e2e_working_directory }}
+    include_json_profile:
+      - build
+      - test
+    build_targets:
+      - "//..."
+    test_targets:
+      - "//..."
