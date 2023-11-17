@@ -4,7 +4,7 @@ buildifier:
 
 matrix:
   platform: ["windows", "ubuntu1804", "rbe_ubuntu1604", "macos"]
-  working_directory: ["", "examples"]
+  working_directory: ["", "examples", "e2e/smoke", "e2e/net6.0", "e2e/net7.0", "e2e/net8.0"]
   strict_deps: ["--@rules_dotnet//dotnet/settings:strict_deps=true", "--@rules_dotnet//dotnet/settings:strict_deps=false"]
   flag_combo: [["--enable_bzlmod", "--@rules_dotnet//dotnet/settings:strict_deps=true"], ["--enable_bzlmod", "--@rules_dotnet//dotnet/settings:strict_deps=false"], ["--noenable_bzlmod", "--@rules_dotnet//dotnet/settings:strict_deps=true"], ["--noenable_bzlmod", "--@rules_dotnet//dotnet/settings:strict_deps=false"]]
 
