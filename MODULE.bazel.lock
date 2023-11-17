@@ -1,6 +1,6 @@
 {
   "lockFileVersion": 3,
-  "moduleFileHash": "b5bec334d4f6bc49f362fe47f074dc259a141f69e6c8f2b9e9a59dcc428855cf",
+  "moduleFileHash": "d80d5cfcd521e6f8cd9e4884b66510f830eeca263e5fc66b874c77cb4ac29bfa",
   "flags": {
     "cmdRegistries": [
       "https://bcr.bazel.build/"
@@ -1159,7 +1159,7 @@
   "moduleExtensions": {
     "//dotnet:extensions.bzl%dotnet": {
       "general": {
-        "bzlTransitiveDigest": "dHLgQYKLw6k+aqIeBASryZjPf/SINQVQ/oAZKdnWlO0=",
+        "bzlTransitiveDigest": "LfueriafbpbmQt8LgZHyFyAyGSZDaaZhGh3j4CWTZ54=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -1230,7 +1230,7 @@
     },
     "//dotnet:paket.paket2bazel_dependencies_extension.bzl%paket2bazel_dependencies_extension": {
       "general": {
-        "bzlTransitiveDigest": "1e+Umdp9EvBIRlyFf19N5DWRQptP8Ali0S2tZS87WkE=",
+        "bzlTransitiveDigest": "XeHgiAXeWnECrmELJ1mUpx62xFg5OO1Yjbp2en/ezIE=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -3130,7 +3130,7 @@
     },
     "//dotnet:paket.rules_dotnet_dev_nuget_packages_extension.bzl%rules_dotnet_dev_nuget_packages_extension": {
       "general": {
-        "bzlTransitiveDigest": "qOUuzY36KbegX2iA5C9mfvUeoOpCPDqPXfgU/HVdj1Y=",
+        "bzlTransitiveDigest": "lL065RgMzhnvsP/G9b9avMsaU7kJu8y25GrVE/XPgfs=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -4000,7 +4000,7 @@
     },
     "//dotnet:paket.rules_dotnet_nuget_packages_extension.bzl%rules_dotnet_nuget_packages_extension": {
       "general": {
-        "bzlTransitiveDigest": "VDBd3bZvtS43fx3uCk80l+HF9QXYlGYM7/qSfCU25Rk=",
+        "bzlTransitiveDigest": "Q7u7GBiH0yvRrnJvAG6kTAoLFok61Se9Bi/dfttNXkc=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -5028,7 +5028,7 @@
         }
       }
     },
-    "@apple_support~1.5.0//crosstool:setup.bzl%apple_cc_configure_extension": {
+    "@@apple_support~1.5.0//crosstool:setup.bzl%apple_cc_configure_extension": {
       "general": {
         "bzlTransitiveDigest": "pMLFCYaRPkgXPQ8vtuNkMfiHfPmRBy6QJfnid4sWfv0=",
         "accumulatedFileDigests": {},
@@ -5051,9 +5051,9 @@
         }
       }
     },
-    "@aspect_bazel_lib~1.34.5//lib:extensions.bzl%ext": {
+    "@@aspect_bazel_lib~1.34.5//lib:extensions.bzl%ext": {
       "general": {
-        "bzlTransitiveDigest": "aak2Dio/nFwhDZ/JqZkCaneVljqm31q3GS186xWRThY=",
+        "bzlTransitiveDigest": "wWN2oL6phwG1ICrtFSR/ic1e/uvGJDNFIGY6Acl4bs4=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -5410,7 +5410,30 @@
         }
       }
     },
-    "@bazel_tools//tools/osx:xcode_configure.bzl%xcode_configure_extension": {
+    "@@bazel_tools//tools/cpp:cc_configure.bzl%cc_configure_extension": {
+      "general": {
+        "bzlTransitiveDigest": "O9sf6ilKWU9Veed02jG9o2HM/xgV/UAyciuFBuxrFRY=",
+        "accumulatedFileDigests": {},
+        "envVariables": {},
+        "generatedRepoSpecs": {
+          "local_config_cc": {
+            "bzlFile": "@@bazel_tools//tools/cpp:cc_configure.bzl",
+            "ruleClassName": "cc_autoconf",
+            "attributes": {
+              "name": "bazel_tools~cc_configure_extension~local_config_cc"
+            }
+          },
+          "local_config_cc_toolchains": {
+            "bzlFile": "@@bazel_tools//tools/cpp:cc_configure.bzl",
+            "ruleClassName": "cc_autoconf_toolchains",
+            "attributes": {
+              "name": "bazel_tools~cc_configure_extension~local_config_cc_toolchains"
+            }
+          }
+        }
+      }
+    },
+    "@@bazel_tools//tools/osx:xcode_configure.bzl%xcode_configure_extension": {
       "general": {
         "bzlTransitiveDigest": "Qh2bWTU6QW6wkrd87qrU4YeY+SG37Nvw3A0PR4Y0L2Y=",
         "accumulatedFileDigests": {},
@@ -5428,7 +5451,7 @@
         }
       }
     },
-    "@bazel_tools//tools/sh:sh_configure.bzl%sh_configure_extension": {
+    "@@bazel_tools//tools/sh:sh_configure.bzl%sh_configure_extension": {
       "general": {
         "bzlTransitiveDigest": "hp4NgmNjEg5+xgvzfh6L83bt9/aiiWETuNpwNuF1MSU=",
         "accumulatedFileDigests": {},
@@ -5444,7 +5467,7 @@
         }
       }
     },
-    "@gazelle~0.33.0//:extensions.bzl%go_deps": {
+    "@@gazelle~0.33.0//:extensions.bzl%go_deps": {
       "general": {
         "bzlTransitiveDigest": "0+dZMjfS4Y46rpY0W44rDC3p1dnaLjwpPoJbXts5ojE=",
         "accumulatedFileDigests": {
@@ -5773,7 +5796,7 @@
         }
       }
     },
-    "@gazelle~0.33.0//internal/bzlmod:non_module_deps.bzl%non_module_deps": {
+    "@@gazelle~0.33.0//internal/bzlmod:non_module_deps.bzl%non_module_deps": {
       "general": {
         "bzlTransitiveDigest": "idtJXxcHUd75fcvggtK/s6naCFjcaysxF0U5OKBm2LE=",
         "accumulatedFileDigests": {},
@@ -5807,9 +5830,9 @@
         }
       }
     },
-    "@rules_go~0.41.0//go:extensions.bzl%go_sdk": {
+    "@@rules_go~0.41.0//go:extensions.bzl%go_sdk": {
       "general": {
-        "bzlTransitiveDigest": "AaWHRBD/gHkNT2tZ68M6uuVkR6o8sNfgmBp5kia672Y=",
+        "bzlTransitiveDigest": "QaU0mhA+aom4ENV5sBUAEDa9IQt53GtspLCjl89277c=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -5863,9 +5886,9 @@
         }
       }
     },
-    "@rules_go~0.41.0//go/private:extensions.bzl%non_module_dependencies": {
+    "@@rules_go~0.41.0//go/private:extensions.bzl%non_module_dependencies": {
       "general": {
-        "bzlTransitiveDigest": "cRMB/4H6g4I4ZyFmTSuuNj5604ce5nBLmfQee36lvL8=",
+        "bzlTransitiveDigest": "CZeQbYwfBEc0H27WqrnwfsnHiarm8whm1PFFxE1fMl4=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -6066,9 +6089,9 @@
         }
       }
     },
-    "@rules_java~7.1.0//java:extensions.bzl%toolchains": {
+    "@@rules_java~7.1.0//java:extensions.bzl%toolchains": {
       "general": {
-        "bzlTransitiveDigest": "EXsxSX2vQjCcI8jYez/O+Yb9H5reAMhLL3WXGPD6Scw=",
+        "bzlTransitiveDigest": "iUIRqCK7tkhvcDJCAfPPqSd06IHG0a8HQD0xeQyVAqw=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {

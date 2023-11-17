@@ -1,6 +1,6 @@
 {
   "lockFileVersion": 3,
-  "moduleFileHash": "4f5744600b7724ca48adbe4bdd7d42f165bbd1cf85844127c673657517239aba",
+  "moduleFileHash": "e8e1f7f5e5027da24bb255718ce5d55c45082f3fd11ebb9db9e7a47fe34a7818",
   "flags": {
     "cmdRegistries": [
       "https://bcr.bazel.build/"
@@ -14,7 +14,7 @@
   },
   "localOverrideHashes": {
     "bazel_tools": "922ea6752dc9105de5af957f7a99a6933c0a6a712d23df6aad16a9c399f7e787",
-    "rules_dotnet": "95b2a48527d5a46cbbae8477385ee710bd93ab1d34b075ee08f3aaba755311c8"
+    "rules_dotnet": "d80d5cfcd521e6f8cd9e4884b66510f830eeca263e5fc66b874c77cb4ac29bfa"
   },
   "moduleDepGraph": {
     "<root>": {
@@ -58,29 +58,12 @@
           "hasNonDevUseExtension": true
         },
         {
-          "extensionBzlFile": "@rules_dotnet//dotnet:paket.rules_dotnet_nuget_packages_extension.bzl",
-          "extensionName": "rules_dotnet_nuget_packages_extension",
-          "usingModule": "<root>",
-          "location": {
-            "file": "@@//:MODULE.bazel",
-            "line": 21,
-            "column": 54
-          },
-          "imports": {
-            "paket.rules_dotnet_nuget_packages": "paket.rules_dotnet_nuget_packages"
-          },
-          "devImports": [],
-          "tags": [],
-          "hasDevUseExtension": false,
-          "hasNonDevUseExtension": true
-        },
-        {
           "extensionBzlFile": "@rules_dotnet_examples//:paket.example_deps_extension.bzl",
           "extensionName": "example_deps_extension",
           "usingModule": "<root>",
           "location": {
             "file": "@@//:MODULE.bazel",
-            "line": 24,
+            "line": 21,
             "column": 39
           },
           "imports": {
@@ -97,7 +80,7 @@
           "usingModule": "<root>",
           "location": {
             "file": "@@//:MODULE.bazel",
-            "line": 27,
+            "line": 24,
             "column": 31
           },
           "imports": {
@@ -114,7 +97,7 @@
           "usingModule": "<root>",
           "location": {
             "file": "@@//:MODULE.bazel",
-            "line": 30,
+            "line": 27,
             "column": 37
           },
           "imports": {
@@ -148,7 +131,7 @@
           "usingModule": "rules_dotnet@_",
           "location": {
             "file": "@@rules_dotnet~override//:MODULE.bazel",
-            "line": 9,
+            "line": 10,
             "column": 23
           },
           "imports": {
@@ -164,7 +147,7 @@
               "devDependency": false,
               "location": {
                 "file": "@@rules_dotnet~override//:MODULE.bazel",
-                "line": 10,
+                "line": 11,
                 "column": 17
               }
             }
@@ -178,7 +161,7 @@
           "usingModule": "rules_dotnet@_",
           "location": {
             "file": "@@rules_dotnet~override//:MODULE.bazel",
-            "line": 14,
+            "line": 16,
             "column": 51
           },
           "imports": {
@@ -195,7 +178,7 @@
           "usingModule": "rules_dotnet@_",
           "location": {
             "file": "@@rules_dotnet~override//:MODULE.bazel",
-            "line": 17,
+            "line": 19,
             "column": 54
           },
           "imports": {
@@ -901,7 +884,7 @@
   "moduleExtensions": {
     "//:paket.example_deps_extension.bzl%example_deps_extension": {
       "general": {
-        "bzlTransitiveDigest": "qDpQhsAS1NxbXl/YjkGvtHWBw/HLyBWo8a7NIIdTWxk=",
+        "bzlTransitiveDigest": "o8ASp0SaBDSpr12busUa14JBp0pFZoE7y5jvQr7iReo=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -1733,7 +1716,7 @@
     },
     "//paket/deps:paket.main_extension.bzl%main_extension": {
       "general": {
-        "bzlTransitiveDigest": "56uj0fPo8ChMpNqgM8naWRfINrhNNU85U/JzwvG3z2Y=",
+        "bzlTransitiveDigest": "V0/U5Z2veudrpj20psobNXtXqng/OnPD4BT7YJzUh4o=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -2257,7 +2240,7 @@
     },
     "//paket/deps:paket.othergroup_extension.bzl%othergroup_extension": {
       "general": {
-        "bzlTransitiveDigest": "WfZnygXSIFNlUguIQHDp2of2Dn833uRhV3NdJ48tPBM=",
+        "bzlTransitiveDigest": "yg18fj5PWaoKAhamdY+yrSAI/qdYidjhjFO8BiccIU4=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -2779,7 +2762,7 @@
         }
       }
     },
-    "@apple_support~1.5.0//crosstool:setup.bzl%apple_cc_configure_extension": {
+    "@@apple_support~1.5.0//crosstool:setup.bzl%apple_cc_configure_extension": {
       "general": {
         "bzlTransitiveDigest": "pMLFCYaRPkgXPQ8vtuNkMfiHfPmRBy6QJfnid4sWfv0=",
         "accumulatedFileDigests": {},
@@ -2802,9 +2785,9 @@
         }
       }
     },
-    "@aspect_bazel_lib~1.34.5//lib:extensions.bzl%ext": {
+    "@@aspect_bazel_lib~1.34.5//lib:extensions.bzl%ext": {
       "general": {
-        "bzlTransitiveDigest": "aak2Dio/nFwhDZ/JqZkCaneVljqm31q3GS186xWRThY=",
+        "bzlTransitiveDigest": "wWN2oL6phwG1ICrtFSR/ic1e/uvGJDNFIGY6Acl4bs4=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -3161,7 +3144,7 @@
         }
       }
     },
-    "@bazel_tools//tools/cpp:cc_configure.bzl%cc_configure_extension": {
+    "@@bazel_tools//tools/cpp:cc_configure.bzl%cc_configure_extension": {
       "general": {
         "bzlTransitiveDigest": "O9sf6ilKWU9Veed02jG9o2HM/xgV/UAyciuFBuxrFRY=",
         "accumulatedFileDigests": {},
@@ -3184,7 +3167,7 @@
         }
       }
     },
-    "@bazel_tools//tools/sh:sh_configure.bzl%sh_configure_extension": {
+    "@@bazel_tools//tools/sh:sh_configure.bzl%sh_configure_extension": {
       "general": {
         "bzlTransitiveDigest": "hp4NgmNjEg5+xgvzfh6L83bt9/aiiWETuNpwNuF1MSU=",
         "accumulatedFileDigests": {},
@@ -3200,9 +3183,9 @@
         }
       }
     },
-    "@rules_dotnet~override//dotnet:extensions.bzl%dotnet": {
+    "@@rules_dotnet~override//dotnet:extensions.bzl%dotnet": {
       "general": {
-        "bzlTransitiveDigest": "dHLgQYKLw6k+aqIeBASryZjPf/SINQVQ/oAZKdnWlO0=",
+        "bzlTransitiveDigest": "LfueriafbpbmQt8LgZHyFyAyGSZDaaZhGh3j4CWTZ54=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -3271,9 +3254,9 @@
         }
       }
     },
-    "@rules_dotnet~override//dotnet:paket.rules_dotnet_nuget_packages_extension.bzl%rules_dotnet_nuget_packages_extension": {
+    "@@rules_dotnet~override//dotnet:paket.rules_dotnet_nuget_packages_extension.bzl%rules_dotnet_nuget_packages_extension": {
       "general": {
-        "bzlTransitiveDigest": "mrE2Xlgxw93Ntc4sypxcXc61eQ81z5ryDhWNfWBxzRY=",
+        "bzlTransitiveDigest": "Q7u7GBiH0yvRrnJvAG6kTAoLFok61Se9Bi/dfttNXkc=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -4301,9 +4284,9 @@
         }
       }
     },
-    "@rules_java~7.1.0//java:extensions.bzl%toolchains": {
+    "@@rules_java~7.1.0//java:extensions.bzl%toolchains": {
       "general": {
-        "bzlTransitiveDigest": "EXsxSX2vQjCcI8jYez/O+Yb9H5reAMhLL3WXGPD6Scw=",
+        "bzlTransitiveDigest": "iUIRqCK7tkhvcDJCAfPPqSd06IHG0a8HQD0xeQyVAqw=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {

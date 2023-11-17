@@ -29,8 +29,6 @@ use_repo(dotnet, "dotnet_toolchains")
 
 register_toolchains("@dotnet_toolchains//:all")
 
-rules_dotnet_nuget_packages_extension = use_extension("@rules_dotnet//dotnet:paket.rules_dotnet_nuget_packages_extension.bzl", "rules_dotnet_nuget_packages_extension")
-use_repo(rules_dotnet_nuget_packages_extension, "paket.rules_dotnet_nuget_packages")
 \`\`\`
 
 ## Using WORKSPACE
