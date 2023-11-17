@@ -299,6 +299,8 @@ RUNTIME_GRAPH = {
     "freebsd.13-x64": ["freebsd.13", "freebsd.12-x64", "freebsd.12", "freebsd-x64", "freebsd", "unix-x64", "unix", "any", "base"],
     "gentoo": ["linux", "unix", "any", "base"],
     "gentoo-x64": ["gentoo", "linux-x64", "linux", "unix-x64", "unix", "any", "base"],
+    "haiku": ["unix", "any", "base"],
+    "haiku-x64": ["haiku", "unix-x64", "unix", "any", "base"],
     "illumos": ["unix", "any", "base"],
     "illumos-x64": ["illumos", "unix-x64", "unix", "any", "base"],
     "ios": ["unix", "any", "base"],

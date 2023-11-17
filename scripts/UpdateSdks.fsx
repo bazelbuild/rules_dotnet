@@ -6,20 +6,10 @@ open System.IO
 open System.Text.Json.Serialization
 open System.Text.Json
 open System.Text
-open System.Threading
-open NuGet.Common
-open NuGet.Configuration
-open NuGet.Protocol
-open NuGet.Protocol.Core.Types
-open System.Xml.Linq
-open NuGet.Versioning
-open NuGet.Packaging.Core
-open NuGet.Packaging
-open System.Security.Cryptography
 open System.Collections.Generic
 open NuGet.RuntimeModel
 
-let supportedChannels = [ "6.0"; "7.0" ]
+let supportedChannels = [ "6.0"; "7.0"; "8.0" ]
 
 type File =
     { [<JsonPropertyName "name">]
