@@ -15,7 +15,7 @@ load(
 
 rules_dotnet_dependencies()
 
-dotnet_register_toolchains("dotnet", "7.0.101")
+dotnet_register_toolchains("dotnet", "8.0.100")
 
 # Fetch NuGet packages needed by end-users
 load("//dotnet:paket.rules_dotnet_nuget_packages.bzl", "rules_dotnet_nuget_packages")

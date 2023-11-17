@@ -1,6 +1,6 @@
 {
   "lockFileVersion": 3,
-  "moduleFileHash": "d80d5cfcd521e6f8cd9e4884b66510f830eeca263e5fc66b874c77cb4ac29bfa",
+  "moduleFileHash": "c44beb4c1e517c768f266eb07833ce84a6bf1ccf4e1f40213a9789fe2f16769c",
   "flags": {
     "cmdRegistries": [
       "https://bcr.bazel.build/"
@@ -43,7 +43,7 @@
             {
               "tagName": "toolchain",
               "attributeValues": {
-                "dotnet_version": "7.0.101"
+                "dotnet_version": "8.0.100"
               },
               "devDependency": false,
               "location": {
@@ -1157,77 +1157,6 @@
     }
   },
   "moduleExtensions": {
-    "//dotnet:extensions.bzl%dotnet": {
-      "general": {
-        "bzlTransitiveDigest": "LfueriafbpbmQt8LgZHyFyAyGSZDaaZhGh3j4CWTZ54=",
-        "accumulatedFileDigests": {},
-        "envVariables": {},
-        "generatedRepoSpecs": {
-          "dotnet_x86_64-apple-darwin": {
-            "bzlFile": "@@//dotnet:repositories.bzl",
-            "ruleClassName": "dotnet_repositories",
-            "attributes": {
-              "name": "_main~dotnet~dotnet_x86_64-apple-darwin",
-              "platform": "x86_64-apple-darwin",
-              "dotnet_version": "7.0.101"
-            }
-          },
-          "dotnet_x86_64-unknown-linux-gnu": {
-            "bzlFile": "@@//dotnet:repositories.bzl",
-            "ruleClassName": "dotnet_repositories",
-            "attributes": {
-              "name": "_main~dotnet~dotnet_x86_64-unknown-linux-gnu",
-              "platform": "x86_64-unknown-linux-gnu",
-              "dotnet_version": "7.0.101"
-            }
-          },
-          "dotnet_arm64-unknown-linux-gnu": {
-            "bzlFile": "@@//dotnet:repositories.bzl",
-            "ruleClassName": "dotnet_repositories",
-            "attributes": {
-              "name": "_main~dotnet~dotnet_arm64-unknown-linux-gnu",
-              "platform": "arm64-unknown-linux-gnu",
-              "dotnet_version": "7.0.101"
-            }
-          },
-          "dotnet_aarch64-apple-darwin": {
-            "bzlFile": "@@//dotnet:repositories.bzl",
-            "ruleClassName": "dotnet_repositories",
-            "attributes": {
-              "name": "_main~dotnet~dotnet_aarch64-apple-darwin",
-              "platform": "aarch64-apple-darwin",
-              "dotnet_version": "7.0.101"
-            }
-          },
-          "dotnet_x86_64-pc-windows-msvc": {
-            "bzlFile": "@@//dotnet:repositories.bzl",
-            "ruleClassName": "dotnet_repositories",
-            "attributes": {
-              "name": "_main~dotnet~dotnet_x86_64-pc-windows-msvc",
-              "platform": "x86_64-pc-windows-msvc",
-              "dotnet_version": "7.0.101"
-            }
-          },
-          "dotnet_toolchains": {
-            "bzlFile": "@@//dotnet/private:toolchains_repo.bzl",
-            "ruleClassName": "toolchains_repo",
-            "attributes": {
-              "name": "_main~dotnet~dotnet_toolchains",
-              "user_repository_name": "dotnet"
-            }
-          },
-          "dotnet_arm64-pc-windows-msvc": {
-            "bzlFile": "@@//dotnet:repositories.bzl",
-            "ruleClassName": "dotnet_repositories",
-            "attributes": {
-              "name": "_main~dotnet~dotnet_arm64-pc-windows-msvc",
-              "platform": "arm64-pc-windows-msvc",
-              "dotnet_version": "7.0.101"
-            }
-          }
-        }
-      }
-    },
     "//dotnet:paket.paket2bazel_dependencies_extension.bzl%paket2bazel_dependencies_extension": {
       "general": {
         "bzlTransitiveDigest": "XeHgiAXeWnECrmELJ1mUpx62xFg5OO1Yjbp2en/ezIE=",

@@ -163,7 +163,7 @@ def dotnet_register_toolchains(name, dotnet_version, register = True, **kwargs):
     Users can avoid this macro and do these steps themselves, if they want more control.
     Args:
         name: base name for all created repos, like "dotnet"
-        dotnet_version: The .Net SDK version to use e.g. 7.0.101
+        dotnet_version: The .Net SDK version to use e.g. 8.0.100
         register: whether to call through to native.register_toolchains.
             Should be True for WORKSPACE users, but false when used under bzlmod extension
         **kwargs: passed to each dotnet_repositories call
