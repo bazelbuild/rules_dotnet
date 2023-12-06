@@ -1,0 +1,6 @@
+load("@aspect_bazel_lib//lib:docs.bzl", "stardoc_with_diff_test")
+
+stardoc_with_diff_test(
+    name = "docs",
+    bzl_library_target = "//dotnet:defs",
+)

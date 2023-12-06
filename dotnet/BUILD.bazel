@@ -91,3 +91,5 @@ bzl_library(
     srcs = ["toolchain.bzl"],
     visibility = ["//visibility:public"],
 )
+
+exports_files(["defs.bzl"])
