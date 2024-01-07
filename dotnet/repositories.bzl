@@ -84,6 +84,7 @@ filegroup(
     }}),
     data = glob([
         "host/**/*",
+        "sdk/{sdk_version}/Microsoft.NET.HostModel.dll",
         "shared/Microsoft.NETCore.App/**/*",
     ]),
     visibility = ["//visibility:public"],
