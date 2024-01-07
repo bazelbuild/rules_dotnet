@@ -85,7 +85,7 @@ filegroup(
     data = glob([
         "host/**/*",
         "sdk/**/*",
-        "shared/Microsoft.NETCore.App/**/*",
+        "shared/**/*",
     ]),
     visibility = ["//visibility:public"],
 )
@@ -123,7 +123,7 @@ filegroup(
 )
 
 dotnet_toolchain(
-    name = "dotnet_toolchain", 
+    name = "dotnet_toolchain",
     runtime = ":runtime",
     csharp_compiler = ":csc_binary",
     fsharp_compiler = ":fsc_binary",
