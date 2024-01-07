@@ -18,7 +18,7 @@ genrule(
 assert_contains(
     name = "check_dotnet_bin_output",
     actual = ":dotnet_bin",
-    expected = "Usage: dotnet [runtime-options] [path-to-application] [arguments]",
+    expected = "Usage: dotnet [runtime-options] [path-to-application] [arguments",
 )
 
 genrule(

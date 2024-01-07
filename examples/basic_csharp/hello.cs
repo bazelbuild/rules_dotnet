@@ -5,7 +5,7 @@ using static Lib.Stuff;
 namespace Hello {
   public static class Program {
     public static void Main() {
-      Console.WriteLine( "Hello, world!" );
+      Console.WriteLine( "Hello, world!2" );
       Console.WriteLine( "Some numbers for you:" );
       Console.Write( "\t" );
 
