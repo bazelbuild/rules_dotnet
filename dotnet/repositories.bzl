@@ -84,7 +84,6 @@ filegroup(
     }}),
     data = glob([
         "host/**/*",
-        "sdk/**/*",
         "shared/Microsoft.NETCore.App/**/*",
     ]),
     visibility = ["//visibility:public"],
