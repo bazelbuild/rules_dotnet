@@ -1,0 +1,4 @@
+# Set the Bazel build outputs to the ~/.cache directory so that the build outputs
+# are persisted on the cache volume between devcontainers.
+startup --output_user_root=~/.cache/bazel_output_user_root
+startup --output_base=~/.cache/bazel_output_base

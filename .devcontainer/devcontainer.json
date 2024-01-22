@@ -1,0 +1,64 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.245.0/containers/ubuntu
+{
+	"name": "rules_dotnet",
+	"containerEnv": {
+		// Override .Net cache locations: https://learn.microsoft.com/en-us/nuget/consume-packages/managing-the-global-packages-and-cache-folders
+		"NUGET_PACKAGES": "/home/vscode/.cache/nuget_packages",
+		"NUGET_HTTP_CACHE_PATH": "/home/vscode/.cache/nuget_http_cache"
+	},
+	"mounts": [
+		// We mount the caches as volumes so that they persist between containers
+		"source=rules-dotnet-caches,target=/home/vscode/.cache,type=volume"
+	],
+	// We need to chown the .cache folder since it's created by the root user during the container creation
+	"postCreateCommand": "sudo chown vscode /home/vscode/.cache",
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			// Set *default* container specific settings.json values on container create.
+			"settings": {
+				// Set the default terminal to use Bash because it can get wonky
+				// if the user has e.g. zsh or fish configured as their default shell
+				// and it's not installed in the container. 
+				"terminal.integrated.profiles.linux": {
+					"bash": {
+						"path": "bash",
+						"args": []
+					}
+				},
+				"terminal.integrated.defaultProfile.linux": "bash"
+			},
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				"BazelBuild.vscode-bazel",
+				"ms-dotnettools.csharp",
+				"Ionide.Ionide-fsharp",
+				"zxh404.vscode-proto3",
+				"timonwong.shellcheck",
+				"mutantdino.resourcemonitor"
+			]
+		}
+	},
+	"build": {
+		"dockerfile": "Dockerfile",
+		// Update 'VARIANT' to pick an Ubuntu version: jammy / ubuntu-22.04, focal / ubuntu-20.04, bionic /ubuntu-18.04
+		// Use ubuntu-22.04 or ubuntu-18.04 on local arm64/Apple Silicon.
+		"args": {
+			"VARIANT": "ubuntu-22.04"
+		}
+	},
+	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "vscode",
+	"features": {
+		"ghcr.io/devcontainers/features/dotnet:2.0.2": {
+			"version": "8.0.100"
+		},
+		"ghcr.io/devcontainers/features/git:1.1.6": {
+			"version": "2.43.0"
+		},
+		"ghcr.io/devcontainers/features/github-cli:1.0.11": {
+			"version": "2.42.1"
+		}
+	}
+}
