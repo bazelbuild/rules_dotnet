@@ -2,7 +2,6 @@
 Base rule for building .Net binaries
 """
 
-load("@aspect_bazel_lib//lib:paths.bzl", "to_manifest_path")
 load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 load(
@@ -12,6 +11,7 @@ load(
     "generate_runtimeconfig",
     "is_core_framework",
     "is_standard_framework",
+    "to_rlocation_path",
 )
 load("//dotnet/private:providers.bzl", "DotnetBinaryInfo")
 
@@ -42,8 +42,8 @@ def _create_launcher(ctx, runfiles, executable):
             template = ctx.file._launcher_bat,
             output = launcher,
             substitutions = {
-                "TEMPLATED_dotnet": to_manifest_path(ctx, runtime.files_to_run.executable),
-                "TEMPLATED_executable": to_manifest_path(ctx, executable),
+                "TEMPLATED_dotnet": to_rlocation_path(ctx, runtime.files_to_run.executable),
+                "TEMPLATED_executable": to_rlocation_path(ctx, executable),
             },
             is_executable = True,
         )
@@ -52,8 +52,8 @@ def _create_launcher(ctx, runfiles, executable):
             template = ctx.file._launcher_sh,
             output = launcher,
             substitutions = {
-                "TEMPLATED_dotnet": to_manifest_path(ctx, runtime.files_to_run.executable),
-                "TEMPLATED_executable": to_manifest_path(ctx, executable),
+                "TEMPLATED_dotnet": to_rlocation_path(ctx, runtime.files_to_run.executable),
+                "TEMPLATED_executable": to_rlocation_path(ctx, executable),
             },
             is_executable = True,
         )

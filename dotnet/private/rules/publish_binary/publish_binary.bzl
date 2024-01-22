@@ -2,9 +2,8 @@
 Rules for compiling F# binaries.
 """
 
-load("@aspect_bazel_lib//lib:paths.bzl", "to_manifest_path")
 load("@bazel_skylib//lib:shell.bzl", "shell")
-load("//dotnet/private:common.bzl", "generate_depsjson", "generate_runtimeconfig")
+load("//dotnet/private:common.bzl", "generate_depsjson", "generate_runtimeconfig", "to_rlocation_path")
 load("//dotnet/private:providers.bzl", "DotnetAssemblyCompileInfo", "DotnetAssemblyRuntimeInfo", "DotnetBinaryInfo", "DotnetPublishBinaryInfo")
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 
@@ -162,7 +161,7 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
     # RUNFILES_DIR/RUNFILES_MANIFEST_FILE/RUNFILES_MANIFEST_ONLY is not set).
     for file in data:
         inputs.append(file)
-        manifest_path = to_manifest_path(ctx, file)
+        manifest_path = to_rlocation_path(ctx, file)
         output = ctx.actions.declare_file(
             "{}/publish/{}/{}.runfiles/{}".format(ctx.label.name, runtime_identifier, binary_info.app_host.basename, manifest_path),
         )

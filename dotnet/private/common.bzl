@@ -2,7 +2,6 @@
 Rules for compatability resolution of dependencies for .NET frameworks.
 """
 
-load("@aspect_bazel_lib//lib:paths.bzl", "to_manifest_path")
 load("@bazel_skylib//lib:sets.bzl", "sets")
 load(
     "//dotnet/private:providers.bzl",
@@ -529,8 +528,8 @@ def generate_depsjson(
             library_fragment["hashPath"] = "{}.{}.nupkg.sha512".format(runtime_dep.name.lower(), runtime_dep.version)
 
         target_fragment = {
-            "runtime": {dll.basename if not use_relative_paths else to_manifest_path(ctx, dll): {} for dll in runtime_dep.libs},
-            "native": {native_file.basename if not use_relative_paths else to_manifest_path(ctx, native_file): {} for native_file in runtime_dep.native},
+            "runtime": {dll.basename if not use_relative_paths else to_rlocation_path(ctx, dll): {} for dll in runtime_dep.libs},
+            "native": {native_file.basename if not use_relative_paths else to_rlocation_path(ctx, native_file): {} for native_file in runtime_dep.native},
             "dependencies": runtime_dep.direct_deps_depsjson_fragment,
         }
 
@@ -571,3 +570,37 @@ def generate_runtimeconfig(target_framework, project_sdk, is_self_contained, too
         base["runtimeOptions"]["frameworks"] = frameworks
 
     return base
+
+def to_rlocation_path(ctx, file):
+    """The rlocation path for a `File`
+
+    This produces the same value as the `rlocationpath` predefined source/output path variable.
+
+    From https://bazel.build/reference/be/make-variables#predefined_genrule_variables:
+
+    > `rlocationpath`: The path a built binary can pass to the `Rlocation` function of a runfiles
+    > library to find a dependency at runtime, either in the runfiles directory (if available)
+    > or using the runfiles manifest.
+
+    > This is similar to root path (a.k.a. [short_path](https://bazel.build/rules/lib/File#short_path))
+    > in that it does not contain configuration prefixes, but differs in that it always starts with the
+    > name of the repository.
+
+    > The rlocation path of a `File` in an external repository repo will start with `repo/`, followed by the
+    > repository-relative path.
+
+    > Passing this path to a binary and resolving it to a file system path using the runfiles libraries
+    > is the preferred approach to find dependencies at runtime. Compared to root path, it has the
+    > advantage that it works on all platforms and even if the runfiles directory is not available.
+
+    Args:
+        ctx: starlark rule execution context
+        file: a `File` object
+
+    Returns:
+        The rlocationpath for the `File`
+    """
+    if file.short_path.startswith("../"):
+        return file.short_path[3:]
+    else:
+        return ctx.workspace_name + "/" + file.short_path

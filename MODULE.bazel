@@ -20,7 +20,6 @@ rules_dotnet_nuget_packages_extension = use_extension("//dotnet:paket.rules_dotn
 use_repo(rules_dotnet_nuget_packages_extension, "paket.rules_dotnet_nuget_packages")
 
 bazel_dep(name = "bazel_skylib", version = "1.4.2")
-bazel_dep(name = "aspect_bazel_lib", version = "1.34.5")
 bazel_dep(name = "platforms", version = "0.0.7")
 
 # Dev dependencies
@@ -28,6 +27,7 @@ bazel_dep(name = "rules_pkg", version = "0.9.1", dev_dependency = True)
 bazel_dep(name = "gazelle", version = "0.33.0", dev_dependency = True, repo_name = "bazel_gazelle")
 bazel_dep(name = "bazel_skylib_gazelle_plugin", version = "1.4.2", dev_dependency = True)
 bazel_dep(name = "rules_cc", version = "0.0.9", dev_dependency = True)
+bazel_dep(name = "aspect_bazel_lib", version = "1.34.5", dev_dependency = True)
 
 rules_dotnet_dev_nuget_packages_extension = use_extension("//dotnet:paket.rules_dotnet_dev_nuget_packages_extension.bzl", "rules_dotnet_dev_nuget_packages_extension", dev_dependency = True)
 use_repo(rules_dotnet_dev_nuget_packages_extension, "paket.rules_dotnet_dev_nuget_packages")
