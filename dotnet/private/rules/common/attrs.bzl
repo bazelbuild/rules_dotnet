@@ -233,6 +233,11 @@ CSHARP_COMMON_ATTRS = dicts.add(
             default = "disable",
             values = ["disable", "enable", "warnings", "annotations"],
         ),
+         "run_analyzers": attr.bool(
+            doc = "Run analyzers.",
+            mandatory = False,
+            default = False,
+        ),
     },
 )
 

@@ -48,6 +48,7 @@ def _compile_action(ctx, tfm):
         project_sdk = ctx.attr.project_sdk,
         allow_unsafe_blocks = ctx.attr.allow_unsafe_blocks,
         nullable = ctx.attr.nullable,
+        run_analyzers = ctx.attr.run_analyzers,
     )
 
 def _csharp_test_impl(ctx):

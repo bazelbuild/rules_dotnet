@@ -81,7 +81,8 @@ def AssemblyAction(
         warning_level,
         project_sdk,
         allow_unsafe_blocks,
-        nullable):
+        nullable,
+        run_analyzers):
     """Creates an action that runs the CSharp compiler with the specified inputs.
 
     This macro aims to match the [C# compiler](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/listed-alphabetically), with the inputs mapping to compiler options.
@@ -117,6 +118,7 @@ def AssemblyAction(
         project_sdk: The project sdk being targeted
         allow_unsafe_blocks: Compiles the target with /unsafe
         nullable: Enable nullable context, or nullable warnings.
+        run_analyzers: Enable analyzers.
     Returns:
         The compiled csharp artifacts.
     """
@@ -176,6 +178,7 @@ def AssemblyAction(
             warning_level,
             allow_unsafe_blocks,
             nullable,
+            run_analyzers,
             out_dll = out_dll,
             out_ref = out_ref,
             out_pdb = out_pdb,
@@ -220,6 +223,7 @@ def AssemblyAction(
             warning_level,
             allow_unsafe_blocks,
             nullable,
+            run_analyzers,
             out_ref = out_iref,
             out_dll = out_dll,
             out_pdb = out_pdb,
@@ -253,6 +257,7 @@ def AssemblyAction(
             warning_level,
             allow_unsafe_blocks,
             nullable,
+            run_analyzers,
             out_dll = None,
             out_ref = out_ref,
             out_pdb = None,
@@ -311,6 +316,7 @@ def _compile(
         warning_level,
         allow_unsafe_blocks,
         nullable,
+        run_analyzers,
         out_dll = None,
         out_ref = None,
         out_pdb = None,
@@ -389,8 +395,9 @@ def _compile(
     format_ref_arg(args, depset(framework_files, transitive = [refs]))
 
     # analyzers
-    args.add_all(analyzer_assemblies, format_each = "/analyzer:%s")
-    args.add_all(additionalfiles, format_each = "/additionalfile:%s")
+    if run_analyzers:
+        args.add_all(analyzer_assemblies, format_each = "/analyzer:%s")
+        args.add_all(additionalfiles, format_each = "/additionalfile:%s")
 
     # .cs files
     args.add_all(srcs)
