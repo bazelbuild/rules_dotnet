@@ -13,9 +13,9 @@ csharp_library(<a href="#csharp_library-name">name</a>, <a href="#csharp_library
                <a href="#csharp_library-exports">exports</a>, <a href="#csharp_library-generate_documentation_file">generate_documentation_file</a>, <a href="#csharp_library-internals_visible_to">internals_visible_to</a>, <a href="#csharp_library-keyfile">keyfile</a>, <a href="#csharp_library-langversion">langversion</a>,
                <a href="#csharp_library-nullable">nullable</a>, <a href="#csharp_library-out">out</a>, <a href="#csharp_library-override_strict_deps">override_strict_deps</a>, <a href="#csharp_library-override_treat_warnings_as_errors">override_treat_warnings_as_errors</a>,
                <a href="#csharp_library-override_warning_level">override_warning_level</a>, <a href="#csharp_library-override_warnings_as_errors">override_warnings_as_errors</a>, <a href="#csharp_library-override_warnings_not_as_errors">override_warnings_not_as_errors</a>,
-               <a href="#csharp_library-project_sdk">project_sdk</a>, <a href="#csharp_library-resources">resources</a>, <a href="#csharp_library-runtime_identifier">runtime_identifier</a>, <a href="#csharp_library-srcs">srcs</a>, <a href="#csharp_library-strict_deps">strict_deps</a>, <a href="#csharp_library-target_frameworks">target_frameworks</a>,
-               <a href="#csharp_library-targeting_packs">targeting_packs</a>, <a href="#csharp_library-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#csharp_library-warning_level">warning_level</a>, <a href="#csharp_library-warnings_as_errors">warnings_as_errors</a>,
-               <a href="#csharp_library-warnings_not_as_errors">warnings_not_as_errors</a>)
+               <a href="#csharp_library-project_sdk">project_sdk</a>, <a href="#csharp_library-resources">resources</a>, <a href="#csharp_library-run_analyzers">run_analyzers</a>, <a href="#csharp_library-runtime_identifier">runtime_identifier</a>, <a href="#csharp_library-srcs">srcs</a>, <a href="#csharp_library-strict_deps">strict_deps</a>,
+               <a href="#csharp_library-target_frameworks">target_frameworks</a>, <a href="#csharp_library-targeting_packs">targeting_packs</a>, <a href="#csharp_library-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#csharp_library-warning_level">warning_level</a>,
+               <a href="#csharp_library-warnings_as_errors">warnings_as_errors</a>, <a href="#csharp_library-warnings_not_as_errors">warnings_not_as_errors</a>)
 </pre>
 
 Compile a C# DLL
@@ -46,6 +46,7 @@ Compile a C# DLL
 | <a id="csharp_library-override_warnings_not_as_errors"></a>override_warnings_not_as_errors |  Whether or not to override the warnings_not_as_errors attribute.   | Boolean | optional | <code>False</code> |
 | <a id="csharp_library-project_sdk"></a>project_sdk |  The project SDK that is being targeted. See https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview   | String | optional | <code>"default"</code> |
 | <a id="csharp_library-resources"></a>resources |  A list of files to embed in the DLL as resources.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | <code>[]</code> |
+| <a id="csharp_library-run_analyzers"></a>run_analyzers |  Run analyzers.   | Boolean | optional | <code>False</code> |
 | <a id="csharp_library-runtime_identifier"></a>runtime_identifier |  The runtime identifier that is being targeted. See https://docs.microsoft.com/en-us/dotnet/core/rid-catalog   | String | required |  |
 | <a id="csharp_library-srcs"></a>srcs |  The source files used in the compilation.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | <code>[]</code> |
 | <a id="csharp_library-strict_deps"></a>strict_deps |  Whether to use strict dependencies or not. <br><br>        This attribute mirrors the DisableTransitiveProjectReferences in MSBuild.         The default setting of this attribute can be overridden in the toolchain configuration   | Boolean | optional | <code>True</code> |
