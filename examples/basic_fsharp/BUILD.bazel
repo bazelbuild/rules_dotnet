@@ -43,3 +43,15 @@ fsharp_library(
         "@paket.example_deps//fsharp.core",
     ],
 )
+
+fsharp_binary(
+    name = "release_mode",
+    srcs = ["release_mode.fs"],
+    target_frameworks = ["net6.0"],
+    targeting_packs = [
+        "@paket.example_deps//microsoft.netcore.app.ref",
+    ],
+    deps = [
+        "@paket.example_deps//fsharp.core",
+    ],
+)
