@@ -368,11 +368,13 @@ def _compile(
     if debug:
         args.add("/debug+")
         args.add("/optimize-")
-        args.add("/define:TRACE;DEBUG")
+        args.add("/define:TRACE")
+        args.add("/define:DEBUG")
     else:
         args.add("/debug-")
         args.add("/optimize+")
-        args.add("/define:TRACE;RELEASE")
+        args.add("/define:TRACE")
+        args.add("/define:RELEASE")
 
     args.add("/debug:portable")
 
