@@ -10,9 +10,6 @@ fsharp_library(
     srcs = ["lib.fs"],
     internals_visible_to = ["lib_test"],
     target_frameworks = ["net6.0"],
-    targeting_packs = [
-        "@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
-    ],
     deps = [
         "@paket.rules_dotnet_dev_nuget_packages//fsharp.core",
     ],

@@ -13,6 +13,9 @@ use_repo(dotnet, "dotnet_toolchains")
 
 register_toolchains("@dotnet_toolchains//:all")
 
+packs_extension = use_extension("//dotnet/private/packs/targeting:dotnet.packs_extension.bzl", "packs_extension")
+use_repo(packs_extension, "dotnet.packs")
+
 paket2bazel_dependencies_extension = use_extension("//dotnet:paket.paket2bazel_dependencies_extension.bzl", "paket2bazel_dependencies_extension")
 use_repo(paket2bazel_dependencies_extension, "paket.paket2bazel_dependencies")
 

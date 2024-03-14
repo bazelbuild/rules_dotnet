@@ -1,4 +1,5 @@
 #r "nuget: NuGet.Protocol"
+#r "nuget: NuGet.PackageManagement"
 
 open System
 open System.Net
@@ -8,6 +9,10 @@ open System.Text.Json
 open System.Text
 open System.Collections.Generic
 open NuGet.RuntimeModel
+open NuGet.Protocol.Core.Types
+open NuGet.Configuration
+open NuGet.Common
+open System.Threading
 
 let supportedChannels = [ "6.0"; "7.0"; "8.0" ]
 
@@ -40,6 +45,8 @@ type Release =
 type Channel =
     { [<JsonPropertyName "channel-version">]
       ChannelVersion: string
+      [<JsonPropertyName "latest-runtime">]
+      LatestRuntime: string
       [<JsonPropertyName "releases">]
       Releases: Release seq }
 
@@ -87,17 +94,13 @@ let filterSdkFiles (sdk: Sdk) =
             | _ -> false)
         |> Seq.filter (fun f ->
             // We are only intersted in the compressed artifacts, not exe or pkg or similar artifacts
-            f.Name.EndsWith(".zip")
-            || f.Name.EndsWith(".tar.gz"))
+            f.Name.EndsWith(".zip") || f.Name.EndsWith(".tar.gz"))
         |> Seq.filter (fun f ->
             // Some releases have .zip and .tar.gz artifacts for linux so we remove the .zip artifacts
             not (f.Rid = "linux-x64" && f.Name.EndsWith(".zip")))
         |> Seq.filter (fun f ->
             // There were some incorrect preview releases which had arm binaries released as x64 binaries, removing those
-            not (
-                f.Rid = "osx-x64"
-                && f.Name.EndsWith("arm64.tar.gz")
-            ))
+            not (f.Rid = "osx-x64" && f.Name.EndsWith("arm64.tar.gz")))
 
     // If there is no MacOS arm version of in the release then we add an entry where we use the x64
     // version since that can be run with Rosetta
@@ -129,13 +132,24 @@ let generateVersionsBzl (channels: Channel seq) =
     |> ignore
 
     sb.AppendLine() |> ignore
+
+    sb.AppendLine("LATEST_VERSIONS = {") |> ignore
+
+    for channel in channels |> Seq.sortBy (fun c -> c.ChannelVersion) do
+        sb.AppendLine(
+            (sprintf "    \"%s\": {\"runtime\" :\"%s\"}," ($"net{channel.ChannelVersion}") channel.LatestRuntime)
+        )
+        |> ignore
+
+    sb.AppendLine("}") |> ignore
+    sb.AppendLine() |> ignore
+
     sb.AppendLine("TOOL_VERSIONS = {") |> ignore
 
     for channel in channels |> Seq.sortBy (fun c -> c.ChannelVersion) do
         for release in channel.Releases do
             for sdk in release.Sdks |> Seq.sortBy (fun s -> s.Version) do
-                sb.AppendLine((sprintf "    \"%s\": {" sdk.Version))
-                |> ignore
+                sb.AppendLine((sprintf "    \"%s\": {" sdk.Version)) |> ignore
 
                 sb.AppendLine((sprintf "        \"runtimeVersion\": \"%s\"," sdk.RuntimeVersion))
                 |> ignore
@@ -162,13 +176,11 @@ let generateVersionsBzl (channels: Channel seq) =
                 sb.AppendLine("    },") |> ignore
 
     sb.AppendLine("}") |> ignore
-    sb.AppendLine() |> ignore
 
     File.WriteAllText("dotnet/private/versions.bzl", sb.ToString())
 
 let generateRidsBzl () =
     let runtimes = downloadRuntimes ()
-    let runtimeGraph = Dictionary<string, string seq>()
 
     let runtimeDescriptions: RuntimeDescription seq =
         runtimes.Runtimes
@@ -195,8 +207,7 @@ let generateRidsBzl () =
                 else
                     s.Substring(0, s.Length - 2))
 
-        sb.AppendLine((sprintf "    \"%s\": [%s]," key values))
-        |> ignore
+        sb.AppendLine((sprintf "    \"%s\": [%s]," key values)) |> ignore
 
     sb.AppendLine("}") |> ignore
 

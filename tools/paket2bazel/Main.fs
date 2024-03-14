@@ -5,8 +5,9 @@ open Argu
 open System
 open System.Collections.Generic
 open System.IO
-open Paket2Bazel.Gen
-open Paket2Bazel.Models
+open NugetRepo.Gen
+open NugetRepo.Models
+open NugetRepo.Parsing
 
 type CliArguments =
     | [<Mandatory>] Dependencies_File of path: string
@@ -39,14 +40,12 @@ let main argv =
 
     let outputFolder = results.GetResult Output_Folder
 
-    let cache = Dictionary<string, Package>()
+    let groups = getGroups dependenciesFile
 
-    let groups = getDependencies dependenciesFile cache
+    let parsedGroups = parseGroups groups
 
-    let netrcLabel =
-        results.TryGetResult Netrc_File_Label
-        |> Option.bind (fun x -> x)
+    let netrcLabel = results.TryGetResult Netrc_File_Label |> Option.bind (fun x -> x)
 
-    generateBazelFiles groups outputFolder netrcLabel
+    generateBazelFiles parsedGroups outputFolder "paket" netrcLabel NamingConvention.IdAsName
 
     0 // return an integer exit

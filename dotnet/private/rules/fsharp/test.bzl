@@ -24,7 +24,7 @@ def _compile_action(ctx, tfm):
         defines = ctx.attr.defines,
         deps = ctx.attr.deps,
         exports = [],
-        targeting_packs = ctx.attr.targeting_packs,
+        targeting_pack = ctx.attr._targeting_pack[0],
         internals_visible_to = ctx.attr.internals_visible_to,
         keyfile = ctx.file.keyfile,
         langversion = ctx.attr.langversion,

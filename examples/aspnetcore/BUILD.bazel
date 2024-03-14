@@ -14,10 +14,6 @@ csharp_binary(
     ],
     project_sdk = "web",
     target_frameworks = ["net6.0"],
-    targeting_packs = [
-        "@paket.example_deps//microsoft.aspnetcore.app.ref",
-        "@paket.example_deps//microsoft.netcore.app.ref",
-    ],
     deps = [
     ],
 )

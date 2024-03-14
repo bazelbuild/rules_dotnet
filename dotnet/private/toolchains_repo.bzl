@@ -64,6 +64,13 @@ def _toolchains_repo_impl(repository_ctx):
 # These can be registered in the workspace file or passed to --extra_toolchains flag.
 # By default all these toolchains are registered by the dotnet_register_toolchains macro
 # so you don't normally need to interact with these targets.
+load("@bazel_skylib//rules:common_settings.bzl", "string_setting")
+
+string_setting(
+    name = "sdk_runtime_version",
+    build_setting_default = "{runtime_version}",
+    visibility = ["//visibility:public"],
+)
 """
 
     for [platform, meta] in PLATFORMS.items():
@@ -92,5 +99,6 @@ toolchains_repo = repository_rule(
      which can be registered or selected.""",
     attrs = {
         "user_repository_name": attr.string(doc = "what the user chose for the base name"),
+        "runtime_version": attr.string(doc = "The version ofthe .Net runtime that has been selected"),
     },
 )

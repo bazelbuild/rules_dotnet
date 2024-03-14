@@ -9,6 +9,7 @@ load(
     "DotnetAssemblyRuntimeInfo",
     "DotnetDepVariantInfo",
     "NuGetInfo",
+    "TargetingPackInfo",
 )
 load("//dotnet/private:rids.bzl", "RUNTIME_GRAPH")
 load("//dotnet/private:semver.bzl", "semver")
@@ -210,13 +211,13 @@ def _find_ref_by_file_name(refs, file_name):
 
     return None
 
-def collect_compile_info(name, deps, targeting_packs, exports, strict_deps):
+def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
     """Determine the transitive dependencies by the target framework.
 
     Args:
         name: The name of the assembly that is being compiled.
         deps: Dependencies that the compilation target depends on.
-        targeting_packs: Targeting packs that the compilation target depends on.
+        targeting_pack: Targeting pack that the compilation target depends on.
         exports: Exported targets
         strict_deps: Whether or not to use strict dependencies.
 
@@ -236,21 +237,23 @@ def collect_compile_info(name, deps, targeting_packs, exports, strict_deps):
     targeting_pack_overrides = {}
     framework_list = {}
     framework_files = []
-    for targeting_pack in targeting_packs:
-        compile_info = targeting_pack[DotnetAssemblyCompileInfo]
-        nuget_info = targeting_pack[NuGetInfo]
 
-        for override_name, override_version in nuget_info.targeting_pack_overrides.items():
-            targeting_pack_overrides[override_name] = override_version
+    if targeting_pack:
+        targeting_pack_info = targeting_pack[TargetingPackInfo]
+        for i, nuget_info in enumerate(targeting_pack_info.nuget_infos):
+            compile_info = targeting_pack_info.assembly_compile_infos[i]
 
-        for dll_name, dll_version in nuget_info.framework_list.items():
-            framework_list[dll_name] = {"version": dll_version, "file": _find_ref_by_file_name(compile_info.refs, dll_name)}
+            for override_name, override_version in nuget_info.targeting_pack_overrides.items():
+                targeting_pack_overrides[override_name] = override_version
 
-        if len(nuget_info.framework_list) == 0:
-            framework_files.extend(compile_info.irefs)
+            for dll_name, dll_version in nuget_info.framework_list.items():
+                framework_list[dll_name] = {"version": dll_version, "file": _find_ref_by_file_name(compile_info.refs, dll_name)}
 
-        direct_analyzers.extend(compile_info.analyzers)
-        direct_compile_data.extend(compile_info.compile_data)
+            if len(nuget_info.framework_list) == 0:
+                framework_files.extend(compile_info.irefs)
+
+            direct_analyzers.extend(compile_info.analyzers)
+            direct_compile_data.extend(compile_info.compile_data)
 
     for dep in deps:
         assembly = dep[DotnetAssemblyCompileInfo]
