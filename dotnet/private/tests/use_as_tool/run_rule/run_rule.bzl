@@ -2,13 +2,10 @@
 
 def _run_rule_impl(ctx):
     output = ctx.actions.declare_file("{}_out".format(ctx.label.name))
-    (inputs, input_manifests) = ctx.resolve_tools(tools = [ctx.attr.tool])
 
     ctx.actions.run(
         outputs = [output],
         arguments = [output.path],
-        inputs = inputs,
-        input_manifests = input_manifests,
         executable = ctx.executable.tool,
     )
 
