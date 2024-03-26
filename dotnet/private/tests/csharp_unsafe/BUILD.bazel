@@ -9,18 +9,12 @@ csharp_library(
     srcs = ["unsafe.cs"],
     allow_unsafe_blocks = True,
     target_frameworks = ["net6.0"],
-    targeting_packs = [
-        "@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
-    ],
 )
 
 csharp_nunit_test(
     name = "UnsafeTest",
     srcs = ["unsafetest.cs"],
     target_frameworks = ["net6.0"],
-    targeting_packs = [
-        "@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
-    ],
     deps = [
         ":Unsafe",
     ],

@@ -7,9 +7,6 @@ csharp_library(
     name = "ab",
     srcs = ["ab.cs"],
     target_frameworks = ["net6.0"],
-    targeting_packs = [
-        "@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
-    ],
     visibility = ["//visibility:public"],
     deps = [
         "//dotnet/private/tests/dependency_resolution/diamond_dependencies/d",

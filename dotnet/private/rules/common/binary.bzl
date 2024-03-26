@@ -22,10 +22,10 @@ def _create_shim_exe(ctx, dll):
     output = ctx.actions.declare_file(paths.replace_extension(dll.basename, ".exe" if ctx.target_platform_has_constraint(windows_constraint) else ""), sibling = dll)
 
     ctx.actions.run(
-        executable = ctx.attr.apphost_shimmer.files_to_run,
+        executable = ctx.attr.apphost_shimmer[0].files_to_run,
         arguments = [apphost.path, dll.path, output.path],
-        inputs = depset([apphost, dll], transitive = [ctx.attr.apphost_shimmer.default_runfiles.files]),
-        tools = [ctx.attr.apphost_shimmer.files, ctx.attr.apphost_shimmer.default_runfiles.files],
+        inputs = depset([apphost, dll], transitive = [ctx.attr.apphost_shimmer[0].default_runfiles.files]),
+        tools = [ctx.attr.apphost_shimmer[0].files, ctx.attr.apphost_shimmer[0].default_runfiles.files],
         outputs = [output],
     )
 
@@ -88,7 +88,7 @@ def build_binary(ctx, compile_action):
     additional_runfiles = []
 
     app_host = None
-    if ctx.attr.apphost_shimmer:
+    if len(ctx.attr.apphost_shimmer) > 0:
         app_host = _create_shim_exe(ctx, dll)
         additional_runfiles.append(app_host)
         default_info_files = default_info_files.append(app_host)

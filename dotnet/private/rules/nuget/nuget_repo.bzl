@@ -8,18 +8,19 @@ _GLOBAL_NUGET_PREFIX = "nuget"
 def _nuget_repo_impl(ctx):
     for package in ctx.attr.packages:
         package = json.decode(package)
-        name = package["id"]
+        name = package["name"]
+        id = package["id"]
         version = package["version"]
         sha512 = package["sha512"]
         deps = package["dependencies"]
 
-        targeting_pack_overrides = ctx.attr.targeting_pack_overrides[name.lower()]
-        framework_list = ctx.attr.framework_list[name.lower()]
+        targeting_pack_overrides = ctx.attr.targeting_pack_overrides[id.lower()]
+        framework_list = ctx.attr.framework_list[id.lower()]
 
-        ctx.template("{}/{}/BUILD.bazel".format(name.lower(), version), ctx.attr._template, {
+        ctx.template("{}/{}/BUILD.bazel".format(id.lower(), version), ctx.attr._template, {
             "{PREFIX}": _GLOBAL_NUGET_PREFIX,
-            "{NAME}": name,
-            "{NAME_LOWER}": name.lower(),
+            "{ID}": id,
+            "{ID_LOWER}": id.lower(),
             "{VERSION}": version,
             "{DEPS}": ",".join(["\n    \"@rules_dotnet//dotnet:tfm_{tfm}\": [{deps_list}]".format(tfm = tfm, deps_list = ",".join(["\"@{nuget_repo_name}//{dep_name}\"".format(dep_name = d.lower(), nuget_repo_name = ctx.attr.repo_name.lower()) for d in tfm_deps])) for (tfm, tfm_deps) in deps.items()]),
             "{TARGETING_PACK_OVERRIDES}": json.encode({override.lower().split("|")[0]: override.lower().split("|")[1] for override in targeting_pack_overrides}),
@@ -29,9 +30,9 @@ def _nuget_repo_impl(ctx):
 
         # currently we only support one version of a package
         ctx.file("{}/BUILD.bazel".format(name.lower()), r"""package(default_visibility = ["//visibility:public"])
-alias(name = "{name}", actual = "//{name}/{version}")
-alias(name = "content_files", actual = "@{prefix}.{name}.v{version}//:content_files")
-""".format(prefix = _GLOBAL_NUGET_PREFIX, name = name.lower(), version = version))
+alias(name = "{name}", actual = "//{id}/{version}")
+alias(name = "content_files", actual = "@{prefix}.{id}.v{version}//:content_files")
+""".format(prefix = _GLOBAL_NUGET_PREFIX, name = name.lower(), id = id.lower(), version = version))
 
 _nuget_repo = repository_rule(
     _nuget_repo_impl,
@@ -63,16 +64,16 @@ def nuget_repo(name, packages):
     # TODO: Add docs
     # scaffold individual nuget archives
     for package in packages:
-        package_name = package["id"].lower()
+        id = package["id"].lower()
         version = package["version"].lower()
 
         # maybe another nuget_repo has the same nuget package dependency
         maybe(
             nuget_archive,
-            name = "{}.{}.v{}".format(_GLOBAL_NUGET_PREFIX, package_name, version),
+            name = "{}.{}.v{}".format(_GLOBAL_NUGET_PREFIX, id, version),
             sources = package["sources"],
             netrc = package.get("netrc", None),
-            id = package_name,
+            id = id,
             version = version,
             sha512 = package["sha512"],
         )

@@ -7,9 +7,6 @@ csharp_nunit_test(
     name = "netcore",
     srcs = ["netcore.cs"],
     target_frameworks = ["net6.0"],
-    targeting_packs = [
-        "@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
-    ],
     deps = [
         "//dotnet/private/tests/dependency_resolution/netcore_to_netstandard/netstandardlib",
     ],

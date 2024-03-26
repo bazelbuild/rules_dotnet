@@ -21,6 +21,9 @@ def _impl(settings, attr):
     if hasattr(attr, "target_frameworks"):
         target_frameworks += attr.target_frameworks
 
+    # if len(target_frameworks) == 0:
+    #     target_frameworks = [incoming_tfm]
+
     transitioned_tfm = get_highest_compatible_target_framework(incoming_tfm, target_frameworks)
 
     if transitioned_tfm == None:

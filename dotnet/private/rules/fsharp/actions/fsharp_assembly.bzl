@@ -77,7 +77,7 @@ def AssemblyAction(
         defines,
         deps,
         exports,
-        targeting_packs,
+        targeting_pack,
         internals_visible_to,
         keyfile,
         langversion,
@@ -108,7 +108,7 @@ def AssemblyAction(
         defines: The list of conditional compilation symbols.
         deps: The list of other libraries to be linked in to the assembly.
         exports: List of exported targets.
-        targeting_packs: The list of targeting packs to be used.
+        targeting_pack: The targeting pack being used.
         internals_visible_to: An optional list of assemblies that can see this assemblies internal symbols.
         keyfile: Specifies a strong name key file of the assembly.
         langversion: Specify language version: Default, ISO-1, ISO-2, 3, 4, 5, 6, 7, 7.1, 7.2, 7.3, or Latest
@@ -145,7 +145,7 @@ def AssemblyAction(
     ) = collect_compile_info(
         assembly_name,
         deps,
-        targeting_packs,
+        targeting_pack,
         exports,
         strict_deps,
     )

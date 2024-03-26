@@ -3,13 +3,12 @@ module Paket2Bazel.Paket
 open Paket
 open System.Collections.Generic
 open FSharpx.Collections
-open Paket2Bazel.Models
+open NugetRepo.Models
 open System.IO
 open System.Security.Cryptography
 open Paket.Requirements
 open NuGet.Packaging
 open NuGet.Frameworks
-open NuGet.Versioning
 open System
 open System.Xml
 
@@ -65,11 +64,7 @@ let getClosestFrameworkFiles (targetFramework: NuGetFramework) (frameworkItems: 
     let frameworkReducer = FrameworkReducer()
 
     let nearest =
-        frameworkReducer.GetNearest(
-            targetFramework,
-            (frameworkItems
-             |> Seq.map (fun i -> i.TargetFramework))
-        )
+        frameworkReducer.GetNearest(targetFramework, (frameworkItems |> Seq.map (fun i -> i.TargetFramework)))
 
     let frameworkFileItems =
         frameworkItems
@@ -129,8 +124,7 @@ let getOverrides (packageName: string) (packageVersion: string) (packageReader: 
         let path = Path.Combine((getPackageFolderPath packageName packageVersion), f)
         let lines = File.ReadAllLines(path)
 
-        lines
-        |> Array.filter (fun l -> not (String.IsNullOrEmpty l)))
+        lines |> Array.filter (fun l -> not (String.IsNullOrEmpty l)))
     |> Option.defaultValue [||]
 
 let getFrameworkList (packageName: string) (packageVersion: string) (packageReader: PackageFolderReader) =
@@ -153,11 +147,11 @@ let getFrameworkList (packageName: string) (packageVersion: string) (packageRead
         |> Seq.filter (fun l -> not (String.IsNullOrEmpty l)))
     |> Option.defaultValue [||]
 
-let getDependencies dependenciesFile (cache: Dictionary<string, Package>) =
+let getGroups dependenciesFile =
     let maybeDeps = Dependencies.TryLocate(dependenciesFile)
 
     match maybeDeps with
-    | Some (deps) ->
+    | Some(deps) ->
         deps.SimplePackagesRestore()
 
         let groups =
@@ -166,46 +160,10 @@ let getDependencies dependenciesFile (cache: Dictionary<string, Package>) =
             |> Seq.map (fun (group, packages) ->
 
                 let sources =
-                    deps.GetDependenciesFile().Groups.Item(
-                        Domain.GroupName group
-                    )
-                        .Sources
+                    deps.GetDependenciesFile().Groups.Item(Domain.GroupName group).Sources
                     |> Seq.map (fun s -> s.Url)
 
-                let packagesInGroup =
-                    packages
-                    |> Seq.map (fun (_, name, version) ->
-                        let found, value = cache.TryGetValue(sprintf "%s-%s" group name)
-
-
-                        match found with
-                        | true -> value
-                        | false ->
-                            let packageReader = new PackageFolderReader(getPackageFolderPath name version)
-                            let sha256 = getSha512Sri name version
-
-                            let package =
-                                { name = name
-                                  group = group
-                                  sha512sri = sha256
-                                  sources = sources
-                                  version = NuGetVersion.Parse(version).ToFullString()
-                                  dependencies =
-                                    getDependenciesPerTFM
-                                        tfms
-                                        (packages |> Seq.map (fun (_, name, _) -> name))
-                                        packageReader
-                                  overrides = getOverrides name version packageReader
-                                  frameworkList = getFrameworkList name version packageReader }
-
-                            cache.Add((sprintf "%s-%s" group name), package)
-                            |> ignore
-
-                            package)
-
-                { name = group
-                  packages = packagesInGroup
-                  tfms = tfms |> Seq.map (fun f -> f.GetShortFolderName()) })
+                (group, sources, packages |> Seq.map (fun (_, name, version) -> (name, version))))
 
         groups
     | None -> failwith "Failed to locate paket.dependencies file"

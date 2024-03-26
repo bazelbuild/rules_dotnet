@@ -1,4 +1,4 @@
-module Paket2Bazel.Models
+module NugetRepo.Models
 
 open System.Collections.Generic
 

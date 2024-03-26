@@ -174,4 +174,5 @@ def dotnet_register_toolchains(name, dotnet_version, register = True, **kwargs):
     toolchains_repo(
         name = name + "_toolchains",
         user_repository_name = name,
+        runtime_version = TOOL_VERSIONS[dotnet_version]["runtimeVersion"],
     )

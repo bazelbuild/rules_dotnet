@@ -4,15 +4,10 @@ fsharp_binary(
     name = "paket2bazel.exe",
     srcs = [
         # Keep order
-        "Models.fs",
         "Paket.fs",
-        "Gen.fs",
         "Main.fs",
     ],
     target_frameworks = ["net6.0"],
-    targeting_packs = [
-        "@paket.paket2bazel_dependencies//microsoft.netcore.app.ref",
-    ],
     visibility = ["//visibility:public"],
     deps = [
         "@paket.paket2bazel_dependencies//argu",

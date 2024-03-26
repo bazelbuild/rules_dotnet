@@ -56,6 +56,15 @@ NuGetInfo = provider(
     },
 )
 
+TargetingPackInfo = provider(
+    doc = "Information about a .Net targeting pack.",
+    fields = {
+        "assembly_runtime_infos": "list[DotnetAssemblyRuntimeInfo]: The runtime infos of the assemblies in the targeting pack",
+        "assembly_compile_infos": "list[DotnetAssemblyCompileInfo]: The compile infos of the assemblies in the targeting pack",
+        "nuget_infos": "list[NuGetInfo]: The NuGet infos of the assemblies in the targeting pack",
+    },
+)
+
 DotnetBinaryInfo = provider(
     doc = "Information about a .Net binary",
     fields = {

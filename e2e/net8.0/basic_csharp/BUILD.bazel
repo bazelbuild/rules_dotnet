@@ -10,9 +10,6 @@ csharp_binary(
     name = "hello",
     srcs = ["hello.cs"],
     target_frameworks = ["net8.0"],
-    targeting_packs = [
-        "@paket.main//microsoft.netcore.app.ref",
-    ],
     deps = [
         ":lib",
     ],
@@ -22,9 +19,6 @@ csharp_nunit_test(
     name = "lib_test",
     srcs = ["libtest.cs"],
     target_frameworks = ["net8.0"],
-    targeting_packs = [
-        "@paket.main//microsoft.netcore.app.ref",
-    ],
     deps = [
         ":lib",
     ],
@@ -35,8 +29,5 @@ csharp_library(
     srcs = ["lib.cs"],
     internals_visible_to = ["lib_test"],
     target_frameworks = ["net8.0"],
-    targeting_packs = [
-        "@paket.main//microsoft.netcore.app.ref",
-    ],
     deps = [],
 )
