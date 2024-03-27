@@ -10,9 +10,6 @@ fsharp_binary(
         "Main.fs",
     ],
     target_frameworks = ["net6.0"],
-    targeting_packs = [
-        "@paket.paket2bazel_dependencies//microsoft.netcore.app.ref",
-    ],
     visibility = ["//visibility:public"],
     deps = [
         "@paket.paket2bazel_dependencies//argu",

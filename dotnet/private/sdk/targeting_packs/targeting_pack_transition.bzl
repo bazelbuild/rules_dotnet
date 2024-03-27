@@ -10,12 +10,12 @@ def _impl(settings, attr):
     if supported_tfms:
         targeting_pack = supported_tfms.get(incoming_target_framework)
         if targeting_pack:
-            return {"//dotnet/private/packs/targeting:empty_pack": targeting_pack}
+            return {"//dotnet/private/sdk/targeting_packs:targeting_pack": targeting_pack}
 
     fail("No targeting pack found for project SDK/target framework: {}/{}".format(project_sdk, incoming_target_framework))
 
 targeting_pack_transition = transition(
     implementation = _impl,
     inputs = ["//dotnet/private/sdk/targeting_packs:targeting_pack", "//dotnet:target_framework"],
-    outputs = ["//dotnet/private/packs/targeting:targeting_pack"],
+    outputs = ["//dotnet/private/sdk/targeting_packs:targeting_pack"],
 )

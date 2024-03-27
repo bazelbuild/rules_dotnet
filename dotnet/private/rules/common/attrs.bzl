@@ -2,6 +2,7 @@
 
 load("@bazel_skylib//lib:dicts.bzl", "dicts")
 load("//dotnet/private:providers.bzl", "DotnetAssemblyCompileInfo", "DotnetAssemblyRuntimeInfo")
+load("//dotnet/private/sdk/targeting_packs:targeting_pack_transition.bzl", "targeting_pack_transition")
 load("//dotnet/private/transitions:default_transition.bzl", "default_transition")
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 
@@ -75,24 +76,6 @@ COMMON_ATTRS = {
     "internals_visible_to": attr.string_list(
         doc = "Other libraries that can see the assembly's internal symbols. Using this rather than the InternalsVisibleTo assembly attribute will improve build caching.",
     ),
-    "targeting_packs": attr.label_list(
-        doc = """Private dependencies 
-
-        The targeting packs that should be used to build the target.
-        You should use a targeting pack that targets the same framework as the target. 
-        There can be multiple runtime packs for a given target e.g. when a AspNetCore 
-        application is built you need the base runtime pack and the AspNetCore runtime pack.
-        Example runtime packs:
-        https://www.nuget.org/packages/NETStandard.Library - .Net Standard 2.0
-        https://www.nuget.org/packages/NETStandard.Library.Ref - .Net Standard 2.1
-        https://www.nuget.org/packages/Microsoft.NETCore.App.Ref/7.0.11 - .Net 7.0.11
-        https://www.nuget.org/packages/Microsoft.AspNetCore.App.Ref/7.0.11 - AspNetCore 7.0.11
-
-        """,
-        providers = [DotnetAssemblyCompileInfo, DotnetAssemblyRuntimeInfo],
-        cfg = tfm_transition,
-        allow_empty = False,
-    ),
     "treat_warnings_as_errors": attr.bool(
         doc = "Treat all compiler warnings as errors. Note that this attribute can not be used in conjunction with warnings_as_errors.",
         mandatory = False,
@@ -161,6 +144,10 @@ COMMON_ATTRS = {
         cfg = "exec",
         allow_single_file = True,
     ),
+    "_targeting_pack": attr.label(
+        default = "//dotnet/private/sdk/targeting_packs:targeting_pack",
+        cfg = targeting_pack_transition,
+    ),
 }
 
 # These are attributes that are common across all libarary rules
@@ -186,7 +173,7 @@ BINARY_COMMON_ATTRS = {
     "apphost_shimmer": attr.label(
         providers = [DotnetAssemblyCompileInfo, DotnetAssemblyRuntimeInfo],
         executable = True,
-        cfg = "exec",
+        cfg = default_transition,
     ),
     "_bash_runfiles": attr.label(
         default = "@bazel_tools//tools/bash/runfiles",

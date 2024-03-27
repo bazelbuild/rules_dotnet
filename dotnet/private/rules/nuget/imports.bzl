@@ -21,7 +21,7 @@ def _import_library(ctx):
     ) = collect_compile_info(
         ctx.label.name,
         ctx.attr.deps,
-        [],
+        None,
         [],
         ctx.toolchains["//dotnet:toolchain_type"].strict_deps[BuildSettingInfo].value,
     )

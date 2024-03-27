@@ -9,9 +9,6 @@ csharp_library(
     srcs = ["nullable.cs"],
     nullable = "enable",
     target_frameworks = ["net6.0"],
-    targeting_packs = [
-        "@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
-    ],
     treat_warnings_as_errors = True,
 )
 
@@ -19,9 +16,6 @@ csharp_nunit_test(
     name = "NullableTest",
     srcs = ["nullabletest.cs"],
     target_frameworks = ["net6.0"],
-    targeting_packs = [
-        "@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
-    ],
     deps = [
         ":Nullable",
     ],
