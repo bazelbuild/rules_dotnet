@@ -10,6 +10,7 @@
     <Compile Include="ApphostPacks.fs" />
     <Compile Include="RuntimePacks.fs" />
     <Compile Include="TargetingPacks.fs" />
+    <Compile Include="Sdk.fs" />
     <Compile Include="Main.fs" />
   </ItemGroup>
   <Import Project="..\..\..\..\.paket\Paket.Restore.targets" />

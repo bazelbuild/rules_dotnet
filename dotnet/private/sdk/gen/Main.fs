@@ -6,8 +6,15 @@ open System.IO
 let main argv =
     let sdkFolder = argv.[0]
 
-    let targetingPacksFile = Path.Combine(sdkFolder, "gen", "targeting-packs.json")
+    // Get the supported SDKs and generate sdk_versions.bzl
+    Sdk.generateSdks (Path.Combine(sdkFolder, "versions.bzl"))
 
+    // // Generate the RID graph
+    Sdk.generateRids (Path.Combine(sdkFolder, "rids.bzl"))
+
+
+    // Generate the targeting pack targets
+    let targetingPacksFile = Path.Combine(sdkFolder, "gen", "targeting-packs.json")
     TargetingPacks.updateTargetingPacks targetingPacksFile
 
     TargetingPacks.writeTargetingPackLookupTable

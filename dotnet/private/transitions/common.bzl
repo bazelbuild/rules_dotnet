@@ -6,7 +6,7 @@ load(
     "FRAMEWORK_COMPATIBILITY",
     "TRANSITIVE_FRAMEWORK_COMPATIBILITY",
 )
-load("//dotnet/private:rids.bzl", "RUNTIME_GRAPH")
+load("//dotnet/private/sdk:rids.bzl", "RUNTIME_GRAPH")
 
 FRAMEWORK_COMPATABILITY_TRANSITION_OUTPUTS = {
     tfm: {

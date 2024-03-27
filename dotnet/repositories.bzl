@@ -5,7 +5,7 @@ Rules to load all the .NET SDK & framework dependencies of rules_dotnet.
 load("@bazel_tools//tools/build_defs/repo:http.bzl", _http_archive = "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("//dotnet/private:toolchains_repo.bzl", "PLATFORMS", "toolchains_repo")
-load("//dotnet/private:versions.bzl", "TOOL_VERSIONS")
+load("//dotnet/private/sdk:versions.bzl", "TOOL_VERSIONS")
 
 def http_archive(name, **kwargs):
     maybe(_http_archive, name = name, **kwargs)

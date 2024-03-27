@@ -10,7 +10,7 @@ load(
     "TRANSITIVE_FRAMEWORK_COMPATIBILITY",
 )
 load(
-    "//dotnet/private:rids.bzl",
+    "//dotnet/private/sdk:rids.bzl",
     "RUNTIME_GRAPH",
 )
 

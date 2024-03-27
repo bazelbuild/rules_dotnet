@@ -10,7 +10,7 @@ load(
     "DotnetDepVariantInfo",
     "NuGetInfo",
 )
-load("//dotnet/private:rids.bzl", "RUNTIME_GRAPH")
+load("//dotnet/private/sdk:rids.bzl", "RUNTIME_GRAPH")
 load("//dotnet/private:semver.bzl", "semver")
 
 def _collect_transitive():
