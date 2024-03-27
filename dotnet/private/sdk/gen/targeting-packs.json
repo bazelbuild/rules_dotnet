@@ -1,0 +1,298 @@
+{
+  "default": {
+    "netstandard1.6": [
+      {
+        "id": "NETStandard.Library",
+        "version": "1.6.1",
+        "sha512": "sha512-CXLcLbtJJeiW9ivOLlnU5IY5Mg7jitMBbc1IX71pNqDtCAc61e7yphLf8F38OQ85MP/5552HoGBw7rgSgnfL0A=="
+      }
+    ],
+    "netstandard2.0": [
+      {
+        "id": "NETStandard.Library",
+        "version": "2.0.3",
+        "sha512": "sha512-548M6mnBSJWxsIlkQHfbzoYxpiYFXZZSL00p4GHYv8PkiqFBnnT68mW5mGEsA/ch9fDO9GkPgkFQpWiXZN7mAQ=="
+      }
+    ],
+    "netstandard2.1": [
+      {
+        "id": "NETStandard.Library.Ref",
+        "version": "2.1.0",
+        "sha512": "sha512-Jr0OqnqkaJJGEVq3w9oNQrIEteD/4QBNg3YOh1cvRjydzwop07\u002B5aWjO/SfEYu6CwBn\u002BdSBKXj8niEvTNy2brA=="
+      }
+    ],
+    "net20": [
+      {
+        "id": "Microsoft.NETFramework.ReferenceAssemblies.net20",
+        "version": "1.0.3",
+        "sha512": "sha512-M1vB2xSMJY0FdXNSUH4kjj04aTqWIOPUKeUUfaCoVA5JVw30XGO9ID7mUuBo\u002BinSXLgmLvoMkSb3d98YEQwfyA=="
+      }
+    ],
+    "net35": [
+      {
+        "id": "Microsoft.NETFramework.ReferenceAssemblies.net35",
+        "version": "1.0.3",
+        "sha512": "sha512-l0U4pfjnh80q9nnMSy6h9OaaLt9289Qo2lOzYaoNXwz4BBUgx1FeQA/Bbz3hc1\u002BCUvDpziG77O8i1DZ6bXIK\u002BA=="
+      }
+    ],
+    "net40": [
+      {
+        "id": "Microsoft.NETFramework.ReferenceAssemblies.net40",
+        "version": "1.0.3",
+        "sha512": "sha512-vUXmwPxi7lY1DEmxnrnve/a4JgN/Z1XE6Raozcmlqrf2OZxs9smXBb3Q9y2dZ2lCPtVMyZBRM4jQPBXz04InpQ=="
+      }
+    ],
+    "net45": [
+      {
+        "id": "Microsoft.NETFramework.ReferenceAssemblies.net45",
+        "version": "1.0.3",
+        "sha512": "sha512-zPJ5Pqc6\u002BcBg4ir33AWryA8CUxJJj68Cs1Cfo8plZt1HH3Q0B/EqVon6LRXw9b8dfQyLYMqTJJk2maXgLhGJIw=="
+      }
+    ],
+    "net451": [
+      {
+        "id": "Microsoft.NETFramework.ReferenceAssemblies.net451",
+        "version": "1.0.3",
+        "sha512": "sha512-fS2Qwxx3JboJ2aUCknMGdM13SaYLsgurXehv\u002BLp5lnbl/lKwtH55S/uI3K7KRBH5CqGxLqBfWWJvAz/elS9ACA=="
+      }
+    ],
+    "net452": [
+      {
+        "id": "Microsoft.NETFramework.ReferenceAssemblies.net452",
+        "version": "1.0.3",
+        "sha512": "sha512-Els1ywsbLD/XpEgQWV0yMpAOHk0Lecz4jWmOeLwzGSFJ3KFXB\u002B57wKjX4rEJxqJf97CIFnUmcO\u002BpvIz8LfTXvw=="
+      }
+    ],
+    "net46": [
+      {
+        "id": "Microsoft.NETFramework.ReferenceAssemblies.net46",
+        "version": "1.0.3",
+        "sha512": "sha512-2DUXmacjqNTXn5FE95qWE6bL22ae0m/0rL/SgK3aWsW6qClDzXVmo0kOLycCh6JV6i3dQU/KMuT2wtrT8EfZiA=="
+      }
+    ],
+    "net461": [
+      {
+        "id": "Microsoft.NETFramework.ReferenceAssemblies.net461",
+        "version": "1.0.3",
+        "sha512": "sha512-txfcwV2rUr4Dxr0r2jU637Dsx4W9Wo1PxHI5oTJPRsSsGHWV2QLS75DGm7vJ2e7sl9BMZZn174/ro3SDO/oBxg=="
+      }
+    ],
+    "net462": [
+      {
+        "id": "Microsoft.NETFramework.ReferenceAssemblies.net462",
+        "version": "1.0.3",
+        "sha512": "sha512-HMn0QQmPYcJsVuKet9WA8IQbBweZvc7US88N39itSRqcn/1XOT/Kao1QiiykxU\u002Bvx8k7/zim11cVmKtunju4MA=="
+      }
+    ],
+    "net47": [
+      {
+        "id": "Microsoft.NETFramework.ReferenceAssemblies.net47",
+        "version": "1.0.3",
+        "sha512": "sha512-x2ENtw\u002BCyAOV9EO1V5okeMkPkR8LGWW8F6xG\u002BndxwEq3GMlNmDo0CDBZtI690PP/0jMHTwlPwyQTvYBhUpGiZA=="
+      }
+    ],
+    "net471": [
+      {
+        "id": "Microsoft.NETFramework.ReferenceAssemblies.net471",
+        "version": "1.0.3",
+        "sha512": "sha512-Vxmc1FxJLU4hA0b2mcELn4O5S6P3AfxtlFHjg1Gw6oMaBPL8gMRt9XT\u002BIODkzDWeJ9bX/yYN4EPiJMz9Zh/2hQ=="
+      }
+    ],
+    "net472": [
+      {
+        "id": "Microsoft.NETFramework.ReferenceAssemblies.net472",
+        "version": "1.0.3",
+        "sha512": "sha512-PvZKpFbtsxtJBi6hJyzt/iaK71qGdu9mNVpJT43\u002Bi1Wp23ym57YVuQI\u002BBEnO/99K2pxPMEgYtz62n7yZFEgi2A=="
+      }
+    ],
+    "net48": [
+      {
+        "id": "Microsoft.NETFramework.ReferenceAssemblies.net48",
+        "version": "1.0.3",
+        "sha512": "sha512-XWKgyeNadNcTQaIVvQB8BrdCNrEar6fo/de1OdQRZ9HFy0jcBSaM8IV5q64ZampsSnC8AlTsACaGZUuoFw41RA=="
+      }
+    ],
+    "net481": [
+      {
+        "id": "Microsoft.NETFramework.ReferenceAssemblies.net481",
+        "version": "1.0.3",
+        "sha512": "sha512-7q2vMYIMeNF2TU1/z8ZStlyALlfQjPRa3eCLwTT\u002B6ErueWvXZsKF6MkjPXU0vglvjCP/5iXxhTMPzvuWRKJ1Ew=="
+      }
+    ],
+    "netcoreapp1.0": [
+      {
+        "id": "Microsoft.NETCore.App",
+        "version": "1.0.16",
+        "sha512": "sha512-BKKb2pT1E0j3PpRXOahEKoLYGCPecVWkvogMEQT\u002BsHM1eZIdGTiDo10ZGeG7sZk3TJHt3VRvLOBk8QyrtzpyYw=="
+      }
+    ],
+    "netcoreapp1.1": [
+      {
+        "id": "Microsoft.NETCore.App",
+        "version": "1.1.13",
+        "sha512": "sha512-KkiJ9r8OprE\u002BHzBNRBGGpvtBl2HwzoxCnu8NZaHV9h7XjCtGSdVKIna6LOFPqp98gqZ7HJ3AUE4zWCv5F7zyBQ=="
+      }
+    ],
+    "netcoreapp2.0": [
+      {
+        "id": "Microsoft.NETCore.App",
+        "version": "2.0.9",
+        "sha512": "sha512-RA35OXXK2enpLyFQrBW6N5WxPQLGJ8cx4SVNPa0PRLEmPcIu1OmdiPzOlqaB\u002B\u002B7ejGWY5O3o3CKkOgEgsHzDqA=="
+      }
+    ],
+    "netcoreapp2.1": [
+      {
+        "id": "Microsoft.NETCore.App",
+        "version": "2.1.30",
+        "sha512": "sha512-rjXfBeXZZOixeTIXi8F\u002BHkfXSf\u002BiauTQg0wO\u002BCZbzqDOm5XPesc2GypYQ0otFOBbfbFP4awZrZwNa60LaYVvYQ=="
+      }
+    ],
+    "netcoreapp2.2": [
+      {
+        "id": "Microsoft.NETCore.App",
+        "version": "2.2.8",
+        "sha512": "sha512-WZ0ojrXi2DZ66MWxds4jU7ZWUyMgKOQB7gyQ70ovrvbrhzu50XNUjnlfTT7ZpWoxKDGAfneDoJjTHoJk\u002BOa1RA=="
+      }
+    ],
+    "netcoreapp3.0": [
+      {
+        "id": "Microsoft.NETCore.App.Ref",
+        "version": "3.0.1",
+        "sha512": "sha512-JPbWGLnLSKJoP\u002BE4dqQd93QIQ4GqXXv/\u002Biltuzd1hFXHEqf1Ie5oOK/x/Z/oJn6PeFTSvOghef32T4cBUi9C1A=="
+      }
+    ],
+    "netcoreapp3.1": [
+      {
+        "id": "Microsoft.NETCore.App.Ref",
+        "version": "3.1.0",
+        "sha512": "sha512-cTXlQgzxZx5XsAIVw8tcdYhvPpcScA3vG3AQ/ScleqMn32SMBCIQqetoE0X0EqPSjW3S\u002Bhw/pRIUli0msjiJ9A=="
+      }
+    ],
+    "net5.0": [
+      {
+        "id": "Microsoft.NETCore.App.Ref",
+        "version": "5.0.0",
+        "sha512": "sha512-bBp1LYzTBY58dMaCABHnp44CYBcBvW7RrfSsXENaS7iRq/yx39g\u002BjhWdgUBZcJQBoF6AZeGbHhKV\u002BJAoT3LHDw=="
+      }
+    ],
+    "net6.0": [
+      {
+        "id": "Microsoft.NETCore.App.Ref",
+        "version": "6.0.28",
+        "sha512": "sha512-mmtX/MfjTfwzU5Gd57m27azyB\u002B29cdykscYNmtEhUZDn97DvRIgXRwha4PjLSwjFdnagLAd/87rbg/DGDzI78w=="
+      }
+    ],
+    "net7.0": [
+      {
+        "id": "Microsoft.NETCore.App.Ref",
+        "version": "7.0.17",
+        "sha512": "sha512-sPK4r\u002BHvhStfHd/eBJL9MPcjewU41RFCbPIEFau4kknDO7ayLcLw/rhgQeGkKdXQiYWm8smqeMPHP8SsCZj9RQ=="
+      }
+    ],
+    "net8.0": [
+      {
+        "id": "Microsoft.NETCore.App.Ref",
+        "version": "8.0.3",
+        "sha512": "sha512-AMA998IeSADApTbNIKNoHz\u002BRI4pseVFASpkibhnjildJ3ACPyTyji/mnDAQXPCpvQfP83F6/yeYuAI\u002BaYoSOgQ=="
+      }
+    ]
+  },
+  "web": {
+    "netcoreapp2.1": [
+      {
+        "id": "Microsoft.AspNetCore.App",
+        "version": "2.1.34",
+        "sha512": "sha512-SIOjTfqVrxUu6Ov6YTO2Szq4qZ/FWjX0O4pFPz\u002BbV6BVC5PJCEfkSrGE26rxuGENVMCuU6nNehDrpa/7rqhk6Q=="
+      },
+      {
+        "id": "Microsoft.NETCore.App",
+        "version": "2.1.30",
+        "sha512": "sha512-rjXfBeXZZOixeTIXi8F\u002BHkfXSf\u002BiauTQg0wO\u002BCZbzqDOm5XPesc2GypYQ0otFOBbfbFP4awZrZwNa60LaYVvYQ=="
+      }
+    ],
+    "netcoreapp2.2": [
+      {
+        "id": "Microsoft.AspNetCore.App",
+        "version": "2.2.8",
+        "sha512": "sha512-tN5tV4OSYlw2Rw2AJVV2K2irF6ijReRgm0sQMuwVyR1\u002BD8d6rgiZggGs/6QCut9mo8xtcH12g9RJmbpQwDJbnA=="
+      },
+      {
+        "id": "Microsoft.NETCore.App",
+        "version": "2.2.8",
+        "sha512": "sha512-WZ0ojrXi2DZ66MWxds4jU7ZWUyMgKOQB7gyQ70ovrvbrhzu50XNUjnlfTT7ZpWoxKDGAfneDoJjTHoJk\u002BOa1RA=="
+      }
+    ],
+    "netcoreapp3.0": [
+      {
+        "id": "Microsoft.AspNetCore.App.Ref",
+        "version": "3.0.1",
+        "sha512": "sha512-WlsoQyUrygTLB389vvp/ORtgQlVq8l2fhFxA9kQ9L2QiMqNgVqycOUZkauc26Knf2uJ34XtrDj2q6zM8lNnRwQ=="
+      },
+      {
+        "id": "Microsoft.NETCore.App.Ref",
+        "version": "3.0.1",
+        "sha512": "sha512-JPbWGLnLSKJoP\u002BE4dqQd93QIQ4GqXXv/\u002Biltuzd1hFXHEqf1Ie5oOK/x/Z/oJn6PeFTSvOghef32T4cBUi9C1A=="
+      }
+    ],
+    "netcoreapp3.1": [
+      {
+        "id": "Microsoft.AspNetCore.App.Ref",
+        "version": "3.1.10",
+        "sha512": "sha512-yojrAwINItqiOp1XYc50AakRLEnJTOLSgCHdWMECI09NB\u002B25i2eL/gaVcGfC/1986bsGGa/Afd85tcpFsuUnSQ=="
+      },
+      {
+        "id": "Microsoft.NETCore.App.Ref",
+        "version": "3.1.0",
+        "sha512": "sha512-cTXlQgzxZx5XsAIVw8tcdYhvPpcScA3vG3AQ/ScleqMn32SMBCIQqetoE0X0EqPSjW3S\u002Bhw/pRIUli0msjiJ9A=="
+      }
+    ],
+    "net5.0": [
+      {
+        "id": "Microsoft.AspNetCore.App.Ref",
+        "version": "5.0.0",
+        "sha512": "sha512-WUXyfm24FMcGI\u002BnADe0wJqBnQcGmtqrjhbJN\u002BW2M9RZOc4TtUJDmmvpQabHwRWYQNoLjTJn/825gs5UKksOMog=="
+      },
+      {
+        "id": "Microsoft.NETCore.App.Ref",
+        "version": "5.0.0",
+        "sha512": "sha512-bBp1LYzTBY58dMaCABHnp44CYBcBvW7RrfSsXENaS7iRq/yx39g\u002BjhWdgUBZcJQBoF6AZeGbHhKV\u002BJAoT3LHDw=="
+      }
+    ],
+    "net6.0": [
+      {
+        "id": "Microsoft.AspNetCore.App.Ref",
+        "version": "6.0.28",
+        "sha512": "sha512-w9TnQpG7AazEtx6qCo6YNpzgzS6sGbTCSCkTnojUFzTGC/pSPnmcZej9ZCJP/BUGfO8kDWisGTmYzlk/OzlGuA=="
+      },
+      {
+        "id": "Microsoft.NETCore.App.Ref",
+        "version": "6.0.28",
+        "sha512": "sha512-mmtX/MfjTfwzU5Gd57m27azyB\u002B29cdykscYNmtEhUZDn97DvRIgXRwha4PjLSwjFdnagLAd/87rbg/DGDzI78w=="
+      }
+    ],
+    "net7.0": [
+      {
+        "id": "Microsoft.AspNetCore.App.Ref",
+        "version": "7.0.17",
+        "sha512": "sha512-/WhhNj33VNbZJtVm79JuWAOgrkqCA\u002BA7JceHYJ7MLQySzxGC96SrphHpaWjCv5gzPvPyJsUX4EV2MctIFWMc0A=="
+      },
+      {
+        "id": "Microsoft.NETCore.App.Ref",
+        "version": "7.0.17",
+        "sha512": "sha512-sPK4r\u002BHvhStfHd/eBJL9MPcjewU41RFCbPIEFau4kknDO7ayLcLw/rhgQeGkKdXQiYWm8smqeMPHP8SsCZj9RQ=="
+      }
+    ],
+    "net8.0": [
+      {
+        "id": "Microsoft.AspNetCore.App.Ref",
+        "version": "8.0.3",
+        "sha512": "sha512-63hpt6nuhCktaoYxAB2RgldBxYCQY6SQ/oJqWnsd3ooIcBgIBp8ksbuDyZctWypEi10P/kzlnXbNdslVwFLeDw=="
+      },
+      {
+        "id": "Microsoft.NETCore.App.Ref",
+        "version": "8.0.3",
+        "sha512": "sha512-AMA998IeSADApTbNIKNoHz\u002BRI4pseVFASpkibhnjildJ3ACPyTyji/mnDAQXPCpvQfP83F6/yeYuAI\u002BaYoSOgQ=="
+      }
+    ]
+  }
+}

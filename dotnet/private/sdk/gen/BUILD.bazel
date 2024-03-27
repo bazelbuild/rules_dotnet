@@ -1,0 +1,26 @@
+# load("//dotnet:defs.bzl", "fsharp_binary")
+
+# fsharp_binary(
+#     name = "gen",
+#     srcs = [
+#         # Keep order
+#         "Parsing.fs",
+#         "Main.fs",
+#     ],
+#     target_frameworks = ["net8.0"],
+#     visibility = ["//visibility:public"],
+#     deps = [
+#         "@paket.paket2bazel_dependencies//argu",
+#         "@paket.paket2bazel_dependencies//chessie",
+#         "@paket.paket2bazel_dependencies//fsharp.core",
+#         "@paket.paket2bazel_dependencies//fsharp.systemtextjson",
+#         "@paket.paket2bazel_dependencies//fsharpx.collections",
+#         "@paket.paket2bazel_dependencies//fsharpx.extras",
+#         "@paket.paket2bazel_dependencies//nuget.frameworks",
+#         "@paket.paket2bazel_dependencies//nuget.packagemanagement",
+#         "@paket.paket2bazel_dependencies//nuget.packaging",
+#         "@paket.paket2bazel_dependencies//nuget.versioning",
+#         "@paket.paket2bazel_dependencies//paket.core",
+#         "@paket.paket2bazel_dependencies//system.text.json",
+#     ],
+# )
