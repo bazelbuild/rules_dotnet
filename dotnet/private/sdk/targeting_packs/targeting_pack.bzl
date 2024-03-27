@@ -29,5 +29,8 @@ targeting_pack = rule(
             cfg = tfm_transition,
             doc = "List of .Net Targeting Packs that make this pack",
         ),
+        "target_framework": attr.string(
+            doc = "The target framework of the targeting pack",
+        ),
     },
 )

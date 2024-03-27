@@ -19,6 +19,9 @@ use_repo(paket2bazel_dependencies_extension, "paket.paket2bazel_dependencies")
 rules_dotnet_nuget_packages_extension = use_extension("//dotnet:paket.rules_dotnet_nuget_packages_extension.bzl", "rules_dotnet_nuget_packages_extension")
 use_repo(rules_dotnet_nuget_packages_extension, "paket.rules_dotnet_nuget_packages")
 
+targeting_packs_extension = use_extension("//dotnet/private/sdk/targeting_packs:dotnet.targeting_packs_extension.bzl", "targeting_packs_extension")
+use_repo(targeting_packs_extension, "dotnet.targeting_packs")
+
 bazel_dep(name = "bazel_skylib", version = "1.4.2")
 bazel_dep(name = "platforms", version = "0.0.7")
 

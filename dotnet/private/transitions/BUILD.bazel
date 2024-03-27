@@ -6,7 +6,6 @@ bzl_library(
     visibility = ["//dotnet:__subpackages__"],
     deps = [
         "//dotnet/private:common",
-        "//dotnet/private:rids",
         "@bazel_skylib//lib:sets",
     ],
 )
@@ -18,7 +17,6 @@ bzl_library(
     deps = [
         ":common",
         "//dotnet/private:common",
-        "//dotnet/private:rids",
         "@bazel_skylib//lib:dicts",
     ],
 )
@@ -30,7 +28,6 @@ bzl_library(
     deps = [
         ":common",
         "//dotnet/private:common",
-        "//dotnet/private:rids",
         "@bazel_skylib//lib:dicts",
     ],
 )

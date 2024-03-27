@@ -15,11 +15,12 @@ type NugetRepoPackage =
       version: string
       sha512: string
       sources: string seq
+      netrc: string option
       dependencies: Dictionary<string, string seq>
       targeting_pack_overrides: string seq
       framework_list: string seq }
 
-let generateTarget (packages: NugetRepoPackage seq) (repoName: string) =
+let generateTarget (packages: NugetRepoPackage seq) (repoName: string) (repoPrefix: string) =
     let jsonOptions = JsonSerializerOptions()
     jsonOptions.DefaultIgnoreCondition <- JsonIgnoreCondition.WhenWritingNull
     jsonOptions.Encoder <- JavaScriptEncoder.UnsafeRelaxedJsonEscaping
@@ -28,7 +29,7 @@ let generateTarget (packages: NugetRepoPackage seq) (repoName: string) =
     let sb = new StringBuilder()
     sb.Append($"{i}nuget_repo(\n") |> ignore
 
-    sb.Append($"{i}    name = \"{repoName}\",\n") |> ignore
+    sb.Append($"{i}    name = \"{repoPrefix}{repoName}\",\n") |> ignore
 
     sb.Append($"{i}    packages = [\n") |> ignore
 
@@ -57,7 +58,7 @@ let generateTarget (packages: NugetRepoPackage seq) (repoName: string) =
     sb.ToString()
 
 let addFileHeaderContent (sb: StringBuilder) (fileName: string) =
-    sb.Append($"\"Generated\"\n") |> ignore
+    sb.Append($"\"GENERATED\"\n") |> ignore
 
     sb.Append($"\n") |> ignore
 
@@ -70,12 +71,13 @@ let addFileHeaderContent (sb: StringBuilder) (fileName: string) =
     sb.Append($"    \"{fileName}\"") |> ignore
     sb.Append("\n") |> ignore
 
-let addExtensionFileContent (sb: StringBuilder) (repoName: string) =
+let addExtensionFileContent (sb: StringBuilder) (repoName: string) (repoPrefix: string) =
     sb.Append($"\"Generated\"\n") |> ignore
 
     sb.Append($"\n") |> ignore
 
-    sb.Append($"load(\":{repoName}.bzl\", _{repoName} = \"{repoName}\")") |> ignore
+    sb.Append($"load(\":{repoPrefix}{repoName}.bzl\", _{repoName} = \"{repoName}\")")
+    |> ignore
 
     sb.Append("\n") |> ignore
     sb.Append("\n") |> ignore
@@ -92,16 +94,16 @@ let addExtensionFileContent (sb: StringBuilder) (repoName: string) =
     sb.Append("\n") |> ignore
 
 
-let addGroupToFileContent (sb: StringBuilder) (repoName: string) (packages: NugetRepoPackage seq) =
+let addGroupToFileContent (sb: StringBuilder) (repoName: string) (repoPrefix: string) (packages: NugetRepoPackage seq) =
 
-    sb.Append(generateTarget packages repoName) |> ignore
+    sb.Append(generateTarget packages repoName repoPrefix) |> ignore
 
-let generateBazelFiles (repoName: string) (packages: NugetRepoPackage seq) (outputFolder: string) =
+let generateBazelFiles (repoName: string) (packages: NugetRepoPackage seq) (outputFolder: string) (repoPrefix: string) =
     let sb = new StringBuilder()
     addFileHeaderContent sb (repoName)
-    addGroupToFileContent sb repoName packages
-    File.WriteAllText($"{outputFolder}/{repoName}.bzl", sb.ToString())
+    addGroupToFileContent sb repoName repoPrefix packages
+    File.WriteAllText($"{outputFolder}/{repoPrefix}{repoName}.bzl", sb.ToString())
 
     let extensionSb = new StringBuilder()
-    addExtensionFileContent extensionSb (repoName)
-    File.WriteAllText($"{outputFolder}/{repoName}_extension.bzl", extensionSb.ToString())
+    addExtensionFileContent extensionSb (repoName) repoPrefix
+    File.WriteAllText($"{outputFolder}/{repoPrefix}{repoName}_extension.bzl", extensionSb.ToString())

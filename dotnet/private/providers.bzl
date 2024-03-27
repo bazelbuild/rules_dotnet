@@ -74,3 +74,12 @@ DotnetPublishBinaryInfo = provider(
         "repo_mapping_manifest": "File: the repo mapping file for the published binary",
     },
 )
+
+TargetingPackInfo = provider(
+    doc = "Information about a .Net targeting pack.",
+    fields = {
+        "assembly_runtime_infos": "list[DotnetAssemblyRuntimeInfo]: The runtime infos of the assemblies in the targeting pack",
+        "assembly_compile_infos": "list[DotnetAssemblyCompileInfo]: The compile infos of the assemblies in the targeting pack",
+        "nuget_infos": "list[NuGetInfo]: The NuGet infos of the assemblies in the targeting pack",
+    },
+)

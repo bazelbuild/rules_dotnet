@@ -57,6 +57,7 @@ FRAMEWORK_COMPATIBILITY = {
     "net471": ["net47"],
     "net472": ["net471"],
     "net48": ["net472"],
+    "net481": ["net48"],
 
     # .NET Core
     "netcoreapp1.0": ["netstandard1.6"],

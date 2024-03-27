@@ -5,10 +5,7 @@ open System.Text.Json
 open System.Collections.Generic
 open System.Text
 
-type TargetingPack =
-    { id: string
-      version: string
-      sha512: string option }
+type TargetingPack = { id: string; version: string }
 
 let private targetingPackLabel projectSdk tfm =
     $"//dotnet/private/sdk/targeting_packs:{projectSdk}_{tfm}"
@@ -42,8 +39,7 @@ let updateTargetingPacks targetingPacksFile =
 
                 let updatedPack =
                     { pack with
-                        version = latestVersion.ToFullString()
-                        sha512 = Some(packageInfo.sha512sri) }
+                        version = latestVersion.ToFullString() }
 
                 updatedPacks <- Array.append updatedPacks [| updatedPack |]
 
@@ -108,18 +104,46 @@ let generateTargetingPackTargets targetingPacksFile output =
 
     for sdk in targetingPacks do
         for tfmPacks in sdk.Value do
-            let label = targetingPackLabel sdk.Key tfmPacks.Key
-
             let packs =
                 tfmPacks.Value
-                |> Array.map (fun p -> $"\"@dotnet.packs//{p.id.ToLower()}.v{p.version}\"")
+                |> Array.map (fun p -> $"\"@dotnet.targeting_packs//{p.id.ToLower()}.v{p.version}\"")
                 |> String.concat ", "
 
-            let label = targetingPackLabel sdk.Key tfmPacks.Key
+            let label = $"{sdk.Key}_{tfmPacks.Key}"
 
-            sb.AppendLine($"    targeting_pack(name = \"{label}\", packs = [{packs}])")
+            sb.AppendLine(
+                $"    targeting_pack(name = \"{label}\", packs = [{packs}], target_framework = \"{tfmPacks.Key}\")"
+            )
             |> ignore
 
     sb.AppendLine() |> ignore
 
     File.WriteAllText(output, sb.ToString())
+
+let generateTargetingPacksNugetRepo (targetingPacksFile: string) (outputFolder: string) =
+    let targetingPacksJson = File.ReadAllText targetingPacksFile
+
+    let targetingPacks =
+        JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, TargetingPack[]>>>(targetingPacksJson)
+
+    let repoPackages: NugetRepo.NugetRepoPackage seq =
+        targetingPacks
+        |> Seq.collect (fun sdk -> sdk.Value |> Seq.collect (fun tfmPacks -> tfmPacks.Value))
+        |> Seq.distinctBy (fun p -> $"{p.id}.{p.version}")
+        |> Seq.map (fun pack ->
+            let packageInfo =
+                NugetHelpers.getPackageInfo pack.id pack.version NugetHelpers.nugetV3Feed
+
+            { name = $"{pack.id.ToLower()}.v{pack.version}"
+              id = pack.id
+              version = pack.version
+              sha512 = packageInfo.sha512sri
+              sources = [ NugetHelpers.nugetV3Feed ]
+              netrc = None
+              // TODO: Look into if the dependencies are needed for targeting packs like NETStandard.Library
+              dependencies = Dictionary<string, string seq>()
+              targeting_pack_overrides = packageInfo.overrides
+              framework_list = packageInfo.frameworkList })
+
+    NugetRepo.generateBazelFiles "targeting_packs" repoPackages outputFolder "dotnet."
+    ()

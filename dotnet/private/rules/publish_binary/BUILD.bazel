@@ -14,7 +14,6 @@ bzl_library(
     ],
     deps = [
         "//dotnet/private:providers",
-        "//dotnet/private:rids",
         "//dotnet/private/transitions:tfm_transition",
         "@bazel_skylib//lib:shell",
     ],
