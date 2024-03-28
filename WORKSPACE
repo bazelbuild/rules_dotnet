@@ -3,6 +3,8 @@ workspace(name = "rules_dotnet")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load(":internal_deps.bzl", "rules_dotnet_internal_deps")
 
+# gazelle:repo bazel_gazelle
+
 # Fetch deps needed only locally for development
 rules_dotnet_internal_deps()
 
@@ -11,11 +13,33 @@ load(
     "//dotnet:repositories.bzl",
     "dotnet_register_toolchains",
     "rules_dotnet_dependencies",
+    "rules_dotnet_gazelle_dependencies",
 )
 
 rules_dotnet_dependencies()
 
 dotnet_register_toolchains("dotnet", "8.0.100")
+
+rules_dotnet_gazelle_dependencies()
+
+# Gazelle, for generating bzl_library targets, go targets and test the dotnet gazelle plugin
+load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
+load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
+load("//:go_deps.bzl", "go_deps")
+
+# gazelle:repository_macro go_deps.bzl%go_deps
+go_deps()
+
+go_rules_dependencies()
+
+go_register_toolchains(version = "1.20.4")
+
+gazelle_dependencies()
+
+load("//dotnet:gazelle_setup.bzl", "rules_dotnet_gazelle_setup")
+
+# gazelle:repo bazel_gazelle
+rules_dotnet_gazelle_setup()
 
 # Fetch NuGet packages needed by end-users
 load("//dotnet:paket.rules_dotnet_nuget_packages.bzl", "rules_dotnet_nuget_packages")
@@ -39,18 +63,6 @@ bazel_skylib_workspace()
 load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
 
 rules_pkg_dependencies()
-
-load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
-
-############################################
-# Gazelle, for generating bzl_library targets
-load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
-
-go_rules_dependencies()
-
-go_register_toolchains(version = "1.20.5")
-
-gazelle_dependencies()
 
 # Used for Bazel CI
 http_archive(
