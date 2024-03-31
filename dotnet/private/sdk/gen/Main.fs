@@ -27,4 +27,17 @@ let main argv =
 
     TargetingPacks.generateTargetingPacksNugetRepo targetingPacksFile (Path.Combine(sdkFolder, "targeting_packs"))
 
+    // Generate the runtime pack targets
+    let runtimePacksFile = Path.Combine(sdkFolder, "gen", "runtime-packs.json")
+    RuntimePacks.updateRuntimePacks runtimePacksFile
+
+    RuntimePacks.writeRuntimePackLookupTable
+        runtimePacksFile
+        (Path.Combine(sdkFolder, "runtime_packs", "runtime_pack_lookup_table.bzl"))
+
+    RuntimePacks.generateRuntimePackTargets
+        runtimePacksFile
+        (Path.Combine(sdkFolder, "runtime_packs", "runtime_packs.bzl"))
+
+    RuntimePacks.generateRuntimePacksNugetRepo runtimePacksFile (Path.Combine(sdkFolder, "runtime_packs"))
     0

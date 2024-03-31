@@ -34,9 +34,6 @@ let updateTargetingPacks targetingPacksFile =
                     |> List.filter (fun v -> v.ToFullString().StartsWith($"{majorVersion}.{featureVersion}"))
                     |> List.max
 
-                let packageInfo =
-                    NugetHelpers.getPackageInfo pack.id (latestVersion.ToFullString()) NugetHelpers.nugetV3Feed
-
                 let updatedPack =
                     { pack with
                         version = latestVersion.ToFullString() }

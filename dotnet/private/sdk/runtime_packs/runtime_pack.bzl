@@ -1,9 +1,9 @@
-".Net Targeting Pack"
+".Net Runtime Pack"
 
-load("//dotnet/private:providers.bzl", "DotnetAssemblyCompileInfo", "DotnetAssemblyRuntimeInfo", "DotnetTargetingPackInfo", "NuGetInfo")
+load("//dotnet/private:providers.bzl", "DotnetAssemblyCompileInfo", "DotnetAssemblyRuntimeInfo", "DotnetRuntimePackInfo", "NuGetInfo")
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 
-def _targeting_pack_impl(ctx):
+def _runtime_pack_impl(ctx):
     compile_infos = []
     runtime_infos = []
     nuget_infos = []
@@ -15,22 +15,25 @@ def _targeting_pack_impl(ctx):
         if pack[NuGetInfo]:
             nuget_infos.append(pack[NuGetInfo])
 
-    return [DotnetTargetingPackInfo(
-        assembly_compile_infos = compile_infos,
+    return [DotnetRuntimePackInfo(
+        runtime_identifier = ctx.attr.runtime_identifier,
         assembly_runtime_infos = runtime_infos,
         nuget_infos = nuget_infos,
     )]
 
-targeting_pack = rule(
-    _targeting_pack_impl,
-    doc = """.Net Targeting Pack""",
+runtime_pack = rule(
+    _runtime_pack_impl,
+    doc = """.Net runtime Pack""",
     attrs = {
         "packs": attr.label_list(
             cfg = tfm_transition,
-            doc = "List of .Net Targeting Packs that make this pack",
+            doc = "List of .Net runtime Packs that make this pack",
         ),
         "target_framework": attr.string(
-            doc = "The target framework of the targeting pack",
+            doc = "The target framework of the runtime pack",
+        ),
+        "runtime_identifier": attr.string(
+            doc = "The runtime identifier of the runtime pack",
         ),
     },
 )

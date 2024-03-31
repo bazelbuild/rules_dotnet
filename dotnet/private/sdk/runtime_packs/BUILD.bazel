@@ -1,0 +1,18 @@
+load(":runtime_pack.bzl", "runtime_pack")
+load(":runtime_packs.bzl", "runtime_packs")
+
+runtime_packs()
+
+label_setting(
+    name = "runtime_pack",
+    build_setting_default = ":empty_pack",
+    visibility = ["//visibility:public"],
+)
+
+# This target is only for the default value of the label setting
+# and the transition should always transition from it to something else
+runtime_pack(
+    name = "empty_pack",
+    packs = [],
+    visibility = ["//visibility:public"],
+)
