@@ -1,0 +1,18 @@
+load(":apphost_pack.bzl", "apphost_pack")
+load(":apphost_packs.bzl", "apphost_packs")
+
+apphost_packs()
+
+label_setting(
+    name = "apphost_pack",
+    build_setting_default = ":empty_pack",
+    visibility = ["//visibility:public"],
+)
+
+# This target is only for the default value of the label setting
+# and the transition should always transition from it to something else
+apphost_pack(
+    name = "empty_pack",
+    packs = [],
+    visibility = ["//visibility:public"],
+)

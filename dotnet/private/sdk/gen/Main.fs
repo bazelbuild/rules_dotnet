@@ -40,4 +40,18 @@ let main argv =
         (Path.Combine(sdkFolder, "runtime_packs", "runtime_packs.bzl"))
 
     RuntimePacks.generateRuntimePacksNugetRepo runtimePacksFile (Path.Combine(sdkFolder, "runtime_packs"))
+
+    // Generate the apphost pack targets
+    let apphostPacksFile = Path.Combine(sdkFolder, "gen", "apphost-packs.json")
+    ApphostPacks.updateApphostPacks apphostPacksFile
+
+    ApphostPacks.writeApphostPackLookupTable
+        apphostPacksFile
+        (Path.Combine(sdkFolder, "apphost_packs", "apphost_pack_lookup_table.bzl"))
+
+    ApphostPacks.generateApphostPackTargets
+        apphostPacksFile
+        (Path.Combine(sdkFolder, "apphost_packs", "apphost_packs.bzl"))
+
+    ApphostPacks.generateApphostPacksNugetRepo apphostPacksFile (Path.Combine(sdkFolder, "apphost_packs"))
     0
