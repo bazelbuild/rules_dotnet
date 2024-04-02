@@ -20,7 +20,7 @@ def _platform_to_rid():
             os_constraint = platform.split(":")[1]
 
     if cpu_constraint == None or os_constraint == None:
-        fail("Could not determine the cpu or os constraint")
+        fail("Could not determine the cpu or os constraint: {}/{}".format(cpu_constraint, os_constraint))
 
     rid_cpu = None
     rid_os = None
@@ -33,7 +33,7 @@ def _platform_to_rid():
 
     if cpu_constraint == "x86_64":
         rid_cpu = "x64"
-    elif cpu_constraint == "aarc64" or cpu_constraint == "arm64":
+    elif cpu_constraint == "aarch64" or cpu_constraint == "arm64":
         rid_cpu = "arm64"
 
     if rid_cpu == None or rid_os == None:
