@@ -2,7 +2,6 @@ module Paket2Bazel.Paket
 
 open Paket
 open System.Collections.Generic
-open FSharpx.Collections
 open Paket2Bazel.Models
 open System.IO
 open System.Security.Cryptography
@@ -65,11 +64,7 @@ let getClosestFrameworkFiles (targetFramework: NuGetFramework) (frameworkItems: 
     let frameworkReducer = FrameworkReducer()
 
     let nearest =
-        frameworkReducer.GetNearest(
-            targetFramework,
-            (frameworkItems
-             |> Seq.map (fun i -> i.TargetFramework))
-        )
+        frameworkReducer.GetNearest(targetFramework, (frameworkItems |> Seq.map (fun i -> i.TargetFramework)))
 
     let frameworkFileItems =
         frameworkItems
@@ -129,8 +124,7 @@ let getOverrides (packageName: string) (packageVersion: string) (packageReader: 
         let path = Path.Combine((getPackageFolderPath packageName packageVersion), f)
         let lines = File.ReadAllLines(path)
 
-        lines
-        |> Array.filter (fun l -> not (String.IsNullOrEmpty l)))
+        lines |> Array.filter (fun l -> not (String.IsNullOrEmpty l)))
     |> Option.defaultValue [||]
 
 let getFrameworkList (packageName: string) (packageVersion: string) (packageReader: PackageFolderReader) =
@@ -157,7 +151,7 @@ let getDependencies dependenciesFile (cache: Dictionary<string, Package>) =
     let maybeDeps = Dependencies.TryLocate(dependenciesFile)
 
     match maybeDeps with
-    | Some (deps) ->
+    | Some(deps) ->
         deps.SimplePackagesRestore()
 
         let groups =
@@ -166,10 +160,7 @@ let getDependencies dependenciesFile (cache: Dictionary<string, Package>) =
             |> Seq.map (fun (group, packages) ->
 
                 let sources =
-                    deps.GetDependenciesFile().Groups.Item(
-                        Domain.GroupName group
-                    )
-                        .Sources
+                    deps.GetDependenciesFile().Groups.Item(Domain.GroupName group).Sources
                     |> Seq.map (fun s -> s.Url)
 
                 let packagesInGroup =
@@ -198,8 +189,7 @@ let getDependencies dependenciesFile (cache: Dictionary<string, Package>) =
                                   overrides = getOverrides name version packageReader
                                   frameworkList = getFrameworkList name version packageReader }
 
-                            cache.Add((sprintf "%s-%s" group name), package)
-                            |> ignore
+                            cache.Add((sprintf "%s-%s" group name), package) |> ignore
 
                             package)
 

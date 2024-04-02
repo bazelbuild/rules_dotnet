@@ -1,7 +1,7 @@
 load("//dotnet:defs.bzl", "fsharp_binary")
 
 fsharp_binary(
-    name = "paket2bazel.exe",
+    name = "paket2bazel",
     srcs = [
         # Keep order
         "Models.fs",
@@ -9,15 +9,13 @@ fsharp_binary(
         "Gen.fs",
         "Main.fs",
     ],
-    target_frameworks = ["net6.0"],
+    target_frameworks = ["net8.0"],
     visibility = ["//visibility:public"],
     deps = [
+        "//dotnet/private/sdk/gen",
         "@paket.paket2bazel_dependencies//argu",
         "@paket.paket2bazel_dependencies//chessie",
         "@paket.paket2bazel_dependencies//fsharp.core",
-        "@paket.paket2bazel_dependencies//fsharp.systemtextjson",
-        "@paket.paket2bazel_dependencies//fsharpx.collections",
-        "@paket.paket2bazel_dependencies//fsharpx.extras",
         "@paket.paket2bazel_dependencies//nuget.frameworks",
         "@paket.paket2bazel_dependencies//nuget.packagemanagement",
         "@paket.paket2bazel_dependencies//nuget.packaging",

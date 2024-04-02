@@ -1,38 +1,38 @@
 ".Net Runtime Pack"
 
-load("//dotnet/private:providers.bzl", "DotnetAssemblyCompileInfo", "DotnetAssemblyRuntimeInfo", "DotnetRuntimePackInfo", "NuGetInfo")
+load("//dotnet/private:providers.bzl", "DotnetApphostPackInfo", "DotnetAssemblyRuntimeInfo")
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 
 def _apphost_pack_impl(ctx):
-    compile_infos = []
-    apphost_infos = []
-    nuget_infos = []
-    for pack in ctx.attr.packs:
-        if pack[DotnetAssemblyCompileInfo]:
-            compile_infos.append(pack[DotnetAssemblyCompileInfo])
-        if pack[DotnetAssemblyRuntimeInfo]:
-            apphost_infos.append(pack[DotnetAssemblyRuntimeInfo])
-        if pack[NuGetInfo]:
-            nuget_infos.append(pack[NuGetInfo])
+    # This is a workaround because label settings require a default target
+    # so we create a default target with `pack` set as None.
+    if ctx.label.name == "empty_pack":
+        apphost_file = None
+    else:
+        apphost_file = None
+        for f in ctx.attr.pack[0][DotnetAssemblyRuntimeInfo].native:
+            if f.basename == "apphost" or f.basename == "apphost.exe":
+                apphost_file = f
 
-    return [DotnetRuntimePackInfo(
-        apphost_identifier = ctx.attr.apphost_identifier,
-        assembly_apphost_infos = apphost_infos,
-        nuget_infos = nuget_infos,
+        if apphost_file == None:
+            fail("Apphost file not found in apphost pack")
+
+    return [DotnetApphostPackInfo(
+        apphost = apphost_file,
     )]
 
 apphost_pack = rule(
     _apphost_pack_impl,
     doc = """.Net apphost Pack""",
     attrs = {
-        "packs": attr.label_list(
+        "pack": attr.label(
             cfg = tfm_transition,
-            doc = "List of .Net apphost Packs that make this pack",
+            doc = "The App Host nuget package target",
         ),
         "target_framework": attr.string(
             doc = "The target framework of the apphost pack",
         ),
-        "apphost_identifier": attr.string(
+        "runtime_identifier": attr.string(
             doc = "The apphost identifier of the apphost pack",
         ),
     },

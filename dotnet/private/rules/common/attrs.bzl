@@ -2,6 +2,7 @@
 
 load("@bazel_skylib//lib:dicts.bzl", "dicts")
 load("//dotnet/private:providers.bzl", "DotnetAssemblyCompileInfo", "DotnetAssemblyRuntimeInfo")
+load("//dotnet/private/sdk/apphost_packs:apphost_pack_transition.bzl", "apphost_pack_transition")
 load("//dotnet/private/sdk/targeting_packs:targeting_pack_transition.bzl", "targeting_pack_transition")
 load("//dotnet/private/transitions:default_transition.bzl", "default_transition")
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
@@ -62,11 +63,6 @@ COMMON_ATTRS = {
               "See https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview",
         default = "default",
         values = ["default", "web"],
-    ),
-    "runtime_identifier": attr.string(
-        doc = "The runtime identifier that is being targeted. " +
-              "See https://docs.microsoft.com/en-us/dotnet/core/rid-catalog",
-        mandatory = True,
     ),
     "defines": attr.string_list(
         doc = "A list of preprocessor directive symbols to define.",
@@ -165,6 +161,11 @@ LIBRARY_COMMON_ATTRS = {
 
 # These are attributes that are common across all binary/test rules
 BINARY_COMMON_ATTRS = {
+    "roll_forward_behavior": attr.string(
+        doc = "The roll forward behavior that should be used: https://learn.microsoft.com/en-us/dotnet/core/versions/selection#control-roll-forward-behavior",
+        default = "Major",
+        values = ["Minor", "Major", "LatestPatch", "LatestMinor", "LatestMajor", "Disable"],
+    ),
     "winexe": attr.bool(
         doc = "If true, output a winexe-style executable, otherwise" +
               "output a console-style executable.",
@@ -188,6 +189,10 @@ BINARY_COMMON_ATTRS = {
         doc = "A template file for the launcher on Windows",
         default = "//dotnet/private:launcher.bat.tpl",
         allow_single_file = True,
+    ),
+    "_apphost_pack": attr.label(
+        default = "//dotnet/private/sdk/apphost_packs:apphost_pack",
+        cfg = apphost_pack_transition,
     ),
 }
 

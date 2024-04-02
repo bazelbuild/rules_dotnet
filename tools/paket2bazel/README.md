@@ -21,7 +21,7 @@ Then you needs to run `paket2bazel` to generate the `paket.bzl` file which will 
 loaded in your `WORKSPACE` file.
 
 ```sh
-bazel run @rules_dotnet//tools/paket2bazel:paket2bazel.exe -- --dependencies-file $(pwd)/paket.dependencies  --output-folder $(pwd)/deps
+bazel run @rules_dotnet//tools/paket2bazel -- --dependencies-file $(pwd)/paket.dependencies  --output-folder $(pwd)/deps
 ```
 
 Next you need to add the following to your `WORKSPACE` file

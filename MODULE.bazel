@@ -8,7 +8,7 @@ module(
 )
 
 dotnet = use_extension("@rules_dotnet//dotnet:extensions.bzl", "dotnet")
-dotnet.toolchain(dotnet_version = "8.0.100")
+dotnet.toolchain(dotnet_version = "8.0.200")
 use_repo(dotnet, "dotnet_toolchains")
 
 register_toolchains("@dotnet_toolchains//:all")
@@ -21,6 +21,12 @@ use_repo(rules_dotnet_nuget_packages_extension, "paket.rules_dotnet_nuget_packag
 
 targeting_packs_extension = use_extension("//dotnet/private/sdk/targeting_packs:dotnet.targeting_packs_extension.bzl", "targeting_packs_extension")
 use_repo(targeting_packs_extension, "dotnet.targeting_packs")
+
+runtime_packs_extension = use_extension("//dotnet/private/sdk/runtime_packs:dotnet.runtime_packs_extension.bzl", "runtime_packs_extension")
+use_repo(runtime_packs_extension, "dotnet.runtime_packs")
+
+apphost_packs_extension = use_extension("//dotnet/private/sdk/apphost_packs:dotnet.apphost_packs_extension.bzl", "apphost_packs_extension")
+use_repo(apphost_packs_extension, "dotnet.apphost_packs")
 
 bazel_dep(name = "bazel_skylib", version = "1.4.2")
 bazel_dep(name = "platforms", version = "0.0.7")

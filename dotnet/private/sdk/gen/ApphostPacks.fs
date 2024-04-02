@@ -15,32 +15,28 @@ let updateApphostPacks apphostPacksFile =
     let apphostPacks = File.ReadAllText apphostPacksFile
 
     let apphostPacks =
-        JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, ApphostPack[]>>>(apphostPacks)
+        JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, ApphostPack>>>(apphostPacks)
 
-    let updatedApphostPacks = Dictionary<string, Dictionary<string, ApphostPack[]>>()
+    let updatedApphostPacks = Dictionary<string, Dictionary<string, ApphostPack>>()
 
     for tfmPacks in apphostPacks do
-        let updatedtfmPacks = Dictionary<string, ApphostPack[]>()
+        let updatedtfmPacks = Dictionary<string, ApphostPack>()
 
         for ridPacks in tfmPacks.Value do
-            let mutable updatedPacks: ApphostPack[] = Array.empty
+            let pack = ridPacks.Value
+            let majorVersion = pack.version.Split('.')[0]
+            let featureVersion = pack.version.Split('.')[1]
 
-            for pack in ridPacks.Value do
-                let majorVersion = pack.version.Split('.')[0]
-                let featureVersion = pack.version.Split('.')[1]
+            let latestVersion =
+                NugetHelpers.getAllVersions pack.id
+                |> List.filter (fun v -> v.ToFullString().StartsWith($"{majorVersion}.{featureVersion}"))
+                |> List.max
 
-                let latestVersion =
-                    NugetHelpers.getAllVersions pack.id
-                    |> List.filter (fun v -> v.ToFullString().StartsWith($"{majorVersion}.{featureVersion}"))
-                    |> List.max
+            let updatedPack =
+                { pack with
+                    version = latestVersion.ToFullString() }
 
-                let updatedPack =
-                    { pack with
-                        version = latestVersion.ToFullString() }
-
-                updatedPacks <- Array.append updatedPacks [| updatedPack |]
-
-            updatedtfmPacks.Add(ridPacks.Key, updatedPacks |> Array.sortBy (fun p -> p.id))
+            updatedtfmPacks.Add(ridPacks.Key, updatedPack)
 
         updatedApphostPacks.Add(tfmPacks.Key, updatedtfmPacks)
 
@@ -54,7 +50,7 @@ let writeApphostPackLookupTable apphostPacksFile output =
     let apphostPacksJson = File.ReadAllText apphostPacksFile
 
     let apphostPacks =
-        JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, ApphostPack[]>>>(apphostPacksJson)
+        JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, ApphostPack>>>(apphostPacksJson)
 
     let lookupTable = Dictionary<string, Dictionary<string, string>>()
 
@@ -84,7 +80,7 @@ let generateApphostPackTargets apphostPacksFile output =
     let apphostPacksJson = File.ReadAllText apphostPacksFile
 
     let apphostPacks =
-        JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, ApphostPack[]>>>(apphostPacksJson)
+        JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, ApphostPack>>>(apphostPacksJson)
 
     let sb = new StringBuilder()
 
@@ -101,15 +97,13 @@ let generateApphostPackTargets apphostPacksFile output =
 
     for tfmPacks in apphostPacks do
         for ridPacks in tfmPacks.Value do
-            let packs =
-                ridPacks.Value
-                |> Array.map (fun p -> $"\"@dotnet.apphost_packs//{p.id.ToLower()}.v{p.version}\"")
-                |> String.concat ", "
+            let pack =
+                $"\"@dotnet.apphost_packs//{ridPacks.Value.id.ToLower()}.v{ridPacks.Value.version}\""
 
             let label = $"{tfmPacks.Key}_{ridPacks.Key}"
 
             sb.AppendLine(
-                $"    apphost_pack(name = \"{label}\", packs = [{packs}], target_framework = \"{tfmPacks.Key}\", apphost_identifier = \"{ridPacks.Key}\")"
+                $"    apphost_pack(name = \"{label}\", pack = {pack}, target_framework = \"{tfmPacks.Key}\", runtime_identifier = \"{ridPacks.Key}\")"
             )
             |> ignore
 
@@ -121,11 +115,11 @@ let generateApphostPacksNugetRepo apphostPacksFile outputFolder =
     let apphostPacksJson = File.ReadAllText apphostPacksFile
 
     let apphostPacks =
-        JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, ApphostPack[]>>>(apphostPacksJson)
+        JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, ApphostPack>>>(apphostPacksJson)
 
     let repoPackages: NugetRepo.NugetRepoPackage seq =
         apphostPacks
-        |> Seq.collect (fun sdk -> sdk.Value |> Seq.collect (fun tfmPacks -> tfmPacks.Value))
+        |> Seq.collect (fun sdk -> sdk.Value |> Seq.map (fun tfmPacks -> tfmPacks.Value))
         |> Seq.distinctBy (fun p -> $"{p.id}.{p.version}")
         |> Seq.map (fun pack ->
             let packageInfo =

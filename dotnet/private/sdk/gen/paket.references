@@ -1,9 +1,6 @@
-group sdk_gen
+group paket2bazel_dependencies
     FSharp.Core
     Argu
     Paket.Core
     NuGet.PackageManagement
-    FSharpx.Extras
-    FSharpx.Collections
-    FSharp.SystemTextJson
     System.Text.Json

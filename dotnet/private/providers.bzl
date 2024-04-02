@@ -65,21 +65,27 @@ DotnetBinaryInfo = provider(
     },
 )
 
-DotnetPublishBinaryInfo = provider(
-    doc = "Information about a published .Net binary",
-    fields = {
-        "runtime_packs": "list[AssemblyInfo]: Optional information about the used runtime packs. Used by self-contained publishing",
-        "target_framework": "string: The target framework of the published binary",
-        "self_contained": "bool: True if the binary is self-contained",
-        "repo_mapping_manifest": "File: the repo mapping file for the published binary",
-    },
-)
-
-TargetingPackInfo = provider(
+DotnetTargetingPackInfo = provider(
     doc = "Information about a .Net targeting pack.",
     fields = {
         "assembly_runtime_infos": "list[DotnetAssemblyRuntimeInfo]: The runtime infos of the assemblies in the targeting pack",
         "assembly_compile_infos": "list[DotnetAssemblyCompileInfo]: The compile infos of the assemblies in the targeting pack",
         "nuget_infos": "list[NuGetInfo]: The NuGet infos of the assemblies in the targeting pack",
+    },
+)
+
+DotnetRuntimePackInfo = provider(
+    doc = "Information about a .Net runtime pack.",
+    fields = {
+        "runtime_identifier": "string: The runtime identifier of the runtime pack",
+        "assembly_runtime_infos": "list[DotnetAssemblyRuntimeInfo]: The runtime infos of the assemblies in the targeting pack",
+        "nuget_infos": "list[NuGetInfo]: The NuGet infos of the assemblies in the targeting pack",
+    },
+)
+
+DotnetApphostPackInfo = provider(
+    doc = "Information about a .Net runtime pack.",
+    fields = {
+        "apphost": "File: The apphost file",
     },
 )

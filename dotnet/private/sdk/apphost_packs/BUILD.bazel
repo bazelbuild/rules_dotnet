@@ -1,3 +1,4 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load(":apphost_pack.bzl", "apphost_pack")
 load(":apphost_packs.bzl", "apphost_packs")
 
@@ -13,6 +14,39 @@ label_setting(
 # and the transition should always transition from it to something else
 apphost_pack(
     name = "empty_pack",
-    packs = [],
+    pack = None,
     visibility = ["//visibility:public"],
+)
+
+bzl_library(
+    name = "apphost_pack_transition",
+    srcs = ["apphost_pack_transition.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+    deps = [":apphost_pack_lookup_table"],
+)
+
+bzl_library(
+    name = "dotnet.apphost_packs",
+    srcs = ["dotnet.apphost_packs.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+    deps = ["@rules_dotnet//dotnet:defs"],
+)
+
+bzl_library(
+    name = "dotnet.apphost_packs_extension",
+    srcs = ["dotnet.apphost_packs_extension.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+    deps = [":dotnet.apphost_packs"],
+)
+
+bzl_library(
+    name = "apphost_pack_lookup_table",
+    srcs = ["apphost_pack_lookup_table.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+)
+
+bzl_library(
+    name = "apphost_packs",
+    srcs = ["apphost_packs.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
 )

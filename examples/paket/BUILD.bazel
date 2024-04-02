@@ -1,7 +1,7 @@
 load("@rules_dotnet//dotnet:defs.bzl", "fsharp_binary")
 
 fsharp_binary(
-    name = "paket_example.exe",
+    name = "paket_example",
     srcs = [
         # Keep order
         "Main.fs",
@@ -17,7 +17,7 @@ fsharp_binary(
 
 # NOTE: Do not mix package groups. Mixing package groups can lead to unexpected results.
 fsharp_binary(
-    name = "paket_example_with_dependency_group.exe",
+    name = "paket_example_with_dependency_group",
     srcs = [
         # Keep order
         "Main.fs",

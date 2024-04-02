@@ -13,12 +13,12 @@ load(
     "is_standard_framework",
     "to_rlocation_path",
 )
-load("//dotnet/private:providers.bzl", "DotnetBinaryInfo")
+load("//dotnet/private:providers.bzl", "DotnetApphostPackInfo", "DotnetBinaryInfo")
 
 def _create_shim_exe(ctx, dll):
     windows_constraint = ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]
 
-    apphost = ctx.toolchains["//dotnet:toolchain_type"].apphost
+    apphost = ctx.attr._apphost_pack[0][DotnetApphostPackInfo].apphost
     output = ctx.actions.declare_file(paths.replace_extension(dll.basename, ".exe" if ctx.target_platform_has_constraint(windows_constraint) else ""), sibling = dll)
 
     ctx.actions.run(
@@ -106,7 +106,7 @@ def build_binary(ctx, compile_action):
             target_framework = tfm,
             project_sdk = ctx.attr.project_sdk,
             is_self_contained = False,
-            toolchain = ctx.toolchains["//dotnet:toolchain_type"],
+            roll_forward_behavior = ctx.attr.roll_forward_behavior,
         )
 
         # Add additional lookup paths so that we can avoid copying all DLLs
@@ -132,7 +132,6 @@ def build_binary(ctx, compile_action):
             is_self_contained = False,
             target_assembly_runtime_info = runtime_provider,
             transitive_runtime_deps = transitive_runtime_deps,
-            runtime_identifier = ctx.attr.runtime_identifier,
             use_relative_paths = True,
         )
 

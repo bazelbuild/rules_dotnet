@@ -10,84 +10,6 @@ exports_files(
     visibility = ["//visibility:public"],
 )
 
-config_setting(
-    name = "linux",
-    constraint_values = [
-        "@platforms//os:linux",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-config_setting(
-    name = "macos",
-    constraint_values = [
-        "@platforms//os:macos",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-config_setting(
-    name = "windows",
-    constraint_values = [
-        "@platforms//os:windows",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-config_setting(
-    name = "linux-x64",
-    constraint_values = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:linux",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-config_setting(
-    name = "linux-arm64",
-    constraint_values = [
-        "@platforms//cpu:arm64",
-        "@platforms//os:linux",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-config_setting(
-    name = "macos-x64",
-    constraint_values = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:macos",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-config_setting(
-    name = "macos-arm64",
-    constraint_values = [
-        "@platforms//cpu:aarch64",
-        "@platforms//os:macos",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-config_setting(
-    name = "windows-x64",
-    constraint_values = [
-        "@platforms//cpu:x86_64",
-        "@platforms//os:windows",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-config_setting(
-    name = "windows-arm64",
-    constraint_values = [
-        "@platforms//cpu:arm64",
-        "@platforms//os:windows",
-    ],
-    visibility = ["//visibility:public"],
-)
-
 bzl_library(
     name = "common",
     srcs = ["common.bzl"],
@@ -95,6 +17,7 @@ bzl_library(
     deps = [
         ":providers",
         ":semver",
+        "//dotnet/private/sdk:rids",
         "@bazel_skylib//lib:sets",
     ],
 )
@@ -112,6 +35,12 @@ bzl_library(
 )
 
 bzl_library(
+    name = "rids",
+    srcs = ["rids.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+)
+
+bzl_library(
     name = "semver",
     srcs = ["semver.bzl"],
     visibility = ["//dotnet:__subpackages__"],
@@ -120,5 +49,11 @@ bzl_library(
 bzl_library(
     name = "toolchains_repo",
     srcs = ["toolchains_repo.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+)
+
+bzl_library(
+    name = "versions",
+    srcs = ["versions.bzl"],
     visibility = ["//dotnet:__subpackages__"],
 )

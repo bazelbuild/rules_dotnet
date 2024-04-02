@@ -8,6 +8,7 @@ load(
 publish_binary(
     name = "framework_dependent",
     binary = "//dotnet/private/tests/publish/app_to_publish",
+    roll_forward_behavior = "Major",
     self_contained = False,
     target_framework = "net6.0",
 )

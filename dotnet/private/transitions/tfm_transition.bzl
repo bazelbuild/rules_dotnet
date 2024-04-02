@@ -1,6 +1,7 @@
 "A transition that transitions between compatible target frameworks"
 
 load("@bazel_skylib//lib:dicts.bzl", "dicts")
+load("@local_config_platform//:constraints.bzl", "HOST_CONSTRAINTS")
 load(
     "//dotnet/private:common.bzl",
     "FRAMEWORK_COMPATIBILITY",
@@ -8,6 +9,34 @@ load(
 )
 load("//dotnet/private/sdk:rids.bzl", "RUNTIME_GRAPH")
 load("//dotnet/private/transitions:common.bzl", "FRAMEWORK_COMPATABILITY_TRANSITION_OUTPUTS", "RID_COMPATABILITY_TRANSITION_OUTPUTS")
+
+def _platform_to_rid():
+    cpu_constraint = None
+    os_constraint = None
+    for platform in HOST_CONSTRAINTS:
+        if platform.startswith("@platforms//cpu"):
+            cpu_constraint = platform.split(":")[1]
+        if platform.startswith("@platforms//os"):
+            os_constraint = platform.split(":")[1]
+
+    if cpu_constraint == None or os_constraint == None:
+        fail("Could not determine the cpu or os constraint")
+
+    rid_cpu = None
+    rid_os = None
+    if os_constraint == "windows":
+        rid_os = "win"
+    elif os_constraint == "linux":
+        rid_os = "linux"
+    elif os_constraint == "macos":
+        rid_os = "osx"
+
+    if cpu_constraint == "x86_64":
+        rid_cpu = "x64"
+    elif cpu_constraint == "aarc64" or cpu_constraint == "arm64":
+        rid_cpu = "arm64"
+
+    return "{}-{}".format(rid_os, rid_cpu)
 
 def _impl(settings, attr):
     incoming_tfm = settings["//dotnet:target_framework"]
@@ -27,8 +56,11 @@ def _impl(settings, attr):
         fail("Label {0} does not support the target framework: {1}".format(attr.name, incoming_tfm))
 
     runtime_identifier = settings["//dotnet:rid"]
-    if hasattr(attr, "runtime_identifier"):
+    if hasattr(attr, "runtime_identifier") and attr.runtime_identifier != "":
         runtime_identifier = attr.runtime_identifier
+    elif runtime_identifier == "base":
+        # If the runtime_identifier attribute is not set and the incoming value is "base", we will use the platform to determine the rid since upstream target has set the runtime identifier
+        runtime_identifier = _platform_to_rid()
 
     return dicts.add({"//dotnet:target_framework": transitioned_tfm}, {"//dotnet:rid": runtime_identifier}, FRAMEWORK_COMPATABILITY_TRANSITION_OUTPUTS[transitioned_tfm], RID_COMPATABILITY_TRANSITION_OUTPUTS[runtime_identifier])
 

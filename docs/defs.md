@@ -86,7 +86,7 @@ nuget_archive(<a href="#nuget_archive-name">name</a>, <a href="#nuget_archive-id
 ## csharp_binary
 
 <pre>
-csharp_binary(<a href="#csharp_binary-runtime_identifier">runtime_identifier</a>, <a href="#csharp_binary-use_apphost_shim">use_apphost_shim</a>, <a href="#csharp_binary-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#csharp_binary-warnings_as_errors">warnings_as_errors</a>,
+csharp_binary(<a href="#csharp_binary-use_apphost_shim">use_apphost_shim</a>, <a href="#csharp_binary-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#csharp_binary-warnings_as_errors">warnings_as_errors</a>,
               <a href="#csharp_binary-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#csharp_binary-warning_level">warning_level</a>, <a href="#csharp_binary-strict_deps">strict_deps</a>, <a href="#csharp_binary-kwargs">kwargs</a>)
 </pre>
 
@@ -97,7 +97,6 @@ csharp_binary(<a href="#csharp_binary-runtime_identifier">runtime_identifier</a>
 
 | Name  | Description | Default Value |
 | :------------- | :------------- | :------------- |
-| <a id="csharp_binary-runtime_identifier"></a>runtime_identifier |  <p align="center"> - </p>   |  <code>None</code> |
 | <a id="csharp_binary-use_apphost_shim"></a>use_apphost_shim |  <p align="center"> - </p>   |  <code>True</code> |
 | <a id="csharp_binary-treat_warnings_as_errors"></a>treat_warnings_as_errors |  <p align="center"> - </p>   |  <code>None</code> |
 | <a id="csharp_binary-warnings_as_errors"></a>warnings_as_errors |  <p align="center"> - </p>   |  <code>None</code> |
@@ -112,8 +111,8 @@ csharp_binary(<a href="#csharp_binary-runtime_identifier">runtime_identifier</a>
 ## csharp_library
 
 <pre>
-csharp_library(<a href="#csharp_library-runtime_identifier">runtime_identifier</a>, <a href="#csharp_library-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#csharp_library-warnings_as_errors">warnings_as_errors</a>,
-               <a href="#csharp_library-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#csharp_library-warning_level">warning_level</a>, <a href="#csharp_library-strict_deps">strict_deps</a>, <a href="#csharp_library-kwargs">kwargs</a>)
+csharp_library(<a href="#csharp_library-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#csharp_library-warnings_as_errors">warnings_as_errors</a>, <a href="#csharp_library-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#csharp_library-warning_level">warning_level</a>,
+               <a href="#csharp_library-strict_deps">strict_deps</a>, <a href="#csharp_library-kwargs">kwargs</a>)
 </pre>
 
 
@@ -123,7 +122,6 @@ csharp_library(<a href="#csharp_library-runtime_identifier">runtime_identifier</
 
 | Name  | Description | Default Value |
 | :------------- | :------------- | :------------- |
-| <a id="csharp_library-runtime_identifier"></a>runtime_identifier |  <p align="center"> - </p>   |  <code>None</code> |
 | <a id="csharp_library-treat_warnings_as_errors"></a>treat_warnings_as_errors |  <p align="center"> - </p>   |  <code>None</code> |
 | <a id="csharp_library-warnings_as_errors"></a>warnings_as_errors |  <p align="center"> - </p>   |  <code>None</code> |
 | <a id="csharp_library-warnings_not_as_errors"></a>warnings_not_as_errors |  <p align="center"> - </p>   |  <code>None</code> |
@@ -137,8 +135,8 @@ csharp_library(<a href="#csharp_library-runtime_identifier">runtime_identifier</
 ## csharp_nunit_test
 
 <pre>
-csharp_nunit_test(<a href="#csharp_nunit_test-runtime_identifier">runtime_identifier</a>, <a href="#csharp_nunit_test-use_apphost_shim">use_apphost_shim</a>, <a href="#csharp_nunit_test-treat_warnings_as_errors">treat_warnings_as_errors</a>,
-                  <a href="#csharp_nunit_test-warnings_as_errors">warnings_as_errors</a>, <a href="#csharp_nunit_test-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#csharp_nunit_test-warning_level">warning_level</a>, <a href="#csharp_nunit_test-strict_deps">strict_deps</a>, <a href="#csharp_nunit_test-kwargs">kwargs</a>)
+csharp_nunit_test(<a href="#csharp_nunit_test-use_apphost_shim">use_apphost_shim</a>, <a href="#csharp_nunit_test-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#csharp_nunit_test-warnings_as_errors">warnings_as_errors</a>,
+                  <a href="#csharp_nunit_test-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#csharp_nunit_test-warning_level">warning_level</a>, <a href="#csharp_nunit_test-strict_deps">strict_deps</a>, <a href="#csharp_nunit_test-kwargs">kwargs</a>)
 </pre>
 
 
@@ -148,7 +146,6 @@ csharp_nunit_test(<a href="#csharp_nunit_test-runtime_identifier">runtime_identi
 
 | Name  | Description | Default Value |
 | :------------- | :------------- | :------------- |
-| <a id="csharp_nunit_test-runtime_identifier"></a>runtime_identifier |  <p align="center"> - </p>   |  <code>None</code> |
 | <a id="csharp_nunit_test-use_apphost_shim"></a>use_apphost_shim |  <p align="center"> - </p>   |  <code>True</code> |
 | <a id="csharp_nunit_test-treat_warnings_as_errors"></a>treat_warnings_as_errors |  <p align="center"> - </p>   |  <code>None</code> |
 | <a id="csharp_nunit_test-warnings_as_errors"></a>warnings_as_errors |  <p align="center"> - </p>   |  <code>None</code> |
@@ -163,8 +160,8 @@ csharp_nunit_test(<a href="#csharp_nunit_test-runtime_identifier">runtime_identi
 ## csharp_test
 
 <pre>
-csharp_test(<a href="#csharp_test-runtime_identifier">runtime_identifier</a>, <a href="#csharp_test-use_apphost_shim">use_apphost_shim</a>, <a href="#csharp_test-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#csharp_test-warnings_as_errors">warnings_as_errors</a>,
-            <a href="#csharp_test-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#csharp_test-warning_level">warning_level</a>, <a href="#csharp_test-strict_deps">strict_deps</a>, <a href="#csharp_test-kwargs">kwargs</a>)
+csharp_test(<a href="#csharp_test-use_apphost_shim">use_apphost_shim</a>, <a href="#csharp_test-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#csharp_test-warnings_as_errors">warnings_as_errors</a>, <a href="#csharp_test-warnings_not_as_errors">warnings_not_as_errors</a>,
+            <a href="#csharp_test-warning_level">warning_level</a>, <a href="#csharp_test-strict_deps">strict_deps</a>, <a href="#csharp_test-kwargs">kwargs</a>)
 </pre>
 
 
@@ -174,7 +171,6 @@ csharp_test(<a href="#csharp_test-runtime_identifier">runtime_identifier</a>, <a
 
 | Name  | Description | Default Value |
 | :------------- | :------------- | :------------- |
-| <a id="csharp_test-runtime_identifier"></a>runtime_identifier |  <p align="center"> - </p>   |  <code>None</code> |
 | <a id="csharp_test-use_apphost_shim"></a>use_apphost_shim |  <p align="center"> - </p>   |  <code>True</code> |
 | <a id="csharp_test-treat_warnings_as_errors"></a>treat_warnings_as_errors |  <p align="center"> - </p>   |  <code>None</code> |
 | <a id="csharp_test-warnings_as_errors"></a>warnings_as_errors |  <p align="center"> - </p>   |  <code>None</code> |
@@ -189,7 +185,7 @@ csharp_test(<a href="#csharp_test-runtime_identifier">runtime_identifier</a>, <a
 ## fsharp_binary
 
 <pre>
-fsharp_binary(<a href="#fsharp_binary-runtime_identifier">runtime_identifier</a>, <a href="#fsharp_binary-use_apphost_shim">use_apphost_shim</a>, <a href="#fsharp_binary-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#fsharp_binary-warnings_as_errors">warnings_as_errors</a>,
+fsharp_binary(<a href="#fsharp_binary-use_apphost_shim">use_apphost_shim</a>, <a href="#fsharp_binary-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#fsharp_binary-warnings_as_errors">warnings_as_errors</a>,
               <a href="#fsharp_binary-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#fsharp_binary-warning_level">warning_level</a>, <a href="#fsharp_binary-strict_deps">strict_deps</a>, <a href="#fsharp_binary-kwargs">kwargs</a>)
 </pre>
 
@@ -200,7 +196,6 @@ fsharp_binary(<a href="#fsharp_binary-runtime_identifier">runtime_identifier</a>
 
 | Name  | Description | Default Value |
 | :------------- | :------------- | :------------- |
-| <a id="fsharp_binary-runtime_identifier"></a>runtime_identifier |  <p align="center"> - </p>   |  <code>None</code> |
 | <a id="fsharp_binary-use_apphost_shim"></a>use_apphost_shim |  <p align="center"> - </p>   |  <code>True</code> |
 | <a id="fsharp_binary-treat_warnings_as_errors"></a>treat_warnings_as_errors |  <p align="center"> - </p>   |  <code>None</code> |
 | <a id="fsharp_binary-warnings_as_errors"></a>warnings_as_errors |  <p align="center"> - </p>   |  <code>None</code> |
@@ -215,8 +210,8 @@ fsharp_binary(<a href="#fsharp_binary-runtime_identifier">runtime_identifier</a>
 ## fsharp_library
 
 <pre>
-fsharp_library(<a href="#fsharp_library-runtime_identifier">runtime_identifier</a>, <a href="#fsharp_library-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#fsharp_library-warnings_as_errors">warnings_as_errors</a>,
-               <a href="#fsharp_library-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#fsharp_library-warning_level">warning_level</a>, <a href="#fsharp_library-strict_deps">strict_deps</a>, <a href="#fsharp_library-kwargs">kwargs</a>)
+fsharp_library(<a href="#fsharp_library-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#fsharp_library-warnings_as_errors">warnings_as_errors</a>, <a href="#fsharp_library-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#fsharp_library-warning_level">warning_level</a>,
+               <a href="#fsharp_library-strict_deps">strict_deps</a>, <a href="#fsharp_library-kwargs">kwargs</a>)
 </pre>
 
 
@@ -226,7 +221,6 @@ fsharp_library(<a href="#fsharp_library-runtime_identifier">runtime_identifier</
 
 | Name  | Description | Default Value |
 | :------------- | :------------- | :------------- |
-| <a id="fsharp_library-runtime_identifier"></a>runtime_identifier |  <p align="center"> - </p>   |  <code>None</code> |
 | <a id="fsharp_library-treat_warnings_as_errors"></a>treat_warnings_as_errors |  <p align="center"> - </p>   |  <code>None</code> |
 | <a id="fsharp_library-warnings_as_errors"></a>warnings_as_errors |  <p align="center"> - </p>   |  <code>None</code> |
 | <a id="fsharp_library-warnings_not_as_errors"></a>warnings_not_as_errors |  <p align="center"> - </p>   |  <code>None</code> |
@@ -240,8 +234,8 @@ fsharp_library(<a href="#fsharp_library-runtime_identifier">runtime_identifier</
 ## fsharp_nunit_test
 
 <pre>
-fsharp_nunit_test(<a href="#fsharp_nunit_test-runtime_identifier">runtime_identifier</a>, <a href="#fsharp_nunit_test-use_apphost_shim">use_apphost_shim</a>, <a href="#fsharp_nunit_test-treat_warnings_as_errors">treat_warnings_as_errors</a>,
-                  <a href="#fsharp_nunit_test-warnings_as_errors">warnings_as_errors</a>, <a href="#fsharp_nunit_test-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#fsharp_nunit_test-warning_level">warning_level</a>, <a href="#fsharp_nunit_test-strict_deps">strict_deps</a>, <a href="#fsharp_nunit_test-kwargs">kwargs</a>)
+fsharp_nunit_test(<a href="#fsharp_nunit_test-use_apphost_shim">use_apphost_shim</a>, <a href="#fsharp_nunit_test-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#fsharp_nunit_test-warnings_as_errors">warnings_as_errors</a>,
+                  <a href="#fsharp_nunit_test-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#fsharp_nunit_test-warning_level">warning_level</a>, <a href="#fsharp_nunit_test-strict_deps">strict_deps</a>, <a href="#fsharp_nunit_test-kwargs">kwargs</a>)
 </pre>
 
 
@@ -251,7 +245,6 @@ fsharp_nunit_test(<a href="#fsharp_nunit_test-runtime_identifier">runtime_identi
 
 | Name  | Description | Default Value |
 | :------------- | :------------- | :------------- |
-| <a id="fsharp_nunit_test-runtime_identifier"></a>runtime_identifier |  <p align="center"> - </p>   |  <code>None</code> |
 | <a id="fsharp_nunit_test-use_apphost_shim"></a>use_apphost_shim |  <p align="center"> - </p>   |  <code>True</code> |
 | <a id="fsharp_nunit_test-treat_warnings_as_errors"></a>treat_warnings_as_errors |  <p align="center"> - </p>   |  <code>None</code> |
 | <a id="fsharp_nunit_test-warnings_as_errors"></a>warnings_as_errors |  <p align="center"> - </p>   |  <code>None</code> |
@@ -266,8 +259,8 @@ fsharp_nunit_test(<a href="#fsharp_nunit_test-runtime_identifier">runtime_identi
 ## fsharp_test
 
 <pre>
-fsharp_test(<a href="#fsharp_test-runtime_identifier">runtime_identifier</a>, <a href="#fsharp_test-use_apphost_shim">use_apphost_shim</a>, <a href="#fsharp_test-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#fsharp_test-warnings_as_errors">warnings_as_errors</a>,
-            <a href="#fsharp_test-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#fsharp_test-warning_level">warning_level</a>, <a href="#fsharp_test-strict_deps">strict_deps</a>, <a href="#fsharp_test-kwargs">kwargs</a>)
+fsharp_test(<a href="#fsharp_test-use_apphost_shim">use_apphost_shim</a>, <a href="#fsharp_test-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#fsharp_test-warnings_as_errors">warnings_as_errors</a>, <a href="#fsharp_test-warnings_not_as_errors">warnings_not_as_errors</a>,
+            <a href="#fsharp_test-warning_level">warning_level</a>, <a href="#fsharp_test-strict_deps">strict_deps</a>, <a href="#fsharp_test-kwargs">kwargs</a>)
 </pre>
 
 
@@ -277,7 +270,6 @@ fsharp_test(<a href="#fsharp_test-runtime_identifier">runtime_identifier</a>, <a
 
 | Name  | Description | Default Value |
 | :------------- | :------------- | :------------- |
-| <a id="fsharp_test-runtime_identifier"></a>runtime_identifier |  <p align="center"> - </p>   |  <code>None</code> |
 | <a id="fsharp_test-use_apphost_shim"></a>use_apphost_shim |  <p align="center"> - </p>   |  <code>True</code> |
 | <a id="fsharp_test-treat_warnings_as_errors"></a>treat_warnings_as_errors |  <p align="center"> - </p>   |  <code>None</code> |
 | <a id="fsharp_test-warnings_as_errors"></a>warnings_as_errors |  <p align="center"> - </p>   |  <code>None</code> |
@@ -311,8 +303,7 @@ nuget_repo(<a href="#nuget_repo-name">name</a>, <a href="#nuget_repo-packages">p
 ## publish_binary
 
 <pre>
-publish_binary(<a href="#publish_binary-name">name</a>, <a href="#publish_binary-binary">binary</a>, <a href="#publish_binary-target_framework">target_framework</a>, <a href="#publish_binary-self_contained">self_contained</a>, <a href="#publish_binary-runtime_packs">runtime_packs</a>, <a href="#publish_binary-runtime_identifier">runtime_identifier</a>,
-               <a href="#publish_binary-kwargs">kwargs</a>)
+publish_binary(<a href="#publish_binary-name">name</a>, <a href="#publish_binary-binary">binary</a>, <a href="#publish_binary-target_framework">target_framework</a>, <a href="#publish_binary-self_contained">self_contained</a>, <a href="#publish_binary-runtime_identifier">runtime_identifier</a>, <a href="#publish_binary-kwargs">kwargs</a>)
 </pre>
 
 
@@ -326,7 +317,6 @@ publish_binary(<a href="#publish_binary-name">name</a>, <a href="#publish_binary
 | <a id="publish_binary-binary"></a>binary |  <p align="center"> - </p>   |  none |
 | <a id="publish_binary-target_framework"></a>target_framework |  <p align="center"> - </p>   |  none |
 | <a id="publish_binary-self_contained"></a>self_contained |  <p align="center"> - </p>   |  <code>False</code> |
-| <a id="publish_binary-runtime_packs"></a>runtime_packs |  <p align="center"> - </p>   |  <code>[]</code> |
 | <a id="publish_binary-runtime_identifier"></a>runtime_identifier |  <p align="center"> - </p>   |  <code>None</code> |
 | <a id="publish_binary-kwargs"></a>kwargs |  <p align="center"> - </p>   |  none |
 

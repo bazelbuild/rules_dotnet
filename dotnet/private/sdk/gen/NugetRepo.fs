@@ -1,7 +1,5 @@
 module NugetRepo
 
-open Paket
-open FSharpx.Collections
 open System.Text
 open System.IO
 open System.Collections.Generic
