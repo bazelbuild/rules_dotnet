@@ -28,7 +28,7 @@ def _platform_to_rid():
         rid_os = "win"
     elif os_constraint == "linux":
         rid_os = "linux"
-    elif os_constraint == "macos":
+    elif os_constraint == "macos" or os_constraint == "osx":
         rid_os = "osx"
 
     if cpu_constraint == "x86_64":
