@@ -36,6 +36,9 @@ def _platform_to_rid():
     elif cpu_constraint == "aarc64" or cpu_constraint == "arm64":
         rid_cpu = "arm64"
 
+    if rid_cpu == None or rid_os == None:
+        fail("Could not determine the rid from the cpu/os constraint: {}/{}".format(cpu_constraint, os_constraint))
+
     return "{}-{}".format(rid_os, rid_cpu)
 
 def _impl(settings, attr):
