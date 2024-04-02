@@ -31,7 +31,7 @@ will do their best to guide if needed.
 
 ### Installation
 
-The minimal supported Bazel version is: 5.3.0
+The minimal supported Bazel version is 7.0.0 and bzlmod has to enabled.
 
 From the release you wish to use: https://github.com/bazelbuild/rules_dotnet/releases copy the WORKSPACE snippet into your WORKSPACE file.
 

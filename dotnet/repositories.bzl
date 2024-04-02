@@ -2,41 +2,8 @@
 Rules to load all the .NET SDK & framework dependencies of rules_dotnet.
 """
 
-load("@bazel_tools//tools/build_defs/repo:http.bzl", _http_archive = "http_archive")
-load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("//dotnet/private:toolchains_repo.bzl", "PLATFORMS", "toolchains_repo")
 load("//dotnet/private/sdk:versions.bzl", "TOOL_VERSIONS")
-
-def http_archive(name, **kwargs):
-    maybe(_http_archive, name = name, **kwargs)
-
-# WARNING: any changes in this function may be BREAKING CHANGES for users
-# because we'll fetch a dependency which may be different from one that
-# they were previously fetching later in their WORKSPACE setup, and now
-# ours took precedence. Such breakages are challenging for users, so any
-# changes in this function should be marked as BREAKING in the commit message
-# and released only in semver majors.
-# buildifier: disable=function-docstring
-def rules_dotnet_dependencies():
-    # The minimal version of bazel_skylib we require
-
-    http_archive(
-        name = "bazel_skylib",
-        sha256 = "66ffd9315665bfaafc96b52278f57c7e2dd09f5ede279ea6d39b2be471e7e3aa",
-        urls = [
-            "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.4.2/bazel-skylib-1.4.2.tar.gz",
-            "https://github.com/bazelbuild/bazel-skylib/releases/download/1.4.2/bazel-skylib-1.4.2.tar.gz",
-        ],
-    )
-
-    http_archive(
-        name = "platforms",
-        urls = [
-            "https://mirror.bazel.build/github.com/bazelbuild/platforms/releases/download/0.0.7/platforms-0.0.7.tar.gz",
-            "https://github.com/bazelbuild/platforms/releases/download/0.0.7/platforms-0.0.7.tar.gz",
-        ],
-        sha256 = "3a561c99e7bdbe9173aa653fd579fe849f1d8d67395780ab4770b1f381431d51",
-    )
 
 ########
 # Remaining content of the file is only used to support toolchains.

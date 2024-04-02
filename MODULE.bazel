@@ -29,7 +29,7 @@ apphost_packs_extension = use_extension("//dotnet/private/sdk/apphost_packs:dotn
 use_repo(apphost_packs_extension, "dotnet.apphost_packs")
 
 bazel_dep(name = "bazel_skylib", version = "1.4.2")
-bazel_dep(name = "platforms", version = "0.0.7")
+bazel_dep(name = "platforms", version = "0.0.9")
 
 # Dev dependencies
 bazel_dep(name = "rules_pkg", version = "0.9.1", dev_dependency = True)

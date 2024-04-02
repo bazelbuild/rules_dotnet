@@ -15,12 +15,3 @@ gazelle(
     name = "gazelle",
     gazelle = "gazelle_bin",
 )
-
-bzl_library(
-    name = "internal_deps",
-    srcs = ["internal_deps.bzl"],
-    deps = [
-        "@bazel_tools//tools/build_defs/repo:http.bzl",
-        "@bazel_tools//tools/build_defs/repo:utils.bzl",
-    ],
-)
