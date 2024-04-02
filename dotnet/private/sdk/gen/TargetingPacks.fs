@@ -95,6 +95,7 @@ let generateTargetingPackTargets targetingPacksFile output =
     |> ignore
 
     sb.AppendLine() |> ignore
+    sb.AppendLine("# buildifier: disable=unnamed-macro") |> ignore
     sb.AppendLine("def targeting_packs():") |> ignore
     sb.AppendLine("    \"\"\"Targeting packs\"\"\"") |> ignore
     sb.AppendLine() |> ignore

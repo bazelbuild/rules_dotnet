@@ -1,6 +1,5 @@
 "A transition that transitions between compatible target frameworks"
 
-load("//dotnet/private:providers.bzl", "DotnetBinaryInfo")
 load(":runtime_pack_lookup_table.bzl", "runtime_pack_lookup_table")
 
 def _impl(settings, attr):

@@ -111,6 +111,7 @@ let generateRuntimePackTargets runtimePacksFile output =
     |> ignore
 
     sb.AppendLine() |> ignore
+    sb.AppendLine("# buildifier: disable=unnamed-macro") |> ignore
     sb.AppendLine("def runtime_packs():") |> ignore
     sb.AppendLine("    \"\"\"runtime packs\"\"\"") |> ignore
     sb.AppendLine() |> ignore

@@ -2,6 +2,7 @@
 
 load("//dotnet/private/sdk/apphost_packs:apphost_pack.bzl", "apphost_pack")
 
+# buildifier: disable=unnamed-macro
 def apphost_packs():
     """apphost packs"""
 

@@ -2,6 +2,7 @@
 
 load("//dotnet/private/sdk/targeting_packs:targeting_pack.bzl", "targeting_pack")
 
+# buildifier: disable=unnamed-macro
 def targeting_packs():
     """Targeting packs"""
 
@@ -41,3 +42,4 @@ def targeting_packs():
     targeting_pack(name = "web_net6.0", packs = ["@dotnet.targeting_packs//microsoft.aspnetcore.app.ref.v6.0.28", "@dotnet.targeting_packs//microsoft.netcore.app.ref.v6.0.28"], target_framework = "net6.0")
     targeting_pack(name = "web_net7.0", packs = ["@dotnet.targeting_packs//microsoft.aspnetcore.app.ref.v7.0.17", "@dotnet.targeting_packs//microsoft.netcore.app.ref.v7.0.17"], target_framework = "net7.0")
     targeting_pack(name = "web_net8.0", packs = ["@dotnet.targeting_packs//microsoft.aspnetcore.app.ref.v8.0.3", "@dotnet.targeting_packs//microsoft.netcore.app.ref.v8.0.3"], target_framework = "net8.0")
+

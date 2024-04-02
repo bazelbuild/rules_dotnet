@@ -2,6 +2,7 @@
 
 load("//dotnet/private/sdk/runtime_packs:runtime_pack.bzl", "runtime_pack")
 
+# buildifier: disable=unnamed-macro
 def runtime_packs():
     """runtime packs"""
 

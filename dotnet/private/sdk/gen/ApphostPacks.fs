@@ -91,6 +91,7 @@ let generateApphostPackTargets apphostPacksFile output =
     |> ignore
 
     sb.AppendLine() |> ignore
+    sb.AppendLine("# buildifier: disable=unnamed-macro") |> ignore
     sb.AppendLine("def apphost_packs():") |> ignore
     sb.AppendLine("    \"\"\"apphost packs\"\"\"") |> ignore
     sb.AppendLine() |> ignore
