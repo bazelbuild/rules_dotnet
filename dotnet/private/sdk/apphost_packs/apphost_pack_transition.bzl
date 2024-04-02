@@ -2,7 +2,7 @@
 
 load(":apphost_pack_lookup_table.bzl", "apphost_pack_lookup_table")
 
-def _impl(settings, attr):
+def _impl(settings, _attr):
     incoming_target_framework = settings["//dotnet:target_framework"]
     incoming_rid = settings["//dotnet:rid"]
 
