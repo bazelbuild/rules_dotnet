@@ -89,7 +89,7 @@ NuGet packages are fully supported by the rules in two ways
 and one of the reasons for Paket being a great fit with Bazel is that it supports a lock file
 out of the box.
 
-See the [paket2bazel](tools/paket2bazel/) docs for instructions on how to set Paket up with Bazel.
+See the [paket2bazel](../tools/paket2bazel/README.md) docs for instructions on how to set Paket up with Bazel.
 
 ## Remote execution
 
