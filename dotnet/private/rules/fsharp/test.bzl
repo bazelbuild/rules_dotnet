@@ -45,6 +45,7 @@ def _compile_action(ctx, tfm):
         warning_level = ctx.attr.warning_level,
         nowarn = ctx.attr.nowarn,
         project_sdk = ctx.attr.project_sdk,
+        compiler_options = ctx.attr.compiler_options,
     )
 
 def _fsharp_test_impl(ctx):

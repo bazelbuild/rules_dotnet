@@ -83,7 +83,8 @@ def AssemblyAction(
         project_sdk,
         allow_unsafe_blocks,
         nullable,
-        run_analyzers):
+        run_analyzers,
+        compiler_options):
     """Creates an action that runs the CSharp compiler with the specified inputs.
 
     This macro aims to match the [C# compiler](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/listed-alphabetically), with the inputs mapping to compiler options.
@@ -121,6 +122,7 @@ def AssemblyAction(
         allow_unsafe_blocks: Compiles the target with /unsafe
         nullable: Enable nullable context, or nullable warnings.
         run_analyzers: Enable analyzers.
+        compiler_options: Additional options to pass to the compiler.
     Returns:
         The compiled csharp artifacts.
     """
@@ -182,6 +184,7 @@ def AssemblyAction(
             allow_unsafe_blocks,
             nullable,
             run_analyzers,
+            compiler_options,
             out_dll = out_dll,
             out_ref = out_ref,
             out_pdb = out_pdb,
@@ -228,6 +231,7 @@ def AssemblyAction(
             allow_unsafe_blocks,
             nullable,
             run_analyzers,
+            compiler_options,
             out_ref = out_iref,
             out_dll = out_dll,
             out_pdb = out_pdb,
@@ -263,6 +267,7 @@ def AssemblyAction(
             allow_unsafe_blocks,
             nullable,
             run_analyzers,
+            compiler_options,
             out_dll = None,
             out_ref = out_ref,
             out_pdb = None,
@@ -323,6 +328,7 @@ def _compile(
         allow_unsafe_blocks,
         nullable,
         run_analyzers,
+        compiler_options,
         out_dll = None,
         out_ref = None,
         out_pdb = None,
@@ -420,6 +426,10 @@ def _compile(
     # keyfile
     if keyfile != None:
         args.add("/keyfile:" + keyfile.path)
+
+    # Additional compiler flags
+    for option in compiler_options:
+        args.add(option)
 
     # spill to a "response file" when the argument list gets too big (Bazel
     # makes that call based on limitations of the OS).

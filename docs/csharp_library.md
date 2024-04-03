@@ -9,10 +9,11 @@ Rule for compiling C# libraries.
 ## csharp_library
 
 <pre>
-csharp_library(<a href="#csharp_library-name">name</a>, <a href="#csharp_library-additionalfiles">additionalfiles</a>, <a href="#csharp_library-allow_unsafe_blocks">allow_unsafe_blocks</a>, <a href="#csharp_library-compile_data">compile_data</a>, <a href="#csharp_library-data">data</a>, <a href="#csharp_library-defines">defines</a>, <a href="#csharp_library-deps">deps</a>,
-               <a href="#csharp_library-exports">exports</a>, <a href="#csharp_library-generate_documentation_file">generate_documentation_file</a>, <a href="#csharp_library-internals_visible_to">internals_visible_to</a>, <a href="#csharp_library-keyfile">keyfile</a>, <a href="#csharp_library-langversion">langversion</a>,
-               <a href="#csharp_library-nowarn">nowarn</a>, <a href="#csharp_library-nullable">nullable</a>, <a href="#csharp_library-out">out</a>, <a href="#csharp_library-project_sdk">project_sdk</a>, <a href="#csharp_library-resources">resources</a>, <a href="#csharp_library-run_analyzers">run_analyzers</a>, <a href="#csharp_library-srcs">srcs</a>, <a href="#csharp_library-target_frameworks">target_frameworks</a>,
-               <a href="#csharp_library-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#csharp_library-warning_level">warning_level</a>, <a href="#csharp_library-warnings_as_errors">warnings_as_errors</a>, <a href="#csharp_library-warnings_not_as_errors">warnings_not_as_errors</a>)
+csharp_library(<a href="#csharp_library-name">name</a>, <a href="#csharp_library-additionalfiles">additionalfiles</a>, <a href="#csharp_library-allow_unsafe_blocks">allow_unsafe_blocks</a>, <a href="#csharp_library-compile_data">compile_data</a>, <a href="#csharp_library-compiler_options">compiler_options</a>, <a href="#csharp_library-data">data</a>,
+               <a href="#csharp_library-defines">defines</a>, <a href="#csharp_library-deps">deps</a>, <a href="#csharp_library-exports">exports</a>, <a href="#csharp_library-generate_documentation_file">generate_documentation_file</a>, <a href="#csharp_library-internals_visible_to">internals_visible_to</a>, <a href="#csharp_library-keyfile">keyfile</a>,
+               <a href="#csharp_library-langversion">langversion</a>, <a href="#csharp_library-nowarn">nowarn</a>, <a href="#csharp_library-nullable">nullable</a>, <a href="#csharp_library-out">out</a>, <a href="#csharp_library-project_sdk">project_sdk</a>, <a href="#csharp_library-resources">resources</a>, <a href="#csharp_library-run_analyzers">run_analyzers</a>, <a href="#csharp_library-srcs">srcs</a>,
+               <a href="#csharp_library-target_frameworks">target_frameworks</a>, <a href="#csharp_library-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#csharp_library-warning_level">warning_level</a>, <a href="#csharp_library-warnings_as_errors">warnings_as_errors</a>,
+               <a href="#csharp_library-warnings_not_as_errors">warnings_not_as_errors</a>)
 </pre>
 
 Compile a C# DLL
@@ -26,6 +27,7 @@ Compile a C# DLL
 | <a id="csharp_library-additionalfiles"></a>additionalfiles |  Extra files to configure analyzers.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | <code>[]</code> |
 | <a id="csharp_library-allow_unsafe_blocks"></a>allow_unsafe_blocks |  Allow compiling unsafe code. It true, /unsafe is passed to the compiler.   | Boolean | optional | <code>False</code> |
 | <a id="csharp_library-compile_data"></a>compile_data |  Additional compile time files.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | <code>[]</code> |
+| <a id="csharp_library-compiler_options"></a>compiler_options |  Additional options to pass to the compiler. This attribute should only be used if the compiler flag has not already been exposed as an attribute.   | List of strings | optional | <code>[]</code> |
 | <a id="csharp_library-data"></a>data |  Runtime files. It is recommended to use the @rules_dotnet//tools/runfiles library to read the runtime files.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | <code>[]</code> |
 | <a id="csharp_library-defines"></a>defines |  A list of preprocessor directive symbols to define.   | List of strings | optional | <code>[]</code> |
 | <a id="csharp_library-deps"></a>deps |  Other libraries, binaries, or imported DLLs   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | <code>[]</code> |

@@ -47,6 +47,7 @@ def _compile_action(ctx, tfm):
         allow_unsafe_blocks = ctx.attr.allow_unsafe_blocks,
         nullable = ctx.attr.nullable,
         run_analyzers = ctx.attr.run_analyzers,
+        compiler_options = ctx.attr.compiler_options,
     )
 
 def _library_impl(ctx):

@@ -98,6 +98,11 @@ COMMON_ATTRS = {
         doc = "Whether or not to generate a documentation file.",
         default = True,
     ),
+    "compiler_options": attr.string_list(
+        doc = "Additional options to pass to the compiler. This attribute should only be used if the compiler flag has not already been exposed as an attribute.",
+        mandatory = False,
+        default = [],
+    ),
     "_target_framework": attr.label(
         default = "//dotnet:target_framework",
     ),
