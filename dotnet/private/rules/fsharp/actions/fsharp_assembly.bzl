@@ -96,7 +96,9 @@ def AssemblyAction(
         warnings_as_errors,
         warnings_not_as_errors,
         warning_level,
-        project_sdk):
+        nowarn,
+        project_sdk,
+        compiler_options):
     """Creates an action that runs the F# compiler with the specified inputs.
 
     This macro aims to match the [F# compiler](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-options), with the inputs mapping to compiler options.
@@ -127,7 +129,9 @@ def AssemblyAction(
         warnings_as_errors: List of warnings to treat as errors.
         warnings_not_as_errors: List of warnings to not treat errors.
         warning_level: The warning level to use.
+        nowarn: List of warnings to suppress.
         project_sdk: The project SDK being targeted
+        compiler_options: Additional compiler options to pass to the compiler.
 
     Returns:
         The compiled fsharp artifacts.
@@ -181,6 +185,8 @@ def AssemblyAction(
             warnings_as_errors,
             warnings_not_as_errors,
             warning_level,
+            nowarn,
+            compiler_options,
             out_dll = out_dll,
             out_ref = out_ref,
             out_pdb = out_pdb,
@@ -219,6 +225,8 @@ def AssemblyAction(
             warnings_as_errors,
             warnings_not_as_errors,
             warning_level,
+            nowarn,
+            compiler_options,
             out_ref = out_iref,
             out_dll = out_dll,
             out_pdb = out_pdb,
@@ -248,6 +256,8 @@ def AssemblyAction(
                 warnings_as_errors,
                 warnings_not_as_errors,
                 warning_level,
+                nowarn,
+                compiler_options,
                 out_dll = None,
                 out_ref = out_ref,
                 out_pdb = None,
@@ -301,6 +311,8 @@ def _compile(
         warnings_as_errors,
         warnings_not_as_errors,
         warning_level,
+        nowarn,
+        compiler_options,
         out_dll = None,
         out_ref = None,
         out_pdb = None,
@@ -331,6 +343,7 @@ def _compile(
         warnings_as_errors,
         warnings_not_as_errors,
         warning_level,
+        nowarn,
     )
 
     args.add("--target:" + target)
@@ -385,6 +398,10 @@ def _compile(
     # keyfile
     if keyfile != None:
         args.add("--keyfile:" + keyfile.path)
+
+    # Additional compiler options
+    for option in compiler_options:
+        args.add(option)
 
     # spill to a "response file" when the argument list gets too big (Bazel
     # makes that call based on limitations of the OS).

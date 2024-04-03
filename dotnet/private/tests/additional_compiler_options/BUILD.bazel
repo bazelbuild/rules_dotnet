@@ -1,0 +1,29 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load(":csharp_additional_compiler_options.bzl", "csharp_additional_compiler_options")
+load(":fsharp_additional_compiler_options.bzl", "fsharp_additional_compiler_options")
+
+fsharp_additional_compiler_options()
+
+csharp_additional_compiler_options()
+
+bzl_library(
+    name = "csharp_additional_compiler_options",
+    srcs = ["csharp_additional_compiler_options.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+    deps = [
+        "//dotnet:defs",
+        "//dotnet/private/tests:utils",
+        "@bazel_skylib//lib:unittest",
+    ],
+)
+
+bzl_library(
+    name = "fsharp_additional_compiler_options",
+    srcs = ["fsharp_additional_compiler_options.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+    deps = [
+        "//dotnet:defs",
+        "//dotnet/private/tests:utils",
+        "@bazel_skylib//lib:unittest",
+    ],
+)

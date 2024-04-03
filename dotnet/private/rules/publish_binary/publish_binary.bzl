@@ -2,9 +2,11 @@
 Rules for compiling F# binaries.
 """
 
+load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@bazel_skylib//lib:shell.bzl", "shell")
 load("//dotnet/private:common.bzl", "generate_depsjson", "generate_runtimeconfig", "to_rlocation_path")
 load("//dotnet/private:providers.bzl", "DotnetAssemblyCompileInfo", "DotnetAssemblyRuntimeInfo", "DotnetBinaryInfo")
+load("//dotnet/private/transitions:default_transition.bzl", "default_transition")
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 
 def _copy_file(script_body, src, dst, is_windows):
@@ -26,14 +28,14 @@ def _get_assembly_files(assembly_info, transitive_runtime_deps):
 
 def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, assembly_info, transitive_runtime_deps, repo_mapping_manifest):
     is_windows = ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo])
-    inputs = [binary_info.app_host]
-    app_host_copy = ctx.actions.declare_file(
-        "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, binary_info.app_host.basename),
+    inputs = [binary_info.dll]
+    main_dll_copy = ctx.actions.declare_file(
+        "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, binary_info.dll.basename),
     )
-    outputs = [app_host_copy]
+    outputs = [main_dll_copy]
     script_body = ["@echo off"] if is_windows else ["#! /usr/bin/env bash", "set -eou pipefail"]
 
-    _copy_file(script_body, binary_info.app_host, app_host_copy, is_windows = is_windows)
+    _copy_file(script_body, binary_info.dll, main_dll_copy, is_windows = is_windows)
 
     (libs, native, data) = _get_assembly_files(assembly_info, transitive_runtime_deps)
 
@@ -73,7 +75,7 @@ def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, as
         inputs.append(file)
         manifest_path = to_rlocation_path(ctx, file)
         output = ctx.actions.declare_file(
-            "{}/publish/{}/{}.runfiles/{}".format(ctx.label.name, runtime_identifier, binary_info.app_host.basename, manifest_path),
+            "{}/publish/{}/{}.runfiles/{}".format(ctx.label.name, runtime_identifier, paths.replace_extension(binary_info.dll.basename, ""), manifest_path),
         )
         outputs.append(output)
         _copy_file(script_body, file, output, is_windows = is_windows)
@@ -83,7 +85,7 @@ def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, as
     if repo_mapping_manifest:
         inputs.append(repo_mapping_manifest)
         output = ctx.actions.declare_file(
-            "{}/publish/{}/{}.runfiles/_repo_mapping".format(ctx.label.name, runtime_identifier, binary_info.app_host.basename),
+            "{}/publish/{}/{}.runfiles/_repo_mapping".format(ctx.label.name, runtime_identifier, paths.replace_extension(binary_info.dll.basename, "")),
         )
         outputs.append(output)
         _copy_file(script_body, repo_mapping_manifest, output, is_windows = is_windows)
@@ -99,7 +101,7 @@ def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, as
                 runtime_pack.data,
             )
             for file in runtime_pack_files.to_list():
-                output = ctx.actions.declare_file(file.basename, sibling = app_host_copy)
+                output = ctx.actions.declare_file(file.basename, sibling = main_dll_copy)
                 outputs.append(output)
                 inputs.append(file)
                 _copy_file(script_body, file, output, is_windows = is_windows)
@@ -118,7 +120,23 @@ def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, as
         tools = [copy_script],
     )
 
-    return (app_host_copy, outputs)
+    return (main_dll_copy, outputs)
+
+def _create_shim_exe(ctx, apphost_pack_info, dll):
+    windows_constraint = ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]
+
+    apphost = apphost_pack_info.apphost
+    output = ctx.actions.declare_file(paths.replace_extension(dll.basename, ".exe" if ctx.target_platform_has_constraint(windows_constraint) else ""), sibling = dll)
+
+    ctx.actions.run(
+        executable = ctx.attr._apphost_shimmer[0].files_to_run,
+        arguments = [apphost.path, dll.path, output.path],
+        inputs = depset([apphost, dll], transitive = [ctx.attr._apphost_shimmer[0].default_runfiles.files]),
+        tools = [ctx.attr._apphost_shimmer[0].files, ctx.attr._apphost_shimmer[0].default_runfiles.files],
+        outputs = [output],
+    )
+
+    return output
 
 def _generate_runtimeconfig(ctx, output, target_framework, project_sdk, is_self_contained, roll_forward_behavior, runtime_pack_info):
     runtimeconfig_struct = generate_runtimeconfig(target_framework, project_sdk, is_self_contained, roll_forward_behavior, runtime_pack_info)
@@ -157,7 +175,7 @@ def _publish_binary_impl(ctx):
     runtime_identifier = binary_info.runtime_pack_info.runtime_identifier
     roll_forward_behavior = ctx.attr.roll_forward_behavior
 
-    (executable, runfiles) = _copy_to_publish(
+    (main_dll, runfiles) = _copy_to_publish(
         ctx,
         runtime_identifier,
         runtime_pack_info,
@@ -166,6 +184,8 @@ def _publish_binary_impl(ctx):
         transitive_runtime_deps,
         repo_mapping_manifest,
     )
+
+    apphost_shim = _create_shim_exe(ctx, binary_info.apphost_pack_info, main_dll)
 
     runtimeconfig = ctx.actions.declare_file("{}/publish/{}/{}.runtimeconfig.json".format(
         ctx.label.name,
@@ -195,9 +215,9 @@ def _publish_binary_impl(ctx):
 
     return [
         DefaultInfo(
-            executable = executable,
-            files = depset([executable, runtimeconfig, depsjson] + runfiles),
-            runfiles = ctx.runfiles(files = [executable, runtimeconfig, depsjson] + runfiles),
+            executable = apphost_shim,
+            files = depset([apphost_shim, main_dll, runtimeconfig, depsjson] + runfiles),
+            runfiles = ctx.runfiles(files = [apphost_shim, main_dll, runtimeconfig, depsjson] + runfiles),
         ),
     ]
 
@@ -241,6 +261,12 @@ publish_binary = rule(
             doc = "The roll forward behavior that should be used: https://learn.microsoft.com/en-us/dotnet/core/versions/selection#control-roll-forward-behavior",
             default = "Minor",
             values = ["Minor", "Major", "LatestPatch", "LatestMinor", "LatestMajor", "Disable"],
+        ),
+        "_apphost_shimmer": attr.label(
+            providers = [DotnetAssemblyCompileInfo, DotnetAssemblyRuntimeInfo],
+            executable = True,
+            default = "//dotnet/private/tools/apphost_shimmer:apphost_shimmer",
+            cfg = default_transition,
         ),
         "_allowlist_function_transition": attr.label(
             default = "@bazel_tools//tools/allowlists/function_transition_allowlist",

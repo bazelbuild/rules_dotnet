@@ -12,8 +12,11 @@ these rules do not propagate transitive dependencies to compilation actions.
 This is similar to setting `<DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>`
 in MSBuild.
 
-Transitive dependency propagation can be configured on per-target basis
-and when the toolchain is configured.
+This behaviour can be overridden by using the following flag when invoking bazel:
+```
+--@rules_dotnet//dotnet/settings:strict_deps=false
+```
+You can add this flag to your `.bazelrc` file to make it the default.
 
 ## Unsupported workloads
 

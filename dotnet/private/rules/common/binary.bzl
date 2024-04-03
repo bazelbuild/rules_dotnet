@@ -2,7 +2,6 @@
 Base rule for building .Net binaries
 """
 
-load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 load(
     "//dotnet/private:common.bzl",
@@ -14,22 +13,6 @@ load(
     "to_rlocation_path",
 )
 load("//dotnet/private:providers.bzl", "DotnetApphostPackInfo", "DotnetBinaryInfo", "DotnetRuntimePackInfo")
-
-def _create_shim_exe(ctx, dll):
-    windows_constraint = ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]
-
-    apphost = ctx.attr._apphost_pack[0][DotnetApphostPackInfo].apphost
-    output = ctx.actions.declare_file(paths.replace_extension(dll.basename, ".exe" if ctx.target_platform_has_constraint(windows_constraint) else ""), sibling = dll)
-
-    ctx.actions.run(
-        executable = ctx.attr.apphost_shimmer[0].files_to_run,
-        arguments = [apphost.path, dll.path, output.path],
-        inputs = depset([apphost, dll], transitive = [ctx.attr.apphost_shimmer[0].default_runfiles.files]),
-        tools = [ctx.attr.apphost_shimmer[0].files, ctx.attr.apphost_shimmer[0].default_runfiles.files],
-        outputs = [output],
-    )
-
-    return output
 
 def _create_launcher(ctx, runfiles, executable):
     runtime = ctx.toolchains["//dotnet:toolchain_type"].runtime
@@ -86,12 +69,6 @@ def build_binary(ctx, compile_action):
     dll = runtime_provider.libs[0]
     default_info_files = [dll] + runtime_provider.xml_docs
     additional_runfiles = []
-
-    app_host = None
-    if len(ctx.attr.apphost_shimmer) > 0:
-        app_host = _create_shim_exe(ctx, dll)
-        additional_runfiles.append(app_host)
-        default_info_files = default_info_files.append(app_host)
 
     launcher = _create_launcher(ctx, additional_runfiles, dll)
 
@@ -154,8 +131,8 @@ def build_binary(ctx, compile_action):
 
     dotnet_binary_info = DotnetBinaryInfo(
         dll = dll,
-        app_host = app_host,
         transitive_runtime_deps = transitive_runtime_deps,
+        apphost_pack_info = ctx.attr._apphost_pack[0][DotnetApphostPackInfo],
         runtime_pack_info = ctx.attr._runtime_pack[0][DotnetRuntimePackInfo],
     )
 
