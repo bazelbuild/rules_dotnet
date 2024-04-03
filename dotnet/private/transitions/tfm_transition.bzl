@@ -62,7 +62,7 @@ def _impl(settings, attr):
     if hasattr(attr, "runtime_identifier") and attr.runtime_identifier != "":
         runtime_identifier = attr.runtime_identifier
     elif runtime_identifier == "base":
-        # If the runtime_identifier attribute is not set and the incoming value is "base", we will use the platform to determine the rid since upstream target has set the runtime identifier
+        # If the runtime_identifier attribute is not set and the incoming value is "base", we will use the platform to determine the rid since no upstream target has set the runtime identifier
         runtime_identifier = _platform_to_rid()
 
     return dicts.add({"//dotnet:target_framework": transitioned_tfm}, {"//dotnet:rid": runtime_identifier}, FRAMEWORK_COMPATABILITY_TRANSITION_OUTPUTS[transitioned_tfm], RID_COMPATABILITY_TRANSITION_OUTPUTS[runtime_identifier])

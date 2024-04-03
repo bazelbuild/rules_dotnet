@@ -21,6 +21,7 @@ csharp_binary(
 publish_binary(
     name = "publish",
     binary = ":aspnetcore",
+    project_sdk = "web"
     self_contained = True,
     target_framework = "net6.0",
 )

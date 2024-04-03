@@ -522,7 +522,6 @@ namespace Bazel
                 result.Add("RUNFILES_MANIFEST_FILE", manifestPath);
                 var runfilesDir = findRunfilesDir(manifestPath);
                 result.Add("RUNFILES_DIR", runfilesDir);
-                // TODO(laszlocsomor): remove JAVA_RUNFILES once the Java launcher can pick up RUNFILES_DIR.
                 result.Add("JAVA_RUNFILES", runfilesDir);
                 return result;
             }
@@ -556,7 +555,6 @@ namespace Bazel
             {
                 var result = new Dictionary<string, string>(2);
                 result.Add("RUNFILES_DIR", runfilesRoot);
-                // TODO(laszlocsomor): remove JAVA_RUNFILES once the Java launcher can pick up RUNFILES_DIR.
                 result.Add("JAVA_RUNFILES", runfilesRoot);
                 return result;
             }

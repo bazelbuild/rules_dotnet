@@ -233,16 +233,7 @@ def fsharp_nunit_test(
         **kwargs
     )
 
-def publish_binary(name, binary, target_framework, self_contained = False, runtime_identifier = None, **kwargs):
-    _publish_binary(
-        name = "{}".format(name),
-        binary = binary,
-        target_framework = target_framework,
-        self_contained = self_contained,
-        runtime_identifier = runtime_identifier,
-        **kwargs
-    )
-
+publish_binary = _publish_binary
 import_library = _import_library
 import_dll = _import_dll
 nuget_repo = _nuget_repo

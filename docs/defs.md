@@ -81,6 +81,31 @@ nuget_archive(<a href="#nuget_archive-name">name</a>, <a href="#nuget_archive-id
 | <a id="nuget_archive-version"></a>version |  -   | String | optional | <code>""</code> |
 
 
+<a id="publish_binary"></a>
+
+## publish_binary
+
+<pre>
+publish_binary(<a href="#publish_binary-name">name</a>, <a href="#publish_binary-binary">binary</a>, <a href="#publish_binary-project_sdk">project_sdk</a>, <a href="#publish_binary-roll_forward_behavior">roll_forward_behavior</a>, <a href="#publish_binary-runtime_identifier">runtime_identifier</a>, <a href="#publish_binary-self_contained">self_contained</a>,
+               <a href="#publish_binary-target_framework">target_framework</a>)
+</pre>
+
+Publish a .Net binary
+
+**ATTRIBUTES**
+
+
+| Name  | Description | Type | Mandatory | Default |
+| :------------- | :------------- | :------------- | :------------- | :------------- |
+| <a id="publish_binary-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/concepts/labels#target-names">Name</a> | required |  |
+| <a id="publish_binary-binary"></a>binary |  The .Net binary that is being published   | <a href="https://bazel.build/concepts/labels">Label</a> | required |  |
+| <a id="publish_binary-project_sdk"></a>project_sdk |  The project SDK that is being targeted. See https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview   | String | optional | <code>"default"</code> |
+| <a id="publish_binary-roll_forward_behavior"></a>roll_forward_behavior |  The roll forward behavior that should be used: https://learn.microsoft.com/en-us/dotnet/core/versions/selection#control-roll-forward-behavior   | String | optional | <code>"Minor"</code> |
+| <a id="publish_binary-runtime_identifier"></a>runtime_identifier |  The runtime identifier that is being targeted. See https://docs.microsoft.com/en-us/dotnet/core/rid-catalog   | String | optional | <code>""</code> |
+| <a id="publish_binary-self_contained"></a>self_contained |  Whether the binary should be self-contained.<br><br>            If true, the binary will be published as a self-contained but you need to provide             a runtime pack in the <code>runtime_packs</code> attribute. At some point the rules might             resolve the runtime pack automatically.<br><br>            If false, the binary will be published as a non-self-contained. That means that to be             able to run the binary you need to have a .Net runtime installed on the host system.   | Boolean | optional | <code>False</code> |
+| <a id="publish_binary-target_framework"></a>target_framework |  The target framework that should be published   | String | required |  |
+
+
 <a id="csharp_binary"></a>
 
 ## csharp_binary
@@ -296,28 +321,5 @@ nuget_repo(<a href="#nuget_repo-name">name</a>, <a href="#nuget_repo-packages">p
 | :------------- | :------------- | :------------- |
 | <a id="nuget_repo-name"></a>name |  <p align="center"> - </p>   |  none |
 | <a id="nuget_repo-packages"></a>packages |  <p align="center"> - </p>   |  none |
-
-
-<a id="publish_binary"></a>
-
-## publish_binary
-
-<pre>
-publish_binary(<a href="#publish_binary-name">name</a>, <a href="#publish_binary-binary">binary</a>, <a href="#publish_binary-target_framework">target_framework</a>, <a href="#publish_binary-self_contained">self_contained</a>, <a href="#publish_binary-runtime_identifier">runtime_identifier</a>, <a href="#publish_binary-kwargs">kwargs</a>)
-</pre>
-
-
-
-**PARAMETERS**
-
-
-| Name  | Description | Default Value |
-| :------------- | :------------- | :------------- |
-| <a id="publish_binary-name"></a>name |  <p align="center"> - </p>   |  none |
-| <a id="publish_binary-binary"></a>binary |  <p align="center"> - </p>   |  none |
-| <a id="publish_binary-target_framework"></a>target_framework |  <p align="center"> - </p>   |  none |
-| <a id="publish_binary-self_contained"></a>self_contained |  <p align="center"> - </p>   |  <code>False</code> |
-| <a id="publish_binary-runtime_identifier"></a>runtime_identifier |  <p align="center"> - </p>   |  <code>None</code> |
-| <a id="publish_binary-kwargs"></a>kwargs |  <p align="center"> - </p>   |  none |
 
 

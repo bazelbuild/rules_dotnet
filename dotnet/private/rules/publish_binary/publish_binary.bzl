@@ -145,10 +145,7 @@ def _generate_depsjson(
     )
 
 def _publish_binary_impl(ctx):
-    # repo_mapping_manifest is only available in Bazel 7.0+
-    repo_mapping_manifest = None
-    if ctx.attr.binary[0][DefaultInfo].files_to_run and hasattr(ctx.attr.binary[0][DefaultInfo].files_to_run, "repo_mapping_manifest"):
-        repo_mapping_manifest = ctx.attr.binary[0][DefaultInfo].files_to_run.repo_mapping_manifest
+    repo_mapping_manifest = ctx.attr.binary[0][DefaultInfo].files_to_run.repo_mapping_manifest
 
     assembly_compile_info = ctx.attr.binary[0][DotnetAssemblyCompileInfo]
     assembly_runtime_info = ctx.attr.binary[0][DotnetAssemblyRuntimeInfo]

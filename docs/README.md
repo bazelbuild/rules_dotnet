@@ -80,10 +80,6 @@ proper IDE support the MSBuild project files need to be manually maintained.
 
 NuGet packages are fully supported by the rules in two ways
 
-### NuGet packages with packages.lock.json
-
-TODO: Write or link to documentation on how to use this
-
 ### NuGet packages with Paket
 
 [Paket](https://fsprojects.github.io/Paket/) is a great choice for managing dependencies in .Net
