@@ -97,6 +97,9 @@ let addGroupToFileContent (sb: StringBuilder) (repoName: string) (repoPrefix: st
     sb.Append(generateTarget packages repoName repoPrefix) |> ignore
 
 let generateBazelFiles (repoName: string) (packages: NugetRepoPackage seq) (outputFolder: string) (repoPrefix: string) =
+    // Create the output directory if it does not exist
+    Directory.CreateDirectory(outputFolder) |> ignore
+
     let sb = new StringBuilder()
     addFileHeaderContent sb (repoName)
     addGroupToFileContent sb repoName repoPrefix packages
