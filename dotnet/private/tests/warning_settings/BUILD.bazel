@@ -1,4 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("//dotnet:defs.bzl", "csharp_library", "fsharp_library")
 load(":csharp_warnings.bzl", "csharp_warnings")
 load(":fsharp_warnings.bzl", "fsharp_warnings")
 
@@ -26,4 +27,24 @@ bzl_library(
         "//dotnet/private/tests:utils",
         "@bazel_skylib//lib:unittest",
     ],
+)
+
+# This is to test that the warnings are actually being ignored
+csharp_library(
+    name = "csharp_ignore_warning",
+    srcs = ["lib_with_warning.cs"],
+    target_frameworks = ["net6.0"],
+    treat_warnings_as_errors = True,
+    warning_level = 4,
+    warnings_not_as_errors = ["CS1591"],
+)
+
+# This is to test that the warnings are actually being ignored
+fsharp_library(
+    name = "fsharp_ignore_warning",
+    srcs = ["warnings.fs"],
+    target_frameworks = ["net6.0"],
+    treat_warnings_as_errors = True,
+    warning_level = 4,
+    warnings_not_as_errors = ["FS0025"],
 )

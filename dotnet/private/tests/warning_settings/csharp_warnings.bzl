@@ -22,6 +22,22 @@ def csharp_warnings():
     )
 
     csharp_library(
+        name = "csharp_all_warnings_except_some",
+        srcs = ["warnings.cs"],
+        target_frameworks = ["net6.0"],
+        treat_warnings_as_errors = True,
+        warnings_not_as_errors = ["CS1591"],
+        tags = ["manual"],
+    )
+
+    action_args_test(
+        name = "csharp_all_warnings_except_some_test",
+        target_under_test = ":csharp_all_warnings_except_some",
+        action_mnemonic = "CSharpCompile",
+        expected_partial_args = ["/warnaserror+", "/warnaserror-:CS1591"],
+    )
+
+    csharp_library(
         name = "csharp_warnings_as_errors",
         srcs = ["warnings.cs"],
         target_frameworks = ["net6.0"],
