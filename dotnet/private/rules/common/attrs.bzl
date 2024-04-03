@@ -76,36 +76,23 @@ COMMON_ATTRS = {
     "treat_warnings_as_errors": attr.bool(
         doc = "Treat all compiler warnings as errors. Note that this attribute can not be used in conjunction with warnings_as_errors.",
         mandatory = False,
-    ),
-    "override_treat_warnings_as_errors": attr.bool(
-        doc = "Whether or not to override the treat_warnings_as_errors attribute.",
-        mandatory = False,
+        default = False,
     ),
     "warnings_as_errors": attr.string_list(
         doc = "List of compiler warning codes that should be considered as errors. Note that this attribute can not be used in conjunction with treat_warning_as_errors.",
         mandatory = False,
-    ),
-    "override_warnings_as_errors": attr.bool(
-        doc = "Whether or not to override the warnings_as_errors attribute.",
-        mandatory = False,
+        default = [],
     ),
     "warnings_not_as_errors": attr.string_list(
         doc = "List of compiler warning codes that should not be considered as errors. Note that this attribute can only be used in conjunction with treat_warning_as_errors.",
         mandatory = False,
-    ),
-    "override_warnings_not_as_errors": attr.bool(
-        doc = "Whether or not to override the warnings_not_as_errors attribute.",
-        mandatory = False,
+        default = [],
     ),
     "warning_level": attr.int(
         doc = "The warning level that should be used by the compiler.",
         mandatory = False,
         values = [0, 1, 2, 3, 4, 5],
         default = 3,
-    ),
-    "override_warning_level": attr.bool(
-        doc = "Whether or not to override the warning_level attribute.",
-        mandatory = False,
     ),
     "strict_deps": attr.bool(
         doc = """Whether to use strict dependencies or not. 
@@ -171,11 +158,6 @@ BINARY_COMMON_ATTRS = {
         doc = "If true, output a winexe-style executable, otherwise" +
               "output a console-style executable.",
         default = False,
-    ),
-    "apphost_shimmer": attr.label(
-        providers = [DotnetAssemblyCompileInfo, DotnetAssemblyRuntimeInfo],
-        executable = True,
-        cfg = default_transition,
     ),
     "_bash_runfiles": attr.label(
         default = "@bazel_tools//tools/bash/runfiles",
