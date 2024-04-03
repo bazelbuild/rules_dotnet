@@ -66,3 +66,18 @@ def csharp_warnings():
         action_mnemonic = "CSharpCompile",
         expected_partial_args = ["/warn:5"],
     )
+
+    csharp_library(
+        name = "csharp_nowarn",
+        srcs = ["warnings.cs"],
+        target_frameworks = ["net6.0"],
+        nowarn = ["CS1234", "CS0000"],
+        tags = ["manual"],
+    )
+
+    action_args_test(
+        name = "csharp_nowarn_test",
+        target_under_test = ":csharp_nowarn",
+        action_mnemonic = "CSharpCompile",
+        expected_partial_args = ["/nowarn:CS1234,CS0000"],
+    )

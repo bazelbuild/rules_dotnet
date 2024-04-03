@@ -66,3 +66,18 @@ def fsharp_warnings():
         action_mnemonic = "FSharpCompile",
         expected_partial_args = ["/warn:5"],
     )
+
+    fsharp_library(
+        name = "fsharp_nowarn",
+        srcs = ["warnings.fs"],
+        target_frameworks = ["net6.0"],
+        nowarn = ["FS0000", "FS1234"],
+        tags = ["manual"],
+    )
+
+    action_args_test(
+        name = "fsharp_nowarn_test",
+        target_under_test = ":fsharp_nowarn",
+        action_mnemonic = "FSharpCompile",
+        expected_partial_args = ["/nowarn:FS0000,FS1234"],
+    )

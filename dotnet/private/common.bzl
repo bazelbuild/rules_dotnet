@@ -418,7 +418,8 @@ def generate_warning_args(
         treat_warnings_as_errors,
         warnings_as_errors,
         warnings_not_as_errors,
-        warning_level):
+        warning_level,
+        nowarn):
     """Generates the compiler arguments for warnings and errors
 
     Args:
@@ -427,6 +428,7 @@ def generate_warning_args(
         warnings_as_errors: List of warnings that should be treated as errors
         warnings_not_as_errors: List of warnings that should not be treated as errors
         warning_level: The warning level to use
+        nowarn: List of warnings to suppress
     """
     if treat_warnings_as_errors:
         if len(warnings_as_errors) > 0:
@@ -443,6 +445,9 @@ def generate_warning_args(
             args.add("/warnaserror+:{}".format(warning))
 
     args.add("/warn:{}".format(warning_level))
+
+    if len(nowarn) > 0:
+        args.add("/nowarn:{}".format(",".join(nowarn)))
 
 def framework_preprocessor_symbols(tfm):
     """Gets the standard preprocessor symbols for the target framework.

@@ -10,8 +10,8 @@ Rule for compiling F# binaries.
 
 <pre>
 fsharp_binary(<a href="#fsharp_binary-name">name</a>, <a href="#fsharp_binary-compile_data">compile_data</a>, <a href="#fsharp_binary-data">data</a>, <a href="#fsharp_binary-defines">defines</a>, <a href="#fsharp_binary-deps">deps</a>, <a href="#fsharp_binary-generate_documentation_file">generate_documentation_file</a>,
-              <a href="#fsharp_binary-internals_visible_to">internals_visible_to</a>, <a href="#fsharp_binary-keyfile">keyfile</a>, <a href="#fsharp_binary-langversion">langversion</a>, <a href="#fsharp_binary-out">out</a>, <a href="#fsharp_binary-override_strict_deps">override_strict_deps</a>, <a href="#fsharp_binary-project_sdk">project_sdk</a>,
-              <a href="#fsharp_binary-resources">resources</a>, <a href="#fsharp_binary-roll_forward_behavior">roll_forward_behavior</a>, <a href="#fsharp_binary-srcs">srcs</a>, <a href="#fsharp_binary-strict_deps">strict_deps</a>, <a href="#fsharp_binary-target_frameworks">target_frameworks</a>,
+              <a href="#fsharp_binary-internals_visible_to">internals_visible_to</a>, <a href="#fsharp_binary-keyfile">keyfile</a>, <a href="#fsharp_binary-langversion">langversion</a>, <a href="#fsharp_binary-nowarn">nowarn</a>, <a href="#fsharp_binary-out">out</a>, <a href="#fsharp_binary-override_strict_deps">override_strict_deps</a>,
+              <a href="#fsharp_binary-project_sdk">project_sdk</a>, <a href="#fsharp_binary-resources">resources</a>, <a href="#fsharp_binary-roll_forward_behavior">roll_forward_behavior</a>, <a href="#fsharp_binary-srcs">srcs</a>, <a href="#fsharp_binary-strict_deps">strict_deps</a>, <a href="#fsharp_binary-target_frameworks">target_frameworks</a>,
               <a href="#fsharp_binary-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#fsharp_binary-warning_level">warning_level</a>, <a href="#fsharp_binary-warnings_as_errors">warnings_as_errors</a>, <a href="#fsharp_binary-warnings_not_as_errors">warnings_not_as_errors</a>,
               <a href="#fsharp_binary-winexe">winexe</a>)
 </pre>
@@ -32,6 +32,7 @@ Compile a F# exe
 | <a id="fsharp_binary-internals_visible_to"></a>internals_visible_to |  Other libraries that can see the assembly's internal symbols. Using this rather than the InternalsVisibleTo assembly attribute will improve build caching.   | List of strings | optional | <code>[]</code> |
 | <a id="fsharp_binary-keyfile"></a>keyfile |  The key file used to sign the assembly with a strong name.   | <a href="https://bazel.build/concepts/labels">Label</a> | optional | <code>None</code> |
 | <a id="fsharp_binary-langversion"></a>langversion |  The version string for the language.   | String | optional | <code>""</code> |
+| <a id="fsharp_binary-nowarn"></a>nowarn |  List of warnings that should be ignored   | List of strings | optional | <code>[]</code> |
 | <a id="fsharp_binary-out"></a>out |  File name, without extension, of the built assembly.   | String | optional | <code>""</code> |
 | <a id="fsharp_binary-override_strict_deps"></a>override_strict_deps |  Whether or not to override the strict_deps attribute.   | Boolean | optional | <code>False</code> |
 | <a id="fsharp_binary-project_sdk"></a>project_sdk |  The project SDK that is being targeted. See https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview   | String | optional | <code>"default"</code> |

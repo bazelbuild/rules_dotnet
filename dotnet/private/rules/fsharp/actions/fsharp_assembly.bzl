@@ -96,6 +96,7 @@ def AssemblyAction(
         warnings_as_errors,
         warnings_not_as_errors,
         warning_level,
+        nowarn,
         project_sdk):
     """Creates an action that runs the F# compiler with the specified inputs.
 
@@ -127,6 +128,7 @@ def AssemblyAction(
         warnings_as_errors: List of warnings to treat as errors.
         warnings_not_as_errors: List of warnings to not treat errors.
         warning_level: The warning level to use.
+        nowarn: List of warnings to suppress.
         project_sdk: The project SDK being targeted
 
     Returns:
@@ -181,6 +183,7 @@ def AssemblyAction(
             warnings_as_errors,
             warnings_not_as_errors,
             warning_level,
+            nowarn,
             out_dll = out_dll,
             out_ref = out_ref,
             out_pdb = out_pdb,
@@ -219,6 +222,7 @@ def AssemblyAction(
             warnings_as_errors,
             warnings_not_as_errors,
             warning_level,
+            nowarn,
             out_ref = out_iref,
             out_dll = out_dll,
             out_pdb = out_pdb,
@@ -248,6 +252,7 @@ def AssemblyAction(
                 warnings_as_errors,
                 warnings_not_as_errors,
                 warning_level,
+                nowarn,
                 out_dll = None,
                 out_ref = out_ref,
                 out_pdb = None,
@@ -301,6 +306,7 @@ def _compile(
         warnings_as_errors,
         warnings_not_as_errors,
         warning_level,
+        nowarn,
         out_dll = None,
         out_ref = None,
         out_pdb = None,
@@ -331,6 +337,7 @@ def _compile(
         warnings_as_errors,
         warnings_not_as_errors,
         warning_level,
+        nowarn,
     )
 
     args.add("--target:" + target)

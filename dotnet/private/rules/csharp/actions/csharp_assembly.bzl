@@ -79,6 +79,7 @@ def AssemblyAction(
         warnings_as_errors,
         warnings_not_as_errors,
         warning_level,
+        nowarn,
         project_sdk,
         allow_unsafe_blocks,
         nullable,
@@ -115,6 +116,7 @@ def AssemblyAction(
         warnings_as_errors: List of warnings to treat as errors.
         warnings_not_as_errors: List of warnings to not treat errors.
         warning_level: The warning level to use.
+        nowarn: List of warnings to suppress.
         project_sdk: The project sdk being targeted
         allow_unsafe_blocks: Compiles the target with /unsafe
         nullable: Enable nullable context, or nullable warnings.
@@ -176,6 +178,7 @@ def AssemblyAction(
             warnings_as_errors,
             warnings_not_as_errors,
             warning_level,
+            nowarn,
             allow_unsafe_blocks,
             nullable,
             run_analyzers,
@@ -221,6 +224,7 @@ def AssemblyAction(
             warnings_as_errors,
             warnings_not_as_errors,
             warning_level,
+            nowarn,
             allow_unsafe_blocks,
             nullable,
             run_analyzers,
@@ -255,6 +259,7 @@ def AssemblyAction(
             warnings_as_errors,
             warnings_not_as_errors,
             warning_level,
+            nowarn,
             allow_unsafe_blocks,
             nullable,
             run_analyzers,
@@ -314,6 +319,7 @@ def _compile(
         warnings_as_errors,
         warnings_not_as_errors,
         warning_level,
+        nowarn,
         allow_unsafe_blocks,
         nullable,
         run_analyzers,
@@ -360,6 +366,7 @@ def _compile(
         warnings_as_errors,
         warnings_not_as_errors,
         warning_level,
+        nowarn,
     )
 
     args.add("/target:" + target)

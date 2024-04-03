@@ -10,8 +10,8 @@ Rule for compiling F# libraries.
 
 <pre>
 fsharp_library(<a href="#fsharp_library-name">name</a>, <a href="#fsharp_library-compile_data">compile_data</a>, <a href="#fsharp_library-data">data</a>, <a href="#fsharp_library-defines">defines</a>, <a href="#fsharp_library-deps">deps</a>, <a href="#fsharp_library-exports">exports</a>, <a href="#fsharp_library-generate_documentation_file">generate_documentation_file</a>,
-               <a href="#fsharp_library-internals_visible_to">internals_visible_to</a>, <a href="#fsharp_library-keyfile">keyfile</a>, <a href="#fsharp_library-langversion">langversion</a>, <a href="#fsharp_library-out">out</a>, <a href="#fsharp_library-override_strict_deps">override_strict_deps</a>, <a href="#fsharp_library-project_sdk">project_sdk</a>,
-               <a href="#fsharp_library-resources">resources</a>, <a href="#fsharp_library-srcs">srcs</a>, <a href="#fsharp_library-strict_deps">strict_deps</a>, <a href="#fsharp_library-target_frameworks">target_frameworks</a>, <a href="#fsharp_library-treat_warnings_as_errors">treat_warnings_as_errors</a>,
+               <a href="#fsharp_library-internals_visible_to">internals_visible_to</a>, <a href="#fsharp_library-keyfile">keyfile</a>, <a href="#fsharp_library-langversion">langversion</a>, <a href="#fsharp_library-nowarn">nowarn</a>, <a href="#fsharp_library-out">out</a>, <a href="#fsharp_library-override_strict_deps">override_strict_deps</a>,
+               <a href="#fsharp_library-project_sdk">project_sdk</a>, <a href="#fsharp_library-resources">resources</a>, <a href="#fsharp_library-srcs">srcs</a>, <a href="#fsharp_library-strict_deps">strict_deps</a>, <a href="#fsharp_library-target_frameworks">target_frameworks</a>, <a href="#fsharp_library-treat_warnings_as_errors">treat_warnings_as_errors</a>,
                <a href="#fsharp_library-warning_level">warning_level</a>, <a href="#fsharp_library-warnings_as_errors">warnings_as_errors</a>, <a href="#fsharp_library-warnings_not_as_errors">warnings_not_as_errors</a>)
 </pre>
 
@@ -32,6 +32,7 @@ Compile a F# DLL
 | <a id="fsharp_library-internals_visible_to"></a>internals_visible_to |  Other libraries that can see the assembly's internal symbols. Using this rather than the InternalsVisibleTo assembly attribute will improve build caching.   | List of strings | optional | <code>[]</code> |
 | <a id="fsharp_library-keyfile"></a>keyfile |  The key file used to sign the assembly with a strong name.   | <a href="https://bazel.build/concepts/labels">Label</a> | optional | <code>None</code> |
 | <a id="fsharp_library-langversion"></a>langversion |  The version string for the language.   | String | optional | <code>""</code> |
+| <a id="fsharp_library-nowarn"></a>nowarn |  List of warnings that should be ignored   | List of strings | optional | <code>[]</code> |
 | <a id="fsharp_library-out"></a>out |  File name, without extension, of the built assembly.   | String | optional | <code>""</code> |
 | <a id="fsharp_library-override_strict_deps"></a>override_strict_deps |  Whether or not to override the strict_deps attribute.   | Boolean | optional | <code>False</code> |
 | <a id="fsharp_library-project_sdk"></a>project_sdk |  The project SDK that is being targeted. See https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview   | String | optional | <code>"default"</code> |

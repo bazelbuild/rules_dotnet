@@ -42,6 +42,7 @@ def _compile_action(ctx, tfm):
         warnings_as_errors = ctx.attr.warnings_as_errors,
         warnings_not_as_errors = ctx.attr.warnings_not_as_errors,
         warning_level = ctx.attr.warning_level,
+        nowarn = ctx.attr.nowarn,
         project_sdk = ctx.attr.project_sdk,
         allow_unsafe_blocks = ctx.attr.allow_unsafe_blocks,
         nullable = ctx.attr.nullable,

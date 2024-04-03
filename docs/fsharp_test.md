@@ -13,8 +13,8 @@ a Bazel test.
 
 <pre>
 fsharp_test(<a href="#fsharp_test-name">name</a>, <a href="#fsharp_test-compile_data">compile_data</a>, <a href="#fsharp_test-data">data</a>, <a href="#fsharp_test-defines">defines</a>, <a href="#fsharp_test-deps">deps</a>, <a href="#fsharp_test-generate_documentation_file">generate_documentation_file</a>,
-            <a href="#fsharp_test-internals_visible_to">internals_visible_to</a>, <a href="#fsharp_test-keyfile">keyfile</a>, <a href="#fsharp_test-langversion">langversion</a>, <a href="#fsharp_test-out">out</a>, <a href="#fsharp_test-override_strict_deps">override_strict_deps</a>, <a href="#fsharp_test-project_sdk">project_sdk</a>,
-            <a href="#fsharp_test-resources">resources</a>, <a href="#fsharp_test-roll_forward_behavior">roll_forward_behavior</a>, <a href="#fsharp_test-srcs">srcs</a>, <a href="#fsharp_test-strict_deps">strict_deps</a>, <a href="#fsharp_test-target_frameworks">target_frameworks</a>,
+            <a href="#fsharp_test-internals_visible_to">internals_visible_to</a>, <a href="#fsharp_test-keyfile">keyfile</a>, <a href="#fsharp_test-langversion">langversion</a>, <a href="#fsharp_test-nowarn">nowarn</a>, <a href="#fsharp_test-out">out</a>, <a href="#fsharp_test-override_strict_deps">override_strict_deps</a>,
+            <a href="#fsharp_test-project_sdk">project_sdk</a>, <a href="#fsharp_test-resources">resources</a>, <a href="#fsharp_test-roll_forward_behavior">roll_forward_behavior</a>, <a href="#fsharp_test-srcs">srcs</a>, <a href="#fsharp_test-strict_deps">strict_deps</a>, <a href="#fsharp_test-target_frameworks">target_frameworks</a>,
             <a href="#fsharp_test-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#fsharp_test-warning_level">warning_level</a>, <a href="#fsharp_test-warnings_as_errors">warnings_as_errors</a>, <a href="#fsharp_test-warnings_not_as_errors">warnings_not_as_errors</a>,
             <a href="#fsharp_test-winexe">winexe</a>)
 </pre>
@@ -35,6 +35,7 @@ Compile a F# executable and runs it as a test
 | <a id="fsharp_test-internals_visible_to"></a>internals_visible_to |  Other libraries that can see the assembly's internal symbols. Using this rather than the InternalsVisibleTo assembly attribute will improve build caching.   | List of strings | optional | <code>[]</code> |
 | <a id="fsharp_test-keyfile"></a>keyfile |  The key file used to sign the assembly with a strong name.   | <a href="https://bazel.build/concepts/labels">Label</a> | optional | <code>None</code> |
 | <a id="fsharp_test-langversion"></a>langversion |  The version string for the language.   | String | optional | <code>""</code> |
+| <a id="fsharp_test-nowarn"></a>nowarn |  List of warnings that should be ignored   | List of strings | optional | <code>[]</code> |
 | <a id="fsharp_test-out"></a>out |  File name, without extension, of the built assembly.   | String | optional | <code>""</code> |
 | <a id="fsharp_test-override_strict_deps"></a>override_strict_deps |  Whether or not to override the strict_deps attribute.   | Boolean | optional | <code>False</code> |
 | <a id="fsharp_test-project_sdk"></a>project_sdk |  The project SDK that is being targeted. See https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview   | String | optional | <code>"default"</code> |
