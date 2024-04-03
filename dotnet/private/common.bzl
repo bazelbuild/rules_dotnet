@@ -179,7 +179,7 @@ def tfm_to_semver(tfm):
         fail("Could not get tfm semver version: {}", tfm)
 
 def is_debug(ctx):
-    return ctx.var["COMPILATION_MODE"] == "dbg"
+    return ctx.var["COMPILATION_MODE"] == "dbg" or ctx.var["COMPILATION_MODE"] == "fastbuild"
 
 def use_highentropyva(tfm):
     return tfm not in ["net20", "net40"]

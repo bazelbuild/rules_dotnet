@@ -2,6 +2,8 @@
 
 ## Design
 
+### Dependency resolution
+
 These rules try their best to follow the conventions that are used in the
 project files that MSBuild uses. MSBuild is not used behind the scenes
 but the compilers and tools that are part of the .Net toolchain are
@@ -17,6 +19,15 @@ This behaviour can be overridden by using the following flag when invoking bazel
 --@rules_dotnet//dotnet/settings:strict_deps=false
 ```
 You can add this flag to your `.bazelrc` file to make it the default.
+
+### Debug/Release configurations
+These rules follow the Bazel idiomatic way of handling compilation modes by reading the `--compilation_mode` flag.
+If the flag is set to either `dbg` or `fastbuild` the rules will compile with relase optimizations disabled.
+If the flag is set to `opt` the rules will compile with the release optimizations enabled.
+
+By default Bazel sets the compilation mode to `fastbuild`.
+
+If you want to e.g. enable optimizations in CI you can add `common --compilation_mode=opt` to your CI `.bazelrc` file.
 
 ## Unsupported workloads
 
