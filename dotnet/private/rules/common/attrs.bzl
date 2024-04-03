@@ -94,17 +94,6 @@ COMMON_ATTRS = {
         values = [0, 1, 2, 3, 4, 5],
         default = 3,
     ),
-    "strict_deps": attr.bool(
-        doc = """Whether to use strict dependencies or not. 
-        
-        This attribute mirrors the DisableTransitiveProjectReferences in MSBuild.
-        The default setting of this attribute can be overridden in the toolchain configuration""",
-        default = True,
-    ),
-    "override_strict_deps": attr.bool(
-        doc = "Whether or not to override the strict_deps attribute.",
-        mandatory = False,
-    ),
     "generate_documentation_file": attr.bool(
         doc = "Whether or not to generate a documentation file.",
         default = True,

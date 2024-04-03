@@ -10,9 +10,9 @@ Rule for compiling F# libraries.
 
 <pre>
 fsharp_library(<a href="#fsharp_library-name">name</a>, <a href="#fsharp_library-compile_data">compile_data</a>, <a href="#fsharp_library-data">data</a>, <a href="#fsharp_library-defines">defines</a>, <a href="#fsharp_library-deps">deps</a>, <a href="#fsharp_library-exports">exports</a>, <a href="#fsharp_library-generate_documentation_file">generate_documentation_file</a>,
-               <a href="#fsharp_library-internals_visible_to">internals_visible_to</a>, <a href="#fsharp_library-keyfile">keyfile</a>, <a href="#fsharp_library-langversion">langversion</a>, <a href="#fsharp_library-nowarn">nowarn</a>, <a href="#fsharp_library-out">out</a>, <a href="#fsharp_library-override_strict_deps">override_strict_deps</a>,
-               <a href="#fsharp_library-project_sdk">project_sdk</a>, <a href="#fsharp_library-resources">resources</a>, <a href="#fsharp_library-srcs">srcs</a>, <a href="#fsharp_library-strict_deps">strict_deps</a>, <a href="#fsharp_library-target_frameworks">target_frameworks</a>, <a href="#fsharp_library-treat_warnings_as_errors">treat_warnings_as_errors</a>,
-               <a href="#fsharp_library-warning_level">warning_level</a>, <a href="#fsharp_library-warnings_as_errors">warnings_as_errors</a>, <a href="#fsharp_library-warnings_not_as_errors">warnings_not_as_errors</a>)
+               <a href="#fsharp_library-internals_visible_to">internals_visible_to</a>, <a href="#fsharp_library-keyfile">keyfile</a>, <a href="#fsharp_library-langversion">langversion</a>, <a href="#fsharp_library-nowarn">nowarn</a>, <a href="#fsharp_library-out">out</a>, <a href="#fsharp_library-project_sdk">project_sdk</a>, <a href="#fsharp_library-resources">resources</a>, <a href="#fsharp_library-srcs">srcs</a>,
+               <a href="#fsharp_library-target_frameworks">target_frameworks</a>, <a href="#fsharp_library-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#fsharp_library-warning_level">warning_level</a>, <a href="#fsharp_library-warnings_as_errors">warnings_as_errors</a>,
+               <a href="#fsharp_library-warnings_not_as_errors">warnings_not_as_errors</a>)
 </pre>
 
 Compile a F# DLL
@@ -34,11 +34,9 @@ Compile a F# DLL
 | <a id="fsharp_library-langversion"></a>langversion |  The version string for the language.   | String | optional | <code>""</code> |
 | <a id="fsharp_library-nowarn"></a>nowarn |  List of warnings that should be ignored   | List of strings | optional | <code>[]</code> |
 | <a id="fsharp_library-out"></a>out |  File name, without extension, of the built assembly.   | String | optional | <code>""</code> |
-| <a id="fsharp_library-override_strict_deps"></a>override_strict_deps |  Whether or not to override the strict_deps attribute.   | Boolean | optional | <code>False</code> |
 | <a id="fsharp_library-project_sdk"></a>project_sdk |  The project SDK that is being targeted. See https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview   | String | optional | <code>"default"</code> |
 | <a id="fsharp_library-resources"></a>resources |  A list of files to embed in the DLL as resources.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | <code>[]</code> |
 | <a id="fsharp_library-srcs"></a>srcs |  The source files used in the compilation.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | <code>[]</code> |
-| <a id="fsharp_library-strict_deps"></a>strict_deps |  Whether to use strict dependencies or not. <br><br>        This attribute mirrors the DisableTransitiveProjectReferences in MSBuild.         The default setting of this attribute can be overridden in the toolchain configuration   | Boolean | optional | <code>True</code> |
 | <a id="fsharp_library-target_frameworks"></a>target_frameworks |  A list of target framework monikers to buildSee https://docs.microsoft.com/en-us/dotnet/standard/frameworks   | List of strings | required |  |
 | <a id="fsharp_library-treat_warnings_as_errors"></a>treat_warnings_as_errors |  Treat all compiler warnings as errors. Note that this attribute can not be used in conjunction with warnings_as_errors.   | Boolean | optional | <code>False</code> |
 | <a id="fsharp_library-warning_level"></a>warning_level |  The warning level that should be used by the compiler.   | Integer | optional | <code>3</code> |

@@ -13,10 +13,9 @@ a Bazel test.
 
 <pre>
 fsharp_test(<a href="#fsharp_test-name">name</a>, <a href="#fsharp_test-compile_data">compile_data</a>, <a href="#fsharp_test-data">data</a>, <a href="#fsharp_test-defines">defines</a>, <a href="#fsharp_test-deps">deps</a>, <a href="#fsharp_test-generate_documentation_file">generate_documentation_file</a>,
-            <a href="#fsharp_test-internals_visible_to">internals_visible_to</a>, <a href="#fsharp_test-keyfile">keyfile</a>, <a href="#fsharp_test-langversion">langversion</a>, <a href="#fsharp_test-nowarn">nowarn</a>, <a href="#fsharp_test-out">out</a>, <a href="#fsharp_test-override_strict_deps">override_strict_deps</a>,
-            <a href="#fsharp_test-project_sdk">project_sdk</a>, <a href="#fsharp_test-resources">resources</a>, <a href="#fsharp_test-roll_forward_behavior">roll_forward_behavior</a>, <a href="#fsharp_test-srcs">srcs</a>, <a href="#fsharp_test-strict_deps">strict_deps</a>, <a href="#fsharp_test-target_frameworks">target_frameworks</a>,
-            <a href="#fsharp_test-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#fsharp_test-warning_level">warning_level</a>, <a href="#fsharp_test-warnings_as_errors">warnings_as_errors</a>, <a href="#fsharp_test-warnings_not_as_errors">warnings_not_as_errors</a>,
-            <a href="#fsharp_test-winexe">winexe</a>)
+            <a href="#fsharp_test-internals_visible_to">internals_visible_to</a>, <a href="#fsharp_test-keyfile">keyfile</a>, <a href="#fsharp_test-langversion">langversion</a>, <a href="#fsharp_test-nowarn">nowarn</a>, <a href="#fsharp_test-out">out</a>, <a href="#fsharp_test-project_sdk">project_sdk</a>, <a href="#fsharp_test-resources">resources</a>,
+            <a href="#fsharp_test-roll_forward_behavior">roll_forward_behavior</a>, <a href="#fsharp_test-srcs">srcs</a>, <a href="#fsharp_test-target_frameworks">target_frameworks</a>, <a href="#fsharp_test-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#fsharp_test-warning_level">warning_level</a>,
+            <a href="#fsharp_test-warnings_as_errors">warnings_as_errors</a>, <a href="#fsharp_test-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#fsharp_test-winexe">winexe</a>)
 </pre>
 
 Compile a F# executable and runs it as a test
@@ -37,12 +36,10 @@ Compile a F# executable and runs it as a test
 | <a id="fsharp_test-langversion"></a>langversion |  The version string for the language.   | String | optional | <code>""</code> |
 | <a id="fsharp_test-nowarn"></a>nowarn |  List of warnings that should be ignored   | List of strings | optional | <code>[]</code> |
 | <a id="fsharp_test-out"></a>out |  File name, without extension, of the built assembly.   | String | optional | <code>""</code> |
-| <a id="fsharp_test-override_strict_deps"></a>override_strict_deps |  Whether or not to override the strict_deps attribute.   | Boolean | optional | <code>False</code> |
 | <a id="fsharp_test-project_sdk"></a>project_sdk |  The project SDK that is being targeted. See https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview   | String | optional | <code>"default"</code> |
 | <a id="fsharp_test-resources"></a>resources |  A list of files to embed in the DLL as resources.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | <code>[]</code> |
 | <a id="fsharp_test-roll_forward_behavior"></a>roll_forward_behavior |  The roll forward behavior that should be used: https://learn.microsoft.com/en-us/dotnet/core/versions/selection#control-roll-forward-behavior   | String | optional | <code>"Major"</code> |
 | <a id="fsharp_test-srcs"></a>srcs |  The source files used in the compilation.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional | <code>[]</code> |
-| <a id="fsharp_test-strict_deps"></a>strict_deps |  Whether to use strict dependencies or not. <br><br>        This attribute mirrors the DisableTransitiveProjectReferences in MSBuild.         The default setting of this attribute can be overridden in the toolchain configuration   | Boolean | optional | <code>True</code> |
 | <a id="fsharp_test-target_frameworks"></a>target_frameworks |  A list of target framework monikers to buildSee https://docs.microsoft.com/en-us/dotnet/standard/frameworks   | List of strings | required |  |
 | <a id="fsharp_test-treat_warnings_as_errors"></a>treat_warnings_as_errors |  Treat all compiler warnings as errors. Note that this attribute can not be used in conjunction with warnings_as_errors.   | Boolean | optional | <code>False</code> |
 | <a id="fsharp_test-warning_level"></a>warning_level |  The warning level that should be used by the compiler.   | Integer | optional | <code>3</code> |

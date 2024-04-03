@@ -35,7 +35,7 @@ def _compile_action(ctx, tfm):
         target_name = ctx.attr.name,
         target_framework = tfm,
         toolchain = toolchain,
-        strict_deps = ctx.attr.strict_deps if ctx.attr.override_strict_deps else toolchain.strict_deps[BuildSettingInfo].value,
+        strict_deps = toolchain.strict_deps[BuildSettingInfo].value,
         generate_documentation_file = ctx.attr.generate_documentation_file,
         include_host_model_dll = False,
         treat_warnings_as_errors = ctx.attr.treat_warnings_as_errors,
