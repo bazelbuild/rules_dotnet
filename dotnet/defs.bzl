@@ -51,27 +51,9 @@ load(
 load(
     "//dotnet/private/rules/publish_binary:publish_binary.bzl",
     _publish_binary = "publish_binary",
-    _publish_binary_wrapper = "publish_binary_wrapper",
 )
 
-def _get_runtime_runtime_identifier(rid):
-    if rid:
-        return rid
-    else:
-        return select(
-            {
-                Label("//dotnet/private:linux-x64"): "linux-x64",
-                Label("//dotnet/private:linux-arm64"): "linux-arm64",
-                Label("//dotnet/private:macos-x64"): "osx-x64",
-                Label("//dotnet/private:macos-arm64"): "osx-arm64",
-                Label("//dotnet/private:windows-x64"): "win-x64",
-                Label("//dotnet/private:windows-arm64"): "win-arm64",
-            },
-            no_match_error = "Could not infer default runtime identifier from the current host platform",
-        )
-
 def csharp_binary(
-        runtime_identifier = None,
         use_apphost_shim = True,
         treat_warnings_as_errors = None,
         warnings_as_errors = None,
@@ -80,7 +62,6 @@ def csharp_binary(
         strict_deps = None,
         **kwargs):
     _csharp_binary(
-        runtime_identifier = _get_runtime_runtime_identifier(runtime_identifier),
         treat_warnings_as_errors = treat_warnings_as_errors if treat_warnings_as_errors != None else False,
         override_treat_warnings_as_errors = True if treat_warnings_as_errors != None else False,
         warnings_as_errors = warnings_as_errors if warnings_as_errors != None else [],
@@ -96,7 +77,6 @@ def csharp_binary(
     )
 
 def csharp_library(
-        runtime_identifier = None,
         treat_warnings_as_errors = None,
         warnings_as_errors = None,
         warnings_not_as_errors = None,
@@ -104,7 +84,6 @@ def csharp_library(
         strict_deps = None,
         **kwargs):
     _csharp_library(
-        runtime_identifier = _get_runtime_runtime_identifier(runtime_identifier),
         treat_warnings_as_errors = treat_warnings_as_errors if treat_warnings_as_errors != None else False,
         override_treat_warnings_as_errors = True if treat_warnings_as_errors != None else False,
         warnings_as_errors = warnings_as_errors if warnings_as_errors != None else [],
@@ -119,7 +98,6 @@ def csharp_library(
     )
 
 def csharp_test(
-        runtime_identifier = None,
         use_apphost_shim = True,
         treat_warnings_as_errors = None,
         warnings_as_errors = None,
@@ -128,7 +106,6 @@ def csharp_test(
         strict_deps = None,
         **kwargs):
     _csharp_test(
-        runtime_identifier = _get_runtime_runtime_identifier(runtime_identifier),
         treat_warnings_as_errors = treat_warnings_as_errors if treat_warnings_as_errors != None else False,
         override_treat_warnings_as_errors = True if treat_warnings_as_errors != None else False,
         warnings_as_errors = warnings_as_errors if warnings_as_errors != None else [],
@@ -144,7 +121,6 @@ def csharp_test(
     )
 
 def csharp_nunit_test(
-        runtime_identifier = None,
         use_apphost_shim = True,
         treat_warnings_as_errors = None,
         warnings_as_errors = None,
@@ -153,7 +129,6 @@ def csharp_nunit_test(
         strict_deps = None,
         **kwargs):
     _csharp_nunit_test(
-        runtime_identifier = _get_runtime_runtime_identifier(runtime_identifier),
         treat_warnings_as_errors = treat_warnings_as_errors if treat_warnings_as_errors != None else False,
         override_treat_warnings_as_errors = True if treat_warnings_as_errors != None else False,
         warnings_as_errors = warnings_as_errors if warnings_as_errors != None else [],
@@ -169,7 +144,6 @@ def csharp_nunit_test(
     )
 
 def fsharp_binary(
-        runtime_identifier = None,
         use_apphost_shim = True,
         treat_warnings_as_errors = None,
         warnings_as_errors = None,
@@ -178,7 +152,6 @@ def fsharp_binary(
         strict_deps = None,
         **kwargs):
     _fsharp_binary(
-        runtime_identifier = _get_runtime_runtime_identifier(runtime_identifier),
         treat_warnings_as_errors = treat_warnings_as_errors if treat_warnings_as_errors != None else False,
         override_treat_warnings_as_errors = True if treat_warnings_as_errors != None else False,
         warnings_as_errors = warnings_as_errors if warnings_as_errors != None else [],
@@ -194,7 +167,6 @@ def fsharp_binary(
     )
 
 def fsharp_library(
-        runtime_identifier = None,
         treat_warnings_as_errors = None,
         warnings_as_errors = None,
         warnings_not_as_errors = None,
@@ -202,7 +174,6 @@ def fsharp_library(
         strict_deps = None,
         **kwargs):
     _fsharp_library(
-        runtime_identifier = _get_runtime_runtime_identifier(runtime_identifier),
         treat_warnings_as_errors = treat_warnings_as_errors if treat_warnings_as_errors != None else False,
         override_treat_warnings_as_errors = True if treat_warnings_as_errors != None else False,
         warnings_as_errors = warnings_as_errors if warnings_as_errors != None else [],
@@ -217,7 +188,6 @@ def fsharp_library(
     )
 
 def fsharp_test(
-        runtime_identifier = None,
         use_apphost_shim = True,
         treat_warnings_as_errors = None,
         warnings_as_errors = None,
@@ -226,7 +196,6 @@ def fsharp_test(
         strict_deps = None,
         **kwargs):
     _fsharp_test(
-        runtime_identifier = _get_runtime_runtime_identifier(runtime_identifier),
         treat_warnings_as_errors = treat_warnings_as_errors if treat_warnings_as_errors != None else False,
         override_treat_warnings_as_errors = True if treat_warnings_as_errors != None else False,
         warnings_as_errors = warnings_as_errors if warnings_as_errors != None else [],
@@ -242,7 +211,6 @@ def fsharp_test(
     )
 
 def fsharp_nunit_test(
-        runtime_identifier = None,
         use_apphost_shim = True,
         treat_warnings_as_errors = None,
         warnings_as_errors = None,
@@ -251,7 +219,6 @@ def fsharp_nunit_test(
         strict_deps = None,
         **kwargs):
     _fsharp_nunit_test(
-        runtime_identifier = _get_runtime_runtime_identifier(runtime_identifier),
         treat_warnings_as_errors = treat_warnings_as_errors if treat_warnings_as_errors != None else False,
         override_treat_warnings_as_errors = True if treat_warnings_as_errors != None else False,
         warnings_as_errors = warnings_as_errors if warnings_as_errors != None else [],
@@ -266,26 +233,7 @@ def fsharp_nunit_test(
         **kwargs
     )
 
-def publish_binary(name, binary, target_framework, self_contained = False, runtime_packs = [], runtime_identifier = None, **kwargs):
-    runtime_identifier = _get_runtime_runtime_identifier(runtime_identifier)
-
-    _publish_binary(
-        name = "{}_wrapped".format(name),
-        binary = binary,
-        target_framework = target_framework,
-        self_contained = self_contained,
-        runtime_packs = runtime_packs,
-        tags = ["manual"],
-    )
-
-    _publish_binary_wrapper(
-        name = name,
-        wrapped_target = "{}_wrapped".format(name),
-        target_framework = target_framework,
-        runtime_identifier = _get_runtime_runtime_identifier(runtime_identifier),
-        **kwargs
-    )
-
+publish_binary = _publish_binary
 import_library = _import_library
 import_dll = _import_dll
 nuget_repo = _nuget_repo

@@ -17,9 +17,6 @@ csharp_binary(
     name = "main",
     srcs = ["main.cs"],
     target_frameworks = ["net7.0"],
-    targeting_packs = [
-        "@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
-    ],
     deps = [
         ":lib",
     ],
@@ -29,9 +26,6 @@ csharp_library(
     name = "lib",
     srcs = ["lib.cs"],
     target_frameworks = ["net6.0"],
-    targeting_packs = [
-        "@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
-    ],
     deps = [],
 )
 
@@ -61,12 +55,6 @@ assert_contains(
 publish_binary(
     name = "publish_self_contained",
     binary = ":main",
-    runtime_packs = select({
-        "//dotnet:rid_linux-x64": ["@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.linux-x64"],
-        "//dotnet:rid_osx-x64": ["@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.osx-x64"],
-        "//dotnet:rid_win-x64": ["@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.win-x64"],
-        "//conditions:default": ["@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.linux-x64"],
-    }),
     self_contained = True,
     target_framework = "net7.0",
 )
@@ -105,9 +93,6 @@ csharp_binary(
         ":run",
     ],
     target_frameworks = ["net6.0"],
-    targeting_packs = [
-        "@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
-    ],
     deps = [
         ":lib",
     ],

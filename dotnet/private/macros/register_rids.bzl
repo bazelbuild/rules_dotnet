@@ -3,7 +3,7 @@
 load("@bazel_skylib//rules:common_settings.bzl", "bool_setting", "string_flag")
 load("//dotnet/private:common.bzl", "DEFAULT_RID")
 load(
-    "//dotnet/private:rids.bzl",
+    "//dotnet/private/sdk:rids.bzl",
     "RUNTIME_GRAPH",
 )
 

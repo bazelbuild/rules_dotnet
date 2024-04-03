@@ -11,8 +11,6 @@ DotnetAssemblyCompileInfo = provider(
         "internals_visible_to": "list[string]: A list of assemblies that can use the assemblies listed in iref for compilation. See docs/ReferenceAssemblies.md for more info.",
         "compile_data": "list[File]: Compile data files",
         "exports": "list[File]",
-
-        # TODO: Maybe this should just be deps?
         "transitive_refs": "depset[File]: Transitive reference-only assemblies containing only public symbols. Only used when strict deps are off.",
         "transitive_compile_data": "depset[File]: Transitive compile data files. Only used when strict deps are off.",
         "transitive_analyzers": "depset[File]: Transitive analyzer dlls. Only used when strict deps are off.",
@@ -62,15 +60,31 @@ DotnetBinaryInfo = provider(
         "app_host": "File: The apphost executable",
         "dll": "File: The main binary dll",
         "transitive_runtime_deps": "list[DotnetAssemblyRuntimeInfo]: The transitive runtime dependencies of the binary",
+        "runtime_pack_info": "DotnetRuntimePackInfo: The runtime pack for the binary",
     },
 )
 
-DotnetPublishBinaryInfo = provider(
-    doc = "Information about a published .Net binary",
+DotnetTargetingPackInfo = provider(
+    doc = "Information about a .Net targeting pack.",
     fields = {
-        "runtime_packs": "list[AssemblyInfo]: Optional information about the used runtime packs. Used by self-contained publishing",
-        "target_framework": "string: The target framework of the published binary",
-        "self_contained": "bool: True if the binary is self-contained",
-        "repo_mapping_manifest": "File: the repo mapping file for the published binary",
+        "assembly_runtime_infos": "list[DotnetAssemblyRuntimeInfo]: The runtime infos of the assemblies in the targeting pack",
+        "assembly_compile_infos": "list[DotnetAssemblyCompileInfo]: The compile infos of the assemblies in the targeting pack",
+        "nuget_infos": "list[NuGetInfo]: The NuGet infos of the assemblies in the targeting pack",
+    },
+)
+
+DotnetRuntimePackInfo = provider(
+    doc = "Information about a .Net runtime pack.",
+    fields = {
+        "runtime_identifier": "string: The runtime identifier of the runtime pack",
+        "assembly_runtime_infos": "list[DotnetAssemblyRuntimeInfo]: The runtime infos of the assemblies in the targeting pack",
+        "nuget_infos": "list[NuGetInfo]: The NuGet infos of the assemblies in the targeting pack",
+    },
+)
+
+DotnetApphostPackInfo = provider(
+    doc = "Information about a .Net runtime pack.",
+    fields = {
+        "apphost": "File: The apphost file",
     },
 )

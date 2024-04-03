@@ -22,17 +22,17 @@ RUN curl -o $HOME/bin/bazelisk-linux-$TARGETARCH -fsSL https://github.com/bazelb
   && ln -s $HOME/bin/bazelisk $HOME/bin/bazel
 
 # Install bazel-watcher
-RUN curl -o $HOME/bin/ibazel_linux_$TARGETARCH -fsSL https://github.com/bazelbuild/bazel-watcher/releases/download/v0.24.0/ibazel_linux_$TARGETARCH \
+RUN curl -o $HOME/bin/ibazel_linux_$TARGETARCH -fsSL https://github.com/bazelbuild/bazel-watcher/releases/download/v0.25.1/ibazel_linux_$TARGETARCH \
   && mv $HOME/bin/ibazel_linux_$TARGETARCH $HOME/bin/ibazel \
   && chmod +x $HOME/bin/ibazel
 
 # Install buildifier
-RUN curl -o $HOME/bin/buildifier-linux-$TARGETARCH -fsSL https://github.com/bazelbuild/buildtools/releases/download/v6.4.0/buildifier-linux-$TARGETARCH \
+RUN curl -o $HOME/bin/buildifier-linux-$TARGETARCH -fsSL https://github.com/bazelbuild/buildtools/releases/download/v7.1.0/buildifier-linux-$TARGETARCH \
   && mv $HOME/bin/buildifier-linux-$TARGETARCH $HOME/bin/buildifier \
   && chmod +x $HOME/bin/buildifier
 
 # Install buildozer
-RUN curl -o $HOME/bin/buildozer-linux-$TARGETARCH -fsSL https://github.com/bazelbuild/buildtools/releases/download/v6.4.0/buildozer-linux-$TARGETARCH \
+RUN curl -o $HOME/bin/buildozer-linux-$TARGETARCH -fsSL https://github.com/bazelbuild/buildtools/releases/download/v7.1.0/buildozer-linux-$TARGETARCH \
   && mv $HOME/bin/buildozer-linux-$TARGETARCH $HOME/bin/buildozer \
   && chmod +x $HOME/bin/buildozer
 

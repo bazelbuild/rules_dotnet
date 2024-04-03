@@ -15,7 +15,7 @@ load(
     "get_highest_compatible_target_framework",
 )
 load(
-    "//dotnet/private:rids.bzl",
+    "//dotnet/private/sdk:rids.bzl",
     "RUNTIME_GRAPH",
 )
 

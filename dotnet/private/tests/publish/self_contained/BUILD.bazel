@@ -7,12 +7,6 @@ load(
 publish_binary(
     name = "self_contained",
     binary = "//dotnet/private/tests/publish/app_to_publish",
-    runtime_packs = select({
-        "//dotnet:rid_linux-x64": ["@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.linux-x64"],
-        "//dotnet:rid_osx-x64": ["@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.osx-x64"],
-        "//dotnet:rid_win-x64": ["@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.win-x64"],
-        "//conditions:default": ["@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.runtime.linux-x64"],
-    }),
     self_contained = True,
     target_framework = "net6.0",
 )
@@ -29,9 +23,12 @@ pkg_tar(
     package_dir = "/",
     strip_prefix = select(
         {
-            "@platforms//os:linux": "self_contained/publish/linux-x64",
-            "@platforms//os:osx": "self_contained/publish/osx-x64",
-            "@platforms//os:windows": "self_contained/publish/win-x64",
+            "//dotnet/private:linux-x64": "self_contained/publish/linux-x64",
+            "//dotnet/private:linux-arm64": "self_contained/publish/linux-arm64",
+            "//dotnet/private:osx-x64": "self_contained/publish/osx-x64",
+            "//dotnet/private:osx-arm64": "self_contained/publish/osx-arm64",
+            "//dotnet/private:windows-x64": "self_contained/publish/win-x64",
+            "//dotnet/private:windows-arm64": "self_contained/publish/win-arm64",
         },
     ),
     # Disabling this for Windows because there are some runfiles issues with Windows and rules_pkg

@@ -4,7 +4,6 @@ fsharp_library(
     name = "a",
     srcs = ["a.fs"],
     target_frameworks = ["net6.0"],
-    targeting_packs = ["@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
     deps = [":b"],
 )
 
@@ -12,7 +11,6 @@ fsharp_library(
     name = "b",
     srcs = ["b.fs"],
     target_frameworks = ["net6.0"],
-    targeting_packs = ["@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
     exports = [":c"],
     deps = [":c"],
 )
@@ -21,5 +19,4 @@ fsharp_library(
     name = "c",
     srcs = ["c.fs"],
     target_frameworks = ["net6.0"],
-    targeting_packs = ["@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
 )

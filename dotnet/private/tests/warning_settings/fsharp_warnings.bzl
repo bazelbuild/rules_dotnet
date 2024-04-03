@@ -37,7 +37,6 @@ def fsharp_warnings():
     fsharp_library(
         name = "fsharp",
         srcs = ["warnings.fs"],
-        targeting_packs = ["@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
         target_frameworks = ["net6.0"],
         tags = ["manual"],
     )
@@ -73,7 +72,6 @@ def fsharp_warnings():
     fsharp_library(
         name = "fsharp_all_warnings",
         srcs = ["warnings.fs"],
-        targeting_packs = ["@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
         target_frameworks = ["net6.0"],
         treat_warnings_as_errors = True,
         tags = ["manual"],
@@ -89,7 +87,6 @@ def fsharp_warnings():
     fsharp_library(
         name = "fsharp_warnings_as_errors",
         srcs = ["warnings.fs"],
-        targeting_packs = ["@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
         target_frameworks = ["net6.0"],
         warnings_as_errors = ["FS0025", "FS0026"],
         tags = ["manual"],
@@ -105,7 +102,6 @@ def fsharp_warnings():
     fsharp_library(
         name = "fsharp_warnings_not_as_errors",
         srcs = ["warnings.fs"],
-        targeting_packs = ["@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
         target_frameworks = ["net6.0"],
         treat_warnings_as_errors = True,
         warnings_not_as_errors = ["FS0025", "FS0026"],
@@ -122,7 +118,6 @@ def fsharp_warnings():
     fsharp_library(
         name = "fsharp_warning_level",
         srcs = ["warnings.fs"],
-        targeting_packs = ["@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref"],
         target_frameworks = ["net6.0"],
         warning_level = 5,
         tags = ["manual"],

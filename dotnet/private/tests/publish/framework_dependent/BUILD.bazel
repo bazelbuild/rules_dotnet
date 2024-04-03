@@ -8,6 +8,7 @@ load(
 publish_binary(
     name = "framework_dependent",
     binary = "//dotnet/private/tests/publish/app_to_publish",
+    roll_forward_behavior = "Major",
     self_contained = False,
     target_framework = "net6.0",
 )
@@ -20,9 +21,6 @@ csharp_binary(
     name = "toolchain_provider",
     srcs = ["hello.cs"],
     target_frameworks = ["net6.0"],
-    targeting_packs = [
-        "@paket.rules_dotnet_dev_nuget_packages//microsoft.netcore.app.ref",
-    ],
     deps = [
     ],
 )
@@ -38,9 +36,12 @@ pkg_tar(
     package_dir = "/",
     strip_prefix = select(
         {
-            "@platforms//os:linux": "framework_dependent/publish/linux-x64",
-            "@platforms//os:osx": "framework_dependent/publish/osx-x64",
-            "@platforms//os:windows": "framework_dependent/publish/win-x64",
+            "//dotnet/private:linux-x64": "framework_dependent/publish/linux-x64",
+            "//dotnet/private:linux-arm64": "framework_dependent/publish/linux-arm64",
+            "//dotnet/private:osx-x64": "framework_dependent/publish/osx-x64",
+            "//dotnet/private:osx-arm64": "framework_dependent/publish/osx-arm64",
+            "//dotnet/private:windows-x64": "framework_dependent/publish/win-x64",
+            "//dotnet/private:windows-arm64": "framework_dependent/publish/win-arm64",
         },
     ),
     # Disabling this for Windows because there are some runfiles issues with Windows and rules_pkg
@@ -61,7 +62,6 @@ sh_test(
         ":tar",
         ":toolchain_provider",
     ],
-
     # Disabling this for Windows because there are some runfiles issues with Windows and rules_pkg
     target_compatible_with = select({
         "@platforms//os:windows": ["@platforms//:incompatible"],

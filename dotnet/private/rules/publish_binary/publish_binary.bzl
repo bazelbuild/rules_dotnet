@@ -4,101 +4,8 @@ Rules for compiling F# binaries.
 
 load("@bazel_skylib//lib:shell.bzl", "shell")
 load("//dotnet/private:common.bzl", "generate_depsjson", "generate_runtimeconfig", "to_rlocation_path")
-load("//dotnet/private:providers.bzl", "DotnetAssemblyCompileInfo", "DotnetAssemblyRuntimeInfo", "DotnetBinaryInfo", "DotnetPublishBinaryInfo")
+load("//dotnet/private:providers.bzl", "DotnetAssemblyCompileInfo", "DotnetAssemblyRuntimeInfo", "DotnetBinaryInfo")
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
-
-def _publish_binary_impl(ctx):
-    runtime_pack_infos = []
-    if ctx.attr.self_contained == True:
-        if len(ctx.attr.runtime_packs) == 0:
-            fail("Can not publish self-contained binaries without a runtime pack")
-
-        for runtime_pack in ctx.attr.runtime_packs:
-            runtime_pack_infos.append(runtime_pack[DotnetAssemblyRuntimeInfo])
-    elif len(ctx.attr.runtime_packs) > 0:
-        fail("Can not do a framework dependent publish with a runtime pack")
-
-    # repo_mapping_manifest is only available in Bazel 7.0+
-    repo_mapping_file = None
-    if ctx.attr.binary[0][DefaultInfo].files_to_run and hasattr(ctx.attr.binary[0][DefaultInfo].files_to_run, "repo_mapping_manifest"):
-        repo_mapping_file = ctx.attr.binary[0][DefaultInfo].files_to_run.repo_mapping_manifest
-
-    return [
-        ctx.attr.binary[0][DotnetAssemblyCompileInfo],
-        ctx.attr.binary[0][DotnetAssemblyRuntimeInfo],
-        ctx.attr.binary[0][DotnetBinaryInfo],
-        DotnetPublishBinaryInfo(
-            runtime_packs = runtime_pack_infos,
-            target_framework = ctx.attr.target_framework,
-            self_contained = ctx.attr.self_contained,
-            repo_mapping_manifest = repo_mapping_file,
-        ),
-    ]
-
-publish_binary = rule(
-    _publish_binary_impl,
-    doc = """Publish a .Net binary""",
-    attrs = {
-        "binary": attr.label(
-            doc = "The .Net binary that is being published",
-            providers = [DotnetBinaryInfo],
-            cfg = tfm_transition,
-            mandatory = True,
-        ),
-        "target_framework": attr.string(
-            doc = "The target framework that should be published",
-            mandatory = True,
-        ),
-        "self_contained": attr.bool(
-            doc = """
-            Whether the binary should be self-contained.
-            
-            If true, the binary will be published as a self-contained but you need to provide
-            a runtime pack in the `runtime_packs` attribute. At some point the rules might
-            resolve the runtime pack automatically.
-
-            If false, the binary will be published as a non-self-contained. That means that to be
-            able to run the binary you need to have a .Net runtime installed on the host system.
-            """,
-            default = False,
-        ),
-        "runtime_packs": attr.label_list(
-            doc = """
-            The runtime packs that should be used to publish the binary.
-            Should only be declared if `self_contained` is true.
-
-            A runtime pack is a NuGet package that contains the runtime that should be
-            used to run the binary. There can be multiple runtime packs for a given
-            publish e.g. when a AspNetCore application is published you need the base
-            runtime pack and the AspNetCore runtime pack.
-
-            Example runtime pack: https://www.nuget.org/packages/Microsoft.NETCore.App.Runtime.linux-x64/6.0.8
-            """,
-            providers = [DotnetAssemblyRuntimeInfo],
-            default = [],
-            cfg = tfm_transition,
-        ),
-        # TODO:
-        # "ready_2_run": attr.bool(
-        #     doc = """
-        #     Wether or not to publish the binary as Ready2Run.
-        #     See: https://docs.microsoft.com/en-us/dotnet/core/deploying/ready-to-run
-        #     """,
-        #     default = False,
-        # ),
-        # "single_file": attr.bool(
-        #     doc = """
-        #     Wether or not to publish the binary as a single file.
-        #     See: https://docs.microsoft.com/en-us/dotnet/core/deploying/single-file/overview
-        #     """,
-        #     default = False,
-        # ),
-        "_allowlist_function_transition": attr.label(
-            default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
-        ),
-    },
-    cfg = tfm_transition,
-)
 
 def _copy_file(script_body, src, dst, is_windows):
     if is_windows:
@@ -117,7 +24,7 @@ def _get_assembly_files(assembly_info, transitive_runtime_deps):
         data += dep.data
     return (libs, native, data)
 
-def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, assembly_info, transitive_runtime_deps, repo_mapping_manifest):
+def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, assembly_info, transitive_runtime_deps, repo_mapping_manifest):
     is_windows = ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo])
     inputs = [binary_info.app_host]
     app_host_copy = ctx.actions.declare_file(
@@ -184,8 +91,8 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
     # In case the publish is self-contained there needs to be a runtime pack available
     # with the runtime dependencies that are required for the targeted runtime.
     # The runtime pack contents should always be copied to the root of the publish folder
-    if len(publish_binary_info.runtime_packs) > 0:
-        for runtime_pack in publish_binary_info.runtime_packs:
+    if runtime_pack_info:
+        for runtime_pack in runtime_pack_info.assembly_runtime_infos:
             runtime_pack_files = depset(
                 runtime_pack.libs +
                 runtime_pack.native +
@@ -213,8 +120,8 @@ def _copy_to_publish(ctx, runtime_identifier, publish_binary_info, binary_info, 
 
     return (app_host_copy, outputs)
 
-def _generate_runtimeconfig(ctx, output, target_framework, project_sdk, is_self_contained, toolchain):
-    runtimeconfig_struct = generate_runtimeconfig(target_framework, project_sdk, is_self_contained, toolchain)
+def _generate_runtimeconfig(ctx, output, target_framework, project_sdk, is_self_contained, roll_forward_behavior, runtime_pack_info):
+    runtimeconfig_struct = generate_runtimeconfig(target_framework, project_sdk, is_self_contained, roll_forward_behavior, runtime_pack_info)
 
     ctx.actions.write(
         output = output,
@@ -228,31 +135,32 @@ def _generate_depsjson(
         is_self_contained,
         assembly_info,
         transitive_runtime_deps,
-        runtime_identifier,
-        runtime_pack_infos):
-    depsjson_struct = generate_depsjson(ctx, target_framework, is_self_contained, assembly_info, transitive_runtime_deps, runtime_identifier, runtime_pack_infos)
+        runtime_pack_info):
+    depsjson_struct = generate_depsjson(ctx, target_framework, is_self_contained, assembly_info, transitive_runtime_deps, runtime_pack_info)
 
     ctx.actions.write(
         output = output,
         content = json.encode_indent(depsjson_struct),
     )
 
-def _publish_binary_wrapper_impl(ctx):
-    assembly_compile_info = ctx.attr.wrapped_target[0][DotnetAssemblyCompileInfo]
-    assembly_runtime_info = ctx.attr.wrapped_target[0][DotnetAssemblyRuntimeInfo]
-    binary_info = ctx.attr.wrapped_target[0][DotnetBinaryInfo]
-    publish_binary_info = ctx.attr.wrapped_target[0][DotnetPublishBinaryInfo]
-    repo_mapping_manifest = ctx.attr.wrapped_target[0][DotnetPublishBinaryInfo].repo_mapping_manifest
+def _publish_binary_impl(ctx):
+    repo_mapping_manifest = ctx.attr.binary[0][DefaultInfo].files_to_run.repo_mapping_manifest
+
+    assembly_compile_info = ctx.attr.binary[0][DotnetAssemblyCompileInfo]
+    assembly_runtime_info = ctx.attr.binary[0][DotnetAssemblyRuntimeInfo]
+    binary_info = ctx.attr.binary[0][DotnetBinaryInfo]
     transitive_runtime_deps = binary_info.transitive_runtime_deps
-    runtime_identifier = ctx.attr.runtime_identifier
-    target_framework = publish_binary_info.target_framework
-    is_self_contained = publish_binary_info.self_contained
+    target_framework = ctx.attr.target_framework
+    is_self_contained = ctx.attr.self_contained
     assembly_name = assembly_runtime_info.name
+    runtime_pack_info = binary_info.runtime_pack_info if is_self_contained else None
+    runtime_identifier = binary_info.runtime_pack_info.runtime_identifier
+    roll_forward_behavior = ctx.attr.roll_forward_behavior
 
     (executable, runfiles) = _copy_to_publish(
         ctx,
         runtime_identifier,
-        publish_binary_info,
+        runtime_pack_info,
         binary_info,
         assembly_runtime_info,
         transitive_runtime_deps,
@@ -270,7 +178,8 @@ def _publish_binary_wrapper_impl(ctx):
         target_framework,
         assembly_compile_info.project_sdk,
         is_self_contained,
-        ctx.toolchains["//dotnet:toolchain_type"],
+        roll_forward_behavior,
+        runtime_pack_info,
     )
 
     depsjson = ctx.actions.declare_file("{}/publish/{}/{}.deps.json".format(ctx.label.name, runtime_identifier, assembly_name))
@@ -281,12 +190,10 @@ def _publish_binary_wrapper_impl(ctx):
         is_self_contained,
         assembly_runtime_info,
         transitive_runtime_deps,
-        runtime_identifier,
-        publish_binary_info.runtime_packs,
+        runtime_pack_info,
     )
 
     return [
-        ctx.attr.wrapped_target[0][DotnetPublishBinaryInfo],
         DefaultInfo(
             executable = executable,
             files = depset([executable, runtimeconfig, depsjson] + runfiles),
@@ -298,14 +205,28 @@ def _publish_binary_wrapper_impl(ctx):
 # into an outgoing transition in the wrapper. This allows us to select on the runtime_identifier
 # and runtime_packs attributes. We also need to have all the file copying in the wrapper rule
 # because Bazel does not allow forwarding executable files as they have to be created by the wrapper rule.
-publish_binary_wrapper = rule(
-    _publish_binary_wrapper_impl,
+publish_binary = rule(
+    _publish_binary_impl,
     doc = """Publish a .Net binary""",
     attrs = {
-        "wrapped_target": attr.label(
-            doc = "The wrapped publish_binary target",
+        "binary": attr.label(
+            doc = "The .Net binary that is being published",
+            providers = [DotnetBinaryInfo],
             cfg = tfm_transition,
             mandatory = True,
+        ),
+        "self_contained": attr.bool(
+            doc = """
+            Whether the binary should be self-contained.
+            
+            If true, the binary will be published as a self-contained but you need to provide
+            a runtime pack in the `runtime_packs` attribute. At some point the rules might
+            resolve the runtime pack automatically.
+
+            If false, the binary will be published as a non-self-contained. That means that to be
+            able to run the binary you need to have a .Net runtime installed on the host system.
+            """,
+            default = False,
         ),
         "target_framework": attr.string(
             doc = "The target framework that should be published",
@@ -314,7 +235,12 @@ publish_binary_wrapper = rule(
         "runtime_identifier": attr.string(
             doc = "The runtime identifier that is being targeted. " +
                   "See https://docs.microsoft.com/en-us/dotnet/core/rid-catalog",
-            mandatory = True,
+            mandatory = False,
+        ),
+        "roll_forward_behavior": attr.string(
+            doc = "The roll forward behavior that should be used: https://learn.microsoft.com/en-us/dotnet/core/versions/selection#control-roll-forward-behavior",
+            default = "Minor",
+            values = ["Minor", "Major", "LatestPatch", "LatestMinor", "LatestMajor", "Disable"],
         ),
         "_allowlist_function_transition": attr.label(
             default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
@@ -325,4 +251,5 @@ publish_binary_wrapper = rule(
         "//dotnet:toolchain_type",
     ],
     executable = True,
+    cfg = tfm_transition,
 )

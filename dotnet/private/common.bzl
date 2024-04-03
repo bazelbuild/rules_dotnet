@@ -8,10 +8,11 @@ load(
     "DotnetAssemblyCompileInfo",
     "DotnetAssemblyRuntimeInfo",
     "DotnetDepVariantInfo",
+    "DotnetTargetingPackInfo",
     "NuGetInfo",
 )
-load("//dotnet/private:rids.bzl", "RUNTIME_GRAPH")
 load("//dotnet/private:semver.bzl", "semver")
+load("//dotnet/private/sdk:rids.bzl", "RUNTIME_GRAPH")
 
 def _collect_transitive():
     t = {}
@@ -57,6 +58,7 @@ FRAMEWORK_COMPATIBILITY = {
     "net471": ["net47"],
     "net472": ["net471"],
     "net48": ["net472"],
+    "net481": ["net48"],
 
     # .NET Core
     "netcoreapp1.0": ["netstandard1.6"],
@@ -159,6 +161,23 @@ NET_FRAMEWORKS = FRAMEWORK_COMPATIBILITY.keys()[_net:_cor]
 COR_FRAMEWORKS = FRAMEWORK_COMPATIBILITY.keys()[_cor:]
 TRANSITIVE_FRAMEWORK_COMPATIBILITY = _collect_transitive()
 
+def tfm_to_semver(tfm):
+    """Converts a target framework moniker to a semver version.
+
+    Args:
+        tfm: The target framework moniker
+    Returns:
+        The semver version
+    """
+    if tfm.startswith("netstandard"):
+        return "{}.0".format(tfm.replace("netstandard", ""))
+    elif tfm.startswith("netcoreapp"):
+        return "{}.0".format(tfm.replace("netcoreapp", ""))
+    elif tfm.startswith("net"):
+        return "{}.0".format(tfm.replace("net", ""))
+    else:
+        fail("Could not get tfm semver version: {}", tfm)
+
 def is_debug(ctx):
     return ctx.var["COMPILATION_MODE"] == "dbg"
 
@@ -210,13 +229,13 @@ def _find_ref_by_file_name(refs, file_name):
 
     return None
 
-def collect_compile_info(name, deps, targeting_packs, exports, strict_deps):
+def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
     """Determine the transitive dependencies by the target framework.
 
     Args:
         name: The name of the assembly that is being compiled.
         deps: Dependencies that the compilation target depends on.
-        targeting_packs: Targeting packs that the compilation target depends on.
+        targeting_pack: Targeting pack that the compilation target depends on.
         exports: Exported targets
         strict_deps: Whether or not to use strict dependencies.
 
@@ -236,21 +255,23 @@ def collect_compile_info(name, deps, targeting_packs, exports, strict_deps):
     targeting_pack_overrides = {}
     framework_list = {}
     framework_files = []
-    for targeting_pack in targeting_packs:
-        compile_info = targeting_pack[DotnetAssemblyCompileInfo]
-        nuget_info = targeting_pack[NuGetInfo]
 
-        for override_name, override_version in nuget_info.targeting_pack_overrides.items():
-            targeting_pack_overrides[override_name] = override_version
+    if targeting_pack:
+        targeting_pack_info = targeting_pack[DotnetTargetingPackInfo]
+        for i, nuget_info in enumerate(targeting_pack_info.nuget_infos):
+            compile_info = targeting_pack_info.assembly_compile_infos[i]
 
-        for dll_name, dll_version in nuget_info.framework_list.items():
-            framework_list[dll_name] = {"version": dll_version, "file": _find_ref_by_file_name(compile_info.refs, dll_name)}
+            for override_name, override_version in nuget_info.targeting_pack_overrides.items():
+                targeting_pack_overrides[override_name] = override_version
 
-        if len(nuget_info.framework_list) == 0:
-            framework_files.extend(compile_info.irefs)
+            for dll_name, dll_version in nuget_info.framework_list.items():
+                framework_list[dll_name] = {"version": dll_version, "file": _find_ref_by_file_name(compile_info.refs, dll_name)}
 
-        direct_analyzers.extend(compile_info.analyzers)
-        direct_compile_data.extend(compile_info.compile_data)
+            if len(nuget_info.framework_list) == 0:
+                framework_files.extend(compile_info.irefs)
+
+            direct_analyzers.extend(compile_info.analyzers)
+            direct_compile_data.extend(compile_info.compile_data)
 
     for dep in deps:
         assembly = dep[DotnetAssemblyCompileInfo]
@@ -452,8 +473,7 @@ def generate_depsjson(
         is_self_contained,
         target_assembly_runtime_info,
         transitive_runtime_deps,
-        runtime_identifier,
-        runtime_pack_infos = [],
+        runtime_pack_info = None,
         use_relative_paths = False):
     """Generates a deps.json file.
 
@@ -463,18 +483,13 @@ def generate_depsjson(
         is_self_contained: If the target is a self-contained publish.
         target_assembly_runtime_info: The DotnetAssemblyRuntimeInfo provider for the target being built.
         transitive_runtime_deps: List of DotnetAssemblyRuntimeInfo providers which are the transitive runtime dependencies of the target.
-        runtime_identifier: The runtime identifier of the target.
-        runtime_pack_infos: The DotnetAssemblyInfo of the runtime packs that are used for a self contained publish.
+        runtime_pack_info: The DotnetRuntimePackInfo of the runtime pack that is used for a self contained publish.
         use_relative_paths: If the paths to the dependencies should be relative to the workspace root.
     Returns:
         The deps.json file as a struct.
     """
-    runtime_target = ".NETCoreApp,Version=v{}".format(
-        "{}/{}".format(
-            target_framework.replace("net", ""),
-            runtime_identifier,
-        ),
-    )
+    version = "{}/{}".format(tfm_to_semver(target_framework), runtime_pack_info.runtime_identifier) if is_self_contained else "{}".format(tfm_to_semver(target_framework))
+    runtime_target = ".NETCoreApp,Version=v{}".format(version)
     base = {
         "runtimeTarget": {
             "name": runtime_target,
@@ -487,20 +502,19 @@ def generate_depsjson(
     base["targets"][runtime_target] = {}
     base["libraries"] = {}
 
-    for runtime_pack_info in runtime_pack_infos:
-        runtime_pack_name = "runtimepack.{}/{}".format(runtime_pack_info.name, runtime_pack_info.version)
-        base["libraries"][runtime_pack_name] = {
-            "type": "runtimepack",
-            "serviceable": False,
-            "sha512": "",
-        }
-        base["targets"][runtime_target][runtime_pack_name] = {
-            "runtime": {dll.basename: {} for dll in runtime_pack_info.libs},
-            "native": {native_file.basename: {} for native_file in runtime_pack_info.native},
-        }
-
     if is_self_contained:
-        base["runtimes"] = {rid: RUNTIME_GRAPH[rid] for rid, supported_rids in RUNTIME_GRAPH.items() if runtime_identifier in supported_rids or runtime_identifier == rid}
+        for assembly_runtime_info in runtime_pack_info.assembly_runtime_infos:
+            runtime_pack_name = "runtimepack.{}/{}".format(assembly_runtime_info.name, assembly_runtime_info.version)
+            base["libraries"][runtime_pack_name] = {
+                "type": "runtimepack",
+                "serviceable": False,
+                "sha512": "",
+            }
+            base["targets"][runtime_target][runtime_pack_name] = {
+                "runtime": {dll.basename: {} for dll in assembly_runtime_info.libs},
+                "native": {native_file.basename: {} for native_file in assembly_runtime_info.native},
+            }
+        base["runtimes"] = {rid: RUNTIME_GRAPH[rid] for rid, supported_rids in RUNTIME_GRAPH.items() if runtime_pack_info.runtime_identifier in supported_rids or runtime_pack_info.runtime_identifier == rid}
 
     for runtime_dep in [target_assembly_runtime_info] + transitive_runtime_deps:
         library_name = "{}/{}".format(runtime_dep.name, runtime_dep.version)
@@ -539,36 +553,40 @@ def generate_depsjson(
     return base
 
 # For runtimeconfig.json spec see https://github.com/dotnet/sdk/blob/main/documentation/specs/runtime-configuration-file.md
-def generate_runtimeconfig(target_framework, project_sdk, is_self_contained, toolchain):
+def generate_runtimeconfig(target_framework, project_sdk, is_self_contained, roll_forward_behavior, runtime_pack_info = None):
     """Generates a runtimeconfig.json file.
 
     Args:
         target_framework: The target framework moniker for the target being built.
         project_sdk: The project SDK that is being used
         is_self_contained: If the target is a self-contained publish.
-        toolchain: The currently configured dotnet toolchain.
+        roll_forward_behavior: The roll forward behavior to use.
+        runtime_pack_info: The DotnetRuntimePackInfo of the runtime pack that is used for a self contained publish.
     Returns:
         The runtimeconfig.json file as a struct.
     """
-    runtime_version = toolchain.dotnetinfo.runtime_version
+
     base = {
         "runtimeOptions": {
             "tfm": target_framework,
+            "rollForward": roll_forward_behavior,
         },
     }
 
-    frameworks = [
-        {"name": "Microsoft.NETCore.App", "version": runtime_version},
-    ]
-
-    if project_sdk == "web":
-        frameworks.append({"name": "Microsoft.AspNetCore.App", "version": runtime_version})
-
     if is_self_contained:
+        frameworks = []
+        for assembly_runtime_info in runtime_pack_info.assembly_runtime_infos:
+            frameworks.append({"name": assembly_runtime_info.name, "version": assembly_runtime_info.version})
         base["runtimeOptions"]["includedFrameworks"] = frameworks
     else:
-        base["runtimeOptions"]["frameworks"] = frameworks
+        runtime_version = tfm_to_semver(target_framework)
+        frameworks = [
+            {"name": "Microsoft.NETCore.App", "version": runtime_version},
+        ]
+        if project_sdk == "web":
+            frameworks.append({"name": "Microsoft.AspNetCore.App", "version": runtime_version})
 
+        base["runtimeOptions"]["frameworks"] = frameworks
     return base
 
 def to_rlocation_path(ctx, file):
