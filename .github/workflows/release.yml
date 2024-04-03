@@ -10,6 +10,7 @@ on:
 
 jobs:
   release:
-    uses: bazel-contrib/.github/.github/workflows/release_ruleset.yaml@v4
+    uses: bazel-contrib/.github/.github/workflows/release_ruleset.yaml@v6
     with:
       release_files: rules_dotnet-*.tar.gz
+      prerelease: false

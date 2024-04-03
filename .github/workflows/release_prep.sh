@@ -13,7 +13,6 @@ ARCHIVE="rules_dotnet-$TAG.tar.gz"
 
 # NB: configuration for 'git archive' is in /.gitattributes
 git archive --format=tar --prefix=${PREFIX}/ ${TAG} | gzip > $ARCHIVE
-SHA=$(shasum -a 256 $ARCHIVE | awk '{print $1}')
 
 cat << EOF
 ## Using Bzlmod with Bazel 7 and above
