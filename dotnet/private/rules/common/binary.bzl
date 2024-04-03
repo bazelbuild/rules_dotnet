@@ -13,7 +13,7 @@ load(
     "is_standard_framework",
     "to_rlocation_path",
 )
-load("//dotnet/private:providers.bzl", "DotnetApphostPackInfo", "DotnetBinaryInfo")
+load("//dotnet/private:providers.bzl", "DotnetApphostPackInfo", "DotnetBinaryInfo", "DotnetRuntimePackInfo")
 
 def _create_shim_exe(ctx, dll):
     windows_constraint = ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]
@@ -156,6 +156,7 @@ def build_binary(ctx, compile_action):
         dll = dll,
         app_host = app_host,
         transitive_runtime_deps = transitive_runtime_deps,
+        runtime_pack_info = ctx.attr._runtime_pack[0][DotnetRuntimePackInfo],
     )
 
     return [default_info, dotnet_binary_info, compile_provider, runtime_provider]

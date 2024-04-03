@@ -4,8 +4,7 @@ Rules for compiling F# binaries.
 
 load("@bazel_skylib//lib:shell.bzl", "shell")
 load("//dotnet/private:common.bzl", "generate_depsjson", "generate_runtimeconfig", "to_rlocation_path")
-load("//dotnet/private:providers.bzl", "DotnetAssemblyCompileInfo", "DotnetAssemblyRuntimeInfo", "DotnetBinaryInfo", "DotnetRuntimePackInfo")
-load("//dotnet/private/sdk/runtime_packs:runtime_pack_transition.bzl", "runtime_pack_transition")
+load("//dotnet/private:providers.bzl", "DotnetAssemblyCompileInfo", "DotnetAssemblyRuntimeInfo", "DotnetBinaryInfo")
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 
 def _copy_file(script_body, src, dst, is_windows):
@@ -154,8 +153,8 @@ def _publish_binary_impl(ctx):
     target_framework = ctx.attr.target_framework
     is_self_contained = ctx.attr.self_contained
     assembly_name = assembly_runtime_info.name
-    runtime_pack_info = ctx.attr._runtime_pack[0][DotnetRuntimePackInfo] if is_self_contained else None
-    runtime_identifier = ctx.attr._runtime_pack[0][DotnetRuntimePackInfo].runtime_identifier
+    runtime_pack_info = binary_info.runtime_pack_info if is_self_contained else None
+    runtime_identifier = binary_info.runtime_pack_info.runtime_identifier
     roll_forward_behavior = ctx.attr.roll_forward_behavior
 
     (executable, runfiles) = _copy_to_publish(
@@ -216,12 +215,6 @@ publish_binary = rule(
             cfg = tfm_transition,
             mandatory = True,
         ),
-        "project_sdk": attr.string(
-            doc = "The project SDK that is being targeted. " +
-                  "See https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview",
-            default = "default",
-            values = ["default", "web"],
-        ),
         "self_contained": attr.bool(
             doc = """
             Whether the binary should be self-contained.
@@ -248,10 +241,6 @@ publish_binary = rule(
             doc = "The roll forward behavior that should be used: https://learn.microsoft.com/en-us/dotnet/core/versions/selection#control-roll-forward-behavior",
             default = "Minor",
             values = ["Minor", "Major", "LatestPatch", "LatestMinor", "LatestMajor", "Disable"],
-        ),
-        "_runtime_pack": attr.label(
-            default = "//dotnet/private/sdk/runtime_packs:runtime_pack",
-            cfg = runtime_pack_transition,
         ),
         "_allowlist_function_transition": attr.label(
             default = "@bazel_tools//tools/allowlists/function_transition_allowlist",

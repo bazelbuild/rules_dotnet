@@ -60,6 +60,7 @@ DotnetBinaryInfo = provider(
         "app_host": "File: The apphost executable",
         "dll": "File: The main binary dll",
         "transitive_runtime_deps": "list[DotnetAssemblyRuntimeInfo]: The transitive runtime dependencies of the binary",
+        "runtime_pack_info": "DotnetRuntimePackInfo: The runtime pack for the binary",
     },
 )
 

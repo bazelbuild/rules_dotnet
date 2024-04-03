@@ -3,6 +3,7 @@
 load("@bazel_skylib//lib:dicts.bzl", "dicts")
 load("//dotnet/private:providers.bzl", "DotnetAssemblyCompileInfo", "DotnetAssemblyRuntimeInfo")
 load("//dotnet/private/sdk/apphost_packs:apphost_pack_transition.bzl", "apphost_pack_transition")
+load("//dotnet/private/sdk/runtime_packs:runtime_pack_transition.bzl", "runtime_pack_transition")
 load("//dotnet/private/sdk/targeting_packs:targeting_pack_transition.bzl", "targeting_pack_transition")
 load("//dotnet/private/transitions:default_transition.bzl", "default_transition")
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
@@ -193,6 +194,10 @@ BINARY_COMMON_ATTRS = {
     "_apphost_pack": attr.label(
         default = "//dotnet/private/sdk/apphost_packs:apphost_pack",
         cfg = apphost_pack_transition,
+    ),
+    "_runtime_pack": attr.label(
+        default = "//dotnet/private/sdk/runtime_packs:runtime_pack",
+        cfg = runtime_pack_transition,
     ),
 }
 
