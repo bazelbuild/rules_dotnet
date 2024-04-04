@@ -12,6 +12,14 @@ USER vscode
 RUN mkdir $HOME/bin
 ENV PATH=$PATH:$HOME/bin
 
+#############################
+# Install system utilities
+#############################
+RUN sudo apt-get update && export DEBIAN_FRONTEND=noninteractive \
+  && sudo apt-get -y install \
+    file \
+  && sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/*
+
 #########################################
 ### Bazel and Bazel releated binaries ###
 #########################################
