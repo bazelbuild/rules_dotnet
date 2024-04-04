@@ -12,6 +12,16 @@ permutations = [
     ("osx-arm64", "'Mach-O'", "'arm64'"),
     ("win-x64", "'PE32+'", "'x86-64'"),
     ("win-arm64", "'PE32+'", "'Aarch64'"),
+    ("linux-musl-x64", "'ELF 64-bit'", "'x86-64'"),
+    ("linux-musl-arm64", "'ELF 64-bit'", "'aarch64'"),
+    # The permutations below are to verify that if we use a higher level rid like `fedora-x64` or `alpine-x64`
+    # then we will find the closes rid that matches and has the runtime/apphost packs
+    ("fedora-x64", "'ELF 64-bit'", "'x86-64'"),
+    ("ubuntu.20.04-x64", "'ELF 64-bit'", "'x86-64'"),
+    ("alpine-x64", "'ELF 64-bit'", "'x86-64'"),
+    ("fedora-arm64", "'ELF 64-bit'", "'aarch64'"),
+    ("ubuntu.20.04-arm64", "'ELF 64-bit'", "'aarch64'"),
+    ("alpine-arm64", "'ELF 64-bit'", "'aarch64'"),
 ]
 
 # buildifier: disable=unnamed-macro
