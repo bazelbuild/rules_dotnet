@@ -383,6 +383,28 @@ def get_highest_compatible_target_framework(incoming_tfm, tfms):
 
     return None
 
+def get_highest_compatible_runtime_identifier(incoming_rid, rids):
+    """Returns the highest compatible runtime identifier for the incoming_rid.
+
+    Args:
+      incoming_rid: The runtime identifier to compare to
+      rids: A list of runtime identifiers to choose from
+    Returns:
+        The highest compatible runtime identifier
+    """
+    if incoming_rid in rids:
+        return incoming_rid
+
+    compatible_rids = RUNTIME_GRAPH.get(incoming_rid)
+    if compatible_rids == None:
+        return None
+
+    for compatible_rid in compatible_rids:
+        if compatible_rid in rids:
+            return compatible_rid
+
+    return None
+
 def get_nuget_relative_path(file):
     """Returns NuGet package relative path of a file that is part of a NuGet package
 
