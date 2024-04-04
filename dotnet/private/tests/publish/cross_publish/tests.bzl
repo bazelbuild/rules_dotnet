@@ -36,6 +36,11 @@ def tests():
             data = [
                 ":cross_publish_{}".format(rid),
             ],
-            # Disable RBE for this test since the system tools required for the test are not available in the RBE executors
-            tags = ["no-remote-exec"],
+            target_compatible_with = select({
+                # Disable on ARM runners beceause the `file` command does not return the expected output on ARM
+                "@platforms//cpu:arm": ["@platforms//:incompatible"],
+                # Disable on remote runners because the `file` binary does not exist on the RBE runners
+                "@bazel_tools//tools/cpp:gcc": ["@platforms//:incompatible"],
+                "//conditions:default": [],
+            }),
         )
