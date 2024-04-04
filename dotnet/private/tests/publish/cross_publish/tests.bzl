@@ -1,3 +1,5 @@
+"Cross publishing tests"
+
 load(
     "//dotnet:defs.bzl",
     "publish_binary",
@@ -33,4 +35,6 @@ def tests():
             data = [
                 ":cross_publish_{}".format(rid),
             ],
+            # Disable RBE for this test since the system tools required for the test are not available in the RBE executors
+            tags = ["no-remote-exec"],
         )
