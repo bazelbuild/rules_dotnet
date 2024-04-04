@@ -6,17 +6,17 @@ load(
 )
 
 permutations = [
-    ("linux-x64", "'ELF 64-bit LSB pie executable, x86-64, version 1 (GNU/Linux), dynamically linked'"),
-    ("linux-arm64", "'ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked'"),
-    ("osx-x64", "'Mach-O 64-bit x86_64 executable'"),
-    ("osx-arm64", "'Mach-O 64-bit arm64 executable'"),
-    ("win-x64", "'PE32+ executable (console) x86-64, for MS Windows'"),
-    ("win-arm64", "'PE32+ executable (console) Aarch64, for MS Windows'"),
+    ("linux-x64", "'ELF 64-bit'", "'x86-64'"),
+    ("linux-arm64", "'ELF 64-bit'", "'aarch64'"),
+    ("osx-x64", "'Mach-O'", "'x86_64'"),
+    ("osx-arm64", "'Mach-O'", "'arm64'"),
+    ("win-x64", "'PE32+'", "'x86-64'"),
+    ("win-arm64", "'PE32+'", "'Aarch64'"),
 ]
 
 # buildifier: disable=unnamed-macro
 def tests():
-    for (rid, expected_output) in permutations:
+    for (rid, expected_file_type, expected_arch) in permutations:
         publish_binary(
             name = "cross_publish_{}".format(rid),
             binary = "//dotnet/private/tests/publish/app_to_publish",
@@ -30,7 +30,8 @@ def tests():
             srcs = ["test.sh"],
             args = [
                 "$(rootpath :cross_publish_{})".format(rid),
-                expected_output,
+                expected_file_type,
+                expected_arch,
             ],
             data = [
                 ":cross_publish_{}".format(rid),
