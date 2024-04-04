@@ -172,7 +172,7 @@ def _publish_binary_impl(ctx):
     is_self_contained = ctx.attr.self_contained
     assembly_name = assembly_runtime_info.name
     runtime_pack_info = binary_info.runtime_pack_info if is_self_contained else None
-    runtime_identifier = binary_info.runtime_pack_info.runtime_identifier
+    runtime_identifier = ctx.attr.runtime_identifier if ctx.attr.runtime_identifier else binary_info.runtime_pack_info.runtime_identifier
     roll_forward_behavior = ctx.attr.roll_forward_behavior
 
     (main_dll, runfiles) = _copy_to_publish(
