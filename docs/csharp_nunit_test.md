@@ -1,10 +1,8 @@
 <!-- Generated with Stardoc: http://skydoc.bazel.build -->
 
-
 Rules for compiling and running NUnit tests.
 
 This rule is a macro that has the same attributes as `csharp_test`
-
 
 <a id="csharp_nunit_test"></a>
 
