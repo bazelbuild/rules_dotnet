@@ -1,7 +1,7 @@
 "A transition that transitions between compatible target frameworks"
 
 load("@bazel_skylib//lib:dicts.bzl", "dicts")
-load("@local_config_platform//:constraints.bzl", "HOST_CONSTRAINTS")
+load("@platforms//host:constraints.bzl", "HOST_CONSTRAINTS")
 load(
     "//dotnet/private:common.bzl",
     "FRAMEWORK_COMPATIBILITY",
