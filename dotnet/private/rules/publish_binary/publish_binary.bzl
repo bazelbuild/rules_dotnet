@@ -20,11 +20,12 @@ def _get_assembly_files(assembly_info, transitive_runtime_deps):
     libs = [] + assembly_info.libs
     native = [] + assembly_info.native
     data = [] + assembly_info.data
+    appsetting_files = assembly_info.appsetting_files.to_list()
     for dep in transitive_runtime_deps:
         libs += dep.libs
         native += dep.native
         data += dep.data
-    return (libs, native, data)
+    return (libs, native, data, appsetting_files)
 
 def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, assembly_info, transitive_runtime_deps, repo_mapping_manifest):
     is_windows = ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo])
@@ -37,7 +38,7 @@ def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, as
 
     _copy_file(script_body, binary_info.dll, main_dll_copy, is_windows = is_windows)
 
-    (libs, native, data) = _get_assembly_files(assembly_info, transitive_runtime_deps)
+    (libs, native, data, appsetting_files) = _get_assembly_files(assembly_info, transitive_runtime_deps)
 
     # All managed DLLs are copied next to the app host in the publish directory
     for file in libs:
@@ -76,6 +77,14 @@ def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, as
         manifest_path = to_rlocation_path(ctx, file)
         output = ctx.actions.declare_file(
             "{}/publish/{}/{}.runfiles/{}".format(ctx.label.name, runtime_identifier, paths.replace_extension(binary_info.dll.basename, ""), manifest_path),
+        )
+        outputs.append(output)
+        _copy_file(script_body, file, output, is_windows = is_windows)
+
+    for file in appsetting_files:     
+        inputs.append(file)
+        output = ctx.actions.declare_file(
+            "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, file.basename),
         )
         outputs.append(output)
         _copy_file(script_body, file, output, is_windows = is_windows)

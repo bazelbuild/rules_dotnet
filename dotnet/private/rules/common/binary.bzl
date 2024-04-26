@@ -67,7 +67,7 @@ def build_binary(ctx, compile_action):
 
     (compile_provider, runtime_provider) = compile_action(ctx, tfm)
     dll = runtime_provider.libs[0]
-    default_info_files = [dll] + runtime_provider.xml_docs
+    default_info_files = [dll] + runtime_provider.xml_docs + runtime_provider.appsetting_files.to_list()
     additional_runfiles = []
 
     launcher = _create_launcher(ctx, additional_runfiles, dll)

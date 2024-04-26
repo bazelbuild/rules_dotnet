@@ -284,6 +284,7 @@ def AssemblyAction(
         pdbs = [out_pdb] if out_pdb else [],
         xml_docs = [out_xml] if out_xml else [],
         data = data,
+        appsetting_files = depset([]),
         native = [],
         deps = depset([dep[DotnetAssemblyRuntimeInfo] for dep in deps], transitive = [dep[DotnetAssemblyRuntimeInfo].deps for dep in deps]),
         nuget_info = None,

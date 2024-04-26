@@ -66,6 +66,7 @@ def AssemblyAction(
         resources,
         srcs,
         data,
+        appsetting_files,
         compile_data,
         out,
         target,
@@ -104,6 +105,7 @@ def AssemblyAction(
         resources: The list of resouces to be embedded in the assembly.
         srcs: The list of source (.cs) files that are processed to create the assembly.
         data: List of files that are a direct runtime dependency
+        appsetting_files: List of appsettings files to include in the output.
         compile_data: List of files that are a direct compile time dependency
         target_name: A unique name for this target.
         out: Specifies the output file name.
@@ -155,6 +157,14 @@ def AssemblyAction(
     out_pdb = actions.declare_file("%s/%s.pdb" % (out_dir, assembly_name))
     out_xml = actions.declare_file("%s/%s.xml" % (out_dir, assembly_name)) if generate_documentation_file else None
 
+    # print("appsetting_files path", appsetting_files[0])
+    out_appsettings_list = []
+    for appsetting_file in appsetting_files:
+        print("appsetting_files", appsetting_file)
+        out_appsettings_file = actions.declare_file("%s/%s" % (out_dir, appsetting_file.basename)) if len(appsetting_files) > 0 else None
+        out_appsettings_list.append(out_appsettings_file)
+    out_appsettings = depset(out_appsettings_list)
+
     if len(internals_visible_to) == 0:
         _compile(
             actions,
@@ -170,6 +180,7 @@ def AssemblyAction(
             framework_files,
             resources,
             srcs,
+            appsetting_files,
             depset(compile_data, transitive = [transitive_compile_data]),
             subsystem_version,
             target,
@@ -189,6 +200,7 @@ def AssemblyAction(
             out_ref = out_ref,
             out_pdb = out_pdb,
             out_xml = out_xml,
+            out_appsettings = out_appsettings
         )
     else:
         # If the user is using internals_visible_to generate an additional
@@ -217,6 +229,7 @@ def AssemblyAction(
             framework_files,
             resources,
             srcs + [internals_visible_to_cs],
+            appsetting_files,
             depset(compile_data, transitive = [transitive_compile_data]),
             subsystem_version,
             target,
@@ -236,6 +249,7 @@ def AssemblyAction(
             out_dll = out_dll,
             out_pdb = out_pdb,
             out_xml = out_xml,
+            out_appsettings = out_appsettings,
         )
 
         # Generate a ref-only DLL without internals
@@ -253,6 +267,7 @@ def AssemblyAction(
             framework_files,
             resources,
             srcs,
+            appsetting_files,
             depset(compile_data, transitive = [transitive_compile_data]),
             subsystem_version,
             target,
@@ -272,7 +287,10 @@ def AssemblyAction(
             out_ref = out_ref,
             out_pdb = None,
             out_xml = None,
+            out_appsettings = None,
         )
+
+    print("after compile out_appettings", out_appsettings)
 
     return (DotnetAssemblyCompileInfo(
         name = target_name,
@@ -294,6 +312,7 @@ def AssemblyAction(
         pdbs = [out_pdb] if out_pdb else [],
         xml_docs = [out_xml] if out_xml else [],
         data = data,
+        appsetting_files = out_appsettings,
         native = [],
         deps = depset([dep[DotnetAssemblyRuntimeInfo] for dep in deps] + [toolchain.host_model[DotnetAssemblyRuntimeInfo]] if include_host_model_dll else [dep[DotnetAssemblyRuntimeInfo] for dep in deps], transitive = [dep[DotnetAssemblyRuntimeInfo].deps for dep in deps]),
         nuget_info = None,
@@ -314,6 +333,7 @@ def _compile(
         framework_files,
         resources,
         srcs,
+        appsetting_files,
         compile_data,
         subsystem_version,
         target,
@@ -332,7 +352,8 @@ def _compile(
         out_dll = None,
         out_ref = None,
         out_pdb = None,
-        out_xml = None):
+        out_xml = None,
+        out_appsettings = None):
     # Our goal is to match msbuild as much as reasonable
     # https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/listed-alphabetically
     args = actions.args()
@@ -406,6 +427,13 @@ def _compile(
         args.add("/doc:" + out_xml.path)
         outputs.append(out_xml)
 
+    appsettings_outputs = []
+    if out_appsettings != None:
+        for appsetting_file in out_appsettings.to_list():
+            appsettings_outputs.append(appsetting_file)
+
+    print("appsettings_outputs", appsettings_outputs)
+
     # assembly references
     format_ref_arg(args, depset(framework_files, transitive = [refs]))
 
@@ -460,3 +488,19 @@ def _compile(
             "DOTNET_CLI_HOME": toolchain.runtime.files_to_run.executable.dirname,
         },
     )
+    print("outputs type", type(outputs))
+
+    if (out_appsettings != None) and (len(out_appsettings.to_list()) > 0):
+        actions.run_shell(
+            mnemonic = "CopyAppSettings",
+            command = "cp %s %s" % (" ".join([file.path for file in appsetting_files]), out_appsettings.to_list()[0].dirname),
+            inputs = appsetting_files,
+            outputs = appsettings_outputs,
+        ) 
+
+    # print("_compile runtime", toolchain.runtime.files_to_run.executable.path)
+    # print("_compile csharp_compiler", toolchain.csharp_compiler.files_to_run.executable.path)
+    # print("_compile compiler_wrapper", compiler_wrapper)
+    # print("_compile direct_inputs", direct_inputs)
+    # print("_compile outputs", outputs)
+    # print("out_appsettings", out_appsettings)
