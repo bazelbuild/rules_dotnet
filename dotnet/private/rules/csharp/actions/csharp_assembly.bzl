@@ -293,7 +293,7 @@ def AssemblyAction(
     print("after compile out_appettings", out_appsettings)
 
     return (DotnetAssemblyCompileInfo(
-        name = target_name,
+        name = assembly_name,
         version = "1.0.0",  #TODO: Maybe make this configurable?
         project_sdk = project_sdk,
         refs = [out_ref],
@@ -306,7 +306,7 @@ def AssemblyAction(
         transitive_analyzers = analyzers,
         transitive_compile_data = transitive_compile_data,
     ), DotnetAssemblyRuntimeInfo(
-        name = target_name,
+        name = assembly_name,
         version = "1.0.0",  #TODO: Maybe make this configurable?
         libs = [out_dll],
         pdbs = [out_pdb] if out_pdb else [],

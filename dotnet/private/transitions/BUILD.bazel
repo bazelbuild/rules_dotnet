@@ -18,7 +18,7 @@ bzl_library(
         ":common",
         "//dotnet/private:common",
         "@bazel_skylib//lib:dicts",
-        "@local_config_platform//:constraints.bzl",
+        "@platforms//host:constraints_lib",
     ],
 )
 
