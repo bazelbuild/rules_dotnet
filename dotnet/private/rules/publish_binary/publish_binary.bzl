@@ -81,7 +81,7 @@ def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, as
         outputs.append(output)
         _copy_file(script_body, file, output, is_windows = is_windows)
 
-    for file in appsetting_files:     
+    for file in appsetting_files:
         inputs.append(file)
         output = ctx.actions.declare_file(
             "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, file.basename),

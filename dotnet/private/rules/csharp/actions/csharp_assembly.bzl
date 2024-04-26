@@ -200,7 +200,7 @@ def AssemblyAction(
             out_ref = out_ref,
             out_pdb = out_pdb,
             out_xml = out_xml,
-            out_appsettings = out_appsettings
+            out_appsettings = out_appsettings,
         )
     else:
         # If the user is using internals_visible_to generate an additional
@@ -490,4 +490,4 @@ def _compile(
             command = "cp %s %s" % (" ".join([file.path for file in appsetting_files]), target_dir),
             inputs = appsetting_files,
             outputs = outputs_appsettings,
-        ) 
+        )
