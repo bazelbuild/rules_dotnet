@@ -7,10 +7,10 @@ Rule for compiling F# libraries.
 ## fsharp_library
 
 <pre>
-fsharp_library(<a href="#fsharp_library-name">name</a>, <a href="#fsharp_library-deps">deps</a>, <a href="#fsharp_library-srcs">srcs</a>, <a href="#fsharp_library-data">data</a>, <a href="#fsharp_library-resources">resources</a>, <a href="#fsharp_library-out">out</a>, <a href="#fsharp_library-compile_data">compile_data</a>, <a href="#fsharp_library-compiler_options">compiler_options</a>, <a href="#fsharp_library-defines">defines</a>,
-               <a href="#fsharp_library-exports">exports</a>, <a href="#fsharp_library-generate_documentation_file">generate_documentation_file</a>, <a href="#fsharp_library-internals_visible_to">internals_visible_to</a>, <a href="#fsharp_library-keyfile">keyfile</a>, <a href="#fsharp_library-langversion">langversion</a>,
-               <a href="#fsharp_library-nowarn">nowarn</a>, <a href="#fsharp_library-project_sdk">project_sdk</a>, <a href="#fsharp_library-target_frameworks">target_frameworks</a>, <a href="#fsharp_library-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#fsharp_library-warning_level">warning_level</a>,
-               <a href="#fsharp_library-warnings_as_errors">warnings_as_errors</a>, <a href="#fsharp_library-warnings_not_as_errors">warnings_not_as_errors</a>)
+fsharp_library(<a href="#fsharp_library-name">name</a>, <a href="#fsharp_library-deps">deps</a>, <a href="#fsharp_library-srcs">srcs</a>, <a href="#fsharp_library-data">data</a>, <a href="#fsharp_library-resources">resources</a>, <a href="#fsharp_library-out">out</a>, <a href="#fsharp_library-appsetting_files">appsetting_files</a>, <a href="#fsharp_library-compile_data">compile_data</a>,
+               <a href="#fsharp_library-compiler_options">compiler_options</a>, <a href="#fsharp_library-defines">defines</a>, <a href="#fsharp_library-exports">exports</a>, <a href="#fsharp_library-generate_documentation_file">generate_documentation_file</a>, <a href="#fsharp_library-internals_visible_to">internals_visible_to</a>,
+               <a href="#fsharp_library-keyfile">keyfile</a>, <a href="#fsharp_library-langversion">langversion</a>, <a href="#fsharp_library-nowarn">nowarn</a>, <a href="#fsharp_library-project_sdk">project_sdk</a>, <a href="#fsharp_library-target_frameworks">target_frameworks</a>, <a href="#fsharp_library-treat_warnings_as_errors">treat_warnings_as_errors</a>,
+               <a href="#fsharp_library-warning_level">warning_level</a>, <a href="#fsharp_library-warnings_as_errors">warnings_as_errors</a>, <a href="#fsharp_library-warnings_not_as_errors">warnings_not_as_errors</a>)
 </pre>
 
 Compile a F# DLL
@@ -26,6 +26,7 @@ Compile a F# DLL
 | <a id="fsharp_library-data"></a>data |  Runtime files. It is recommended to use the @rules_dotnet//tools/runfiles library to read the runtime files.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional |  `[]`  |
 | <a id="fsharp_library-resources"></a>resources |  A list of files to embed in the DLL as resources.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional |  `[]`  |
 | <a id="fsharp_library-out"></a>out |  File name, without extension, of the built assembly.   | String | optional |  `""`  |
+| <a id="fsharp_library-appsetting_files"></a>appsetting_files |  A list of appsettings files to include in the output directory.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional |  `[]`  |
 | <a id="fsharp_library-compile_data"></a>compile_data |  Additional compile time files.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional |  `[]`  |
 | <a id="fsharp_library-compiler_options"></a>compiler_options |  Additional options to pass to the compiler. This attribute should only be used if the compiler flag has not already been exposed as an attribute.   | List of strings | optional |  `[]`  |
 | <a id="fsharp_library-defines"></a>defines |  A list of preprocessor directive symbols to define.   | List of strings | optional |  `[]`  |

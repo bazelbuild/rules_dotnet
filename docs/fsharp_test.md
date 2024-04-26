@@ -10,10 +10,11 @@ a Bazel test.
 ## fsharp_test
 
 <pre>
-fsharp_test(<a href="#fsharp_test-name">name</a>, <a href="#fsharp_test-deps">deps</a>, <a href="#fsharp_test-srcs">srcs</a>, <a href="#fsharp_test-data">data</a>, <a href="#fsharp_test-resources">resources</a>, <a href="#fsharp_test-out">out</a>, <a href="#fsharp_test-compile_data">compile_data</a>, <a href="#fsharp_test-compiler_options">compiler_options</a>, <a href="#fsharp_test-defines">defines</a>,
-            <a href="#fsharp_test-generate_documentation_file">generate_documentation_file</a>, <a href="#fsharp_test-internals_visible_to">internals_visible_to</a>, <a href="#fsharp_test-keyfile">keyfile</a>, <a href="#fsharp_test-langversion">langversion</a>, <a href="#fsharp_test-nowarn">nowarn</a>,
-            <a href="#fsharp_test-project_sdk">project_sdk</a>, <a href="#fsharp_test-roll_forward_behavior">roll_forward_behavior</a>, <a href="#fsharp_test-target_frameworks">target_frameworks</a>, <a href="#fsharp_test-treat_warnings_as_errors">treat_warnings_as_errors</a>,
-            <a href="#fsharp_test-warning_level">warning_level</a>, <a href="#fsharp_test-warnings_as_errors">warnings_as_errors</a>, <a href="#fsharp_test-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#fsharp_test-winexe">winexe</a>)
+fsharp_test(<a href="#fsharp_test-name">name</a>, <a href="#fsharp_test-deps">deps</a>, <a href="#fsharp_test-srcs">srcs</a>, <a href="#fsharp_test-data">data</a>, <a href="#fsharp_test-resources">resources</a>, <a href="#fsharp_test-out">out</a>, <a href="#fsharp_test-appsetting_files">appsetting_files</a>, <a href="#fsharp_test-compile_data">compile_data</a>,
+            <a href="#fsharp_test-compiler_options">compiler_options</a>, <a href="#fsharp_test-defines">defines</a>, <a href="#fsharp_test-generate_documentation_file">generate_documentation_file</a>, <a href="#fsharp_test-internals_visible_to">internals_visible_to</a>, <a href="#fsharp_test-keyfile">keyfile</a>,
+            <a href="#fsharp_test-langversion">langversion</a>, <a href="#fsharp_test-nowarn">nowarn</a>, <a href="#fsharp_test-project_sdk">project_sdk</a>, <a href="#fsharp_test-roll_forward_behavior">roll_forward_behavior</a>, <a href="#fsharp_test-target_frameworks">target_frameworks</a>,
+            <a href="#fsharp_test-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#fsharp_test-warning_level">warning_level</a>, <a href="#fsharp_test-warnings_as_errors">warnings_as_errors</a>, <a href="#fsharp_test-warnings_not_as_errors">warnings_not_as_errors</a>,
+            <a href="#fsharp_test-winexe">winexe</a>)
 </pre>
 
 Compile a F# executable and runs it as a test
@@ -29,6 +30,7 @@ Compile a F# executable and runs it as a test
 | <a id="fsharp_test-data"></a>data |  Runtime files. It is recommended to use the @rules_dotnet//tools/runfiles library to read the runtime files.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional |  `[]`  |
 | <a id="fsharp_test-resources"></a>resources |  A list of files to embed in the DLL as resources.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional |  `[]`  |
 | <a id="fsharp_test-out"></a>out |  File name, without extension, of the built assembly.   | String | optional |  `""`  |
+| <a id="fsharp_test-appsetting_files"></a>appsetting_files |  A list of appsettings files to include in the output directory.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional |  `[]`  |
 | <a id="fsharp_test-compile_data"></a>compile_data |  Additional compile time files.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional |  `[]`  |
 | <a id="fsharp_test-compiler_options"></a>compiler_options |  Additional options to pass to the compiler. This attribute should only be used if the compiler flag has not already been exposed as an attribute.   | List of strings | optional |  `[]`  |
 | <a id="fsharp_test-defines"></a>defines |  A list of preprocessor directive symbols to define.   | List of strings | optional |  `[]`  |
