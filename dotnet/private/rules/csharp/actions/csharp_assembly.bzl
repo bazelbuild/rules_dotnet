@@ -290,8 +290,6 @@ def AssemblyAction(
             out_appsettings = None,
         )
 
-    print("after compile out_appettings", out_appsettings)
-
     return (DotnetAssemblyCompileInfo(
         name = assembly_name,
         version = "1.0.0",  #TODO: Maybe make this configurable?
@@ -427,12 +425,8 @@ def _compile(
         args.add("/doc:" + out_xml.path)
         outputs.append(out_xml)
 
-    appsettings_outputs = []
-    if out_appsettings != None:
-        for appsetting_file in out_appsettings.to_list():
-            appsettings_outputs.append(appsetting_file)
-
-    print("appsettings_outputs", appsettings_outputs)
+    # outputs appsettings
+    outputs_appsettings = out_appsettings.to_list() if out_appsettings != None else []
 
     # assembly references
     format_ref_arg(args, depset(framework_files, transitive = [refs]))
@@ -488,19 +482,12 @@ def _compile(
             "DOTNET_CLI_HOME": toolchain.runtime.files_to_run.executable.dirname,
         },
     )
-    print("outputs type", type(outputs))
 
-    if (out_appsettings != None) and (len(out_appsettings.to_list()) > 0):
+    if (outputs_appsettings != None) and (len(outputs_appsettings) > 0):
+        target_dir = outputs_appsettings[0].dirname
         actions.run_shell(
             mnemonic = "CopyAppSettings",
-            command = "cp %s %s" % (" ".join([file.path for file in appsetting_files]), out_appsettings.to_list()[0].dirname),
+            command = "cp %s %s" % (" ".join([file.path for file in appsetting_files]), target_dir),
             inputs = appsetting_files,
-            outputs = appsettings_outputs,
+            outputs = outputs_appsettings,
         ) 
-
-    # print("_compile runtime", toolchain.runtime.files_to_run.executable.path)
-    # print("_compile csharp_compiler", toolchain.csharp_compiler.files_to_run.executable.path)
-    # print("_compile compiler_wrapper", compiler_wrapper)
-    # print("_compile direct_inputs", direct_inputs)
-    # print("_compile outputs", outputs)
-    # print("out_appsettings", out_appsettings)

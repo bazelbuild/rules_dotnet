@@ -54,9 +54,6 @@ def _compile_action(ctx, tfm):
 
 def _binary_private_impl(ctx):
     result = build_binary(ctx, _compile_action)
-    print("result compile info: ", result[0])
-    # print("result runtime info: ", result[1])
-    # print("result runtime info binary info transitive_runtime_deps: ", result[1])
     return result
 
 csharp_binary = rule(
