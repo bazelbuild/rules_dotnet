@@ -157,10 +157,8 @@ def AssemblyAction(
     out_pdb = actions.declare_file("%s/%s.pdb" % (out_dir, assembly_name))
     out_xml = actions.declare_file("%s/%s.xml" % (out_dir, assembly_name)) if generate_documentation_file else None
 
-    # print("appsetting_files path", appsetting_files[0])
     out_appsettings_list = []
     for appsetting_file in appsetting_files:
-        print("appsetting_files", appsetting_file)
         out_appsettings_file = actions.declare_file("%s/%s" % (out_dir, appsetting_file.basename)) if len(appsetting_files) > 0 else None
         out_appsettings_list.append(out_appsettings_file)
     out_appsettings = depset(out_appsettings_list)
