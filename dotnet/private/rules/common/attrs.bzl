@@ -24,15 +24,6 @@ COMMON_ATTRS = {
         # in their data and we want the TFM graphs to be disconnected
         cfg = default_transition,
     ),
-    "appsetting_files": attr.label_list(
-        doc = "A list of appsettings files to include in the output directory.",
-        allow_files = True,
-        default = [],
-        allow_empty = True,
-        # We transition to the default configuration because the end user might have dotnet binaries
-        # in their appsetting_files and we want the TFM graphs to be disconnected
-        cfg = default_transition,
-    ),
     "compile_data": attr.label_list(
         doc = "Additional compile time files.",
         allow_files = True,
@@ -161,6 +152,15 @@ BINARY_COMMON_ATTRS = {
         doc = "If true, output a winexe-style executable, otherwise" +
               "output a console-style executable.",
         default = False,
+    ),
+    "appsetting_files": attr.label_list(
+        doc = "A list of appsettings files to include in the output directory.",
+        allow_files = True,
+        default = [],
+        allow_empty = True,
+        # We transition to the default configuration because the end user might have dotnet binaries
+        # in their appsetting_files and we want the TFM graphs to be disconnected
+        cfg = default_transition,
     ),
     "_bash_runfiles": attr.label(
         default = "@bazel_tools//tools/bash/runfiles",
