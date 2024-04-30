@@ -8,6 +8,9 @@ load(
 fsharp_binary(
     name = "hello",
     srcs = ["hello.fs"],
+    appsetting_files = [
+        "appsettings.json",
+    ] + glob(["appsettings.*.json"]),
     target_frameworks = ["net7.0"],
     deps = [
         ":lib",

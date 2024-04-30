@@ -85,7 +85,8 @@ def AssemblyAction(
         allow_unsafe_blocks,
         nullable,
         run_analyzers,
-        compiler_options):
+        compiler_options,
+        is_windows):
     """Creates an action that runs the CSharp compiler with the specified inputs.
 
     This macro aims to match the [C# compiler](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/listed-alphabetically), with the inputs mapping to compiler options.
@@ -125,6 +126,7 @@ def AssemblyAction(
         nullable: Enable nullable context, or nullable warnings.
         run_analyzers: Enable analyzers.
         compiler_options: Additional options to pass to the compiler.
+        is_windows: Whether or not the target is a windows target.
     Returns:
         The compiled csharp artifacts.
     """
@@ -157,11 +159,9 @@ def AssemblyAction(
     out_pdb = actions.declare_file("%s/%s.pdb" % (out_dir, assembly_name))
     out_xml = actions.declare_file("%s/%s.xml" % (out_dir, assembly_name)) if generate_documentation_file else None
 
-    out_appsettings_list = []
-    for appsetting_file in appsetting_files:
-        out_appsettings_file = actions.declare_file("%s/%s" % (out_dir, appsetting_file.basename)) if len(appsetting_files) > 0 else None
-        out_appsettings_list.append(out_appsettings_file)
-    out_appsettings = depset(out_appsettings_list)
+    # Appsettings
+
+    out_appsettings = _copy_appsettings(actions, appsetting_files, out_dir, is_windows)
 
     if len(internals_visible_to) == 0:
         _compile(
@@ -178,7 +178,6 @@ def AssemblyAction(
             framework_files,
             resources,
             srcs,
-            appsetting_files,
             depset(compile_data, transitive = [transitive_compile_data]),
             subsystem_version,
             target,
@@ -198,7 +197,6 @@ def AssemblyAction(
             out_ref = out_ref,
             out_pdb = out_pdb,
             out_xml = out_xml,
-            out_appsettings = out_appsettings,
         )
     else:
         # If the user is using internals_visible_to generate an additional
@@ -227,7 +225,6 @@ def AssemblyAction(
             framework_files,
             resources,
             srcs + [internals_visible_to_cs],
-            appsetting_files,
             depset(compile_data, transitive = [transitive_compile_data]),
             subsystem_version,
             target,
@@ -247,7 +244,6 @@ def AssemblyAction(
             out_dll = out_dll,
             out_pdb = out_pdb,
             out_xml = out_xml,
-            out_appsettings = out_appsettings,
         )
 
         # Generate a ref-only DLL without internals
@@ -265,7 +261,6 @@ def AssemblyAction(
             framework_files,
             resources,
             srcs,
-            appsetting_files,
             depset(compile_data, transitive = [transitive_compile_data]),
             subsystem_version,
             target,
@@ -285,7 +280,6 @@ def AssemblyAction(
             out_ref = out_ref,
             out_pdb = None,
             out_xml = None,
-            out_appsettings = None,
         )
 
     return (DotnetAssemblyCompileInfo(
@@ -329,7 +323,6 @@ def _compile(
         framework_files,
         resources,
         srcs,
-        appsetting_files,
         compile_data,
         subsystem_version,
         target,
@@ -348,8 +341,7 @@ def _compile(
         out_dll = None,
         out_ref = None,
         out_pdb = None,
-        out_xml = None,
-        out_appsettings = None):
+        out_xml = None):
     # Our goal is to match msbuild as much as reasonable
     # https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/listed-alphabetically
     args = actions.args()
@@ -423,9 +415,6 @@ def _compile(
         args.add("/doc:" + out_xml.path)
         outputs.append(out_xml)
 
-    # outputs appsettings
-    outputs_appsettings = out_appsettings.to_list() if out_appsettings != None else []
-
     # assembly references
     format_ref_arg(args, depset(framework_files, transitive = [refs]))
 
@@ -481,11 +470,32 @@ def _compile(
         },
     )
 
-    if (outputs_appsettings != None) and (len(outputs_appsettings) > 0):
-        target_dir = outputs_appsettings[0].dirname
+def _copy_appsettings(actions, appsetting_files, out_dir, is_windows):
+    """Copy appsettings files to the output directory."""
+
+    if(len(appsetting_files) == 0):
+        return depset([])
+    
+    out_appsettings_list = []
+    for appsetting_file in appsetting_files:
+        out_appsettings_file = actions.declare_file("%s/%s" % (out_dir, appsetting_file.basename)) if len(appsetting_files) > 0 else None
+        out_appsettings_list.append(out_appsettings_file)
+
+    target_dir = out_appsettings_list[0].dirname
+    if is_windows: # for %I in (file1.txt file2.txt file3.txt) do copy %I c:\somedir\
+        actions.run_shell(
+            mnemonic = "CopyAppSettings",
+            command = "for %I in (%s) do copy %I %s" % (" ".join([file.path for file in appsetting_files]), target_dir),
+            inputs = appsetting_files,
+            outputs = out_appsettings_list,
+        )
+    else:   
         actions.run_shell(
             mnemonic = "CopyAppSettings",
             command = "cp %s %s" % (" ".join([file.path for file in appsetting_files]), target_dir),
             inputs = appsetting_files,
-            outputs = outputs_appsettings,
+            outputs = out_appsettings_list,
         )
+
+    out_appsettings = depset(out_appsettings_list)
+    return out_appsettings
