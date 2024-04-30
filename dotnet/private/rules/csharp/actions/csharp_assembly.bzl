@@ -473,23 +473,23 @@ def _compile(
 def _copy_appsettings(actions, appsetting_files, out_dir, is_windows):
     """Copy appsettings files to the output directory."""
 
-    if(len(appsetting_files) == 0):
+    if (len(appsetting_files) == 0):
         return depset([])
-    
+
     out_appsettings_list = []
     for appsetting_file in appsetting_files:
         out_appsettings_file = actions.declare_file("%s/%s" % (out_dir, appsetting_file.basename)) if len(appsetting_files) > 0 else None
         out_appsettings_list.append(out_appsettings_file)
 
     target_dir = out_appsettings_list[0].dirname
-    if is_windows: # for %I in (file1.txt file2.txt file3.txt) do copy %I c:\somedir\
+    if is_windows:
         actions.run_shell(
             mnemonic = "CopyAppSettings",
             command = "for %I in (%s) do copy %I %s" % (" ".join([file.path for file in appsetting_files]), target_dir),
             inputs = appsetting_files,
             outputs = out_appsettings_list,
         )
-    else:   
+    else:
         actions.run_shell(
             mnemonic = "CopyAppSettings",
             command = "cp %s %s" % (" ".join([file.path for file in appsetting_files]), target_dir),
