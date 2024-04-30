@@ -485,7 +485,7 @@ def _copy_appsettings(actions, appsetting_files, out_dir, is_windows):
     if is_windows:
         actions.run_shell(
             mnemonic = "CopyAppSettings",
-            command = "for %I in (%s) do copy %I %s" % (" ".join([file.path for file in appsetting_files]), target_dir),
+            command = "for %%I in (%s) do copy %%I %s" % (" ".join([file.path for file in appsetting_files]), target_dir),
             inputs = appsetting_files,
             outputs = out_appsettings_list,
         )
