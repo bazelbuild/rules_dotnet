@@ -482,20 +482,20 @@ def _copy_appsettings(actions, appsetting_files, out_dir, is_windows):
         out_appsettings_list.append(out_appsettings_file)
 
     target_dir = out_appsettings_list[0].dirname
-    if is_windows:
-        actions.run_shell(
-            mnemonic = "CopyAppSettings",
-            command = "for %%I in (%s) do copy %%I %s" % (" ".join([file.path for file in appsetting_files]), target_dir),
-            inputs = appsetting_files,
-            outputs = out_appsettings_list,
-        )
-    else:
-        actions.run_shell(
-            mnemonic = "CopyAppSettings",
-            command = "cp %s %s" % (" ".join([file.path for file in appsetting_files]), target_dir),
-            inputs = appsetting_files,
-            outputs = out_appsettings_list,
-        )
+    # if is_windows:
+    #     actions.run_shell(
+    #         mnemonic = "CopyAppSettings",
+    #         command = "for %%I in (%s) do copy %%I %s" % (" ".join([file.path for file in appsetting_files]), target_dir),
+    #         inputs = appsetting_files,
+    #         outputs = out_appsettings_list,
+    #     )
+    # else:
+    actions.run_shell(
+        mnemonic = "CopyAppSettings",
+        command = "cp %s %s" % (" ".join([file.path for file in appsetting_files]), target_dir),
+        inputs = appsetting_files,
+        outputs = out_appsettings_list,
+    )
 
     out_appsettings = depset(out_appsettings_list)
     return out_appsettings
