@@ -85,8 +85,7 @@ def AssemblyAction(
         allow_unsafe_blocks,
         nullable,
         run_analyzers,
-        compiler_options,
-        is_windows):
+        compiler_options):
     """Creates an action that runs the CSharp compiler with the specified inputs.
 
     This macro aims to match the [C# compiler](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/listed-alphabetically), with the inputs mapping to compiler options.
@@ -126,7 +125,6 @@ def AssemblyAction(
         nullable: Enable nullable context, or nullable warnings.
         run_analyzers: Enable analyzers.
         compiler_options: Additional options to pass to the compiler.
-        is_windows: Whether or not the target is a windows target.
     Returns:
         The compiled csharp artifacts.
     """
@@ -161,7 +159,7 @@ def AssemblyAction(
 
     # Appsettings
 
-    out_appsettings = _copy_appsettings(actions, appsetting_files, out_dir, is_windows)
+    out_appsettings = _copy_appsettings(actions, appsetting_files, out_dir)
 
     if len(internals_visible_to) == 0:
         _compile(
@@ -470,7 +468,7 @@ def _compile(
         },
     )
 
-def _copy_appsettings(actions, appsetting_files, out_dir, is_windows):
+def _copy_appsettings(actions, appsetting_files, out_dir):
     """Copy appsettings files to the output directory."""
 
     if (len(appsetting_files) == 0):
@@ -482,14 +480,7 @@ def _copy_appsettings(actions, appsetting_files, out_dir, is_windows):
         out_appsettings_list.append(out_appsettings_file)
 
     target_dir = out_appsettings_list[0].dirname
-    # if is_windows:
-    #     actions.run_shell(
-    #         mnemonic = "CopyAppSettings",
-    #         command = "for %%I in (%s) do copy %%I %s" % (" ".join([file.path for file in appsetting_files]), target_dir),
-    #         inputs = appsetting_files,
-    #         outputs = out_appsettings_list,
-    #     )
-    # else:
+
     actions.run_shell(
         mnemonic = "CopyAppSettings",
         command = "cp %s %s" % (" ".join([file.path for file in appsetting_files]), target_dir),
