@@ -1,0 +1,21 @@
+{
+    "name": "Bazel",
+    "id": "bazel",
+    "version": "0.0.1",
+    "description": "Install Bazel and related tools",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "BazelBuild.vscode-bazel"
+            ],
+            "settings": {
+                "bazel.executable": "bazel",
+                "bazel.buildifierExecutable": "buildifier",
+                "bazel.lsp.enabled": true,
+                "bazel.lsp.command": "starpls",
+                "bazel.lsp.args": []
+            }
+        }
+    },
+    "options": {}
+}

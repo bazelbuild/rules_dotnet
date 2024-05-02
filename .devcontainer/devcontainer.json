@@ -31,10 +31,8 @@
 			},
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
-				"BazelBuild.vscode-bazel",
 				"ms-dotnettools.csharp",
 				"Ionide.Ionide-fsharp",
-				"zxh404.vscode-proto3",
 				"timonwong.shellcheck",
 				"mutantdino.resourcemonitor"
 			]
@@ -59,6 +57,7 @@
 		},
 		"ghcr.io/devcontainers/features/github-cli:1.0.11": {
 			"version": "2.42.1"
-		}
+		},
+		"./features/bazel": {}
 	}
 }
