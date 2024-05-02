@@ -12,6 +12,9 @@ csharp_binary(
         "Program.cs",
         "WeatherForecast.cs",
     ],
+    appsetting_files = [
+        "appsettings.json",
+    ] + glob(["appsettings.*.json"]),
     project_sdk = "web",
     target_frameworks = ["net6.0"],
     deps = [

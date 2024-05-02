@@ -30,6 +30,7 @@ def _compile_action(ctx, tfm):
         resources = ctx.files.resources,
         srcs = ctx.files.srcs,
         data = ctx.files.data,
+        appsetting_files = ctx.files.appsetting_files,
         compile_data = ctx.files.compile_data,
         out = ctx.attr.out,
         target = "exe",
@@ -49,10 +50,12 @@ def _compile_action(ctx, tfm):
         nullable = ctx.attr.nullable,
         run_analyzers = ctx.attr.run_analyzers,
         compiler_options = ctx.attr.compiler_options,
+        is_windows = ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]),
     )
 
 def _binary_private_impl(ctx):
-    return build_binary(ctx, _compile_action)
+    result = build_binary(ctx, _compile_action)
+    return result
 
 csharp_binary = rule(
     _binary_private_impl,

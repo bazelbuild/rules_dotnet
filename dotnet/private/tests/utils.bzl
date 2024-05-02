@@ -1,6 +1,9 @@
 "Test utilities"
 
 load("@bazel_skylib//lib:unittest.bzl", "analysistest")
+load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
+load("@rules_testing//lib:util.bzl", "TestingAspectInfo")
+load("//dotnet/private:providers.bzl", "DotnetBinaryInfo")
 
 ACTION_ARGS_TEST_ARGS = {
     "action_mnemonic": attr.string(),
@@ -42,3 +45,32 @@ action_args_test = analysistest.make(
     action_args_test_impl,
     attrs = ACTION_ARGS_TEST_ARGS,
 )
+
+def get_target_tfm(target):
+    """Returns the target framework of the given target.
+
+    Args:
+        target: The target to get the target framework of.
+
+    Returns:
+        The target framework of the given target.
+    """
+    return target[TestingAspectInfo].attrs._target_framework[BuildSettingInfo].value
+
+def get_target_rid(target):
+    """Returns the target runtime identifier of the given target.
+
+    Args:
+        target: The target to get the target runtime identifier of.
+
+    Returns:
+        The target runtime identifier of the given target.
+    """
+
+    if getattr(target[TestingAspectInfo].attrs, "runtime_identifier", None):
+        return target[TestingAspectInfo].attrs.runtime_identifier
+
+    if getattr(target[TestingAspectInfo].attrs, "binary", None):
+        return target[TestingAspectInfo].attrs.binary[0][DotnetBinaryInfo].runtime_pack_info.runtime_identifier
+
+    fail("Could not determine target runtime identifier")

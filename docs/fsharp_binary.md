@@ -7,10 +7,11 @@ Rule for compiling F# binaries.
 ## fsharp_binary
 
 <pre>
-fsharp_binary(<a href="#fsharp_binary-name">name</a>, <a href="#fsharp_binary-deps">deps</a>, <a href="#fsharp_binary-srcs">srcs</a>, <a href="#fsharp_binary-data">data</a>, <a href="#fsharp_binary-resources">resources</a>, <a href="#fsharp_binary-out">out</a>, <a href="#fsharp_binary-compile_data">compile_data</a>, <a href="#fsharp_binary-compiler_options">compiler_options</a>, <a href="#fsharp_binary-defines">defines</a>,
-              <a href="#fsharp_binary-generate_documentation_file">generate_documentation_file</a>, <a href="#fsharp_binary-internals_visible_to">internals_visible_to</a>, <a href="#fsharp_binary-keyfile">keyfile</a>, <a href="#fsharp_binary-langversion">langversion</a>, <a href="#fsharp_binary-nowarn">nowarn</a>,
-              <a href="#fsharp_binary-project_sdk">project_sdk</a>, <a href="#fsharp_binary-roll_forward_behavior">roll_forward_behavior</a>, <a href="#fsharp_binary-target_frameworks">target_frameworks</a>, <a href="#fsharp_binary-treat_warnings_as_errors">treat_warnings_as_errors</a>,
-              <a href="#fsharp_binary-warning_level">warning_level</a>, <a href="#fsharp_binary-warnings_as_errors">warnings_as_errors</a>, <a href="#fsharp_binary-warnings_not_as_errors">warnings_not_as_errors</a>, <a href="#fsharp_binary-winexe">winexe</a>)
+fsharp_binary(<a href="#fsharp_binary-name">name</a>, <a href="#fsharp_binary-deps">deps</a>, <a href="#fsharp_binary-srcs">srcs</a>, <a href="#fsharp_binary-data">data</a>, <a href="#fsharp_binary-resources">resources</a>, <a href="#fsharp_binary-out">out</a>, <a href="#fsharp_binary-appsetting_files">appsetting_files</a>, <a href="#fsharp_binary-compile_data">compile_data</a>,
+              <a href="#fsharp_binary-compiler_options">compiler_options</a>, <a href="#fsharp_binary-defines">defines</a>, <a href="#fsharp_binary-generate_documentation_file">generate_documentation_file</a>, <a href="#fsharp_binary-internals_visible_to">internals_visible_to</a>, <a href="#fsharp_binary-keyfile">keyfile</a>,
+              <a href="#fsharp_binary-langversion">langversion</a>, <a href="#fsharp_binary-nowarn">nowarn</a>, <a href="#fsharp_binary-project_sdk">project_sdk</a>, <a href="#fsharp_binary-roll_forward_behavior">roll_forward_behavior</a>, <a href="#fsharp_binary-target_frameworks">target_frameworks</a>,
+              <a href="#fsharp_binary-treat_warnings_as_errors">treat_warnings_as_errors</a>, <a href="#fsharp_binary-warning_level">warning_level</a>, <a href="#fsharp_binary-warnings_as_errors">warnings_as_errors</a>, <a href="#fsharp_binary-warnings_not_as_errors">warnings_not_as_errors</a>,
+              <a href="#fsharp_binary-winexe">winexe</a>)
 </pre>
 
 Compile a F# exe
@@ -26,6 +27,7 @@ Compile a F# exe
 | <a id="fsharp_binary-data"></a>data |  Runtime files. It is recommended to use the @rules_dotnet//tools/runfiles library to read the runtime files.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional |  `[]`  |
 | <a id="fsharp_binary-resources"></a>resources |  A list of files to embed in the DLL as resources.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional |  `[]`  |
 | <a id="fsharp_binary-out"></a>out |  File name, without extension, of the built assembly.   | String | optional |  `""`  |
+| <a id="fsharp_binary-appsetting_files"></a>appsetting_files |  A list of appsettings files to include in the output directory.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional |  `[]`  |
 | <a id="fsharp_binary-compile_data"></a>compile_data |  Additional compile time files.   | <a href="https://bazel.build/concepts/labels">List of labels</a> | optional |  `[]`  |
 | <a id="fsharp_binary-compiler_options"></a>compiler_options |  Additional options to pass to the compiler. This attribute should only be used if the compiler flag has not already been exposed as an attribute.   | List of strings | optional |  `[]`  |
 | <a id="fsharp_binary-defines"></a>defines |  A list of preprocessor directive symbols to define.   | List of strings | optional |  `[]`  |
