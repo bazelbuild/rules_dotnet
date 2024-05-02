@@ -9,9 +9,6 @@ load(
 csharp_binary(
     name = "hello",
     srcs = ["hello.cs"],
-    appsetting_files = [
-        "appsettings.json",
-    ] + glob(["appsettings.*.json"]),
     target_frameworks = ["net6.0"],
     deps = [
         ":lib",

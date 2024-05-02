@@ -29,6 +29,7 @@ def _compile_action(ctx, tfm):
         resources = ctx.files.resources,
         srcs = ctx.files.srcs,
         data = ctx.files.data,
+        appsetting_files = [],
         compile_data = ctx.files.compile_data,
         out = ctx.attr.out,
         target = "library",
@@ -44,6 +45,7 @@ def _compile_action(ctx, tfm):
         nowarn = ctx.attr.nowarn,
         project_sdk = ctx.attr.project_sdk,
         compiler_options = ctx.attr.compiler_options,
+        is_windows = ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]),
     )
 
 def _library_impl(ctx):

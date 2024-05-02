@@ -19,6 +19,7 @@ bzl_library(
         ":semver",
         "//dotnet/private/sdk:rids",
         "@bazel_skylib//lib:sets",
+        "@bazel_skylib//lib:shell",
     ],
 )
 

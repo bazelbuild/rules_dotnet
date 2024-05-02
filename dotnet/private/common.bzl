@@ -3,6 +3,7 @@ Rules for compatability resolution of dependencies for .NET frameworks.
 """
 
 load("@bazel_skylib//lib:sets.bzl", "sets")
+load("@bazel_skylib//lib:shell.bzl", "shell")
 load(
     "//dotnet/private:providers.bzl",
     "DotnetAssemblyCompileInfo",
@@ -650,3 +651,46 @@ def to_rlocation_path(ctx, file):
         return file.short_path[3:]
     else:
         return ctx.workspace_name + "/" + file.short_path
+
+def copy_files_to_dir(target_name, actions, is_windows, files, out_dir):
+    """Copies files to a specific location.
+
+    Args:
+        target_name: The name of the executing target
+        actions: The actions object
+        is_windows: If the OS is Windows
+        files: The files to copy
+        out_dir: The directory to copy the files to
+
+    Returns:
+        A list of the copied files in the out_dir
+    """
+
+    script_body = ["@echo off"] if is_windows else ["#! /usr/bin/env bash", "set -eou pipefail"]
+
+    inputs = []
+    outputs = []
+    for src in files:
+        dst = actions.declare_file("%s/%s" % (out_dir, src.basename))
+        inputs.append(src)
+        outputs.append(dst)
+        if is_windows:
+            script_body.append("if not exist \"{dir}\" @mkdir \"{dir}\" >NUL".format(dir = dst.dirname.replace("/", "\\")))
+            script_body.append("@copy /Y \"{src}\" \"{dst}\" >NUL".format(src = src.path.replace("/", "\\"), dst = dst.path.replace("/", "\\")))
+        else:
+            script_body.append("mkdir -p {dir} && cp -f {src} {dst}".format(dir = shell.quote(dst.dirname), src = shell.quote(src.path), dst = shell.quote(dst.path)))
+
+    if len(outputs) > 0:
+        copy_script = actions.declare_file(target_name + ".copy.bat" if is_windows else target_name + ".copy.sh")
+        actions.write(
+            output = copy_script,
+            content = "\r\n".join(script_body) if is_windows else "\n".join(script_body),
+            is_executable = True,
+        )
+        actions.run(
+            outputs = outputs,
+            inputs = inputs,
+            executable = copy_script,
+            tools = [copy_script],
+        )
+    return outputs

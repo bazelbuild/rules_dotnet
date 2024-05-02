@@ -1,0 +1,3 @@
+load(":tests.bzl", "appsettings_test_suite")
+
+appsettings_test_suite(name = "appsettings_test_suite")

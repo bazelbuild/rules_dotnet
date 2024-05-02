@@ -5,6 +5,7 @@ Actions for compiling targets with C#.
 load(
     "//dotnet/private:common.bzl",
     "collect_compile_info",
+    "copy_files_to_dir",
     "format_ref_arg",
     "framework_preprocessor_symbols",
     "generate_warning_args",
@@ -84,6 +85,7 @@ def AssemblyAction(
         resources,
         srcs,
         data,
+        appsetting_files,
         compile_data,
         out,
         target,
@@ -98,7 +100,8 @@ def AssemblyAction(
         warning_level,
         nowarn,
         project_sdk,
-        compiler_options):
+        compiler_options,
+        is_windows):
     """Creates an action that runs the F# compiler with the specified inputs.
 
     This macro aims to match the [F# compiler](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-options), with the inputs mapping to compiler options.
@@ -117,6 +120,7 @@ def AssemblyAction(
         resources: The list of resouces to be embedded in the assembly.
         srcs: The list of source (.cs) files that are processed to create the assembly.
         data: List of files that are a direct runtime dependency
+        appsetting_files: List of appsettings files to include in the output.
         compile_data: List of files that are a direct compile time dependency
         target_name: A unique name for this target.
         out: Specifies the output file name.
@@ -132,6 +136,7 @@ def AssemblyAction(
         nowarn: List of warnings to suppress.
         project_sdk: The project SDK being targeted
         compiler_options: Additional compiler options to pass to the compiler.
+        is_windows: Whether or not the target is running on Windows.
 
     Returns:
         The compiled fsharp artifacts.
@@ -162,6 +167,8 @@ def AssemblyAction(
     out_ref = actions.declare_file("%s/ref/%s.%s" % (out_dir, assembly_name, out_ext)) if _should_output_ref_assembly(toolchain) else None
     out_pdb = actions.declare_file("%s/%s.pdb" % (out_dir, assembly_name))
     out_xml = actions.declare_file("%s/%s.xml" % (out_dir, assembly_name)) if generate_documentation_file else None
+
+    out_appsettings = copy_files_to_dir(target_name, actions, is_windows, appsetting_files, out_dir)
 
     if len(internals_visible_to) == 0:
         _compile(
@@ -284,7 +291,7 @@ def AssemblyAction(
         pdbs = [out_pdb] if out_pdb else [],
         xml_docs = [out_xml] if out_xml else [],
         data = data,
-        appsetting_files = depset([]),
+        appsetting_files = depset(out_appsettings),
         native = [],
         deps = depset([dep[DotnetAssemblyRuntimeInfo] for dep in deps], transitive = [dep[DotnetAssemblyRuntimeInfo].deps for dep in deps]),
         nuget_info = None,

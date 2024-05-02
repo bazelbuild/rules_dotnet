@@ -5,6 +5,7 @@ Actions for compiling targets with C#.
 load(
     "//dotnet/private:common.bzl",
     "collect_compile_info",
+    "copy_files_to_dir",
     "format_ref_arg",
     "framework_preprocessor_symbols",
     "generate_warning_args",
@@ -85,7 +86,8 @@ def AssemblyAction(
         allow_unsafe_blocks,
         nullable,
         run_analyzers,
-        compiler_options):
+        compiler_options,
+        is_windows):
     """Creates an action that runs the CSharp compiler with the specified inputs.
 
     This macro aims to match the [C# compiler](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/listed-alphabetically), with the inputs mapping to compiler options.
@@ -125,6 +127,7 @@ def AssemblyAction(
         nullable: Enable nullable context, or nullable warnings.
         run_analyzers: Enable analyzers.
         compiler_options: Additional options to pass to the compiler.
+        is_windows: Whether or not the target is running on Windows.
     Returns:
         The compiled csharp artifacts.
     """
@@ -158,8 +161,7 @@ def AssemblyAction(
     out_xml = actions.declare_file("%s/%s.xml" % (out_dir, assembly_name)) if generate_documentation_file else None
 
     # Appsettings
-
-    out_appsettings = _copy_appsettings(actions, appsetting_files, out_dir)
+    out_appsettings = copy_files_to_dir(target_name, actions, is_windows, appsetting_files, out_dir)
 
     if len(internals_visible_to) == 0:
         _compile(
@@ -300,7 +302,7 @@ def AssemblyAction(
         pdbs = [out_pdb] if out_pdb else [],
         xml_docs = [out_xml] if out_xml else [],
         data = data,
-        appsetting_files = out_appsettings,
+        appsetting_files = depset(out_appsettings),
         native = [],
         deps = depset([dep[DotnetAssemblyRuntimeInfo] for dep in deps] + [toolchain.host_model[DotnetAssemblyRuntimeInfo]] if include_host_model_dll else [dep[DotnetAssemblyRuntimeInfo] for dep in deps], transitive = [dep[DotnetAssemblyRuntimeInfo].deps for dep in deps]),
         nuget_info = None,
@@ -467,26 +469,3 @@ def _compile(
             "DOTNET_CLI_HOME": toolchain.runtime.files_to_run.executable.dirname,
         },
     )
-
-def _copy_appsettings(actions, appsetting_files, out_dir):
-    """Copy appsettings files to the output directory."""
-
-    if (len(appsetting_files) == 0):
-        return depset([])
-
-    out_appsettings_list = []
-    for appsetting_file in appsetting_files:
-        out_appsettings_file = actions.declare_file("%s/%s" % (out_dir, appsetting_file.basename)) if len(appsetting_files) > 0 else None
-        out_appsettings_list.append(out_appsettings_file)
-
-    target_dir = out_appsettings_list[0].dirname
-
-    actions.run_shell(
-        mnemonic = "CopyAppSettings",
-        command = "cp %s %s" % (" ".join([file.path for file in appsetting_files]), target_dir),
-        inputs = appsetting_files,
-        outputs = out_appsettings_list,
-    )
-
-    out_appsettings = depset(out_appsettings_list)
-    return out_appsettings
