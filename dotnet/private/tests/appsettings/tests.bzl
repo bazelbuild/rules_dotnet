@@ -1,7 +1,6 @@
 "Appsettings test suite."
 
 load("@rules_testing//lib:analysis_test.bzl", "analysis_test", "test_suite")
-load("@rules_testing//lib:util.bzl", "util")
 load(
     "//dotnet:defs.bzl",
     "csharp_binary",
