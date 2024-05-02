@@ -1,3 +1,5 @@
+"Appsettings test suite."
+
 load("@rules_testing//lib:analysis_test.bzl", "analysis_test", "test_suite")
 load("@rules_testing//lib:util.bzl", "util")
 load(
@@ -9,8 +11,7 @@ load(
 load("//dotnet/private/tests:utils.bzl", "get_target_rid", "get_target_tfm")
 
 def _csharp_binary(name):
-    util.helper_target(
-        csharp_binary,
+    csharp_binary(
         name = name + "_target_under_test",
         srcs = ["Main.cs"],
         appsetting_files = [
@@ -27,8 +28,7 @@ def _csharp_binary(name):
     )
 
 def _csharp_publish(name):
-    util.helper_target(
-        csharp_binary,
+    csharp_binary(
         name = name + "_binary",
         srcs = ["Main.cs"],
         appsetting_files = [
@@ -38,8 +38,7 @@ def _csharp_publish(name):
         target_frameworks = ["net6.0"],
     )
 
-    util.helper_target(
-        publish_binary,
+    publish_binary(
         name = name + "_target_under_test",
         binary = name + "_binary",
         roll_forward_behavior = "Major",
@@ -54,8 +53,7 @@ def _csharp_publish(name):
     )
 
 def _csharp_publish_self_contained(name):
-    util.helper_target(
-        csharp_binary,
+    csharp_binary(
         name = name + "_binary",
         srcs = ["Main.cs"],
         appsetting_files = [
@@ -65,8 +63,7 @@ def _csharp_publish_self_contained(name):
         target_frameworks = ["net6.0"],
     )
 
-    util.helper_target(
-        publish_binary,
+    publish_binary(
         name = name + "_target_under_test",
         binary = name + "_binary",
         roll_forward_behavior = "Major",
@@ -81,8 +78,7 @@ def _csharp_publish_self_contained(name):
     )
 
 def _fsharp_binary(name):
-    util.helper_target(
-        fsharp_binary,
+    fsharp_binary(
         name = name + "_target_under_test",
         srcs = ["Main.fs"],
         appsetting_files = [
@@ -99,8 +95,7 @@ def _fsharp_binary(name):
     )
 
 def _fsharp_publish(name):
-    util.helper_target(
-        fsharp_binary,
+    fsharp_binary(
         name = name + "_binary",
         srcs = ["Main.fs"],
         appsetting_files = [
@@ -110,8 +105,7 @@ def _fsharp_publish(name):
         target_frameworks = ["net6.0"],
     )
 
-    util.helper_target(
-        publish_binary,
+    publish_binary(
         name = name + "_target_under_test",
         binary = name + "_binary",
         roll_forward_behavior = "Major",
@@ -126,8 +120,7 @@ def _fsharp_publish(name):
     )
 
 def _fsharp_publish_self_contained(name):
-    util.helper_target(
-        fsharp_binary,
+    fsharp_binary(
         name = name + "_binary",
         srcs = ["Main.fs"],
         appsetting_files = [
@@ -137,8 +130,7 @@ def _fsharp_publish_self_contained(name):
         target_frameworks = ["net6.0"],
     )
 
-    util.helper_target(
-        publish_binary,
+    publish_binary(
         name = name + "_target_under_test",
         binary = name + "_binary",
         roll_forward_behavior = "Major",
