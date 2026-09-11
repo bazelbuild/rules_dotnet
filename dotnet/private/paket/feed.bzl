@@ -25,6 +25,16 @@ _FACT_VERSION = "v1"
 # Registration resources in order of preference. Only the SemVer 2.0.0
 # flavours list packages whose versions carry build metadata or dotted
 # pre-release identifiers, which rules out the older resources for some feeds.
+# The algorithms Bazel can verify a download against. NuGet publishes the hash
+# in standard base 64, which is the encoding subresource integrity wants, so
+# the algorithm name is all that has to be translated. nuget.org has always
+# used SHA512, but the algorithm is up to the feed.
+_HASH_ALGORITHMS = {
+    "SHA256": "sha256",
+    "SHA384": "sha384",
+    "SHA512": "sha512",
+}
+
 _REGISTRATION_RESOURCES = [
     "RegistrationsBaseUrl/3.6.0",
     "RegistrationsBaseUrl/Versioned",
@@ -68,13 +78,10 @@ def _auth(netrc_entries, urls):
         "password": "<password>",
     })
 
-def _read_json(module_ctx, path):
+def _read_json(module_ctx, path, url):
     content = module_ctx.read(path)
-
-    # A feed that mis-declares compression leaves us holding bytes that are not
-    # JSON, which is not worth failing a build over.
     if not content.startswith("{"):
-        return None
+        fail("{} did not return JSON. Check the feed, or set verify_integrity = False on paket.parse.".format(url))
 
     return json.decode(content)
 
@@ -88,13 +95,14 @@ def _download_all(module_ctx, requests, auth, directory):
       directory: Where to stage the downloaded files.
 
     Returns:
-      A dict of key to parsed JSON, omitting anything that failed.
+      A dict of key to parsed JSON. A request the feed has nothing for is
+      omitted; one it answers with something other than JSON fails the build.
     """
     pending = []
 
     for (index, (key, url)) in enumerate(requests):
         path = "{}/{}.json".format(directory, index)
-        pending.append((key, path, module_ctx.download(
+        pending.append((key, path, url, module_ctx.download(
             url = url,
             output = path,
             allow_fail = True,
@@ -103,13 +111,12 @@ def _download_all(module_ctx, requests, auth, directory):
         )))
 
     results = {}
-    for (key, path, token) in pending:
-        if not token.wait().success:
-            continue
-
-        body = _read_json(module_ctx, path)
-        if body != None:
-            results[key] = body
+    for (key, path, url, token) in pending:
+        # A feed that serves a package but does not list it in its registration
+        # answers 404 here, which is what "this feed publishes no hash for it"
+        # looks like. The caller moves on to the next feed.
+        if token.wait().success:
+            results[key] = _read_json(module_ctx, path, url)
 
     return results
 
@@ -137,9 +144,7 @@ def _registration_base(module_ctx, source, auth):
             " Check the feed and its credentials, or set verify_integrity = False on paket.parse.",
         )
 
-    index = _read_json(module_ctx, "service_index.json")
-    if index == None:
-        fail("The service index of {} is not valid JSON.".format(source))
+    index = _read_json(module_ctx, "service_index.json", source)
 
     resources = {}
     for resource in index.get("resources", []):
@@ -152,13 +157,24 @@ def _registration_base(module_ctx, source, auth):
 
     return ""
 
-def _package_hash(catalog_entry):
-    if catalog_entry.get("packageHashAlgorithm") != "SHA512":
+def _package_hash(catalog_entry, url):
+    """Returns a catalog entry's hash as subresource integrity, or None."""
+    hash = catalog_entry.get("packageHash")
+    algorithm = catalog_entry.get("packageHashAlgorithm")
+
+    # Both are required by the spec, but a feed that omits them is just a feed
+    # that publishes no hash.
+    if not hash or not algorithm:
         return None
 
-    hash = catalog_entry.get("packageHash")
+    prefix = _HASH_ALGORITHMS.get(algorithm.upper())
+    if prefix == None:
+        fail(
+            "{} hashes packages with {}, which Bazel cannot verify.".format(url, algorithm) +
+            " Set verify_integrity = False on paket.parse.",
+        )
 
-    return "sha512-" + hash if hash else None
+    return "{}-{}".format(prefix, hash)
 
 def resolve_integrity(module_ctx, source, packages, netrc_entries, bases):
     """Looks up the subresource integrity of each package on a feed.
@@ -211,7 +227,7 @@ def resolve_integrity(module_ctx, source, packages, netrc_entries, bases):
 
     integrity = {}
     for (key, entry) in _download_all(module_ctx, catalog_requests, auth, "catalog").items():
-        hash = _package_hash(entry)
+        hash = _package_hash(entry, source)
         if hash:
             integrity[key] = hash
 
