@@ -389,6 +389,110 @@ def get_highest_compatible_target_framework(incoming_tfm, tfms):
 
     return None
 
+_NUGET_FRAMEWORK_IDENTIFIERS = {
+    ".netcoreapp": "netcoreapp",
+    ".netframework": "net",
+    ".netstandard": "netstandard",
+    "net": "net",
+    "netcoreapp": "netcoreapp",
+    "netstandard": "netstandard",
+}
+
+def nuget_framework_to_tfm(framework):
+    """Normalizes a framework name from NuGet package metadata to a TFM.
+
+    `.nuspec` files and framework lists spell frameworks out in full
+    (`.NETStandard2.0`, `.NETFramework,Version=v4.7.2`), while the folders
+    inside a package and rules_dotnet itself use the short form
+    (`netstandard2.0`, `net472`).
+
+    Args:
+      framework: The framework name as it appears in package metadata.
+
+    Returns:
+      The matching target framework moniker, or None when it is not a
+      framework that rules_dotnet supports.
+    """
+    framework = framework.strip().lower()
+
+    if framework in FRAMEWORK_COMPATIBILITY:
+        return framework
+
+    # `.NETFramework,Version=v4.7.2` and `.NETFramework4.7.2` name the same
+    # framework; normalize the former into the latter.
+    (identifier, separator, version) = framework.partition(",version=v")
+    if not separator:
+        digit = -1
+        for i in range(len(framework)):
+            if framework[i].isdigit():
+                digit = i
+                break
+
+        if digit <= 0:
+            return None
+
+        identifier = framework[:digit]
+        version = framework[digit:]
+
+    # Portable class library profiles such as `.NETPortable0.0-Profile259`.
+    if version.find("-") != -1:
+        return None
+
+    identifier = _NUGET_FRAMEWORK_IDENTIFIERS.get(identifier)
+    if identifier == None:
+        return None
+
+    parts = version.split(".")
+    for _ in range(2 - len(parts)):
+        parts.append("0")
+
+    # A trailing zero component is not part of a framework's short name, but
+    # the major and minor version always are.
+    for _ in range(len(parts)):
+        if len(parts) > 2 and parts[-1] == "0":
+            parts.pop()
+        else:
+            break
+
+    if not parts[0].isdigit():
+        return None
+
+    if identifier == "netcoreapp" and int(parts[0]) >= 5:
+        # .NET 5 and later are `.NETCoreApp` in metadata but `netX.Y` in the
+        # folder layout.
+        tfm = "net" + ".".join(parts[:2])
+    elif identifier == "net":
+        tfm = "net" + "".join(parts)
+    else:
+        tfm = identifier + ".".join(parts)
+
+    return tfm if tfm in FRAMEWORK_COMPATIBILITY else None
+
+def get_nearest_compatible_target_framework(incoming_tfm, tfms):
+    """Returns the entry of `tfms` that best matches `incoming_tfm`.
+
+    This mirrors how NuGet picks the folder to use out of a package: of the
+    frameworks that `incoming_tfm` can consume, the most specific one wins.
+
+    Args:
+      incoming_tfm: The target framework being built for.
+      tfms: The frameworks to choose from.
+
+    Returns:
+      The best match, or None if none of `tfms` is compatible.
+    """
+    compatible = TRANSITIVE_FRAMEWORK_COMPATIBILITY.get(incoming_tfm)
+    if compatible == None:
+        fail("Target framework moniker is not supported/valid: {}".format(incoming_tfm))
+
+    # FRAMEWORK_COMPATIBILITY is ordered oldest to newest within a family, so
+    # the last compatible entry is the most specific match.
+    for tfm in reversed(FRAMEWORK_COMPATIBILITY.keys()):
+        if tfm in tfms and sets.contains(compatible, tfm):
+            return tfm
+
+    return None
+
 def get_highest_compatible_runtime_identifier(incoming_rid, rids):
     """Returns the highest compatible runtime identifier for the incoming_rid.
 

@@ -131,11 +131,7 @@ let generateApphostPacksNugetRepo apphostPacksFile outputFolder =
               version = pack.version
               sha512 = packageInfo.sha512sri
               sources = [ NugetHelpers.nugetV3Feed ]
-              netrc = None
-              dependencies = Dictionary<string, string seq>()
-              targeting_pack_overrides = packageInfo.overrides
-              framework_list = packageInfo.frameworkList
-              tools = Dictionary() })
+              netrc = None })
 
     NugetRepo.generateBazelFiles "apphost_packs" repoPackages outputFolder "dotnet."
     ()

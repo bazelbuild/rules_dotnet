@@ -19,6 +19,13 @@ load(
     "DotnetToolInfo",
 )
 load(
+    "//dotnet/private/rules/nuget:package_metadata.bzl",
+    "parse_dotnet_tool_settings",
+    "parse_framework_list",
+    "parse_nuspec",
+    "parse_package_overrides",
+)
+load(
     "//dotnet/private/sdk:rids.bzl",
     "RUNTIME_GRAPH",
 )
@@ -400,6 +407,70 @@ def _get_auth_dict(ctx, netrc, urls):
 
     return cred_dict
 
+_PACKAGE_INFO_TEMPLATE = """\
+"GENERATED"
+
+DEPENDENCY_GROUPS = {dependency_groups}
+
+FRAMEWORK_LIST = {framework_list}
+
+TARGETING_PACK_OVERRIDES = {targeting_pack_overrides}
+
+TOOLS = {tools}
+"""
+
+def _write_package_info(ctx, all_files, tool_files):
+    """Extracts the package metadata that the hub repository needs.
+
+    Reading it here keeps the work lazy: a package nothing depends on is never
+    fetched, let alone parsed.
+    """
+    nuspec = None
+    framework_list = {}
+    targeting_pack_overrides = {}
+
+    for file in all_files:
+        file = _sanitize_path(file)
+        lower = file.lower()
+
+        if lower.endswith(".nuspec") and file.find("/") == -1:
+            nuspec = file
+        elif lower == "data/frameworklist.xml":
+            framework_list = parse_framework_list(ctx.read(file))
+        elif lower == "data/packageoverrides.txt":
+            targeting_pack_overrides = parse_package_overrides(ctx.read(file))
+
+    dependency_groups = {}
+    is_dotnet_tool = False
+
+    if nuspec != None:
+        manifest = parse_nuspec(ctx.read(nuspec))
+        dependency_groups = manifest.dependency_groups
+        is_dotnet_tool = manifest.is_dotnet_tool
+
+    # Tool name -> target framework -> entrypoint. Packages that are not
+    # dotnet tools sometimes ship helper executables under `tools/`, which are
+    # not meant to be run through `dotnet tool`.
+    tools = {}
+    if is_dotnet_tool:
+        for (tfm, files) in tool_files.items():
+            for file in files:
+                if not file.endswith("DotnetToolSettings.xml"):
+                    continue
+
+                for command in parse_dotnet_tool_settings(ctx.read(file), file):
+                    tools.setdefault(command["name"], {})[tfm] = {
+                        "entrypoint": command["entrypoint"],
+                        "runner": command["runner"],
+                    }
+
+    ctx.file("package_info.bzl", _PACKAGE_INFO_TEMPLATE.format(
+        dependency_groups = json.encode(dependency_groups),
+        framework_list = json.encode(framework_list),
+        targeting_pack_overrides = json.encode(targeting_pack_overrides),
+        tools = json.encode(tools),
+    ))
+
 def _nuget_archive_impl(ctx):
     # First get the auth dict for the package sources since the sources can be different than the
     # package base url when using NuGet V3 feeds.
@@ -469,6 +540,8 @@ def _nuget_archive_impl(ctx):
         key = file[:i]
 
         _process_key_and_file(groups, key, file)
+
+    _write_package_info(ctx, all_files, groups["tools"])
 
     # Now that we have processed all the files we need to make sure that they are correctly set to be
     # either a runtime dependency or a compile time dependency. Dependency resolution in .Net is fun!

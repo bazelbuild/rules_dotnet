@@ -20,8 +20,33 @@ bzl_library(
     ],
     deps = [
         ":dotnet_tool",
+        ":package_metadata",
         "//dotnet/private:common",
         "@bazel_tools//tools/build_defs/repo:utils.bzl",
+    ],
+)
+
+bzl_library(
+    name = "package_metadata",
+    srcs = ["package_metadata.bzl"],
+    visibility = [
+        "//dotnet:__subpackages__",
+    ],
+    deps = [
+        "//dotnet/private:common",
+        "//dotnet/private:xml",
+    ],
+)
+
+bzl_library(
+    name = "package",
+    srcs = ["package.bzl"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":dotnet_tool",
+        ":imports",
+        ":package_metadata",
+        "//dotnet/private:common",
     ],
 )
 
@@ -33,7 +58,6 @@ bzl_library(
     ],
     deps = [
         "//dotnet/private/rules/nuget:nuget_archive",
-        "@bazel_tools//tools/build_defs/repo:utils.bzl",
     ],
 )
 

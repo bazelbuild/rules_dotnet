@@ -25,11 +25,17 @@ use_repo(dotnet, "dotnet_toolchains")
 
 register_toolchains("@dotnet_toolchains//:all")
 
-example_deps_extension = use_extension("//:paket.example_deps_extension.bzl", "example_deps_extension")
-use_repo(example_deps_extension, "paket.example_deps")
+paket = use_extension("@rules_dotnet//dotnet:paket.bzl", "paket")
+paket.parse(
+    dependencies = "//:paket.dependencies",
+    lock = "//:paket.lock",
+)
+use_repo(paket, "paket.example_deps")
 
-main_extension = use_extension("//paket/deps:paket.main_extension.bzl", "main_extension")
-use_repo(main_extension, "paket.main")
-
-othergroup_extension = use_extension("//paket/deps:paket.othergroup_extension.bzl", "othergroup_extension")
-use_repo(othergroup_extension, "paket.othergroup")
+# A second lock file, showing that a package group is addressed by its name.
+paket_example = use_extension("@rules_dotnet//dotnet:paket.bzl", "paket")
+paket_example.parse(
+    dependencies = "//paket:paket.dependencies",
+    lock = "//paket:paket.lock",
+)
+use_repo(paket_example, "paket.main", "paket.othergroup")

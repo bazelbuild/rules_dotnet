@@ -76,10 +76,8 @@ This rule allows you to run a pre-built .NET command-line tool that has been pac
 with NuGet. The tool is executed using the hermetic .NET runtime provided by `rules_dotnet`.
 
 This is a lower-level API that requires a manual specification of tool details.
-You should instead add the tool as a dependency to your Paket dependencies, and
-use paket2bazel to generate Bazel targets; any tools found within the Paket
-dependencies will automatically be exposed as Bazel targets in the resulting
-`nuget_repo` rule.
+Prefer adding the tool to your `paket.dependencies`: every dotnet tool in a
+dependency group is exposed automatically as `@<group>//<package>/tools:<tool>`.
 """,
     attrs = {
         "target_frameworks": attr.string_list(
@@ -101,12 +99,12 @@ dependencies will automatically be exposed as Bazel targets in the resulting
         ),
         "_launcher_sh": attr.label(
             doc = "A template file for the launcher on Linux/MacOS",
-            default = "//dotnet/private:launcher.sh.tpl",
+            default = "//dotnet/private:tool_launcher.sh.tpl",
             allow_single_file = True,
         ),
         "_launcher_bat": attr.label(
             doc = "A template file for the launcher on Windows",
-            default = "//dotnet/private:launcher.bat.tpl",
+            default = "//dotnet/private:tool_launcher.bat.tpl",
             allow_single_file = True,
         ),
         "_bash_runfiles": attr.label(default = "@rules_shell//shell/runfiles"),

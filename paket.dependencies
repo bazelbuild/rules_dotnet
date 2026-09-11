@@ -1,5 +1,5 @@
 storage: none
-group paket2bazel_dependencies
+group sdk_gen_dependencies
     framework: net10.0
     source https://api.nuget.org/v3/index.json
 
@@ -63,3 +63,9 @@ group rules_dotnet_nuget_tool_tests
     # Included to test older framework tools being supported by newer
     # dotnet toolchains.
     nuget Paket 9.0.2
+
+group paket_cli
+    framework: net10.0
+    source https://api.nuget.org/v3/index.json
+
+    nuget Paket 10.3.1

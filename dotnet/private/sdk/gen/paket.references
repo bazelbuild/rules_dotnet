@@ -1,4 +1,4 @@
-group paket2bazel_dependencies
+group sdk_gen_dependencies
     FSharp.Core
     Argu
     Paket.Core

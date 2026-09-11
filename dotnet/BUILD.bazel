@@ -60,27 +60,6 @@ bzl_library(
 )
 
 bzl_library(
-    name = "paket.paket2bazel_dependencies",
-    srcs = ["paket.paket2bazel_dependencies.bzl"],
-    visibility = ["//visibility:public"],
-    deps = ["//dotnet:defs"],
-)
-
-bzl_library(
-    name = "paket.rules_dotnet_dev_nuget_packages",
-    srcs = ["paket.rules_dotnet_dev_nuget_packages.bzl"],
-    visibility = ["//visibility:public"],
-    deps = ["//dotnet:defs"],
-)
-
-bzl_library(
-    name = "paket.rules_dotnet_nuget_packages",
-    srcs = ["paket.rules_dotnet_nuget_packages.bzl"],
-    visibility = ["//visibility:public"],
-    deps = ["//dotnet:defs"],
-)
-
-bzl_library(
     name = "extensions",
     srcs = ["extensions.bzl"],
     visibility = ["//visibility:public"],
@@ -88,24 +67,10 @@ bzl_library(
 )
 
 bzl_library(
-    name = "paket.paket2bazel_dependencies_extension",
-    srcs = ["paket.paket2bazel_dependencies_extension.bzl"],
+    name = "paket",
+    srcs = ["paket.bzl"],
     visibility = ["//visibility:public"],
-    deps = [":paket.paket2bazel_dependencies"],
-)
-
-bzl_library(
-    name = "paket.rules_dotnet_dev_nuget_packages_extension",
-    srcs = ["paket.rules_dotnet_dev_nuget_packages_extension.bzl"],
-    visibility = ["//visibility:public"],
-    deps = [":paket.rules_dotnet_dev_nuget_packages"],
-)
-
-bzl_library(
-    name = "paket.rules_dotnet_nuget_packages_extension",
-    srcs = ["paket.rules_dotnet_nuget_packages_extension.bzl"],
-    visibility = ["//visibility:public"],
-    deps = [":paket.rules_dotnet_nuget_packages"],
+    deps = ["//dotnet/private/paket:extension"],
 )
 
 exports_files(["defs.bzl"])
