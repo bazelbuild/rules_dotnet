@@ -1,0 +1,7 @@
+# The Paket CLI, so that a lock file can be regenerated without a local .NET
+# install: `bazel run @rules_dotnet//paket -- install`.
+alias(
+    name = "paket",
+    actual = "@paket.paket_cli//paket/tools:paket",
+    visibility = ["//visibility:public"],
+)

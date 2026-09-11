@@ -7,22 +7,16 @@ open System.Text.Json
 open System.Text.Json.Serialization
 open System.Text.Encodings.Web
 
-type NugetRepoTool =
-    { name: string
-      entrypoint: string
-      runner: string }
-
+// Everything else a package declares (its dependencies, targeting pack
+// overrides, framework list and dotnet tools) is read out of the .nupkg by
+// nuget_archive, so it does not belong in the generated file.
 type NugetRepoPackage =
     { name: string
       id: string
       version: string
       sha512: string
       sources: string seq
-      netrc: string option
-      dependencies: Dictionary<string, string seq>
-      targeting_pack_overrides: string seq
-      framework_list: string seq
-      tools: Dictionary<string, NugetRepoTool seq> }
+      netrc: string option }
 
 let generateTarget (packages: NugetRepoPackage seq) (repoName: string) (repoPrefix: string) =
     let jsonOptions = JsonSerializerOptions()

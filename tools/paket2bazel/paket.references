@@ -1,6 +1,0 @@
-group paket2bazel_dependencies
-    FSharp.Core
-    Argu
-    Paket.Core
-    NuGet.PackageManagement
-    System.Text.Json

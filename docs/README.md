@@ -72,15 +72,71 @@ proper IDE support the MSBuild project files need to be manually maintained.
 
 ## NuGet packages
 
-NuGet packages are fully supported by the rules in two ways
+NuGet packages are resolved with [Paket](https://fsprojects.github.io/Paket/),
+whose lock file pins an exact version for every package.
 
-### NuGet packages with Paket
+### Setting Paket up
 
-[Paket](https://fsprojects.github.io/Paket/) is a great choice for managing dependencies in .Net
-and one of the reasons for Paket being a great fit with Bazel is that it supports a lock file
-out of the box.
+Declare your packages in `paket.dependencies`:
 
-See the [paket2bazel](../tools/paket2bazel/README.md) docs for instructions on how to set Paket up with Bazel.
+```
+source https://api.nuget.org/v3/index.json
+framework: net10.0
+
+nuget FSharp.Core 10.1.201
+nuget Argu 6.2.3
+```
+
+Point the extension at it and at the lock file Paket writes next to it:
+
+```starlark
+paket = use_extension("@rules_dotnet//dotnet:paket.bzl", "paket")
+paket.parse(
+    dependencies = "//:paket.dependencies",
+    lock = "//:paket.lock",
+)
+use_repo(paket, "paket.main")
+```
+
+`@rules_dotnet//paket` is the Paket CLI on the build's own .NET toolchain, so
+it needs no local .NET install. Every Paket command works (`update`,
+`outdated`, `why`), and it runs in the directory you invoke it from.
+
+### Referring to packages
+
+Each [dependency group](https://fsprojects.github.io/Paket/groups.html) becomes
+a repository named after it, holding one lower cased target per package:
+`@paket.main//argu` for the implicit top group, `@paket.build//fake.core` for a
+group named `Build`. Versions are left out, since a group resolves one version
+of each package.
+
+```starlark
+csharp_binary(
+    name = "app",
+    srcs = ["Program.cs"],
+    target_frameworks = ["net10.0"],
+    deps = ["@paket.main//argu"],
+)
+```
+
+`bazel mod tidy` keeps the `use_repo` call in step with the lock file.
+
+Do not mix groups in one target. Paket resolves each group separately, so two
+groups can hold incompatible versions of the same transitive dependency.
+
+A package that ships a [dotnet tool](https://learn.microsoft.com/en-us/dotnet/core/tools/global-tools)
+also exposes it as an executable, at `@paket.main//csharpier/tools:csharpier`.
+
+### Package sources and verification
+
+Packages are downloaded from the feeds their group lists in `paket.lock`, in
+order, authenticating from your `.netrc` or the one `paket.parse` names.
+
+Paket records no hashes, so `paket.parse` looks them up from the feed's
+registration metadata and keeps them in `MODULE.bazel.lock`, where they are
+pinned and visible in review. Feeds that do not publish it yield no hash and
+their packages are pinned by version alone; `verify_integrity = False` skips
+the lookup.
 
 ## Remote execution
 

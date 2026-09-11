@@ -4,6 +4,8 @@ exports_files(
     [
         "launcher.sh.tpl",
         "launcher.bat.tpl",
+        "tool_launcher.sh.tpl",
+        "tool_launcher.bat.tpl",
         "compiler_wrapper.sh",
         "compiler_wrapper.bat",
     ],
@@ -122,6 +124,12 @@ bzl_library(
 bzl_library(
     name = "semver",
     srcs = ["semver.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+)
+
+bzl_library(
+    name = "xml",
+    srcs = ["xml.bzl"],
     visibility = ["//dotnet:__subpackages__"],
 )
 
