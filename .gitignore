@@ -18,3 +18,4 @@ package.json
 examples/paket/packages
 examples/packages
 paket-files
+**/MODULE.bazel.lock
