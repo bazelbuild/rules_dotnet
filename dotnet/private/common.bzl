@@ -195,9 +195,9 @@ def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
     if targeting_pack:
         targeting_pack_info = targeting_pack[DotnetTargetingPackInfo]
 
-        # The pack already resolved its FrameworkList to ref files; copy the
-        # parts that get mutated below and take the rest as is.
-        targeting_pack_overrides = dict(targeting_pack_info.targeting_pack_overrides)
+        # The pack has already resolved its FrameworkList to ref files.
+        # `framework_list` and `framework_files` are narrowed below, so copy them.
+        targeting_pack_overrides = targeting_pack_info.targeting_pack_overrides
         framework_list = dict(targeting_pack_info.framework_list)
         framework_files = list(targeting_pack_info.framework_files)
 
@@ -255,22 +255,16 @@ def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
         # This is not a complete solution since we are not comparing assembly versions
         # Transitive dependency resolution is very complicated.
         if not strict_deps:
-            # The compiler must not be handed an assembly that the targeting pack
-            # already provides, so the closure is filtered for the reference
-            # arguments of *this* compilation.
+            # The compiler must not be handed an assembly that this target's
+            # targeting pack already provides, so filter the closure down to the
+            # reference arguments of this compilation.
             for transitive_assembly in assembly.transitive_refs.to_list():
-                # Not `name`: that is the assembly being compiled, and the
-                # `internals_visible_to` check above reads it on every later
-                # iteration of this loop.
                 transitive_name = transitive_assembly.basename.replace(".dll", "").lower()
                 if transitive_name not in targeting_pack_overrides and transitive_name not in framework_list:
                     transitive_ref.append(transitive_assembly)
 
-            # What gets published in the provider, though, keeps the deps' depsets
-            # intact. Storing the flattened list here made every node hold its own
-            # copy of the whole closure below it - O(N) memory per node, O(N^2) for
-            # a chain - and the consumer re-filters against its own targeting pack
-            # anyway, which is the pack that actually matters.
+            # The provider keeps the deps' depsets, so every consumer shares one
+            # copy of the closure and filters it against its own targeting pack.
             transitive_ref_depsets.append(assembly.transitive_refs)
 
             transitive_analyzers.append(assembly.transitive_analyzers)
@@ -288,9 +282,9 @@ def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
         exports_files.extend(assembly.refs)
 
     return (
-        # Filtered and flat: these become the compiler's reference arguments.
+        # Filtered and flat: the compiler's reference arguments.
         depset(direct = direct_iref, transitive = [depset(transitive_ref)]),
-        # Structurally shared: this is only stored in the provider.
+        # Unfiltered and structurally shared: only ever read back out of a provider.
         depset(direct = direct_ref, transitive = transitive_ref_depsets),
         depset(direct = direct_analyzers, transitive = transitive_analyzers),
         depset(direct = direct_analyzers_csharp, transitive = transitive_analyzers_csharp),
@@ -313,14 +307,10 @@ def collect_transitive_runfiles(ctx, assembly_runtime_info, deps):
         A runfiles object that includes the transitive dependencies of the target
     """
 
-    # XML documentation is a build output, not a runtime input: the .NET runtime
-    # never loads it, and `publish_binary` already does not ship it. Keeping it
-    # out of runfiles avoids a symlink per assembly in every binary's and every
-    # test's runfiles tree - on a 500 library graph that was 323 of 842 entries.
+    # XML documentation is a build output, not a runtime input: nothing loads it
+    # and a publish does not ship it, so it stays out of the runfiles tree.
     runfiles = ctx.runfiles(files = assembly_runtime_info.data + assembly_runtime_info.native + assembly_runtime_info.libs + assembly_runtime_info.resource_assemblies)
 
-    # One merge_all rather than a chain of merges, which would build a deep
-    # nested runfiles tree.
     transitive_runfiles = [dep[DefaultInfo].default_runfiles for dep in deps]
     transitive_runfiles.extend([
         d[DefaultInfo].default_runfiles
@@ -621,10 +611,7 @@ def _or_greater_symbols(family, tfms):
         symbols.append((version, _versioned_symbol(family, version) + "_OR_GREATER"))
     return symbols
 
-# Built once per family rather than once per framework: parsing every candidate's
-# version inside the loop below made the table that seeds
-# _FRAMEWORK_PREPROCESSOR_SYMBOLS quadratic in the size of the family, which is
-# paid on every cold Bazel server.
+# Every framework in a family walks the whole family, so parse the versions once.
 _SDK_OR_GREATER_SYMBOLS = {
     family: _or_greater_symbols(family, tfms)
     for (family, tfms) in _SDK_TFMS_BY_FAMILY.items()
@@ -720,6 +707,21 @@ def framework_preprocessor_symbols(tfm):
         A list of preprocessor symbols.
     """
     return _FRAMEWORK_PREPROCESSOR_SYMBOLS.get(tfm, _compute_framework_preprocessor_symbols(tfm))
+
+def runtime_target_path(file):
+    """The key a native asset takes in the `runtimeTargets` of a deps.json.
+
+    Native assets from a NuGet package live at
+    `<prefix>/runtimes/<rid>/<native|lib>/<file>`, and that suffix is both the
+    deps.json key and the path the asset takes inside a publish.
+
+    Args:
+        file: (File) The native asset.
+    Returns:
+        The `runtimes/<rid>/<native|lib>/<file>` path.
+    """
+    parts = file.dirname.split("/")
+    return "runtimes/{}/{}/{}".format(parts[-2], parts[-1], file.basename)
 
 def _get_resource_assembly_locale(file):
     """Gets the locale of a resource assembly file.
@@ -858,14 +860,13 @@ def generate_depsjson(
                 # them and point to their relative location within the execroot.
                 target_fragment["native"] = {(native_file.basename if not use_relative_paths else to_rlocation_path(ctx, native_file)): {"fileVersion": "0.0.0.0"} for native_file in runtime_dep.native}
             else:
-                target_fragment["runtimeTargets"] = {}
-                for native_file in runtime_dep.native:
-                    # The path of the native file is of the form:
-                    # <prefix>/runtimes/<rid>/<native/lib>/<file>
-                    rid = native_file.dirname.split("/")[-2]
-                    asset_type = "runtime" if native_file.dirname.split("/")[-1] == "lib" else "native"
-                    native_path = "runtimes/{}/{}/{}".format(rid, native_file.dirname.split("/")[-1], native_file.basename)
-                    target_fragment["runtimeTargets"][native_path] = {"rid": rid, "assetType": asset_type}
+                target_fragment["runtimeTargets"] = {
+                    runtime_target_path(native_file): {
+                        "rid": native_file.dirname.split("/")[-2],
+                        "assetType": "runtime" if native_file.dirname.split("/")[-1] == "lib" else "native",
+                    }
+                    for native_file in runtime_dep.native
+                }
 
         base["libraries"][library_name] = library_fragment
         base["targets"][runtime_target][library_name] = target_fragment
@@ -1000,10 +1001,9 @@ _RESOURCE_TEMPLATE_FSHARP = "--resource:{}"
 def add_resource_args(args, resources, target_label, out_dll, language):
     """Adds one resource argument per file to `args`.
 
-    The argument depends on the target's label and output name as well as the
-    file, which `Args.map_each` cannot pass through without a closure. Closures
-    in `map_each` are retained until the action executes, so resolve the
-    arguments here instead.
+    The argument depends on the target as well as on the file, which
+    `Args.map_each` can only pass through with a closure that Bazel then has to
+    retain until the action executes. Resolve the arguments here instead.
 
     Args:
         args: The Args object for the compilation action.
@@ -1013,9 +1013,9 @@ def add_resource_args(args, resources, target_label, out_dll, language):
         language: "csharp" or "fsharp".
     """
     for resource in resources:
-        args.add(map_resource_arg(resource, target_label, out_dll, language))
+        args.add(_map_resource_arg(resource, target_label, out_dll, language))
 
-def map_resource_arg(file, target_label, out_dll, language):
+def _map_resource_arg(file, target_label, out_dll, language):
     """Map an embedded resource file to a resource argument for the compiler.
 
     Args:

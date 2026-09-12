@@ -524,8 +524,6 @@ def _compile(
             direct = direct_inputs + framework_files,
             transitive = [refs, analyzer_assemblies, analyzer_assemblies_csharp, compile_data],
         ),
-        # The wrapper, the dotnet host and the compiler are tools, not ordinary
-        # inputs - declaring them as such is what lets Bazel tell them apart.
         tools = depset(
             direct = [
                 compiler_wrapper,

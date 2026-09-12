@@ -17,8 +17,8 @@ load(
 )
 load("//dotnet/private/sdk:rids.bzl", "RUNTIME_GRAPH")
 
-# The outputs are constant, so build the dict once at load time rather than
-# rebuilding 838 entries on every single application of the transition.
+# Constant, so it is built once at load time rather than on every application
+# of the transition.
 _DEFAULT_OUTPUTS = dicts.add(
     {"//dotnet:target_framework": DEFAULT_TFM, "//dotnet:rid": DEFAULT_RID},
     {"//dotnet:framework_compatible_{}".format(framework): False for framework in FRAMEWORK_COMPATIBILITY.keys()},

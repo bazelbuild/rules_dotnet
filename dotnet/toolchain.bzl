@@ -6,14 +6,10 @@ DotnetInfo = provider(
     doc = "Information about the dotnet toolchain",
     fields = {
         "runtime_path": "Path to the dotnet executable",
-        "compiler_host_files": """The minimal set of files needed to run `dotnet exec <dll>`.
-
-This is the dotnet muxer, the host resolver and Microsoft.NETCore.App - but not
-the SDK. Compilations and framework dependent binaries only need these.""",
         "runtime_files": """Files required in runfiles to make the dotnet executable available.
 
-Includes every shared framework, since a binary's `project_sdk` decides which one
-it asks for, but not the SDK itself.
+This is the dotnet host and every shared framework, since a binary's
+`project_sdk` decides which one it asks for, but not the SDK.
 
 May be empty if the runtime_path points to a locally installed tool binary.""",
         "csharp_compiler_path": "Path to the C# compiler executable",
@@ -68,10 +64,6 @@ def _dotnet_toolchain_impl(ctx):
     fsharp_compiler_files = []
     fsharp_compiler_path = ctx.attr.fsharp_compiler_path
 
-    compiler_host_files = []
-    if ctx.attr.compiler_host:
-        compiler_host_files = ctx.attr.compiler_host.files.to_list() + ctx.attr.compiler_host.default_runfiles.files.to_list()
-
     runtime_host_files = []
     if ctx.attr.runtime_host:
         runtime_host_files = ctx.attr.runtime_host.files.to_list() + ctx.attr.runtime_host.default_runfiles.files.to_list()
@@ -106,11 +98,7 @@ def _dotnet_toolchain_impl(ctx):
 
     dotnetinfo = DotnetInfo(
         runtime_path = runtime_path,
-        # What a binary needs at run time is not what a compilation needs: the
-        # compiler only ever loads Microsoft.NETCore.App, while a binary loads
-        # whichever shared framework its `project_sdk` selected.
-        runtime_files = runtime_host_files if runtime_host_files else runtime_files,
-        compiler_host_files = compiler_host_files,
+        runtime_files = runtime_host_files or runtime_files,
         csharp_compiler_path = csharp_compiler_path,
         csharp_compiler_files = csharp_compiler_files,
         fsharp_compiler_path = fsharp_compiler_path,
@@ -151,13 +139,17 @@ dotnet_toolchain = rule(
             cfg = "exec",
         ),
         "compiler_host": attr.label(
-            doc = "The minimal dotnet host needed to run a dll (muxer + hostfxr + Microsoft.NETCore.App)",
+            doc = """The dotnet host a compilation runs on: the muxer, hostfxr and Microsoft.NETCore.App.
+
+Defaults to `runtime`, which also carries the SDK the compilers do not need.""",
             mandatory = False,
             executable = True,
             cfg = "exec",
         ),
         "runtime_host": attr.label(
-            doc = "The dotnet host and every shared framework, but not the SDK. What a binary needs in its runfiles.",
+            doc = """The dotnet host a binary runs on: the muxer, hostfxr and every shared framework.
+
+Defaults to `runtime`, which also carries the SDK a binary does not need.""",
             mandatory = False,
             executable = True,
             cfg = "target",

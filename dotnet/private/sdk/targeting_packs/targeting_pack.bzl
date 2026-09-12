@@ -15,9 +15,8 @@ def _targeting_pack_impl(ctx):
         if pack[NuGetInfo]:
             nuget_infos.append(pack[NuGetInfo])
 
-    # Resolving the pack's FrameworkList to ref files depends only on the pack,
-    # but every target compiling against it needs the result. Do it once here
-    # instead of once per configured target.
+    # Resolving the FrameworkList to ref files depends only on the pack itself,
+    # so do it here rather than in every target that compiles against the pack.
     targeting_pack_overrides = {}
     framework_list = {}
     framework_files = []
@@ -30,13 +29,11 @@ def _targeting_pack_impl(ctx):
     for i, nuget_info in enumerate(nuget_infos):
         compile_info = compile_infos[i]
 
+        # `parse_framework_list` lower cases the assembly names it returns, so
+        # index on the same normalisation. First match wins.
         refs_by_name = {}
         for ref in compile_info.refs:
-            # `parse_framework_list` lower cases the assembly names it returns,
-            # so index on the same normalisation. First match wins.
-            key = ref.basename.lower().replace(".dll", "")
-            if key not in refs_by_name:
-                refs_by_name[key] = ref
+            refs_by_name.setdefault(ref.basename.lower().replace(".dll", ""), ref)
 
         for override_name, override_version in nuget_info.targeting_pack_overrides.items():
             targeting_pack_overrides[override_name] = override_version

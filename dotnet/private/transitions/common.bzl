@@ -53,9 +53,8 @@ FRAMEWORK_COMPATABILITY_TRANSITION_OUTPUTS = {
     for (tfm, tfm_compatible_set) in TRANSITIVE_FRAMEWORK_COMPATIBILITY.items()
 }
 
-# `compatible_rids` is a list, so testing membership of every RID against it was
-# an O(rids x rids x compatible) scan at load time (~7.5M string compares for the
-# 798 entry graph). Index each row first so the membership test is a dict lookup.
+# The table below tests every RID against every row, so index the rows first to
+# keep each membership test a dict lookup rather than a scan of a list.
 _COMPATIBLE_RID_SETS = {
     rid: {identifier: True for identifier in compatible_rids + [rid]}
     for (rid, compatible_rids) in RUNTIME_GRAPH.items()

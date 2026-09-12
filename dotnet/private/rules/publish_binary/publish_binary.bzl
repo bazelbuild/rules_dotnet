@@ -1,10 +1,10 @@
 """
-Rules for compiling F# binaries.
+Rule for assembling the publish output of a .NET binary.
 """
 
 load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@bazel_skylib//lib:shell.bzl", "shell")
-load("//dotnet/private:common.bzl", "generate_depsjson", "generate_runtimeconfig")
+load("//dotnet/private:common.bzl", "generate_depsjson", "generate_runtimeconfig", "runtime_target_path")
 load(
     "//dotnet/private:providers.bzl",
     "DotnetAssemblyCompileInfo",
@@ -14,9 +14,6 @@ load(
 )
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 
-def _copy_file(copies, src, dst):
-    copies.append((src, dst))
-
 # How many sources one `cp` invocation takes. A self-contained publish copies
 # several hundred files into one directory, and the point of batching is lost if
 # the command line grows long enough to risk the execve argument limit.
@@ -25,13 +22,13 @@ _COPY_BATCH = 128
 def _render_copy_script(copies, is_windows):
     """The script that puts every published file in its place.
 
-    One process per file - and a second one to make its directory - is most of
-    the wall time of a self-contained publish, which copies the whole runtime
-    pack into a single directory. So each directory is created once, and the
-    files that keep their name are copied in batches.
+    A self-contained publish copies the whole runtime pack, so one process per
+    file - and a second one to create its directory - dominates the action.
+    Each directory is created once instead, and the files that keep their name
+    are copied in batches.
 
     Args:
-        copies: The (source, destination) pairs to copy.
+        copies: The (source, destination) pairs to copy, one pair per destination.
         is_windows: Whether the script is a batch file rather than a shell script.
 
     Returns:
@@ -39,39 +36,25 @@ def _render_copy_script(copies, is_windows):
     """
     script_body = ["@echo off"] if is_windows else ["#! /usr/bin/env bash", "set -eou pipefail"]
 
-    # The binary's own assembly reaches this twice: once as the main DLL and
-    # once in the list of assemblies to publish. Where two sources do name one
-    # destination the later one wins, which is what a run of `cp -f` did.
-    by_destination = {}
-    for (src, dst) in copies:
-        by_destination[dst.path] = (src, dst)
-
-    # Grouped by destination directory, in first-seen order.
-    dirs = []
+    # Grouped by destination directory, in first-seen order. A file published
+    # under a different name cannot join a batch, but its directory is still
+    # created along with the rest.
     same_name = {}
     renamed = []
 
-    for (src, dst) in by_destination.values():
-        if dst.dirname not in same_name:
-            same_name[dst.dirname] = []
-            dirs.append(dst.dirname)
-
+    for (src, dst) in copies:
+        same_name.setdefault(dst.dirname, [])
         if src.basename == dst.basename:
             same_name[dst.dirname].append(src)
         else:
             renamed.append((src, dst))
 
-    for directory in dirs:
+    for (directory, sources) in same_name.items():
         if is_windows:
             script_body.append("if not exist \"{dir}\" @mkdir \"{dir}\" >NUL".format(dir = directory.replace("/", "\\")))
-        else:
-            script_body.append("mkdir -p {dir}".format(dir = shell.quote(directory)))
 
-        sources = same_name[directory]
-
-        # `copy` on Windows concatenates when handed several sources, so only
-        # the directory creation is shared there.
-        if is_windows:
+            # `copy` concatenates when handed several sources, so only the
+            # directory creation is shared on Windows.
             for src in sources:
                 script_body.append("@copy /Y \"{src}\" \"{dir}\" >NUL".format(
                     src = src.path.replace("/", "\\"),
@@ -79,14 +62,14 @@ def _render_copy_script(copies, is_windows):
                 ))
             continue
 
+        script_body.append("mkdir -p {dir}".format(dir = shell.quote(directory)))
+
         for start in range(0, len(sources), _COPY_BATCH):
-            batch = sources[start:start + _COPY_BATCH]
             script_body.append("cp -f {srcs} {dir}".format(
-                srcs = " ".join([shell.quote(src.path) for src in batch]),
+                srcs = " ".join([shell.quote(src.path) for src in sources[start:start + _COPY_BATCH]]),
                 dir = shell.quote(directory),
             ))
 
-    # A file published under a different name cannot join a batch.
     for (src, dst) in renamed:
         if is_windows:
             script_body.append("@copy /Y \"{src}\" \"{dst}\" >NUL".format(
@@ -228,10 +211,10 @@ def _ready_to_run_images(ctx, binary_info, assembly_files, deps_json_struct, run
 
 def _get_assembly_files(assembly_info, transitive_runtime_deps, deps_json_struct):
     """The files a publish copies, gathered from the target and its deps."""
-    libs = [] + assembly_info.libs
-    resource_assemblies = [] + assembly_info.resource_assemblies
-    native = [] + assembly_info.native
-    data = [] + assembly_info.data
+    libs = list(assembly_info.libs)
+    resource_assemblies = list(assembly_info.resource_assemblies)
+    native = list(assembly_info.native)
+    data = list(assembly_info.data)
     targets = deps_json_struct["targets"].values()[0]
 
     for dep in transitive_runtime_deps:
@@ -244,18 +227,10 @@ def _get_assembly_files(assembly_info, transitive_runtime_deps, deps_json_struct
             runtime_targets = target.get("runtimeTargets", {})
             runtime = target.get("runtime", {})
 
+            # `native` is keyed by basename, `runtimeTargets` by the path the
+            # asset takes inside the publish.
             for file in dep.native:
-                if file.basename in dep_native:
-                    native.append(file)
-                    continue
-
-                # `runtimeTargets` is keyed by the path the asset takes inside
-                # the publish (`runtimes/<rid>/<native|lib>/<file>`), not by the
-                # basename - build the same key `generate_depsjson` wrote.
-                asset_dir = file.dirname.split("/")[-1]
-                rid = file.dirname.split("/")[-2]
-                runtime_target_path = "runtimes/{}/{}/{}".format(rid, asset_dir, file.basename)
-                if runtime_targets.get(runtime_target_path, {}).get("assetType") == "native":
+                if file.basename in dep_native or runtime_targets.get(runtime_target_path(file), {}).get("assetType") == "native":
                     native.append(file)
 
             for file in dep.libs:
@@ -276,99 +251,59 @@ def _get_assembly_files(assembly_info, transitive_runtime_deps, deps_json_struct
 def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, assembly_files, deps_json_struct, is_self_contained, ready_to_run = _NO_READY_TO_RUN):
     is_windows = ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo])
     main_dll_source = ready_to_run.replace.get(binary_info.dll.path, binary_info.dll)
-    inputs = [main_dll_source]
     main_dll_copy = ctx.actions.declare_file(
         "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, binary_info.dll.basename),
     )
-    outputs = [main_dll_copy]
-    copies = []
 
-    _copy_file(copies, main_dll_source, main_dll_copy)
+    # (source, destination) pairs, which are also the action's inputs and outputs.
+    copies = [(main_dll_source, main_dll_copy)]
 
     for file in ready_to_run.extra:
-        output = ctx.actions.declare_file(file.basename, sibling = main_dll_copy)
-        outputs.append(output)
-        inputs.append(file)
-        _copy_file(copies, file, output)
+        copies.append((file, ctx.actions.declare_file(file.basename, sibling = main_dll_copy)))
 
     # All managed DLLs are copied next to the app host in the publish directory
     for file in assembly_files.libs:
         output = ctx.actions.declare_file(
             "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, file.basename),
         )
-        outputs.append(output)
-        source = ready_to_run.replace.get(file.path, file)
-        inputs.append(source)
-        _copy_file(copies, source, output)
+        copies.append((ready_to_run.replace.get(file.path, file), output))
 
     # Resource assemblies are copied next to the app host in the publish directory in a folder
     # that has the same name as the locale of the resource assembly.
     # Example: `de/MyAssembly.resources.dll`
     for file in assembly_files.resource_assemblies:
         locale = file.dirname.split("/")[-1]
-        output_dir = "{}/publish/{}/{}/{}".format(ctx.label.name, runtime_identifier, locale, file.basename)
-        output = ctx.actions.declare_file(output_dir)
-        outputs.append(output)
-        inputs.append(file)
-        _copy_file(copies, file, output)
+        output = ctx.actions.declare_file(
+            "{}/publish/{}/{}/{}".format(ctx.label.name, runtime_identifier, locale, file.basename),
+        )
+        copies.append((file, output))
 
     for file in assembly_files.native:
-        # If the publish is not self-contained we need to copy the native
-        # DLLs into the runtimes/{rid}/native/ folder structure.
-        output_path = "{}/publish/{}/runtimes/{}/native/{}".format(
-            ctx.label.name,
-            runtime_identifier,
-            # We need to determine the RID for this native-library.
-            #
-            # For native libraries from a NuGet package, we can get their RID from their path within
-            # their NuGet package.
-            #
-            # For first-party native libraries that we built ourselves, their path has no RID
-            # information.  But, since we built it, its RID should be the same as our RID, so we can
-            # just use that.
-            #
-            # Since all we have here is a File object, we don't have perfect information about which
-            # case we're dealing with.  But, rules_dotnet always models libraries within NuGet
-            # packages as "source" files (not generated by a rule), and, in practice, all libraries
-            # that we builtwill not "source" files.  So, it's a good enough distinction to make
-            # things work.
-            #
-            file.dirname.split("/")[-2] if file.is_source else runtime_identifier,
-            file.basename,
-        )
-
-        # If the publish is self-contained we need to copy the native DLLs
-        # next to the main DLL in the publish folder
         if is_self_contained:
+            # A self-contained publish carries native DLLs next to the main DLL.
             output_path = "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, file.basename)
-        output = ctx.actions.declare_file(
-            output_path,
-        )
-        inputs.append(file)
-        outputs.append(output)
-        _copy_file(copies, file, output)
+        else:
+            # Everything else goes under runtimes/{rid}/native/. A native
+            # library from a NuGet package carries its RID in its path; one we
+            # built ourselves does not, but is by definition built for our RID.
+            # Files inside a NuGet package are modelled as source files, which
+            # is what tells the two apart.
+            rid = file.dirname.split("/")[-2] if file.is_source else runtime_identifier
+            output_path = "{}/publish/{}/runtimes/{}/native/{}".format(ctx.label.name, runtime_identifier, rid, file.basename)
 
-    # The data files put into the publish folder in a structure that works with
-    # the runfiles lib. End users should not expect files in the `data` attribute
-    # to be resolvable by relative paths. They need to use the runfiles lib.
-    #
-    # The end-user will have to use rules that also pull the runfiles. For examples if
-    # they use rules_pkg they have to use `include_runfiles` on the pkt_tar rule.
-    #
-    # The runfiles library follows the spec and tries to find a `<DLL>.runfiles` directory
-    # next to the the DLL based on argv0 of the running process if
-    # RUNFILES_DIR/RUNFILES_MANIFEST_FILE/RUNFILES_MANIFEST_ONLY is not set).
-    runfiles = []
-    for file in assembly_files.data:
-        runfiles.append(file)
+        copies.append((file, ctx.actions.declare_file(output_path)))
+
+    # Data files reach the publish as runfiles, not as files at a relative path:
+    # end users have to resolve them with the runfiles library, and to package
+    # them with a rule that carries runfiles along (`include_runfiles` on
+    # rules_pkg's `pkg_tar`, for one).
+    runfiles = list(assembly_files.data)
 
     for file in assembly_files.appsetting_files:
-        inputs.append(file)
         output = ctx.actions.declare_file(
             "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, file.basename),
         )
-        outputs.append(output)
-        _copy_file(copies, file, output)
+        copies.append((file, output))
 
     # A self-contained publish carries the runtime pack at the root of the
     # publish folder.
@@ -378,10 +313,12 @@ def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, as
 
             for file in files.libs + files.native + runtime_pack.data:
                 output = ctx.actions.declare_file(file.basename, sibling = main_dll_copy)
-                outputs.append(output)
-                source = ready_to_run.replace.get(file.path, file)
-                inputs.append(source)
-                _copy_file(copies, source, output)
+                copies.append((ready_to_run.replace.get(file.path, file), output))
+
+    # The binary's own assembly arrives twice, as the main DLL and again in the
+    # list of assemblies to publish. Keep the last source named for a destination.
+    copies = {dst.path: (src, dst) for (src, dst) in copies}.values()
+    outputs = [dst for (_, dst) in copies]
 
     script_body = _render_copy_script(copies, is_windows)
     copy_script = ctx.actions.declare_file(ctx.label.name + ".copy.bat" if is_windows else ctx.label.name + ".copy.sh")
@@ -395,7 +332,7 @@ def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, as
         mnemonic = "DotnetPublishCopy",
         progress_message = "Assembling publish output for %{label}",
         outputs = outputs,
-        inputs = depset(inputs),
+        inputs = depset([src for (src, _) in copies]),
         executable = copy_script,
         tools = [copy_script],
     )

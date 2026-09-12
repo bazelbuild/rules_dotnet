@@ -1,5 +1,5 @@
 """
-Actions for compiling targets with C#.
+Actions for compiling targets with F#.
 """
 
 load(
@@ -447,8 +447,6 @@ def _compile(
             direct = direct_inputs + framework_files,
             transitive = [refs, compile_data],
         ),
-        # The wrapper, the dotnet host and the compiler are tools, not ordinary
-        # inputs - declaring them as such is what lets Bazel tell them apart.
         tools = depset(
             direct = [
                 compiler_wrapper,

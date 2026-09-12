@@ -61,7 +61,7 @@ filegroup(
         "host/**/*",
         # Every shared framework, not just Microsoft.NETCore.App: a binary built
         # with `project_sdk = "web"` asks its runtimeconfig for
-        # Microsoft.AspNetCore.App and the host has to find it in the runfiles.
+        # Microsoft.AspNetCore.App.
         "shared/**/*",
     ]),
     visibility = ["//visibility:public"],
