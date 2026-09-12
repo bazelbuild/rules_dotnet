@@ -240,6 +240,22 @@ path mapping, cannot be executed with any of the available strategies: [standalo
 The same happens with `--spawn_strategy=local` and with a `no-sandbox` tag applied to the
 compile actions. Turn path mapping off in those builds.
 
+### It cannot be used on Windows
+
+Bazel has [no sandboxing on Windows](https://github.com/bazelbuild/bazel/discussions/18401), so
+there is no strategy there that can satisfy the requirement and *every* compile fails with the
+error above. Path mapping is a Linux and macOS option only. This repository's `.bazelrc` switches
+it on per platform for that reason:
+
+```
+common --enable_platform_specific_config
+build:linux --experimental_output_paths=strip
+build:macos --experimental_output_paths=strip
+```
+
+Put it behind the same guard rather than in a bare `common` line if your workspace builds on
+Windows at all.
+
 ## Which flags work together
 
 What the compile actions ask Bazel for:
@@ -257,6 +273,7 @@ What the compile actions ask Bazel for:
 | `--experimental_output_paths=strip` + `--strategy=CSharpCompile=local` | **Hard error.** Path mapping requires a sandbox. |
 | `--experimental_output_paths=strip` + `--spawn_strategy=local` | **Hard error**, same reason. |
 | `--experimental_output_paths=strip` + `no-sandbox` on the compile actions | **Hard error**, same reason. |
+| `--experimental_output_paths=strip` on Windows | **Hard error.** Bazel has no sandbox there, so no strategy qualifies. |
 | `--experimental_output_paths=off` + any strategy | Works. No sandbox is forced. |
 | `prune_unused_references=true` + `--experimental_output_paths=strip` | Works. |
 | `prune_unused_references=true` + `--strategy=CSharpCompile=sandboxed` | Works. The binary writes the unused inputs list whether or not it is a persistent worker. |

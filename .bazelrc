@@ -24,7 +24,17 @@ common --verbose_failures
 # itself alongside --disk_cache or a remote cache. Without one it costs about
 # 30%, because path mapping forces the workers to be sandboxed.
 # See docs/README.md#path-mapping.
-common --experimental_output_paths=strip
+#
+# That sandbox is a hard requirement, and Bazel has no sandbox on Windows, so
+# switching this on there does not slow the build down - it fails it:
+#
+#   CSharpCompile spawn, which requires sandboxing due to path mapping, cannot
+#   be executed with any of the available strategies: [worker, local].
+#
+# So it is enabled per platform rather than for every one.
+common --enable_platform_specific_config
+build:linux --experimental_output_paths=strip
+build:macos --experimental_output_paths=strip
 
 # Bazel's default of 4 worker instances leaves a wide machine idle once the C#
 # compiler worker is switched on. See docs/README.md#persistent-workers.
