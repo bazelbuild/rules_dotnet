@@ -37,7 +37,7 @@ def _impl(settings, attr):
 
 tfm_transition = transition(
     implementation = _impl,
-    inputs = ["//dotnet:target_framework", "//dotnet:rid", "//command_line_option:cpu", "//command_line_option:platforms"],
+    inputs = ["//dotnet:target_framework", "//dotnet:rid"],
     outputs = ["//dotnet:target_framework", "//dotnet:rid"] +
               ["//dotnet:framework_compatible_%s" % framework for framework in FRAMEWORK_COMPATIBILITY.keys()] +
               ["//dotnet:rid_compatible_%s" % rid for rid in RUNTIME_GRAPH.keys()],

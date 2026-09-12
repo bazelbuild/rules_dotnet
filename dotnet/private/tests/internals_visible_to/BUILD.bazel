@@ -1,0 +1,37 @@
+load(
+    "//dotnet:defs.bzl",
+    "csharp_library",
+    "csharp_nunit_test",
+)
+
+# Only here to give `chain` a transitive closure to walk.
+csharp_library(
+    name = "base",
+    srcs = ["Base.cs"],
+    target_frameworks = ["net9.0"],
+)
+
+csharp_library(
+    name = "chain",
+    srcs = ["Chain.cs"],
+    target_frameworks = ["net9.0"],
+    deps = [":base"],
+)
+
+csharp_library(
+    name = "secrets",
+    srcs = ["Secrets.cs"],
+    internals_visible_to = ["consumer"],
+    target_frameworks = ["net9.0"],
+)
+
+# The order of `deps` is what this test is about. See README.md.
+csharp_nunit_test(
+    name = "consumer",
+    srcs = ["Consumer.cs"],
+    target_frameworks = ["net9.0"],
+    deps = [
+        ":chain",
+        ":secrets",
+    ],
+)

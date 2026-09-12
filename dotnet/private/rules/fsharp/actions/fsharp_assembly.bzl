@@ -1,9 +1,10 @@
 """
-Actions for compiling targets with C#.
+Actions for compiling targets with F#.
 """
 
 load(
     "//dotnet/private:common.bzl",
+    "add_resource_args",
     "collect_compile_info",
     "copy_files_to_dir",
     "format_ref_arg",
@@ -13,7 +14,6 @@ load(
     "is_core_framework",
     "is_greater_or_equal_framework",
     "is_standard_framework",
-    "map_resource_arg",
     "use_highentropyva",
 )
 load(
@@ -417,7 +417,7 @@ def _compile(
     args.add_all(srcs)
 
     # resources
-    args.add_all(resources, map_each = lambda r: map_resource_arg(r, label, out_dll.basename if out_dll != None else None, language = "fsharp"), allow_closure = True)
+    add_resource_args(args, resources, label, out_dll.basename if out_dll != None else None, "fsharp")
 
     # defines
     args.add_all(defines, format_each = "-d:%s")
@@ -436,7 +436,7 @@ def _compile(
 
     args.use_param_file("@%s", use_always = True)
 
-    direct_inputs = srcs + resources + [toolchain.fsharp_compiler.files_to_run.executable]
+    direct_inputs = srcs + resources
     direct_inputs += [keyfile] if keyfile else []
 
     # dotnet.exe fsc.dll --noconfig <other fsc args>
@@ -444,17 +444,28 @@ def _compile(
         mnemonic = "FSharpCompile",
         progress_message = "Compiling " + target_name + (" (internals ref-only dll)" if out_dll == None else ""),
         inputs = depset(
-            direct = direct_inputs + framework_files + [compiler_wrapper, toolchain.runtime.files_to_run.executable],
-            transitive = [refs, toolchain.runtime.default_runfiles.files, toolchain.fsharp_compiler.default_runfiles.files, compile_data],
+            direct = direct_inputs + framework_files,
+            transitive = [refs, compile_data],
+        ),
+        tools = depset(
+            direct = [
+                compiler_wrapper,
+                toolchain.compiler_host.files_to_run.executable,
+                toolchain.fsharp_compiler.files_to_run.executable,
+            ],
+            transitive = [
+                toolchain.compiler_host.default_runfiles.files,
+                toolchain.fsharp_compiler.default_runfiles.files,
+            ],
         ),
         outputs = outputs,
         executable = compiler_wrapper,
         arguments = [
-            toolchain.runtime.files_to_run.executable.path,
+            toolchain.compiler_host.files_to_run.executable.path,
             toolchain.fsharp_compiler.files_to_run.executable.path,
             args,
         ],
         env = {
-            "DOTNET_CLI_HOME": toolchain.runtime.files_to_run.executable.dirname,
+            "DOTNET_CLI_HOME": toolchain.compiler_host.files_to_run.executable.dirname,
         },
     )

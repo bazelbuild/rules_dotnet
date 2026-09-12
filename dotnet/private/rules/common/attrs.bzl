@@ -113,9 +113,6 @@ COMMON_ATTRS = {
         default = "//dotnet:target_framework",
     ),
     "_windows_constraint": attr.label(default = "@platforms//os:windows"),
-    "_allowlist_function_transition": attr.label(
-        default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
-    ),
     "_compiler_wrapper_sh": attr.label(
         default = "//dotnet/private:compiler_wrapper.sh",
         executable = True,

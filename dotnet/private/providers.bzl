@@ -77,6 +77,14 @@ DotnetTargetingPackInfo = provider(
     fields = {
         "assembly_runtime_infos": "list[DotnetAssemblyRuntimeInfo]: The runtime infos of the assemblies in the targeting pack",
         "assembly_compile_infos": "list[DotnetAssemblyCompileInfo]: The compile infos of the assemblies in the targeting pack",
+        "targeting_pack_overrides": "map[string, string]: The merged `PackageOverride.txt` entries of every pack.",
+        "framework_list": "map[string, struct]: The merged `FrameworkList.xml` entries of every pack, resolved to the ref File that provides each assembly.",
+        "framework_files": "list[File]: The irefs of packs that do not ship a `FrameworkList.xml`.",
+        "analyzers": "list[File]: The merged common language analyzers of every pack.",
+        "analyzers_csharp": "list[File]: The merged C# analyzers of every pack.",
+        "analyzers_fsharp": "list[File]: The merged F# analyzers of every pack.",
+        "analyzers_vb": "list[File]: The merged VB analyzers of every pack.",
+        "compile_data": "list[File]: The merged compile data of every pack.",
         "nuget_infos": "list[NuGetInfo]: The NuGet infos of the assemblies in the targeting pack",
     },
 )

@@ -51,6 +51,35 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
+filegroup(
+    name = "runtime_host",
+    srcs = select({{
+        "@bazel_tools//src/conditions:windows": ["dotnet.exe"],
+        "//conditions:default": ["dotnet"],
+    }}),
+    data = glob([
+        "host/**/*",
+        # Every shared framework, not just Microsoft.NETCore.App: a binary built
+        # with `project_sdk = "web"` asks its runtimeconfig for
+        # Microsoft.AspNetCore.App.
+        "shared/**/*",
+    ]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "compiler_host",
+    srcs = select({{
+        "@bazel_tools//src/conditions:windows": ["dotnet.exe"],
+        "//conditions:default": ["dotnet"],
+    }}),
+    data = glob([
+        "host/**/*",
+        "shared/Microsoft.NETCore.App/**/*",
+    ]),
+    visibility = ["//visibility:public"],
+)
+
 import_dll(
     name = "host_model",
     version = "{runtime_version}",
@@ -80,6 +109,8 @@ filegroup(
 dotnet_toolchain(
     name = "dotnet_toolchain", 
     runtime = ":runtime",
+    runtime_host = ":runtime_host",
+    compiler_host = ":compiler_host",
     csharp_compiler = ":csc_binary",
     fsharp_compiler = ":fsc_binary",
     host_model = ":host_model",

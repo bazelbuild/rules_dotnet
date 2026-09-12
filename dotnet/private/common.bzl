@@ -158,13 +158,6 @@ def format_ref_arg(args, refs):
 
     return args
 
-def _find_ref_by_file_name(refs, file_name):
-    for ref in refs:
-        if ref.basename.lower().replace(".dll", "") == file_name.lower():
-            return ref
-
-    return None
-
 def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
     """Determine the transitive dependencies by the target framework.
 
@@ -181,6 +174,7 @@ def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
     direct_iref = []
     direct_ref = []
     transitive_ref = []
+    transitive_ref_depsets = []
     direct_compile_data = []
     transitive_compile_data = []
     direct_analyzers = []
@@ -200,23 +194,18 @@ def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
 
     if targeting_pack:
         targeting_pack_info = targeting_pack[DotnetTargetingPackInfo]
-        for i, nuget_info in enumerate(targeting_pack_info.nuget_infos):
-            compile_info = targeting_pack_info.assembly_compile_infos[i]
 
-            for override_name, override_version in nuget_info.targeting_pack_overrides.items():
-                targeting_pack_overrides[override_name] = override_version
+        # The pack has already resolved its FrameworkList to ref files.
+        # `framework_list` and `framework_files` are narrowed below, so copy them.
+        targeting_pack_overrides = targeting_pack_info.targeting_pack_overrides
+        framework_list = dict(targeting_pack_info.framework_list)
+        framework_files = list(targeting_pack_info.framework_files)
 
-            for dll_name, dll_version in nuget_info.framework_list.items():
-                framework_list[dll_name] = {"version": dll_version, "file": _find_ref_by_file_name(compile_info.refs, dll_name)}
-
-            if len(nuget_info.framework_list) == 0:
-                framework_files.extend(compile_info.irefs)
-
-            direct_analyzers.extend(compile_info.analyzers)
-            direct_analyzers_csharp.extend(compile_info.analyzers_csharp)
-            direct_analyzers_fsharp.extend(compile_info.analyzers_fsharp)
-            direct_analyzers_vb.extend(compile_info.analyzers_vb)
-            direct_compile_data.extend(compile_info.compile_data)
+        direct_analyzers.extend(targeting_pack_info.analyzers)
+        direct_analyzers_csharp.extend(targeting_pack_info.analyzers_csharp)
+        direct_analyzers_fsharp.extend(targeting_pack_info.analyzers_fsharp)
+        direct_analyzers_vb.extend(targeting_pack_info.analyzers_vb)
+        direct_compile_data.extend(targeting_pack_info.compile_data)
 
     for dep in deps:
         assembly = dep[DotnetAssemblyCompileInfo]
@@ -266,14 +255,18 @@ def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
         # This is not a complete solution since we are not comparing assembly versions
         # Transitive dependency resolution is very complicated.
         if not strict_deps:
+            # The compiler must not be handed an assembly that this target's
+            # targeting pack already provides, so filter the closure down to the
+            # reference arguments of this compilation.
             for transitive_assembly in assembly.transitive_refs.to_list():
-                add_to_output = True
-                if transitive_assembly.basename.replace(".dll", "").lower() in targeting_pack_overrides:
-                    add_to_output = False
-                elif transitive_assembly.basename.replace(".dll", "").lower() in framework_list:
-                    add_to_output = False
-                if add_to_output:
+                transitive_name = transitive_assembly.basename.replace(".dll", "").lower()
+                if transitive_name not in targeting_pack_overrides and transitive_name not in framework_list:
                     transitive_ref.append(transitive_assembly)
+
+            # The provider keeps the deps' depsets, so every consumer shares one
+            # copy of the closure and filters it against its own targeting pack.
+            transitive_ref_depsets.append(assembly.transitive_refs)
+
             transitive_analyzers.append(assembly.transitive_analyzers)
             transitive_analyzers_csharp.append(assembly.transitive_analyzers_csharp)
             transitive_analyzers_fsharp.append(assembly.transitive_analyzers_fsharp)
@@ -289,8 +282,10 @@ def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
         exports_files.extend(assembly.refs)
 
     return (
+        # Filtered and flat: the compiler's reference arguments.
         depset(direct = direct_iref, transitive = [depset(transitive_ref)]),
-        depset(direct = direct_ref, transitive = [depset(transitive_ref)]),
+        # Unfiltered and structurally shared: only ever read back out of a provider.
+        depset(direct = direct_ref, transitive = transitive_ref_depsets),
         depset(direct = direct_analyzers, transitive = transitive_analyzers),
         depset(direct = direct_analyzers_csharp, transitive = transitive_analyzers_csharp),
         depset(direct = direct_analyzers_fsharp, transitive = transitive_analyzers_fsharp),
@@ -311,16 +306,17 @@ def collect_transitive_runfiles(ctx, assembly_runtime_info, deps):
     Returns:
         A runfiles object that includes the transitive dependencies of the target
     """
-    runfiles = ctx.runfiles(files = assembly_runtime_info.data + assembly_runtime_info.native + assembly_runtime_info.xml_docs + assembly_runtime_info.libs + assembly_runtime_info.resource_assemblies)
 
-    transitive_runfiles = []
-    for dep in deps:
-        transitive_runfiles.append(dep[DefaultInfo].default_runfiles)
+    # XML documentation is a build output, not a runtime input: nothing loads it
+    # and a publish does not ship it, so it stays out of the runfiles tree.
+    runfiles = ctx.runfiles(files = assembly_runtime_info.data + assembly_runtime_info.native + assembly_runtime_info.libs + assembly_runtime_info.resource_assemblies)
 
-    for d in ctx.attr.data:
-        if not DefaultInfo in d:
-            continue
-        runfiles = runfiles.merge(d[DefaultInfo].default_runfiles)
+    transitive_runfiles = [dep[DefaultInfo].default_runfiles for dep in deps]
+    transitive_runfiles.extend([
+        d[DefaultInfo].default_runfiles
+        for d in ctx.attr.data
+        if DefaultInfo in d
+    ])
 
     return runfiles.merge_all(transitive_runfiles)
 
@@ -607,6 +603,20 @@ def _versioned_symbol(family, version):
     separator = "" if family == _NETFRAMEWORK else "_"
     return prefix + separator.join([str(part) for part in version])
 
+def _or_greater_symbols(family, tfms):
+    """The `_OR_GREATER` symbol each framework in a family contributes."""
+    symbols = []
+    for candidate in tfms:
+        version = _tfm_version(candidate)
+        symbols.append((version, _versioned_symbol(family, version) + "_OR_GREATER"))
+    return symbols
+
+# Every framework in a family walks the whole family, so parse the versions once.
+_SDK_OR_GREATER_SYMBOLS = {
+    family: _or_greater_symbols(family, tfms)
+    for (family, tfms) in _SDK_TFMS_BY_FAMILY.items()
+}
+
 def _compute_framework_preprocessor_symbols(tfm):
     """Gets the standard preprocessor symbols for the target framework.
 
@@ -645,10 +655,9 @@ def _compute_framework_preprocessor_symbols(tfm):
         defines.append("NETCOREAPP")
 
     # GenerateNETCompatibleDefineConstants.
-    for candidate in _SDK_TFMS_BY_FAMILY[family]:
-        candidate_version = _tfm_version(candidate)
+    for (candidate_version, symbol) in _SDK_OR_GREATER_SYMBOLS[family]:
         if candidate_version <= version:
-            defines.append(_versioned_symbol(family, candidate_version) + "_OR_GREATER")
+            defines.append(symbol)
 
     return defines
 
@@ -698,6 +707,21 @@ def framework_preprocessor_symbols(tfm):
         A list of preprocessor symbols.
     """
     return _FRAMEWORK_PREPROCESSOR_SYMBOLS.get(tfm, _compute_framework_preprocessor_symbols(tfm))
+
+def runtime_target_path(file):
+    """The key a native asset takes in the `runtimeTargets` of a deps.json.
+
+    Native assets from a NuGet package live at
+    `<prefix>/runtimes/<rid>/<native|lib>/<file>`, and that suffix is both the
+    deps.json key and the path the asset takes inside a publish.
+
+    Args:
+        file: (File) The native asset.
+    Returns:
+        The `runtimes/<rid>/<native|lib>/<file>` path.
+    """
+    parts = file.dirname.split("/")
+    return "runtimes/{}/{}/{}".format(parts[-2], parts[-1], file.basename)
 
 def _get_resource_assembly_locale(file):
     """Gets the locale of a resource assembly file.
@@ -836,14 +860,13 @@ def generate_depsjson(
                 # them and point to their relative location within the execroot.
                 target_fragment["native"] = {(native_file.basename if not use_relative_paths else to_rlocation_path(ctx, native_file)): {"fileVersion": "0.0.0.0"} for native_file in runtime_dep.native}
             else:
-                target_fragment["runtimeTargets"] = {}
-                for native_file in runtime_dep.native:
-                    # The path of the native file is of the form:
-                    # <prefix>/runtimes/<rid>/<native/lib>/<file>
-                    rid = native_file.dirname.split("/")[-2]
-                    asset_type = "runtime" if native_file.dirname.split("/")[-1] == "lib" else "native"
-                    native_path = "runtimes/{}/{}/{}".format(rid, native_file.dirname.split("/")[-1], native_file.basename)
-                    target_fragment["runtimeTargets"][native_path] = {"rid": rid, "assetType": asset_type}
+                target_fragment["runtimeTargets"] = {
+                    runtime_target_path(native_file): {
+                        "rid": native_file.dirname.split("/")[-2],
+                        "assetType": "runtime" if native_file.dirname.split("/")[-1] == "lib" else "native",
+                    }
+                    for native_file in runtime_dep.native
+                }
 
         base["libraries"][library_name] = library_fragment
         base["targets"][runtime_target][library_name] = target_fragment
@@ -963,8 +986,10 @@ def copy_files_to_dir(target_name, actions, is_windows, files, out_dir, executab
             is_executable = True,
         )
         actions.run(
+            mnemonic = "DotnetCopyFiles",
+            progress_message = "Copying %d file(s) into %s" % (len(outputs), out_dir),
             outputs = outputs,
-            inputs = inputs,
+            inputs = depset(inputs),
             executable = copy_script,
             tools = [copy_script],
         )
@@ -973,7 +998,24 @@ def copy_files_to_dir(target_name, actions, is_windows, files, out_dir, executab
 _RESOURCE_TEMPLATE_CSHARP = "/resource:{}"
 _RESOURCE_TEMPLATE_FSHARP = "--resource:{}"
 
-def map_resource_arg(file, target_label, out_dll, language):
+def add_resource_args(args, resources, target_label, out_dll, language):
+    """Adds one resource argument per file to `args`.
+
+    The argument depends on the target as well as on the file, which
+    `Args.map_each` can only pass through with a closure that Bazel then has to
+    retain until the action executes. Resolve the arguments here instead.
+
+    Args:
+        args: The Args object for the compilation action.
+        resources: The resource files to embed.
+        target_label: (Label) The label embedding the resources.
+        out_dll: (str) Basename of the output dll, or None for a ref-only compile.
+        language: "csharp" or "fsharp".
+    """
+    for resource in resources:
+        args.add(_map_resource_arg(resource, target_label, out_dll, language))
+
+def _map_resource_arg(file, target_label, out_dll, language):
     """Map an embedded resource file to a resource argument for the compiler.
 
     Args:

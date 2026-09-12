@@ -17,60 +17,46 @@ load(
 load("//dotnet/private:providers.bzl", "DotnetApphostPackInfo", "DotnetAssemblyRuntimeInfo", "DotnetBinaryInfo", "DotnetRuntimePackInfo")
 
 def _collect_native_dlls(assembly_runtime_info, deps):
-    """Collect the native DLLs of target and its dependencies.
+    """Groups the native DLLs of a target and its dependencies by RID.
 
     Args:
         assembly_runtime_info: The DotnetAssemblyRuntimeInfo provider for the target.
         deps: Dependencies of the target.
 
     Returns:
-        A list of native DLL files that includes the transitive dependencies of the target
+        A dict of RID to the native DLL files built for it.
     """
-    native_dlls = assembly_runtime_info.native
+
+    # A copy: this is the list the returned provider holds, so extending it in
+    # place would leak the transitive closure into DotnetAssemblyRuntimeInfo.
+    native_dlls = list(assembly_runtime_info.native)
 
     for dep in deps:
         native_dlls.extend(dep[DotnetAssemblyRuntimeInfo].native)
-        for transitive_dep in dep[DotnetAssemblyRuntimeInfo].deps.to_list():
-            native_dlls.extend(transitive_dep.native)
 
-    # Create a dict where the key is the RID and the value is the list of native DLLs for that RID
+    closure = depset(transitive = [dep[DotnetAssemblyRuntimeInfo].deps for dep in deps])
+    for transitive_dep in closure.to_list():
+        native_dlls.extend(transitive_dep.native)
+
     result = {}
     for dll in native_dlls:
-        rid = dll.dirname.split("/")[-2]
-        if rid not in result:
-            result[rid] = []
-        result[rid].append(dll)
+        result.setdefault(dll.dirname.split("/")[-2], []).append(dll)
 
     return result
 
-def _create_launcher(ctx, runfiles, executable):
-    runtime = get_toolchain(ctx).runtime
-    windows_constraint = ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]
+def _create_launcher(ctx, executable):
+    is_windows = ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo])
+    launcher = ctx.actions.declare_file("{}.{}".format(executable.basename, "bat" if is_windows else "sh"), sibling = executable)
 
-    launcher = ctx.actions.declare_file("{}.{}".format(executable.basename, "bat" if ctx.target_platform_has_constraint(windows_constraint) else "sh"), sibling = executable)
-
-    if ctx.target_platform_has_constraint(windows_constraint):
-        ctx.actions.expand_template(
-            template = ctx.file._launcher_bat,
-            output = launcher,
-            substitutions = {
-                "TEMPLATED_dotnet": to_rlocation_path(ctx, runtime.files_to_run.executable),
-                "TEMPLATED_executable": to_rlocation_path(ctx, executable),
-            },
-            is_executable = True,
-        )
-    else:
-        ctx.actions.expand_template(
-            template = ctx.file._launcher_sh,
-            output = launcher,
-            substitutions = {
-                "TEMPLATED_dotnet": to_rlocation_path(ctx, runtime.files_to_run.executable),
-                "TEMPLATED_executable": to_rlocation_path(ctx, executable),
-            },
-            is_executable = True,
-        )
-
-    runfiles.extend(get_toolchain(ctx).dotnetinfo.runtime_files)
+    ctx.actions.expand_template(
+        template = ctx.file._launcher_bat if is_windows else ctx.file._launcher_sh,
+        output = launcher,
+        substitutions = {
+            "TEMPLATED_dotnet": to_rlocation_path(ctx, get_toolchain(ctx).runtime.files_to_run.executable),
+            "TEMPLATED_executable": to_rlocation_path(ctx, executable),
+        },
+        is_executable = True,
+    )
 
     return launcher
 
@@ -95,12 +81,13 @@ def build_binary(ctx, compile_action):
 
     (compile_provider, runtime_provider) = compile_action(ctx, tfm)
     dll = runtime_provider.libs[0]
-    default_info_files = [dll] + runtime_provider.xml_docs + runtime_provider.appsetting_files.to_list()
+    appsetting_files = runtime_provider.appsetting_files.to_list()
+    default_info_files = [dll] + runtime_provider.xml_docs + appsetting_files
+
+    launcher = _create_launcher(ctx, dll)
 
     # appsetting_files must be in runfiles (not just DefaultInfo) so they're present when the target runs from an isolated runfiles tree (RBE/sandbox).
-    additional_runfiles = runtime_provider.appsetting_files.to_list()
-
-    launcher = _create_launcher(ctx, additional_runfiles, dll)
+    additional_runfiles = appsetting_files + get_toolchain(ctx).dotnetinfo.runtime_files
 
     runtimeconfig = None
     depsjson = None
@@ -129,7 +116,7 @@ def build_binary(ctx, compile_action):
         ]
         ctx.actions.write(
             output = runtimeconfig,
-            content = json.encode_indent(runtimeconfig_struct),
+            content = json.encode(runtimeconfig_struct),
         )
 
         depsjson = ctx.actions.declare_file("%s/%s/%s.deps.json" % (ctx.label.name, tfm, ctx.attr.out or ctx.attr.name))
@@ -144,7 +131,7 @@ def build_binary(ctx, compile_action):
 
         ctx.actions.write(
             output = depsjson,
-            content = json.encode_indent(depsjson_struct),
+            content = json.encode(depsjson_struct),
         )
 
     if runtimeconfig != None:
@@ -155,10 +142,17 @@ def build_binary(ctx, compile_action):
 
     runfiles = collect_transitive_runfiles(ctx, runtime_provider, ctx.attr.deps).merge(ctx.runfiles(files = additional_runfiles))
 
+    # The apphost shimmer loads Microsoft.NET.HostModel.dll at run time.
+    # `include_host_model_dll` makes it a compile dependency; the runtime needs
+    # it staged as well. Only csharp_binary carries the attribute.
+    if getattr(ctx.attr, "include_host_model_dll", False):
+        runfiles = runfiles.merge(ctx.runfiles(files = get_toolchain(ctx).host_model[DotnetAssemblyRuntimeInfo].libs))
+
     # Due to how the .Net runtime loads native DLLs we need make the native
     # DLLs available in the application root directory with the folder structure:
     # runtimes/{rid}/native/{dlls}
     native_dlls = _collect_native_dlls(runtime_provider, ctx.attr.deps)
+    native_symlinks = []
     for (rid, native_files) in native_dlls.items():
         for file in native_files:
             output_path = "{}/{}/runtimes/{}/native/{}".format(ctx.label.name, tfm, rid, file.basename)
@@ -168,7 +162,10 @@ def build_binary(ctx, compile_action):
                 target_file = file,
             )
             default_info_files.append(output)
-            runfiles = runfiles.merge(ctx.runfiles(files = [output]))
+            native_symlinks.append(output)
+
+    if native_symlinks:
+        runfiles = runfiles.merge(ctx.runfiles(files = native_symlinks))
 
     if not ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]):
         runfiles = runfiles.merge(ctx.attr._bash_runfiles[DefaultInfo].default_runfiles)
