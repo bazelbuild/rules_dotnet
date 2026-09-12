@@ -175,3 +175,19 @@ To enable this optimization, set the following flags:
 build --@rules_dotnet//dotnet/settings:use_compiler_worker=true
 build --@rules_dotnet//dotnet/settings:prune_unused_references=true
 ```
+
+## Path mapping
+
+The C# and F# compile actions support [Bazel path mapping](https://bazel.build/reference/command-line-reference#flag--experimental_output_paths).
+Path mapping strips the configuration segment out of the paths a compile action sees, so the *same*
+compilation reached through two different configurations produces one cache entry instead of two.
+
+Enable it with:
+
+```
+common --experimental_output_paths=strip
+```
+
+This pays off when a build reaches the same libraries in more than one configuration e.g. when
+publishing one application for several runtime identifiers, since the RID changes the
+configuration of the whole library graph without changing a single compiler argument.

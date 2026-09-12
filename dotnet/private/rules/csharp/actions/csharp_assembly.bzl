@@ -474,17 +474,17 @@ def _compile(
 
     # outputs
     if out_dll != None:
-        args.add(out_dll.path, format = "/out:%s")
-        args.add(out_ref.path, format = "/refout:%s")
-        args.add(out_pdb.path, format = "/pdb:%s")
+        args.add(out_dll, format = "/out:%s")
+        args.add(out_ref, format = "/refout:%s")
+        args.add(out_pdb, format = "/pdb:%s")
         outputs = [out_dll, out_ref, out_pdb]
     else:
         args.add("/refonly")
-        args.add(out_ref.path, format = "/out:%s")
+        args.add(out_ref, format = "/out:%s")
         outputs = [out_ref]
 
     if out_xml != None:
-        args.add(out_xml.path, format = "/doc:%s")
+        args.add(out_xml, format = "/doc:%s")
         outputs.append(out_xml)
 
     # Only the real compilation can report unused references: the references a
@@ -515,7 +515,7 @@ def _compile(
 
     # keyfile
     if keyfile != None:
-        args.add(keyfile.path, format = "/keyfile:%s")
+        args.add(keyfile, format = "/keyfile:%s")
 
     # Additional compiler flags
     for option in compiler_options:
@@ -535,6 +535,11 @@ def _compile(
     direct_inputs += [keyfile] if keyfile else []
 
     executable = compiler_worker or compiler_wrapper
+
+    execution_requirements = {"supports-path-mapping": "1"}
+    if compiler_worker:
+        execution_requirements["requires-worker-protocol"] = "json"
+        execution_requirements["supports-workers"] = "1"
 
     # dotnet.exe csc.dll /noconfig <other csc args>
     # https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/command-line-building-with-csc-exe
@@ -566,8 +571,5 @@ def _compile(
         env = {
             "DOTNET_CLI_HOME": toolchain.compiler_host.files_to_run.executable.dirname,
         },
-        execution_requirements = {
-            "requires-worker-protocol": "json",
-            "supports-workers": "1",
-        } if compiler_worker else {},
+        execution_requirements = execution_requirements,
     )

@@ -17,6 +17,11 @@ common --experimental_collect_worker_data_in_profiler
 # Verbose failure output
 common --verbose_failures
 
+# The compile actions declare `supports-path-mapping`, so the same compilation
+# reached through two configurations (e.g. publishing for several RIDs) shares
+# one cache entry instead of being run twice. See docs/README.md#path-mapping.
+common --experimental_output_paths=strip
+
 # Bazel's default of 4 worker instances leaves a wide machine idle once the C#
 # compiler worker is switched on. See docs/README.md#persistent-workers.
 build --worker_max_instances=CSharpCompile=HOST_CPUS
