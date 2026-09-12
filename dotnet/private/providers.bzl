@@ -90,6 +90,14 @@ DotnetRuntimePackInfo = provider(
     },
 )
 
+DotnetCrossgen2PackInfo = provider(
+    doc = "The crossgen2 tool that compiles ReadyToRun images.",
+    fields = {
+        "crossgen2": "The crossgen2 executable.",
+        "files": "Everything crossgen2 needs at runtime.",
+    },
+)
+
 DotnetApphostPackInfo = provider(
     doc = "Information about a .Net runtime pack.",
     fields = {
