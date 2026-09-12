@@ -63,7 +63,10 @@ bzl_library(
     name = "extensions",
     srcs = ["extensions.bzl"],
     visibility = ["//visibility:public"],
-    deps = [":repositories"],
+    deps = [
+        ":repositories",
+        "//dotnet/private/sdk:pack_repos",
+    ],
 )
 
 bzl_library(

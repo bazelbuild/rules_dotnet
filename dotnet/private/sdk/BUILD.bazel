@@ -11,3 +11,30 @@ bzl_library(
     srcs = ["versions.bzl"],
     visibility = ["//dotnet:__subpackages__"],
 )
+
+bzl_library(
+    name = "pack_bands",
+    srcs = ["pack_bands.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+)
+
+bzl_library(
+    name = "packs",
+    srcs = ["packs.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+    deps = [":pack_bands"],
+)
+
+bzl_library(
+    name = "pack_repos",
+    srcs = ["pack_repos.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+    deps = [
+        ":packs",
+        ":versions",
+        "//dotnet/private:semver",
+        "//dotnet/private/paket:feed",
+        "//dotnet/private/rules/nuget:nuget_repo",
+        "@bazel_skylib//lib:collections",
+    ],
+)

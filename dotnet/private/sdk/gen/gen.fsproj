@@ -6,10 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="NugetHelpers.fs" />
-    <Compile Include="NugetRepo.fs" />
-    <Compile Include="ApphostPacks.fs" />
-    <Compile Include="RuntimePacks.fs" />
-    <Compile Include="TargetingPacks.fs" />
+    <Compile Include="Packs.fs" />
     <Compile Include="Sdk.fs" />
     <Compile Include="Main.fs" />
   </ItemGroup>

@@ -4,13 +4,8 @@ group sdk_gen_dependencies
     source https://api.nuget.org/v3/index.json
 
     nuget FSharp.Core 10.1.201
-    nuget Argu 6.2.3
-    nuget Paket.Core 10.0.0-alpha011
-    nuget NuGet.PackageManagement 7.0.0
     nuget NuGet.Packaging 7.0.0
     nuget NuGet.Protocol 7.0.0
-    nuget NuGet.Credentials 7.0.0
-    nuget NuGet.Resolver 7.0.0
     nuget System.Text.Json 10.0.0
 
 group rules_dotnet_dev_nuget_packages

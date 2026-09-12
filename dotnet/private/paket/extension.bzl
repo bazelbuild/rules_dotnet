@@ -5,7 +5,7 @@ load(
     "//dotnet/private/paket:feed.bzl",
     "integrity_fact_key",
     "read_netrc_entries",
-    "resolve_integrity",
+    "resolve_integrity_cached",
 )
 load("//dotnet/private/paket:lock.bzl", "parse_lock")
 load(
@@ -169,51 +169,24 @@ def _collect(module_ctx):
     return requests
 
 def _resolve_integrity(module_ctx, requests):
-    """Returns the hash of every resolved package, keyed for `facts`.
-
-    Hashes already remembered by an earlier evaluation are re-read rather than
-    looked up again; package contents never change once published. Facts
-    cannot be iterated, so the keys are reconstructed from the lock files,
-    which also drops packages that are no longer resolved.
-    """
-    remembered = getattr(module_ctx, "facts", {})
-    facts = {}
-    bases = {}
+    """Returns the hash of every resolved package, keyed for `facts`."""
+    resolved = {}
+    indexes = {}
 
     for request in requests:
-        pending = {}
-
-        for package in request.group.packages:
-            key = integrity_fact_key(package.id, package.version)
-            integrity = remembered.get(key)
-
-            if integrity:
-                facts[key] = integrity
-            elif request.verify_integrity and key not in facts:
-                pending["{}/{}".format(package.id.lower(), package.version.lower())] = package
-
-        if not pending:
+        if not request.verify_integrity:
             continue
 
-        netrc_entries = read_netrc_entries(module_ctx, request.netrc)
+        resolve_integrity_cached(
+            module_ctx,
+            request.group.sources,
+            request.group.packages,
+            read_netrc_entries(module_ctx, request.netrc),
+            resolved,
+            indexes,
+        )
 
-        # Feeds are tried in the order the lock file lists them, which is the
-        # order the package itself is downloaded in.
-        for source in request.group.sources:
-            if not pending:
-                break
-
-            for (key, integrity) in resolve_integrity(
-                module_ctx,
-                source,
-                pending.values(),
-                netrc_entries,
-                bases,
-            ).items():
-                package = pending.pop(key)
-                facts[integrity_fact_key(package.id, package.version)] = integrity
-
-    return facts
+    return resolved
 
 def _paket_impl(module_ctx):
     requests = _collect(module_ctx)

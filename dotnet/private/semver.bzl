@@ -15,6 +15,7 @@
 "Semver utilities."
 
 visibility([
+    "//dotnet/private/sdk/...",
     "//dotnet/private/tests/semver/...",
 ])
 
