@@ -613,6 +613,23 @@ def _versioned_symbol(family, version):
     separator = "" if family == _NETFRAMEWORK else "_"
     return prefix + separator.join([str(part) for part in version])
 
+def _or_greater_symbols(family, tfms):
+    """The `_OR_GREATER` symbol each framework in a family contributes."""
+    symbols = []
+    for candidate in tfms:
+        version = _tfm_version(candidate)
+        symbols.append((version, _versioned_symbol(family, version) + "_OR_GREATER"))
+    return symbols
+
+# Built once per family rather than once per framework: parsing every candidate's
+# version inside the loop below made the table that seeds
+# _FRAMEWORK_PREPROCESSOR_SYMBOLS quadratic in the size of the family, which is
+# paid on every cold Bazel server.
+_SDK_OR_GREATER_SYMBOLS = {
+    family: _or_greater_symbols(family, tfms)
+    for (family, tfms) in _SDK_TFMS_BY_FAMILY.items()
+}
+
 def _compute_framework_preprocessor_symbols(tfm):
     """Gets the standard preprocessor symbols for the target framework.
 
@@ -651,10 +668,9 @@ def _compute_framework_preprocessor_symbols(tfm):
         defines.append("NETCOREAPP")
 
     # GenerateNETCompatibleDefineConstants.
-    for candidate in _SDK_TFMS_BY_FAMILY[family]:
-        candidate_version = _tfm_version(candidate)
+    for (candidate_version, symbol) in _SDK_OR_GREATER_SYMBOLS[family]:
         if candidate_version <= version:
-            defines.append(_versioned_symbol(family, candidate_version) + "_OR_GREATER")
+            defines.append(symbol)
 
     return defines
 
