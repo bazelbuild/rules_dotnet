@@ -186,3 +186,31 @@ strategy does not apply.
 F# compiles do not use a worker. fsc has no build server to keep warm, and hosting it in the
 worker process is not an option because it terminates the process it runs in when a compilation
 fails, which would lose the diagnostics along with the worker.
+
+## Pruning unused references
+
+Roslyn is handed every reference a target is allowed to see, which for a small library is the
+handful it actually uses plus the ~170 assemblies of the targeting pack. Measured on a generated
+library: **171 references passed, 3 recorded in the compiled output**.
+
+With
+
+```
+build --@rules_dotnet//dotnet/settings:use_compiler_worker=true
+build --@rules_dotnet//dotnet/settings:prune_unused_references=true
+```
+
+the compile reports the references it did not use through Bazel's `unused_inputs_list`, so a
+change to one of them no longer re-runs it. On a 500-library graph, adding a public member to a
+leaf library triggers 11 recompiles instead of 21, and 6 instead of 9 for a change further up
+the graph.
+
+It is off by default because of a deliberate trade: the used set is taken from the assembly
+references recorded in the compiled output, so a change to a pruned reference that would only
+have produced a *new diagnostic* - a newly introduced ambiguity, say - will not trigger a
+rebuild. This is the same trade Java's reduced classpath makes. A clean build always produces the
+same result either way.
+
+Working out which references went unused means reading the compiled output, which is the worker
+binary's job, so this needs `use_compiler_worker` as well - asking for one without the other is
+an error. It applies to C# only, for the same reason.

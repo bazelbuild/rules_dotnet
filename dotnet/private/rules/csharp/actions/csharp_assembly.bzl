@@ -75,6 +75,7 @@ def AssemblyAction(
         actions,
         compiler_wrapper,
         compiler_worker,
+        prune_unused_references,
         label,
         additionalfiles,
         debug,
@@ -121,6 +122,7 @@ def AssemblyAction(
         actions: Bazel module providing functions to create actions.
         compiler_wrapper: The wrapper script that invokes the C# compiler.
         compiler_worker: The persistent worker that runs the C# compiler, or None to fall back to the wrapper.
+        prune_unused_references: Whether the compile should report the references it did not use.
         label: The label of the target. This is used to determine the relative path of embedded resources.
         additionalfiles: Names additional files that don't directly affect code generation but may be used by analyzers for producing errors or warnings.
         debug: Emits debugging information.
@@ -208,6 +210,7 @@ def AssemblyAction(
             actions,
             compiler_wrapper,
             compiler_worker,
+            prune_unused_references,
             label,
             additionalfiles,
             analyzers,
@@ -259,6 +262,7 @@ def AssemblyAction(
             actions,
             compiler_wrapper,
             compiler_worker,
+            prune_unused_references,
             label,
             additionalfiles,
             analyzers,
@@ -299,6 +303,7 @@ def AssemblyAction(
             actions,
             compiler_wrapper,
             compiler_worker,
+            prune_unused_references,
             label,
             additionalfiles,
             analyzers,
@@ -375,6 +380,7 @@ def _compile(
         actions,
         compiler_wrapper,
         compiler_worker,
+        prune_unused_references,
         label,
         additionalfiles,
         analyzer_assemblies,
@@ -481,6 +487,13 @@ def _compile(
         args.add(out_xml.path, format = "/doc:%s")
         outputs.append(out_xml)
 
+    # Only the real compilation can report unused references: the references a
+    # `/refonly` pass records are not the full picture.
+    unused_inputs = None
+    if prune_unused_references and compiler_worker and out_dll != None:
+        unused_inputs = actions.declare_file(out_dll.basename + ".unused_inputs", sibling = out_dll)
+        outputs.append(unused_inputs)
+
     # assembly references
     format_ref_arg(args, depset(framework_files, transitive = [refs]))
 
@@ -548,8 +561,8 @@ def _compile(
         arguments = [
             toolchain.compiler_host.files_to_run.executable.path,
             toolchain.csharp_compiler.files_to_run.executable.path,
-            args,
-        ],
+        ] + (["--prune_unused_inputs"] if unused_inputs else []) + [args],
+        unused_inputs_list = unused_inputs,
         env = {
             "DOTNET_CLI_HOME": toolchain.compiler_host.files_to_run.executable.dirname,
         },

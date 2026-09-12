@@ -251,6 +251,10 @@ CSHARP_COMMON_ATTRS = dicts.add(
             doc = "Whether the compile action should run in a persistent worker.",
             default = "//dotnet/settings:use_compiler_worker",
         ),
+        "_prune_unused_references": attr.label(
+            doc = "Whether the compile action should report the references it did not use.",
+            default = "//dotnet/settings:prune_unused_references",
+        ),
         "_compiler_worker": attr.label(
             doc = "The persistent worker that runs the C# compiler. It keeps Roslyn's build server alive between compilations so that the reference assemblies of the targeting pack are only read once.",
             default = "//dotnet/private/tools/compiler_worker",

@@ -148,7 +148,12 @@ def get_compiler_worker(ctx):
         The worker executable, or None.
     """
 
-    if not ctx.attr._use_compiler_worker[BuildSettingInfo].value:
+    use_worker = ctx.attr._use_compiler_worker[BuildSettingInfo].value
+    if ctx.attr._prune_unused_references[BuildSettingInfo].value and not use_worker:
+        fail("//dotnet/settings:prune_unused_references needs //dotnet/settings:use_compiler_worker, " +
+             "because it is the worker that reads the compiled output to work out which references went unused.")
+
+    if not use_worker:
         return None
 
     # compiler_worker_binary has no worker attribute: it is the one target the

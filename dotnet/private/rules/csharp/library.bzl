@@ -22,6 +22,7 @@ def _compile_action(ctx, tfm):
         ctx.actions,
         ctx.executable._compiler_wrapper_bat if ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]) else ctx.executable._compiler_wrapper_sh,
         compiler_worker = get_compiler_worker(ctx),
+        prune_unused_references = ctx.attr._prune_unused_references[BuildSettingInfo].value,
         label = ctx.label,
         additionalfiles = ctx.files.additionalfiles,
         debug = is_debug(ctx),

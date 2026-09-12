@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection.Metadata;
+using System.Reflection.PortableExecutable;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
@@ -29,7 +31,7 @@ namespace CompilerWorker
 
         public static int Main(string[] args)
         {
-            // <dotnet> <compiler.dll> [--persistent_worker] [args...]
+            // <dotnet> <compiler.dll> [--persistent_worker] [--prune_unused_inputs] [args...]
             if (args.Length < 2)
             {
                 Console.Error.WriteLine("usage: compiler_worker <dotnet> <compiler.dll> [flags...] [args...]");
@@ -41,11 +43,16 @@ namespace CompilerWorker
 
             var rest = new List<string>();
             var persistent = false;
+            var pruneUnusedInputs = false;
             foreach (var arg in args[2..])
             {
                 if (arg == "--persistent_worker")
                 {
                     persistent = true;
+                }
+                else if (arg == "--prune_unused_inputs")
+                {
+                    pruneUnusedInputs = true;
                 }
                 else
                 {
@@ -55,16 +62,16 @@ namespace CompilerWorker
 
             if (persistent)
             {
-                return RunWorkerLoop(dotnet, compiler);
+                return RunWorkerLoop(dotnet, compiler, pruneUnusedInputs);
             }
 
             var output = new StringBuilder();
-            var exitCode = Compile(dotnet, compiler, rest, shared: false, output);
+            var exitCode = Compile(dotnet, compiler, rest, shared: false, pruneUnusedInputs, output);
             Console.Error.Write(output.ToString());
             return exitCode;
         }
 
-        private static int RunWorkerLoop(string dotnet, string compiler)
+        private static int RunWorkerLoop(string dotnet, string compiler, bool pruneUnusedInputs)
         {
             using var stdin = Console.OpenStandardInput();
             using var stdout = Console.OpenStandardOutput();
@@ -77,7 +84,7 @@ namespace CompilerWorker
                 int exitCode;
                 try
                 {
-                    exitCode = Compile(dotnet, compiler, arguments, shared: true, output);
+                    exitCode = Compile(dotnet, compiler, arguments, shared: true, pruneUnusedInputs, output);
                 }
                 catch (Exception e)
                 {
@@ -92,7 +99,7 @@ namespace CompilerWorker
             return 0;
         }
 
-        private static int Compile(string dotnet, string compiler, List<string> arguments, bool shared, StringBuilder output)
+        private static int Compile(string dotnet, string compiler, List<string> arguments, bool shared, bool pruneUnusedInputs, StringBuilder output)
         {
             var startInfo = new ProcessStartInfo
             {
@@ -141,6 +148,11 @@ namespace CompilerWorker
                 output.Append(standardError.GetAwaiter().GetResult());
                 process.WaitForExit();
 
+                if (pruneUnusedInputs)
+                {
+                    WriteUnusedInputs(arguments, process.ExitCode, output);
+                }
+
                 return process.ExitCode;
             }
             finally
@@ -154,6 +166,139 @@ namespace CompilerWorker
                 {
                 }
             }
+        }
+
+        /// <summary>
+        /// Assembly name of each reference read so far. A file name is not a
+        /// reliable stand-in for the assembly name, and re-reading ~170 reference
+        /// assemblies per compilation would undo the point of the worker. The key
+        /// includes size and mtime so that a changed file is read again.
+        /// </summary>
+        private static readonly Dictionary<string, string?> AssemblyNameCache = new Dictionary<string, string?>();
+
+        private static string? AssemblyNameOf(string path)
+        {
+            string key;
+            try
+            {
+                var info = new FileInfo(path);
+                key = path + "|" + info.Length + "|" + info.LastWriteTimeUtc.Ticks;
+            }
+            catch (IOException)
+            {
+                return null;
+            }
+
+            if (AssemblyNameCache.TryGetValue(key, out var cached))
+            {
+                return cached;
+            }
+
+            string? name = null;
+            try
+            {
+                using var stream = File.OpenRead(path);
+                using var peReader = new PEReader(stream);
+                if (peReader.HasMetadata)
+                {
+                    var metadata = peReader.GetMetadataReader();
+                    name = metadata.GetString(metadata.GetAssemblyDefinition().Name);
+                }
+            }
+            catch (Exception)
+            {
+                // Not a managed assembly, or unreadable. Null means the reference
+                // counts as used, which is the safe direction.
+            }
+
+            AssemblyNameCache[key] = name;
+            return name;
+        }
+
+        /// <summary>
+        /// Writes the references that contributed nothing to the output, for
+        /// Bazel's <c>unused_inputs_list</c>. The used set is the assembly
+        /// reference table of the produced assembly; anything that cannot be
+        /// determined counts as used, so an unreadable file never prunes a
+        /// reference that mattered.
+        /// </summary>
+        private static void WriteUnusedInputs(List<string> arguments, int exitCode, StringBuilder output)
+        {
+            // Bazel expands the response file into the request arguments under the
+            // worker strategy, but passes it as `@file` when this binary runs as a
+            // plain action.
+            var effective = new List<string>();
+            foreach (var argument in arguments)
+            {
+                if (argument.StartsWith('@') && File.Exists(argument[1..]))
+                {
+                    effective.AddRange(File.ReadAllLines(argument[1..]));
+                }
+                else
+                {
+                    effective.Add(argument);
+                }
+            }
+
+            var references = new List<string>();
+            string? outputAssembly = null;
+            foreach (var rawLine in effective)
+            {
+                var line = rawLine.Trim();
+                if (line.StartsWith("-r:", StringComparison.Ordinal))
+                {
+                    references.Add(line[3..]);
+                }
+                else if (line.StartsWith("/out:", StringComparison.Ordinal))
+                {
+                    outputAssembly = line[5..];
+                }
+            }
+
+            if (outputAssembly == null)
+            {
+                return;
+            }
+
+            var unusedInputsFile = outputAssembly + ".unused_inputs";
+
+            // An empty list keeps every input, which is always correct. Nothing was
+            // produced on failure, so nothing can be shown to be unused.
+            if (exitCode != 0 || !File.Exists(outputAssembly))
+            {
+                File.WriteAllText(unusedInputsFile, "");
+                return;
+            }
+
+            var used = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            try
+            {
+                using var stream = File.OpenRead(outputAssembly);
+                using var peReader = new PEReader(stream);
+                var metadata = peReader.GetMetadataReader();
+                foreach (var handle in metadata.AssemblyReferences)
+                {
+                    used.Add(metadata.GetString(metadata.GetAssemblyReference(handle).Name));
+                }
+            }
+            catch (Exception e)
+            {
+                output.AppendLine("could not read assembly references from " + outputAssembly + ": " + e.Message);
+                File.WriteAllText(unusedInputsFile, "");
+                return;
+            }
+
+            var unused = new List<string>();
+            foreach (var reference in references)
+            {
+                var name = AssemblyNameOf(reference);
+                if (name != null && !used.Contains(name))
+                {
+                    unused.Add(reference);
+                }
+            }
+
+            File.WriteAllLines(unusedInputsFile, unused);
         }
 
         private sealed class WorkRequest
