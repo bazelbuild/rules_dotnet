@@ -158,13 +158,6 @@ def format_ref_arg(args, refs):
 
     return args
 
-def _find_ref_by_file_name(refs, file_name):
-    for ref in refs:
-        if ref.basename.lower().replace(".dll", "") == file_name.lower():
-            return ref
-
-    return None
-
 def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
     """Determine the transitive dependencies by the target framework.
 
@@ -200,23 +193,18 @@ def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
 
     if targeting_pack:
         targeting_pack_info = targeting_pack[DotnetTargetingPackInfo]
-        for i, nuget_info in enumerate(targeting_pack_info.nuget_infos):
-            compile_info = targeting_pack_info.assembly_compile_infos[i]
 
-            for override_name, override_version in nuget_info.targeting_pack_overrides.items():
-                targeting_pack_overrides[override_name] = override_version
+        # The pack already resolved its FrameworkList to ref files; copy the
+        # parts that get mutated below and take the rest as is.
+        targeting_pack_overrides = dict(targeting_pack_info.targeting_pack_overrides)
+        framework_list = dict(targeting_pack_info.framework_list)
+        framework_files = list(targeting_pack_info.framework_files)
 
-            for dll_name, dll_version in nuget_info.framework_list.items():
-                framework_list[dll_name] = {"version": dll_version, "file": _find_ref_by_file_name(compile_info.refs, dll_name)}
-
-            if len(nuget_info.framework_list) == 0:
-                framework_files.extend(compile_info.irefs)
-
-            direct_analyzers.extend(compile_info.analyzers)
-            direct_analyzers_csharp.extend(compile_info.analyzers_csharp)
-            direct_analyzers_fsharp.extend(compile_info.analyzers_fsharp)
-            direct_analyzers_vb.extend(compile_info.analyzers_vb)
-            direct_compile_data.extend(compile_info.compile_data)
+        direct_analyzers.extend(targeting_pack_info.analyzers)
+        direct_analyzers_csharp.extend(targeting_pack_info.analyzers_csharp)
+        direct_analyzers_fsharp.extend(targeting_pack_info.analyzers_fsharp)
+        direct_analyzers_vb.extend(targeting_pack_info.analyzers_vb)
+        direct_compile_data.extend(targeting_pack_info.compile_data)
 
     for dep in deps:
         assembly = dep[DotnetAssemblyCompileInfo]
