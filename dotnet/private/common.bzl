@@ -174,6 +174,7 @@ def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
     direct_iref = []
     direct_ref = []
     transitive_ref = []
+    transitive_ref_depsets = []
     direct_compile_data = []
     transitive_compile_data = []
     direct_analyzers = []
@@ -254,14 +255,21 @@ def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
         # This is not a complete solution since we are not comparing assembly versions
         # Transitive dependency resolution is very complicated.
         if not strict_deps:
+            # The compiler must not be handed an assembly that the targeting pack
+            # already provides, so the closure is filtered for the reference
+            # arguments of *this* compilation.
             for transitive_assembly in assembly.transitive_refs.to_list():
-                add_to_output = True
-                if transitive_assembly.basename.replace(".dll", "").lower() in targeting_pack_overrides:
-                    add_to_output = False
-                elif transitive_assembly.basename.replace(".dll", "").lower() in framework_list:
-                    add_to_output = False
-                if add_to_output:
+                name = transitive_assembly.basename.replace(".dll", "").lower()
+                if name not in targeting_pack_overrides and name not in framework_list:
                     transitive_ref.append(transitive_assembly)
+
+            # What gets published in the provider, though, keeps the deps' depsets
+            # intact. Storing the flattened list here made every node hold its own
+            # copy of the whole closure below it - O(N) memory per node, O(N^2) for
+            # a chain - and the consumer re-filters against its own targeting pack
+            # anyway, which is the pack that actually matters.
+            transitive_ref_depsets.append(assembly.transitive_refs)
+
             transitive_analyzers.append(assembly.transitive_analyzers)
             transitive_analyzers_csharp.append(assembly.transitive_analyzers_csharp)
             transitive_analyzers_fsharp.append(assembly.transitive_analyzers_fsharp)
@@ -277,8 +285,10 @@ def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
         exports_files.extend(assembly.refs)
 
     return (
+        # Filtered and flat: these become the compiler's reference arguments.
         depset(direct = direct_iref, transitive = [depset(transitive_ref)]),
-        depset(direct = direct_ref, transitive = [depset(transitive_ref)]),
+        # Structurally shared: this is only stored in the provider.
+        depset(direct = direct_ref, transitive = transitive_ref_depsets),
         depset(direct = direct_analyzers, transitive = transitive_analyzers),
         depset(direct = direct_analyzers_csharp, transitive = transitive_analyzers_csharp),
         depset(direct = direct_analyzers_fsharp, transitive = transitive_analyzers_fsharp),
