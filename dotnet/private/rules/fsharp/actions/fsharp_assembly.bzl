@@ -372,6 +372,8 @@ def _compile(
     )
 
     args.add("--target:" + target)
+
+    # MSBuild passes no --langversion for F#, letting fsc default to latest.
     if langversion:
         args.add("--langversion:" + langversion)
 

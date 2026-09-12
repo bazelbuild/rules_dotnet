@@ -27,7 +27,8 @@ def _compile_action(ctx, tfm):
         targeting_pack = ctx.attr._targeting_pack[0],
         internals_visible_to = ctx.attr.internals_visible_to,
         keyfile = ctx.file.keyfile,
-        langversion = ctx.attr.langversion if ctx.attr.langversion != "" else toolchain.dotnetinfo.fsharp_default_version,
+        # MSBuild passes no --langversion for F#; fsc then defaults to latest.
+        langversion = ctx.attr.langversion,
         resources = ctx.files.resources,
         srcs = ctx.files.srcs,
         data = ctx.files.data,

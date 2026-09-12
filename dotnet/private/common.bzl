@@ -13,6 +13,15 @@ load(
     "NuGetInfo",
 )
 load("//dotnet/private:semver.bzl", "semver")
+load(
+    "//dotnet/private/sdk:frameworks.bzl",
+    "SDK_LANG_VERSIONS",
+    "SDK_NETCOREAPP_FRAMEWORKS",
+    "SDK_NETFRAMEWORK_FRAMEWORKS",
+    "SDK_NETSTANDARD_FRAMEWORKS",
+    _DEFAULT_TARGET_FRAMEWORK = "DEFAULT_TARGET_FRAMEWORK",
+    _FRAMEWORK_COMPATIBILITY = "FRAMEWORK_COMPATIBILITY",
+)
 load("//dotnet/private/sdk:rids.bzl", "RUNTIME_GRAPH")
 
 def _collect_transitive():
@@ -22,60 +31,12 @@ def _collect_transitive():
         t[framework] = sets.union(sets.make([framework]), *[t[c] for c in compat])
     return t
 
-DEFAULT_TFM = "net10.0"
+# Generated; see dotnet/private/sdk/frameworks.bzl.
+DEFAULT_TFM = _DEFAULT_TARGET_FRAMEWORK
 DEFAULT_RID = "base"
 
-# A dict of target frameworks to the set of other framworks it can compile
-# against. This relationship is transitive. The order of this dictionary also
-# matters. netstandard should appear first, and keys within a family should
-# proceed from oldest to newest
-FRAMEWORK_COMPATIBILITY = {
-    # .NET Standard
-    "netstandard": [],
-    "netstandard1.0": ["netstandard"],
-    "netstandard1.1": ["netstandard1.0"],
-    "netstandard1.2": ["netstandard1.1"],
-    "netstandard1.3": ["netstandard1.2"],
-    "netstandard1.4": ["netstandard1.3"],
-    "netstandard1.5": ["netstandard1.4"],
-    "netstandard1.6": ["netstandard1.5"],
-    "netstandard2.0": ["netstandard1.6"],
-    "netstandard2.1": ["netstandard2.0"],
-
-    # .NET Framework
-    "net11": [],
-    "net20": ["net11"],
-    "net30": ["net20"],
-    "net35": ["net30"],
-    "net40": ["net35"],
-    "net403": ["net40"],
-    "net45": ["net403", "netstandard1.1"],
-    "net451": ["net45", "netstandard1.2"],
-    "net452": ["net451"],
-    "net46": ["net452", "netstandard1.3"],
-    "net461": ["net46", "netstandard2.0"],
-    "net462": ["net461"],
-    "net47": ["net462"],
-    "net471": ["net47"],
-    "net472": ["net471"],
-    "net48": ["net472"],
-    "net481": ["net48"],
-
-    # .NET Core
-    "netcoreapp1.0": ["netstandard1.6"],
-    "netcoreapp1.1": ["netcoreapp1.0"],
-    "netcoreapp2.0": ["netcoreapp1.1", "netstandard2.0"],
-    "netcoreapp2.1": ["netcoreapp2.0"],
-    "netcoreapp2.2": ["netcoreapp2.1"],
-    "netcoreapp3.0": ["netcoreapp2.2", "netstandard2.1"],
-    "netcoreapp3.1": ["netcoreapp3.0"],
-    "net5.0": ["netcoreapp3.1"],
-    "net6.0": ["net5.0"],
-    "net7.0": ["net6.0"],
-    "net8.0": ["net7.0"],
-    "net9.0": ["net8.0"],
-    "net10.0": ["net9.0"],
-}
+# Re-exported so the many modules that read it keep loading it from here.
+FRAMEWORK_COMPATIBILITY = _FRAMEWORK_COMPATIBILITY
 
 _subsystem_version = {
     "netstandard": None,
@@ -151,11 +112,10 @@ def use_highentropyva(tfm):
     return tfm not in ["net20", "net40"]
 
 def is_standard_framework(tfm):
-    return tfm.startswith("netstandard")
+    return _tfm_family(tfm) == _NETSTANDARD
 
 def is_core_framework(tfm):
-    # TODO: Make this work with future versions
-    return tfm.startswith("netcoreapp") or tfm.startswith("net5.0") or tfm.startswith("net6.0") or tfm.startswith("net7.0") or tfm.startswith("net8.0") or tfm.startswith("net9.0") or tfm.startswith("net10.0")
+    return _tfm_family(tfm) == _NETCOREAPP
 
 def is_greater_or_equal_framework(tfm1, tfm2):
     """Returns true if tfm1 is greater or equal to tfm2
@@ -582,35 +542,162 @@ def generate_warning_args(
     if len(nowarn) > 0:
         args.add("/nowarn:{}".format(",".join(nowarn)))
 
-def framework_preprocessor_symbols(tfm):
+_NETSTANDARD = "netstandard"
+_NETCOREAPP = "netcoreapp"
+_NETFRAMEWORK = "netframework"
+
+# SDK-recognised frameworks per family, ascending. Anything absent (net11,
+# net403) gets no `*_OR_GREATER` symbol. Generated -- see dotnet/private/sdk/gen.
+_SDK_TFMS_BY_FAMILY = {
+    _NETCOREAPP: SDK_NETCOREAPP_FRAMEWORKS,
+    _NETFRAMEWORK: SDK_NETFRAMEWORK_FRAMEWORKS,
+    _NETSTANDARD: SDK_NETSTANDARD_FRAMEWORKS,
+}
+
+# .NET 5 is where the netcoreapp family starts spelling its symbols NET*.
+_NET5 = [5, 0]
+
+def _tfm_family(tfm):
+    """Classifies a target framework moniker into an SDK framework family."""
+    if tfm.startswith("netstandard"):
+        return _NETSTANDARD
+    if tfm.startswith("netcoreapp"):
+        return _NETCOREAPP
+    if not tfm.startswith("net"):
+        return None
+
+    # net5.0+ spells the version with a dot; net48/net481 do not.
+    return _NETCOREAPP if "." in tfm else _NETFRAMEWORK
+
+def _tfm_version(tfm):
+    """A framework's version as a list of ints, for ordering.
+
+    net48 -> [4, 8], net481 -> [4, 8, 1], net10.0 -> [10, 0],
+    netstandard2.0 -> [2, 0], bare netstandard -> [].
+    """
+    digits = tfm
+    for prefix in ["netstandard", "netcoreapp", "net"]:
+        if tfm.startswith(prefix):
+            digits = tfm[len(prefix):]
+            break
+
+    if digits == "":
+        return []
+
+    if "." in digits:
+        return [int(part) for part in digits.split(".")]
+
+    parts = [int(digits[0])]
+    if len(digits) > 1:
+        parts.append(int(digits[1]))
+    if len(digits) > 2:
+        parts.append(int(digits[2:]))
+    return parts
+
+def _versioned_symbol(family, version):
+    """The versioned define for a framework: NETSTANDARD2_0, NET48, NET10_0."""
+    if family == _NETSTANDARD:
+        prefix = "NETSTANDARD"
+    elif family == _NETCOREAPP and version < _NET5:
+        prefix = "NETCOREAPP"
+    else:
+        prefix = "NET"
+
+    # .NET Framework strips the separators; everything else underscores them.
+    separator = "" if family == _NETFRAMEWORK else "_"
+    return prefix + separator.join([str(part) for part in version])
+
+def _compute_framework_preprocessor_symbols(tfm):
     """Gets the standard preprocessor symbols for the target framework.
 
-    See https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/preprocessor-directives/preprocessor-if#remarks
-    for the official list.
+    Reproduces the SDK's GenerateTargetFrameworkDefineConstants and
+    GenerateNETCompatibleDefineConstants targets. FRAMEWORK_COMPATIBILITY
+    records assignability, so walking it instead would emit symbols the SDK
+    never defines.
+
+    See https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/preprocessor-directives#conditional-compilation
 
     Args:
         tfm: The target framework moniker target being built.
     Returns:
         A list of preprocessor symbols.
     """
+    family = _tfm_family(tfm)
+    if family == None:
+        return []
 
-    defines = [tfm.upper().replace(".", "_")] + [
-        # net8.0 -> NET8_0_OR_GREATER
-        # net461 -> NET461_OR_GREATER
-        framework.upper().replace(".", "_") + "_OR_GREATER"
-        for framework in sets.to_list(TRANSITIVE_FRAMEWORK_COMPATIBILITY[tfm])
-    ]
+    version = _tfm_version(tfm)
+    is_net5_or_greater = family == _NETCOREAPP and version >= _NET5
 
-    if tfm.startswith("netstandard"):
-        defines.append("NETSTANDARD")
-    elif tfm.startswith("netcoreapp"):
+    # GenerateTargetFrameworkDefineConstants.
+    if family == _NETSTANDARD:
+        versionless = "NETSTANDARD"
+    elif family == _NETFRAMEWORK:
+        versionless = "NETFRAMEWORK"
+    elif is_net5_or_greater:
+        versionless = "NET"
+    else:
+        versionless = "NETCOREAPP"
+
+    defines = [versionless, _versioned_symbol(family, version)]
+
+    if is_net5_or_greater:
         defines.append("NETCOREAPP")
-    elif tfm.startswith("net4"):
-        defines.append("NETFRAMEWORK")
-    elif tfm.startswith("net"):
-        defines.append("NET")
+
+    # GenerateNETCompatibleDefineConstants.
+    for candidate in _SDK_TFMS_BY_FAMILY[family]:
+        candidate_version = _tfm_version(candidate)
+        if candidate_version <= version:
+            defines.append(_versioned_symbol(family, candidate_version) + "_OR_GREATER")
 
     return defines
+
+def default_csharp_lang_version(tfm, sdk_default):
+    """The C# language version the SDK would pick for a target framework.
+
+    The SDK caps LangVersion per target framework -- 7.3 for netstandard2.0 and
+    .NET Framework -- because newer language features need runtime support
+    those targets lack.
+
+    Args:
+        tfm: The target framework moniker being built.
+        sdk_default: The newest C# version this SDK supports. Used for
+            frameworks the SDK does not recognise, and as a ceiling so we never
+            ask for a language version this compiler does not know.
+    Returns:
+        The language version string to pass to csc.
+    """
+    selected = SDK_LANG_VERSIONS.get(tfm)
+    if selected == None:
+        return sdk_default
+
+    if sdk_default == "":
+        return selected
+
+    # Never ask for a language version this compiler does not know.
+    if semver.to_comparable(selected, relaxed = True) > semver.to_comparable(sdk_default, relaxed = True):
+        return sdk_default
+
+    return selected
+
+# Both of these are called once per target per framework during analysis, and
+# the input domain is the known framework set, so they are computed once here
+# rather than on every call.
+_FRAMEWORK_PREPROCESSOR_SYMBOLS = {
+    tfm: _compute_framework_preprocessor_symbols(tfm)
+    for tfm in FRAMEWORK_COMPATIBILITY
+}
+
+def framework_preprocessor_symbols(tfm):
+    """The preprocessor symbols the SDK defines for a target framework.
+
+    Args:
+        tfm: The target framework moniker being built.
+
+    Returns:
+        A list of preprocessor symbols.
+    """
+    return _FRAMEWORK_PREPROCESSOR_SYMBOLS.get(tfm, _compute_framework_preprocessor_symbols(tfm))
 
 def _get_resource_assembly_locale(file):
     """Gets the locale of a resource assembly file.

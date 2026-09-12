@@ -19,6 +19,7 @@ bzl_library(
     deps = [
         ":providers",
         ":semver",
+        "//dotnet/private/sdk:frameworks",
         "//dotnet/private/sdk:rids",
         "@bazel_skylib//lib:sets",
         "@bazel_skylib//lib:shell",
@@ -128,13 +129,13 @@ bzl_library(
 )
 
 bzl_library(
-    name = "xml",
-    srcs = ["xml.bzl"],
+    name = "toolchains_repo",
+    srcs = ["toolchains_repo.bzl"],
     visibility = ["//dotnet:__subpackages__"],
 )
 
 bzl_library(
-    name = "toolchains_repo",
-    srcs = ["toolchains_repo.bzl"],
+    name = "xml",
+    srcs = ["xml.bzl"],
     visibility = ["//dotnet:__subpackages__"],
 )

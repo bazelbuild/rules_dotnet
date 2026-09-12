@@ -8,6 +8,8 @@
     <Compile Include="NugetHelpers.fs" />
     <Compile Include="Packs.fs" />
     <Compile Include="Sdk.fs" />
+    <Compile Include="Frameworks.fs" />
+    <Compile Include="Paket.fs" />
     <Compile Include="Main.fs" />
   </ItemGroup>
   <Import Project="..\..\..\..\.paket\Paket.Restore.targets" />

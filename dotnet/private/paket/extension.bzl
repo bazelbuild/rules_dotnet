@@ -61,7 +61,7 @@ alone.""",
     },
 )
 
-_INSTALL_COMMAND = "bazel run @rules_dotnet//paket -- install"
+_INSTALL_COMMAND = "bazel run @rules_dotnet//tools/paket -- install"
 
 def _check_lock_is_current(tag, declared, groups):
     """Fails if the lock file does not cover what the dependencies file asks for.

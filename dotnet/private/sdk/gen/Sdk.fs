@@ -10,7 +10,70 @@ open System.Collections.Generic
 open NuGet.RuntimeModel
 open System.Net.Http
 
-let private supportedChannels = [ "6.0"; "7.0"; "8.0"; "9.0"; "10.0" ]
+/// Shared so the handler and its sockets are not leaked per call.
+let private http = new HttpClient()
+
+/// One entry of the release index: a .NET channel and where it is in its
+/// lifecycle. `SupportPhase` is what keeps a preview release from becoming the
+/// default target framework.
+type ReleaseIndexEntry =
+    { [<JsonPropertyName "channel-version">]
+      ChannelVersion: string
+      [<JsonPropertyName "support-phase">]
+      SupportPhase: string
+      [<JsonPropertyName "latest-sdk">]
+      LatestSdk: string }
+
+type ReleaseIndex =
+    { [<JsonPropertyName "releases-index">]
+      Releases: ReleaseIndexEntry seq }
+
+/// Channels older than this were never supported by rules_dotnet: their packs
+/// are laid out differently and no pack band exists for them.
+let private oldestSupportedChannel = Version "6.0"
+
+let private releaseIndexUrl =
+    "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/releases-index.json"
+
+let private parseChannelVersion (channel: string) =
+    match Version.TryParse channel with
+    | true, version -> Some version
+    | _ -> None
+
+/// The release index, newest channel first.
+let downloadReleaseIndex () =
+    let json = http.GetAsync(releaseIndexUrl).Result.Content.ReadAsStringAsync().Result
+
+    JsonSerializer.Deserialize<ReleaseIndex>(json).Releases
+    |> Seq.choose (fun entry ->
+        parseChannelVersion entry.ChannelVersion
+        |> Option.map (fun version -> version, entry))
+    |> Seq.filter (fun (version, _) -> version >= oldestSupportedChannel)
+    |> Seq.sortByDescending fst
+    |> List.ofSeq
+
+/// Every channel rules_dotnet tracks, oldest first. Discovered rather than
+/// hardcoded so a new .NET release needs no code change here.
+let supportedChannels (index: (Version * ReleaseIndexEntry) list) =
+    index |> List.rev |> List.map (fun (_, entry) -> entry.ChannelVersion)
+
+/// The newest channel that is not a preview.
+///
+/// This is what DEFAULT_TFM is derived from: defaulting to a preview framework
+/// would make every target in every downstream repo depend on packs that are
+/// still changing shape.
+let latestStableChannel (index: (Version * ReleaseIndexEntry) list) =
+    // Only a generally-available channel qualifies. "preview" is the obvious
+    // exclusion, but "go-live" matters just as much: a release candidate is
+    // supported in production yet its packs are still moving, and it must not
+    // become the default every downstream target inherits.
+    index
+    |> List.filter (fun (_, entry) ->
+        String.Equals(entry.SupportPhase, "active", StringComparison.OrdinalIgnoreCase)
+        || String.Equals(entry.SupportPhase, "maintenance", StringComparison.OrdinalIgnoreCase))
+    |> List.tryHead
+    |> Option.map (fun (_, entry) -> entry.ChannelVersion)
+    |> Option.defaultWith (fun () -> failwith "The release index contains no non-preview channel")
 
 type File =
     { [<JsonPropertyName "name">]
@@ -58,18 +121,22 @@ let private releaseJsonUrl channel =
     $"https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/{channel}/releases.json"
 
 
-let private downloadReleaseInfoForChannel channel =
-    let httpClient = new HttpClient()
-    let url = releaseJsonUrl channel
+// The newest channel's feed is wanted by both generateSdks and
+// newestSdkArchive, and it is several MB.
+let private channelCache = Collections.Generic.Dictionary<string, Channel>()
 
-    let json = httpClient.GetAsync(url).Result.Content.ReadAsStringAsync().Result
-    JsonSerializer.Deserialize<Channel>(json)
+let private downloadReleaseInfoForChannel channel =
+    match channelCache.TryGetValue channel with
+    | true, cached -> cached
+    | _ ->
+        let json = http.GetAsync(releaseJsonUrl channel).Result.Content.ReadAsStringAsync().Result
+        let parsed = JsonSerializer.Deserialize<Channel>(json)
+        channelCache[channel] <- parsed
+        parsed
 
 let private downloadRuntimes () =
-    let httpClient = new HttpClient()
-
     let json =
-        httpClient
+        http
             .GetAsync(
                 "https://raw.githubusercontent.com/dotnet/runtime/main/src/libraries/Microsoft.NETCore.Platforms/src/runtime.json"
             )
@@ -201,7 +268,64 @@ let generateRids output =
 
     File.WriteAllText(output, sb.ToString())
 
-let generateSdks output =
-    supportedChannels
+/// The host RID, used to pick which SDK archive to download.
+let hostRid () =
+    let arch =
+        match Runtime.InteropServices.RuntimeInformation.OSArchitecture with
+        | Runtime.InteropServices.Architecture.Arm64 -> "arm64"
+        | Runtime.InteropServices.Architecture.X64 -> "x64"
+        | other -> failwith $"Unsupported host architecture: {other}"
+
+    if Runtime.InteropServices.RuntimeInformation.IsOSPlatform Runtime.InteropServices.OSPlatform.Windows then
+        $"win-{arch}"
+    elif Runtime.InteropServices.RuntimeInformation.IsOSPlatform Runtime.InteropServices.OSPlatform.OSX then
+        $"osx-{arch}"
+    else
+        $"linux-{arch}"
+
+/// Channels up to and including the newest generally-available one, oldest
+/// first.
+///
+/// This is the set of frameworks rules_dotnet claims to support. A release
+/// that is still a preview or a release candidate is deliberately excluded:
+/// its reference and runtime packs are not published as stable versions yet,
+/// so a framework entry for it would resolve to nothing. Keeping every
+/// generated table keyed off this one list is what stops them drifting apart.
+let gaChannels (index: (Version * ReleaseIndexEntry) list) =
+    let stable = Version(latestStableChannel index)
+
+    index
+    |> List.map fst
+    |> List.filter (fun version -> version <= stable)
+    |> List.sort
+    |> List.map (fun version -> version.ToString())
+
+/// The newest SDK archive for the host, as (version, url).
+///
+/// Deliberately the newest *available* SDK including previews: the generator's
+/// job is to describe the .NET that exists, and the preview filtering happens
+/// only where it matters, when choosing the default target framework.
+let newestSdkArchive (index: (Version * ReleaseIndexEntry) list) =
+    let channel = index |> List.head |> snd
+
+    let release =
+        let channelInfo = downloadReleaseInfoForChannel channel.ChannelVersion
+
+        channelInfo.Releases
+        |> Seq.collect (fun release -> release.Sdks)
+        |> Seq.filter (fun sdk -> sdk.Version = channel.LatestSdk)
+        |> Seq.tryHead
+
+    match release with
+    | None -> failwith $"Could not find SDK {channel.LatestSdk} in channel {channel.ChannelVersion}"
+    | Some sdk ->
+        let rid = hostRid ()
+
+        match sdk.Files |> Seq.filter (fun f -> f.Rid = rid) |> Seq.filter (fun f -> f.Name.EndsWith ".tar.gz" || f.Name.EndsWith ".zip") |> Seq.tryHead with
+        | None -> failwith $"No SDK archive for {rid} in {sdk.Version}"
+        | Some file -> sdk.Version, file.Url
+
+let generateSdks output (channels: string list) =
+    channels
     |> Seq.map downloadReleaseInfoForChannel
     |> generateVersionsBzl output

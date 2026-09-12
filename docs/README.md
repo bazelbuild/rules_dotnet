@@ -98,7 +98,7 @@ paket.parse(
 use_repo(paket, "paket.main")
 ```
 
-`@rules_dotnet//paket` is the Paket CLI on the build's own .NET toolchain, so
+`@rules_dotnet//tools/paket` is the Paket CLI on the build's own .NET toolchain, so
 it needs no local .NET install. Every Paket command works (`update`,
 `outdated`, `why`), and it runs in the directory you invoke it from.
 
