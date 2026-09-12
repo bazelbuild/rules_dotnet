@@ -1,6 +1,5 @@
 "Register TFM flags and set up the compatibility chains"
 
-load("@bazel_skylib//lib:dicts.bzl", "dicts")
 load("@bazel_skylib//lib:sets.bzl", "sets")
 load("@bazel_skylib//rules:common_settings.bzl", "bool_setting", "string_flag")
 load(
@@ -8,10 +7,6 @@ load(
     "DEFAULT_TFM",
     "FRAMEWORK_COMPATIBILITY",
     "TRANSITIVE_FRAMEWORK_COMPATIBILITY",
-)
-load(
-    "//dotnet/private/sdk:rids.bzl",
-    "RUNTIME_GRAPH",
 )
 
 # buildifier: disable=unnamed-macro
@@ -44,13 +39,3 @@ def register_tfms():
             flag_values = tfm_flags,
             visibility = ["//visibility:public"],
         )
-
-        # Also register TFM flags that are compatible with a specific RID
-        for rid in RUNTIME_GRAPH.keys():
-            rid_flags = {":rid_compatible_%s" % f: repr(True) for f in RUNTIME_GRAPH[rid] + [rid]}
-
-            native.config_setting(
-                name = "tfm_%s_%s" % (framework, rid),
-                flag_values = dicts.add(tfm_flags, rid_flags),
-                visibility = ["//visibility:public"],
-            )
