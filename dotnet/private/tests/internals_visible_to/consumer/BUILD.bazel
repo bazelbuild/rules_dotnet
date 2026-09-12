@@ -1,0 +1,16 @@
+load("//dotnet:defs.bzl", "csharp_nunit_test")
+
+# The order of `deps` is what this test is about, and it is also the order
+# buildifier sorts them into: `chain` carries a transitive closure and has to be
+# walked before `secrets` is looked at. Renaming either target so that it sorts
+# the other way round would leave the test passing whether or not the bug is
+# present.
+csharp_nunit_test(
+    name = "consumer",
+    srcs = ["Consumer.cs"],
+    target_frameworks = ["net9.0"],
+    deps = [
+        "//dotnet/private/tests/internals_visible_to/chain",
+        "//dotnet/private/tests/internals_visible_to/secrets",
+    ],
+)

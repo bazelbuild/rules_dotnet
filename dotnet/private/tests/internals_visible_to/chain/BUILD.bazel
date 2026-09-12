@@ -1,0 +1,9 @@
+load("//dotnet:defs.bzl", "csharp_library")
+
+csharp_library(
+    name = "chain",
+    srcs = ["Chain.cs"],
+    target_frameworks = ["net9.0"],
+    visibility = ["//dotnet/private/tests/internals_visible_to:__subpackages__"],
+    deps = ["//dotnet/private/tests/internals_visible_to/base"],
+)

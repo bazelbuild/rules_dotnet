@@ -259,8 +259,11 @@ def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
             # already provides, so the closure is filtered for the reference
             # arguments of *this* compilation.
             for transitive_assembly in assembly.transitive_refs.to_list():
-                name = transitive_assembly.basename.replace(".dll", "").lower()
-                if name not in targeting_pack_overrides and name not in framework_list:
+                # Not `name`: that is the assembly being compiled, and the
+                # `internals_visible_to` check above reads it on every later
+                # iteration of this loop.
+                transitive_name = transitive_assembly.basename.replace(".dll", "").lower()
+                if transitive_name not in targeting_pack_overrides and transitive_name not in framework_list:
                     transitive_ref.append(transitive_assembly)
 
             # What gets published in the provider, though, keeps the deps' depsets
