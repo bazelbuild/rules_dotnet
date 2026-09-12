@@ -14,12 +14,90 @@ load(
 )
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 
-def _copy_file(script_body, src, dst, is_windows):
-    if is_windows:
-        script_body.append("if not exist \"{dir}\" @mkdir \"{dir}\" >NUL".format(dir = dst.dirname.replace("/", "\\")))
-        script_body.append("@copy /Y \"{src}\" \"{dst}\" >NUL".format(src = src.path.replace("/", "\\"), dst = dst.path.replace("/", "\\")))
-    else:
-        script_body.append("mkdir -p {dir} && cp -f {src} {dst}".format(dir = shell.quote(dst.dirname), src = shell.quote(src.path), dst = shell.quote(dst.path)))
+def _copy_file(copies, src, dst):
+    copies.append((src, dst))
+
+# How many sources one `cp` invocation takes. A self-contained publish copies
+# several hundred files into one directory, and the point of batching is lost if
+# the command line grows long enough to risk the execve argument limit.
+_COPY_BATCH = 128
+
+def _render_copy_script(copies, is_windows):
+    """The script that puts every published file in its place.
+
+    One process per file - and a second one to make its directory - is most of
+    the wall time of a self-contained publish, which copies the whole runtime
+    pack into a single directory. So each directory is created once, and the
+    files that keep their name are copied in batches.
+
+    Args:
+        copies: The (source, destination) pairs to copy.
+        is_windows: Whether the script is a batch file rather than a shell script.
+
+    Returns:
+        A list of script lines.
+    """
+    script_body = ["@echo off"] if is_windows else ["#! /usr/bin/env bash", "set -eou pipefail"]
+
+    # The binary's own assembly reaches this twice: once as the main DLL and
+    # once in the list of assemblies to publish.
+    seen = {}
+
+    # Grouped by destination directory, in first-seen order.
+    dirs = []
+    same_name = {}
+    renamed = []
+
+    for (src, dst) in copies:
+        if dst.path in seen:
+            continue
+        seen[dst.path] = True
+
+        if dst.dirname not in same_name:
+            same_name[dst.dirname] = []
+            dirs.append(dst.dirname)
+
+        if src.basename == dst.basename:
+            same_name[dst.dirname].append(src)
+        else:
+            renamed.append((src, dst))
+
+    for directory in dirs:
+        if is_windows:
+            script_body.append("if not exist \"{dir}\" @mkdir \"{dir}\" >NUL".format(dir = directory.replace("/", "\\")))
+        else:
+            script_body.append("mkdir -p {dir}".format(dir = shell.quote(directory)))
+
+        sources = same_name[directory]
+
+        # `copy` on Windows concatenates when handed several sources, so only
+        # the directory creation is shared there.
+        if is_windows:
+            for src in sources:
+                script_body.append("@copy /Y \"{src}\" \"{dir}\" >NUL".format(
+                    src = src.path.replace("/", "\\"),
+                    dir = directory.replace("/", "\\"),
+                ))
+            continue
+
+        for start in range(0, len(sources), _COPY_BATCH):
+            batch = sources[start:start + _COPY_BATCH]
+            script_body.append("cp -f {srcs} {dir}".format(
+                srcs = " ".join([shell.quote(src.path) for src in batch]),
+                dir = shell.quote(directory),
+            ))
+
+    # A file published under a different name cannot join a batch.
+    for (src, dst) in renamed:
+        if is_windows:
+            script_body.append("@copy /Y \"{src}\" \"{dst}\" >NUL".format(
+                src = src.path.replace("/", "\\"),
+                dst = dst.path.replace("/", "\\"),
+            ))
+        else:
+            script_body.append("cp -f {src} {dst}".format(src = shell.quote(src.path), dst = shell.quote(dst.path)))
+
+    return script_body
 
 _NO_READY_TO_RUN = struct(replace = {}, extra = [])
 
@@ -204,15 +282,15 @@ def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, as
         "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, binary_info.dll.basename),
     )
     outputs = [main_dll_copy]
-    script_body = ["@echo off"] if is_windows else ["#! /usr/bin/env bash", "set -eou pipefail"]
+    copies = []
 
-    _copy_file(script_body, main_dll_source, main_dll_copy, is_windows = is_windows)
+    _copy_file(copies, main_dll_source, main_dll_copy)
 
     for file in ready_to_run.extra:
         output = ctx.actions.declare_file(file.basename, sibling = main_dll_copy)
         outputs.append(output)
         inputs.append(file)
-        _copy_file(script_body, file, output, is_windows = is_windows)
+        _copy_file(copies, file, output)
 
     # All managed DLLs are copied next to the app host in the publish directory
     for file in assembly_files.libs:
@@ -222,7 +300,7 @@ def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, as
         outputs.append(output)
         source = ready_to_run.replace.get(file.path, file)
         inputs.append(source)
-        _copy_file(script_body, source, output, is_windows = is_windows)
+        _copy_file(copies, source, output)
 
     # Resource assemblies are copied next to the app host in the publish directory in a folder
     # that has the same name as the locale of the resource assembly.
@@ -233,7 +311,7 @@ def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, as
         output = ctx.actions.declare_file(output_dir)
         outputs.append(output)
         inputs.append(file)
-        _copy_file(script_body, file, output, is_windows = is_windows)
+        _copy_file(copies, file, output)
 
     for file in assembly_files.native:
         # If the publish is not self-contained we need to copy the native
@@ -269,7 +347,7 @@ def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, as
         )
         inputs.append(file)
         outputs.append(output)
-        _copy_file(script_body, file, output, is_windows = is_windows)
+        _copy_file(copies, file, output)
 
     # The data files put into the publish folder in a structure that works with
     # the runfiles lib. End users should not expect files in the `data` attribute
@@ -291,7 +369,7 @@ def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, as
             "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, file.basename),
         )
         outputs.append(output)
-        _copy_file(script_body, file, output, is_windows = is_windows)
+        _copy_file(copies, file, output)
 
     # A self-contained publish carries the runtime pack at the root of the
     # publish folder.
@@ -304,8 +382,9 @@ def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, as
                 outputs.append(output)
                 source = ready_to_run.replace.get(file.path, file)
                 inputs.append(source)
-                _copy_file(script_body, source, output, is_windows = is_windows)
+                _copy_file(copies, source, output)
 
+    script_body = _render_copy_script(copies, is_windows)
     copy_script = ctx.actions.declare_file(ctx.label.name + ".copy.bat" if is_windows else ctx.label.name + ".copy.sh")
     ctx.actions.write(
         output = copy_script,

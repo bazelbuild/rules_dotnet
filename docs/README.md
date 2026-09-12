@@ -166,3 +166,16 @@ csharp_binary(
 
 For CI that builds but does not test, `--nobuild_runfile_links` skips materialising the trees
 altogether.
+
+## Publishing
+
+`publish_binary` assembles its output with one script that copies every file into place. A
+self-contained publish copies the whole runtime pack, so that script is long: on a generated
+application it places 617 files into 14 directories.
+
+Each directory is created once and the files that keep their name are copied in batches, rather
+than running `mkdir -p` and `cp` per file. That script went from 1,234 processes to 30, and from
+2.40s to 0.36s for byte identical output - it had been the slowest action in the build.
+
+Windows still runs one `copy` per file, because `copy` concatenates when handed several sources,
+but it shares the directory creation.
