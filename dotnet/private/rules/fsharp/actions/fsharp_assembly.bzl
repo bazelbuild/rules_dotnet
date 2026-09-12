@@ -436,7 +436,7 @@ def _compile(
 
     args.use_param_file("@%s", use_always = True)
 
-    direct_inputs = srcs + resources + [toolchain.fsharp_compiler.files_to_run.executable]
+    direct_inputs = srcs + resources
     direct_inputs += [keyfile] if keyfile else []
 
     # dotnet.exe fsc.dll --noconfig <other fsc args>
@@ -444,8 +444,21 @@ def _compile(
         mnemonic = "FSharpCompile",
         progress_message = "Compiling " + target_name + (" (internals ref-only dll)" if out_dll == None else ""),
         inputs = depset(
-            direct = direct_inputs + framework_files + [compiler_wrapper, toolchain.compiler_host.files_to_run.executable],
-            transitive = [refs, toolchain.compiler_host.default_runfiles.files, toolchain.fsharp_compiler.default_runfiles.files, compile_data],
+            direct = direct_inputs + framework_files,
+            transitive = [refs, compile_data],
+        ),
+        # The wrapper, the dotnet host and the compiler are tools, not ordinary
+        # inputs - declaring them as such is what lets Bazel tell them apart.
+        tools = depset(
+            direct = [
+                compiler_wrapper,
+                toolchain.compiler_host.files_to_run.executable,
+                toolchain.fsharp_compiler.files_to_run.executable,
+            ],
+            transitive = [
+                toolchain.compiler_host.default_runfiles.files,
+                toolchain.fsharp_compiler.default_runfiles.files,
+            ],
         ),
         outputs = outputs,
         executable = compiler_wrapper,
