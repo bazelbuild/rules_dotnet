@@ -107,6 +107,23 @@ DotnetCrossgen2PackInfo = provider(
     },
 )
 
+DotnetIlcompilerPackInfo = provider(
+    doc = "The ilc tool that compiles IL to native code.",
+    fields = {
+        "ilc": "The ilc executable.",
+        "files": "Everything ilc needs at runtime.",
+    },
+)
+
+DotnetNativeAotPackInfo = provider(
+    doc = "The framework a NativeAOT publish compiles and links against.",
+    fields = {
+        "libs": "The framework assemblies ilc compiles against.",
+        "link_inputs": "The static libraries and objects the native link consumes, by basename.",
+        "files": "Every file the pack provides.",
+    },
+)
+
 DotnetApphostPackInfo = provider(
     doc = "Information about a .Net runtime pack.",
     fields = {

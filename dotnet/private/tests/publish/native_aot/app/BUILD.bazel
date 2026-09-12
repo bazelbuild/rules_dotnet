@@ -1,0 +1,10 @@
+# A managed-only app, so the cross-compilation test exercises the AOT toolchain
+# without also needing the first-party native library built for the target.
+load("//dotnet:defs.bzl", "csharp_binary")
+
+csharp_binary(
+    name = "app",
+    srcs = ["Program.cs"],
+    target_frameworks = ["net10.0"],
+    visibility = ["//dotnet/private/tests/publish/native_aot:__pkg__"],
+)

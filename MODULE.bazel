@@ -17,7 +17,7 @@ dotnet.toolchain(
     name = "dotnet_apphost",
     dotnet_version = "10.0.201",
 )
-use_repo(dotnet, "dotnet.apphost_packs", "dotnet.crossgen2_packs", "dotnet.runtime_packs", "dotnet.targeting_packs", "dotnet_toolchains")
+use_repo(dotnet, "dotnet.apphost_packs", "dotnet.crossgen2_packs", "dotnet.ilcompiler_packs", "dotnet.nativeaot_packs", "dotnet.runtime_packs", "dotnet.targeting_packs", "dotnet_toolchains")
 
 # These toolchains are used to build the apphost shimmer
 use_repo(dotnet, "dotnet_apphost_x86_64-unknown-linux-gnu")
@@ -28,6 +28,15 @@ use_repo(dotnet, "dotnet_apphost_x86_64-pc-windows-msvc")
 use_repo(dotnet, "dotnet_apphost_arm64-pc-windows-msvc")
 
 register_toolchains("@dotnet_toolchains//:all")
+
+# rules_dotnet builds its own C/C++ hermetically, so the NativeAOT tests link
+# identically everywhere and can cross-compile. Consumers choose for
+# themselves: `publish_binary` resolves whatever C/C++ toolchain the workspace
+# registered, and only when `native_aot = True`.
+register_toolchains(
+    "@llvm//toolchain:all",
+    dev_dependency = True,
+)
 
 paket = use_extension("@rules_dotnet//dotnet:paket.bzl", "paket")
 paket.parse(
@@ -46,13 +55,44 @@ bazel_dep(name = "platforms", version = "1.0.0")
 bazel_dep(name = "bazel_lib", version = "3.0.0")
 bazel_dep(name = "rules_shell", version = "0.5.0")
 
+# Read by `publish_binary` to link a NativeAOT publish.
+bazel_dep(name = "rules_cc", version = "0.2.19")
+
 # Dev dependencies
 bazel_dep(name = "rules_pkg", version = "1.1.0", dev_dependency = True)
 bazel_dep(name = "gazelle", version = "0.51.3", dev_dependency = True, repo_name = "bazel_gazelle")
 bazel_dep(name = "bazel_skylib_gazelle_plugin", version = "1.9.0", dev_dependency = True)
-bazel_dep(name = "rules_cc", version = "0.2.19", dev_dependency = True)
 bazel_dep(name = "rules_testing", version = "0.8.0", dev_dependency = True)
 bazel_dep(name = "bazel_ci_rules", version = "1.0.0", dev_dependency = True)
+
+# A hermetic cross-compiling C/C++ toolchain, so the NativeAOT tests can link
+# for a platform other than the one running the build. Only the tests need it:
+# `publish_binary` resolves whatever cc toolchain the consuming workspace has
+# registered, and asks for one only when `native_aot = True`.
+bazel_dep(name = "llvm", version = "0.8.19", dev_dependency = True)
+
+# The module's default macOS sysroot is a minimal one. A NativeAOT link also
+# needs the frameworks and Swift runtime libraries the .NET runtime's own
+# cryptography and networking code binds to. Naming any framework replaces the
+# default set, so the defaults are repeated here.
+osx_sysroot = use_extension("@llvm//extensions:osx.bzl", "osx", dev_dependency = True)
+osx_sysroot.frameworks(names = [
+    "CoreFoundation",
+    "CryptoKit",
+    "Foundation",
+    "GSS",
+    "Kernel",
+    "Network",
+    "OSLog",
+    "Security",
+    "SystemConfiguration",
+])
+osx_sysroot.libraries(names = [
+    "libicucore",
+    "swift/libswiftCore",
+    "swift/libswiftFoundation",
+])
+
 bazel_dep(name = "dotnet_test_resources_other_repo", version = "", dev_dependency = True)
 local_path_override(
     module_name = "dotnet_test_resources_other_repo",
