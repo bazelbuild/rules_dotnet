@@ -139,3 +139,20 @@ bzl_library(
     srcs = ["xml.bzl"],
     visibility = ["//dotnet:__subpackages__"],
 )
+
+# The crossgen2 pack for the machine the build runs on. Behind an alias
+# because a rule attribute default cannot itself be a select; the rule depends
+# on this in the exec configuration, so the select resolves to the execution
+# platform rather than the target.
+alias(
+    name = "crossgen2_pack",
+    actual = select({
+        ":linux-arm64": "@dotnet.crossgen2_packs//tool:linux-arm64",
+        ":linux-x64": "@dotnet.crossgen2_packs//tool:linux-x64",
+        ":osx-arm64": "@dotnet.crossgen2_packs//tool:osx-arm64",
+        ":osx-x64": "@dotnet.crossgen2_packs//tool:osx-x64",
+        ":windows-arm64": "@dotnet.crossgen2_packs//tool:win-arm64",
+        ":windows-x64": "@dotnet.crossgen2_packs//tool:win-x64",
+    }),
+    visibility = ["//visibility:public"],
+)

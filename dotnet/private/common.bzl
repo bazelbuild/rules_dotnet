@@ -921,7 +921,7 @@ def to_rlocation_path(ctx, file):
     else:
         return ctx.workspace_name + "/" + file.short_path
 
-def copy_files_to_dir(target_name, actions, is_windows, files, out_dir):
+def copy_files_to_dir(target_name, actions, is_windows, files, out_dir, executables = []):
     """Copies files to a specific location.
 
     Args:
@@ -930,6 +930,9 @@ def copy_files_to_dir(target_name, actions, is_windows, files, out_dir):
         is_windows: If the OS is Windows
         files: The files to copy
         out_dir: The directory to copy the files to
+        executables: Basenames to mark executable. Zip entries carry no Unix
+            permissions, so a native tool extracted from a nupkg arrives
+            without its bit set. Windows goes by file extension instead.
 
     Returns:
         A list of the copied files in the out_dir
@@ -948,6 +951,9 @@ def copy_files_to_dir(target_name, actions, is_windows, files, out_dir):
             script_body.append("@copy /Y \"{src}\" \"{dst}\" >NUL".format(src = src.path.replace("/", "\\"), dst = dst.path.replace("/", "\\")))
         else:
             script_body.append("mkdir -p {dir} && cp -f {src} {dst}".format(dir = shell.quote(dst.dirname), src = shell.quote(src.path), dst = shell.quote(dst.path)))
+
+            if src.basename in executables:
+                script_body.append("chmod +x {dst}".format(dst = shell.quote(dst.path)))
 
     if len(outputs) > 0:
         copy_script = actions.declare_file(target_name + ".copy.bat" if is_windows else target_name + ".copy.sh")

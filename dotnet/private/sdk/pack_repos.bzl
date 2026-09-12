@@ -19,6 +19,7 @@ load(
 )
 load(
     "//dotnet/private/rules/nuget:nuget_repo.bzl",
+    "nuget_archive_name",
     "nuget_archives",
     "nuget_hub_repo",
     "nuget_package_label",
@@ -26,11 +27,14 @@ load(
 load(
     "//dotnet/private/sdk:packs.bzl",
     "APPHOST_PACK_REPO",
+    "CROSSGEN2_PACK_REPO",
     "PROJECT_SDKS",
     "RUNTIME_PACK_REPO",
     "TARGETING_PACK_REPO",
     "apphost_pack",
     "band_is_movable",
+    "crossgen2_host_rids",
+    "crossgen2_pack",
     "runtime_pack_rids",
     "runtime_pack_tfms",
     "runtime_packs",
@@ -56,9 +60,16 @@ def _retarget(packs, version):
 
     return [(id, version) for (id, _) in packs]
 
+def _render(value):
+    """Renders an attribute value, keeping `select` dicts as selects."""
+    if type(value) == "dict":
+        return "select({})".format(json.encode(value))
+
+    return json.encode(value)
+
 def _target(kind, attrs):
     return "{}_pack(\n{}\n)".format(kind, "\n".join([
-        "    {} = {},".format(key, json.encode(attrs[key]))
+        "    {} = {},".format(key, _render(attrs[key]))
         for key in sorted(attrs)
     ]))
 
@@ -128,6 +139,51 @@ def _apphost(versions):
 
     return struct(build_files = build_files, packages = collections.uniq(packages))
 
+def _crossgen2(versions):
+    """One target per host runtime identifier, selecting its pack by framework.
+
+    crossgen2 is chosen by the machine the build runs on while the framework
+    comes from the configuration, and a rule attribute cannot select on both.
+    """
+    packages = []
+    targets = []
+    newest_tfm = runtime_pack_tfms()[-1]
+
+    for rid in crossgen2_host_rids():
+        by_tfm = {}
+
+        for tfm in runtime_pack_tfms():
+            pack = crossgen2_pack(tfm, rid)
+
+            if pack == None:
+                continue
+
+            (id, version) = pack
+            version = versions.get(tfm) or version
+            packages.append((id, version))
+
+            # crossgen2 is a native executable with its JIT libraries beside
+            # it, none of which the package rules classify, so the pack reads
+            # the archive's file list directly.
+            files = "@{}//:files".format(nuget_archive_name(id, version))
+            by_tfm["@rules_dotnet//dotnet:tfm_{}".format(tfm)] = files
+
+            if tfm == newest_tfm:
+                # Nothing sets a target framework outside a tfm transition, so
+                # the target still has to resolve without one.
+                by_tfm["//conditions:default"] = files
+
+        targets.append({
+            "name": rid,
+            "pack_files": by_tfm,
+        })
+
+    return struct(
+        # Not the root BUILD: the hub writes its own there.
+        build_files = {"tool/BUILD.bazel": _build_file("crossgen2", targets)},
+        packages = collections.uniq(packages),
+    )
+
 def _versions_for_registered_sdks(module_ctx, registrations, netrc_entries, indexes):
     """Returns the version each band's packs should move to, by target framework.
 
@@ -194,10 +250,11 @@ def declare_pack_repos(module_ctx, registrations):
         (TARGETING_PACK_REPO, _targeting(bands.versions)),
         (RUNTIME_PACK_REPO, _runtime(bands.versions)),
         (APPHOST_PACK_REPO, _apphost(bands.versions)),
+        (CROSSGEN2_PACK_REPO, _crossgen2(bands.versions)),
     ]
 
-    # The three kinds cannot share a package: their ids end in `.Ref`,
-    # `.Runtime.<rid>` and `.Host.<rid>` respectively.
+    # The kinds cannot share a package: their ids end in `.Ref`,
+    # `.Runtime.<rid>`, `.Host.<rid>` and `.Crossgen2.<rid>` respectively.
     packages = [pack for (_, kind) in kinds for pack in kind.packages]
 
     resolved = {}

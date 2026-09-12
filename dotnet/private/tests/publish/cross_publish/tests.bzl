@@ -34,7 +34,7 @@ def tests():
             binary = "//dotnet/private/tests/publish/app_to_publish",
             runtime_identifier = rid,
             self_contained = True,
-            target_framework = "net6.0",
+            target_framework = "net10.0",
         )
         sh_test(
             name = "cross_publish_test_{}".format(rid),

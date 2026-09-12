@@ -6,8 +6,10 @@ load(
 )
 
 publish_binary(
-    name = "self_contained",
+    name = "ready2run_composite",
     binary = "//dotnet/private/tests/publish/app_to_publish",
+    ready_to_run = True,
+    ready_to_run_composite = True,
     self_contained = True,
     target_framework = "net10.0",
 )
@@ -18,24 +20,24 @@ publish_binary(
 # of the publish without any problems
 pkg_tar(
     name = "tar",
-    srcs = [":self_contained"],
+    srcs = [":ready2run_composite"],
     include_runfiles = True,
     mode = "0755",
     package_dir = "/",
     strip_prefix = select(
         {
-            "//dotnet/private:linux-x64": "self_contained/publish/linux-x64",
-            "//dotnet/private:linux-arm64": "self_contained/publish/linux-arm64",
-            "//dotnet/private:osx-x64": "self_contained/publish/osx-x64",
-            "//dotnet/private:osx-arm64": "self_contained/publish/osx-arm64",
-            "//dotnet/private:windows-x64": "self_contained/publish/win-x64",
-            "//dotnet/private:windows-arm64": "self_contained/publish/win-arm64",
+            "//dotnet/private:linux-x64": "ready2run_composite/publish/linux-x64",
+            "//dotnet/private:linux-arm64": "ready2run_composite/publish/linux-arm64",
+            "//dotnet/private:osx-x64": "ready2run_composite/publish/osx-x64",
+            "//dotnet/private:osx-arm64": "ready2run_composite/publish/osx-arm64",
+            "//dotnet/private:windows-x64": "ready2run_composite/publish/win-x64",
+            "//dotnet/private:windows-arm64": "ready2run_composite/publish/win-arm64",
         },
     ),
 )
 
 sh_test(
-    name = "self_contained_test",
+    name = "ready2run_composite_test",
     srcs = [
         "test.sh",
     ],

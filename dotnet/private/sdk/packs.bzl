@@ -126,6 +126,24 @@ def apphost_pack(tfm, rid):
 
     return (_app_pack_id(tfm, False, "Host." + rid), PACK_BANDS[tfm]["runtime"])
 
+def crossgen2_pack(tfm, rid):
+    """Returns the crossgen2 pack that compiles ReadyToRun images.
+
+    Keyed by the *host* runtime identifier, not the target: crossgen2 runs on
+    the build machine and cross-compiles via --targetos/--targetarch.
+
+    Args:
+      tfm: The target framework.
+      rid: The runtime identifier of the machine crossgen2 will run on.
+
+    Returns:
+      A (package id, version) tuple, or None if there is no crossgen2 pack.
+    """
+    if rid not in runtime_pack_rids(tfm):
+        return None
+
+    return (_app_pack_id(tfm, False, "Crossgen2." + rid), PACK_BANDS[tfm]["runtime"])
+
 def runtime_pack_rids(tfm, project_sdk = DEFAULT_SDK):
     """Returns the runtime identifiers a target framework shipped packs for.
 
@@ -181,6 +199,8 @@ RUNTIME_PACK_REPO = "dotnet.runtime_packs"
 
 APPHOST_PACK_REPO = "dotnet.apphost_packs"
 
+CROSSGEN2_PACK_REPO = "dotnet.crossgen2_packs"
+
 TARGETING_PACK_LOOKUP_TABLE = {
     project_sdk: {
         tfm: "@{}//{}:{}".format(TARGETING_PACK_REPO, project_sdk, tfm)
@@ -188,6 +208,26 @@ TARGETING_PACK_LOOKUP_TABLE = {
     }
     for project_sdk in PROJECT_SDKS
 }
+
+# The runtime identifiers a build can run on, and so the ones crossgen2 packs
+# are fetched for. Matches the platforms `//dotnet/private:crossgen2_pack`
+# selects over; a musl host is not distinguishable as a Bazel platform here.
+_CROSSGEN2_HOST_RIDS = [
+    "linux-arm64",
+    "linux-x64",
+    "osx-arm64",
+    "osx-x64",
+    "win-arm64",
+    "win-x64",
+]
+
+def crossgen2_host_rids():
+    """The runtime identifiers crossgen2 packs are fetched for.
+
+    Returns:
+      A list of runtime identifiers.
+    """
+    return _CROSSGEN2_HOST_RIDS
 
 RUNTIME_PACK_LOOKUP_TABLE = {
     project_sdk: {

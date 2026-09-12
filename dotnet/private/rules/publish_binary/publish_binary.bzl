@@ -5,7 +5,13 @@ Rules for compiling F# binaries.
 load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@bazel_skylib//lib:shell.bzl", "shell")
 load("//dotnet/private:common.bzl", "generate_depsjson", "generate_runtimeconfig")
-load("//dotnet/private:providers.bzl", "DotnetAssemblyCompileInfo", "DotnetAssemblyRuntimeInfo", "DotnetBinaryInfo")
+load(
+    "//dotnet/private:providers.bzl",
+    "DotnetAssemblyCompileInfo",
+    "DotnetAssemblyRuntimeInfo",
+    "DotnetBinaryInfo",
+    "DotnetCrossgen2PackInfo",
+)
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 
 def _copy_file(script_body, src, dst, is_windows):
@@ -15,63 +21,205 @@ def _copy_file(script_body, src, dst, is_windows):
     else:
         script_body.append("mkdir -p {dir} && cp -f {src} {dst}".format(dir = shell.quote(dst.dirname), src = shell.quote(src.path), dst = shell.quote(dst.path)))
 
+_NO_READY_TO_RUN = struct(replace = {}, extra = [])
+
+def _crossgen2_target(runtime_identifier):
+    """Splits a runtime identifier into crossgen2's --targetos/--targetarch.
+    """
+    parts = runtime_identifier.split("-")
+
+    if len(parts) < 2 or parts[0] not in ("linux", "osx", "win"):
+        fail("Cannot target {} with ReadyToRun".format(runtime_identifier))
+
+    return ("windows" if parts[0] == "win" else parts[0], parts[-1])
+
+def _runtime_pack_files(runtime_pack, deps_json_struct):
+    """The runtime pack files that reach the publish.
+
+    A user dependency that overrides a runtime pack DLL drops it from the
+    pack's deps.json target, and then the pack's copy is not published.
+    """
+    libs = []
+    native = []
+    target = deps_json_struct["targets"].values()[0].get("runtimepack.{}/{}".format(
+        runtime_pack.name,
+        runtime_pack.version,
+    ))
+
+    if target:
+        for file in runtime_pack.native:
+            if file.basename in target.get("native", {}):
+                native.append(file)
+        for file in runtime_pack.libs:
+            if file.basename in target.get("runtime", {}):
+                libs.append(file)
+
+    return struct(libs = libs, native = native)
+
+def _ready_to_run_images(ctx, binary_info, assembly_files, deps_json_struct, runtime_identifier):
+    """Compiles the published assemblies to ReadyToRun.
+
+    crossgen2 cross-compiles, so the tool comes from the pack for the execution
+    platform while the target platform and the references come from the target.
+    """
+    crossgen2_info = ctx.attr._crossgen2_pack[DotnetCrossgen2PackInfo]
+    (target_os, target_arch) = _crossgen2_target(runtime_identifier)
+
+    framework = [
+        lib
+        for runtime_pack in binary_info.runtime_pack_info.assembly_runtime_infos
+        for lib in runtime_pack.libs
+    ]
+
+    # Runtime pack assemblies already ship as ReadyToRun images, so only a
+    # composite image, which has to cover the framework, recompiles them.
+    # Either way the framework is there for crossgen2 to resolve against.
+    compiled = [binary_info.dll] + assembly_files.libs
+    if ctx.attr.ready_to_run_composite:
+        for runtime_pack in binary_info.runtime_pack_info.assembly_runtime_infos:
+            compiled.extend(_runtime_pack_files(runtime_pack, deps_json_struct).libs)
+
+    assemblies = {assembly.path: assembly for assembly in compiled}.values()
+    references = {reference.path: reference for reference in framework + assemblies}.values()
+
+    common = ctx.actions.args()
+    common.add("--targetos:" + target_os)
+    common.add("--targetarch:" + target_arch)
+    common.add("-O")
+    common.add_all(references, format_each = "-r:%s")
+    common.set_param_file_format("multiline")
+
+    response_file = ctx.actions.declare_file("{}/r2r/{}/crossgen2.rsp".format(
+        ctx.label.name,
+        runtime_identifier,
+    ))
+    ctx.actions.write(response_file, common)
+
+    tool_files = depset(references + [response_file], transitive = [crossgen2_info.files])
+    rsp = "@" + response_file.path
+
+    if ctx.attr.ready_to_run_composite:
+        image = ctx.actions.declare_file("{}/r2r/{}/composite/{}.r2r.dll".format(
+            ctx.label.name,
+            runtime_identifier,
+            ctx.attr.binary[0][DotnetAssemblyRuntimeInfo].name,
+        ))
+
+        components = {}
+        outputs = [image]
+
+        for assembly in assemblies:
+            component = ctx.actions.declare_file("{}/r2r/{}/composite/{}".format(
+                ctx.label.name,
+                runtime_identifier,
+                assembly.basename,
+            ))
+            components[assembly.path] = component
+            outputs.append(component)
+
+        ctx.actions.run(
+            executable = crossgen2_info.crossgen2,
+            arguments = [rsp, "--composite", "--out:" + image.path] + [a.path for a in assemblies],
+            inputs = tool_files,
+            outputs = outputs,
+            mnemonic = "Crossgen2Composite",
+            progress_message = "Compiling composite ReadyToRun image for %{label}",
+        )
+
+        return struct(replace = components, extra = [image])
+
+    images = {}
+    for assembly in assemblies:
+        image = ctx.actions.declare_file("{}/r2r/{}/{}".format(
+            ctx.label.name,
+            runtime_identifier,
+            assembly.basename,
+        ))
+
+        ctx.actions.run(
+            executable = crossgen2_info.crossgen2,
+            arguments = [rsp, "--out:" + image.path, assembly.path],
+            inputs = tool_files,
+            outputs = [image],
+            mnemonic = "Crossgen2",
+            progress_message = "Compiling %{input} to ReadyToRun",
+        )
+
+        images[assembly.path] = image
+
+    return struct(replace = images, extra = [])
+
 def _get_assembly_files(assembly_info, transitive_runtime_deps, deps_json_struct):
+    """The files a publish copies, gathered from the target and its deps."""
     libs = [] + assembly_info.libs
     resource_assemblies = [] + assembly_info.resource_assemblies
     native = [] + assembly_info.native
     data = [] + assembly_info.data
-    appsetting_files = assembly_info.appsetting_files.to_list()
+    targets = deps_json_struct["targets"].values()[0]
+
     for dep in transitive_runtime_deps:
-        # For each dependency we need to check in the deps.json struct if the files should be copied.
-        # If the file is to be copied it will be in the `native`, `runtimeTargets` or `runtime` attribute of the `target` for the dependency.
-        # A reason for the file not being in the deps.json is that the runtime pack might provide the file instead of the dependency.
-        target = deps_json_struct["targets"].items()[0][1].get("{}/{}".format(dep.name, dep.version))
+        # A file missing from the deps.json is not published: the runtime pack
+        # may be providing it instead of the dependency.
+        target = targets.get("{}/{}".format(dep.name, dep.version))
+
         if target:
-            if "native" in target:
-                for file in dep.native:
-                    if file.basename in target["native"]:
-                        native.append(file)
+            dep_native = target.get("native", {})
+            runtime_targets = target.get("runtimeTargets", {})
+            runtime = target.get("runtime", {})
 
-            if "runtimeTargets" in target:
-                for file in dep.native:
-                    if file.basename in target["runtimeTargets"].keys() and target["runtimeTargets"][file.basename]["assetType"] == "native":
-                        native.append(file)
+            for file in dep.native:
+                if file.basename in dep_native:
+                    native.append(file)
+                elif runtime_targets.get(file.basename, {}).get("assetType") == "native":
+                    native.append(file)
 
-            if "runtime" in target:
-                for file in dep.libs:
-                    if file.basename in target["runtime"]:
-                        libs.append(file)
+            for file in dep.libs:
+                if file.basename in runtime:
+                    libs.append(file)
 
         data += dep.data
         resource_assemblies += dep.resource_assemblies
-    return (libs, resource_assemblies, native, data, appsetting_files)
 
-def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, assembly_info, transitive_runtime_deps, deps_json_struct, is_self_contained):
+    return struct(
+        libs = libs,
+        resource_assemblies = resource_assemblies,
+        native = native,
+        data = data,
+        appsetting_files = assembly_info.appsetting_files.to_list(),
+    )
+
+def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, assembly_files, deps_json_struct, is_self_contained, ready_to_run = _NO_READY_TO_RUN):
     is_windows = ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo])
-    inputs = [binary_info.dll]
+    main_dll_source = ready_to_run.replace.get(binary_info.dll.path, binary_info.dll)
+    inputs = [main_dll_source]
     main_dll_copy = ctx.actions.declare_file(
         "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, binary_info.dll.basename),
     )
     outputs = [main_dll_copy]
     script_body = ["@echo off"] if is_windows else ["#! /usr/bin/env bash", "set -eou pipefail"]
 
-    _copy_file(script_body, binary_info.dll, main_dll_copy, is_windows = is_windows)
+    _copy_file(script_body, main_dll_source, main_dll_copy, is_windows = is_windows)
 
-    (libs, resource_assemblies, native, data, appsetting_files) = _get_assembly_files(assembly_info, transitive_runtime_deps, deps_json_struct)
-
-    # All managed DLLs are copied next to the app host in the publish directory
-    for file in libs:
-        output = ctx.actions.declare_file(
-            "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, file.basename),
-        )
+    for file in ready_to_run.extra:
+        output = ctx.actions.declare_file(file.basename, sibling = main_dll_copy)
         outputs.append(output)
         inputs.append(file)
         _copy_file(script_body, file, output, is_windows = is_windows)
 
+    # All managed DLLs are copied next to the app host in the publish directory
+    for file in assembly_files.libs:
+        output = ctx.actions.declare_file(
+            "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, file.basename),
+        )
+        outputs.append(output)
+        source = ready_to_run.replace.get(file.path, file)
+        inputs.append(source)
+        _copy_file(script_body, source, output, is_windows = is_windows)
+
     # Resource assemblies are copied next to the app host in the publish directory in a folder
     # that has the same name as the locale of the resource assembly.
     # Example: `de/MyAssembly.resources.dll`
-    for file in resource_assemblies:
+    for file in assembly_files.resource_assemblies:
         locale = file.dirname.split("/")[-1]
         output_dir = "{}/publish/{}/{}/{}".format(ctx.label.name, runtime_identifier, locale, file.basename)
         output = ctx.actions.declare_file(output_dir)
@@ -79,7 +227,7 @@ def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, as
         inputs.append(file)
         _copy_file(script_body, file, output, is_windows = is_windows)
 
-    for file in native:
+    for file in assembly_files.native:
         # If the publish is not self-contained we need to copy the native
         # DLLs into the runtimes/{rid}/native/ folder structure.
         output_path = "{}/publish/{}/runtimes/{}/native/{}".format(
@@ -126,10 +274,10 @@ def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, as
     # next to the the DLL based on argv0 of the running process if
     # RUNFILES_DIR/RUNFILES_MANIFEST_FILE/RUNFILES_MANIFEST_ONLY is not set).
     runfiles = []
-    for file in data:
+    for file in assembly_files.data:
         runfiles.append(file)
 
-    for file in appsetting_files:
+    for file in assembly_files.appsetting_files:
         inputs.append(file)
         output = ctx.actions.declare_file(
             "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, file.basename),
@@ -137,37 +285,18 @@ def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, as
         outputs.append(output)
         _copy_file(script_body, file, output, is_windows = is_windows)
 
-    # In case the publish is self-contained there needs to be a runtime pack available
-    # with the runtime dependencies that are required for the targeted runtime.
-    # The runtime pack contents should always be copied to the root of the publish folder
+    # A self-contained publish carries the runtime pack at the root of the
+    # publish folder.
     if runtime_pack_info:
         for runtime_pack in runtime_pack_info.assembly_runtime_infos:
-            # We need to go through the deps.json struct to determine which files should be copied.
-            # If a user provided dependency is overriding a DLL that is in the runtime pack then the
-            # DLL is omitted from the target for the runtime pack in the deps.json.
-            libs = []
-            native = []
-            target = deps_json_struct["targets"].items()[0][1].get("runtimepack.{}/{}".format(runtime_pack.name, runtime_pack.version))
-            if target:
-                if "native" in target:
-                    for file in runtime_pack.native:
-                        if file.basename in target["native"]:
-                            native.append(file)
-                if "runtime" in target:
-                    for file in runtime_pack.libs:
-                        if file.basename in target["runtime"]:
-                            libs.append(file)
+            files = _runtime_pack_files(runtime_pack, deps_json_struct)
 
-            runtime_pack_files = depset(
-                libs +
-                native +
-                runtime_pack.data,
-            )
-            for file in runtime_pack_files.to_list():
+            for file in files.libs + files.native + runtime_pack.data:
                 output = ctx.actions.declare_file(file.basename, sibling = main_dll_copy)
                 outputs.append(output)
-                inputs.append(file)
-                _copy_file(script_body, file, output, is_windows = is_windows)
+                source = ready_to_run.replace.get(file.path, file)
+                inputs.append(source)
+                _copy_file(script_body, source, output, is_windows = is_windows)
 
     copy_script = ctx.actions.declare_file(ctx.label.name + ".copy.bat" if is_windows else ctx.label.name + ".copy.sh")
     ctx.actions.write(
@@ -233,6 +362,9 @@ def _publish_binary_impl(ctx):
     transitive_runtime_deps = binary_info.transitive_runtime_deps
     target_framework = ctx.attr.target_framework
     is_self_contained = ctx.attr.self_contained
+
+    if ctx.attr.ready_to_run_composite and not (ctx.attr.ready_to_run and is_self_contained):
+        fail("ready_to_run_composite requires ready_to_run and self_contained")
     assembly_name = assembly_runtime_info.name
     runtime_pack_info = binary_info.runtime_pack_info if is_self_contained else None
     runtime_identifier = ctx.attr.runtime_identifier if ctx.attr.runtime_identifier else binary_info.runtime_pack_info.runtime_identifier
@@ -265,15 +397,27 @@ def _publish_binary_impl(ctx):
         runtime_pack_info,
     )
 
+    assembly_files = _get_assembly_files(assembly_runtime_info, transitive_runtime_deps, depsjson_struct)
+    ready_to_run = _NO_READY_TO_RUN
+
+    if ctx.attr.ready_to_run:
+        ready_to_run = _ready_to_run_images(
+            ctx,
+            binary_info,
+            assembly_files,
+            depsjson_struct,
+            runtime_identifier,
+        )
+
     (main_dll, outputs, runfiles) = _copy_to_publish(
         ctx,
         runtime_identifier,
         runtime_pack_info,
         binary_info,
-        assembly_runtime_info,
-        transitive_runtime_deps,
+        assembly_files,
         depsjson_struct,
         is_self_contained,
+        ready_to_run,
     )
 
     apphost_shim = _create_shim_exe(ctx, binary_info.apphost_pack_info, main_dll, runtime_identifier)
@@ -326,6 +470,30 @@ _publish_binary = rule(
             doc = "The roll forward behavior that should be used: https://learn.microsoft.com/en-us/dotnet/core/versions/selection#control-roll-forward-behavior",
             default = "Minor",
             values = ["Minor", "Major", "LatestPatch", "LatestMinor", "LatestMajor", "Disable"],
+        ),
+        "ready_to_run": attr.bool(
+            doc = """Compile the published assemblies to ReadyToRun.
+
+ReadyToRun embeds native code alongside the IL so the JIT has less to do at
+startup. The published file set is unchanged: each assembly is replaced by its
+compiled image.""",
+            default = False,
+        ),
+        "ready_to_run_composite": attr.bool(
+            doc = """Compile a single composite ReadyToRun image.
+
+One image covers every assembly, which lets crossgen2 inline across assembly
+boundaries. Requires `ready_to_run` and `self_contained`, because the framework
+has to be part of the image.""",
+            default = False,
+        ),
+        "_crossgen2_pack": attr.label(
+            doc = """The crossgen2 pack to compile ReadyToRun images with.
+
+Selected by the execution platform rather than the target: crossgen2
+cross-compiles, so what matters is the machine it runs on.""",
+            cfg = "exec",
+            default = Label("//dotnet/private:crossgen2_pack"),
         ),
         "_apphost_shimmer": attr.label(
             providers = [DotnetAssemblyCompileInfo, DotnetAssemblyRuntimeInfo],
