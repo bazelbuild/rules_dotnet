@@ -8,6 +8,7 @@ a Bazel test.
 load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 load(
     "//dotnet/private:common.bzl",
+    "default_csharp_lang_version",
     "get_toolchain",
     "is_debug",
 )
@@ -31,7 +32,7 @@ def _compile_action(ctx, tfm):
         targeting_pack = ctx.attr._targeting_pack[0],
         internals_visible_to = ctx.attr.internals_visible_to,
         keyfile = ctx.file.keyfile,
-        langversion = ctx.attr.langversion if ctx.attr.langversion != "" else toolchain.dotnetinfo.csharp_default_version,
+        langversion = ctx.attr.langversion if ctx.attr.langversion != "" else default_csharp_lang_version(tfm, toolchain.dotnetinfo.csharp_default_version),
         resources = ctx.files.resources,
         srcs = ctx.files.srcs,
         data = ctx.files.data,

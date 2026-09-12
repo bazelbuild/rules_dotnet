@@ -38,3 +38,9 @@ bzl_library(
         "@bazel_skylib//lib:collections",
     ],
 )
+
+bzl_library(
+    name = "frameworks",
+    srcs = ["frameworks.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+)

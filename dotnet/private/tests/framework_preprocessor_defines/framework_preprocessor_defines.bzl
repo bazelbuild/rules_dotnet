@@ -1,4 +1,5 @@
-"Tests for ensuring that NET*_OR_GREATER defines are properly set when targeting a given TFM."
+"""Tests that framework preprocessor defines match what the .NET SDK emits.
+"""
 
 load("//dotnet:defs.bzl", "csharp_library")
 load("//dotnet/private/tests:utils.bzl", "action_args_test")
@@ -6,8 +7,6 @@ load("//dotnet/private/tests:utils.bzl", "action_args_test")
 # buildifier: disable=unnamed-macro
 # buildifier: disable=function-docstring
 def test_framework_preprocessor_defines():
-    # TODO: Also test .NET Framework. Currently blocked by https://github.com/bazel-contrib/rules_dotnet/issues/477
-
     csharp_library(
         name = "lib_netstd",
         srcs = ["Hello.cs"],
@@ -24,6 +23,12 @@ def test_framework_preprocessor_defines():
         name = "lib_netcoreapp",
         srcs = ["Hello.cs"],
         target_frameworks = ["netcoreapp3.1"],
+    )
+
+    csharp_library(
+        name = "lib_netfx",
+        srcs = ["Hello.cs"],
+        target_frameworks = ["net48"],
     )
 
     action_args_test(
@@ -44,6 +49,8 @@ def test_framework_preprocessor_defines():
             "/d:NETCOREAPP3_1_OR_GREATER",
             "/d:NETSTANDARD2_1_OR_GREATER",
             "/d:NET462_OR_GREATER",
+            # There is no versionless _OR_GREATER symbol.
+            "/d:NETSTANDARD_OR_GREATER",
         ],
     )
 
@@ -56,14 +63,16 @@ def test_framework_preprocessor_defines():
             "/d:NET8_0",
             "/d:NET8_0_OR_GREATER",
             "/d:NET6_0_OR_GREATER",
-            "/d:NETSTANDARD2_1_OR_GREATER",
+            "/d:NETCOREAPP",
+            "/d:NETCOREAPP3_1_OR_GREATER",
         ],
         expected_nonexistent_partial_args = [
             "/d:NETSTANDARD",
-            "/d:NETCOREAPP",
             "/d:NETFRAMEWORK",
             "/d:NET9_0_OR_GREATER",
             "/d:NET472_OR_GREATER",
+            "/d:NETSTANDARD2_0_OR_GREATER",
+            "/d:NETSTANDARD2_1_OR_GREATER",
         ],
     )
 
@@ -85,5 +94,27 @@ def test_framework_preprocessor_defines():
             "/d:NETCOREAPP5_0_OR_GREATER",
             "/d:NETCOREAPP6_0_OR_GREATER",
             "/d:NET472_OR_GREATER",
+        ],
+    )
+
+    action_args_test(
+        name = "test_netfx",
+        target_under_test = ":lib_netfx",
+        action_mnemonic = "CSharpCompile",
+        expected_partial_args = [
+            "/d:NETFRAMEWORK",
+            "/d:NET48",
+            "/d:NET48_OR_GREATER",
+            "/d:NET472_OR_GREATER",
+            "/d:NET20_OR_GREATER",
+        ],
+        expected_nonexistent_partial_args = [
+            "/d:NET",
+            "/d:NETCOREAPP",
+            "/d:NETSTANDARD",
+            "/d:NET11_OR_GREATER",
+            "/d:NET403_OR_GREATER",
+            "/d:NETSTANDARD2_0_OR_GREATER",
+            "/d:NET481_OR_GREATER",
         ],
     )
