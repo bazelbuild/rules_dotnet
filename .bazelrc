@@ -18,8 +18,12 @@ common --experimental_collect_worker_data_in_profiler
 common --verbose_failures
 
 # The compile actions declare `supports-path-mapping`, so the same compilation
-# reached through two configurations (e.g. publishing for several RIDs) shares
-# one cache entry instead of being run twice. See docs/README.md#path-mapping.
+# reached through two configurations (e.g. publishing for several RIDs) gets one
+# cache key instead of two. Note that one key is not one action: the second
+# configuration still has to find its outputs somewhere, so this only pays for
+# itself alongside --disk_cache or a remote cache. Without one it costs about
+# 30%, because path mapping forces the workers to be sandboxed.
+# See docs/README.md#path-mapping.
 common --experimental_output_paths=strip
 
 # Bazel's default of 4 worker instances leaves a wide machine idle once the C#

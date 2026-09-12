@@ -180,14 +180,93 @@ build --@rules_dotnet//dotnet/settings:prune_unused_references=true
 
 The C# and F# compile actions support [Bazel path mapping](https://bazel.build/reference/command-line-reference#flag--experimental_output_paths).
 Path mapping strips the configuration segment out of the paths a compile action sees, so the *same*
-compilation reached through two different configurations produces one cache entry instead of two.
-
-Enable it with:
+compilation reached through two different configurations produces one cache **key** instead of two.
 
 ```
 common --experimental_output_paths=strip
 ```
 
-This pays off when a build reaches the same libraries in more than one configuration e.g. when
-publishing one application for several runtime identifiers, since the RID changes the
-configuration of the whole library graph without changing a single compiler argument.
+The case it exists for is a build that reaches the same libraries in more than one configuration -
+publishing one application for several runtime identifiers, say, since the RID reconfigures the
+whole library graph without changing a single compiler argument. Measured on one application
+published for six RIDs on top of a generated 300 library graph, clean each time:
+
+| | no cache | with `--disk_cache` |
+| --- | --- | --- |
+| `--experimental_output_paths=off` | 92.1s | 86.7s, 0 cache hits |
+| `--experimental_output_paths=strip` | 105.4s | **26.9s, 1,833 cache hits** |
+
+Two things follow, and both matter more than the headline.
+
+### It only pays off with a cache
+
+One cache key is not one action. Each configuration still has its own output paths and still has to
+put files there, so on a cold build with nowhere to read from, the six compilations all run whether
+or not their keys match. The win comes from the five that *find their outputs already built* - which
+needs somewhere to look, either `--disk_cache` or a remote cache. Without one, path mapping is cost
+with no benefit: the middle column above is 14% slower than not using it at all.
+
+### It forces workers to be sandboxed
+
+Path mapping needs the indirection a sandbox provides, so Bazel silently upgrades a worker that
+declares `supports-path-mapping` from non-sandboxed to sandboxed:
+
+```
+$ bazel build //... --experimental_output_paths=strip --worker_verbose
+INFO: Created new sandboxed singleplex CSharpCompile worker ...
+
+$ bazel build //... --experimental_output_paths=off --worker_verbose
+INFO: Created new non-sandboxed singleplex CSharpCompile worker ...
+```
+
+A sandboxed worker stages its inputs for every action instead of reusing what is already in its
+exec root. On a generated 300 library C# graph in a single configuration - nothing to share between
+configurations, so nothing for path mapping to win - that costs about 30%:
+
+| | clean build wall time |
+| --- | --- |
+| `--experimental_output_paths=off` | 10.8s |
+| `--experimental_output_paths=strip` | 14.1s |
+
+And because the sandbox is a requirement rather than a preference, any strategy that takes it away
+turns into a hard failure rather than a slow build:
+
+```
+$ bazel build //... --strategy=CSharpCompile=local
+ERROR: ... Compiling main failed: CSharpCompile spawn, which requires sandboxing due to
+path mapping, cannot be executed with any of the available strategies: [standalone].
+```
+
+The same happens with `--spawn_strategy=local` and with a `no-sandbox` tag applied to the
+compile actions. Turn path mapping off in those builds.
+
+## Which flags work together
+
+What the compile actions ask Bazel for:
+
+| Action | Execution requirements |
+| --- | --- |
+| `CSharpCompile` | `supports-path-mapping`, plus `supports-workers` and `requires-worker-protocol: json` when `use_compiler_worker=true` |
+| `FSharpCompile` | `supports-path-mapping` |
+
+| Combination | Result |
+| --- | --- |
+| `--experimental_output_paths=strip` + `use_compiler_worker=true` | Works. Workers become sandboxed singleplex. |
+| `--experimental_output_paths=strip` + `--disk_cache` or remote cache | Works, and is the only combination path mapping pays for itself in. |
+| `--experimental_output_paths=strip` + `--strategy=CSharpCompile=sandboxed` | Works. Workers off, path mapping still applies. |
+| `--experimental_output_paths=strip` + `--strategy=CSharpCompile=local` | **Hard error.** Path mapping requires a sandbox. |
+| `--experimental_output_paths=strip` + `--spawn_strategy=local` | **Hard error**, same reason. |
+| `--experimental_output_paths=strip` + `no-sandbox` on the compile actions | **Hard error**, same reason. |
+| `--experimental_output_paths=off` + any strategy | Works. No sandbox is forced. |
+| `prune_unused_references=true` + `--experimental_output_paths=strip` | Works. |
+| `prune_unused_references=true` + `--strategy=CSharpCompile=sandboxed` | Works. The binary writes the unused inputs list whether or not it is a persistent worker. |
+
+`use_compiler_worker` and `prune_unused_references` above are the `--@rules_dotnet//dotnet/settings:`
+flags from [C# Persistent workers](#c-persistent-workers); both are off by default.
+
+`CSharpCompile` never declares `supports-multiplex-workers`, so it is always singleplex and
+`--experimental_worker_multiplex_sandboxing`, `--worker_max_multiplex_instances` and
+`--noworker_multiplex` have no effect on it. `--worker_max_instances=CSharpCompile=...` does.
+
+`--worker_sandboxing` does not need to be set: path mapping already forces the sandbox where it is
+required, and setting it turns on sandboxing for every other worker in the build as well.
