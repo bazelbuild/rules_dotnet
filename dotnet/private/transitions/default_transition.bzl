@@ -17,14 +17,20 @@ load(
 )
 load("//dotnet/private/sdk:rids.bzl", "RUNTIME_GRAPH")
 
+# The outputs are constant, so build the dict once at load time rather than
+# rebuilding 838 entries on every single application of the transition.
+_DEFAULT_OUTPUTS = dicts.add(
+    {"//dotnet:target_framework": DEFAULT_TFM, "//dotnet:rid": DEFAULT_RID},
+    {"//dotnet:framework_compatible_{}".format(framework): False for framework in FRAMEWORK_COMPATIBILITY.keys()},
+    {"//dotnet:rid_compatible_{}".format(rid): False for rid in RUNTIME_GRAPH.keys()},
+)
+
 def _impl(_settings, _attr):
-    default_framework_compatibility = {"//dotnet:framework_compatible_{}".format(framework): False for framework in FRAMEWORK_COMPATIBILITY.keys()}
-    default_rid_compatibility = {"//dotnet:rid_compatible_{}".format(rid): False for rid in RUNTIME_GRAPH.keys()}
-    return dicts.add({"//dotnet:target_framework": DEFAULT_TFM}, {"//dotnet:rid": DEFAULT_RID}, default_framework_compatibility, default_rid_compatibility)
+    return _DEFAULT_OUTPUTS
 
 default_transition = transition(
     implementation = _impl,
-    inputs = ["//dotnet:target_framework", "//dotnet:rid", "//command_line_option:cpu", "//command_line_option:platforms"],
+    inputs = [],
     outputs = ["//dotnet:target_framework", "//dotnet:rid"] +
               ["//dotnet:framework_compatible_%s" % framework for framework in FRAMEWORK_COMPATIBILITY.keys()] +
               ["//dotnet:rid_compatible_%s" % rid for rid in RUNTIME_GRAPH.keys()],
