@@ -24,48 +24,54 @@ let main argv =
         1
     else
 
-    let sdkFolder = argv.[0]
-    let requested = argv |> Array.skip 1 |> Set.ofArray
-    let shouldRun name = Set.isEmpty requested || requested.Contains name
+        let sdkFolder = argv.[0]
+        let requested = argv |> Array.skip 1 |> Set.ofArray
 
-    let unknown = requested - set [ "versions"; "rids"; "packs"; "frameworks"; "paket" ]
+        let shouldRun name =
+            Set.isEmpty requested || requested.Contains name
 
-    if not (Set.isEmpty unknown) then
-        let names = String.concat ", " unknown
-        eprintfn $"Unknown generator(s): {names}"
-        eprintfn $"{usage}"
-        1
-    else
+        let unknown = requested - set [ "versions"; "rids"; "packs"; "frameworks"; "paket" ]
 
-    // Discovered once and shared: which .NET channels exist, and which of them
-    // are still previews.
-    let index = Sdk.downloadReleaseIndex ()
-    let stableChannel = Sdk.latestStableChannel index
+        if not (Set.isEmpty unknown) then
+            let names = String.concat ", " unknown
+            eprintfn $"Unknown generator(s): {names}"
+            eprintfn $"{usage}"
+            1
+        else
 
-    let channelList = String.concat ", " (Sdk.gaChannels index)
-    printfn $"channels: {channelList}"
-    printfn $"newest non-preview channel: {stableChannel}"
+            // Discovered once and shared: which .NET channels exist, and which of them
+            // are still previews.
+            let index = Sdk.downloadReleaseIndex ()
+            let stableChannel = Sdk.latestStableChannel index
 
-    if shouldRun "versions" then
-        // GA channels only, matching the hardcoded list this replaced: a
-        // preview SDK has no stable packs to pair with, so offering it as a
-        // dotnet_version would produce a toolchain that cannot resolve them.
-        Sdk.generateSdks (Path.Combine(sdkFolder, "versions.bzl")) (Sdk.gaChannels index)
+            let channelList = String.concat ", " (Sdk.gaChannels index)
+            printfn $"channels: {channelList}"
+            printfn $"newest non-preview channel: {stableChannel}"
 
-    if shouldRun "rids" then
-        Sdk.generateRids (Path.Combine(sdkFolder, "rids.bzl"))
+            if shouldRun "versions" then
+                // GA channels only, matching the hardcoded list this replaced: a
+                // preview SDK has no stable packs to pair with, so offering it as a
+                // dotnet_version would produce a toolchain that cannot resolve them.
+                Sdk.generateSdks (Path.Combine(sdkFolder, "versions.bzl")) (Sdk.gaChannels index)
 
-    if shouldRun "packs" then
-        Packs.generatePackBands (Path.Combine(sdkFolder, "pack_bands.bzl")) (Sdk.gaChannels index)
+            if shouldRun "rids" then
+                Sdk.generateRids (Path.Combine(sdkFolder, "rids.bzl"))
 
-    // Framework lists and the per-framework C# language version cap, both read
-    // from the installed SDK rather than hardcoded in Starlark.
-    if shouldRun "frameworks" then
-        let sdkVersion, sdkUrl = Sdk.newestSdkArchive index
-        Frameworks.generateFrameworks (Path.Combine(sdkFolder, "frameworks.bzl")) sdkVersion sdkUrl stableChannel
+            if shouldRun "packs" then
+                Packs.generatePackBands (Path.Combine(sdkFolder, "pack_bands.bzl")) (Sdk.gaChannels index)
 
-    if shouldRun "paket" then
-        // sdkFolder is dotnet/private/sdk; the repo root is four levels up.
-        Paket.updatePaket (Path.Combine(sdkFolder, "..", "..", ".."))
+            // Framework lists and the per-framework C# language version cap, both read
+            // from the installed SDK rather than hardcoded in Starlark.
+            if shouldRun "frameworks" then
+                let sdkVersion, sdkUrl = Sdk.newestSdkArchive index
 
-    0
+                Frameworks.generateFrameworks
+                    (Path.Combine(sdkFolder, "frameworks.bzl"))
+                    sdkVersion
+                    sdkUrl
+                    stableChannel
+
+            if shouldRun "paket" then
+                Paket.updatePaket (Path.Combine(sdkFolder, "..", "..", ".."))
+
+            0
