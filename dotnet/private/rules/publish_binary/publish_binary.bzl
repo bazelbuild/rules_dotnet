@@ -40,19 +40,18 @@ def _render_copy_script(copies, is_windows):
     script_body = ["@echo off"] if is_windows else ["#! /usr/bin/env bash", "set -eou pipefail"]
 
     # The binary's own assembly reaches this twice: once as the main DLL and
-    # once in the list of assemblies to publish.
-    seen = {}
+    # once in the list of assemblies to publish. Where two sources do name one
+    # destination the later one wins, which is what a run of `cp -f` did.
+    by_destination = {}
+    for (src, dst) in copies:
+        by_destination[dst.path] = (src, dst)
 
     # Grouped by destination directory, in first-seen order.
     dirs = []
     same_name = {}
     renamed = []
 
-    for (src, dst) in copies:
-        if dst.path in seen:
-            continue
-        seen[dst.path] = True
-
+    for (src, dst) in by_destination.values():
         if dst.dirname not in same_name:
             same_name[dst.dirname] = []
             dirs.append(dst.dirname)
