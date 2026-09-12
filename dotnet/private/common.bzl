@@ -309,7 +309,12 @@ def collect_transitive_runfiles(ctx, assembly_runtime_info, deps):
     Returns:
         A runfiles object that includes the transitive dependencies of the target
     """
-    runfiles = ctx.runfiles(files = assembly_runtime_info.data + assembly_runtime_info.native + assembly_runtime_info.xml_docs + assembly_runtime_info.libs + assembly_runtime_info.resource_assemblies)
+
+    # XML documentation is a build output, not a runtime input: the .NET runtime
+    # never loads it, and `publish_binary` already does not ship it. Keeping it
+    # out of runfiles avoids a symlink per assembly in every binary's and every
+    # test's runfiles tree - on a 500 library graph that was 323 of 842 entries.
+    runfiles = ctx.runfiles(files = assembly_runtime_info.data + assembly_runtime_info.native + assembly_runtime_info.libs + assembly_runtime_info.resource_assemblies)
 
     # One merge_all rather than a chain of merges, which would build a deep
     # nested runfiles tree.

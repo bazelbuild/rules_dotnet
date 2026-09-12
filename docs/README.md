@@ -143,3 +143,26 @@ the lookup.
 The rules support remote execution out of the box. The remote runners do need to have the required .Net
 system dependencies installed though. A common missing system dependency in existing RBE images is `libicu`.
 
+## Runfiles
+
+XML documentation files are build outputs, not runtime inputs: the .NET runtime never loads
+them, and `publish_binary` has never shipped them. They are therefore not staged into runfiles,
+which on a 500 library graph takes a binary's runfiles from 842 entries to 519 and the time
+spent materialising runfiles trees down by about 17%. The files are still produced and are
+still in the target's `DefaultInfo`, so `bazel build` on a library gives you its `.xml` as
+before.
+
+The one behaviour change: an application that reads its *own* XML documentation at run time -
+ASP.NET Core API documentation generators do this - will no longer find it under `bazel run`
+or `bazel test`. Add it back explicitly for those targets:
+
+```python
+csharp_binary(
+    name = "api",
+    data = [":api_xml"],  # or list the library target that produces it
+    ...
+)
+```
+
+For CI that builds but does not test, `--nobuild_runfile_links` skips materialising the trees
+altogether.
