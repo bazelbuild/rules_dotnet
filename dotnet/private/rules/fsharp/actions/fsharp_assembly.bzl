@@ -4,6 +4,7 @@ Actions for compiling targets with C#.
 
 load(
     "//dotnet/private:common.bzl",
+    "add_resource_args",
     "collect_compile_info",
     "copy_files_to_dir",
     "format_ref_arg",
@@ -13,7 +14,6 @@ load(
     "is_core_framework",
     "is_greater_or_equal_framework",
     "is_standard_framework",
-    "map_resource_arg",
     "use_highentropyva",
 )
 load(
@@ -417,7 +417,7 @@ def _compile(
     args.add_all(srcs)
 
     # resources
-    args.add_all(resources, map_each = lambda r: map_resource_arg(r, label, out_dll.basename if out_dll != None else None, language = "fsharp"), allow_closure = True)
+    add_resource_args(args, resources, label, out_dll.basename if out_dll != None else None, "fsharp")
 
     # defines
     args.add_all(defines, format_each = "-d:%s")

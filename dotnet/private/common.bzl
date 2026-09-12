@@ -973,6 +973,24 @@ def copy_files_to_dir(target_name, actions, is_windows, files, out_dir, executab
 _RESOURCE_TEMPLATE_CSHARP = "/resource:{}"
 _RESOURCE_TEMPLATE_FSHARP = "--resource:{}"
 
+def add_resource_args(args, resources, target_label, out_dll, language):
+    """Adds one resource argument per file to `args`.
+
+    The argument depends on the target's label and output name as well as the
+    file, which `Args.map_each` cannot pass through without a closure. Closures
+    in `map_each` are retained until the action executes, so resolve the
+    arguments here instead.
+
+    Args:
+        args: The Args object for the compilation action.
+        resources: The resource files to embed.
+        target_label: (Label) The label embedding the resources.
+        out_dll: (str) Basename of the output dll, or None for a ref-only compile.
+        language: "csharp" or "fsharp".
+    """
+    for resource in resources:
+        args.add(map_resource_arg(resource, target_label, out_dll, language))
+
 def map_resource_arg(file, target_label, out_dll, language):
     """Map an embedded resource file to a resource argument for the compiler.
 
