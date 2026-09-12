@@ -444,17 +444,17 @@ def _compile(
         mnemonic = "FSharpCompile",
         progress_message = "Compiling " + target_name + (" (internals ref-only dll)" if out_dll == None else ""),
         inputs = depset(
-            direct = direct_inputs + framework_files + [compiler_wrapper, toolchain.runtime.files_to_run.executable],
-            transitive = [refs, toolchain.runtime.default_runfiles.files, toolchain.fsharp_compiler.default_runfiles.files, compile_data],
+            direct = direct_inputs + framework_files + [compiler_wrapper, toolchain.compiler_host.files_to_run.executable],
+            transitive = [refs, toolchain.compiler_host.default_runfiles.files, toolchain.fsharp_compiler.default_runfiles.files, compile_data],
         ),
         outputs = outputs,
         executable = compiler_wrapper,
         arguments = [
-            toolchain.runtime.files_to_run.executable.path,
+            toolchain.compiler_host.files_to_run.executable.path,
             toolchain.fsharp_compiler.files_to_run.executable.path,
             args,
         ],
         env = {
-            "DOTNET_CLI_HOME": toolchain.runtime.files_to_run.executable.dirname,
+            "DOTNET_CLI_HOME": toolchain.compiler_host.files_to_run.executable.dirname,
         },
     )

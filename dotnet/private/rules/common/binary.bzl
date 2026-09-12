@@ -155,6 +155,13 @@ def build_binary(ctx, compile_action):
 
     runfiles = collect_transitive_runfiles(ctx, runtime_provider, ctx.attr.deps).merge(ctx.runfiles(files = additional_runfiles))
 
+    # The apphost shimmer loads Microsoft.NET.HostModel.dll at runtime. It is
+    # already a compile dependency (see `include_host_model_dll`), but it has to
+    # be declared in runfiles too - it used to be present only because the whole
+    # SDK directory was staged into every binary's runfiles.
+    if getattr(ctx.attr, "include_host_model_dll", False):
+        runfiles = runfiles.merge(ctx.runfiles(files = get_toolchain(ctx).host_model[DotnetAssemblyRuntimeInfo].libs))
+
     # Due to how the .Net runtime loads native DLLs we need make the native
     # DLLs available in the application root directory with the folder structure:
     # runtimes/{rid}/native/{dlls}

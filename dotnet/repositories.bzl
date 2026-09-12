@@ -51,6 +51,19 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
+filegroup(
+    name = "compiler_host",
+    srcs = select({{
+        "@bazel_tools//src/conditions:windows": ["dotnet.exe"],
+        "//conditions:default": ["dotnet"],
+    }}),
+    data = glob([
+        "host/**/*",
+        "shared/Microsoft.NETCore.App/**/*",
+    ]),
+    visibility = ["//visibility:public"],
+)
+
 import_dll(
     name = "host_model",
     version = "{runtime_version}",
@@ -80,6 +93,7 @@ filegroup(
 dotnet_toolchain(
     name = "dotnet_toolchain", 
     runtime = ":runtime",
+    compiler_host = ":compiler_host",
     csharp_compiler = ":csc_binary",
     fsharp_compiler = ":fsc_binary",
     host_model = ":host_model",

@@ -521,17 +521,17 @@ def _compile(
         mnemonic = "CSharpCompile",
         progress_message = "Compiling " + target_name + (" (internals ref-only dll)" if out_dll == None else ""),
         inputs = depset(
-            direct = direct_inputs + framework_files + [compiler_wrapper, toolchain.runtime.files_to_run.executable],
-            transitive = [refs, analyzer_assemblies, analyzer_assemblies_csharp, toolchain.runtime.default_runfiles.files, toolchain.csharp_compiler.default_runfiles.files, compile_data],
+            direct = direct_inputs + framework_files + [compiler_wrapper, toolchain.compiler_host.files_to_run.executable],
+            transitive = [refs, analyzer_assemblies, analyzer_assemblies_csharp, toolchain.compiler_host.default_runfiles.files, toolchain.csharp_compiler.default_runfiles.files, compile_data],
         ),
         outputs = outputs,
         executable = compiler_wrapper,
         arguments = [
-            toolchain.runtime.files_to_run.executable.path,
+            toolchain.compiler_host.files_to_run.executable.path,
             toolchain.csharp_compiler.files_to_run.executable.path,
             args,
         ],
         env = {
-            "DOTNET_CLI_HOME": toolchain.runtime.files_to_run.executable.dirname,
+            "DOTNET_CLI_HOME": toolchain.compiler_host.files_to_run.executable.dirname,
         },
     )
