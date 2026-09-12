@@ -53,10 +53,18 @@ FRAMEWORK_COMPATABILITY_TRANSITION_OUTPUTS = {
     for (tfm, tfm_compatible_set) in TRANSITIVE_FRAMEWORK_COMPATIBILITY.items()
 }
 
+# `compatible_rids` is a list, so testing membership of every RID against it was
+# an O(rids x rids x compatible) scan at load time (~7.5M string compares for the
+# 798 entry graph). Index each row first so the membership test is a dict lookup.
+_COMPATIBLE_RID_SETS = {
+    rid: {identifier: True for identifier in compatible_rids + [rid]}
+    for (rid, compatible_rids) in RUNTIME_GRAPH.items()
+}
+
 RID_COMPATABILITY_TRANSITION_OUTPUTS = {
     rid: {
-        "//dotnet:rid_compatible_%s" % identifier: (identifier in compatible_rids) or (identifier == rid)
+        "//dotnet:rid_compatible_%s" % identifier: identifier in compatible_set
         for identifier in RUNTIME_GRAPH.keys()
     }
-    for (rid, compatible_rids) in RUNTIME_GRAPH.items()
+    for (rid, compatible_set) in _COMPATIBLE_RID_SETS.items()
 }
