@@ -44,6 +44,9 @@ _REGISTRATION_RESOURCES = [
     "RegistrationsBaseUrl",
 ]
 
+def _package_key(id, version):
+    return "{}/{}".format(id.lower(), version.lower())
+
 def integrity_fact_key(id, version):
     """Returns the key a package's hash is remembered under.
 
@@ -57,7 +60,7 @@ def integrity_fact_key(id, version):
     Returns:
       The fact key.
     """
-    return "sha512/{}:{}/{}".format(_FACT_VERSION, id.lower(), version.lower())
+    return "sha512/{}:{}".format(_FACT_VERSION, _package_key(id, version))
 
 def read_netrc_entries(module_ctx, netrc):
     """Reads a netrc file once, for repeated `auth_for` calls.
@@ -120,37 +123,50 @@ def _download_all(module_ctx, requests, auth, directory):
 
     return results
 
-def _registration_base(module_ctx, source, auth):
-    """Returns the registration base URL of a V3 feed, or "" if it has none.
+def _service_index(module_ctx, source, auth, indexes, required):
+    """Returns a V3 feed's resources by type, or {} for a feed without them.
 
-    Fails if the feed should have one but could not be asked, so that a
-    misconfigured or unreachable feed is not mistaken for one that simply does
-    not publish hashes.
+    Args:
+      module_ctx: The module extension context.
+      source: The feed to query.
+      auth: The auth dict to use.
+      indexes: A cache of source URL to resources, which this call adds to.
+      required: Whether an unreachable feed should fail the build, rather than
+        be treated as one that offers nothing.
     """
-    if not source.endswith("index.json"):
-        # A V2 feed. Its metadata is OData rather than JSON and does not
-        # expose package hashes.
-        return ""
+    if source in indexes:
+        return indexes[source]
 
-    result = module_ctx.download(
+    if not source.endswith("index.json"):
+        # A V2 feed. Its metadata is OData rather than JSON.
+        indexes[source] = {}
+        return {}
+
+    if not module_ctx.download(
         url = source,
         output = "service_index.json",
         allow_fail = True,
         auth = auth,
-    )
-    if not result.success:
+    ).success:
+        if not required:
+            indexes[source] = {}
+            return {}
+
         fail(
             "Could not read the service index of {} to verify package hashes.".format(source) +
             " Check the feed and its credentials, or set verify_integrity = False on paket.parse.",
         )
 
-    index = _read_json(module_ctx, "service_index.json", source)
-
     resources = {}
-    for resource in index.get("resources", []):
+    for resource in _read_json(module_ctx, "service_index.json", source).get("resources", []):
         resources.setdefault(resource.get("@type", ""), resource.get("@id", ""))
 
-    for name in _REGISTRATION_RESOURCES:
+    indexes[source] = resources
+
+    return resources
+
+def _base_url(resources, types):
+    for name in types:
         base = resources.get(name)
         if base:
             return base if base.endswith("/") else base + "/"
@@ -176,7 +192,7 @@ def _package_hash(catalog_entry, url):
 
     return "{}-{}".format(prefix, hash)
 
-def resolve_integrity(module_ctx, source, packages, netrc_entries, bases):
+def resolve_integrity(module_ctx, source, packages, netrc_entries, indexes):
     """Looks up the subresource integrity of each package on a feed.
 
     Args:
@@ -184,9 +200,7 @@ def resolve_integrity(module_ctx, source, packages, netrc_entries, bases):
       source: The feed to query.
       packages: Structs with `id` and `version` fields.
       netrc_entries: Parsed netrc entries, from `read_netrc_entries`.
-      bases: A cache of source URL to registration base, which this call adds
-        to. Pass the same dict across feeds so that a feed shared by several
-        dependency groups is only asked once.
+      indexes: A cache of service index lookups, which this call adds to.
 
     Returns:
       A dict of "<lower id>/<lower version>" to an integrity string, holding
@@ -195,10 +209,10 @@ def resolve_integrity(module_ctx, source, packages, netrc_entries, bases):
     if not packages:
         return {}
 
-    if source not in bases:
-        bases[source] = _registration_base(module_ctx, source, _auth(netrc_entries, [source]))
-
-    base = bases[source]
+    base = _base_url(
+        _service_index(module_ctx, source, _auth(netrc_entries, [source]), indexes, required = True),
+        _REGISTRATION_RESOURCES,
+    )
     if not base:
         return {}
 
@@ -232,3 +246,71 @@ def resolve_integrity(module_ctx, source, packages, netrc_entries, bases):
             integrity[key] = hash
 
     return integrity
+
+def package_versions(module_ctx, source, id, netrc_entries, indexes):
+    """Returns the versions of a package a feed publishes.
+
+    Args:
+      module_ctx: The module extension context.
+      source: The feed to query. Must be a V3 service index.
+      id: The package id.
+      netrc_entries: Parsed netrc entries, from `read_netrc_entries`.
+      indexes: A cache of service index lookups, which this call adds to.
+
+    Returns:
+      A list of versions, empty if the feed could not be asked.
+    """
+    resources = _service_index(module_ctx, source, _auth(netrc_entries, [source]), indexes, required = False)
+    base = _base_url(resources, ["PackageBaseAddress/3.0.0"])
+    if not base:
+        return []
+
+    url = "{}{}/index.json".format(base, id.lower())
+    path = "versions/{}.json".format(id.lower())
+    if not module_ctx.download(url = url, output = path, allow_fail = True, auth = _auth(netrc_entries, [url])).success:
+        return []
+
+    return _read_json(module_ctx, path, url).get("versions", [])
+
+def resolve_integrity_cached(module_ctx, sources, packages, netrc_entries, resolved, indexes):
+    """Fills `resolved` with each package's integrity, keyed for `facts`.
+
+    A hash remembered by an earlier evaluation, or already resolved in this
+    one, is reused. Feeds are tried in order, which is the order the package
+    itself is downloaded in.
+
+    Args:
+      module_ctx: The module extension context.
+      sources: The feeds to try.
+      packages: Structs with `id` and `version` fields.
+      netrc_entries: Parsed netrc entries, from `read_netrc_entries`.
+      resolved: Integrity by fact key, which this call adds to.
+      indexes: A cache of service index lookups, which this call adds to.
+    """
+    remembered = getattr(module_ctx, "facts", {})
+    pending = {}
+
+    for package in packages:
+        key = integrity_fact_key(package.id, package.version)
+        if key in resolved:
+            continue
+
+        integrity = remembered.get(key)
+        if integrity:
+            resolved[key] = integrity
+        else:
+            pending[_package_key(package.id, package.version)] = package
+
+    for source in sources:
+        if not pending:
+            break
+
+        for (key, integrity) in resolve_integrity(
+            module_ctx,
+            source,
+            pending.values(),
+            netrc_entries,
+            indexes,
+        ).items():
+            package = pending.pop(key)
+            resolved[integrity_fact_key(package.id, package.version)] = integrity

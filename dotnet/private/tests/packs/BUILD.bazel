@@ -1,0 +1,3 @@
+load(":packs_test.bzl", "packs_test_suite")
+
+packs_test_suite(name = "packs_test")

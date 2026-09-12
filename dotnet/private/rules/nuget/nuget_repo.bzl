@@ -51,7 +51,7 @@ _ALIAS_TEMPLATE = """\
 
 package(default_visibility = ["//visibility:public"])
 
-alias(name = "{name}", actual = "//{id}/{version}")
+alias(name = "{name}", actual = "{package}")
 
 alias(name = "content_files", actual = "@{archive}//:content_files")
 
@@ -67,10 +67,22 @@ load("@{archive}//:package_info.bzl", "TOOLS")
 package(default_visibility = ["//visibility:public"])
 
 nuget_package_tools(
-    package = "//{id}/{version}",
+    package = "{package}",
     tools = TOOLS,
 )
 """
+
+def nuget_package_label(id, version):
+    """Returns the label a package version is addressed by inside a hub.
+
+    Args:
+      id: The package id.
+      version: The normalized package version.
+
+    Returns:
+      A repository relative label.
+    """
+    return "//{}/{}".format(id.lower(), version)
 
 def nuget_archive_name(id, version):
     """Returns the repository name of the archive holding a package version.
@@ -89,6 +101,9 @@ def nuget_archive_name(id, version):
 
 def _nuget_repo_impl(ctx):
     packages = [json.decode(package) for package in ctx.attr.packages]
+
+    for (path, content) in ctx.attr.extra_build_files.items():
+        ctx.file(path, content)
 
     ctx.file("BUILD.bazel", """\
 "GENERATED"
@@ -124,15 +139,13 @@ package(default_visibility = ["//visibility:public"])
 
         ctx.file("{}/BUILD.bazel".format(name), _ALIAS_TEMPLATE.format(
             archive = archive,
-            id = id,
             name = name,
-            version = version,
+            package = nuget_package_label(id, version),
         ))
 
         ctx.file("{}/tools/BUILD.bazel".format(name), _TOOLS_TEMPLATE.format(
             archive = archive,
-            id = id,
-            version = version,
+            package = nuget_package_label(id, version),
         ))
 
 _nuget_repo = repository_rule(
@@ -143,6 +156,9 @@ _nuget_repo = repository_rule(
             doc = "The resolved packages, each a JSON object with `name`, `id`, `version` and `sha512` keys.",
             mandatory = True,
             allow_empty = False,
+        ),
+        "extra_build_files": attr.string_dict(
+            doc = "Additional BUILD files to write, keyed by their path in the repository.",
         ),
     },
 )
@@ -172,7 +188,7 @@ def nuget_archives(packages, declared):
             version = package["version"].lower(),
         )
 
-def nuget_hub_repo(name, packages):
+def nuget_hub_repo(name, packages, extra_build_files = {}):
     """Declares the hub repository for one dependency group.
 
     The `nuget_archive` repositories the hub points at have to be declared
@@ -183,9 +199,12 @@ def nuget_hub_repo(name, packages):
       packages: Dicts with `id`, `version` and optionally `name` and `sha512`
         keys. `name` is the label the package is addressed by and defaults to
         its id.
+      extra_build_files: Additional BUILD files to write into the repository,
+        keyed by path.
     """
     _nuget_repo(
         name = name,
+        extra_build_files = extra_build_files,
         packages = [
             json.encode({
                 "id": package["id"],

@@ -1,12 +1,12 @@
 "A transition that transitions between compatible target frameworks"
 
-load(":targeting_pack_lookup_table.bzl", "targeting_pack_lookup_table")
+load("//dotnet/private/sdk:packs.bzl", "TARGETING_PACK_LOOKUP_TABLE")
 
 def _impl(settings, attr):
     project_sdk = attr.project_sdk
     incoming_target_framework = settings["//dotnet:target_framework"]
 
-    supported_tfms = targeting_pack_lookup_table.get(project_sdk)
+    supported_tfms = TARGETING_PACK_LOOKUP_TABLE.get(project_sdk)
     if supported_tfms:
         targeting_pack = supported_tfms.get(incoming_target_framework)
         if targeting_pack:

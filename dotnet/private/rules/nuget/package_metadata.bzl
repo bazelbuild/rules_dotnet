@@ -1,9 +1,7 @@
 """Readers for the metadata files that ship inside a `.nupkg`.
 
-Everything in here used to be computed by the `paket2bazel` F# tool against a
-locally restored NuGet cache. It is all read out of the package archive
-instead, at the point where `nuget_archive` has already downloaded and
-extracted it.
+These run against the archive `nuget_archive` has already downloaded and
+extracted.
 """
 
 load("//dotnet/private:common.bzl", "nuget_framework_to_tfm")

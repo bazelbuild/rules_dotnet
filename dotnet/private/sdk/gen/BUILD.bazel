@@ -5,27 +5,20 @@ fsharp_binary(
     srcs = [
         # Keep order
         "NugetHelpers.fs",
-        "NugetRepo.fs",
-        "ApphostPacks.fs",
-        "RuntimePacks.fs",
-        "TargetingPacks.fs",
+        "Packs.fs",
         "Sdk.fs",
         "Main.fs",
     ],
     target_frameworks = ["net9.0"],
     visibility = ["//visibility:public"],
     deps = [
-        "@paket.sdk_gen_dependencies//argu",
-        "@paket.sdk_gen_dependencies//chessie",
         "@paket.sdk_gen_dependencies//fsharp.core",
         "@paket.sdk_gen_dependencies//nuget.common",
         "@paket.sdk_gen_dependencies//nuget.configuration",
         "@paket.sdk_gen_dependencies//nuget.frameworks",
-        "@paket.sdk_gen_dependencies//nuget.packagemanagement",
         "@paket.sdk_gen_dependencies//nuget.packaging",
         "@paket.sdk_gen_dependencies//nuget.protocol",
         "@paket.sdk_gen_dependencies//nuget.versioning",
-        "@paket.sdk_gen_dependencies//paket.core",
         "@paket.sdk_gen_dependencies//system.text.json",
     ],
 )

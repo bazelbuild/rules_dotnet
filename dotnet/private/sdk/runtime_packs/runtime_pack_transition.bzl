@@ -1,14 +1,14 @@
 "A transition that transitions between compatible target frameworks"
 
 load("//dotnet/private:common.bzl", "get_highest_compatible_runtime_identifier")
-load(":runtime_pack_lookup_table.bzl", "runtime_pack_lookup_table")
+load("//dotnet/private/sdk:packs.bzl", "RUNTIME_PACK_LOOKUP_TABLE")
 
 def _impl(settings, attr):
     project_sdk = attr.project_sdk
     incoming_target_framework = settings["//dotnet:target_framework"]
     incoming_rid = settings["//dotnet:rid"]
 
-    supported_tfms = runtime_pack_lookup_table.get(project_sdk)
+    supported_tfms = RUNTIME_PACK_LOOKUP_TABLE.get(project_sdk)
     if supported_tfms:
         supported_rids = supported_tfms.get(incoming_target_framework)
         if supported_rids:

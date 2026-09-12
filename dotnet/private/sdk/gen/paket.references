@@ -1,6 +1,5 @@
 group sdk_gen_dependencies
     FSharp.Core
-    Argu
-    Paket.Core
-    NuGet.PackageManagement
+    NuGet.Packaging
+    NuGet.Protocol
     System.Text.Json

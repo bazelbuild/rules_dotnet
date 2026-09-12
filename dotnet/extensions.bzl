@@ -1,5 +1,6 @@
 "extensions for bzlmod"
 
+load("//dotnet/private/sdk:pack_repos.bzl", "declare_pack_repos")
 load(":repositories.bzl", "dotnet_register_toolchains")
 
 _DEFAULT_NAME = "dotnet"
@@ -39,6 +40,14 @@ def _toolchain_extension(module_ctx):
             dotnet_version = dotnet_version,
             register = False,
         )
+
+    facts = declare_pack_repos(module_ctx, registrations)
+
+    metadata = {}
+    if hasattr(module_ctx, "facts"):
+        metadata["facts"] = facts
+
+    return module_ctx.extension_metadata(reproducible = True, **metadata)
 
 dotnet = module_extension(
     implementation = _toolchain_extension,

@@ -1,8 +1,5 @@
 load("@bazel_lib//:bzl_library.bzl", "bzl_library")
 load(":runtime_pack.bzl", "runtime_pack")
-load(":runtime_packs.bzl", "runtime_packs")
-
-runtime_packs()
 
 label_setting(
     name = "runtime_pack",
@@ -19,37 +16,11 @@ runtime_pack(
 )
 
 bzl_library(
-    name = "dotnet.runtime_packs",
-    srcs = ["dotnet.runtime_packs.bzl"],
-    visibility = ["//dotnet:__subpackages__"],
-    deps = ["@rules_dotnet//dotnet:defs"],
-)
-
-bzl_library(
-    name = "dotnet.runtime_packs_extension",
-    srcs = ["dotnet.runtime_packs_extension.bzl"],
-    visibility = ["//dotnet:__subpackages__"],
-    deps = [":dotnet.runtime_packs"],
-)
-
-bzl_library(
     name = "runtime_pack_transition",
     srcs = ["runtime_pack_transition.bzl"],
     visibility = ["//dotnet:__subpackages__"],
     deps = [
-        ":runtime_pack_lookup_table",
         "//dotnet/private:providers",
+        "//dotnet/private/sdk:packs",
     ],
-)
-
-bzl_library(
-    name = "runtime_pack_lookup_table",
-    srcs = ["runtime_pack_lookup_table.bzl"],
-    visibility = ["//dotnet:__subpackages__"],
-)
-
-bzl_library(
-    name = "runtime_packs",
-    srcs = ["runtime_packs.bzl"],
-    visibility = ["//dotnet:__subpackages__"],
 )
