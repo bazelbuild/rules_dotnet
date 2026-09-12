@@ -129,7 +129,7 @@ def build_binary(ctx, compile_action):
         ]
         ctx.actions.write(
             output = runtimeconfig,
-            content = json.encode_indent(runtimeconfig_struct),
+            content = json.encode(runtimeconfig_struct),
         )
 
         depsjson = ctx.actions.declare_file("%s/%s/%s.deps.json" % (ctx.label.name, tfm, ctx.attr.out or ctx.attr.name))
@@ -144,7 +144,7 @@ def build_binary(ctx, compile_action):
 
         ctx.actions.write(
             output = depsjson,
-            content = json.encode_indent(depsjson_struct),
+            content = json.encode(depsjson_struct),
         )
 
     if runtimeconfig != None:

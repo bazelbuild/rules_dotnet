@@ -335,7 +335,7 @@ def _generate_runtimeconfig(ctx, output, target_framework, project_sdk, is_self_
 
     ctx.actions.write(
         output = output,
-        content = json.encode_indent(runtimeconfig_struct),
+        content = json.encode(runtimeconfig_struct),
     )
 
 def _generate_depsjson(
@@ -350,7 +350,7 @@ def _generate_depsjson(
 
     ctx.actions.write(
         output = output,
-        content = json.encode_indent(depsjson_struct),
+        content = json.encode(depsjson_struct),
     )
 
     return depsjson_struct
