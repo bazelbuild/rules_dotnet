@@ -12,6 +12,9 @@ This is the dotnet muxer, the host resolver and Microsoft.NETCore.App - but not
 the SDK. Compilations and framework dependent binaries only need these.""",
         "runtime_files": """Files required in runfiles to make the dotnet executable available.
 
+Includes every shared framework, since a binary's `project_sdk` decides which one
+it asks for, but not the SDK itself.
+
 May be empty if the runtime_path points to a locally installed tool binary.""",
         "csharp_compiler_path": "Path to the C# compiler executable",
         "csharp_compiler_files": """Files required in runfiles to make the C# compiler executable available.
@@ -69,6 +72,10 @@ def _dotnet_toolchain_impl(ctx):
     if ctx.attr.compiler_host:
         compiler_host_files = ctx.attr.compiler_host.files.to_list() + ctx.attr.compiler_host.default_runfiles.files.to_list()
 
+    runtime_host_files = []
+    if ctx.attr.runtime_host:
+        runtime_host_files = ctx.attr.runtime_host.files.to_list() + ctx.attr.runtime_host.default_runfiles.files.to_list()
+
     if ctx.attr.runtime:
         runtime_files = ctx.attr.runtime.files.to_list() + ctx.attr.runtime.default_runfiles.files.to_list()
         runtime_path = _to_manifest_path(ctx, runtime_files[0])
@@ -99,7 +106,10 @@ def _dotnet_toolchain_impl(ctx):
 
     dotnetinfo = DotnetInfo(
         runtime_path = runtime_path,
-        runtime_files = compiler_host_files if compiler_host_files else runtime_files,
+        # What a binary needs at run time is not what a compilation needs: the
+        # compiler only ever loads Microsoft.NETCore.App, while a binary loads
+        # whichever shared framework its `project_sdk` selected.
+        runtime_files = runtime_host_files if runtime_host_files else runtime_files,
         compiler_host_files = compiler_host_files,
         csharp_compiler_path = csharp_compiler_path,
         csharp_compiler_files = csharp_compiler_files,
@@ -145,6 +155,12 @@ dotnet_toolchain = rule(
             mandatory = False,
             executable = True,
             cfg = "exec",
+        ),
+        "runtime_host": attr.label(
+            doc = "The dotnet host and every shared framework, but not the SDK. What a binary needs in its runfiles.",
+            mandatory = False,
+            executable = True,
+            cfg = "target",
         ),
         "runtime_path": attr.string(
             doc = "Path to the dotnet CLI. Do not set if `runtime` is set",
