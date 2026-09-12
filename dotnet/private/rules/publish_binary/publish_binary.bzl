@@ -170,7 +170,15 @@ def _get_assembly_files(assembly_info, transitive_runtime_deps, deps_json_struct
             for file in dep.native:
                 if file.basename in dep_native:
                     native.append(file)
-                elif runtime_targets.get(file.basename, {}).get("assetType") == "native":
+                    continue
+
+                # `runtimeTargets` is keyed by the path the asset takes inside
+                # the publish (`runtimes/<rid>/<native|lib>/<file>`), not by the
+                # basename - build the same key `generate_depsjson` wrote.
+                asset_dir = file.dirname.split("/")[-1]
+                rid = file.dirname.split("/")[-2]
+                runtime_target_path = "runtimes/{}/{}/{}".format(rid, asset_dir, file.basename)
+                if runtime_targets.get(runtime_target_path, {}).get("assetType") == "native":
                     native.append(file)
 
             for file in dep.libs:

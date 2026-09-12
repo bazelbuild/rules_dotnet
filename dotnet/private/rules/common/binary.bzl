@@ -26,7 +26,11 @@ def _collect_native_dlls(assembly_runtime_info, deps):
     Returns:
         A list of native DLL files that includes the transitive dependencies of the target
     """
-    native_dlls = assembly_runtime_info.native
+
+    # Copy: this is the list held by the provider that this rule returns, so
+    # extending it in place would leak the transitive closure into
+    # DotnetAssemblyRuntimeInfo.native after deps.json was already generated.
+    native_dlls = list(assembly_runtime_info.native)
 
     for dep in deps:
         native_dlls.extend(dep[DotnetAssemblyRuntimeInfo].native)
