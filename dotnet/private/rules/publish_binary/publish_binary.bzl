@@ -513,9 +513,6 @@ cross-compiles, so what matters is the machine it runs on.""",
             default = "//dotnet/private/tools/apphost_shimmer:apphost_shimmer",
             cfg = "exec",
         ),
-        "_allowlist_function_transition": attr.label(
-            default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
-        ),
         "_windows_constraint": attr.label(default = "@platforms//os:windows"),
     },
     toolchains = [

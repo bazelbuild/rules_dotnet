@@ -171,9 +171,6 @@ nuget_test_wrapper = rule(
         "runtime_identifier": attr.string(
             doc = "The runtime identifier to test",
         ),
-        "_allowlist_function_transition": attr.label(
-            default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
-        ),
     },
     toolchains = [
         "//dotnet:toolchain_type",
