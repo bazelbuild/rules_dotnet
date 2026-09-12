@@ -4,6 +4,7 @@ Rules for compatability resolution of dependencies for .NET frameworks.
 
 load("@bazel_skylib//lib:sets.bzl", "sets")
 load("@bazel_skylib//lib:shell.bzl", "shell")
+load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 load(
     "//dotnet/private:providers.bzl",
     "DotnetAssemblyCompileInfo",
@@ -136,6 +137,23 @@ def get_toolchain(ctx):
         return ctx.attr.dotnet_toolchain[platform_common.ToolchainInfo]
 
     return ctx.toolchains["//dotnet:toolchain_type"]
+
+def get_compiler_worker(ctx):
+    """The persistent worker to compile with, or None to use the wrapper script.
+
+    Args:
+        ctx: The rule context.
+
+    Returns:
+        The worker executable, or None.
+    """
+
+    if not ctx.attr._use_compiler_worker[BuildSettingInfo].value:
+        return None
+
+    # compiler_worker_binary has no worker attribute: it is the one target the
+    # worker cannot compile.
+    return getattr(ctx.executable, "_compiler_worker", None)
 
 def _format_ref_with_overrides(assembly):
     # See https://github.com/bazel-contrib/rules_dotnet/issues/405

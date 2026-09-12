@@ -142,3 +142,47 @@ the lookup.
 
 The rules support remote execution out of the box. The remote runners do need to have the required .Net
 system dependencies installed though. A common missing system dependency in existing RBE images is `libicu`.
+
+## Persistent workers
+
+The C# compile actions can run in a [Bazel persistent worker](https://bazel.build/remote/persistent).
+It is off while it is new, so turn it on with:
+
+```
+build --@rules_dotnet//dotnet/settings:use_compiler_worker=true
+```
+
+Most of the wall time of a small C# compilation is not compilation: it is Roslyn reading the
+~170 reference assemblies of the targeting pack, which is identical work for every target in
+the build. Roslyn keeps that metadata in its build server, but a plain Bazel action cannot
+reach the server, because every action gets its own sandbox and therefore its own temporary
+directory. A worker lives across compilations, so the server it starts is reused and Bazel owns
+its lifetime.
+
+Measured on a generated 500-library graph (826 compile actions):
+
+| | without worker | with worker |
+| --- | --- | --- |
+| Clean build wall time | 64.6s | **11.2s** |
+| Critical path | 28.4s | **4.8s** |
+| Mean per compile | 1,929ms | 680ms |
+
+Bazel runs 4 worker instances by default, which is then the limiting factor on a wide machine.
+Raise it alongside the flag above:
+
+```
+build --worker_max_instances=CSharpCompile=HOST_CPUS
+```
+
+The build servers are shared between the workers, so that costs almost no extra memory (~390MB
+in total in the measurement above, whatever the worker count), and they shut themselves down 60
+seconds after the last compilation.
+
+With the flag on, `--strategy=CSharpCompile=sandboxed` still runs each compile as its own
+process: the worker binary compiles a single target and exits when Bazel does not pass
+`--persistent_worker`. That is also what happens under remote execution, where the worker
+strategy does not apply.
+
+F# compiles do not use a worker. fsc has no build server to keep warm, and hosting it in the
+worker process is not an option because it terminates the process it runs in when a compilation
+fails, which would lose the diagnostics along with the worker.

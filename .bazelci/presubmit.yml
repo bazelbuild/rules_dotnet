@@ -16,7 +16,10 @@ matrix:
     ]
   flag_combo:
     [
-      ["--@rules_dotnet//dotnet/settings:strict_deps=true"],
+      [
+        "--@rules_dotnet//dotnet/settings:strict_deps=true",
+        "--@rules_dotnet//dotnet/settings:use_compiler_worker=true",
+      ],
       ["--@rules_dotnet//dotnet/settings:strict_deps=false"],
     ]
   e2e_working_directory: ["e2e/net8.0", "e2e/net9.0", "e2e/net10.0", "e2e/web_sdk"]

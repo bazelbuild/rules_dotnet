@@ -74,6 +74,7 @@ def _collect_analyzer_dependencies(deps):
 def AssemblyAction(
         actions,
         compiler_wrapper,
+        compiler_worker,
         label,
         additionalfiles,
         debug,
@@ -119,6 +120,7 @@ def AssemblyAction(
     Args:
         actions: Bazel module providing functions to create actions.
         compiler_wrapper: The wrapper script that invokes the C# compiler.
+        compiler_worker: The persistent worker that runs the C# compiler, or None to fall back to the wrapper.
         label: The label of the target. This is used to determine the relative path of embedded resources.
         additionalfiles: Names additional files that don't directly affect code generation but may be used by analyzers for producing errors or warnings.
         debug: Emits debugging information.
@@ -205,6 +207,7 @@ def AssemblyAction(
         _compile(
             actions,
             compiler_wrapper,
+            compiler_worker,
             label,
             additionalfiles,
             analyzers,
@@ -255,6 +258,7 @@ def AssemblyAction(
         _compile(
             actions,
             compiler_wrapper,
+            compiler_worker,
             label,
             additionalfiles,
             analyzers,
@@ -294,6 +298,7 @@ def AssemblyAction(
         _compile(
             actions,
             compiler_wrapper,
+            compiler_worker,
             label,
             additionalfiles,
             analyzers,
@@ -369,6 +374,7 @@ def AssemblyAction(
 def _compile(
         actions,
         compiler_wrapper,
+        compiler_worker,
         label,
         additionalfiles,
         analyzer_assemblies,
@@ -515,6 +521,8 @@ def _compile(
     direct_inputs = srcs + resources + additionalfiles + analyzer_configs
     direct_inputs += [keyfile] if keyfile else []
 
+    executable = compiler_worker or compiler_wrapper
+
     # dotnet.exe csc.dll /noconfig <other csc args>
     # https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/command-line-building-with-csc-exe
     actions.run(
@@ -526,7 +534,7 @@ def _compile(
         ),
         tools = depset(
             direct = [
-                compiler_wrapper,
+                executable,
                 toolchain.compiler_host.files_to_run.executable,
                 toolchain.csharp_compiler.files_to_run.executable,
             ],
@@ -536,7 +544,7 @@ def _compile(
             ],
         ),
         outputs = outputs,
-        executable = compiler_wrapper,
+        executable = executable,
         arguments = [
             toolchain.compiler_host.files_to_run.executable.path,
             toolchain.csharp_compiler.files_to_run.executable.path,
@@ -545,4 +553,8 @@ def _compile(
         env = {
             "DOTNET_CLI_HOME": toolchain.compiler_host.files_to_run.executable.dirname,
         },
+        execution_requirements = {
+            "requires-worker-protocol": "json",
+            "supports-workers": "1",
+        } if compiler_worker else {},
     )
