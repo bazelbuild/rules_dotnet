@@ -301,14 +301,14 @@ def collect_transitive_runfiles(ctx, assembly_runtime_info, deps):
     """
     runfiles = ctx.runfiles(files = assembly_runtime_info.data + assembly_runtime_info.native + assembly_runtime_info.xml_docs + assembly_runtime_info.libs + assembly_runtime_info.resource_assemblies)
 
-    transitive_runfiles = []
-    for dep in deps:
-        transitive_runfiles.append(dep[DefaultInfo].default_runfiles)
-
-    for d in ctx.attr.data:
-        if not DefaultInfo in d:
-            continue
-        runfiles = runfiles.merge(d[DefaultInfo].default_runfiles)
+    # One merge_all rather than a chain of merges, which would build a deep
+    # nested runfiles tree.
+    transitive_runfiles = [dep[DefaultInfo].default_runfiles for dep in deps]
+    transitive_runfiles.extend([
+        d[DefaultInfo].default_runfiles
+        for d in ctx.attr.data
+        if DefaultInfo in d
+    ])
 
     return runfiles.merge_all(transitive_runfiles)
 

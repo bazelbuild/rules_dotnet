@@ -32,10 +32,12 @@ def _collect_native_dlls(assembly_runtime_info, deps):
     # DotnetAssemblyRuntimeInfo.native after deps.json was already generated.
     native_dlls = list(assembly_runtime_info.native)
 
+    # One flattening of the merged closure rather than one per direct dep.
     for dep in deps:
         native_dlls.extend(dep[DotnetAssemblyRuntimeInfo].native)
-        for transitive_dep in dep[DotnetAssemblyRuntimeInfo].deps.to_list():
-            native_dlls.extend(transitive_dep.native)
+
+    for transitive_dep in depset(transitive = [dep[DotnetAssemblyRuntimeInfo].deps for dep in deps]).to_list():
+        native_dlls.extend(transitive_dep.native)
 
     # Create a dict where the key is the RID and the value is the list of native DLLs for that RID
     result = {}
@@ -99,10 +101,11 @@ def build_binary(ctx, compile_action):
 
     (compile_provider, runtime_provider) = compile_action(ctx, tfm)
     dll = runtime_provider.libs[0]
-    default_info_files = [dll] + runtime_provider.xml_docs + runtime_provider.appsetting_files.to_list()
+    appsetting_files = runtime_provider.appsetting_files.to_list()
+    default_info_files = [dll] + runtime_provider.xml_docs + appsetting_files
 
     # appsetting_files must be in runfiles (not just DefaultInfo) so they're present when the target runs from an isolated runfiles tree (RBE/sandbox).
-    additional_runfiles = runtime_provider.appsetting_files.to_list()
+    additional_runfiles = list(appsetting_files)
 
     launcher = _create_launcher(ctx, additional_runfiles, dll)
 
@@ -170,6 +173,7 @@ def build_binary(ctx, compile_action):
     # DLLs available in the application root directory with the folder structure:
     # runtimes/{rid}/native/{dlls}
     native_dlls = _collect_native_dlls(runtime_provider, ctx.attr.deps)
+    native_symlinks = []
     for (rid, native_files) in native_dlls.items():
         for file in native_files:
             output_path = "{}/{}/runtimes/{}/native/{}".format(ctx.label.name, tfm, rid, file.basename)
@@ -179,7 +183,10 @@ def build_binary(ctx, compile_action):
                 target_file = file,
             )
             default_info_files.append(output)
-            runfiles = runfiles.merge(ctx.runfiles(files = [output]))
+            native_symlinks.append(output)
+
+    if native_symlinks:
+        runfiles = runfiles.merge(ctx.runfiles(files = native_symlinks))
 
     if not ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]):
         runfiles = runfiles.merge(ctx.attr._bash_runfiles[DefaultInfo].default_runfiles)
