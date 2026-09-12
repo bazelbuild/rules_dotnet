@@ -961,8 +961,10 @@ def copy_files_to_dir(target_name, actions, is_windows, files, out_dir, executab
             is_executable = True,
         )
         actions.run(
+            mnemonic = "DotnetCopyFiles",
+            progress_message = "Copying %d file(s) into %s" % (len(outputs), out_dir),
             outputs = outputs,
-            inputs = inputs,
+            inputs = depset(inputs),
             executable = copy_script,
             tools = [copy_script],
         )

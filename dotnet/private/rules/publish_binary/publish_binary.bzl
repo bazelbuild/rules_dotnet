@@ -314,8 +314,10 @@ def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, as
     )
 
     ctx.actions.run(
+        mnemonic = "DotnetPublishCopy",
+        progress_message = "Assembling publish output for %{label}",
         outputs = outputs,
-        inputs = inputs,
+        inputs = depset(inputs),
         executable = copy_script,
         tools = [copy_script],
     )
@@ -329,6 +331,8 @@ def _create_shim_exe(ctx, apphost_pack_info, dll, runtime_identifier):
     output = ctx.actions.declare_file(paths.replace_extension(dll.basename, ".exe" if ctx.target_platform_has_constraint(windows_constraint) else ""), sibling = dll)
 
     ctx.actions.run(
+        mnemonic = "DotnetApphostShim",
+        progress_message = "Creating apphost shim for %{label}",
         executable = ctx.attr._apphost_shimmer.files_to_run,
         arguments = [apphost.path, dll.path, output.path, runtime_identifier],
         inputs = depset([apphost, dll], transitive = [ctx.attr._apphost_shimmer.default_runfiles.files]),
