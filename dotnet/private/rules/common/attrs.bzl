@@ -12,10 +12,6 @@ COMMON_ATTRS = {
     "deps": attr.label_list(
         doc = "Other libraries, binaries, or imported DLLs",
         providers = [DotnetAssemblyCompileInfo, DotnetAssemblyRuntimeInfo],
-        # No `cfg`: every rule using these attributes applies tfm_transition as
-        # its own incoming transition, and an outgoing transition here would be
-        # handed this target's attributes again, arriving back at the same
-        # configuration.
     ),
     "data": attr.label_list(
         doc = "Runtime files. It is recommended to use the @rules_dotnet//tools/runfiles library to read the runtime files.",

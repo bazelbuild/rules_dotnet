@@ -176,9 +176,6 @@ build --@rules_dotnet//dotnet/settings:use_compiler_worker=true
 build --@rules_dotnet//dotnet/settings:prune_unused_references=true
 ```
 
-This composes with [path mapping](#path-mapping): a reference in `bazel-out` is
-pruned just like one in `external`.
-
 ## Path mapping
 
 The rules_dotnet compile actions support [path mapping](https://bazel.build/reference/command-line-reference#flag--experimental_output_paths),

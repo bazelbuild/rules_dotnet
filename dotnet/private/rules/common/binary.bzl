@@ -86,7 +86,6 @@ def build_binary(ctx, compile_action):
 
     launcher = _create_launcher(ctx, dll)
 
-    # appsetting_files must be in runfiles (not just DefaultInfo) so they're present when the target runs from an isolated runfiles tree (RBE/sandbox).
     additional_runfiles = list(appsetting_files)
 
     runtimeconfig = None
@@ -94,7 +93,6 @@ def build_binary(ctx, compile_action):
     transitive_runtime_deps = runtime_provider.deps.to_list()
 
     if is_core_framework(tfm):
-        # Create the runtimeconfig.json for the binary
         runtimeconfig = ctx.actions.declare_file("%s/%s/%s.runtimeconfig.json" % (ctx.label.name, tfm, ctx.attr.out or ctx.attr.name))
         runtimeconfig_struct = generate_runtimeconfig(
             target_framework = tfm,
@@ -140,8 +138,6 @@ def build_binary(ctx, compile_action):
     if depsjson != None:
         additional_runfiles.append(depsjson)
 
-    # The dotnet host and its shared frameworks stay a depset so that every
-    # binary and test shares the one node.
     runfiles = collect_transitive_runfiles(ctx, runtime_provider, ctx.attr.deps).merge(
         ctx.runfiles(
             files = additional_runfiles,
