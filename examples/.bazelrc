@@ -3,6 +3,9 @@ common --enable_runfiles
 common --incompatible_strict_action_env
 common --test_output=errors
 
+# Enable C# persistent workers
+build --@rules_dotnet//dotnet/settings:use_compiler_worker=true
+
 # Profiling flags
 common --noslim_profile
 common --experimental_profile_include_target_label
