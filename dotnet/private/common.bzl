@@ -138,27 +138,58 @@ def get_toolchain(ctx):
 
     return ctx.toolchains["//dotnet:toolchain_type"]
 
-def get_compiler_worker(ctx):
-    """The persistent worker to compile with, or None to use the wrapper script.
+def targets_windows(ctx):
+    """Whether the target platform is Windows.
 
     Args:
         ctx: The rule context.
 
     Returns:
-        The worker executable, or None.
+        True if the target platform is Windows.
     """
 
-    use_worker = ctx.attr._use_compiler_worker[BuildSettingInfo].value
-    if ctx.attr._prune_unused_references[BuildSettingInfo].value and not use_worker:
-        fail("//dotnet/settings:prune_unused_references needs //dotnet/settings:use_compiler_worker, " +
-             "because it is the worker that reads the compiled output to work out which references went unused.")
+    return ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo])
 
-    if not use_worker:
+def get_compiler_wrapper(ctx):
+    """The script that invokes the compiler with an execution time pathmap.
+
+    Args:
+        ctx: The rule context.
+
+    Returns:
+        The wrapper script for the target platform.
+    """
+
+    return ctx.executable._compiler_wrapper_bat if targets_windows(ctx) else ctx.executable._compiler_wrapper_sh
+
+def get_compiler_worker(ctx):
+    """The persistent worker to compile with, if it is enabled and usable.
+
+    Args:
+        ctx: The rule context.
+
+    Returns:
+        A struct with an `executable` and a `prune_unused_references` flag, or
+        None when the compile should use the wrapper script instead.
+    """
+
+    prune_unused_references = ctx.attr._prune_unused_references[BuildSettingInfo].value
+
+    if not ctx.attr._use_compiler_worker[BuildSettingInfo].value:
+        if prune_unused_references:
+            fail("//dotnet/settings:prune_unused_references needs //dotnet/settings:use_compiler_worker, " +
+                 "because it is the worker that reads the compiled output to work out which references went unused.")
         return None
 
-    # compiler_worker_binary has no worker attribute: it is the one target the
-    # worker cannot compile.
-    return getattr(ctx.executable, "_compiler_worker", None)
+    # compiler_worker_binary drops the attribute: it is the one target that
+    # cannot be compiled by the worker.
+    if not hasattr(ctx.executable, "_compiler_worker"):
+        return None
+
+    return struct(
+        executable = ctx.executable._compiler_worker,
+        prune_unused_references = prune_unused_references,
+    )
 
 def _format_ref_with_overrides(assembly):
     # See https://github.com/bazel-contrib/rules_dotnet/issues/405

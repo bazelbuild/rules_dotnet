@@ -8,8 +8,10 @@ load(
     "//dotnet/private:common.bzl",
     "default_csharp_lang_version",
     "get_compiler_worker",
+    "get_compiler_wrapper",
     "get_toolchain",
     "is_debug",
+    "targets_windows",
 )
 load("//dotnet/private/rules/common:attrs.bzl", "CSHARP_BINARY_COMMON_ATTRS")
 load("//dotnet/private/rules/common:binary.bzl", "build_binary")
@@ -21,9 +23,8 @@ def _compile_action(ctx, tfm):
     toolchain = get_toolchain(ctx)
     return AssemblyAction(
         ctx.actions,
-        ctx.executable._compiler_wrapper_bat if ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]) else ctx.executable._compiler_wrapper_sh,
+        get_compiler_wrapper(ctx),
         compiler_worker = get_compiler_worker(ctx),
-        prune_unused_references = ctx.attr._prune_unused_references[BuildSettingInfo].value,
         label = ctx.label,
         additionalfiles = ctx.files.additionalfiles,
         debug = is_debug(ctx),
@@ -61,7 +62,7 @@ def _compile_action(ctx, tfm):
         analyzer_configs = ctx.files.analyzer_configs,
         compiler_options = ctx.attr.compiler_options,
         interceptors_namespaces = ctx.attr.interceptors_namespaces,
-        is_windows = ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]),
+        is_windows = targets_windows(ctx),
     )
 
 def _binary_private_impl(ctx):
@@ -77,12 +78,6 @@ _BINARY_ATTRS = dicts.add(
         ),
     },
 )
-
-_WORKER_FREE_BINARY_ATTRS = {
-    name: value
-    for (name, value) in _BINARY_ATTRS.items()
-    if name != "_compiler_worker"
-}
 
 csharp_binary = rule(
     _binary_private_impl,
@@ -113,12 +108,18 @@ apphost_shimmer_binary = rule(
     cfg = apphost_shimmer_transition,
 )
 
-# Builds the compiler worker itself. Every other C# target depends on the
-# worker, so the worker has to be compiled without it to avoid a cycle.
+# Every other C# target compiles with the worker, so the worker itself has to
+# compile without it: depending on itself would be a cycle.
+_COMPILER_WORKER_ATTRS = {
+    name: value
+    for (name, value) in _BINARY_ATTRS.items()
+    if name != "_compiler_worker"
+}
+
 compiler_worker_binary = rule(
     _binary_private_impl,
     doc = """Compile the persistent compiler worker C# exe.""",
-    attrs = _WORKER_FREE_BINARY_ATTRS,
+    attrs = _COMPILER_WORKER_ATTRS,
     executable = True,
     toolchains = [
         "//dotnet:toolchain_type",

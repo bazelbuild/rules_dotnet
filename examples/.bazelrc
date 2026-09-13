@@ -14,6 +14,13 @@ common --experimental_collect_load_average_in_profiler
 common --experimental_collect_system_network_usage
 common --experimental_collect_worker_data_in_profiler
 
+# Give one cache key to a compilation reached through several configurations.
+# Per platform because path mapping requires a sandbox and Bazel has none on
+# Windows, where it would fail every compile. See ../docs/README.md#path-mapping.
+common --enable_platform_specific_config
+common:linux --experimental_output_paths=strip
+common:macos --experimental_output_paths=strip
+
 # Load any settings specific to the current user.
 # .bazelrc.user should appear in .gitignore so that settings are not shared with team members
 # This needs to be last statement in this

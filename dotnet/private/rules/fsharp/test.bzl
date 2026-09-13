@@ -8,8 +8,10 @@ a Bazel test.
 load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 load(
     "//dotnet/private:common.bzl",
+    "get_compiler_wrapper",
     "get_toolchain",
     "is_debug",
+    "targets_windows",
 )
 load("//dotnet/private/rules/common:attrs.bzl", "FSHARP_BINARY_COMMON_ATTRS")
 load("//dotnet/private/rules/common:binary.bzl", "build_binary")
@@ -21,7 +23,7 @@ def _compile_action(ctx, tfm):
 
     return AssemblyAction(
         ctx.actions,
-        ctx.executable._compiler_wrapper_bat if ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]) else ctx.executable._compiler_wrapper_sh,
+        get_compiler_wrapper(ctx),
         label = ctx.label,
         debug = is_debug(ctx),
         defines = ctx.attr.defines,
@@ -51,7 +53,7 @@ def _compile_action(ctx, tfm):
         nowarn = ctx.attr.nowarn,
         project_sdk = ctx.attr.project_sdk,
         compiler_options = ctx.attr.compiler_options,
-        is_windows = ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]),
+        is_windows = targets_windows(ctx),
     )
 
 def _fsharp_test_impl(ctx):

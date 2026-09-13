@@ -10,8 +10,10 @@ load(
     "//dotnet/private:common.bzl",
     "default_csharp_lang_version",
     "get_compiler_worker",
+    "get_compiler_wrapper",
     "get_toolchain",
     "is_debug",
+    "targets_windows",
 )
 load("//dotnet/private/rules/common:attrs.bzl", "CSHARP_BINARY_COMMON_ATTRS")
 load("//dotnet/private/rules/common:binary.bzl", "build_binary")
@@ -23,9 +25,8 @@ def _compile_action(ctx, tfm):
 
     return AssemblyAction(
         ctx.actions,
-        ctx.executable._compiler_wrapper_bat if ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]) else ctx.executable._compiler_wrapper_sh,
+        get_compiler_wrapper(ctx),
         compiler_worker = get_compiler_worker(ctx),
-        prune_unused_references = ctx.attr._prune_unused_references[BuildSettingInfo].value,
         label = ctx.label,
         additionalfiles = ctx.files.additionalfiles,
         debug = is_debug(ctx),
@@ -63,7 +64,7 @@ def _compile_action(ctx, tfm):
         analyzer_configs = ctx.files.analyzer_configs,
         compiler_options = ctx.attr.compiler_options,
         interceptors_namespaces = ctx.attr.interceptors_namespaces,
-        is_windows = ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]),
+        is_windows = targets_windows(ctx),
     )
 
 def _csharp_test_impl(ctx):

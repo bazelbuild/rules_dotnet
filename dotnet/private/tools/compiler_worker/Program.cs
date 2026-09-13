@@ -27,7 +27,16 @@ namespace CompilerWorker
             PropertyNameCaseInsensitive = true,
         };
 
+        /// <summary>csc only reads a response file as UTF-8 if it starts with a BOM.</summary>
         private static readonly Encoding Utf8WithBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: true);
+
+        /// <summary>
+        /// Assembly name of each reference read so far, keyed by path, size and
+        /// mtime so that a changed file is read again. A file name is not a
+        /// reliable stand-in for the assembly name, and re-reading ~170 reference
+        /// assemblies per compilation would undo the point of the worker.
+        /// </summary>
+        private static readonly Dictionary<string, string?> AssemblyNameCache = new Dictionary<string, string?>();
 
         public static int Main(string[] args)
         {
@@ -101,6 +110,8 @@ namespace CompilerWorker
 
         private static int Compile(string dotnet, string compiler, List<string> arguments, bool shared, bool pruneUnusedInputs, StringBuilder output)
         {
+            arguments = ExpandResponseFiles(arguments);
+
             var startInfo = new ProcessStartInfo
             {
                 FileName = dotnet,
@@ -120,10 +131,9 @@ namespace CompilerWorker
                 startInfo.ArgumentList.Add("/keepalive:60");
             }
 
-            // Bazel expands its response file into the request arguments, and a
-            // compile carrying the targeting pack's references is far past the
-            // 32767 characters Windows allows on a command line, so they go back
-            // into a response file. One line per argument, as Bazel wrote it.
+            // A compile carrying the targeting pack's references is far past the
+            // 32767 characters Windows allows on a command line, so the arguments
+            // go back into a response file. One line per argument.
             var responseFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + ".rsp");
             File.WriteAllLines(responseFile, arguments, Utf8WithBom);
             startInfo.ArgumentList.Add("@" + responseFile);
@@ -169,12 +179,28 @@ namespace CompilerWorker
         }
 
         /// <summary>
-        /// Assembly name of each reference read so far. A file name is not a
-        /// reliable stand-in for the assembly name, and re-reading ~170 reference
-        /// assemblies per compilation would undo the point of the worker. The key
-        /// includes size and mtime so that a changed file is read again.
+        /// Inlines any <c>@file</c> argument. Bazel expands the response file into
+        /// the request itself under the worker protocol, but passes it through as
+        /// <c>@file</c> when this binary runs as a plain action, and the rest of
+        /// the code only wants to deal with one of those shapes.
         /// </summary>
-        private static readonly Dictionary<string, string?> AssemblyNameCache = new Dictionary<string, string?>();
+        private static List<string> ExpandResponseFiles(List<string> arguments)
+        {
+            var expanded = new List<string>(arguments.Count);
+            foreach (var argument in arguments)
+            {
+                if (argument.StartsWith('@') && File.Exists(argument[1..]))
+                {
+                    expanded.AddRange(File.ReadAllLines(argument[1..]));
+                }
+                else
+                {
+                    expanded.Add(argument);
+                }
+            }
+
+            return expanded;
+        }
 
         private static string? AssemblyNameOf(string path)
         {
@@ -217,32 +243,16 @@ namespace CompilerWorker
 
         /// <summary>
         /// Writes the references that contributed nothing to the output, for
-        /// Bazel's <c>unused_inputs_list</c>. The used set is the assembly
-        /// reference table of the produced assembly; anything that cannot be
-        /// determined counts as used, so an unreadable file never prunes a
-        /// reference that mattered.
+        /// Bazel's <c>unused_inputs_list</c>, next to the assembly that was just
+        /// built. The used set is that assembly's reference table; anything that
+        /// cannot be determined counts as used, so an unreadable file never prunes
+        /// a reference that mattered.
         /// </summary>
         private static void WriteUnusedInputs(List<string> arguments, int exitCode, StringBuilder output)
         {
-            // Bazel expands the response file into the request arguments under the
-            // worker strategy, but passes it as `@file` when this binary runs as a
-            // plain action.
-            var effective = new List<string>();
-            foreach (var argument in arguments)
-            {
-                if (argument.StartsWith('@') && File.Exists(argument[1..]))
-                {
-                    effective.AddRange(File.ReadAllLines(argument[1..]));
-                }
-                else
-                {
-                    effective.Add(argument);
-                }
-            }
-
             var references = new List<string>();
             string? outputAssembly = null;
-            foreach (var rawLine in effective)
+            foreach (var rawLine in arguments)
             {
                 var line = rawLine.Trim();
                 if (line.StartsWith("-r:", StringComparison.Ordinal))
