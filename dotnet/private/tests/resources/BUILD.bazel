@@ -41,3 +41,19 @@ fsharp_test(
         "@paket.rules_dotnet_dev_nuget_packages//fsharp.core",
     ],
 )
+
+# A resource that is a build output rather than a source file: its path carries
+# the configuration segment that --experimental_output_paths=strip rewrites.
+genrule(
+    name = "generate_resource",
+    outs = ["generated.txt"],
+    cmd = "echo 'generated at build time' > $@",
+)
+
+csharp_test(
+    name = "test_generated_resource_runtime_csharp",
+    srcs = ["GeneratedResource.cs"],
+    out = "GeneratedResource.Library",
+    resources = [":generate_resource"],
+    target_frameworks = ["net9.0"],
+)

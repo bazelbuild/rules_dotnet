@@ -1053,15 +1053,11 @@ def copy_files_to_dir(target_name, actions, is_windows, files, out_dir, executab
         )
     return outputs
 
-_RESOURCE_TEMPLATE_CSHARP = "/resource:{}"
-_RESOURCE_TEMPLATE_FSHARP = "--resource:{}"
+_RESOURCE_TEMPLATE_CSHARP = "/resource:%s"
+_RESOURCE_TEMPLATE_FSHARP = "--resource:%s"
 
 def add_resource_args(args, resources, target_label, out_dll, language):
     """Adds one resource argument per file to `args`.
-
-    The argument depends on the target as well as on the file, which
-    `Args.map_each` can only pass through with a closure that Bazel then has to
-    retain until the action executes. Resolve the arguments here instead.
 
     Args:
         args: The Args object for the compilation action.
@@ -1071,10 +1067,13 @@ def add_resource_args(args, resources, target_label, out_dll, language):
         language: "csharp" or "fsharp".
     """
     for resource in resources:
-        args.add(_map_resource_arg(resource, target_label, out_dll, language))
+        args.add(resource, format = _resource_arg_format(resource, target_label, out_dll, language))
 
-def _map_resource_arg(file, target_label, out_dll, language):
-    """Map an embedded resource file to a resource argument for the compiler.
+def _resource_arg_format(file, target_label, out_dll, language):
+    """The Args format string that turns a resource file into a compiler argument.
+
+    A format rather than a finished string, so the file is still added to `args`
+    as a `File` and `--experimental_output_paths=strip` can rewrite its path.
 
     Args:
         file: (File) The file to embed.
@@ -1083,20 +1082,18 @@ def _map_resource_arg(file, target_label, out_dll, language):
         language: (str) The language of the target that is embedding the resource. Possible values are "csharp" or "fsharp".
 
     Returns:
-        The resource argument to pass to the compiler.
+        A format string with a single `%s` where the file's path goes.
     """
     if language == "csharp":
         base_resource_fmt = _RESOURCE_TEMPLATE_CSHARP
     elif language == "fsharp":
         base_resource_fmt = _RESOURCE_TEMPLATE_FSHARP
     else:
-        fail("Unsupported language: {}", language)
-
-    base_resource_arg = base_resource_fmt.format(file.path)
+        fail("Unsupported language: {}".format(language))
 
     # We can only determine the embedded resource's name if we have a DLL to embed it in.
     if out_dll == None or not out_dll.endswith(".dll"):
-        return base_resource_arg
+        return base_resource_fmt
 
     # When the file is not within a project directory, MSBuild falls back to
     # the basename of the file.
@@ -1105,7 +1102,7 @@ def _map_resource_arg(file, target_label, out_dll, language):
     if file.owner != None and file.owner.repo_name != target_label.repo_name:
         # Fallback to the basename if the file comes from a different repository.
         resource_name = simple_resource_name
-    if not file.short_path.startswith(target_label.package):
+    elif not file.short_path.startswith(target_label.package):
         # Fallback to the basename if the file is not in the target's package, because
         # the path will not be normalized.
         resource_name = simple_resource_name
@@ -1117,4 +1114,6 @@ def _map_resource_arg(file, target_label, out_dll, language):
         parts = relative_path.split("/")
         resource_name = "{}.{}".format(out_dll[:-4], ".".join(parts))
 
-    return base_resource_arg + "," + resource_name
+    # `%` is the escape character in an Args format string, so a resource whose
+    # name contains one has to double it to come out literal.
+    return base_resource_fmt + "," + resource_name.replace("%", "%%")
