@@ -7,18 +7,18 @@ bool_flag(
     visibility = ["//visibility:public"],
 )
 
-# A flag controlling if the C# compile actions run in a persistent worker. Off
-# while the worker is new; see docs/README.md#persistent-workers.
+# Whether the C# compile actions run in a persistent worker.
+# See docs/README.md#persistent-workers.
 bool_flag(
     name = "use_compiler_worker",
     build_setting_default = False,
     visibility = ["//visibility:public"],
 )
 
-# A flag controlling if a compile reports the references it did not use, so that
-# Bazel stops re-running it when only those change. Needs the compiler worker,
-# which reads the compiled output. Off by default because of the trade documented
-# in docs/README.md#pruning-unused-references.
+# Whether a compile reports the references it did not use, so that Bazel stops
+# re-running it when only those change. Needs use_compiler_worker, because it is
+# the worker that reads the compiled output.
+# See docs/README.md#pruning-unused-references.
 bool_flag(
     name = "prune_unused_references",
     build_setting_default = False,

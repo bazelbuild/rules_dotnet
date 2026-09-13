@@ -175,3 +175,25 @@ To enable this optimization, set the following flags:
 build --@rules_dotnet//dotnet/settings:use_compiler_worker=true
 build --@rules_dotnet//dotnet/settings:prune_unused_references=true
 ```
+
+## Path mapping
+
+The rules_dotnet compile actions support [path mapping](https://bazel.build/reference/command-line-reference#flag--experimental_output_paths),
+which strips the configuration segment out of the paths a compile action sees, so the *same*
+compilation reached through two different configurations produces one cache **key** instead of two.
+
+```
+common --experimental_output_paths=strip
+```
+
+### It cannot be used on Windows
+
+Bazel has [no sandboxing on Windows](https://github.com/bazelbuild/bazel/discussions/18401), so
+there is no strategy there that can satisfy the requirement and *every* compile fails with the
+error above. You can use platform specific configuration to enable path mapping only on supported platforms:
+
+```
+common --enable_platform_specific_config
+build:linux --experimental_output_paths=strip
+build:macos --experimental_output_paths=strip
+```

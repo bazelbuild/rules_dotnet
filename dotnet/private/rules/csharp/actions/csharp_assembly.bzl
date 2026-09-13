@@ -75,7 +75,6 @@ def AssemblyAction(
         actions,
         compiler_wrapper,
         compiler_worker,
-        prune_unused_references,
         label,
         additionalfiles,
         debug,
@@ -121,8 +120,7 @@ def AssemblyAction(
     Args:
         actions: Bazel module providing functions to create actions.
         compiler_wrapper: The wrapper script that invokes the C# compiler.
-        compiler_worker: The persistent worker that runs the C# compiler, or None to fall back to the wrapper.
-        prune_unused_references: Whether the compile should report the references it did not use.
+        compiler_worker: The persistent worker to compile with, or None to fall back to the wrapper script. See `get_compiler_worker`.
         label: The label of the target. This is used to determine the relative path of embedded resources.
         additionalfiles: Names additional files that don't directly affect code generation but may be used by analyzers for producing errors or warnings.
         debug: Emits debugging information.
@@ -210,7 +208,6 @@ def AssemblyAction(
             actions,
             compiler_wrapper,
             compiler_worker,
-            prune_unused_references,
             label,
             additionalfiles,
             analyzers,
@@ -262,7 +259,6 @@ def AssemblyAction(
             actions,
             compiler_wrapper,
             compiler_worker,
-            prune_unused_references,
             label,
             additionalfiles,
             analyzers,
@@ -303,7 +299,6 @@ def AssemblyAction(
             actions,
             compiler_wrapper,
             compiler_worker,
-            prune_unused_references,
             label,
             additionalfiles,
             analyzers,
@@ -380,7 +375,6 @@ def _compile(
         actions,
         compiler_wrapper,
         compiler_worker,
-        prune_unused_references,
         label,
         additionalfiles,
         analyzer_assemblies,
@@ -417,7 +411,6 @@ def _compile(
     # Our goal is to match msbuild as much as reasonable
     # https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/listed-alphabetically
     args = actions.args()
-    args.add("/unsafe-")
     if (allow_unsafe_blocks):
         args.add("/unsafe+")
     else:
@@ -474,23 +467,24 @@ def _compile(
 
     # outputs
     if out_dll != None:
-        args.add(out_dll.path, format = "/out:%s")
-        args.add(out_ref.path, format = "/refout:%s")
-        args.add(out_pdb.path, format = "/pdb:%s")
+        args.add(out_dll, format = "/out:%s")
+        args.add(out_ref, format = "/refout:%s")
+        args.add(out_pdb, format = "/pdb:%s")
         outputs = [out_dll, out_ref, out_pdb]
     else:
         args.add("/refonly")
-        args.add(out_ref.path, format = "/out:%s")
+        args.add(out_ref, format = "/out:%s")
         outputs = [out_ref]
 
     if out_xml != None:
-        args.add(out_xml.path, format = "/doc:%s")
+        args.add(out_xml, format = "/doc:%s")
         outputs.append(out_xml)
 
-    # Only the real compilation can report unused references: the references a
-    # `/refonly` pass records are not the full picture.
+    # A `/refonly` pass does not record every reference the real compilation
+    # uses, so only the latter can say which ones went unused. The worker writes
+    # the list next to the assembly it just read, which is this path.
     unused_inputs = None
-    if prune_unused_references and compiler_worker and out_dll != None:
+    if compiler_worker and compiler_worker.prune_unused_references and out_dll != None:
         unused_inputs = actions.declare_file(out_dll.basename + ".unused_inputs", sibling = out_dll)
         outputs.append(unused_inputs)
 
@@ -515,7 +509,7 @@ def _compile(
 
     # keyfile
     if keyfile != None:
-        args.add(keyfile.path, format = "/keyfile:%s")
+        args.add(keyfile, format = "/keyfile:%s")
 
     # Additional compiler flags
     for option in compiler_options:
@@ -525,19 +519,28 @@ def _compile(
     if interceptors_namespaces:
         args.add("/features:InterceptorsNamespaces=" + ";".join(interceptors_namespaces))
 
-    # spill to a "response file" when the argument list gets too big (Bazel
-    # makes that call based on limitations of the OS).
+    # A compile carrying the targeting pack's references is far past any OS
+    # command line limit, so the arguments always go into a response file.
     args.set_param_file_format("multiline")
-
     args.use_param_file("@%s", use_always = True)
 
     direct_inputs = srcs + resources + additionalfiles + analyzer_configs
     direct_inputs += [keyfile] if keyfile else []
 
-    executable = compiler_worker or compiler_wrapper
+    if compiler_worker:
+        executable = compiler_worker.executable
+        execution_requirements = {
+            "requires-worker-protocol": "json",
+            "supports-path-mapping": "1",
+            "supports-workers": "1",
+        }
+    else:
+        executable = compiler_wrapper
+        execution_requirements = {"supports-path-mapping": "1"}
 
-    # dotnet.exe csc.dll /noconfig <other csc args>
-    # https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/command-line-building-with-csc-exe
+    # Both the worker and the wrapper script take the dotnet host and csc.dll
+    # first, then the csc arguments:
+    # https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/
     actions.run(
         mnemonic = "CSharpCompile",
         progress_message = "Compiling " + target_name + (" (internals ref-only dll)" if out_dll == None else ""),
@@ -566,8 +569,5 @@ def _compile(
         env = {
             "DOTNET_CLI_HOME": toolchain.compiler_host.files_to_run.executable.dirname,
         },
-        execution_requirements = {
-            "requires-worker-protocol": "json",
-            "supports-workers": "1",
-        } if compiler_worker else {},
+        execution_requirements = execution_requirements,
     )
