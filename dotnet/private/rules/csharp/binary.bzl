@@ -7,6 +7,7 @@ load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
 load(
     "//dotnet/private:common.bzl",
     "default_csharp_lang_version",
+    "get_compiler_worker",
     "get_toolchain",
     "is_debug",
 )
@@ -21,6 +22,8 @@ def _compile_action(ctx, tfm):
     return AssemblyAction(
         ctx.actions,
         ctx.executable._compiler_wrapper_bat if ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]) else ctx.executable._compiler_wrapper_sh,
+        compiler_worker = get_compiler_worker(ctx),
+        prune_unused_references = ctx.attr._prune_unused_references[BuildSettingInfo].value,
         label = ctx.label,
         additionalfiles = ctx.files.additionalfiles,
         debug = is_debug(ctx),
@@ -75,6 +78,12 @@ _BINARY_ATTRS = dicts.add(
     },
 )
 
+_WORKER_FREE_BINARY_ATTRS = {
+    name: value
+    for (name, value) in _BINARY_ATTRS.items()
+    if name != "_compiler_worker"
+}
+
 csharp_binary = rule(
     _binary_private_impl,
     doc = """Compile a C# exe""",
@@ -97,6 +106,19 @@ apphost_shimmer_binary = rule(
     _binary_private_impl,
     doc = """Compile the apphost shimmer C# exe.""",
     attrs = _BINARY_ATTRS,
+    executable = True,
+    toolchains = [
+        "//dotnet:toolchain_type",
+    ],
+    cfg = apphost_shimmer_transition,
+)
+
+# Builds the compiler worker itself. Every other C# target depends on the
+# worker, so the worker has to be compiled without it to avoid a cycle.
+compiler_worker_binary = rule(
+    _binary_private_impl,
+    doc = """Compile the persistent compiler worker C# exe.""",
+    attrs = _WORKER_FREE_BINARY_ATTRS,
     executable = True,
     toolchains = [
         "//dotnet:toolchain_type",

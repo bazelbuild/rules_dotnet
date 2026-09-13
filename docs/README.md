@@ -87,7 +87,10 @@ nuget FSharp.Core 10.1.201
 nuget Argu 6.2.3
 ```
 
-Point the extension at it and at the lock file Paket writes next to it:
+Run `@rules_dotnet//tools/paket -- install` in the same directory as the 
+`paket.dependencies` file to generate the `paket.lock` file.
+
+Add the following snippet to your MODULE.bazel file:
 
 ```starlark
 paket = use_extension("@rules_dotnet//dotnet:paket.bzl", "paket")
@@ -98,47 +101,77 @@ paket.parse(
 use_repo(paket, "paket.main")
 ```
 
-`@rules_dotnet//tools/paket` is the Paket CLI on the build's own .NET toolchain, so
-it needs no local .NET install. Every Paket command works (`update`,
+`@rules_dotnet//tools/paket`. Every Paket command works (`update`,
 `outdated`, `why`), and it runs in the directory you invoke it from.
 
 ### Referring to packages
 
 Each [dependency group](https://fsprojects.github.io/Paket/groups.html) becomes
 a repository named after it, holding one lower cased target per package:
-`@paket.main//argu` for the implicit top group, `@paket.build//fake.core` for a
-group named `Build`. Versions are left out, since a group resolves one version
-of each package.
+
+Example:
+If you have the following `paket.dependencies`:
+
+```text
+source https://api.nuget.org/v3/index.json
+framework: net10.0
+
+nuget System.Text.Json 10.1.201
+
+group iaac
+    source https://api.nuget.org/v3/index.json
+
+    nuget Pulumi 3.101.2
+```
+
+The top-level group becomes `@paket.main`, and the `iaac` group becomes `@paket.iaac`.
+and you can refer to them in your Bazel targets using the `@paket.<group>//<package>` syntax
+in the `deps` attribute of your Bazel targets.
 
 ```starlark
 csharp_binary(
     name = "app",
     srcs = ["Program.cs"],
     target_frameworks = ["net10.0"],
-    deps = ["@paket.main//argu"],
+    deps = ["@paket.main//system.text.json"],
 )
 ```
-
-`bazel mod tidy` keeps the `use_repo` call in step with the lock file.
 
 Do not mix groups in one target. Paket resolves each group separately, so two
 groups can hold incompatible versions of the same transitive dependency.
 
 A package that ships a [dotnet tool](https://learn.microsoft.com/en-us/dotnet/core/tools/global-tools)
-also exposes it as an executable, at `@paket.main//csharpier/tools:csharpier`.
-
-### Package sources and verification
-
-Packages are downloaded from the feeds their group lists in `paket.lock`, in
-order, authenticating from your `.netrc` or the one `paket.parse` names.
-
-Paket records no hashes, so `paket.parse` looks them up from the feed's
-registration metadata and keeps them in `MODULE.bazel.lock`, where they are
-pinned and visible in review. Feeds that do not publish it yield no hash and
-their packages are pinned by version alone; `verify_integrity = False` skips
-the lookup.
+also exposes it as an executable, at `@paket.<group>//<package>/tools:<tool>`.
 
 ## Remote execution
 
 The rules support remote execution out of the box. The remote runners do need to have the required .Net
 system dependencies installed though. A common missing system dependency in existing RBE images is `libicu`.
+
+## C# Persistent workers
+
+The C# compile actions can run in a [Bazel persistent worker](https://bazel.build/remote/persistent).
+It is off by default, so turn it on with:
+
+```
+build --@rules_dotnet//dotnet/settings:use_compiler_worker=true
+```
+
+You can control the number of worker instances with:
+
+```
+build --worker_max_instances=CSharpCompile=HOST_CPUS
+```
+
+### Pruning unused references
+
+When using the compiler worker an additional optimization becomes possible: pruning unused references.
+What this does is track which references are actually used by the compiler and if they are unused
+they will be ignored by Bazel in subsequent builds. This can lead to better cache reuse.
+
+To enable this optimization, set the following flags:
+
+```
+build --@rules_dotnet//dotnet/settings:use_compiler_worker=true
+build --@rules_dotnet//dotnet/settings:prune_unused_references=true
+```

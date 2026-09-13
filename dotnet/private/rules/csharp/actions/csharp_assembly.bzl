@@ -74,6 +74,8 @@ def _collect_analyzer_dependencies(deps):
 def AssemblyAction(
         actions,
         compiler_wrapper,
+        compiler_worker,
+        prune_unused_references,
         label,
         additionalfiles,
         debug,
@@ -119,6 +121,8 @@ def AssemblyAction(
     Args:
         actions: Bazel module providing functions to create actions.
         compiler_wrapper: The wrapper script that invokes the C# compiler.
+        compiler_worker: The persistent worker that runs the C# compiler, or None to fall back to the wrapper.
+        prune_unused_references: Whether the compile should report the references it did not use.
         label: The label of the target. This is used to determine the relative path of embedded resources.
         additionalfiles: Names additional files that don't directly affect code generation but may be used by analyzers for producing errors or warnings.
         debug: Emits debugging information.
@@ -205,6 +209,8 @@ def AssemblyAction(
         _compile(
             actions,
             compiler_wrapper,
+            compiler_worker,
+            prune_unused_references,
             label,
             additionalfiles,
             analyzers,
@@ -255,6 +261,8 @@ def AssemblyAction(
         _compile(
             actions,
             compiler_wrapper,
+            compiler_worker,
+            prune_unused_references,
             label,
             additionalfiles,
             analyzers,
@@ -294,6 +302,8 @@ def AssemblyAction(
         _compile(
             actions,
             compiler_wrapper,
+            compiler_worker,
+            prune_unused_references,
             label,
             additionalfiles,
             analyzers,
@@ -369,6 +379,8 @@ def AssemblyAction(
 def _compile(
         actions,
         compiler_wrapper,
+        compiler_worker,
+        prune_unused_references,
         label,
         additionalfiles,
         analyzer_assemblies,
@@ -475,6 +487,13 @@ def _compile(
         args.add(out_xml.path, format = "/doc:%s")
         outputs.append(out_xml)
 
+    # Only the real compilation can report unused references: the references a
+    # `/refonly` pass records are not the full picture.
+    unused_inputs = None
+    if prune_unused_references and compiler_worker and out_dll != None:
+        unused_inputs = actions.declare_file(out_dll.basename + ".unused_inputs", sibling = out_dll)
+        outputs.append(unused_inputs)
+
     # assembly references
     format_ref_arg(args, depset(framework_files, transitive = [refs]))
 
@@ -515,6 +534,8 @@ def _compile(
     direct_inputs = srcs + resources + additionalfiles + analyzer_configs
     direct_inputs += [keyfile] if keyfile else []
 
+    executable = compiler_worker or compiler_wrapper
+
     # dotnet.exe csc.dll /noconfig <other csc args>
     # https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/command-line-building-with-csc-exe
     actions.run(
@@ -526,7 +547,7 @@ def _compile(
         ),
         tools = depset(
             direct = [
-                compiler_wrapper,
+                executable,
                 toolchain.compiler_host.files_to_run.executable,
                 toolchain.csharp_compiler.files_to_run.executable,
             ],
@@ -536,13 +557,17 @@ def _compile(
             ],
         ),
         outputs = outputs,
-        executable = compiler_wrapper,
+        executable = executable,
         arguments = [
             toolchain.compiler_host.files_to_run.executable.path,
             toolchain.csharp_compiler.files_to_run.executable.path,
-            args,
-        ],
+        ] + (["--prune_unused_inputs"] if unused_inputs else []) + [args],
+        unused_inputs_list = unused_inputs,
         env = {
             "DOTNET_CLI_HOME": toolchain.compiler_host.files_to_run.executable.dirname,
         },
+        execution_requirements = {
+            "requires-worker-protocol": "json",
+            "supports-workers": "1",
+        } if compiler_worker else {},
     )
