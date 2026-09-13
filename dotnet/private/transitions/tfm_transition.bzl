@@ -6,8 +6,8 @@ load(
     "FRAMEWORK_COMPATIBILITY",
     "get_highest_compatible_target_framework",
 )
-load("//dotnet/private/sdk:rids.bzl", "RUNTIME_GRAPH")
-load("//dotnet/private/transitions:common.bzl", "FRAMEWORK_COMPATABILITY_TRANSITION_OUTPUTS", "RID_COMPATABILITY_TRANSITION_OUTPUTS", "platform_to_rid")
+load("//dotnet/private:portable_rids.bzl", "PORTABLE_RUNTIME_GRAPH")
+load("//dotnet/private/transitions:common.bzl", "FRAMEWORK_COMPATABILITY_TRANSITION_OUTPUTS", "platform_to_rid", "rid_compatability_transition_outputs")
 
 def _impl(settings, attr):
     incoming_tfm = settings["//dotnet:target_framework"]
@@ -33,12 +33,12 @@ def _impl(settings, attr):
         # If the runtime_identifier attribute is not set and the incoming value is "base", we will use the platform to determine the rid since no upstream target has set the runtime identifier
         runtime_identifier = platform_to_rid()
 
-    return dicts.add({"//dotnet:target_framework": transitioned_tfm}, {"//dotnet:rid": runtime_identifier}, FRAMEWORK_COMPATABILITY_TRANSITION_OUTPUTS[transitioned_tfm], RID_COMPATABILITY_TRANSITION_OUTPUTS[runtime_identifier])
+    return dicts.add({"//dotnet:target_framework": transitioned_tfm}, {"//dotnet:rid": runtime_identifier}, FRAMEWORK_COMPATABILITY_TRANSITION_OUTPUTS[transitioned_tfm], rid_compatability_transition_outputs(runtime_identifier))
 
 tfm_transition = transition(
     implementation = _impl,
     inputs = ["//dotnet:target_framework", "//dotnet:rid"],
     outputs = ["//dotnet:target_framework", "//dotnet:rid"] +
               ["//dotnet:framework_compatible_%s" % framework for framework in FRAMEWORK_COMPATIBILITY.keys()] +
-              ["//dotnet:rid_compatible_%s" % rid for rid in RUNTIME_GRAPH.keys()],
+              ["//dotnet:rid_compatible_%s" % rid for rid in PORTABLE_RUNTIME_GRAPH.keys()],
 )

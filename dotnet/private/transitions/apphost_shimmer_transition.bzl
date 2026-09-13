@@ -11,12 +11,12 @@ load(
     "DEFAULT_TFM",
     "FRAMEWORK_COMPATIBILITY",
 )
-load("//dotnet/private/sdk:rids.bzl", "RUNTIME_GRAPH")
+load("//dotnet/private:portable_rids.bzl", "PORTABLE_RUNTIME_GRAPH")
 load(
     "//dotnet/private/transitions:common.bzl",
     "FRAMEWORK_COMPATABILITY_TRANSITION_OUTPUTS",
-    "RID_COMPATABILITY_TRANSITION_OUTPUTS",
     "platform_to_rid",
+    "rid_compatability_transition_outputs",
 )
 
 def _impl(_settings, _attr):
@@ -25,7 +25,7 @@ def _impl(_settings, _attr):
     return dicts.add(
         {"//dotnet:target_framework": tfm, "//dotnet:rid": rid},
         FRAMEWORK_COMPATABILITY_TRANSITION_OUTPUTS[tfm],
-        RID_COMPATABILITY_TRANSITION_OUTPUTS[rid],
+        rid_compatability_transition_outputs(rid),
     )
 
 apphost_shimmer_transition = transition(
@@ -33,5 +33,5 @@ apphost_shimmer_transition = transition(
     inputs = [],
     outputs = ["//dotnet:target_framework", "//dotnet:rid"] +
               ["//dotnet:framework_compatible_%s" % framework for framework in FRAMEWORK_COMPATIBILITY.keys()] +
-              ["//dotnet:rid_compatible_%s" % rid for rid in RUNTIME_GRAPH.keys()],
+              ["//dotnet:rid_compatible_%s" % rid for rid in PORTABLE_RUNTIME_GRAPH.keys()],
 )

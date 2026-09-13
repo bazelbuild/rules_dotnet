@@ -22,6 +22,7 @@ bzl_library(
         ":dotnet_tool",
         ":package_metadata",
         "//dotnet/private:common",
+        "//dotnet/private:portable_rids",
         "@bazel_tools//tools/build_defs/repo:utils.bzl",
     ],
 )

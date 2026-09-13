@@ -5,6 +5,9 @@ bzl_library(
     srcs = ["register_rids.bzl"],
     visibility = ["//dotnet:__subpackages__"],
     deps = [
+        "//dotnet/private:common",
+        "//dotnet/private:portable_rids",
+        "//dotnet/private/sdk:rids",
         "@bazel_skylib//rules:common_settings",
     ],
 )
