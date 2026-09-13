@@ -57,7 +57,9 @@ def _dotnet_tool_impl(ctx):
             is_executable = True,
         )
 
-    runfiles = ctx.runfiles(files = filegroup[DefaultInfo].files.to_list() + dotnet_info.runtime_files)
+    runfiles = ctx.runfiles(transitive_files = depset(
+        transitive = [filegroup[DefaultInfo].files, dotnet_info.runtime_files],
+    ))
     runfiles = runfiles.merge(ctx.attr._bash_runfiles[DefaultInfo].default_runfiles)
 
     return [

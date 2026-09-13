@@ -87,7 +87,7 @@ def build_binary(ctx, compile_action):
     launcher = _create_launcher(ctx, dll)
 
     # appsetting_files must be in runfiles (not just DefaultInfo) so they're present when the target runs from an isolated runfiles tree (RBE/sandbox).
-    additional_runfiles = appsetting_files + get_toolchain(ctx).dotnetinfo.runtime_files
+    additional_runfiles = list(appsetting_files)
 
     runtimeconfig = None
     depsjson = None
@@ -140,7 +140,14 @@ def build_binary(ctx, compile_action):
     if depsjson != None:
         additional_runfiles.append(depsjson)
 
-    runfiles = collect_transitive_runfiles(ctx, runtime_provider, ctx.attr.deps).merge(ctx.runfiles(files = additional_runfiles))
+    # The dotnet host and its shared frameworks stay a depset so that every
+    # binary and test shares the one node.
+    runfiles = collect_transitive_runfiles(ctx, runtime_provider, ctx.attr.deps).merge(
+        ctx.runfiles(
+            files = additional_runfiles,
+            transitive_files = get_toolchain(ctx).dotnetinfo.runtime_files,
+        ),
+    )
 
     # The apphost shimmer loads Microsoft.NET.HostModel.dll at run time.
     # `include_host_model_dll` makes it a compile dependency; the runtime needs
