@@ -50,6 +50,13 @@ def _targeting_pack_impl(ctx):
         analyzers_vb.extend(compile_info.analyzers_vb)
         compile_data.extend(compile_info.compile_data)
 
+    # Resolved once here so that every target that does not narrow the pack
+    # shares this depset.
+    resolved_framework_files = list(framework_files)
+    for entry in framework_list.values():
+        if entry["file"] != None:
+            resolved_framework_files.append(entry["file"])
+
     return [DotnetTargetingPackInfo(
         assembly_compile_infos = compile_infos,
         assembly_runtime_infos = runtime_infos,
@@ -57,6 +64,7 @@ def _targeting_pack_impl(ctx):
         targeting_pack_overrides = targeting_pack_overrides,
         framework_list = framework_list,
         framework_files = framework_files,
+        framework_files_depset = depset(resolved_framework_files),
         analyzers = analyzers,
         analyzers_csharp = analyzers_csharp,
         analyzers_fsharp = analyzers_fsharp,

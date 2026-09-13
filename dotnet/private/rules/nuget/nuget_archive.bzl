@@ -14,6 +14,7 @@ load(
     "STD_FRAMEWORKS",
     "get_highest_compatible_target_framework",
 )
+load("//dotnet/private:portable_rids.bzl", "to_portable_rid")
 load(
     "//dotnet/private/rules/nuget:dotnet_tool.bzl",
     "DotnetToolInfo",
@@ -287,24 +288,40 @@ def _process_runtimes_file(groups, file):
     if len(parts) < 2:
         return
 
-    rid = parts[1]
+    # A package can ship assets under a version-qualified RID such as
+    # `ubuntu.16.04-x64`. rules_dotnet configures only on portable RIDs, so fold
+    # those onto the nearest portable ancestor.
+    source_rid = parts[1]
 
-    if rid not in RUNTIME_GRAPH:
+    if source_rid not in RUNTIME_GRAPH:
         return
+
+    rid = to_portable_rid(source_rid)
 
     if not groups.get("runtimes"):
         groups["runtimes"] = {}
 
     group = groups["runtimes"]
+    entry = group.get(rid)
 
-    if not group.get(rid):
-        group[rid] = {
+    if entry != None and entry["rid"] != source_rid:
+        # Several version-qualified RIDs can fold onto the same portable one, and
+        # only one set of assets can sit there. Order by fallback chain length,
+        # then by name, so the winner does not depend on the order of the archive.
+        if (len(RUNTIME_GRAPH[source_rid]), source_rid) <= (len(RUNTIME_GRAPH[entry["rid"]]), entry["rid"]):
+            return
+        entry = None
+
+    if entry == None:
+        entry = {
+            "rid": source_rid,
             "native": [],
             "lib": {},
         }
+        group[rid] = entry
 
     if parts[2] == "native":
-        group[rid]["native"].append(file)
+        entry["native"].append(file)
 
     if parts[2] == "lib":
         tfm = parts[3]
@@ -315,10 +332,10 @@ def _process_runtimes_file(groups, file):
         if not file.endswith(".dll") or file.endswith(".resources.dll"):
             return
 
-        if not group[rid]["lib"].get(tfm):
-            group[rid]["lib"][tfm] = []
+        if not entry["lib"].get(tfm):
+            entry["lib"][tfm] = []
 
-        group[rid]["lib"][tfm].append(file)
+        entry["lib"][tfm].append(file)
 
     return
 

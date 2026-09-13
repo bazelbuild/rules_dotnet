@@ -242,18 +242,19 @@ def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
 
     exports_files = []
 
+    targeting_pack_info = None
     targeting_pack_overrides = {}
     framework_list = {}
-    framework_files = []
+
+    # The pack has already resolved its FrameworkList to ref files. A dependency
+    # that supersedes one of them narrows that set, which needs a copy of the
+    # pack's dict; hold the pack's own until that actually happens.
+    narrowed = False
 
     if targeting_pack:
         targeting_pack_info = targeting_pack[DotnetTargetingPackInfo]
-
-        # The pack has already resolved its FrameworkList to ref files.
-        # `framework_list` and `framework_files` are narrowed below, so copy them.
         targeting_pack_overrides = targeting_pack_info.targeting_pack_overrides
-        framework_list = dict(targeting_pack_info.framework_list)
-        framework_files = list(targeting_pack_info.framework_files)
+        framework_list = targeting_pack_info.framework_list
 
         direct_analyzers.extend(targeting_pack_info.analyzers)
         direct_analyzers_csharp.extend(targeting_pack_info.analyzers_csharp)
@@ -263,35 +264,32 @@ def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
 
     for dep in deps:
         assembly = dep[DotnetAssemblyCompileInfo]
+        dep_name = assembly.name.lower()
+
+        # `targeting_pack_overrides` gives minimum versions for assemblies;
+        # `framework_list` gives reference assemblies the pack contributes even
+        # when the target does not depend on them explicitly.
+        minimum_version = None
+        if dep_name in targeting_pack_overrides:
+            minimum_version = targeting_pack_overrides[dep_name]
+        elif dep_name in framework_list:
+            minimum_version = framework_list[dep_name]["version"]
 
         add_to_output = True
-        if assembly.name.lower() in targeting_pack_overrides:
-            if semver.to_comparable(assembly.version) > semver.to_comparable(targeting_pack_overrides[assembly.name.lower()], relaxed = True):
-                # The `targeting_pack_overrides` specify minimum versions for assemblies. The
-                # `framework_list` specifies reference assemblies that will be included even if
-                # not listed by the Bazel target as an explicit dependency. When the user
-                # provides their own explicit assembly dependency that is newer than the minimum
-                # version, we must remove the automatically-provided reference assembly from
-                # `framework_list` to avoid conflicts.
-                #
-                # We pass `None` to make the pop() a no-op if the assembly doesn't exist in
-                # `framework_list`. It is okay if `targeting_pack_overrides` specifies a minimum
-                # version but `framework_list` did not actually automatically include that
-                # assembly. Not all assemblies in the former list are in the latter list for all
-                # possible `project_sdk` values. For example, System.Security.Cryptography.Xml
-                # must be at least version 4.4.0 for net8.0, but the default net8.0 framework
-                # does not provide it automatically: only the `project_sdk = "web"` (ASP.NET)
-                # framework does.
-                framework_list.pop(assembly.name.lower(), None)
-                add_to_output = True
-            else:
-                add_to_output = False
-        elif assembly.name.lower() in framework_list:
-            if semver.to_comparable(assembly.version) > semver.to_comparable(framework_list[assembly.name.lower()].get("version"), relaxed = True):
-                framework_list.pop(assembly.name.lower())
-                add_to_output = True
-            else:
-                add_to_output = False
+        if minimum_version != None:
+            # An explicit dependency newer than the minimum supersedes the pack's
+            # own reference assembly, which has to go to avoid a conflict. The
+            # pop() is a no-op when `framework_list` never contributed one: not
+            # every assembly with a minimum version is in it for every
+            # `project_sdk`. System.Security.Cryptography.Xml, for example, has a
+            # minimum version for net8.0 but is only contributed by the
+            # `project_sdk = "web"` (ASP.NET) framework.
+            add_to_output = semver.to_comparable(assembly.version) > semver.to_comparable(minimum_version, relaxed = True)
+            if add_to_output:
+                if not narrowed:
+                    framework_list = dict(framework_list)
+                    narrowed = True
+                framework_list.pop(dep_name, None)
 
         if add_to_output:
             direct_iref.extend(assembly.irefs if name in assembly.internals_visible_to else assembly.refs)
@@ -327,9 +325,15 @@ def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
             transitive_analyzers_vb.append(assembly.transitive_analyzers_vb)
             transitive_compile_data.append(assembly.transitive_compile_data)
 
-    for file in framework_list.values():
-        if file["file"] != None:
-            framework_files.append(file["file"])
+    if not narrowed:
+        # Nothing was superseded, so share the depset the pack resolved once.
+        framework_files = targeting_pack_info.framework_files_depset if targeting_pack_info else depset()
+    else:
+        narrowed_files = list(targeting_pack_info.framework_files)
+        for file in framework_list.values():
+            if file["file"] != None:
+                narrowed_files.append(file["file"])
+        framework_files = depset(narrowed_files)
 
     for export in exports:
         assembly = export[DotnetAssemblyCompileInfo]
@@ -1049,15 +1053,11 @@ def copy_files_to_dir(target_name, actions, is_windows, files, out_dir, executab
         )
     return outputs
 
-_RESOURCE_TEMPLATE_CSHARP = "/resource:{}"
-_RESOURCE_TEMPLATE_FSHARP = "--resource:{}"
+_RESOURCE_TEMPLATE_CSHARP = "/resource:%s"
+_RESOURCE_TEMPLATE_FSHARP = "--resource:%s"
 
 def add_resource_args(args, resources, target_label, out_dll, language):
     """Adds one resource argument per file to `args`.
-
-    The argument depends on the target as well as on the file, which
-    `Args.map_each` can only pass through with a closure that Bazel then has to
-    retain until the action executes. Resolve the arguments here instead.
 
     Args:
         args: The Args object for the compilation action.
@@ -1067,10 +1067,13 @@ def add_resource_args(args, resources, target_label, out_dll, language):
         language: "csharp" or "fsharp".
     """
     for resource in resources:
-        args.add(_map_resource_arg(resource, target_label, out_dll, language))
+        args.add(resource, format = _resource_arg_format(resource, target_label, out_dll, language))
 
-def _map_resource_arg(file, target_label, out_dll, language):
-    """Map an embedded resource file to a resource argument for the compiler.
+def _resource_arg_format(file, target_label, out_dll, language):
+    """The Args format string that turns a resource file into a compiler argument.
+
+    A format rather than a finished string, so the file is still added to `args`
+    as a `File` and `--experimental_output_paths=strip` can rewrite its path.
 
     Args:
         file: (File) The file to embed.
@@ -1079,20 +1082,18 @@ def _map_resource_arg(file, target_label, out_dll, language):
         language: (str) The language of the target that is embedding the resource. Possible values are "csharp" or "fsharp".
 
     Returns:
-        The resource argument to pass to the compiler.
+        A format string with a single `%s` where the file's path goes.
     """
     if language == "csharp":
         base_resource_fmt = _RESOURCE_TEMPLATE_CSHARP
     elif language == "fsharp":
         base_resource_fmt = _RESOURCE_TEMPLATE_FSHARP
     else:
-        fail("Unsupported language: {}", language)
-
-    base_resource_arg = base_resource_fmt.format(file.path)
+        fail("Unsupported language: {}".format(language))
 
     # We can only determine the embedded resource's name if we have a DLL to embed it in.
     if out_dll == None or not out_dll.endswith(".dll"):
-        return base_resource_arg
+        return base_resource_fmt
 
     # When the file is not within a project directory, MSBuild falls back to
     # the basename of the file.
@@ -1101,7 +1102,7 @@ def _map_resource_arg(file, target_label, out_dll, language):
     if file.owner != None and file.owner.repo_name != target_label.repo_name:
         # Fallback to the basename if the file comes from a different repository.
         resource_name = simple_resource_name
-    if not file.short_path.startswith(target_label.package):
+    elif not file.short_path.startswith(target_label.package):
         # Fallback to the basename if the file is not in the target's package, because
         # the path will not be normalized.
         resource_name = simple_resource_name
@@ -1113,4 +1114,6 @@ def _map_resource_arg(file, target_label, out_dll, language):
         parts = relative_path.split("/")
         resource_name = "{}.{}".format(out_dll[:-4], ".".join(parts))
 
-    return base_resource_arg + "," + resource_name
+    # `%` is the escape character in an Args format string, so a resource whose
+    # name contains one has to double it to come out literal.
+    return base_resource_fmt + "," + resource_name.replace("%", "%%")

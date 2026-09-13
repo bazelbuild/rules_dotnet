@@ -6,18 +6,18 @@ DotnetInfo = provider(
     doc = "Information about the dotnet toolchain",
     fields = {
         "runtime_path": "Path to the dotnet executable",
-        "runtime_files": """Files required in runfiles to make the dotnet executable available.
+        "runtime_files": """depset[File]: Files required in runfiles to make the dotnet executable available.
 
 This is the dotnet host and every shared framework, since a binary's
 `project_sdk` decides which one it asks for, but not the SDK.
 
 May be empty if the runtime_path points to a locally installed tool binary.""",
         "csharp_compiler_path": "Path to the C# compiler executable",
-        "csharp_compiler_files": """Files required in runfiles to make the C# compiler executable available.
+        "csharp_compiler_files": """depset[File]: Files required in runfiles to make the C# compiler executable available.
 
 May be empty if the csharp_compiler_path points to a locally installed tool binary.""",
         "fsharp_compiler_path": "Path to the F# compiler executable",
-        "fsharp_compiler_files": """Files required in runfiles to make the F# compiler executable available.
+        "fsharp_compiler_files": """depset[File]: Files required in runfiles to make the F# compiler executable available.
 
 May be empty if the fsharp_compiler_path points to a locally installed tool binary.""",
         "apphost_path": "Path to the apphost executable",
@@ -39,6 +39,29 @@ def _to_manifest_path(ctx, file):
     else:
         return ctx.workspace_name + "/" + file.short_path
 
+def _tool(ctx, target, fallback_path):
+    """The manifest path of a tool target and everything it carries.
+
+    The files stay a depset so that every action and binary the toolchain reaches
+    shares one node instead of a copy of the list.
+
+    Args:
+        ctx: The toolchain rule context.
+        target: The tool target, or None when the toolchain names a path instead.
+        fallback_path: The path to use when `target` is None.
+
+    Returns:
+        A (path, depset[File]) tuple.
+    """
+    if not target:
+        return fallback_path, depset()
+
+    # The tool itself is the filegroup's `srcs`; the runfiles carry the rest.
+    return (
+        _to_manifest_path(ctx, target.files.to_list()[0]),
+        depset(transitive = [target.files, target.default_runfiles.files]),
+    )
+
 def _dotnet_toolchain_impl(ctx):
     if ctx.attr.runtime and ctx.attr.runtime_path:
         fail("Can only set one of runtime or runtime_path but both were set.")
@@ -55,30 +78,15 @@ def _dotnet_toolchain_impl(ctx):
     if not ctx.attr.fsharp_compiler and not ctx.attr.fsharp_compiler_path:
         fail("Must set one of fsharp_compiler or fsharp_compiler_path.")
 
-    runtime_files = []
-    runtime_path = ctx.attr.runtime_path
+    runtime_path, runtime_files = _tool(ctx, ctx.attr.runtime, ctx.attr.runtime_path)
+    csharp_compiler_path, csharp_compiler_files = _tool(ctx, ctx.attr.csharp_compiler, ctx.attr.csharp_compiler_path)
+    fsharp_compiler_path, fsharp_compiler_files = _tool(ctx, ctx.attr.fsharp_compiler, ctx.attr.fsharp_compiler_path)
 
-    csharp_compiler_files = []
-    csharp_compiler_path = ctx.attr.csharp_compiler_path
-
-    fsharp_compiler_files = []
-    fsharp_compiler_path = ctx.attr.fsharp_compiler_path
-
-    runtime_host_files = []
+    # A binary runs on the host, which carries every shared framework but not the
+    # SDK. Fall back to `runtime` when the toolchain does not name a host.
+    runtime_host_files = runtime_files
     if ctx.attr.runtime_host:
-        runtime_host_files = ctx.attr.runtime_host.files.to_list() + ctx.attr.runtime_host.default_runfiles.files.to_list()
-
-    if ctx.attr.runtime:
-        runtime_files = ctx.attr.runtime.files.to_list() + ctx.attr.runtime.default_runfiles.files.to_list()
-        runtime_path = _to_manifest_path(ctx, runtime_files[0])
-
-    if ctx.attr.csharp_compiler:
-        csharp_compiler_files = ctx.attr.csharp_compiler.files.to_list() + ctx.attr.csharp_compiler.default_runfiles.files.to_list()
-        csharp_compiler_path = _to_manifest_path(ctx, csharp_compiler_files[0])
-
-    if ctx.attr.fsharp_compiler:
-        fsharp_compiler_files = ctx.attr.fsharp_compiler.files.to_list() + ctx.attr.fsharp_compiler.default_runfiles.files.to_list()
-        fsharp_compiler_path = _to_manifest_path(ctx, fsharp_compiler_files[0])
+        _, runtime_host_files = _tool(ctx, ctx.attr.runtime_host, "")
 
     # Make the $(tool_BIN) variable available in places like genrules.
     # See https://docs.bazel.build/versions/main/be/make-variables.html#custom_variables
@@ -91,14 +99,15 @@ def _dotnet_toolchain_impl(ctx):
         "DOTNET_RUNTIME_TFM": ctx.attr.runtime_tfm,
     })
 
+    toolchain_files = depset(transitive = [runtime_files, csharp_compiler_files, fsharp_compiler_files])
     default = DefaultInfo(
-        files = depset(runtime_files + csharp_compiler_files + fsharp_compiler_files),
-        runfiles = ctx.runfiles(files = runtime_files + csharp_compiler_files + fsharp_compiler_files),
+        files = toolchain_files,
+        runfiles = ctx.runfiles(transitive_files = toolchain_files),
     )
 
     dotnetinfo = DotnetInfo(
         runtime_path = runtime_path,
-        runtime_files = runtime_host_files or runtime_files,
+        runtime_files = runtime_host_files,
         csharp_compiler_path = csharp_compiler_path,
         csharp_compiler_files = csharp_compiler_files,
         fsharp_compiler_path = fsharp_compiler_path,

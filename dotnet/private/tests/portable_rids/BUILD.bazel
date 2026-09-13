@@ -1,0 +1,3 @@
+load(":portable_rids_test.bzl", "portable_rids_test_suite")
+
+portable_rids_test_suite(name = "portable_rids_test")

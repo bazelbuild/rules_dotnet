@@ -15,14 +15,14 @@ load(
     "DEFAULT_TFM",
     "FRAMEWORK_COMPATIBILITY",
 )
-load("//dotnet/private/sdk:rids.bzl", "RUNTIME_GRAPH")
+load("//dotnet/private:portable_rids.bzl", "PORTABLE_RUNTIME_GRAPH")
 
 # Constant, so it is built once at load time rather than on every application
 # of the transition.
 _DEFAULT_OUTPUTS = dicts.add(
     {"//dotnet:target_framework": DEFAULT_TFM, "//dotnet:rid": DEFAULT_RID},
     {"//dotnet:framework_compatible_{}".format(framework): False for framework in FRAMEWORK_COMPATIBILITY.keys()},
-    {"//dotnet:rid_compatible_{}".format(rid): False for rid in RUNTIME_GRAPH.keys()},
+    {"//dotnet:rid_compatible_{}".format(rid): False for rid in PORTABLE_RUNTIME_GRAPH.keys()},
 )
 
 def _impl(_settings, _attr):
@@ -33,5 +33,5 @@ default_transition = transition(
     inputs = [],
     outputs = ["//dotnet:target_framework", "//dotnet:rid"] +
               ["//dotnet:framework_compatible_%s" % framework for framework in FRAMEWORK_COMPATIBILITY.keys()] +
-              ["//dotnet:rid_compatible_%s" % rid for rid in RUNTIME_GRAPH.keys()],
+              ["//dotnet:rid_compatible_%s" % rid for rid in PORTABLE_RUNTIME_GRAPH.keys()],
 )

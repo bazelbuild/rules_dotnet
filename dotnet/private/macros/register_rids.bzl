@@ -2,10 +2,8 @@
 
 load("@bazel_skylib//rules:common_settings.bzl", "bool_setting", "string_flag")
 load("//dotnet/private:common.bzl", "DEFAULT_RID")
-load(
-    "//dotnet/private/sdk:rids.bzl",
-    "RUNTIME_GRAPH",
-)
+load("//dotnet/private:portable_rids.bzl", "PORTABLE_RUNTIME_GRAPH")
+load("//dotnet/private/sdk:rids.bzl", "RUNTIME_GRAPH")
 
 # buildifier: disable=unnamed-macro
 def register_rids():
@@ -17,14 +15,14 @@ def register_rids():
         visibility = ["//visibility:public"],
     )
 
-    for rid in RUNTIME_GRAPH.keys():
+    for rid in PORTABLE_RUNTIME_GRAPH.keys():
         bool_setting(
             name = "rid_compatible_%s" % rid,
             build_setting_default = False,
             visibility = ["//visibility:public"],
         )
 
-        flags = {":rid_compatible_%s" % f: repr(True) for f in RUNTIME_GRAPH[rid] + [rid]}
+        flags = {":rid_compatible_%s" % f: repr(True) for f in PORTABLE_RUNTIME_GRAPH[rid] + [rid]}
 
         native.config_setting(
             name = "rid_%s" % rid,
