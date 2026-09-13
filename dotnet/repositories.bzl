@@ -42,22 +42,12 @@ filegroup(
         "@bazel_tools//src/conditions:windows": ["dotnet.exe"],
         "//conditions:default": ["dotnet"],
     }}),
-    # The SDK proper is not here; see the `sdk` filegroup below. The pieces of it
-    # these rules use -- Roslyn, FSharp, Microsoft.NET.HostModel -- are named by
-    # the filegroups around this one.
     data = glob([
         "host/**/*",
+        "sdk/**/*",
         "shared/Microsoft.AspNetCore.App/**/*",
         "shared/Microsoft.NETCore.App/**/*",
     ]),
-    visibility = ["//visibility:public"],
-)
-
-# The whole SDK, for a rule of your own that needs more of it than these rules
-# do. Nothing in rules_dotnet depends on it.
-filegroup(
-    name = "sdk",
-    srcs = glob(["sdk/**/*"]),
     visibility = ["//visibility:public"],
 )
 
