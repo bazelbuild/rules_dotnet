@@ -411,7 +411,9 @@ def _compile(
         outputs.append(out_xml)
 
     # assembly references
-    format_ref_arg(args, depset(framework_files, transitive = [refs]))
+    # fsc resolves a duplicate assembly identity by order, so refs must come
+    # before the framework files.
+    format_ref_arg(args, depset(transitive = [refs, framework_files]))
 
     # .fs files
     args.add_all(srcs)
@@ -444,8 +446,8 @@ def _compile(
         mnemonic = "FSharpCompile",
         progress_message = "Compiling " + target_name + (" (internals ref-only dll)" if out_dll == None else ""),
         inputs = depset(
-            direct = direct_inputs + framework_files,
-            transitive = [refs, compile_data],
+            direct = direct_inputs,
+            transitive = [framework_files, refs, compile_data],
         ),
         tools = depset(
             direct = [

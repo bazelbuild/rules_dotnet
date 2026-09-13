@@ -242,18 +242,19 @@ def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
 
     exports_files = []
 
+    targeting_pack_info = None
     targeting_pack_overrides = {}
     framework_list = {}
-    framework_files = []
+
+    # The pack has already resolved its FrameworkList to ref files. A dependency
+    # that supersedes one of them narrows that set, which needs a copy of the
+    # pack's dict; hold the pack's own until that actually happens.
+    narrowed = False
 
     if targeting_pack:
         targeting_pack_info = targeting_pack[DotnetTargetingPackInfo]
-
-        # The pack has already resolved its FrameworkList to ref files.
-        # `framework_list` and `framework_files` are narrowed below, so copy them.
         targeting_pack_overrides = targeting_pack_info.targeting_pack_overrides
-        framework_list = dict(targeting_pack_info.framework_list)
-        framework_files = list(targeting_pack_info.framework_files)
+        framework_list = targeting_pack_info.framework_list
 
         direct_analyzers.extend(targeting_pack_info.analyzers)
         direct_analyzers_csharp.extend(targeting_pack_info.analyzers_csharp)
@@ -263,35 +264,32 @@ def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
 
     for dep in deps:
         assembly = dep[DotnetAssemblyCompileInfo]
+        dep_name = assembly.name.lower()
+
+        # `targeting_pack_overrides` gives minimum versions for assemblies;
+        # `framework_list` gives reference assemblies the pack contributes even
+        # when the target does not depend on them explicitly.
+        minimum_version = None
+        if dep_name in targeting_pack_overrides:
+            minimum_version = targeting_pack_overrides[dep_name]
+        elif dep_name in framework_list:
+            minimum_version = framework_list[dep_name]["version"]
 
         add_to_output = True
-        if assembly.name.lower() in targeting_pack_overrides:
-            if semver.to_comparable(assembly.version) > semver.to_comparable(targeting_pack_overrides[assembly.name.lower()], relaxed = True):
-                # The `targeting_pack_overrides` specify minimum versions for assemblies. The
-                # `framework_list` specifies reference assemblies that will be included even if
-                # not listed by the Bazel target as an explicit dependency. When the user
-                # provides their own explicit assembly dependency that is newer than the minimum
-                # version, we must remove the automatically-provided reference assembly from
-                # `framework_list` to avoid conflicts.
-                #
-                # We pass `None` to make the pop() a no-op if the assembly doesn't exist in
-                # `framework_list`. It is okay if `targeting_pack_overrides` specifies a minimum
-                # version but `framework_list` did not actually automatically include that
-                # assembly. Not all assemblies in the former list are in the latter list for all
-                # possible `project_sdk` values. For example, System.Security.Cryptography.Xml
-                # must be at least version 4.4.0 for net8.0, but the default net8.0 framework
-                # does not provide it automatically: only the `project_sdk = "web"` (ASP.NET)
-                # framework does.
-                framework_list.pop(assembly.name.lower(), None)
-                add_to_output = True
-            else:
-                add_to_output = False
-        elif assembly.name.lower() in framework_list:
-            if semver.to_comparable(assembly.version) > semver.to_comparable(framework_list[assembly.name.lower()].get("version"), relaxed = True):
-                framework_list.pop(assembly.name.lower())
-                add_to_output = True
-            else:
-                add_to_output = False
+        if minimum_version != None:
+            # An explicit dependency newer than the minimum supersedes the pack's
+            # own reference assembly, which has to go to avoid a conflict. The
+            # pop() is a no-op when `framework_list` never contributed one: not
+            # every assembly with a minimum version is in it for every
+            # `project_sdk`. System.Security.Cryptography.Xml, for example, has a
+            # minimum version for net8.0 but is only contributed by the
+            # `project_sdk = "web"` (ASP.NET) framework.
+            add_to_output = semver.to_comparable(assembly.version) > semver.to_comparable(minimum_version, relaxed = True)
+            if add_to_output:
+                if not narrowed:
+                    framework_list = dict(framework_list)
+                    narrowed = True
+                framework_list.pop(dep_name, None)
 
         if add_to_output:
             direct_iref.extend(assembly.irefs if name in assembly.internals_visible_to else assembly.refs)
@@ -327,9 +325,15 @@ def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
             transitive_analyzers_vb.append(assembly.transitive_analyzers_vb)
             transitive_compile_data.append(assembly.transitive_compile_data)
 
-    for file in framework_list.values():
-        if file["file"] != None:
-            framework_files.append(file["file"])
+    if not narrowed:
+        # Nothing was superseded, so share the depset the pack resolved once.
+        framework_files = targeting_pack_info.framework_files_depset if targeting_pack_info else depset()
+    else:
+        narrowed_files = list(targeting_pack_info.framework_files)
+        for file in framework_list.values():
+            if file["file"] != None:
+                narrowed_files.append(file["file"])
+        framework_files = depset(narrowed_files)
 
     for export in exports:
         assembly = export[DotnetAssemblyCompileInfo]

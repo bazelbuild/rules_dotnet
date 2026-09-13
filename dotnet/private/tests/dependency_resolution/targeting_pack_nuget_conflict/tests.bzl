@@ -8,10 +8,14 @@ load(
     "publish_binary",
 )
 
+# net6.0 and net7.0 resolve through the pack's FrameworkList; net10.0 is the
+# first framework whose pack also lists System.Text.Json in PackageOverrides,
+# which is the other of the two ways a pack can supersede a dependency.
 EXPECTED_VERSION_PER_TFM = {
     "net6.0": "7.0.0.0",
     "net7.0": "7.0.0.0",
     "net8.0": "8.0.0.0",
+    "net10.0": "10.0.0.0",
 }
 
 # buildifier: disable=unnamed-macro

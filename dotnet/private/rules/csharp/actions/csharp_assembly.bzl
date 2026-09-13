@@ -489,7 +489,9 @@ def _compile(
         outputs.append(unused_inputs)
 
     # assembly references
-    format_ref_arg(args, depset(framework_files, transitive = [refs]))
+    # csc resolves a duplicate assembly identity by order, so refs must come
+    # before the framework files.
+    format_ref_arg(args, depset(transitive = [refs, framework_files]))
 
     # analyzers
     if run_analyzers:
@@ -545,8 +547,8 @@ def _compile(
         mnemonic = "CSharpCompile",
         progress_message = "Compiling " + target_name + (" (internals ref-only dll)" if out_dll == None else ""),
         inputs = depset(
-            direct = direct_inputs + framework_files,
-            transitive = [refs, analyzer_assemblies, analyzer_assemblies_csharp, compile_data],
+            direct = direct_inputs,
+            transitive = [framework_files, refs, analyzer_assemblies, analyzer_assemblies_csharp, compile_data],
         ),
         tools = depset(
             direct = [

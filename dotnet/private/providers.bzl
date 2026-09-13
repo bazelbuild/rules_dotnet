@@ -80,6 +80,7 @@ DotnetTargetingPackInfo = provider(
         "targeting_pack_overrides": "map[string, string]: The merged `PackageOverride.txt` entries of every pack.",
         "framework_list": "map[string, struct]: The merged `FrameworkList.xml` entries of every pack, resolved to the ref File that provides each assembly.",
         "framework_files": "list[File]: The irefs of packs that do not ship a `FrameworkList.xml`.",
+        "framework_files_depset": "depset[File]: `framework_files` plus the resolved files of `framework_list`, for targets that do not narrow the pack.",
         "analyzers": "list[File]: The merged common language analyzers of every pack.",
         "analyzers_csharp": "list[File]: The merged C# analyzers of every pack.",
         "analyzers_fsharp": "list[File]: The merged F# analyzers of every pack.",
