@@ -6,14 +6,16 @@ load("//dotnet/private/sdk/apphost_packs:apphost_pack_transition.bzl", "apphost_
 load("//dotnet/private/sdk/runtime_packs:runtime_pack_transition.bzl", "runtime_pack_transition")
 load("//dotnet/private/sdk/targeting_packs:targeting_pack_transition.bzl", "targeting_pack_transition")
 load("//dotnet/private/transitions:default_transition.bzl", "default_transition")
-load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 
 # These are attributes that are common across all the binary/library/test .Net rules
 COMMON_ATTRS = {
     "deps": attr.label_list(
         doc = "Other libraries, binaries, or imported DLLs",
         providers = [DotnetAssemblyCompileInfo, DotnetAssemblyRuntimeInfo],
-        cfg = tfm_transition,
+        # No `cfg`: every rule using these attributes applies tfm_transition as
+        # its own incoming transition, and an outgoing transition here would be
+        # handed this target's attributes again, arriving back at the same
+        # configuration.
     ),
     "data": attr.label_list(
         doc = "Runtime files. It is recommended to use the @rules_dotnet//tools/runfiles library to read the runtime files.",
