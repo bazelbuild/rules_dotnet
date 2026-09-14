@@ -1,0 +1,14 @@
+load("@bazel_lib//:bzl_library.bzl", "bzl_library")
+load(":csharp_duplicate_analyzers.bzl", "csharp_duplicate_analyzers")
+
+csharp_duplicate_analyzers()
+
+bzl_library(
+    name = "csharp_duplicate_analyzers",
+    srcs = ["csharp_duplicate_analyzers.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+    deps = [
+        "//dotnet:defs",
+        "@bazel_skylib//lib:unittest",
+    ],
+)

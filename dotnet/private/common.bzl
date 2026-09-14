@@ -212,6 +212,31 @@ def format_ref_arg(args, refs):
 
     return args
 
+def _resolve_analyzers(direct, transitive):
+    """Keeps one analyzer per file name, the way MSBuild resolves the same conflict.
+
+    An analyzer handed to the compiler twice runs twice and emits its generated
+    types twice, which fails the compilation. The same analyzer arrives twice
+    whenever it ships both in a targeting pack and in a NuGet package that the
+    target depends on.
+
+    Args:
+        direct: The target's own analyzers, in precedence order.
+        transitive: Depsets of the dependencies' transitive analyzers, which lose
+            to everything in `direct`, mirroring how the targeting pack's
+            reference assemblies beat the closure's. Empty under strict deps.
+
+    Returns:
+        A depset of analyzers, no two of which share a file name.
+    """
+    files = direct if not transitive else direct + depset(transitive = transitive).to_list()
+
+    resolved = {}
+    for file in files:
+        resolved.setdefault(file.basename, file)
+
+    return depset(resolved.values())
+
 def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
     """Determine the transitive dependencies by the target framework.
 
@@ -256,10 +281,6 @@ def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
         targeting_pack_overrides = targeting_pack_info.targeting_pack_overrides
         framework_list = targeting_pack_info.framework_list
 
-        direct_analyzers.extend(targeting_pack_info.analyzers)
-        direct_analyzers_csharp.extend(targeting_pack_info.analyzers_csharp)
-        direct_analyzers_fsharp.extend(targeting_pack_info.analyzers_fsharp)
-        direct_analyzers_vb.extend(targeting_pack_info.analyzers_vb)
         direct_compile_data.extend(targeting_pack_info.compile_data)
 
     for dep in deps:
@@ -325,6 +346,15 @@ def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
             transitive_analyzers_vb.append(assembly.transitive_analyzers_vb)
             transitive_compile_data.append(assembly.transitive_compile_data)
 
+    if targeting_pack_info:
+        # Last, so a dependency wins a file name clash: it contributes analyzers
+        # only once it has superseded the pack's reference assembly, so its
+        # analyzer is the one that matches the refs. See `_resolve_analyzers`.
+        direct_analyzers.extend(targeting_pack_info.analyzers)
+        direct_analyzers_csharp.extend(targeting_pack_info.analyzers_csharp)
+        direct_analyzers_fsharp.extend(targeting_pack_info.analyzers_fsharp)
+        direct_analyzers_vb.extend(targeting_pack_info.analyzers_vb)
+
     if not narrowed:
         # Nothing was superseded, so share the depset the pack resolved once.
         framework_files = targeting_pack_info.framework_files_depset if targeting_pack_info else depset()
@@ -344,10 +374,10 @@ def collect_compile_info(name, deps, targeting_pack, exports, strict_deps):
         depset(direct = direct_iref, transitive = [depset(transitive_ref)]),
         # Unfiltered and structurally shared: only ever read back out of a provider.
         depset(direct = direct_ref, transitive = transitive_ref_depsets),
-        depset(direct = direct_analyzers, transitive = transitive_analyzers),
-        depset(direct = direct_analyzers_csharp, transitive = transitive_analyzers_csharp),
-        depset(direct = direct_analyzers_fsharp, transitive = transitive_analyzers_fsharp),
-        depset(direct = direct_analyzers_vb, transitive = transitive_analyzers_vb),
+        _resolve_analyzers(direct_analyzers, transitive_analyzers),
+        _resolve_analyzers(direct_analyzers_csharp, transitive_analyzers_csharp),
+        _resolve_analyzers(direct_analyzers_fsharp, transitive_analyzers_fsharp),
+        _resolve_analyzers(direct_analyzers_vb, transitive_analyzers_vb),
         depset(direct = direct_compile_data, transitive = transitive_compile_data),
         framework_files,
         exports_files,
