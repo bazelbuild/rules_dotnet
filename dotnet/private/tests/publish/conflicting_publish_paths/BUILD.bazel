@@ -108,8 +108,9 @@ csharp_binary(
     ],
 )
 
-# Only a self-contained publish collides: it carries native libraries next to
-# the main DLL, where the RID in their path no longer keeps them apart.
+# A self-contained publish carries native libraries next to the main DLL, where
+# the RID in their path no longer keeps them apart. Both come from a package, so
+# one of them is published and neither target is blamed for it.
 publish_binary(
     name = "duplicate_native_names",
     binary = ":native_app",
@@ -118,13 +119,9 @@ publish_binary(
     target_framework = "net10.0",
 )
 
-publish_conflict_test(
+publish_succeeds_test(
     name = "duplicate_native_names_test",
     size = "small",
-    expected_message_fragments = [
-        "glibc/runtimes/linux-x64/native/libnative.so and ",
-        "musl/runtimes/linux-musl-x64/native/libnative.so are both published as \"libnative.so\".",
-    ],
     target_under_test = ":duplicate_native_names",
 )
 
@@ -141,4 +138,45 @@ publish_succeeds_test(
     name = "native_names_by_rid_test",
     size = "small",
     target_under_test = ":native_names_by_rid",
+)
+
+# Two packages that ship the same assembly file name, which is what a package
+# repackaged under a second id looks like. The compile actions resolve the
+# duplicate identity by order, and the publish has to agree with them.
+import_library(
+    name = "packaged_one",
+    library_name = "PackagedOne",
+    libs = ["pkg_one/lib/net10.0/Shared.dll"],
+    version = "1.0.0",
+)
+
+import_library(
+    name = "packaged_two",
+    library_name = "PackagedTwo",
+    libs = ["pkg_two/lib/net10.0/Shared.dll"],
+    version = "1.0.0",
+)
+
+csharp_binary(
+    name = "packaged_app",
+    srcs = ["NativeMain.cs"],
+    target_frameworks = ["net10.0"],
+    deps = [
+        ":packaged_one",
+        ":packaged_two",
+    ],
+)
+
+publish_binary(
+    name = "duplicate_packaged_assemblies",
+    binary = ":packaged_app",
+    self_contained = True,
+    tags = ["manual"],
+    target_framework = "net10.0",
+)
+
+publish_succeeds_test(
+    name = "duplicate_packaged_assemblies_test",
+    size = "small",
+    target_under_test = ":duplicate_packaged_assemblies",
 )

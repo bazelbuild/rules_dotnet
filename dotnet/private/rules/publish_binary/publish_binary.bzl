@@ -154,17 +154,27 @@ def _publish_layout(runtime_identifier, binary_info, assembly_files, runtime_pac
     return layout
 
 def _reject_conflicting_publish_paths(layout, label):
-    """Fails when two different files would be published to the same path."""
-    by_path = {}
+    """Fails when two files the build produces would take the same publish path.
+
+    Only files the build produces, because only their name can be changed. The
+    same assembly ships under more than one package id often enough, and a name
+    inside a package is not the user's to pick, so files that arrive from one
+    keep the behaviour of the compile actions: a duplicate assembly identity is
+    resolved by order rather than rejected.
+    """
+    built = {}
 
     for (path, file) in layout:
-        previous = by_path.setdefault(path, file)
+        if file.is_source:
+            continue
+
+        previous = built.setdefault(path, file)
 
         if previous.path != file.path:
             fail(("{}: {} and {} are both published as \"{}\".\n\n" +
                   "A publish directory holds one file per path, so only one of them can " +
-                  "be there. Give one of them a different name; `out` sets the file name " +
-                  "of a managed assembly.").format(label, previous.owner, file.owner, path))
+                  "be there. Set `out` on one of them to give its assembly a different " +
+                  "file name.").format(label, previous.owner, file.owner, path))
 
 def _ready_to_run_images(ctx, binary_info, assembly_files, runtime_pack_files, runtime_identifier):
     """Compiles the published assemblies to ReadyToRun.
