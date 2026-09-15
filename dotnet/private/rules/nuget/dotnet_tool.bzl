@@ -9,6 +9,35 @@ DotnetToolInfo = provider(
     },
 )
 
+def _tool_executable(ctx, files, entrypoint):
+    """Finds the assembly a tool's settings file names.
+
+    `entrypoint` is a bare file name, resolved against the folder holding the
+    `DotnetToolSettings.xml` that named it. The folder cannot be rebuilt from
+    the framework: a package names it with whatever spelling of the framework it
+    shipped, which is not always the one the tool resolved to.
+
+    Args:
+      ctx: The rule context.
+      files: The files the package ships for the resolved framework.
+      entrypoint: The file name the settings file names.
+
+    Returns:
+      The rlocation path of the entrypoint, or None when it is not shipped.
+    """
+    directory = None
+
+    for file in files:
+        if file.basename == "DotnetToolSettings.xml":
+            directory = file.dirname
+            break
+
+    for file in files:
+        if file.dirname == directory and file.basename == entrypoint:
+            return to_rlocation_path(ctx, file)
+
+    return None
+
 def _dotnet_tool_impl(ctx):
     toolchain = get_toolchain(ctx)
 
@@ -27,12 +56,13 @@ def _dotnet_tool_impl(ctx):
     if runner != "dotnet":
         fail("Unsupported runner '{}' for target framework '{}'. Currently, only 'dotnet' is supported.".format(runner, framework))
 
-    repo_name = ctx.attr.deps.label.repo_name
-    executable = "{}/tools/{}/any/{}".format(repo_name, framework, entrypoint)
-
     filegroup = ctx.attr.deps[DotnetToolInfo].files_by_tfm.get(framework)
     if filegroup == None:
         fail("Tool {} does not provide files for the target framework: {}".format(ctx.attr.name, framework))
+
+    executable = _tool_executable(ctx, filegroup[DefaultInfo].files.to_list(), entrypoint)
+    if executable == None:
+        fail("Tool {} does not ship its entrypoint '{}' for the target framework: {}".format(ctx.attr.name, entrypoint, framework))
 
     windows_constraint = ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]
     launcher = ctx.actions.declare_file("{}.{}".format(ctx.label.name, "bat" if ctx.target_platform_has_constraint(windows_constraint) else "sh"))

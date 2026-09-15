@@ -80,3 +80,6 @@ use_repo(
 
 internal_dev_deps = use_extension("@rules_dotnet//dotnet:internal_dev_deps.bzl", "internal_dev_deps", dev_dependency = True)
 use_repo(internal_dev_deps, "buildkite_config")
+
+nuget_fixtures = use_extension("//dotnet/private/tests/nuget_resolution/internal:fixtures.bzl", "nuget_fixtures", dev_dependency = True)
+use_repo(nuget_fixtures, "nuget_fixtures")

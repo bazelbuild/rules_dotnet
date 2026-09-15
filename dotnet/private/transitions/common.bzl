@@ -1,4 +1,4 @@
-"Common functinality for transitions"
+"Common functionality for transitions"
 
 load("@bazel_skylib//lib:sets.bzl", "sets")
 load("@platforms//host:constraints.bzl", "HOST_CONSTRAINTS")

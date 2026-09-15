@@ -16,13 +16,19 @@ load(
     "FRAMEWORK_COMPATIBILITY",
 )
 load("//dotnet/private:portable_rids.bzl", "PORTABLE_RUNTIME_GRAPH")
+load(
+    "//dotnet/private/transitions:common.bzl",
+    "FRAMEWORK_COMPATABILITY_TRANSITION_OUTPUTS",
+    "rid_compatability_transition_outputs",
+)
 
 # Constant, so it is built once at load time rather than on every application
-# of the transition.
+# of the transition. The state reset to is the one an untouched configuration
+# starts in, compatibility settings included.
 _DEFAULT_OUTPUTS = dicts.add(
     {"//dotnet:target_framework": DEFAULT_TFM, "//dotnet:rid": DEFAULT_RID},
-    {"//dotnet:framework_compatible_{}".format(framework): False for framework in FRAMEWORK_COMPATIBILITY.keys()},
-    {"//dotnet:rid_compatible_{}".format(rid): False for rid in PORTABLE_RUNTIME_GRAPH.keys()},
+    FRAMEWORK_COMPATABILITY_TRANSITION_OUTPUTS[DEFAULT_TFM],
+    rid_compatability_transition_outputs(DEFAULT_RID),
 )
 
 def _impl(_settings, _attr):

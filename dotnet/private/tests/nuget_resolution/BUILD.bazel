@@ -1,0 +1,30 @@
+load("@bazel_lib//:bzl_library.bzl", "bzl_library")
+load("//dotnet/private/tests/nuget_resolution/internal:assertions.bzl", "resolution_test", "resolved_package")
+load("//dotnet/private/tests/nuget_resolution/internal:targets.bzl", "nuget_resolution_tests")
+
+# One target per declaration in tests.bzl.
+nuget_resolution_tests()
+
+# The one test that resolves a package that was actually fetched: everything
+# else skips the download and lays the package out from a list of paths.
+resolved_package(
+    name = "downloaded_package",
+    package = "@paket.rules_dotnet_dev_nuget_packages//system.memory",
+    runtime_identifier = "linux-x64",
+    tags = ["manual"],
+    target_framework = "netstandard2.0",
+)
+
+resolution_test(
+    name = "a_downloaded_package_resolves",
+    expected_libs = ["lib/netstandard2.0/System.Memory.dll"],
+    expected_refs = ["lib/netstandard2.0/System.Memory.dll"],
+    target_under_test = ":downloaded_package",
+)
+
+bzl_library(
+    name = "tests",
+    srcs = ["tests.bzl"],
+    visibility = ["//dotnet:__subpackages__"],
+    deps = ["//dotnet/private/tests/nuget_resolution/internal:declaration"],
+)

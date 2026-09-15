@@ -57,3 +57,52 @@ def to_portable_rid(rid):
     if rid in PORTABLE_RUNTIME_GRAPH:
         return rid
     return _LEGACY_RID_TO_PORTABLE.get(rid)
+
+# The architecture suffixes that appear in the RID graph. A RID carrying one is
+# "architecture qualified"; `linux-musl` is not, `linux-musl-x64` is.
+_ARCHITECTURES = [
+    "x64",
+    "x86",
+    "arm64",
+    "arm",
+    "armv6",
+    "s390x",
+    "ppc64le",
+    "mips64",
+    "loongarch64",
+    "riscv64",
+    "wasm",
+]
+
+def _is_architecture_qualified(rid):
+    for architecture in _ARCHITECTURES:
+        if rid.endswith("-" + architecture):
+            return True
+    return False
+
+# When several of a package's RID folders are compatible with the one being
+# built, NuGet prefers every architecture qualified RID over every architecture
+# agnostic one, and within each of those the more specific RID. Building
+# `linux-musl-x64` against a package shipping both `linux-musl` and `linux-x64`
+# resolves to `linux-x64`, not to the `linux-musl` the graph lists first.
+#
+# A RID's own compatibility list doubles as the specificity measure: the longer
+# the list, the more of the graph the RID sits on top of.
+_RID_PREFERENCE = {
+    rank[2]: index
+    for (index, rank) in enumerate(sorted([
+        (0 if _is_architecture_qualified(rid) else 1, -len(compatible), rid)
+        for (rid, compatible) in PORTABLE_RUNTIME_GRAPH.items()
+    ]))
+}
+
+def rids_by_preference(rids):
+    """Orders runtime identifiers the way NuGet picks between compatible ones.
+
+    Args:
+        rids: The runtime identifiers a package ships assets for.
+
+    Returns:
+        The same RIDs, most preferred first.
+    """
+    return [rid for (_, rid) in sorted([(_RID_PREFERENCE[rid], rid) for rid in rids])]
