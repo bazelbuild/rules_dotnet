@@ -116,6 +116,31 @@ def _runtime_pack_files(runtime_pack, deps_json_struct):
 
     return struct(libs = libs, native = native)
 
+def _reject_duplicate_assembly_names(assemblies, label):
+    """Fails when two different assemblies would be published under one name.
+
+    Args:
+        assemblies: The managed assemblies that land in the publish directory.
+        label: The `publish_binary` being analysed, for the error message.
+    """
+    by_name = {}
+
+    for assembly in assemblies:
+        previous = by_name.get(assembly.basename)
+
+        if previous != None and previous.path != assembly.path:
+            fail(("{}: {} and {} are both published as \"{}\".\n\n" +
+                  "A publish directory is flat and .NET resolves an assembly by its file " +
+                  "name, so only one of them can be there. Rename one of the targets, or " +
+                  "set its `out` attribute to give its assembly a different name.").format(
+                label,
+                previous.owner,
+                assembly.owner,
+                assembly.basename,
+            ))
+
+        by_name[assembly.basename] = assembly
+
 def _ready_to_run_images(ctx, binary_info, assembly_files, deps_json_struct, runtime_identifier):
     """Compiles the published assemblies to ReadyToRun.
 
@@ -425,6 +450,18 @@ def _publish_binary_impl(ctx):
     )
 
     assembly_files = _get_assembly_files(assembly_runtime_info, transitive_runtime_deps, depsjson_struct)
+
+    # Everything that ends up next to the app host, checked before anything is
+    # declared: both the copy and the ReadyToRun compile assume these names are
+    # unique, and neither fails in a way that names the targets at fault.
+    published_assemblies = [binary_info.dll] + assembly_files.libs
+
+    if runtime_pack_info:
+        for runtime_pack in runtime_pack_info.assembly_runtime_infos:
+            published_assemblies += _runtime_pack_files(runtime_pack, depsjson_struct).libs
+
+    _reject_duplicate_assembly_names(published_assemblies, ctx.label)
+
     ready_to_run = _NO_READY_TO_RUN
 
     if ctx.attr.ready_to_run:
