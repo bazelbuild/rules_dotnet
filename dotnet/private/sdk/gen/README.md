@@ -85,10 +85,9 @@ the new framework.
 ### Things that still need a human
 
 - **Servicing bumps ripple into tests.** `pack_bands.bzl` pins an exact pack
-  version per band, and a few tests assert on those strings
-  (`dotnet/private/tests/packs/packs_test.bzl`,
-  `dotnet/private/tests/nuget_structure/targetingpacks.bzl`). A routine patch
-  release will fail them until the expectations are updated.
+  version per band, and `dotnet/private/tests/packs/packs_test.bzl` asserts on
+  those strings. A routine patch release will fail it until the expectations
+  are updated.
 - **`MODULE.bazel` still pins the SDK by hand.** The generator adds the new
   version to `versions.bzl`; choosing to move `dotnet.toolchain(dotnet_version)`
   onto it is a deliberate decision, not an automatic one.

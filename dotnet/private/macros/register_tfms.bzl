@@ -20,9 +20,13 @@ def register_tfms():
     )
 
     for framework in FRAMEWORK_COMPATIBILITY.keys():
+        # The defaults spell out `DEFAULT_TFM`, the framework
+        # `target_framework` itself defaults to, so that a configuration no
+        # transition has touched still matches a `tfm_*` condition. Anything
+        # reaching a NuGet filegroup outside the .NET rules resolves there.
         bool_setting(
             name = "framework_compatible_%s" % framework,
-            build_setting_default = False,
+            build_setting_default = sets.contains(TRANSITIVE_FRAMEWORK_COMPATIBILITY[DEFAULT_TFM], framework),
             visibility = ["//visibility:public"],
         )
 

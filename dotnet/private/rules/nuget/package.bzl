@@ -80,15 +80,16 @@ def nuget_package(
         dependency_groups = {},
         framework_list = {},
         targeting_pack_overrides = {},
-        tools = {}):
+        tools = {},
+        tags = []):
     """Declares the targets for one version of one NuGet package.
 
     Args:
       version: The normalized package version. Also the target name, so that
         the package is addressable as `//<id>/<version>`.
       library_name: The package id with its original casing.
-      archive: The repo of the `nuget_archive` holding the extracted package,
-        e.g. `@nuget.argu.v6.1.1`.
+      archive: The package the extracted `nuget_archive` targets live in,
+        e.g. `@nuget.argu.v6.1.1//`.
       packages: Every package in the repository, as a dict of lower cased id
         to the label it is addressed by. Dependencies that are not in it were
         not resolved into this group and are dropped.
@@ -98,25 +99,27 @@ def nuget_package(
       framework_list: Assembly versions shipped by a targeting pack.
       targeting_pack_overrides: Package versions superseded by a targeting pack.
       tools: Dotnet tool entrypoints, keyed by tool name and target framework.
+      tags: Tags for the package target.
     """
     import_library(
         name = version,
-        analyzers = ["{}//:analyzers".format(archive)],
-        analyzers_csharp = ["{}//:analyzers_csharp".format(archive)],
-        analyzers_fsharp = ["{}//:analyzers_fsharp".format(archive)],
-        analyzers_vb = ["{}//:analyzers_vb".format(archive)],
-        data = ["{}//:data".format(archive)],
+        analyzers = ["{}:analyzers".format(archive)],
+        analyzers_csharp = ["{}:analyzers_csharp".format(archive)],
+        analyzers_fsharp = ["{}:analyzers_fsharp".format(archive)],
+        analyzers_vb = ["{}:analyzers_vb".format(archive)],
+        data = ["{}:data".format(archive)],
         framework_list = framework_list,
         library_name = library_name,
-        libs = ["{}//:libs".format(archive)],
-        native = ["{}//:native".format(archive)],
-        nupkg = "{}//:{}.{}.nupkg".format(archive, library_name.lower(), version),
-        refs = ["{}//:refs".format(archive)],
-        resource_assemblies = ["{}//:resource_assemblies".format(archive)],
+        libs = ["{}:libs".format(archive)],
+        native = ["{}:native".format(archive)],
+        nupkg = "{}:{}.{}.nupkg".format(archive, library_name.lower(), version),
+        refs = ["{}:refs".format(archive)],
+        resource_assemblies = ["{}:resource_assemblies".format(archive)],
         sha512 = sha512,
         targeting_pack_overrides = targeting_pack_overrides,
         version = version,
         deps = select(deps_by_tfm(dependency_groups, packages)),
+        tags = tags,
     )
 
     for (tool_name, by_tfm) in tools.items():
@@ -125,7 +128,7 @@ def nuget_package(
             entrypoint = {tfm: tool["entrypoint"] for (tfm, tool) in by_tfm.items()},
             runner = {tfm: tool["runner"] for (tfm, tool) in by_tfm.items()},
             target_frameworks = by_tfm.keys(),
-            deps = "{}//:tools".format(archive),
+            deps = "{}:tools".format(archive),
         )
 
 # buildifier: disable=unnamed-macro

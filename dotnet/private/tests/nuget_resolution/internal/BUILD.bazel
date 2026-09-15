@@ -1,0 +1,39 @@
+load("@bazel_lib//:bzl_library.bzl", "bzl_library")
+
+package(default_visibility = ["//dotnet/private/tests/nuget_resolution:__subpackages__"])
+
+bzl_library(
+    name = "declaration",
+    srcs = ["declaration.bzl"],
+)
+
+bzl_library(
+    name = "fixtures",
+    srcs = ["fixtures.bzl"],
+    deps = [
+        "//dotnet/private/rules/nuget:nuget_archive",
+        "//dotnet/private/tests/nuget_resolution:tests",
+    ],
+)
+
+bzl_library(
+    name = "assertions",
+    srcs = ["assertions.bzl"],
+    deps = [
+        "//dotnet/private:common",
+        "//dotnet/private:providers",
+        "//dotnet/private/rules/nuget:dotnet_tool",
+        "//dotnet/private/transitions:tfm_transition",
+        "@bazel_skylib//lib:unittest",
+    ],
+)
+
+bzl_library(
+    name = "targets",
+    srcs = ["targets.bzl"],
+    deps = [
+        ":assertions",
+        "//dotnet/private/rules/nuget:package",
+        "//dotnet/private/tests/nuget_resolution:tests",
+    ],
+)

@@ -36,7 +36,7 @@ package(default_visibility = ["//visibility:public"])
 nuget_package(
     version = "{version}",
     library_name = "{library_name}",
-    archive = "@{archive}",
+    archive = "@{archive}//",
     packages = PACKAGES,
     sha512 = "{sha512}",
     dependency_groups = DEPENDENCY_GROUPS,

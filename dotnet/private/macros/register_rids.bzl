@@ -1,4 +1,4 @@
-"Register TFM flags and set up the compatibility chains"
+"Register RID flags and set up the compatibility chains"
 
 load("@bazel_skylib//rules:common_settings.bzl", "bool_setting", "string_flag")
 load("//dotnet/private:common.bzl", "DEFAULT_RID")
@@ -7,7 +7,7 @@ load("//dotnet/private/sdk:rids.bzl", "RUNTIME_GRAPH")
 
 # buildifier: disable=unnamed-macro
 def register_rids():
-    "Register RID flags. The `base` flag will allow us to choose the default RID via a transition that tansitions on OS/ARCH"
+    "Register RID flags and the config settings that resolve RID bound assets"
     string_flag(
         name = "rid",
         values = RUNTIME_GRAPH.keys(),
@@ -15,10 +15,14 @@ def register_rids():
         visibility = ["//visibility:public"],
     )
 
+    default_compatible_rids = PORTABLE_RUNTIME_GRAPH[DEFAULT_RID] + [DEFAULT_RID]
+
     for rid in PORTABLE_RUNTIME_GRAPH.keys():
+        # As with the framework settings, the defaults spell out `DEFAULT_RID`
+        # so that an untouched configuration matches a `rid_*` condition.
         bool_setting(
             name = "rid_compatible_%s" % rid,
-            build_setting_default = False,
+            build_setting_default = rid in default_compatible_rids,
             visibility = ["//visibility:public"],
         )
 
