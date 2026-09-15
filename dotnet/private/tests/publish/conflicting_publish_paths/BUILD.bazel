@@ -1,0 +1,144 @@
+load("//dotnet:defs.bzl", "csharp_binary", "csharp_library", "import_library", "publish_binary")
+load(":tests.bzl", "publish_conflict_test", "publish_succeeds_test")
+
+# `lib_one` and `lib_two` both build `lib.dll`, and `a` and `b` each see only
+# one of them. Nothing conflicts until a publish flattens the whole closure
+# into a single directory.
+csharp_library(
+    name = "lib_one",
+    srcs = ["One.cs"],
+    out = "lib",
+    target_frameworks = ["net10.0"],
+)
+
+csharp_library(
+    name = "lib_two",
+    srcs = ["Two.cs"],
+    out = "lib",
+    target_frameworks = ["net10.0"],
+)
+
+csharp_library(
+    name = "a",
+    srcs = ["A.cs"],
+    target_frameworks = ["net10.0"],
+    deps = [":lib_one"],
+)
+
+csharp_library(
+    name = "b",
+    srcs = ["B.cs"],
+    target_frameworks = ["net10.0"],
+    deps = [":lib_two"],
+)
+
+csharp_binary(
+    name = "app",
+    srcs = ["Main.cs"],
+    target_frameworks = ["net10.0"],
+    deps = [
+        ":a",
+        ":b",
+    ],
+)
+
+publish_binary(
+    name = "duplicate_assembly_names",
+    binary = ":app",
+    tags = ["manual"],
+    target_framework = "net10.0",
+)
+
+publish_conflict_test(
+    name = "duplicate_assembly_names_test",
+    size = "small",
+    expected_message_fragments = [
+        ":lib_one and ",
+        ":lib_two are both published as \"lib.dll\".",
+    ],
+    target_under_test = ":duplicate_assembly_names",
+)
+
+# Self-contained, so the runtime pack assemblies are checked too, and
+# ReadyToRun, so the check has to run before crossgen2 declares its outputs.
+publish_binary(
+    name = "duplicate_assembly_names_ready_to_run",
+    binary = ":app",
+    ready_to_run = True,
+    self_contained = True,
+    tags = ["manual"],
+    target_framework = "net10.0",
+)
+
+publish_conflict_test(
+    name = "duplicate_assembly_names_ready_to_run_test",
+    size = "small",
+    expected_message_fragments = [
+        ":lib_one and ",
+        ":lib_two are both published as \"lib.dll\".",
+    ],
+    target_under_test = ":duplicate_assembly_names_ready_to_run",
+)
+
+# Placeholder files, never built or loaded: only their `runtimes/<rid>/native/`
+# paths matter, which is where a NuGet package keeps its native assets. A
+# package built by the rules only ever offers the target RID's natives, so
+# reaching this needs an `import_library` written by hand.
+import_library(
+    name = "native_glibc",
+    library_name = "NativeGlibc",
+    native = ["glibc/runtimes/linux-x64/native/libnative.so"],
+    version = "1.0.0",
+)
+
+import_library(
+    name = "native_musl",
+    library_name = "NativeMusl",
+    native = ["musl/runtimes/linux-musl-x64/native/libnative.so"],
+    version = "1.0.0",
+)
+
+csharp_binary(
+    name = "native_app",
+    srcs = ["NativeMain.cs"],
+    target_frameworks = ["net10.0"],
+    deps = [
+        ":native_glibc",
+        ":native_musl",
+    ],
+)
+
+# Only a self-contained publish collides: it carries native libraries next to
+# the main DLL, where the RID in their path no longer keeps them apart.
+publish_binary(
+    name = "duplicate_native_names",
+    binary = ":native_app",
+    self_contained = True,
+    tags = ["manual"],
+    target_framework = "net10.0",
+)
+
+publish_conflict_test(
+    name = "duplicate_native_names_test",
+    size = "small",
+    expected_message_fragments = [
+        "glibc/runtimes/linux-x64/native/libnative.so and ",
+        "musl/runtimes/linux-musl-x64/native/libnative.so are both published as \"libnative.so\".",
+    ],
+    target_under_test = ":duplicate_native_names",
+)
+
+# The same two natives keep their RID folders in a framework-dependent publish,
+# so nothing collides and the publish is expected to succeed.
+publish_binary(
+    name = "native_names_by_rid",
+    binary = ":native_app",
+    tags = ["manual"],
+    target_framework = "net10.0",
+)
+
+publish_succeeds_test(
+    name = "native_names_by_rid_test",
+    size = "small",
+    target_under_test = ":native_names_by_rid",
+)
