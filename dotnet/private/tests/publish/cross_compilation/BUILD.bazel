@@ -2,7 +2,9 @@ load("@bazel_lib//lib:transitions.bzl", "platform_transition_binary")
 load("@rules_dotnet//dotnet:defs.bzl", "publish_binary")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 
-#TODO: Add a C/C++ toolchain for cross compilation. Until that is done these tests are marked as manual
+# Cross-publishing builds this app's own native library for the target, so it
+# needs a C/C++ toolchain that can target something other than the host. See
+# docs/README.md for the toolchain rules_dotnet registers for its own builds.
 
 platform(
     name = "x86_64_linux",
@@ -53,7 +55,6 @@ sh_test(
         ":transitioned_publish_linux_x86_64",
         "@bazel_tools//tools/bash/runfiles",
     ],
-    tags = ["manual"],
 )
 
 sh_test(
@@ -68,5 +69,4 @@ sh_test(
         ":transitioned_publish_linux_arm64",
         "@bazel_tools//tools/bash/runfiles",
     ],
-    tags = ["manual"],
 )

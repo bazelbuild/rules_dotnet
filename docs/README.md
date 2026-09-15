@@ -37,6 +37,59 @@ The following workloads are not supported by these rules at this given time:
 - Razor
 - Blazor/WebAssembly
 - Workloads that require Mono
+## NativeAOT and the C/C++ toolchain
+
+`publish_binary(native_aot = True)` compiles the application ahead of time to a
+single native executable. It is the only publish model that links native code,
+so unlike every other rule in `rules_dotnet` it needs a **C/C++ toolchain**.
+
+The toolchain is resolved through Bazel's standard mechanism and requested
+optionally, so a build that never publishes NativeAOT needs none — nothing else
+in `rules_dotnet` is affected.
+
+### Recommended: a hermetic toolchain
+
+We recommend the [`llvm`](https://registry.bazel.build/modules/llvm) module. It
+supplies a hermetic LLVM toolchain and downloads Apple's official SDK for Apple
+targets, so NativeAOT builds the same way on every machine and can
+cross-compile — publishing a `linux-x64` binary from macOS, for example, with
+nothing installed on the host.
+
+```starlark
+bazel_dep(name = "llvm", version = "0.8.19")
+
+register_toolchains("@llvm//toolchain:all")
+
+# Only needed for Apple targets. The .NET runtime binds to frameworks that are
+# not in the module's default sysroot, and naming any framework replaces the
+# default set rather than extending it, so the defaults are repeated here.
+osx_sysroot = use_extension("@llvm//extensions:osx.bzl", "osx")
+osx_sysroot.frameworks(names = [
+    "CoreFoundation",
+    "CryptoKit",
+    "Foundation",
+    "GSS",
+    "Kernel",
+    "Network",
+    "OSLog",
+    "Security",
+    "SystemConfiguration",
+])
+```
+
+This is what `rules_dotnet` itself uses, so the arrangement above is exercised
+by its own test suite on every change.
+
+### Otherwise: host toolchains
+
+Any registered C/C++ toolchain works, including the one Bazel auto-configures
+from the host compiler. That needs a working toolchain installed on every
+machine that publishes NativeAOT — Xcode's command line tools on macOS, clang
+or gcc on Linux — and it cannot cross-compile, because a host toolchain only
+targets its own platform.
+
+Windows targets are not supported yet either way: the link goes through MSVC's
+`link.exe`, whose command line shares nothing with the Unix driver.
 
 Contributions to add the missing workloads are welcomed and the maintainers
 will do their best to guide if needed.

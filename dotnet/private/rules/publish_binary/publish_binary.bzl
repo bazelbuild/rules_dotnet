@@ -4,6 +4,8 @@ Rule for assembling the publish output of a .NET binary.
 
 load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@bazel_skylib//lib:shell.bzl", "shell")
+load("@rules_cc//cc:action_names.bzl", "CPP_LINK_EXECUTABLE_ACTION_NAME")
+load("@rules_cc//cc/common:cc_common.bzl", "cc_common")
 load("//dotnet/private:common.bzl", "generate_depsjson", "generate_runtimeconfig", "runtime_target_path")
 load(
     "//dotnet/private:providers.bzl",
@@ -11,7 +13,10 @@ load(
     "DotnetAssemblyRuntimeInfo",
     "DotnetBinaryInfo",
     "DotnetCrossgen2PackInfo",
+    "DotnetIlcompilerPackInfo",
+    "DotnetNativeAotPackInfo",
 )
+load("//dotnet/private/sdk/nativeaot_packs:nativeaot_pack_transition.bzl", "nativeaot_pack_transition")
 load("//dotnet/private/transitions:tfm_transition.bzl", "tfm_transition")
 
 # How many sources one `cp` invocation takes. A self-contained publish copies
@@ -83,7 +88,7 @@ def _render_copy_script(copies, is_windows):
 
 _NO_READY_TO_RUN = struct(replace = {}, extra = [])
 
-def _crossgen2_target(runtime_identifier):
+def _native_target(runtime_identifier):
     """Splits a runtime identifier into crossgen2's --targetos/--targetarch.
     """
     parts = runtime_identifier.split("-")
@@ -92,6 +97,310 @@ def _crossgen2_target(runtime_identifier):
         fail("Cannot target {} with ReadyToRun".format(runtime_identifier))
 
     return ("windows" if parts[0] == "win" else parts[0], parts[-1])
+
+# The framework assemblies ilc has to initialise explicitly, because nothing
+# in the managed closure references them.
+_AOT_INIT_ASSEMBLIES = [
+    "System.Private.CoreLib",
+    "System.Private.StackTraceMetadata",
+    "System.Private.TypeLoader",
+    "System.Private.Reflection.Execution",
+]
+
+# The trimming switches the SDK turns on for a NativeAOT publish. A switch
+# removes the feature's code (`--feature`) and tells the runtime it is gone
+# (`--runtimeknob`); the debugger is the one feature the runtime reads from the
+# image instead, so it takes no knob.
+_AOT_FEATURE_SWITCHES = {
+    "System.Diagnostics.Debugger.IsSupported": False,
+    "Microsoft.Extensions.DependencyInjection.VerifyOpenGenericServiceTrimmability": True,
+    "System.ComponentModel.DefaultValueAttribute.IsSupported": False,
+    "System.ComponentModel.Design.IDesignerHost.IsSupported": False,
+    "System.ComponentModel.TypeConverter.EnableUnsafeBinaryFormatterInDesigntimeLicenseContextSerialization": False,
+    "System.ComponentModel.TypeDescriptor.IsComObjectDescriptorSupported": False,
+    "System.Data.DataSet.XmlSerializationIsSupported": False,
+    "System.Diagnostics.Tracing.EventSource.IsSupported": False,
+    "System.Linq.Enumerable.IsSizeOptimized": True,
+    "System.Linq.Expressions.CanEmitObjectArrayDelegate": False,
+    "System.Net.SocketsHttpHandler.Http3Support": False,
+    "System.Reflection.Metadata.MetadataUpdater.IsSupported": False,
+    "System.Resources.ResourceManager.AllowCustomResourceTypes": False,
+    "System.Resources.UseSystemResourceKeys": False,
+    "System.Runtime.CompilerServices.RuntimeFeature.IsDynamicCodeSupported": False,
+    "System.Runtime.InteropServices.BuiltInComInterop.IsSupported": False,
+    "System.Runtime.InteropServices.EnableConsumingManagedCodeFromNativeHosting": False,
+    "System.Runtime.InteropServices.EnableCppCLIHostActivation": False,
+    "System.Runtime.InteropServices.Marshalling.EnableGeneratedComInterfaceComImportInterop": False,
+    "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": False,
+    "System.StartupHookProvider.IsSupported": False,
+    "System.Text.Encoding.EnableUnsafeUTF7Encoding": False,
+    "System.Text.Json.JsonSerializer.IsReflectionEnabledByDefault": False,
+    "System.Threading.Thread.EnableAutoreleasePool": False,
+}
+
+_AOT_SWITCHES_WITHOUT_KNOB = ["System.Diagnostics.Debugger.IsSupported"]
+
+def _direct_pinvokes(link_inputs):
+    """The framework libraries ilc binds directly instead of loading at runtime.
+
+    Read from the static libraries the pack ships, which is what makes the
+    platform differences -- Apple's cryptography library against OpenSSL's, or
+    MSVC's naming against Unix's -- fall out on their own.
+    """
+    names = []
+
+    for basename in link_inputs:
+        name = basename[3:] if basename.startswith("lib") else basename
+        name = name.rsplit(".", 1)[0].removesuffix(".Aot")
+
+        if name.startswith("System."):
+            names.append(name)
+
+    return sorted(names)
+
+def _aot_closure(assembly_info, transitive_runtime_deps):
+    """Everything a NativeAOT publish has to account for.
+
+    ilc compiles the whole managed closure, so every assembly is a reference
+    rather than something to select between. Native libraries are still loaded
+    at runtime, so they travel beside the executable.
+    """
+    libs = [] + assembly_info.libs
+    native = [] + assembly_info.native
+    data = [] + assembly_info.data
+
+    for dep in transitive_runtime_deps:
+        libs += dep.libs
+        native += dep.native
+        data += dep.data
+
+    return struct(
+        libs = libs,
+        native = native,
+        data = data,
+        appsetting_files = assembly_info.appsetting_files.to_list(),
+    )
+
+def _native_aot_object(ctx, binary_info, assembly_files, runtime_identifier, target_framework):
+    """Compiles the whole managed closure to one native object file.
+
+    Returns that object and the list of symbols to export from the executable
+    linked from it.
+    """
+    ilcompiler = ctx.attr._ilcompiler_pack[DotnetIlcompilerPackInfo]
+    aot_pack = ctx.attr._nativeaot_pack[0][DotnetNativeAotPackInfo]
+
+    if not aot_pack.libs:
+        fail("NativeAOT is not available for {} on {}".format(target_framework, runtime_identifier))
+
+    (target_os, target_arch) = _native_target(runtime_identifier)
+    name = binary_info.dll.basename[:-len(".dll")]
+
+    # The AOT framework replaces the JIT one wholesale: ilc compiles the app
+    # and its dependencies against assemblies built for ahead-of-time use.
+    references = {reference.path: reference for reference in aot_pack.libs + assembly_files.libs}
+    references.pop(binary_info.dll.path, None)
+
+    prefix = "{}/aot/{}/{}".format(ctx.label.name, runtime_identifier, name)
+    object_file = ctx.actions.declare_file(prefix + ".o")
+    exports_file = ctx.actions.declare_file(prefix + ".exports")
+
+    args = ctx.actions.args()
+    args.add(binary_info.dll)
+    args.add("-o:" + object_file.path)
+    args.add("--targetos:" + target_os)
+    args.add("--targetarch:" + target_arch)
+    args.add_all(references.values(), format_each = "-r:%s")
+    args.add("-O")
+    args.add("--dehydrate")
+    args.add("--exportsfile:" + exports_file.path)
+    args.add("--export-dynamic-symbol:DotNetRuntimeDebugHeader")
+    args.add_all(_AOT_INIT_ASSEMBLIES, format_each = "--initassembly:%s")
+
+    # The bootstrapper calls into the class library through a fixed set of
+    # entry points, which only exist if ilc is asked to emit them.
+    args.add("--generateunmanagedentrypoints:System.Private.CoreLib")
+    args.add_all(_direct_pinvokes(aot_pack.link_inputs), format_each = "--directpinvoke:%s")
+
+    for switch in sorted(_AOT_FEATURE_SWITCHES):
+        setting = "{}={}".format(switch, "true" if _AOT_FEATURE_SWITCHES[switch] else "false")
+        args.add("--feature:" + setting)
+
+        if switch not in _AOT_SWITCHES_WITHOUT_KNOB:
+            args.add("--runtimeknob:" + setting)
+
+    args.add("--runtimeknob:RUNTIME_IDENTIFIER=" + runtime_identifier)
+    args.add("--stacktracedata")
+    args.add("--scanreflection")
+    args.add("--methodbodyfolding:generic")
+
+    # A warning from framework code is not the user's to fix, and one bad
+    # method should not fail the whole publish.
+    args.add("--singlewarn")
+    args.add("--nosinglewarnassembly:" + name)
+    args.add("--resilient")
+    args.set_param_file_format("multiline")
+    args.use_param_file("@%s", use_always = True)
+
+    ctx.actions.run(
+        executable = ilcompiler.ilc,
+        arguments = [args],
+        inputs = depset(
+            [binary_info.dll] + references.values(),
+            transitive = [ilcompiler.files],
+        ),
+        outputs = [object_file, exports_file],
+        mnemonic = "Ilc",
+        progress_message = "Compiling %{label} to native code",
+    )
+
+    return struct(object_file = object_file, exports_file = exports_file)
+
+# The order the runtime's static libraries have to reach the linker. Names are
+# given without the platform's `lib` prefix or archive extension; entries the
+# pack does not ship (the cryptography library differs by platform) are skipped.
+_AOT_LINK_ORDER = [
+    "System.Native",
+    "System.Globalization.Native",
+    "System.IO.Compression.Native",
+    "System.Net.Security.Native",
+    "System.Security.Cryptography.Native.Apple",
+    "System.Security.Cryptography.Native.OpenSsl",
+    "bootstrapper",
+    "Runtime.WorkstationGC",
+    # The GC's vectorised sort, which only ships for x64.
+    "Runtime.VxsortEnabled",
+    "eventpipe-disabled",
+    "standalonegc-disabled",
+    "aotminipal",
+    "stdc++compat",
+    "z",
+    "brotlienc",
+    "brotlidec",
+    "brotlicommon",
+]
+
+# Libraries the runtime expects from the platform rather than from its pack.
+# The C++ runtime, the Swift runtime and ICU are deliberately absent: the
+# pack's own libstdc++compat.a covers the first, and nothing in a publish has
+# been found to reference the other two.
+_AOT_SYSTEM_LIBS = {
+    "linux": ["dl", "rt", "m"],
+    "osx": ["dl", "objc", "m"],
+}
+
+# Apple frameworks the runtime links against. They come from the macOS SDK, so
+# the toolchain's sysroot has to carry them.
+_AOT_APPLE_FRAMEWORKS = [
+    "CoreFoundation",
+    "CryptoKit",
+    "Foundation",
+    "Network",
+    "Security",
+    "GSS",
+]
+
+def _aot_link_libraries(link_inputs):
+    """The pack's static libraries, in the order the linker needs them."""
+    libraries = []
+
+    for name in _AOT_LINK_ORDER:
+        for basename in ["lib{}.a".format(name), "lib{}.o".format(name)]:
+            library = link_inputs.get(basename)
+
+            if library:
+                libraries.append(library)
+
+    return libraries
+
+def _native_aot_binary(ctx, compiled, runtime_identifier, name):
+    """Links the compiled object into a native executable."""
+    (target_os, _) = _native_target(runtime_identifier)
+
+    if target_os not in _AOT_SYSTEM_LIBS:
+        fail("NativeAOT cannot target {} yet: only Linux and macOS are supported".format(target_os))
+
+    toolchain = ctx.toolchains["@bazel_tools//tools/cpp:toolchain_type"]
+
+    if toolchain == None:
+        fail("NativeAOT needs a C/C++ toolchain to link with, but none is registered")
+
+    cc_toolchain = toolchain.cc
+    feature_configuration = cc_common.configure_features(
+        ctx = ctx,
+        cc_toolchain = cc_toolchain,
+        requested_features = ctx.features,
+        unsupported_features = ctx.disabled_features,
+    )
+    linker = cc_common.get_tool_for_action(
+        feature_configuration = feature_configuration,
+        action_name = CPP_LINK_EXECUTABLE_ACTION_NAME,
+    )
+    link_variables = cc_common.create_link_variables(
+        feature_configuration = feature_configuration,
+        cc_toolchain = cc_toolchain,
+    )
+
+    aot_pack = ctx.attr._nativeaot_pack[0][DotnetNativeAotPackInfo]
+    libraries = _aot_link_libraries(aot_pack.link_inputs)
+    executable = ctx.actions.declare_file("{}/aot/{}/{}".format(ctx.label.name, runtime_identifier, name))
+
+    args = ctx.actions.args()
+
+    # Whatever the toolchain itself needs to target this platform: the sysroot
+    # on a hermetic toolchain, the SDK path on Apple.
+    args.add_all(cc_common.get_memory_inefficient_command_line(
+        feature_configuration = feature_configuration,
+        action_name = CPP_LINK_EXECUTABLE_ACTION_NAME,
+        variables = link_variables,
+    ))
+    args.add(compiled.object_file)
+    args.add("-o", executable)
+
+    if target_os == "osx":
+        # Exports only what ilc listed and drops the rest. Section garbage
+        # collection has no Linux counterpart here: the runtime relies on
+        # sections the linker cannot prove are reachable.
+        args.add("-exported_symbols_list", compiled.exports_file)
+        args.add("-Wl,-dead_strip")
+
+    args.add_all(libraries)
+
+    if target_os != "osx":
+        args.add("-Wl,--build-id=sha1")
+        args.add("-Wl,--as-needed")
+        args.add("-pthread")
+
+    args.add_all(_AOT_SYSTEM_LIBS[target_os], format_each = "-l%s")
+
+    if target_os == "osx":
+        args.add_all(_AOT_APPLE_FRAMEWORKS, before_each = "-framework")
+    else:
+        # The hardening the runtime ships with: read-only relocations,
+        # immediate binding, and a position-independent executable.
+        args.add("-Wl,-z,relro")
+        args.add("-Wl,-z,now")
+        args.add("-pie")
+        args.add("-Wl,-pie")
+
+    ctx.actions.run(
+        executable = linker,
+        arguments = [args],
+        inputs = depset(
+            [compiled.object_file, compiled.exports_file] + libraries,
+            transitive = [cc_toolchain.all_files],
+        ),
+        outputs = [executable],
+        env = cc_common.get_environment_variables(
+            feature_configuration = feature_configuration,
+            action_name = CPP_LINK_EXECUTABLE_ACTION_NAME,
+            variables = link_variables,
+        ),
+        mnemonic = "IlcLink",
+        progress_message = "Linking native executable for %{label}",
+    )
+
+    return executable
 
 def _runtime_pack_files(runtime_pack_info, deps_json_struct):
     """The files each runtime pack contributes to the publish, one struct per pack.
@@ -183,7 +492,7 @@ def _ready_to_run_images(ctx, binary_info, assembly_files, runtime_pack_files, r
     platform while the target platform and the references come from the target.
     """
     crossgen2_info = ctx.attr._crossgen2_pack[DotnetCrossgen2PackInfo]
-    (target_os, target_arch) = _crossgen2_target(runtime_identifier)
+    (target_os, target_arch) = _native_target(runtime_identifier)
 
     framework = [
         lib
@@ -268,6 +577,35 @@ def _ready_to_run_images(ctx, binary_info, assembly_files, runtime_pack_files, r
         images[assembly.path] = image
 
     return struct(replace = images, extra = [])
+
+def _copy_beside(ctx, executable, files):
+    """Copies files into the directory holding `executable`."""
+    if not files:
+        return []
+
+    is_windows = ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo])
+    copies = [(file, ctx.actions.declare_file(file.basename, sibling = executable)) for file in files]
+    outputs = [dst for (_, dst) in copies]
+
+    script_body = _render_copy_script(copies, is_windows)
+    script = ctx.actions.declare_file(
+        "{}.sidecars.{}".format(ctx.label.name, "bat" if is_windows else "sh"),
+    )
+    ctx.actions.write(
+        output = script,
+        content = ("\r\n" if is_windows else "\n").join(script_body),
+        is_executable = True,
+    )
+    ctx.actions.run(
+        executable = script,
+        inputs = files,
+        outputs = outputs,
+        tools = [script],
+        mnemonic = "CopyNativeAotFiles",
+        progress_message = "Copying native dependencies for %{label}",
+    )
+
+    return outputs
 
 def _get_assembly_files(assembly_info, transitive_runtime_deps, deps_json_struct):
     """The files a publish copies, gathered from the target and its deps."""
@@ -402,10 +740,34 @@ def _publish_binary_impl(ctx):
 
     if ctx.attr.ready_to_run_composite and not (ctx.attr.ready_to_run and is_self_contained):
         fail("ready_to_run_composite requires ready_to_run and self_contained")
+
+    if ctx.attr.native_aot and ctx.attr.ready_to_run:
+        fail("native_aot cannot be combined with ready_to_run: it compiles ahead of time already")
+
     assembly_name = assembly_runtime_info.name
     runtime_pack_info = binary_info.runtime_pack_info if is_self_contained else None
     runtime_identifier = ctx.attr.runtime_identifier if ctx.attr.runtime_identifier else binary_info.runtime_pack_info.runtime_identifier
     roll_forward_behavior = ctx.attr.roll_forward_behavior
+
+    if ctx.attr.native_aot:
+        # Nothing managed survives into the output, so none of the publish
+        # layout below applies: no deps.json, no runtimeconfig, no apphost.
+        closure = _aot_closure(assembly_runtime_info, transitive_runtime_deps)
+        compiled = _native_aot_object(
+            ctx,
+            binary_info,
+            closure,
+            runtime_identifier,
+            target_framework,
+        )
+        executable = _native_aot_binary(ctx, compiled, runtime_identifier, assembly_name)
+        sidecars = _copy_beside(ctx, executable, closure.native + closure.appsetting_files)
+
+        return [DefaultInfo(
+            executable = executable,
+            files = depset([executable] + sidecars),
+            runfiles = ctx.runfiles(files = sidecars + closure.data),
+        )]
 
     depsjson = ctx.actions.declare_file("{}/publish/{}/{}.deps.json".format(ctx.label.name, runtime_identifier, assembly_name))
     depsjson_struct = _generate_depsjson(
@@ -478,6 +840,8 @@ def _publish_binary_impl(ctx):
 _publish_binary = rule(
     _publish_binary_impl,
     doc = """Publish a .Net binary""",
+    # Read by the C/C++ toolchain a NativeAOT publish links with.
+    fragments = ["cpp"],
     attrs = {
         "binary": attr.label(
             doc = "The .Net binary that is being published",
@@ -528,6 +892,28 @@ boundaries. Requires `ready_to_run` and `self_contained`, because the framework
 has to be part of the image.""",
             default = False,
         ),
+        "native_aot": attr.bool(
+            doc = """Compile the publish ahead of time to a native executable.
+
+The output is a single self-contained binary with no IL and no JIT, so the
+managed publish layout does not apply: `deps.json`, `runtimeconfig.json` and
+the apphost shim are all absent. Implies trimming, and needs a registered
+C/C++ toolchain to link with.""",
+            default = False,
+        ),
+        "_ilcompiler_pack": attr.label(
+            doc = """The ILCompiler pack to compile native code with.
+
+Selected by the execution platform rather than the target: ilc
+cross-compiles, so what matters is the machine it runs on.""",
+            cfg = "exec",
+            default = Label("//dotnet/private:ilcompiler_pack"),
+        ),
+        "_nativeaot_pack": attr.label(
+            doc = "The framework a NativeAOT publish compiles and links against.",
+            cfg = nativeaot_pack_transition,
+            default = Label("//dotnet/private/sdk/nativeaot_packs:nativeaot_pack"),
+        ),
         "_crossgen2_pack": attr.label(
             doc = """The crossgen2 pack to compile ReadyToRun images with.
 
@@ -546,6 +932,9 @@ cross-compiles, so what matters is the machine it runs on.""",
     },
     toolchains = [
         "//dotnet:toolchain_type",
+        # Only a NativeAOT publish links native code, so a build that never
+        # asks for one does not need a C/C++ toolchain registered.
+        config_common.toolchain_type("@bazel_tools//tools/cpp:toolchain_type", mandatory = False),
     ],
     executable = True,
     cfg = tfm_transition,
