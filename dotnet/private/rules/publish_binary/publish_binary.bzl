@@ -93,30 +93,80 @@ def _crossgen2_target(runtime_identifier):
 
     return ("windows" if parts[0] == "win" else parts[0], parts[-1])
 
-def _runtime_pack_files(runtime_pack, deps_json_struct):
-    """The runtime pack files that reach the publish.
+def _runtime_pack_files(runtime_pack_info, deps_json_struct):
+    """The files each runtime pack contributes to the publish, one struct per pack.
 
     A user dependency that overrides a runtime pack DLL drops it from the
     pack's deps.json target, and then the pack's copy is not published.
     """
-    libs = []
-    native = []
-    target = deps_json_struct["targets"].values()[0].get("runtimepack.{}/{}".format(
-        runtime_pack.name,
-        runtime_pack.version,
-    ))
+    if not runtime_pack_info:
+        return []
 
-    if target:
-        for file in runtime_pack.native:
-            if file.basename in target.get("native", {}):
-                native.append(file)
-        for file in runtime_pack.libs:
-            if file.basename in target.get("runtime", {}):
-                libs.append(file)
+    targets = deps_json_struct["targets"].values()[0]
+    packs = []
 
-    return struct(libs = libs, native = native)
+    for pack in runtime_pack_info.assembly_runtime_infos:
+        target = targets.get("runtimepack.{}/{}".format(pack.name, pack.version)) or {}
 
-def _ready_to_run_images(ctx, binary_info, assembly_files, deps_json_struct, runtime_identifier):
+        packs.append(struct(
+            libs = [file for file in pack.libs if file.basename in target.get("runtime", {})],
+            native = [file for file in pack.native if file.basename in target.get("native", {})],
+            data = pack.data,
+        ))
+
+    return packs
+
+def _publish_layout(runtime_identifier, binary_info, assembly_files, runtime_pack_files, is_self_contained):
+    """Every published file paired with the path it takes inside the publish directory.
+
+    The directory is flat apart from resource assemblies and, unless the publish
+    is self-contained, native libraries.
+    """
+    layout = [(binary_info.dll.basename, binary_info.dll)]
+
+    for file in assembly_files.libs + assembly_files.appsetting_files:
+        layout.append((file.basename, file))
+
+    # Resource assemblies go in a folder named after their locale, so that a
+    # German one lands at `de/MyAssembly.resources.dll`.
+    for file in assembly_files.resource_assemblies:
+        layout.append(("{}/{}".format(file.dirname.split("/")[-1], file.basename), file))
+
+    for file in assembly_files.native:
+        if is_self_contained:
+            # A self-contained publish carries native libraries next to the main DLL.
+            layout.append((file.basename, file))
+        else:
+            # Everything else goes under runtimes/{rid}/native/. A native
+            # library from a NuGet package carries its RID in its path; one we
+            # built ourselves does not, but is by definition built for our RID.
+            # Files inside a NuGet package are modelled as source files, which
+            # is what tells the two apart.
+            rid = file.dirname.split("/")[-2] if file.is_source else runtime_identifier
+            layout.append(("runtimes/{}/native/{}".format(rid, file.basename), file))
+
+    # A self-contained publish carries the runtime pack at the root of the
+    # publish folder.
+    for pack in runtime_pack_files:
+        for file in pack.libs + pack.native + pack.data:
+            layout.append((file.basename, file))
+
+    return layout
+
+def _reject_conflicting_publish_paths(layout, label):
+    """Fails when two different files would be published to the same path."""
+    by_path = {}
+
+    for (path, file) in layout:
+        previous = by_path.setdefault(path, file)
+
+        if previous.path != file.path:
+            fail(("{}: {} and {} are both published as \"{}\".\n\n" +
+                  "A publish directory holds one file per path, so only one of them can " +
+                  "be there. Give one of them a different name; `out` sets the file name " +
+                  "of a managed assembly.").format(label, previous.owner, file.owner, path))
+
+def _ready_to_run_images(ctx, binary_info, assembly_files, runtime_pack_files, runtime_identifier):
     """Compiles the published assemblies to ReadyToRun.
 
     crossgen2 cross-compiles, so the tool comes from the pack for the execution
@@ -136,8 +186,8 @@ def _ready_to_run_images(ctx, binary_info, assembly_files, deps_json_struct, run
     # Either way the framework is there for crossgen2 to resolve against.
     compiled = [binary_info.dll] + assembly_files.libs
     if ctx.attr.ready_to_run_composite:
-        for runtime_pack in binary_info.runtime_pack_info.assembly_runtime_infos:
-            compiled.extend(_runtime_pack_files(runtime_pack, deps_json_struct).libs)
+        for pack in runtime_pack_files:
+            compiled.extend(pack.libs)
 
     assemblies = {assembly.path: assembly for assembly in compiled}.values()
     references = {reference.path: reference for reference in framework + assemblies}.values()
@@ -248,76 +298,26 @@ def _get_assembly_files(assembly_info, transitive_runtime_deps, deps_json_struct
         appsetting_files = assembly_info.appsetting_files.to_list(),
     )
 
-def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, assembly_files, deps_json_struct, is_self_contained, ready_to_run = _NO_READY_TO_RUN):
+def _copy_to_publish(ctx, runtime_identifier, layout, binary_info, ready_to_run = _NO_READY_TO_RUN):
     is_windows = ctx.target_platform_has_constraint(ctx.attr._windows_constraint[platform_common.ConstraintValueInfo])
-    main_dll_source = ready_to_run.replace.get(binary_info.dll.path, binary_info.dll)
-    main_dll_copy = ctx.actions.declare_file(
-        "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, binary_info.dll.basename),
-    )
+    root = "{}/publish/{}".format(ctx.label.name, runtime_identifier)
 
-    # (source, destination) pairs, which are also the action's inputs and outputs.
-    copies = [(main_dll_source, main_dll_copy)]
+    # (source, destination) pairs, which are also the action's inputs and
+    # outputs. Keyed by destination because the binary's own assembly arrives
+    # twice, as the main DLL and again in the list of assemblies to publish.
+    copies = {
+        path: (
+            ready_to_run.replace.get(file.path, file),
+            ctx.actions.declare_file("{}/{}".format(root, path)),
+        )
+        for (path, file) in layout
+    }
 
     for file in ready_to_run.extra:
-        copies.append((file, ctx.actions.declare_file(file.basename, sibling = main_dll_copy)))
+        copies[file.basename] = (file, ctx.actions.declare_file("{}/{}".format(root, file.basename)))
 
-    # All managed DLLs are copied next to the app host in the publish directory
-    for file in assembly_files.libs:
-        output = ctx.actions.declare_file(
-            "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, file.basename),
-        )
-        copies.append((ready_to_run.replace.get(file.path, file), output))
-
-    # Resource assemblies are copied next to the app host in the publish directory in a folder
-    # that has the same name as the locale of the resource assembly.
-    # Example: `de/MyAssembly.resources.dll`
-    for file in assembly_files.resource_assemblies:
-        locale = file.dirname.split("/")[-1]
-        output = ctx.actions.declare_file(
-            "{}/publish/{}/{}/{}".format(ctx.label.name, runtime_identifier, locale, file.basename),
-        )
-        copies.append((file, output))
-
-    for file in assembly_files.native:
-        if is_self_contained:
-            # A self-contained publish carries native DLLs next to the main DLL.
-            output_path = "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, file.basename)
-        else:
-            # Everything else goes under runtimes/{rid}/native/. A native
-            # library from a NuGet package carries its RID in its path; one we
-            # built ourselves does not, but is by definition built for our RID.
-            # Files inside a NuGet package are modelled as source files, which
-            # is what tells the two apart.
-            rid = file.dirname.split("/")[-2] if file.is_source else runtime_identifier
-            output_path = "{}/publish/{}/runtimes/{}/native/{}".format(ctx.label.name, runtime_identifier, rid, file.basename)
-
-        copies.append((file, ctx.actions.declare_file(output_path)))
-
-    # Data files reach the publish as runfiles, not as files at a relative path:
-    # end users have to resolve them with the runfiles library, and to package
-    # them with a rule that carries runfiles along (`include_runfiles` on
-    # rules_pkg's `pkg_tar`, for one).
-    runfiles = list(assembly_files.data)
-
-    for file in assembly_files.appsetting_files:
-        output = ctx.actions.declare_file(
-            "{}/publish/{}/{}".format(ctx.label.name, runtime_identifier, file.basename),
-        )
-        copies.append((file, output))
-
-    # A self-contained publish carries the runtime pack at the root of the
-    # publish folder.
-    if runtime_pack_info:
-        for runtime_pack in runtime_pack_info.assembly_runtime_infos:
-            files = _runtime_pack_files(runtime_pack, deps_json_struct)
-
-            for file in files.libs + files.native + runtime_pack.data:
-                output = ctx.actions.declare_file(file.basename, sibling = main_dll_copy)
-                copies.append((ready_to_run.replace.get(file.path, file), output))
-
-    # The binary's own assembly arrives twice, as the main DLL and again in the
-    # list of assemblies to publish. Keep the last source named for a destination.
-    copies = {dst.path: (src, dst) for (src, dst) in copies}.values()
+    copies = copies.values()
+    main_dll_copy = ctx.actions.declare_file("{}/{}".format(root, binary_info.dll.basename))
     outputs = [dst for (_, dst) in copies]
 
     script_body = _render_copy_script(copies, is_windows)
@@ -337,7 +337,7 @@ def _copy_to_publish(ctx, runtime_identifier, runtime_pack_info, binary_info, as
         tools = [copy_script],
     )
 
-    return (main_dll_copy, outputs, runfiles)
+    return (main_dll_copy, outputs)
 
 def _create_shim_exe(ctx, apphost_pack_info, dll, runtime_identifier):
     windows_constraint = ctx.attr._windows_constraint[platform_common.ConstraintValueInfo]
@@ -425,6 +425,15 @@ def _publish_binary_impl(ctx):
     )
 
     assembly_files = _get_assembly_files(assembly_runtime_info, transitive_runtime_deps, depsjson_struct)
+    runtime_pack_files = _runtime_pack_files(runtime_pack_info, depsjson_struct)
+
+    layout = _publish_layout(runtime_identifier, binary_info, assembly_files, runtime_pack_files, is_self_contained)
+
+    # Checked before the ReadyToRun and copy actions are declared, so a
+    # collision names the targets at fault instead of surfacing as conflicting
+    # actions on a path nobody wrote.
+    _reject_conflicting_publish_paths(layout, ctx.label)
+
     ready_to_run = _NO_READY_TO_RUN
 
     if ctx.attr.ready_to_run:
@@ -432,20 +441,11 @@ def _publish_binary_impl(ctx):
             ctx,
             binary_info,
             assembly_files,
-            depsjson_struct,
+            runtime_pack_files,
             runtime_identifier,
         )
 
-    (main_dll, outputs, runfiles) = _copy_to_publish(
-        ctx,
-        runtime_identifier,
-        runtime_pack_info,
-        binary_info,
-        assembly_files,
-        depsjson_struct,
-        is_self_contained,
-        ready_to_run,
-    )
+    (main_dll, outputs) = _copy_to_publish(ctx, runtime_identifier, layout, binary_info, ready_to_run)
 
     apphost_shim = _create_shim_exe(ctx, binary_info.apphost_pack_info, main_dll, runtime_identifier)
 
@@ -453,7 +453,11 @@ def _publish_binary_impl(ctx):
         DefaultInfo(
             executable = apphost_shim,
             files = depset([apphost_shim, main_dll, runtimeconfig, depsjson] + outputs),
-            runfiles = ctx.runfiles(files = runfiles),
+            # Data files reach the publish as runfiles, not as files at a
+            # relative path: end users have to resolve them with the runfiles
+            # library, and package them with a rule that carries runfiles along
+            # (`include_runfiles` on rules_pkg's `pkg_tar`, for one).
+            runfiles = ctx.runfiles(files = assembly_files.data),
         ),
     ]
 
